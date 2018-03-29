@@ -3,8 +3,8 @@
 \chapter{Continuidade}\label{cap:continuidade}\index{continuidade}
 \thispagestyle{fancy}
 
-\begin{defn}\normalfont{(Continuidade)}
-  Sejam $f:D\to\mathbb{R}$, $y=f(x)$, e $a$ um ponto de acumulação de $D$. Dizemos que $f$ é \emph{contínua} no ponto $a$ se as sguintes condições são satisfeitas:
+\begin{defn}\normalfont{(Continuidade)}\label{defn:funcao_continua}
+  Sejam $f:D\to\mathbb{R}$, $y=f(x)$, e $a$ um ponto de acumulação de $D$. Dizemos que $f$ é \emph{contínua} no ponto $a$ se as seguintes condições são satisfeitas:
   \begin{enumerate}[a)]
   \item $a\in D$.
   \item existe o limite de $f(x)$ com $x\to a$.
@@ -16,6 +16,75 @@ Ainda, dizemos que $f$ é uma \emph{função contínua}\index{função contínua
 \begin{ex}
   Vejamos os seguintes casos:
   \begin{enumerate}[a)]
-  \item A função $\displaystyle f(x)=\frac{x^2-1}{x+1}$ não é contínua no ponto $x=-1$, pois 
+  \item A função $f(x) = x-1$ é contínua em todo o seu domínio.
+  \item A função $\displaystyle g(x)=\frac{x^2-1}{x+1}$ é \emph{descontínua}\index{função descontínua} (i.e., não contínua) no ponto $x=-1$, pois este não é um ponto no domínio da função.
+  \item A função
+    \begin{equation}
+      h(x) = \left\{\begin{array}{ll}\frac{x^2-1}{x+1} &, x\neq -1,\\1, x=-1\end{array}\right.
+    \end{equation}
+é descontínua no ponto $x=-1$, pois
+    \begin{equation}
+      \lim_{x\to -1} h(x) = -2 \neq 1 = h(-1).
+    \end{equation}
   \end{enumerate}
 \end{ex}
+
+\begin{teo}
+  Se $f$ e $g$ são funções contínuas no ponto $x=a$, então são contínuas nestes pontos as funções: (a) $f+g$, (b) $kf$, $\forall k\in\mathbb{R}$, (c) $f/g$, dado que $g(a)\neq 0$.
+\end{teo}
+\begin{dem}
+  Decorre imediatamente da definição de função contínua (Definição~\ref{defn:funcao_continua}) e do Teorema~\ref{teo:operações_com_limites}.
+\end{dem}
+
+\begin{teo}\normalfont{(Continuidade da função composta)}
+  Sejam dadas funções $f:D_f\to\mathbb{R}$ e $g:D_g\to\mathbb{R}$ com $g(D_g)\subset D_f$. Se $g$ é contínua no ponto $a$ e $f$ é contínua no ponto $g(a)$, então a função composta $f\circ g$ é contínua no ponto $a$.
+\end{teo}
+\begin{dem}
+  É claro do enunciado que $a$ pertence ao domínio de $f\circ g$. Como $(f\circ g)(a) = f(g(a))$, nos resta mostrar que $(f\circ g)(x)$ tende para $f(g(a))$ quando $x\to a$. Seja, então, $\varepsilon>0$. Pela continuidade da $f$ no ponto $g(a)$, tomemos $\delta'>0$ tal que $y\in V'_{\delta'}(g(a))\cap D_f$ implica $|f(y)-f(g(a))|<\varepsilon$. Agora, pela continuidade da $g$ no ponto $a$, tomemos $\delta>0$ tal que $x\in V'_{\delta}(a)\cap D_g$ implica $|g(x)-g(a)|<\delta'$. Logo, temos que se $x\in V'_{\delta}(a)\cap D_g$, então $|f(g(x))-f(g(a))|<\varepsilon$, o que completa a demonstração.
+\end{dem}
+
+\begin{defn}\normalfont{(Continuidade lateral)}\index{continuidade!lateral}
+  Dizemos que $f$ é \emph{contínua à direta}\index{função contínua!à direta} (\emph{contínua à esquerda}\index{função contínua!à direta}) no ponto $a$, se está definida neste ponto, onde seu limite à direta (à esquerda) é $f(a)$.
+\end{defn}
+
+\begin{ex}
+  Vejamos os seguintes casos:
+  \begin{enumerate}[a)]
+    \item A função
+      \begin{equation}
+        f_1(x) = \left\{
+          \begin{array}{ll}
+            x/|x| &, x\neq 0,\\
+            -1 &, x=0
+          \end{array}
+\right.
+      \end{equation}
+é contínua à esquerda no ponto $x=0$. De fato, $f_1(0)=-1$ e dado qualquer $\epsilon>0$ podemos escolher, por exemplo, $\delta = \epsilon$ tal que $0<0-x<\delta$ implica $|f_1(x)-(-1)|=|-1-(-1)|=0<\epsilon$.
+    \item A função
+      \begin{equation}
+        f_2(x) = \left\{
+          \begin{array}{ll}
+            x/|x| &, x\neq 0,\\
+            1 &, x=0
+          \end{array}
+\right.
+      \end{equation}
+é contínua à direta no ponto $x=0$. Verifique!
+  \end{enumerate}
+\end{ex}
+
+\subsection*{Exercícios}
+
+\begin{exer}
+  Mostre que se $f:D\to\mathbb{R}$ é uma função contínua no ponto $a$ e $f(a)>0$, então existe $\delta>0$ tal que $x\in V_\delta(a)\cap D$ implica $f(x)>0$. Além disso, se removermos a hipótese de que $f$ seja contínua no ponto $a$ essa afirmação continua verdadeira? Justifique sua resposta.
+\end{exer}
+\begin{resp}
+  Segue imediatamente do Corolário~\ref{corol:limite_permanência_do_sinal}.
+\end{resp}
+
+\begin{exer}
+  Mostre que qualquer $f:D\to\mathbb{R}$ é contínua em no ponto $a$ se, e somente se, $f$ é contínua à esquerda e à direita neste ponto.
+\end{exer}
+\begin{resp}
+  Observe que $f$ tem limite no ponto $a$ se, e somente se, são iguais os limites à esquerda e à direita de $f$ neste ponto.
+\end{resp}
