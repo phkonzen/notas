@@ -144,11 +144,11 @@ inclusive para $k=0$. Agora, para todo $h$ suficientemente pequeno, pomos $k = g
   Seja $f:I=(a, b)\to\mathbb{R}$, $y=f(x)$, uma função derivável em $I$ com $f'(x)$ sempre positiva ou sempre negativa. Então, sua inversa $x=f^{-1}(y)$ é derivável no intervalo $J = f(I)$ e $(f^{-1})'(y) = 1/f'(g(x))$.
 \end{teo}
 \begin{dem}
-  Sejam $y,y_0\in J$, $x=g(y)$ e $x_0=g(y_0)$. Notemos que
+  Sejam $y,y_0\in J$, $x=f^{-1}(y)$ e $x_0=f^{-1}(y_0)$. Notemos que
   \begin{equation}
-    \frac{g(y)-g(y_0)}{y-y_0} = \frac{x-x_0}{f(x)-f(x_0)} = \left[\frac{f(x)-f(x_0)}{x-x_0}\right]^{-1}.
+    \frac{f^{-1}(y)-f^{-1}g(y_0)}{y-y_0} = \frac{x-x_0}{f(x)-f(x_0)} = \left[\frac{f(x)-f(x_0)}{x-x_0}\right]^{-1}.
   \end{equation}
-Agora, basta observar que quando $y\to y_0$, temos $x\to x_0$ pela continuidade da $g$. Logo, tomando o limite nas expressões acima, temos o resultado desejado.
+Agora, basta observar que quando $y\to y_0$, temos $x\to x_0$ pela continuidade da $f^{-1}$. Logo, tomando o limite nas expressões acima, temos o resultado desejado.
 \end{dem}
 
 \subsection*{Exercícios}
@@ -164,8 +164,50 @@ Agora, basta observar que quando $y\to y_0$, temos $x\to x_0$ pela continuidade 
 \end{resp}
 
 \begin{exer}
-  Mostre que se $f:I=(a,b)\to\mathbb{R}$ é derivável em $I$ e $f'(x) > 0$ para todo $x\in I$, então $f$ é uma função crescente.
+  Mostre que se $f:D\to\mathbb{R}$ é derivável em algum ponto $c\in D$ e $f'(c) > 0$, então $f$ é crescente em alguma vizinhança não vazia de $c$.
 \end{exer}
-\begin{resp}
-  Observe que se $f'(x)>0$ para algum $x\in I$, então existe uma vizinhança de $x$ na qual $f$ é crescente.
-\end{resp}
+
+\section{Extremos e o teorema do valor médio}
+
+\begin{teo}\label{teo:ponto_crítico}
+  Se $f:D\to\mathbb{R}$ é derivável num ponto $c\in D$ no qual ela assume valor máximo ou mínimo local, então $f'(c) = 0$. 
+\end{teo}
+\begin{dem}
+  No caso de $c$ ser ponto de mínimo local de $f$, então existe $\delta>0$ tal que $f(c+h)-f(c) \geq 0$ para todo $|h|<\delta$. Logo, temos
+  \begin{equation}
+    \lim_{h\to 0^+} \frac{f(c+h)-f(c)}{h} \geq 0\quad\text{e}\quad\lim_{h\to 0^-} \frac{f(c+h)-f(c)}{h} \leq 0.
+  \end{equation}
+Mas, então, como $f$ é diferenciável no ponto $c$, necessariamente $f'(c)=0$. Um raciocínio análogo mostra o resultado para o caso de $c$ ser ponto de máximo local (veja o Exercício~\ref{exer:ponto_de_mínimo}.
+\end{dem}
+
+\begin{teo}\normalfont{(de Rolle)}
+  Se $f:[a, b]\to\mathbb{R}$ é uma função contínua em todo o seu domínio, derivável no intervalo aberto $(a, b)$ e $f(a) = f(b)$, então existe $c\in (a, b)$ tal que $f'(c)=0$.
+\end{teo}
+\begin{dem}
+  Se $f$ é constante, então $f'(c)=0$ para todo $c\in(a, b)$. Caso contrário, $f$ terá que assumir valores maiores ou menores que $f(a)=f(b)$. Como $f$ é contínua no intervalo fechado $[a, b]$ ela assumirá valor máximo ou mínimo em algum ponto $c \in (a, b)$ (veja Teorema~\ref{teo:função_contínua_valores_extremos}). Então, pelo Teorema~\ref{teo:ponto_crítico}, temos $f'(c)=0$.
+\end{dem}
+
+\begin{teo}\normalfont{(do valor médio)}
+  Se $f:[a, b]\to\mathbb{R}$ é uma função contínua em todo o seu domínio e derivável no intervalo $(a, b)$, então existe $c\in (a, b)$ tal que
+  \begin{equation}
+    \frac{f(b) - f(a)}{b - a} = f'(c).
+  \end{equation}
+\end{teo}
+\begin{dem}
+  Seja
+  \begin{equation}
+    g(x) = f(x) - f(a) - \frac{f(b) - f(a)}{b - a}(x-a).
+  \end{equation}
+Observamos que $g$ é contínua em $[a, b]$, derivável em $(a, b)$ e $g(a)=g(b)=0$. Logo, pelo Teorema de Rolle\index{teorema de!Rolle}, temos que existe $c\in (a, b)$ tal que $g'(c) = 0$, mas daí $f'(c)$ satisfaz o resultado desejado.
+\end{dem}
+
+\subsection*{Exercícios}
+
+\begin{exer}\label{exer:ponto_de_mínimo}
+  Mostre que se $f:D\to\mathbb{R}$ é derivável num ponto $c\in D$ no qual ela assume valor máximo local, então $f'(c) = 0$.   
+\end{exer}
+
+\begin{exer}
+  Use o teorema do valor médio para mostrar que se $f:[a, b]\to \mathbb{R}$ é contínua em todo o seu domínio e $f'(x)>0$ para todo $x\in (a, b)$, então $f$ é uma função crescente.
+\end{exer}
+
