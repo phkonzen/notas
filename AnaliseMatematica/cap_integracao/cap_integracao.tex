@@ -13,12 +13,16 @@
 O valor $|P| = \max_{1\leq i\leq n} \Delta x_i$, $\Delta x_i = x_i - x_{i-1}$, é chamado de \emph{norma da partição}\index{norma da partição}.
 \end{defn}
 
+\begin{defn}\normalfont{(Refinamento de uma partição)}
+  Um refinamento de uma partição $P_n([a, b]) := \{a=x_0, x_1, x_2, \dotsc, x_n=b\}$ é uma partição $P_m([a, b])$ com $m>n$ tal que $P_n([a, b])\subset P_m([a, b])$.
+\end{defn}
+
 \begin{defn}\normalfont{(Integral de Riemann)}
   A \emph{integral de Riemann}\index{integral de Riemann} de uma função $f:D\to\mathbb{R}$, $y=f(x)$, num intervalo $[a, b]\subset D$, quando existe, é o número $I$ tal que
   \begin{equation}
      I = \lim_{n\to \infty} \sum_{i=1}^n f(\xi_i)\Delta x_i,
   \end{equation}
-onde arbitrariamente $\xi_i\in [x_i, x_{i-1}]$ e $\Delta x_i = x_{i}-x_{i-1}$ são tomados considerando todas as possíveis partições $P([a, b]) = \{a=x_0, x_1, x_2, \dotsc, x_n=b\}$, com $|P|\to 0$ quando $n\to 0$.
+onde arbitrariamente $\xi_i\in [x_{i-1}, x_{i}]$ e $\Delta x_i = x_{i}-x_{i-1}$ são tomados considerando todas as possíveis partições $P([a, b]) = \{a=x_0, x_1, x_2, \dotsc, x_n=b\}$, com $|P|\to 0$ quando $n\to 0$. Quando um tal $I$ existe, dizemos que $f$ é integrável em $[a, b]$.
 \end{defn}
 
 \begin{obs}
@@ -29,6 +33,63 @@ onde arbitrariamente $\xi_i\in [x_i, x_{i-1}]$ e $\Delta x_i = x_{i}-x_{i-1}$ s�
 que aparecem na definição da integral de Riemann são chamadas de \emph{somas de Riemann}\index{somas de!Riemann}.
 \end{obs}
 
+\section{Integrabilidade de funções contínuas}
+
+\begin{teo}
+  Toda função $f:[a, b]\to\mathbb{R}$ contínua em $[a, b]$ é integrável.
+\end{teo}
+\begin{dem}
+  Seja dado $\varepsilon>0$. Pelo teorema de Heine, $f$ é uniformemente contínua e, portanto, existe $\delta>0$ tal que
+  \begin{equation}
+    x,y\in I:=[a, b], |x-y|<\delta \Rightarrow |f(x)-f(y)|<\varepsilon.
+  \end{equation}
+Seja, agora, $S_n$ uma sequência arbitrária de somas de Riemann com norma tendo a zero quando $n\to\infty$, i.e.
+\begin{equation}
+  S_n = \sum_{i=1}^n f(\xi_i)\Delta x_i,
+\end{equation}
+com $\max_{1\leq i\leq n}\Delta x_i\to 0$ quando $n\to\infty$. Queremos provar que existe $I\in\mathbb{R}$ tal que
+\begin{equation}
+  I = \lim_{n\to\infty} S_n
+\end{equation}
+independentemente da escolha dos pontos $x_i$ e $\xi_i$. Para tanto, iremos usar o critério de convergência de Cauchy\index{Cauchy}. Para tanto, sejam 
+\begin{equation}
+  S_n := \sum_{i=1}^n f(\xi_i)\Delta x_i
+\end{equation}
+a soma de Riemann para uma dada partição $P_n := \{a=x_0<x_1<x_2<\cdots <x_n=b\}$ com $|P_n| < \delta$ e 
+\begin{equation}
+  S_M := \sum_{i=1}^M f(\eta_i)\Delta y_i
+\end{equation}
+a soma de Riemann para um refinamento $P_M:=\{a=y_0<y_1<y_2<\cdots <y_M=b\}$ de $P_n$. Como $P_M$ é um refinamento de $P_n$, cada subintervalo $[x_{i-1}, x_i]$ é a união de certos subintervalos $[y_{r-1}, y_{r}]$, $\ldots$, $[y_{s-1}, y_{s}]$ e, portanto $\Delta x_i = \Delta y_r + \cdots + \Delta y_s$. Ainda, a diferença $S_n - S_M$ conterá, então, termos da forma
+\begin{equation}
+  f(\xi_i)\sum_{j=r}^s f(\eta_i)\Delta y_j = \sum_{j=r}^s [f(\xi_i) - f(\eta_j)]\delta y_j.
+\end{equation}
+Agora, como $|\xi_i-\eta_j|<\delta$, temos $|f(\xi_i) - f(\eta_j)|<\varepsilon$ e, portanto
+\begin{equation}
+  \left|f(\xi_i) - \sum_{j=r}^s f(\eta_j)\Delta y_j\right| < \varepsilon \sum_{j=r}^s \Delta y_j = \varepsilon\Delta x_i.
+\end{equation}
+Estendendo este resultado, temos
+\begin{equation}
+  |S_n - S_M| \varepsilon\sum_{i=1}^n \Delta x_i = \varepsilon (b-a).
+\end{equation}
+Por fim, sejam $S_n$ e $S_m$ somas de Riemann correspondentes às partições $P_n$ e $P_m$, respectivamente, com $|P_n|<\delta$ e $|P_m|<\delta$. Ainda, seja $P_M$ um refinamento de ambas partições. Então
+\begin{equation}
+  |S_n - S_m| \leq |S_n - S_M| + |S_M - S_m| < 2\varepsilon (b-a).
+\end{equation}
+Isto mostra que, dada uma sequência arbitrária de partições $P_n$ com $|P_n|\to 0$ quando $n\to \infty$, então o limite das somas de Riemann $S_n$ destas partições existe quando $n\to\infty$. Falta mostrar que este limite é único.
+
+Sejam, agora, $S_n$ e $T_n$ diferentes sequências de somas de Riemann cujas partições têm norma tendendo a zero quando $n\to\infty$. Então, por exemplo, a sequência
+\begin{equation}
+  S_1, T_1, S_2, T_2, S_3, T_3, \dotsc, S_n, T_n, \ldots
+\end{equation}
+também é uma sequência de somas de Riemann cujas partições têm norma tendo a zero quando $n\to\infty$. Logo, pelo que mostramos acima, o limite desta sequência existe. Agora, como $(S_n)_n$ e $(T_n)_n$ são subsequências destas, elas convergem para o mesmo limite.
+\end{dem}
+
 \subsection*{Exercícios}
 
-
+\begin{exer}
+  Mostre que se $f:[a, b]\to\mathbb{R}$ é integrável em $[a, b]$, então
+  \begin{equation}
+    \int_a^b f(x)\,dx = \int_a^c f(x)\,dx + \int_c^b f(x)\,dx,
+  \end{equation}
+para qualquer $c\in [a, b]$.
+\end{exer}
