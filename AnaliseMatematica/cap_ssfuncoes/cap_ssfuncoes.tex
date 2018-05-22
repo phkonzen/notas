@@ -147,3 +147,76 @@ O que concluí que $f_n$ satisfaz o critério de Cauchy.
 \begin{exer}
   Mostre que a sequência de funções $f_n(x) = x^2/(1 + nx^2)$ satisfaz o critério de convergência de Cauchy para sequências de funções. Dica: observe que $0\leq f_n(x) < 1/n$.
 \end{exer}
+
+\section{Algumas consequências da convergência uniforme}
+
+\begin{teo}\label{teo:sf_continuas}
+  Seja $f_n:D\to\mathbb{R}$ uma sequência de funções contínuas. Se $f_n$ converge uniformemente para uma função $f:D\to\mathbb{R}$, então $f$ é contínua.
+\end{teo}
+\begin{dem}
+  Primeiramente, observemos que para quaisquer $x,a\in D$ e $n\in \mathbb{N}$, temos
+  \begin{equation}\label{eq:sf_desigualdade_triangular}
+    \begin{split}
+      |f(x)-f(a)| &= |f(x)-f_n(x)+f_n(x)-f_n(a)+f_n(a)-f(a)|\\
+      &\leq |f(x)-f_n(x)| + |f_n(x)-f_n(a)| + |f_n(a)-f(a)|.
+    \end{split}
+  \end{equation}
+Seja, então, $\varepsilon>0$. Como $f_n$ converge uniformemente para $f$, existe $N\in\mathbb{N}$ tal que, para todo $n>N$ temos
+\begin{equation}
+  |f(x)-f_n(x)| < \frac{\varepsilon}{3} \qquad\text{e}\qquad |f_n(a)-f(a)| < \frac{\varepsilon}{3}.
+\end{equation}
+Fixemos um $n>N$. Como $f_n$ é contínua, para cada $a\in D$, existe $\delta>0$ tal que
+\begin{equation}
+  x\in D, |x-a|<\delta \Rightarrow |f_n(x) - f_n(a)| < \frac{\varepsilon}{3}.
+\end{equation}
+Portanto, usando a desigualdade em~\eqref{eq:sf_desigualdade_triangular}, vemos que para cada $a\in D$, existe $\delta>0$ tal que
+\begin{equation}
+  x\in D, |x-a|<\varepsilon \Rightarrow |f(x) - f(a)| < \varepsilon.
+\end{equation}
+Isto mostra a continuidade de $f$.
+\end{dem}
+
+\begin{teo}\label{teo:sf_integravel}
+  Seja $f_n:[a, b]\to\mathbb{R}$ uma sequência de funções contínuas. Se $f_n$ converge uniformemente para uma função $f:[a, b]\to\mathbb{R}$, então
+  \begin{equation}
+    \lim \int_a^b f_n(x)\,dx = \int_a^b [\lim f_n(x)]\,dx = \int_a^b f(x)\,dx.
+  \end{equation}
+\end{teo}
+\begin{dem}
+  Seja $\varepsilon>0$. Como $f_n$ converge uniformemente para $f$, temos que existe $N\in\mathbb{N}$ tal que
+  \begin{equation}
+    x\in [a, b], n>N \Rightarrow |f_n(x) - f(x)| < \frac{\varepsilon}{(b-a)}.
+  \end{equation}
+Além disso, do teorema anterior (Teorema~\ref{teo:sf_continuas}), temos que $f$ é contínua em $[a, b]$ e, portanto, assim como $f_n$, é integrável neste intervalo (veja Teorema~\ref{teo:integrabilidade_de_f_contínua}). Por tudo isso, temos
+\begin{equation}
+  \begin{split}
+    n>N \Rightarrow \left|\int_a^b f_n(x)\,dx - \int_a^b f(x)\,dx\right| &= \left|\int_a^b |f_n(x) - f(x)|\,dx\right|\\
+    &\leq \frac{\varepsilon}{(b-a)}(b-a) = \varepsilon.
+  \end{split}
+\end{equation}
+O que concluí a demonstração.
+\end{dem}
+
+\begin{teo}\label{teo:sf_deriváveis}
+  Seja $f_n:[a, b]\to\mathbb{R}$ uma sequência de funções com derivadas contínuas em $[a, b]$, tal que $f_n'$ converge uniformemente para uma função $g:[a, b]\to\mathbb{R}$. Suponhamos, ainda, para algum ponto $c\in [a, b]$, $f_n(c)$ é uma sequência convergente. Então, $f_n$ converge uniformemente para uma função $f$ para a qual $f' = g$, i.e.
+  \begin{equation}
+    \frac{d}{dx}\lim f_n(x) = \lim \frac{d}{dx}f_n(x).
+  \end{equation}
+\end{teo}
+\begin{dem}
+  Do teorema fundamental do cálculo (Teorema~\ref{teo:teo_fundamental_do_cálculo}), para todo $x\in [a, b]$ temos
+  \begin{equation}\label{eq:sf_tfc1}
+    f_n(x) = f_n(c) + \int_c^x f'_n(t)\,dt.
+  \end{equation}
+Como, por hipótese, $f_n(c)$ é convergente e $f_n'$ é uniformemente convergente para a função $g$, temos, do teorema anterior (Teorema~\ref{teo:sf_integravel}), que tomando o limite de $n\to \infty$ nesta última equação, obtemos
+  \begin{equation}\label{eq:sf_tfc2}
+    f(x) = f(c) + \int_c^x g(t)\,dt.
+  \end{equation}
+Observemos que $f' = g$. Fica de exercício, mostrar que $f_n$ converge uniformemente para $f$, o que completa a demonstração.
+\end{dem}
+
+\subsection*{Exercícios}
+
+\begin{exer}
+  Complete a demonstração do Teorema~\ref{teo:sf_deriváveis}.
+\end{exer}
