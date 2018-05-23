@@ -43,6 +43,8 @@ main.html: main.tex
 	latex main
 	htlatex main.tex "myconfig.cfg,3,notoc*" " -cunihtf" "-d./html/"
 	cp config-book.knd config.knd
+#	rm -rf  ../docs/AnaliseMatematica
+#	mv html ../docs/AnaliseMatematica
 
 ########################################
 # TODOS AS VERSÕES EM FORMATO PDF
