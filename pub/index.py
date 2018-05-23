@@ -34,7 +34,9 @@ class Index:
 
     def add_body(self):
         body = '<body>\n'
-
+        body += '<div class="row">\n'
+        body += '<div class="col-xs-12 col-xs-offset-0 col-md-8 col-md-offset-2">\n'
+        
         #jumbotron
         body += '<div class="jumbotron text-center">\n'
         body += '<h1>Notas de Aula</h1>\n'
@@ -44,15 +46,29 @@ class Index:
         #notas de aula
         body += '<h3>Notas de aula</h3>\n'
         body += '<ul>\n'
+
+        #AnaliseMatematica
         body += '<li>Análise Matemática</li>\n'
         body += '<ul class="list-unstyled">\n'
-        body += '<li>Versão instável: '
+        body += '<li>Versão corrente: '
         body += '<a href="./AnaliseMatematica/main.html">HTML</a>'
         body += ' | '
         body += '<a href="./AnaliseMatematica/main.pdf">PDF</a> '
         body += '</ul>\n'
+
+        #MatematicaNumerica
+        body += '<li>Matemática Numérica</li>\n'
+        body += '<ul class="list-unstyled">\n'
+        body += '<li>Versão corrente: '
+        body += '<a href="./MatematicaNumerica/main.html">HTML</a>'
+        body += ' | '
+        body += '<a href="./MatematicaNumerica/main.pdf">PDF</a> '
         body += '</ul>\n'
 
+        body += '</ul>\n'
+
+        body += '</div>\n'
+        body += '</div>\n'
         body += '</body>\n'
 
         #add at bottom
