@@ -29,5 +29,5 @@ index.build()
 os.system('cp -rvf ../src/* '+srcdir+'/')
 
 #AnaliseMatematica
-am = AnaliseMatematica(srcdir)
+am = AnaliseMatematica(srcdir,odir)
 am.build()

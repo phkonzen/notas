@@ -11,8 +11,9 @@ import os
 
 class AnaliseMatematica:
     
-    def __init__(self,srcdir):
+    def __init__(self,srcdir,odir):
         self.srcdir = srcdir
+        self.odir = odir
         
     def make_pdf(self):
         os.chdir(self.srcdir+'/AnaliseMatematica')
@@ -29,6 +30,8 @@ class AnaliseMatematica:
     def build(self):
         self.make_pdf()
         self.make_html()
-        os.system('rm -rvf ../docs/AnaliseMatematica')
+        os.system('rm -rvf '+self.odir+'/AnaliseMatematica')
         os.system('mv '+self.srcdir+'/AnaliseMatematica/html'\
-                      +' ../docs/AnaliseMatematica')
+                      +' '+self.odir+'/AnaliseMatematica')
+        os.system('mv '+self.srcdir+'/AnaliseMatematica/main.pdf'\
+                      +' '+self.odir+'/AnaliseMatematica/')
