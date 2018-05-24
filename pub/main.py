@@ -29,9 +29,9 @@ index.build()
 #copia src para pasta temporária
 os.system('cp -rvf ../src/* '+srcdir+'/')
 
-# #AnaliseMatematica
-# am = AnaliseMatematica(srcdir,odir)
-# am.build()
+#AnaliseMatematica
+am = AnaliseMatematica(srcdir,odir)
+am.build()
 
 #AnaliseMatematica
 am = MatematicaNumerica(srcdir,odir)
