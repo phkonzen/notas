@@ -41,7 +41,7 @@ main.html: main.tex
 	bibtex main
 	latex main
 	latex main
-	htlatex main.tex "myconfig.cfg,3,notoc*" " -cunihtf" "-d./html/"
+	htlatex main.tex "myconfig.cfg,3,notoc*,charset=utf-8" " -cunihtf -utf8" "-d./html/"
 	cp config-book.knd config.knd
 
 ########################################

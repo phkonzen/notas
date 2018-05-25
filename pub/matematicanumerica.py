@@ -9,7 +9,9 @@ Autor: Pedro H A Konzen - 05/2018
 
 import os
 
-class MatematicaNumerica:
+from notas import *
+
+class MatematicaNumerica(Notas):
     
     def __init__(self,srcdir,odir):
         self.srcdir = srcdir
@@ -30,6 +32,7 @@ class MatematicaNumerica:
     def build(self):
         self.make_pdf()
         self.make_html()
+        self.goodies(self.srcdir+'/MatematicaNumerica/html')
         os.system('rm -rvf '+self.odir+'/MatematicaNumerica')
         os.system('mv '+self.srcdir+'/MatematicaNumerica/html'\
                       +' '+self.odir+'/MatematicaNumerica')

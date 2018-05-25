@@ -9,7 +9,10 @@ Autor: Pedro H A Konzen - 05/2018
 
 import os
 
-class AnaliseMatematica:
+#classe mãe
+from notas import *
+
+class AnaliseMatematica(Notas):
     
     def __init__(self,srcdir,odir):
         self.srcdir = srcdir
@@ -30,6 +33,7 @@ class AnaliseMatematica:
     def build(self):
         self.make_pdf()
         self.make_html()
+        self.goodies(self.srcdir+'/AnaliseMatematica/html')
         os.system('rm -rvf '+self.odir+'/AnaliseMatematica')
         os.system('mv '+self.srcdir+'/AnaliseMatematica/html'\
                       +' '+self.odir+'/AnaliseMatematica')
