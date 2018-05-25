@@ -29,6 +29,9 @@ index.build()
 #copia src para pasta temporária
 os.system('cp -rvf ../src/* '+srcdir+'/')
 
+#del o site antigo
+os.system('rm -rvf ../docs/*')
+
 #AnaliseMatematica
 am = AnaliseMatematica(srcdir,odir)
 am.build()
@@ -37,5 +40,5 @@ am.build()
 am = MatematicaNumerica(srcdir,odir)
 am.build()
 
-#publica
+#publica o novo site
 os.system('cp -rvf '+odir+'/* ../docs/')

@@ -35,13 +35,16 @@ html: main.html
 
 main.html: main.tex
 	cp config-html.knd config.knd
+	rm -rvf ./html
 	mkdir -p ./html
-	rm -f ./html/*
-	latex main
-	bibtex main
-	latex main
-	latex main
-	htlatex main.tex "myconfig.cfg,3,notoc*,charset=utf-8" " -cunihtf -utf8" "-d./html/"
+	cp -rvf ../fonts html/
+	latexml main.tex | latexmlpost \
+        --splitat=section -splitnaming=label \
+	--css=../main.css \
+	--format=html \
+	--javascript='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_SVG' \
+	--javascript=../mymathcfg.js \
+	--dest=html/main.html -
 	cp config-book.knd config.knd
 
 ########################################
