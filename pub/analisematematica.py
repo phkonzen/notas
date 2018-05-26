@@ -33,7 +33,8 @@ class AnaliseMatematica(Notas):
     def build(self):
         self.make_pdf()
         self.make_html()
-        self.goodies(self.srcdir+'/AnaliseMatematica/html')
+        self.goodies(self.srcdir+'/AnaliseMatematica/html',
+                         'Análise Matemática')
         os.system('rm -rvf '+self.odir+'/AnaliseMatematica')
         os.system('mv '+self.srcdir+'/AnaliseMatematica/html'\
                       +' '+self.odir+'/AnaliseMatematica')
