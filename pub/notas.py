@@ -39,6 +39,18 @@ class Notas:
         head += '<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>\n'
         head += '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
         head += '<link rel="stylesheet" href="goodies.css" type="text/css">\n'
+
+        #google tracking
+        head += '\n<!-- Global site tag (gtag.js) - Google Analytics -->\n'
+        head += '<script async src="https://www.googletagmanager.com/gtag/js?id=UA-17226092-2"></script>\n'
+        head += '<script>\n'
+        head += 'window.dataLayer = window.dataLayer || [];\n'
+        head += 'function gtag(){dataLayer.push(arguments);}\n'
+        head += 'gtag("js", new Date());\n'
+        head += '\ngtag("config", "UA-17226092-2")\n';
+        head += '</script>\n'
+
+        
         head += '</head>\n'
 
         #enxerta no __body__ (top)
