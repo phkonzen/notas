@@ -42,9 +42,9 @@ main.html: main.tex
         --splitat=section -splitnaming=label \
 	--css=../main.css \
 	--format=html \
-	--javascript='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_SVG' \
-	--javascript=../mymathcfg.js \
+	--javascript='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML' \
 	--dest=html/main.html -
+#	--javascript=../mymathcfg.js \
 	cp config-book.knd config.knd
 
 ########################################
