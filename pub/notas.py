@@ -69,7 +69,7 @@ class Notas:
         body += '<span class="icon-bar"></span>\n'
         body += '<span class="icon-bar"></span>\n'
         body += '</button>\n'
-        body += '<a class="navbar-brand" href="../index.html">Notas de Aula<br/><small>'+nome_notas+'<small/></a>\n'
+        body += '<a class="navbar-brand" href="main.html">Notas de Aula<br/><small>'+nome_notas+'<small/></a>\n'
         body += '</div>\n\n'
 
         body += '<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">\n'
