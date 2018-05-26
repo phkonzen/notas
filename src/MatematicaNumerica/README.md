@@ -1,6 +1,10 @@
-# notas
+# notas/MatematicaNumerica
 
-Notas de aula.
+Notas de aula de matemática numérica.
+
+## Contato
+
+phkonzen@gmail.com
 
 ## Licença
 

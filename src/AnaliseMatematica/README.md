@@ -1,6 +1,10 @@
-# notas
+# notas/AnaliseMatematica
 
-Notas de aula.
+Notas de aula de análise matemática.
+
+## Contato
+
+phkonzen@gmail.com
 
 ## Licença
 
