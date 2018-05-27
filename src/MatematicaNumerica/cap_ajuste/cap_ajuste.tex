@@ -122,14 +122,14 @@ plot(x,y,'ro',...
   \begin{equation}
     f(x) = c_1\sen(x) + c_2\cos(x) + c_3
   \end{equation}
-no sentido de mínimos quadrados. Para tanto, formamos a matrix
+no sentido de mínimos quadrados. Para tanto, formamos a matriz
 \begin{equation}
   A :=
   \begin{bmatrix}
     \sen(x_1) & \cos(x_1) & 1 \\
     \sen(x_2) & \cos(x_2) & 1 \\
     \sen(x_3) & \cos(x_3) & 1 \\
-    \sen(x_4) & \cos(x_4) & 1 \\
+    \sen(x_4) & \cos(x_4) & 1
   \end{bmatrix}
 \end{equation}
   e, então, resolvemos as equações normais $A^TAc = A^Ty$ para o vetor de coeficientes $c=(c_1, c_2)$. Fazendo isso, obtemos $c_1=-0,198$, $c_2=-2,906$ e $c_3=2,662$. A Figura~\ref{fig:ex_mq_curvas} mostra um esboço da curva ajustada (linha azul) aos pontos dados (círculos vermelhos).
@@ -155,10 +155,74 @@ c = inv(A'*A)*A'*y
 #curva ajustada
 f = @(x) c(1)*sin(x) + c(2)*cos(x) + c(3)
 
-#esboco do pol. ajustado
+#esboco da fun. ajustada
 xx = linspace(-1.25,1.75);
 plot(x,y,'ro',...
      xx,f(xx));grid
+\end{verbatim}
+\fi
+
+\end{ex}
+
+\begin{ex}\normalfont{(Um problema não linear)}\label{ex:ajuste_nlin0}
+  Consideremos o problema de ajustar, no sentido de mínimos quadrados, à função
+  \begin{equation}
+    f(x) = ae^{bx}
+  \end{equation}
+ao seguinte conjunto de pontos
+\begin{center}
+  \begin{tabular}{l|rrrr}
+    $i$ & $1$ & $2$ & $3$ & $4$ \\\hline
+    $x_i$ & $-1$ & $0$ & $1$ & $1,5$\\
+    $y_i$ & $8,0$ & $1,5$ & $0,2$ & $0,1$\\\hline
+  \end{tabular}
+\end{center}
+
+Aqui, temos um problema não linear de mínimos quadrados que pode ser transformado em um problema linear fazendo-se
+\begin{align}
+  y = ae^{bx} &\Rightarrow \ln y = \ln ae^{bx}\\
+             &\Rightarrow \ln y = \ln a + bx.
+\end{align}
+Isto é, denotando $c_1 := \ln a$ e $c_2 := b$, o problema se resume a ajustar uma reta $r(x) = c_1 + c_2x$ ao conjunto de pontos $\{(x_i, \ln y_i)\}_{i=1}^4$. 
+
+Para resolver o problema transformado, formamos a matriz
+\begin{equation}
+  A :=
+  \begin{bmatrix}
+    1 & x_1 \\
+    1 & x_2 \\
+    1 & x_3 \\
+    1 & x_4
+  \end{bmatrix}
+\end{equation}
+e, então, resolvemos as equações normais~\eqref{eq:equacoes_normais} de modo que obtemos $c_1=0,315$ e $c_2=-1,792$. Das definições de $c_1$ e $c_2$, temos $b = c_2 = -1,792$ e $a = e^{c_1} = 1,371$. A Figura~\ref{fig:ex_mq_nlin0} mostra um esboço da curva $f(x) = ae^{bx}$ ajustada (linha azul) aos pontos dados (círculos vermelhos).
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{cap_ajuste/figs/ex_mq_nlin0/ex_mq_nlin0}
+  \caption{Esboço da curva ajustada no Exemplo~\ref{ex:ajuste_nlin0}.}
+  \label{fig:ex_mq_nlin0}
+\end{figure}
+
+\ifisoctave
+O ajuste e um esboço da função ajustada podem ser feitos no \verb+GNU Octave+ com o seguinte código:
+\begin{verbatim}
+#pontos
+x = [-1 0 1 1.5]';
+y = [8.0 1.5 0.2 0.1]';
+
+#resol. as eqs. normais
+A = [ones(4,1) x];
+c = inv(A'*A)*A'*log(y)
+
+#fun. ajustada
+a = exp(c(1)), b = c(2)
+f = @(x) a*exp(b*x);
+
+#esboco da fun. ajustada
+xx = linspace(-1.1,1.6);
+plot(x,y,'ro','linewidth',1.5,...
+     xx,f(xx),'b-','linewidth',1.5);grid
 \end{verbatim}
 \fi
 
