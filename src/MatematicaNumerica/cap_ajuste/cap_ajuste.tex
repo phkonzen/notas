@@ -1,9 +1,9 @@
 %Este trabalho está licenciado sob a Licença Atribuição-CompartilhaIgual 4.0 Internacional Creative Commons. Para visualizar uma cópia desta licença, visite http://creativecommons.org/licenses/by-sa/4.0/ ou mande uma carta para Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
 
-\chapter{Aproximação por mínimos quadrados}\label{cap:ajuste}
+\chapter{Aproximação por mínimos quadrados}\label{c_ajuste}
 \thispagestyle{fancy}
 
-\section{Problemas lineares}\label{sec:problemas_lineares}
+\section{Problemas lineares}\label{c_ajuste_s_prob_lin}
 
 Dado um conjunto de $n$ pontos $\{(x_i,y_i)\}_{i=1}^n$, $x_i\neq x_j$ para $i\neq j$, e uma família de $m \leq n$ funções $\{f_i(x)\}_{i=1}^m$, o problema linear de aproximação por mínimos quadrados consiste em determinar os $m$ coeficientes $\{c_i\}_{i=1}^m$ tal que a função
 \begin{align}    
@@ -15,7 +15,7 @@ aproxime o conjunto de pontos dados no sentido de mínimos quadrados, i.e. os co
   \min_{\{c_1,c_2,\dotsc,c_n\}} \sum_{i=1}^n (y_i - f_i(x_i))^2.
 \end{equation}
 
-\subsection{Equações normais}
+\subsection{Método das equações normais}
 
 Afim de resolver o problema de mínimos quadrados~\eqref{eq:pmq}, observamos que o erro quadrático
 \begin{equation}
@@ -52,6 +52,22 @@ o sistema linear~\eqref{eq:aux2_mq} pode ser escrito na seguinte forma matricial
   A^TAc= A^Ty,
 \end{equation}
 onde $c = (c_1, c_2, \dotsc, c_m)$ é o vetor dos coeficientes e $y = (y_1, y_2, \dotsc, y_n)$ é o vetor das abscissas dos pontos dados.
+
+Logo, o problema linear de mínimos quadrados~\eqref{eq:pmq} reduz-se a resolver o sistema linear \eqref{eq:equacoes_normais} para $c$. Isto nos leva a questão de verificar se $A^TA$ é invertível. De sorte, da disciplina de álgebra linear temos o seguinte teorema.
+
+\begin{teo}
+  A matriz $A^TA$ é positiva definida se, e somente se, as colunas de $A$ são linearmente independentes (i.e. $\text{posto}(A)=n$).
+\end{teo}
+\begin{dem}
+  Se as colunas de $A$ são linearmente independentes, então $x\neq 0$ implica $Ax\neq 0$ e, equivalentemente, $x^TA^T\neq 0$. Portanto, $x\neq 0$ implica $x^TA^TAx = \|Ax\|_2^2 > 0$, o que mostra que $A^TA$ é positiva definida.
+
+  Suponhamos, agora, que as colunas de $A$ não são linearmente independentes. Então, existe $x_0\neq 0$ tal que $Ax_0 = 0$. Mas, então, $x_0^TA^TAx_0=0$, o que mostra que $A^TA$ não é positiva definida. 
+\end{dem}
+
+Este teorema nos fornece uma condição suficiente para a existência (e unicidade de) de solução do problema linear de mínimos quadrados. Mais especificamente, se as colunas da matriz $A$ são linearmente independentes, então os coeficientes da função $f(x)$ que melhor ajustam os pontos dados são
+\begin{equation}
+  c = (A^TA)^{-1}A^Ty.
+\end{equation}
 
 \begin{ex}\normalfont{(Ajuste de polinômios)}\label{ex:ajuste_de_polinomios}
   Considere o problema de ajustar o conjunto de pontos
