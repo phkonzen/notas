@@ -9,7 +9,7 @@ c = inv(A'*A)*A'*y
 #curva ajustada
 f = @(x) c(1)*sin(x) + c(2)*cos(x) + c(3)
 
-#esboco do pol. ajustado
+#esboco da fun. ajustada
 xx = linspace(-1.25,1.75);
 plot(x,y,'ro',...
      xx,f(xx));grid

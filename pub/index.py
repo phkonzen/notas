@@ -43,10 +43,15 @@ class Index:
         body += '<p>Pedro H A Konzen</p>\n'
         body += '</div>\n'
 
-        #notas de aula
-        body += '<h3>Notas de aula</h3>\n'
-        body += '<ul>\n'
+        #miolo
+        body += '<div class="container-fluid">\n'
+        body += '<div class="row">\n'
 
+        #notas de aula
+        body += '<div class="col-md-6">\n'
+
+        body += '<h3>Notas de aula</h3>\n'
+        body += '<ul>\n'        
         #AnaliseMatematica
         body += '<li>Análise Matemática</li>\n'
         body += '<ul class="list-unstyled">\n'
@@ -55,7 +60,6 @@ class Index:
         body += ' | '
         body += '<a href="./AnaliseMatematica/main.pdf">PDF</a> '
         body += '</ul>\n'
-
         #MatematicaNumerica
         body += '<li>Matemática Numérica</li>\n'
         body += '<ul class="list-unstyled">\n'
@@ -64,8 +68,31 @@ class Index:
         body += ' | '
         body += '<a href="./MatematicaNumerica/main.pdf">PDF</a> '
         body += '</ul>\n'
-
         body += '</ul>\n'
+
+        body += '</div> <!-- div class="col-md-6" -->\n'
+
+        body += '<div class="col-md-6">\n'
+
+        body += '<h3>Sobre</h3>\n'
+        body += '<p>Neste <i>site</i> disponibilizo minhas notas de aula \n'
+        body += 'em formato HTML e PDF. As notas estão predominante escritas \n'
+        body += 'em linguagem de marcação \n'
+        body += '<a href="https://www.latex-project.org/" target=_blank>LaTeX</a>.</p>\n'
+        body += '<p>Buscando fomentar a educação, as notas estão disponíveis \n'
+        body += 'sob licença \n'
+        body += '<a href="http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR" target=_blank>CC-BY-SA 4.0</a>. \n'
+        body += 'Além disso, você pode acessar os códigos-fonte do material no \n'
+        body += 'seguinte repositório GitHub \n'
+        body += '<a href="https://github.com/phkonzen/notas">https://github.com/phkonzen/notas</a>.<p>\n'
+        body += '<p>Aproveito para agradecer aos(às) estudantes e colegas que \n'
+        body += 'de modo assíduo ou esporádico contribuem com sugestões, críticas e correções! :)\n'
+        body += '</p>'
+
+        body += '</div><!-- div class="col-md-6" -->\n'
+
+        body += '</div>\n'
+        body += '</div>\n'
 
         body += '</div>\n'
         body += '</div>\n'
