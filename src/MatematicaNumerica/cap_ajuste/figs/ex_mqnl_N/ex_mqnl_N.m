@@ -1,6 +1,6 @@
 #pontos
-x = [-1 0 1 1.5]';
-y = [8.0 1.5 0.2 0.1]';
+global x = [-1 0 1 1.5]';
+global y = [8.0 1.5 0.2 0.1]';
 
 #fun. objetivo
 f = @(x,c) c(1)*exp(c(2)*x);

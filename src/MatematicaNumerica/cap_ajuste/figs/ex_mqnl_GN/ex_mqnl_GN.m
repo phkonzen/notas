@@ -9,7 +9,7 @@ f = @(x,c) c(1)*exp(c(2)*x);
 r = @(c) y - f(x,c);
 
 #jacobiana
-function A = J(c)
+function A = JR(c)
   global x
   A = zeros(4,2);
   A(:,1) = - exp(c(2)*x);

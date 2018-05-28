@@ -7,37 +7,30 @@
 
 Dado um conjunto de $n$ pontos $\{(x_i,y_i)\}_{i=1}^n$, $x_i\neq x_j$ para $i\neq j$, e uma família de $m \leq n$ funções $\{f_i(x)\}_{i=1}^m$, o problema linear de aproximação por mínimos quadrados consiste em determinar os $m$ coeficientes $\{c_i\}_{i=1}^m$ tal que a função
 \begin{align}    
-  f(x) &= \sum_{i=1}^m c_if_i(x) \\
-       &= c_1f_1(x) + c_2f_2(x) + c_3f_3(x) + \cdots + c_nf_n(x)
+  f(x;c) &= \sum_{j=1}^m c_jf_j(x) \\
+         &= c_1f_1(x) + c_2f_2(x) + c_3f_3(x) + \cdots + c_mf_m(x)
 \end{align}
-aproxime o conjunto de pontos dados no sentido de mínimos quadrados, i.e. os coeficientes que são solução do seguinte problema linear de minimização
+aproxime o conjunto de pontos dados no sentido de mínimos quadrados, i.e. o vetor dos coeficientes $c = (c_1, c_2, \dotsc, c_m)$ é solução do seguinte problema linear de minimização
+\begin{equation}
+  \min_{c} \left\{E:= \sum_{i=1}^n (y_i - f(x_i;c))^2\right\}.
+\end{equation}
+
+Afim de trabalharmos com uma notação mais compacta, definimos o resíduo $r(c) = (r_1(c), r_2(c), \dotsc, r_n(c))$, onde $r_i(c) := y_i - f(x_i)$ e $c = (c_1, c_2, \dotsc, c_m)$. Com esta notação, o problema de mínimos quadrados se resume a resolver
 \begin{equation}\label{eq:pmq}
-  \min_{\{c_1,c_2,\dotsc,c_n\}} \sum_{i=1}^n (y_i - f_i(x_i))^2.
+  \min_{c} \{E := \|r(c)\|_2^2\}.
 \end{equation}
 
 \subsection{Método das equações normais}
 
 Afim de resolver o problema de mínimos quadrados~\eqref{eq:pmq}, observamos que o erro quadrático
-\begin{equation}
-  E := \sum_{i=1}^n (y_i - f_i(x_i))^2 = \sum_{i=1}^n \left(y_i - \sum_{j=1}^m c_jf_j(x_i)\right)^2
-\end{equation}
-tem seu mínimo para os coeficientes $c_k$ tais que
-\begin{equation}\label{eq:aux1_mq}
-  \frac{\p R}{\p c_k} = 0,\quad k=1, 2, 3, \dotsc, m.
-\end{equation}
-Calculando estas derivadas parciais, temos
-\begin{align}
-  \frac{\p E}{\p c_k} &= \frac{\p}{\p c_k} \sum_{i=1}^n \left(y_i - \sum_{j=1}^m c_jf_j(x_i)\right)^2\\
-    &= 2\sum_{i=1}^n \left(y_i - \sum_{j=1}^m c_jf_j(x_i)\right)f(x_k)\\
-    &= 2\sum_{i=1}^n y_if(x_k) - 2\sum_{i=1}^n\sum_{k=1}^m c_jf_j(x_i)f(x_k),\quad k=1, 2, 3, \dotsc, m.
-\end{align}
-
-Desta forma, a equação~\eqref{eq:aux1_mq} é equivalente a resolver o seguinte sistema linear
-\begin{equation}\label{eq:aux2_mq}
-  \sum_{i=1}^n\sum_{k=1}^m c_jf_j(x_i)f(x_k) = \sum_{i=1}^n y_if(x_k),\quad k=1, 2, 3, \dotsc, m.
-\end{equation}
-
-Agora, denotando
+\begin{align*}
+  E &= \|r(c)\|_2^2 \\
+    &= \sum_{i=1}^n r_i(c)^2 \\
+    &= \sum_{i=1}^n \left(y_i - f(x_i;c)\right)^2 \\
+    &= \sum_{i=1}^n \left(y_i - \sum_{j=1}^m c_jf_j(x_i)\right)^2 \\
+    &= \|y - Ac\|_2^2,
+\end{align*}
+onde $y = (y_1, y_2, \dotsc, y_n)$ e
 \begin{equation}
   A :=
   \begin{bmatrix}
@@ -45,13 +38,24 @@ Agora, denotando
     f_1(x_2) & f_2(x_2) & \cdots & f_m(x_2) \\
     \vdots & \vdots & \vdots & \vdots \\
     f_1(x_n) & f_2(x_n) & \cdots & f_m(x_n)
-  \end{bmatrix}
+  \end{bmatrix}.
 \end{equation}
-o sistema linear~\eqref{eq:aux2_mq} pode ser escrito na seguinte forma matricial
+
+Os parâmetros $c_j$ que minimizam o erro $E$ são solução do seguinte sistema de equações
+\begin{equation}
+  \frac{\p E}{\p c_j} = 2\sum_{i=0}^n r_i(c)\frac{\p}{\p c_j}r_i(c) = 0,
+\end{equation}
+onde $j=1, 2, \dotsc, m$. Ou, em uma notação mais apropriada,
+\begin{align}
+  \nabla_c E = 0 &\Leftrightarrow A^Tr(c) = 0\\
+  &\Leftrightarrow A^T(y - Ac) = 0\\
+  &\Leftrightarrow A^TAc = A^Ty.
+\end{align}
+
+Portanto, o problema linear de mínimos quadrados se resume em resolver as chamadas \emph{equações normais}\index{equações normais}
 \begin{equation}\label{eq:equacoes_normais}
-  A^TAc= A^Ty,
+  A^TAc= A^Ty.
 \end{equation}
-onde $c = (c_1, c_2, \dotsc, c_m)$ é o vetor dos coeficientes e $y = (y_1, y_2, \dotsc, y_n)$ é o vetor das abscissas dos pontos dados.
 
 Logo, o problema linear de mínimos quadrados~\eqref{eq:pmq} reduz-se a resolver o sistema linear \eqref{eq:equacoes_normais} para $c$. Isto nos leva a questão de verificar se $A^TA$ é invertível. De sorte, da disciplina de álgebra linear temos o seguinte teorema.
 
@@ -64,7 +68,7 @@ Logo, o problema linear de mínimos quadrados~\eqref{eq:pmq} reduz-se a resolver
   Suponhamos, agora, que as colunas de $A$ não são linearmente independentes. Então, existe $x_0\neq 0$ tal que $Ax_0 = 0$. Mas, então, $x_0^TA^TAx_0=0$, o que mostra que $A^TA$ não é positiva definida. 
 \end{dem}
 
-Este teorema nos fornece uma condição suficiente para a existência (e unicidade de) de solução do problema linear de mínimos quadrados. Mais especificamente, se as colunas da matriz $A$ são linearmente independentes, então os coeficientes da função $f(x)$ que melhor ajustam os pontos dados são
+Este teorema nos fornece uma condição suficiente para a existência (e unicidade) de solução do problema linear de mínimos quadrados. Mais especificamente, se as colunas da matriz $A$ são linearmente independentes, então os coeficientes da função $f(x)$ que melhor ajustam os pontos dados são
 \begin{equation}
   c = (A^TA)^{-1}A^Ty.
 \end{equation}
@@ -256,7 +260,7 @@ Um problema não-linear de mínimos quadrados consiste em ajustar uma dada funç
 \end{equation}
 Aqui, denotaremos por $r(c) := (r_1(c), r_2(c), \dotsc, r_n(c))$ o vetor dos resíduos $r_i(c) := y_i - f(x_i,c)$. Com isso, o problema se resume a encontrar o vetor de parâmetros $c$ que minimiza
 \begin{equation}
-  E = r(c)^Tr(c).
+  E = \|r(c)\|_2^2.
 \end{equation}
 Tais parâmetros são solução do seguinte sistema de equações
 \begin{equation}
@@ -278,17 +282,15 @@ onde
 \end{equation}
 é a jacobiana do resíduo $r$ em relação aos parâmetros $c$.
 
-Podemos usar o método de Newton para resolver~\eqref{eq:grad_E}. Para tanto, escolhemos uma aproximação inicial para $c^{(1)} = (c_1^{(1)}, c_2^{(1)})$ e iteramos
+Podemos usar o método de Newton para resolver~\eqref{eq:grad_E}. Para tanto, escolhemos uma aproximação inicial para $c^{(1)} = (c_1^{(1)}, c_2^{(1)}, \dotsc, c_m^{(1)})$ e iteramos
 \begin{align}
-  H_R(c^{(n)})\delta^{(n)} &= -J_R^T(c)r(c) \label{eq:mqnl_newton1}\\
-  c^{(n+1)} &= c^{(n)} + \delta^{(n)} \label{eq:mqnl_newton2},
+  H_R(c^{(k)})\delta^{(k)} &= -J_R^T(c)r(c) \label{eq:mqnl_newton1}\\
+  c^{(k+1)} &= c^{(k)} + \delta^{(k)} \label{eq:mqnl_newton2},
 \end{align}
-onde $\delta^{(n)} = (\delta_1^{(n)}, \delta_2^{(n)})$ é a atualização de Newton e $H_R(c) := [h_{j,k}(c)]_{j,k=1}^{2,2}$ é a matrix hessiana, cujos elementos são
+onde $\delta^{(k)} = (\delta_1^{(k)}, \delta_2^{(k)}, \delta_m^{(k)})$ é a atualização de Newton (ou direção de busca) e $H_R(c) := [h_{p,q}(c)]_{p,q=1}^{m,m}$ é a matrix hessiana, cujos elementos são
 \begin{equation}
-  h_{j,k} := \sum_{i=1}^n\left\{\frac{\p r_i}{\p c_k}\frac{\p r_i}{\p c_j} + r_i\frac{\p^2 r_i}{\p c_k\p c_j}\right\},
+  h_{p,q} := \sum_{i=1}^n\left\{\frac{\p r_i}{\p c_q}\frac{\p r_i}{\p c_p} + r_i\frac{\p^2 r_i}{\p c_q\p c_p}\right\}.
 \end{equation}
-com $j,k=1, 2, \dotsc, m$.
-
 
 \begin{ex}\label{ex:mqnl_newton}
   Consideremos o problema de ajustar, no sentido de mínimos quadrados, a função
@@ -315,7 +317,7 @@ Aqui, vamos utilizar a iteração de Newton para o problema de mínimos quadrado
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=\textwidth]{cap_ajuste/figs/ex_mqnl_newton/ex_mqnl_newton}
+  \includegraphics[width=\textwidth]{cap_ajuste/figs/ex_mqnl_N/ex_mqnl_N}
   \caption{Esboço da curva ajustada no Exemplo~\ref{ex:mqnl_newton}.}
   \label{fig:ex_mqnl_newton}
 \end{figure}
@@ -326,8 +328,8 @@ Com isso e tomando $c^{(1)} = (1,4, ~-1,8)$ (motivado do Exemplo~\ref{ex:mq_nlin
 O ajuste discutido neste exemplo pode ser computado no \verb+GNU Octave+ com o seguinte código:
 \begin{verbatim}
 #pontos
-x = [-1 0 1 1.5]';
-y = [8.0 1.5 0.2 0.1]';
+global x = [-1 0 1 1.5]';
+global y = [8.0 1.5 0.2 0.1]';
 
 #fun. objetivo
 f = @(x,c) c(1)*exp(c(2)*x);
@@ -381,9 +383,9 @@ O emprego do método de Newton para o problema de mínimos quadrados tem a vanta
 
 \subsection{Método de Gauss-Newton}
 
-O método de Gauss-Newton é uma técnica iterativa que aproxima o problema não linear de mínimos quadrados \eqref{eq:prob_nlin_mq} por uma sequência de problemas lineares. Para seu desenvolvimento, começamos de uma aproximação inicial $c^{(1)} = (c_1^{(1)}, c_2^{(1)}, \dotsc, c_m^{(1)})$ dos parâmetros que queremos ajustar. Também, assumindo que a $n$-ésima iterada $c^{(n)}$ é conhecida, faremos uso da aproximação de primeira ordem de $f(x,c)$ por polinômio de Taylor, i.e.
+O método de Gauss-Newton é uma técnica iterativa que aproxima o problema não linear de mínimos quadrados \eqref{eq:prob_nlin_mq} por uma sequência de problemas lineares. Para seu desenvolvimento, começamos de uma aproximação inicial $c^{(1)} = (c_1^{(1)}, c_2^{(1)}, \dotsc, c_m^{(1)})$ dos parâmetros que queremos ajustar. Também, assumindo que a $n$-ésima iterada $c^{(k)}$ é conhecida, faremos uso da aproximação de primeira ordem de $f(x,c)$ por polinômio de Taylor, i.e.
 \begin{equation}
-  f(x;c^{(n+1)}) \approx f(x;c^{(n)}) + \nabla_c f(x;c^{(n)})(c^{(n+1)}-c^{(n)}),
+  f(x;c^{(k+1)}) \approx f(x;c^{(k)}) + \nabla_c f(x;c^{(k)})(c^{(k+1)}-c^{(k)}),
 \end{equation}
 onde
 \begin{equation}
@@ -392,13 +394,13 @@ onde
 
 O método consiste em obter a solução do problema não linear \eqref{eq:prob_nlin_mq} pelo limite dos seguintes problemas lineares de mínimos quadrados
 \begin{align}
-  &\min_{\delta^{(n)} = (\delta^{(n)}_1, \delta^{(n)}_2, \dotsc, \delta^{(n)}_m)} \left[\tilde{E} := \sum_{i=1}^n (y_i - f(x_i,c^{(n)}) - \nabla_c f(x_i;c^{(n)})\delta^{(n)})^2\right] \label{eq:mq_gn0}\\
-  &c^{(n+1)} = c^{(n)} + \delta^{(n)}.
+  \min_{\delta^{(k)}} &\left[\tilde{E} := \sum_{i=1}^n (y_i - f(x_i,c^{(k)}) - \nabla_c f(x_i;c^{(k)})\delta^{(k)})^2\right] \label{eq:mq_gn0}\\
+  &c^{(k+1)} = c^{(k)} + \delta^{(k)}.
 \end{align}
 
 Agora, usando a notação de resíduo $r(c) = y - f(x;c)$, observamos que \eqref{eq:mq_gn0} consiste no problema linear de mínimos quadrados
 \begin{equation}
-  \sum_{i=1}^n (r_i(c^{(n)}) + J_R(c^{(n)})\delta^{(n)})^2,
+  \min_{\delta^{(k)}} \|r(c^{(k)}) + J_R(c^{(k)})\delta^{(k)}\|_2^2,
 \end{equation}
 o qual é equivalente a resolver as equações normais
 \begin{equation}
@@ -407,8 +409,8 @@ o qual é equivalente a resolver as equações normais
 
 Com isso, dada uma aproximação inicial $c^{(1)}$, a \emph{iteração do método de Gauss-Newton} consiste em
 \begin{align}
-  &J_R^T(c^{(n)})J_R(c^{(n)})\delta^{(n)} = -J_R^T(c)r(c)\\
-  &c^{(n+1)} = c^{(n)} + \delta^{(n)}.
+  &J_R^T(c^{(k)})J_R(c^{(k)})\delta^{(k)} = -J_R^T(c)r(c)\\
+  &c^{(k+1)} = c^{(k)} + \delta^{(k)}.
 \end{align}
 
 \begin{ex}
@@ -418,7 +420,7 @@ Com isso, dada uma aproximação inicial $c^{(1)}$, a \emph{iteração do métod
 A implementação do método de Gauss-Newton para este problema no \verb+GNU Octave+ pode ser feita com o seguinte código:
 \begin{verbatim}
 #pontos
-x = [-1 0 1 1.5]';
+global x = [-1 0 1 1.5]';
 y = [8.0 1.5 0.2 0.1]';
 
 #fun. objetivo
@@ -450,6 +452,76 @@ until ((k>10) | (norm(delta)<1e-4))
 \fi
 \end{ex}
 
+O método de Gauss-Newton pode ser lentamente convergente para problemas muito não lineares ou com resíduos grandes. Nesse caso, métodos de Gauss-Newton com amortecimento são alternativas robustas~\cite{Bjorck1996a,Nocedal2006a}. Na sequência, introduziremos um destes métodos, conhecido como método de Levenberg-Marquardt.
+
 \subsection{Método de Levenberg-Marquardt}
+
+O método de Levenberg-Marquardt é uma variação do método de Gauss-Newton no qual a direção de busca $\delta^{(n)}$ é obtida da solução do seguinte problema regularizado
+\begin{equation} \label{eq:mq_gn0}
+  \min_{\delta^{(k)}} \{\|r(c^{(k)}) + J_R(c^{(k)})\delta^{(k)}\|_2^2 + \mu^{(k)}\|\delta^{(k)}\|_2^2\}
+\end{equation}
+ou, equivalentemente,
+\begin{equation} \label{eq:mq_gn0}
+  \min_{\delta^{(k)}} \left\|
+    \begin{bmatrix}
+      r(c^{(k)})\\
+      0
+    \end{bmatrix} +
+    \begin{bmatrix}
+      J_R(c^{(k)})\\
+      \mu^{(k)}I
+    \end{bmatrix}
+    \delta^{(k)}\right\|_2^2
+\end{equation}
+
+A taxa de convergência das iterações de Levenberg-Marquardt é sensível a escolha do parâmetro $\mu^{(k)}\geq 0$. Aqui, faremos esta escolha por tentativa e erro. O leitor pode aprofundar-se mais sobre esta questão na literatura especializada (veja, por exemplo, \cite{Bjorck1996a,Nocedal2006a}).
+
+\begin{obs}
+  Quando $\mu^{(k)} \equiv 0$ para todo $n$, o método de Levenberg-Marquardt é equivalente ao método de Gauss-Newton.
+\end{obs}
+
+\begin{ex}\label{ex:mqnl_LM}
+  Consideremos o problema de mínimos quadrados discutido no Exemplo~\ref{ex:mqln_newton}. O método de Gauss-Newton falha para este problema se escolhermos, por exemplo, $c^{(1)} = (0, 0)$. Isto ocorre pois, para esta escolha de $c^{(1)}$, a jacobiana $J(c^{(1)})$ não tem posto completo. Entretanto, o método de Levenberg-Marquardt com $\mu^{(k)} = 0,1$ é convergente, mesmo para esta escolha de $c^{(1)}$.
+
+\ifisoctave
+A implementação no \verb+GNU Octave+ do método de Levenberg-Marquardt (com $\mu^{(k)}=0,1$ constante) para este problema pode ser feita com o seguinte código:
+\begin{verbatim}
+#pontos
+global x = [-1 0 1 1.5]';
+y = [8.0 1.5 0.2 0.1]';
+
+#fun. objetivo
+f = @(x,c) c(1)*exp(c(2)*x);
+
+#residuo
+r = @(c) y - f(x,c);
+
+#jacobiana
+function A = JR(c)
+  global x;
+  A = zeros(4,2);
+  A(:,1) = - exp(c(2)*x);
+  A(:,2) = - c(1)*x.*exp(c(2)*x);
+endfunction
+
+#aprox. inicial
+c = [0 0]';
+
+#param. de amortecimento
+mu = 0.1;
+
+#iteracoes de Gauss-Newton
+k=0;
+do
+  k+=1;
+  JJ = [JR(c);mu*eye(2,2)];
+  delta = - inv(JJ'*JJ)*JJ'*[r(c);zeros(2,1)];
+  c = c + delta;
+  printf("%d %1.1e %1.3e %1.3e\n", k,norm(delta),c')
+until ((k>10) | (norm(delta)<1e-4))
+\end{verbatim}
+\fi
+\end{ex}
+
 
 \emconstrucao
