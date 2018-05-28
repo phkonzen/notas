@@ -14,3 +14,5 @@ f = @(x) a*exp(b*x);
 xx = linspace(-1.1,1.6);
 plot(x,y,'ro','linewidth',1.5,...
      xx,f(xx),'b-','linewidth',1.5);grid
+     
+norm(y - f(x))^2

@@ -23,7 +23,7 @@ Afim de resolver o problema de mínimos quadrados~\eqref{eq:pmq}, observamos que
 \end{equation}
 tem seu mínimo para os coeficientes $c_k$ tais que
 \begin{equation}\label{eq:aux1_mq}
-  \frac{\p E}{\p c_k} = 0,\quad k=1, 2, 3, \dotsc, m.
+  \frac{\p R}{\p c_k} = 0,\quad k=1, 2, 3, \dotsc, m.
 \end{equation}
 Calculando estas derivadas parciais, temos
 \begin{align}
@@ -180,10 +180,10 @@ plot(x,y,'ro',...
 
 \end{ex}
 
-\begin{ex}\normalfont{(Um problema não linear)}\label{ex:ajuste_nlin0}
+\begin{ex}\normalfont{(Um problema não linear)}\label{ex:mq_nlin0}
   Consideremos o problema de ajustar, no sentido de mínimos quadrados, à função
   \begin{equation}
-    f(x) = ae^{bx}
+    f(x) = c_1e^{c_2x}
   \end{equation}
 ao seguinte conjunto de pontos
 \begin{center}
@@ -196,10 +196,10 @@ ao seguinte conjunto de pontos
 
 Aqui, temos um problema não linear de mínimos quadrados que pode ser transformado em um problema linear fazendo-se
 \begin{align}
-  y = ae^{bx} &\Rightarrow \ln y = \ln ae^{bx}\\
-             &\Rightarrow \ln y = \ln a + bx.
+  y = c_1e^{c_2x} &\Rightarrow \ln y = \ln c_1e^{c_2x}\\
+                  &\Rightarrow \ln y = \ln c_1 + c_2x.
 \end{align}
-Isto é, denotando $c_1 := \ln a$ e $c_2 := b$, o problema se resume a ajustar uma reta $r(x) = c_1 + c_2x$ ao conjunto de pontos $\{(x_i, \ln y_i)\}_{i=1}^4$. 
+Isto é, denotando $d_1 := \ln c_1$ e $d_2 := c_2$, o problema se resume a ajustar uma reta $r(x) = d_1 + d_2x$ ao conjunto de pontos $\{(x_i, \ln y_i)\}_{i=1}^4$. 
 
 Para resolver o problema transformado, formamos a matriz
 \begin{equation}
@@ -211,12 +211,12 @@ Para resolver o problema transformado, formamos a matriz
     1 & x_4
   \end{bmatrix}
 \end{equation}
-e, então, resolvemos as equações normais~\eqref{eq:equacoes_normais} de modo que obtemos $c_1=0,315$ e $c_2=-1,792$. Das definições de $c_1$ e $c_2$, temos $b = c_2 = -1,792$ e $a = e^{c_1} = 1,371$. A Figura~\ref{fig:ex_mq_nlin0} mostra um esboço da curva $f(x) = ae^{bx}$ ajustada (linha azul) aos pontos dados (círculos vermelhos).
+e, então, resolvemos as equações normais $A^TAd = A^T\ln y$, com $\ln y = (\ln y_1, \ln y_2, \ln y_3, \ln y_4)$, donde obtemos $d_1=0,315$ e $d_2=-1,792$. Das definições de $d_1$ e $d_2$, temos $c_2 = d_2 = -1,792$ e $c_1 = e^{d_1} = 1,371$. A Figura~\ref{fig:ex_mq_nlin0} mostra um esboço da curva $f(x) = c_1e^{c_2x}$ ajustada (linha azul) aos pontos dados (círculos vermelhos).
 
 \begin{figure}[h]
   \centering
   \includegraphics[width=\textwidth]{cap_ajuste/figs/ex_mq_nlin0/ex_mq_nlin0}
-  \caption{Esboço da curva ajustada no Exemplo~\ref{ex:ajuste_nlin0}.}
+  \caption{Esboço da curva ajustada no Exemplo~\ref{ex:mq_nlin0}.}
   \label{fig:ex_mq_nlin0}
 \end{figure}
 
@@ -229,11 +229,11 @@ y = [8.0 1.5 0.2 0.1]';
 
 #resol. as eqs. normais
 A = [ones(4,1) x];
-c = inv(A'*A)*A'*log(y)
+d = inv(A'*A)*A'*log(y)
 
 #fun. ajustada
-a = exp(c(1)), b = c(2)
-f = @(x) a*exp(b*x);
+c = [exp(d(1)); d(2)]
+f = @(x) c(1)*exp(c(2)*x);
 
 #esboco da fun. ajustada
 xx = linspace(-1.1,1.6);
@@ -244,11 +244,212 @@ plot(x,y,'ro','linewidth',1.5,...
 
 \end{ex}
 
-% \subsection*{Exercícios}
+\subsection*{Exercícios}
 
-% \begin{exer}
-%   oi
-% \end{exer}
-% \begin{resp}
-%   tchau
-% \end{resp}
+\emconstrucao
+
+\section{Problemas não lineares}
+
+Um problema não-linear de mínimos quadrados consiste em ajustar uma dada função $f(x;c)$ que dependa não linearmente dos parâmetros $c = (c_1, c_2, \dotsc, c_m)$, $m\geq 1$, a um dado conjunto de $n\geq m$ pontos $\{(x_i, y_i)\}_{i=1}^n$. Mais especificamente, buscamos resolver o seguinte problema de minimização
+\begin{equation}\label{eq:prob_nlin_mq}
+  \min_{\{c_1, c_2, \dotsc, c_m\}} \left[E := \sum_{i=1}^n \left(y_i - f(x_i;c)\right)^2\right].
+\end{equation}
+Aqui, denotaremos por $r(c) := (r_1(c), r_2(c), \dotsc, r_n(c))$ o vetor dos resíduos $r_i(c) := y_i - f(x_i,c)$. Com isso, o problema se resume a encontrar o vetor de parâmetros $c$ que minimiza
+\begin{equation}
+  E = r(c)^Tr(c).
+\end{equation}
+Tais parâmetros são solução do seguinte sistema de equações
+\begin{align}
+  \frac{\p E}{\p c_j} &= 2\sum_{i=1}^n r_i(c)\frac{\p}{\p c_j}r_i(c)\\
+\end{align}
+ou, equivalentemente, da equação
+\begin{equation}\label{eq:grad_E}
+  \nabla E = 0 \Leftrightarrow J_R^T(c)r(c) = 0,
+\end{equation}
+onde
+\begin{equation}
+  J_R(c) :=
+  \begin{bmatrix}
+    \frac{\p r_1}{\p c_1} & \frac{\p r_1}{\p c_2} & \cdots & \frac{\p r_1}{\p c_m}\\
+    \frac{\p r_2}{\p c_1} & \frac{\p r_2}{\p c_2} & \cdots & \frac{\p r_2}{\p c_m}\\
+    \vdots  & \vdots & \vdots & \vdots \\
+    \frac{\p r_n}{\p c_1} & \frac{\p r_n}{\p c_2} & \cdots & \frac{\p r_n}{\p c_m}
+  \end{bmatrix}
+\end{equation}
+é a jacobiana do resíduo $r$ em relação aos parâmetros $c$.
+
+Podemos usar o método de Newton para resolver~\eqref{eq:grad_E}. Para tanto, escolhemos uma aproximação inicial para $c^{(1)} = (c_1^{(1)}, c_2^{(1)})$ e iteramos
+\begin{align}
+  H_R(c^{(n)})\delta^{(n)} &= -J_R^T(c)r(c) \label{eq:mqnl_newton1}\\
+  c^{(n+1)} &= c^{(n)} + \delta^{(n)} \label{eq:mqnl_newton2},
+\end{align}
+onde $\delta^{(n)} = (\delta_1^{(n)}, \delta_2^{(n)})$ é a atualização de Newton e $H_R(c) := [h_{j,k}(c)]_{j,k=1}^{2,2}$ é a matrix hessiana, cujos elementos são
+\begin{equation}
+  h_{j,k} := \sum_{i=1}^n\left\{\frac{\p r_i}{\p c_k}\frac{\p r_i}{\p c_j} + r_i\frac{\p^2 r_i}{\p c_k\p c_j}\right\},
+\end{equation}
+com $j,k=1, 2, \dotsc, m$.
+
+
+\begin{ex}\label{ex:mqnl_newton}
+  Consideremos o problema de ajustar, no sentido de mínimos quadrados, a função
+  \begin{equation}
+    f(x;c) = c_1e^{c_2x}
+  \end{equation}
+ao seguinte conjunto de pontos
+\begin{center}
+  \begin{tabular}{l|rrrr}
+    $i$ & $1$ & $2$ & $3$ & $4$ \\\hline
+    $x_i$ & $-1$ & $0$ & $1$ & $1,5$\\
+    $y_i$ & $8,0$ & $1,5$ & $0,2$ & $0,1$\\\hline
+  \end{tabular}
+\end{center}
+
+Aqui, vamos utilizar a iteração de Newton para o problema de mínimos quadrados, i.e. a iteração dada em \eqref{eq:mqnl_newton1}-\eqref{eq:mqnl_newton2}. Para tanto, para cada $i=1, 2, 3, 4$, precisamos das seguintes derivadas parciais do resíduo $r_i(c) := y_i - c_1e^{c_2x_i}$:
+\begin{align}
+  &\frac{\p}{\p c_1}r_i(c) = - e^{c_2x_i},\\
+  &\frac{\p}{\p c_2}r_i(c) = - c_1x_ie^{c_2x_i},\\
+  &\frac{\p^2}{\p c_1^2}r_i(c) = 0,\\
+  &\frac{\p^2}{\p c_1\p c_2}r_i(c) = \frac{\p^2}{\p c_2\p c_1}r_i(c) = - x_ie^{c_2x_i},\\
+  &\frac{\p^2}{\p c_2^2}r_i(c) = - c_1x_i^2e^{c_2x_i}.
+\end{align}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{cap_ajuste/figs/ex_mqnl_newton/ex_mqnl_newton}
+  \caption{Esboço da curva ajustada no Exemplo~\ref{ex:mqnl_newton}.}
+  \label{fig:ex_mqnl_newton}
+\end{figure}
+
+Com isso e tomando $c^{(1)} = (1,4, ~-1,8)$ (motivado do Exemplo~\ref{ex:mq_nlin0}), computamos as iterações de Newton~\eqref{eq:mqnl_newton1}-\eqref{eq:mqnl_newton2}. Iterando até a precisão de $TOL = 10^{-4}$, obtemos a solução $c_1 = 1,471$ e $c_2 = -1,6938$. Na Figura~\ref{fig:ex_mqnl_newton} vemos uma comparação entre a curva aqui ajustada ($-$) e aquela obtida no Exemplo~\ref{ex:mq_nlin0} ($--$).
+
+\ifisoctave
+O ajuste discutido neste exemplo pode ser computado no \verb+GNU Octave+ com o seguinte código:
+\begin{verbatim}
+#pontos
+x = [-1 0 1 1.5]';
+y = [8.0 1.5 0.2 0.1]';
+
+#fun. objetivo
+f = @(x,c) c(1)*exp(c(2)*x);
+
+#residuo
+r = @(c) y - f(x,c);
+
+#jacobiana
+function A = J(c)
+  global x
+  A = zeros(4,2);
+  A(:,1) = - exp(c(2)*x);
+  A(:,2) = - c(1)*x.*exp(c(2)*x);
+endfunction
+
+#hessiana
+function A = H(c)
+  global x
+  global y
+  A = zeros(2,2);
+  A = J(c)'*J(c);
+  for i=1:4
+    A(1,1) += 0;
+    A(1,2) += (y(i) - c(1)*exp(c(2)*x(i))) * ...
+              (- x(i)*exp(c(2)*x(i)));
+    A(2,1) += (y(i) - c(1)*exp(c(2)*x(i))) * ...
+              (- x(i)*exp(c(2)*x(i)));
+    A(2,2) += (y(i) - c(1)*exp(c(2)*x(i))) * ...
+              (- c(1)*x(i)^2*exp(c(2)*x(i)));
+  endfor
+endfunction
+
+#aprox. inicial
+c = [1.4 -1.8]';
+
+#iteracoes de Newton
+k=0;
+do
+  k+=1;
+  delta = - inv(H(c))*J(c)'*r(c);
+  c = c + delta;
+  [k,c',norm(delta)]
+until ((k>10) | (norm(delta)<1e-4))
+\end{verbatim}
+\fi
+\end{ex}
+
+Observamos que a solução obtida no exemplo anterior (Exemplo~\ref{ex:mqnl_newton}) difere da previamente encontrada no Exemplo~\ref{ex:mq_nlin0}. Naquele exemplo, os parâmetros obtidos nos fornecem $E = 6,8\E-2$, enquando que a solução do exemplo anterior fornece $E = 6,1\E-3$. Isto é esperado, pois naquele exemplo resolvemos um problema aproximado, equanto no exemplo anterior resolvemos o problema por si.
+
+O emprego do método de Newton para o problema de mínimos quadrados tem a vantagem da taxa de convergência quadrática, entretanto requer a computação das derivadas parciais de segunda ordem do resíduo. Na sequência discutimos alteranativas comumente empregadas.
+
+\subsection{Método de Gauss-Newton}
+
+O método de Gauss-Newton é uma técnica iterativa que aproxima o problema não linear de mínimos quadrados \eqref{eq:prob_nlin_mq} por uma sequência de problemas lineares. Para seu desenvolvimento, começamos de uma aproximação inicial $c^{(1)} = (c_1^{(1)}, c_2^{(1)}, \dotsc, c_m^{(1)})$ dos parâmetros que queremos ajustar. Também, assumindo que a $n$-ésima iterada $c^{(n)}$ é conhecida, faremos uso da aproximação de primeira ordem de $f(x,c)$ por polinômio de Taylor, i.e.
+\begin{equation}
+  f(x;c^{(n+1)}) \approx f(x;c^{(n)}) + \nabla_c f(x;c^{(n)})(c^{(n+1)}-c^{(n)}),
+\end{equation}
+onde
+\begin{equation}
+  \nabla_c f(x;c) = \left[\frac{\p}{\p c_1}f(x;c) ~\frac{\p}{\p c_2}f(x;c) ~\cdots ~\frac{\p}{\p c_m}f(x;c)\right].
+\end{equation}
+
+O método consiste em obter a solução do problema não linear \eqref{eq:prob_nlin_mq} pelo limite dos seguintes problemas lineares de mínimos quadrados
+\begin{align}
+  &\min_{\delta^{(n)} = (\delta^{(n)}_1, \delta^{(n)}_2, \dotsc, \delta^{(n)}_m)} \left[\tilde{E} := \sum_{i=1}^n (y_i - f(x_i,c^{(n)}) - \nabla_c f(x_i;c^{(n)})\delta^{(n)})^2\right] \label{eq:mq_gn0}\\
+  &c^{(n+1)} = c^{(n)} + \delta^{(n)}.
+\end{align}
+
+Agora, usando a notação de resíduo $r(c) = y - f(x;c)$, observamos que \eqref{eq:mq_gn0} consiste no problema linear de mínimos quadrados
+\begin{equation}
+  \sum_{i=1}^n (r_i(c^{(n)}) + J_R(c^{(n)})\delta^{(n)})^2,
+\end{equation}
+o qual é equivalente a resolver as equações normais
+\begin{equation}
+  J_R^T(c^{(n)})J_R(c^{(n)})\delta^{(n)} = -J_R^T(c)r(c).
+\end{equation}
+
+Com isso, dada uma aproximação inicial $c^{(1)}$, a \emph{iteração do método de Gauss-Newton} consiste em
+\begin{align}
+  &J_R^T(c^{(n)})J_R(c^{(n)})\delta^{(n)} = -J_R^T(c)r(c)\\
+  &c^{(n+1)} = c^{(n)} + \delta^{(n)}.
+\end{align}
+
+\begin{ex}
+  A aplicação da iteração de Gauss-Newton ao problema de mínimos quadrados discutido no Exemplo~\ref{ex:mqnl_newton} nos fornece a mesma solução obtida naquele exemplo (preservadas a aproximação inicial e a tolerância de precisão).
+
+\ifisoctave
+A implementação do método de Gauss-Newton para este problema no \verb+GNU Octave+ pode ser feita com o seguinte código:
+\begin{verbatim}
+#pontos
+x = [-1 0 1 1.5]';
+y = [8.0 1.5 0.2 0.1]';
+
+#fun. objetivo
+f = @(x,c) c(1)*exp(c(2)*x);
+
+#residuo
+r = @(c) y - f(x,c);
+
+#jacobiana
+function A = J(c)
+  global x
+  A = zeros(4,2);
+  A(:,1) = - exp(c(2)*x);
+  A(:,2) = - c(1)*x.*exp(c(2)*x);
+endfunction
+
+#aprox. inicial
+c = [1.4 -1.8]';
+
+#iteracoes de Gauss-Newton
+k=0;
+do
+  k+=1;
+  delta = - inv(J(c)'*J(c))*J(c)'*r(c);
+  c = c + delta;
+  [k,c',norm(delta)]
+until ((k>10) | (norm(delta)<1e-4))
+\end{verbatim}
+\fi
+\end{ex}
+
+\subsection{Método de Levenberg-Marquardt}
+
+\emconstrucao
