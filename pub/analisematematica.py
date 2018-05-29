@@ -31,12 +31,15 @@ class AnaliseMatematica(Notas):
         os.chdir('../..')
         
     def build(self):
-        self.make_pdf()
+        #html
         self.make_html()
         self.goodies(self.srcdir+'/AnaliseMatematica/html',
-                         'Análise Matemática')
+                         'Análise Matemática', 'AnaliseMatematica')
         os.system('rm -rvf '+self.odir+'/AnaliseMatematica')
         os.system('mv '+self.srcdir+'/AnaliseMatematica/html'\
                       +' '+self.odir+'/AnaliseMatematica')
+
+        #pdf
+        self.make_pdf()
         os.system('mv '+self.srcdir+'/AnaliseMatematica/main.pdf'\
                       +' '+self.odir+'/AnaliseMatematica/')

@@ -30,12 +30,15 @@ class MatematicaNumerica(Notas):
         os.chdir('../..')
         
     def build(self):
-        self.make_pdf()
+        #html
         self.make_html()
         self.goodies(self.srcdir+'/MatematicaNumerica/html',\
-                         'Matemática Numérica')
+                         'Matemática Numérica', 'MatematicaNumerica')
         os.system('rm -rvf '+self.odir+'/MatematicaNumerica')
         os.system('mv '+self.srcdir+'/MatematicaNumerica/html'\
                       +' '+self.odir+'/MatematicaNumerica')
+
+        #pdf
+        self.make_pdf()
         os.system('mv '+self.srcdir+'/MatematicaNumerica/main.pdf'\
                       +' '+self.odir+'/MatematicaNumerica/')

@@ -37,8 +37,8 @@ am = AnaliseMatematica(srcdir,odir)
 am.build()
 
 #AnaliseMatematica
-am = MatematicaNumerica(srcdir,odir)
-am.build()
+mn = MatematicaNumerica(srcdir,odir)
+mn.build()
 
 #publica o novo site
 os.system('cp -rvf '+odir+'/* ../docs/')

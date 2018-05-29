@@ -14,7 +14,7 @@ class Notas:
     def __init__(self):
         raise ValueError("Você não devia estar aqui!!!")
 
-    def goodies(self,htmldir,nome_notas):
+    def goodies(self,htmldir,titulo_notas,srcref):
         #adiciona goodies.css
         f = open(htmldir+'/goodies.css','w')
         text = 'body {\n'
@@ -69,14 +69,14 @@ class Notas:
         body += '<span class="icon-bar"></span>\n'
         body += '<span class="icon-bar"></span>\n'
         body += '</button>\n'
-        body += '<a class="navbar-brand" href="main.html">Notas de Aula<br/><small>'+nome_notas+'<small/></a>\n'
+        body += '<a class="navbar-brand" href="main.html">Notas de Aula<br/><small>'+titulo_notas+'<small/></a>\n'
         body += '</div>\n\n'
 
         body += '<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">\n'
         body += '<ul class="nav navbar-nav">\n'
         body += '<li><a href="https://github.com/phkonzen/notas">Repositório GitHub</a></li>\n'
         body += '<li><a href="main.pdf">Baixar PDF</a></li>\n'
-        body += '<li><a href="https://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR">CC-BY-SA 4.0</a></li>\n'
+        # body += '<li><a href="https://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR">CC-BY-SA 4.0</a></li>\n'
         body += '<li><a href="../index.html">Outras Notas & Infos</a></li>\n'
         body += '</ul>\n'
         body += '</div><!-- /.navbar-collapse -->\n'
@@ -103,7 +103,6 @@ class Notas:
 
         for p in pages:
             fn,ext = os.path.splitext(p)
-            print(ext)
             if (ext == '.html'):
                 print("goodies: affecting "+htmldir+"/"+p)
                 #lê a página atual
@@ -119,6 +118,32 @@ class Notas:
                 #modifica o __body__ (bottom)
                 page = page.replace('</body>',body_end)
 
+                #cria botões de link para o repo/src
+                if (fn != 'main'):
+                    src_fname = fn
+                    if (fn[0:4] == 'cap_'):
+                        pos = fn.find('_sec')
+                        if (pos != -1):
+                            src_fname = fn[0:pos]
+
+                    link_to_src = '<small><a href="https://github.com/phkonzen/notas/blob/master/src/'
+                    link_to_src += srcref
+                
+                    if (src_fname[0:4] == 'cap_'):
+                        link_to_src += '/'+src_fname+'/'+src_fname+'.tex'
+                    elif (src_fname == 'bib'):
+                        link_to_src += '/main.bib'
+                    else:
+                        link_to_src += '/'+src_fname+'.tex'
+
+                    link_to_src += '" target=_blank> <span class="glyphicon glyphicon-pencil"></span> </a>'
+                    link_to_src += '<a href="mailto:phkonzen@gmail.com?Subject=[Notas]'
+                    link_to_src += srcref+'/'+p
+                    link_to_src += '" target="_top"> <span class="glyphicon glyphicon-envelope"></span> </a></small>'
+
+                    page = page.replace('</h1>',link_to_src+'</h1>')
+                    page = page.replace('</h2>',link_to_src+'</h2>')
+
                 #modifica o __footer__
                 page = page.replace('<div class="ltx_page_logo">',foot)
 
@@ -126,7 +151,6 @@ class Notas:
                 f = open(htmldir+"/"+p,'w')
                 f.write(page)
                 f.close()
-            
-        
+                        
 
         
