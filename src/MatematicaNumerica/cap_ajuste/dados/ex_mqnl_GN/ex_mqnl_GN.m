@@ -1,5 +1,5 @@
 #pontos
-x = [-1 0 1 1.5]';
+global x = [-1 0 1 1.5]';
 y = [8.0 1.5 0.2 0.1]';
 
 #fun. objetivo
@@ -23,7 +23,8 @@ c = [1.4 -1.8]';
 k=0;
 do
   k+=1;
-  delta = - inv(J(c)'*J(c))*J(c)'*r(c);
+  delta = - inv(JR(c)'*JR(c))*JR(c)'*r(c);
   c = c + delta;
   [k,c',norm(delta)]
 until ((k>10) | (norm(delta)<1e-4))
+

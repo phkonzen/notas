@@ -259,7 +259,7 @@ plot(x,y,'ro','linewidth',1.5,...
       $y_i$ & $3,8$ & $1,5$ & $-0,7$ & $-1,5$ & $-3,2$\\\hline
     \end{tabular}
   \end{center}
-Por fim, compute a norma $L^2$ do resídulo, i.e. $\|r(c)\|_2 = \|y - (c_1x - c_2)\|_2$ para os pontos dados.
+Por fim, compute a norma $L^2$ do resíduo, i.e. $\|r(c)\|_2 = \|y - (c_1x - c_2)\|_2$ para os pontos dados.
 \end{exer}
 \begin{resp}
   $c_1 = -1,3259$, $c_2 = 8,66071\E-2$, $\|r(c)\|_2 = 1,01390$.
@@ -274,17 +274,44 @@ Por fim, compute a norma $L^2$ do resídulo, i.e. $\|r(c)\|_2 = \|y - (c_1x - c_
       $y_i$ & $3,8$ & $0,5$ & $2,7$ & $1,2$ & $-1,3$\\\hline
     \end{tabular}
   \end{center}
-Por fim, compute a norma $L^2$ do resídulo, i.e. $\|r(c)\|_2$.
+Por fim, compute a norma $L^2$ do resíduo, i.e. $\|r(c)\|_2$.
 \end{exer}
 \begin{resp}
   $c_1 = -4,50361\E-1$, $c_2 = -2,78350\E-1$, $c_3 = 1,46291$, $c_4 = 2,09648$, $\|r(c)\|_2 = 5,71346$
 \end{resp}
 
-\emconstrucao
+\begin{exer}\label{exer:mq_curva}
+  Determine a curva $y = c_1\sen x + c_2\cos x + c_3$ que melhor se ajusta, no sentido de mínimos quadrados, aos pontos
+  \begin{center}
+    \begin{tabular}{l|ccccc}
+      $i$ & $1$ & $2$ & $3$ & $4$ & $5$ \\\hline
+      $x_i$ & $-2,5$ & $-1,3$ & $0,2$ & $1,7$ & $2,3$\\
+      $y_i$ & $3,8$ & $0,5$ & $2,7$ & $1,2$ & $-1,3$\\\hline
+    \end{tabular}
+  \end{center}
+Por fim, compute a norma $L^2$ do resíduo, i.e. $\|r(c)\|_2$.
+\end{exer}
+\begin{resp}
+  $c_1 = -2,76842$, $c_2 = -7,17935\E-1$, $c_3 = 1,37014\E-1$, $\|r(c)\|_2 = 2,48880\E+1$
+\end{resp}
 
+\begin{exer}\label{exer:mq_nlin0}
+  Use a transformação $z = \ln y$ para ajustar, no sentido de mínimos quadrados, a curva $y = c_1e^{c_2(x-c_3)^2}$ aos pontos
+  \begin{center}
+    \begin{tabular}{l|cccccc}
+      $i$ & $1$ & $2$ & $3$ & $4$ & $5$ & $6$ \\\hline
+      $x_i$ & $-0,5$ & $0,5$ & $1,3$ & $2,1$ & $2,7$ & $3,1$ \\
+      $y_i$ & $0,1$ & $1,2$ & $2,7$ & $0,9$ & $0,2$ & $0,1$ \\\hline
+    \end{tabular}
+  \end{center}
+\end{exer}
+\begin{resp}
+  $c_1 = 2,10131\E+0$, $c_2 = -9,73859\E-1$, $c_3 = 1.25521\E+0$
+\end{resp}
+   
 \section{Problemas não lineares}\label{cap_ajuste_sec_prob_nlin}
 
-Um problema não-linear de mínimos quadrados consiste em ajustar uma dada função $f(x;c)$ que dependa não linearmente dos parâmetros $c = (c_1, c_2, \dotsc, c_m)$, $m\geq 1$, a um dado conjunto de $n\geq m$ pontos $\{(x_i, y_i)\}_{i=1}^n$. Mais especificamente, buscamos resolver o seguinte problema de minimização
+Um problema não linear de mínimos quadrados consiste em ajustar uma dada função $f(x;c)$ que dependa não linearmente dos parâmetros $c = (c_1, c_2, \dotsc, c_m)$, $m\geq 1$, a um dado conjunto de $n\geq m$ pontos $\{(x_i, y_i)\}_{i=1}^n$. Mais especificamente, buscamos resolver o seguinte problema de minimização
 \begin{equation}\label{eq:prob_nlin_mq}
   \min_{\{c_1, c_2, \dotsc, c_m\}} \left[E := \sum_{i=1}^n \left(y_i - f(x_i;c)\right)^2\right].
 \end{equation}
@@ -317,7 +344,7 @@ Podemos usar o método de Newton para resolver~\eqref{eq:grad_E}. Para tanto, es
   H_R(c^{(k)})\delta^{(k)} &= -J_R^T(c)r(c) \label{eq:mqnl_newton1}\\
   c^{(k+1)} &= c^{(k)} + \delta^{(k)} \label{eq:mqnl_newton2},
 \end{align}
-onde $\delta^{(k)} = (\delta_1^{(k)}, \delta_2^{(k)}, \delta_m^{(k)})$ é a atualização de Newton (ou direção de busca) e $H_R(c) := [h_{p,q}(c)]_{p,q=1}^{m,m}$ é a matrix hessiana, cujos elementos são
+onde $\delta^{(k)} = (\delta_1^{(k)}, \delta_2^{(k)}, \delta_m^{(k)})$ é a atualização de Newton (ou direção de busca) e $H_R(c) := [h_{p,q}(c)]_{p,q=1}^{m,m}$ é a matriz hessiana, cujos elementos são
 \begin{equation}
   h_{p,q} := \sum_{i=1}^n\left\{\frac{\p r_i}{\p c_q}\frac{\p r_i}{\p c_p} + r_i\frac{\p^2 r_i}{\p c_q\p c_p}\right\}.
 \end{equation}
@@ -407,9 +434,9 @@ until ((k>10) | (norm(delta)<1e-4))
 \fi
 \end{ex}
 
-Observamos que a solução obtida no exemplo anterior (Exemplo~\ref{ex:mqnl_newton}) difere da previamente encontrada no Exemplo~\ref{ex:mq_nlin0}. Naquele exemplo, os parâmetros obtidos nos fornecem $E = 6,8\E-2$, enquando que a solução do exemplo anterior fornece $E = 6,1\E-3$. Isto é esperado, pois naquele exemplo resolvemos um problema aproximado, equanto no exemplo anterior resolvemos o problema por si.
+Observamos que a solução obtida no exemplo anterior (Exemplo~\ref{ex:mqnl_newton}) difere da previamente encontrada no Exemplo~\ref{ex:mq_nlin0}. Naquele exemplo, os parâmetros obtidos nos fornecem $E = 6,8\E-2$, enquanto que a solução do exemplo anterior fornece $E = 6,1\E-3$. Isto é esperado, pois naquele exemplo resolvemos um problema aproximado, enquanto no exemplo anterior resolvemos o problema por si.
 
-O emprego do método de Newton para o problema de mínimos quadrados tem a vantagem da taxa de convergência quadrática, entretanto requer a computação das derivadas parciais de segunda ordem do resíduo. Na sequência discutimos alteranativas comumente empregadas.
+O emprego do método de Newton para o problema de mínimos quadrados tem a vantagem da taxa de convergência quadrática, entretanto requer a computação das derivadas parciais de segunda ordem do resíduo. Na sequência discutimos alternativas comumente empregadas.
 
 \subsection{Método de Gauss-Newton}
 
@@ -553,5 +580,30 @@ until ((k>10) | (norm(delta)<1e-4))
 \fi
 \end{ex}
 
+\subsection*{Exercícios}
 
-\emconstrucao
+\begin{exer}\label{exer:mqnl_GN}
+  Use o método de Gauss-Newton para ajustar, no sentido de mínimos quadrados e com precisão de $10^{-4}$, a curva $y = c_1e^{c_2(x-c_3)^2}$ aos pontos
+  \begin{center}
+    \begin{tabular}{l|cccccc}
+      $i$ & $1$ & $2$ & $3$ & $4$ & $5$ & $6$ \\\hline
+      $x_i$ & $-0,5$ & $0,5$ & $1,3$ & $2,1$ & $2,7$ & $3,1$ \\
+      $y_i$ & $0,1$ & $1,2$ & $2,7$ & $0,9$ & $0,2$ & $0,1$ \\\hline
+    \end{tabular}
+  \end{center}
+Use as condições iniciais:
+\begin{enumerate}[a)]
+\item $c_1 = 2,1$, $c_2=-1$ e $c_3=1,3$.
+\item $c_1=1$, $c_2=-1$ e $c_3=-1$.
+\end{enumerate}
+\end{exer}
+\begin{resp}
+  a) $c_1 = 2,69971\E+0$, $c_2 = -1,44723\E+0$, $c_3 = 1.24333\E+0$; b) divergente.
+\end{resp}
+
+\begin{exer}
+  Resolva o exercício anterior (Exercício~\ref{exer:mqnl_GN}) usando o método de Levenberg-Marquardt com amortecimento constante $\mu=0,2$.
+\end{exer}
+\begin{resp}
+  a)  $c_1 = 2,69971\E+0$, $c_2 = -1,44723\E+0$, $c_3 = 1.24333\E+0$; b) $c_1 = 2,69971\E+0$, $c_2 = -1,44723\E+0$, $c_3 = 1.24333\E+0$
+\end{resp}
