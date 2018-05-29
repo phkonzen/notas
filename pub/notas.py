@@ -144,6 +144,24 @@ class Notas:
                     page = page.replace('</h1>',link_to_src+'</h1>')
                     page = page.replace('</h2>',link_to_src+'</h2>')
 
+                #colapsa as respostas dos exercícios
+                paux = page.find('ltx_theorem_resp')
+                while (paux != -1):
+                    pini = page[paux:0:-1].find('<')
+                    pini = paux - pini
+                    pter = paux+len('ltx_theorem_resp')+2
+                    taux = page[pini:pter]
+                    paux = taux.index('id="')+4
+                    respid = taux[paux:]
+                    paux = respid.index('"')
+                    respid = respid[0:paux]
+                    page = page.replace(taux, \
+                                '<small><button data-toggle="collapse" '+ \
+                                'data-target="#'+respid+'">Resp.'+ \
+                                '</button></small>'+ \
+                                '\n<div id="'+respid+'" class="collapse">\n')
+                    paux = page.find('ltx_theorem_resp')
+                    
                 #modifica o __footer__
                 page = page.replace('<div class="ltx_page_logo">',foot)
 
