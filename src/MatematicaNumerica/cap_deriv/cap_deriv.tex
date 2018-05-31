@@ -45,6 +45,15 @@ Na Tabela~\ref{tab:ex_intro_deriv} temos os valores desta aproximação para dif
   \caption{Valores aproximados da derivada de $f(x)=\sen(x)$ no ponto $x=\pi/6$ usado a expressão~\eqref{eq_razao_fundamental}.}
   \label{tab:ex_intro_deriv}
 \end{table}
+
+No \verb+GNU Octave+, podemos fazer estes cálculos com o seguinte código:
+\begin{verbatim}
+f = @(x) sin(x);
+Df = @(x,h) (f(x+h)-f(x))/h;
+x=pi/3;
+h=1e-1;
+printf('%1.5e\n',Df(x,h))
+\end{verbatim}
 \end{ex}
 
 A aproximação~\eqref{eq_razao_fundamental} é uma \emph{fórmula de diferenças finitas}\index{diferenças finitas}. Existem várias aproximações deste tipo que podem ser derivadas. Além disso, tais derivações nos permitem estimar o erro na utilização de tais fórmulas para a aproximação de derivadas. Na sequência, discutiremos o desenvolvimento de fórmulas de diferenças finitas usando polinômios de Taylor.
@@ -90,6 +99,15 @@ Na Tabela~\ref{tab:ex_dfp_h} temos os valores desta aproximação para diferente
   \end{tabular}
   \label{tab:ex_dfp_h}
 \end{table}
+
+No \verb+GNU Octave+, podemos fazer estes cálculos com o seguinte código:
+\begin{verbatim}
+f = @(x) sin(x);
+Df = @(x,h) (f(x+h)-f(x))/h;
+x=pi/3;
+h=1e-1;
+printf('%1.5e %1.1e\n',Df(x,h),abs(cos(x)-Df(x,h)))
+\end{verbatim}
 \end{ex}
 
 \begin{obs}
@@ -130,6 +148,15 @@ Na Tabela~\ref{tab:ex_dfr_h} temos os valores desta aproximação para diferente
   \end{tabular}
   \label{tab:ex_dfr_h}
 \end{table}
+
+No \verb+GNU Octave+, podemos fazer estes cálculos com o seguinte código:
+\begin{verbatim}
+f = @(x) sin(x);
+Df = @(x,h) (f(x)-f(x-h))/h;
+x=pi/3;
+h=1e-1;
+printf('%1.5E %1.1E\n',Df(x,h),abs(cos(x)-Df(x,h)))
+\end{verbatim}
 \end{ex}
 
 \subsubsection{Diferenças finitas central de ordem $h^2$}
@@ -175,10 +202,54 @@ o que nos fornece a chamada fórmula de diferenças finitas central de ordem $h^
 
 Na Tabela~\ref{tab:ex_dfc_h2} temos os valores desta aproximação para diferentes escolhas de $h$, bem como, o erro absoluto da aproximação de $f'(\pi/3)$ por $D_{0,h^2}f(\pi/3)$.
 
+No \verb+GNU Octave+, podemos fazer estes cálculos com o seguinte código:
+\begin{verbatim}
+f = @(x) sin(x);
+Df = @(x,h) (f(x+h)-f(x-h))/(2*h);
+x=pi/3;
+h=1e-1;
+printf('%1.5E %1.1E\n',Df(x,h),abs(cos(x)-Df(x,h)))
+\end{verbatim}
 \end{ex}
 
 
 \subsection*{Exercícios}
+
+\begin{exer}
+  Calcule aproximações da derivada de
+  \begin{equation}
+    f(x) = \frac{\sen(x+2) - e^{-x^2}}{x^2 + \ln(x+2)}+x
+  \end{equation}
+no ponto $x=2,5$ dadas pelas seguintes fórmulas de diferenças finitas com $h=10^{-2}$:
+\begin{enumerate}[a)]
+\item progressiva de ordem $h$.
+\item regressiva de ordem $h$.
+\item central de ordem $h^2$.
+\end{enumerate}
+\end{exer}
+\begin{resp}
+  $D_{+,h}f(2,5)=1,05949$, $D_{-,h}f(2,5)=1,05877$, $D_{0,h^2}f(2,5)=1.05913$
+\end{resp}
+
+\begin{exer}
+  Considere a seguinte tabela de pontos
+  \begin{center}
+    \begin{tabular}{l|cccccc}
+      $i$ & $1$ & $2$ & $3$ & $4$ & $5$ & $6$ \\\hline
+      $x_i$ & $2,0$ & $2,1$ & $2,2$ & $2,3$ & $2,4$ & $2,5$ \\
+      $y_i$ & $1,86$ & $1,90$ & $2,01$ & $2,16$ & $2,23$ & $2,31$ \\\hline
+    \end{tabular}
+  \end{center}
+Calcule aproximações de $dy/dx$ usando diferenças finitas centrais de ordem $h^2$ quando possível e, caso contrário, diferenças finitas progressiva ou regressiva conforme o caso.
+\end{exer}
+\begin{resp}
+  \begin{center}
+    \begin{tabular}{l|cccccc}\hline
+      $i$ & $1$ & $2$ & $3$ & $4$ & $5$ & $6$ \\
+      $dy/dx$ & $4,0\E-1$ & $7,5\E-1$ & $1,3\E+0$ & $1,1\E+0$ & $7,5\E-1$ & $8,0\E-1$ \\\hline
+    \end{tabular}
+  \end{center}
+\end{resp}
 
 \emconstrucao
 
@@ -205,7 +276,7 @@ Isto nos leva a definição da \emph{fórmula de diferenças finitas de ordem $h
 \end{equation}
 
 \begin{ex}\label{ex:d2fc_h2}
-  Consideremos o problema de computar a derivada segunda de $f(x) = x^2 + \sen x$ no ponto $x=\pi/6$. Analíticamente, $f''(\pi/6) = 2 - \sen(\pi/6) = 1,5$. Numericamente, vamos explorar as seguintes duas aproximações:
+  Consideremos o problema de computar a derivada segunda de $f(x) = x^2 + \sen x$ no ponto $x=\pi/6$. Analiticamente, $f''(\pi/6) = 2 - \sen(\pi/6) = 1,5$. Numericamente, vamos explorar as seguintes duas aproximações:
   \begin{enumerate}
   \item[a)] Aplicação de sucessivas diferenças finitas centrais de ordem $h^2$ para derivada primeira, i.e.
     \begin{equation}\label{eq:ddf}
@@ -234,12 +305,24 @@ Na Tabela~\ref{tab:ex_d2fc_h2} temos os valores computados em ambos os casos e s
 \begin{equation}
   D_{0,h^2}D_{0,h^2}f(x) = \underbrace{\frac{f(x+2h) - 2f(x) + f(x-2h)}{4h^2}}_{D^2_{0,(2h)^2}f(x)}.
 \end{equation}
+
+No \verb+GNU Octave+, podemos fazer estes cálculos com o seguinte código:
+\begin{verbatim}
+f = @(x) sin(x) + x^2;
+Df = @(x,h) (f(x+h)-f(x-h))/(2*h);
+DDf = @(x,h) (Df(x+h,h)-Df(x-h,h))/(2*h);
+D2f = @(x,h) (f(x+h) - 2*f(x) + f(x-h))/(h^2);
+x=pi/6;
+h=1e-1;
+printf('%1.5E %1.1E %1.5E %1.1E\n',...
+  DDf(x,h),abs(1.5-DDf(x,h)),...
+  D2f(x,h),abs(1.5-D2f(x,h)))
+\end{verbatim}
 \end{ex}
 
 \subsection*{Exercícios}
 
 \emconstrucao
-
 
 \section{Diferenças finitas por polinômios interpoladores}\label{cap_deriv_sec_df_pi}
 
