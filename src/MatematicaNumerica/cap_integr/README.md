@@ -1,6 +1,6 @@
-# Diretório: AnaliseMatematica/cap_intro
+# Diretório: AnaliseMatematica/cap_integr
 
-Este diretório contém o código fonte do capítulo "Introdução".
+Este diretório contém o código fonte do capítulo "Integração".
 
 ## Licença
 
