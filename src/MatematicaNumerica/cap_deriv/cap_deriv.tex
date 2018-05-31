@@ -76,7 +76,7 @@ Isto nos fornece a chamada fórmula de diferenças finitas progressiva de ordem 
 \begin{equation}\label{eq:dfp_h}
   D_{+,h}f(x) := \frac{f(x+h) - f(x)}{h}.
 \end{equation}
-Observemos que a ordem da fórmula se refere a ordem do erro de truncamento com respeito ao passo $h$.
+Observemos que a ordem da fórmula se refere a ordem do \emph{erro de truncamento}\index{erro de!truncamento} com respeito ao passo $h$.
 
 \begin{ex}\label{ex:dfp_h}
   Consideremos o problema de aproximar a derivada da função $f(x) = \sen(x)$ no ponto $\pi/3$. Usando a fórmula de diferenças finitas progressiva de ordem $h$ obtemos
@@ -215,7 +215,7 @@ printf('%1.5E %1.1E\n',Df(x,h),abs(cos(x)-Df(x,h)))
 
 \subsection*{Exercícios}
 
-\begin{exer}
+\begin{exer}\label{exer:df_fun}
   Calcule aproximações da derivada de
   \begin{equation}
     f(x) = \frac{\sen(x+2) - e^{-x^2}}{x^2 + \ln(x+2)}+x
@@ -228,10 +228,13 @@ no ponto $x=2,5$ dadas pelas seguintes fórmulas de diferenças finitas com $h=1
 \end{enumerate}
 \end{exer}
 \begin{resp}
-  $D_{+,h}f(2,5)=1,05949$, $D_{-,h}f(2,5)=1,05877$, $D_{0,h^2}f(2,5)=1.05913$
+  \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_deriv/dados/exer_df_fun/exer_df_fun.m}{Código.} 
+  \fi
+  a)~$D_{+,h}f(2,5)=1,05949$; b)~$D_{-,h}f(2,5)=1,05877$; c)~$D_{0,h^2}f(2,5)=1,05913$;
 \end{resp}
 
-\begin{exer}
+\begin{exer}\label{exer:df_tab}
   Considere a seguinte tabela de pontos
   \begin{center}
     \begin{tabular}{l|cccccc}
@@ -243,6 +246,9 @@ no ponto $x=2,5$ dadas pelas seguintes fórmulas de diferenças finitas com $h=1
 Calcule aproximações de $dy/dx$ usando diferenças finitas centrais de ordem $h^2$ quando possível e, caso contrário, diferenças finitas progressiva ou regressiva conforme o caso.
 \end{exer}
 \begin{resp}
+  \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_deriv/dados/exer_df_tab/exer_df_tab.m}{Código.} 
+  \fi
   \begin{center}
     \begin{tabular}{l|cccccc}\hline
       $i$ & $1$ & $2$ & $3$ & $4$ & $5$ & $6$ \\
@@ -250,8 +256,6 @@ Calcule aproximações de $dy/dx$ usando diferenças finitas centrais de ordem $
     \end{tabular}
   \end{center}
 \end{resp}
-
-\emconstrucao
 
 \section{Derivadas de segunda ordem}\label{cap_deriv_sec_d2f}\index{diferenças finitas!derivada segunda}
 
@@ -322,7 +326,44 @@ printf('%1.5E %1.1E %1.5E %1.1E\n',...
 
 \subsection*{Exercícios}
 
-\emconstrucao
+\begin{exer}\label{exer:d2fc_fun}
+  Use a fórmula de diferenças finitas central de ordem $h^2$ para computar aproximações da segunda derivada de
+  \begin{equation}
+    f(x) = \frac{\sen(x+2) - e^{-x^2}}{x^2 + \ln(x+2)}+x
+  \end{equation}
+no ponto $x=2,5$. Para tanto, use os passos
+\begin{enumerate}[a)]
+\item $h=10^{-1}$
+\item $h=10^{-2}$
+\item $h=10^{-3}$
+\item $h=10^{-4}$
+\end{enumerate}
+Por fim, com base nos resultados obtidos, qual foi o maior passo que forneceu a aproximação com precisão de pelo menos $5$ dígitos significativos? Justifique sua resposta.
+\end{exer}
+\begin{resp}
+  \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_deriv/dados/exer_d2fc_fun/exer_d2fc_fun.m}{Código.} 
+  \fi
+  a)~$7,25162\E-2$; b)~$7.24701\E-2$; c)~$7,24696\E-2$; d)~$7,24696\E-2$; $h=10^{-2}$;
+\end{resp}
+
+\begin{exer}\label{exer:d2fc_tab}
+  Considere a seguinte tabela de pontos
+  \begin{center}
+    \begin{tabular}{l|cccccc}
+      $i$ & $1$ & $2$ & $3$ & $4$ & $5$ & $6$ \\\hline
+      $x_i$ & $2,0$ & $2,1$ & $2,2$ & $2,3$ & $2,4$ & $2,5$ \\
+      $y_i$ & $1,86$ & $1,90$ & $2,01$ & $2,16$ & $2,23$ & $2,31$ \\\hline
+    \end{tabular}
+  \end{center}
+Calcule a aproximação $d^2y/dx^2$ no ponto $x=2,2$ usando a fórmula de diferenças finitas central de ordem $h^2$.
+\end{exer}
+\begin{resp}
+  \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_deriv/dados/exer_d2fc_tab/exer_d2fc_tab.m}{Código.} 
+  \fi
+  $4,0$; 
+\end{resp}
 
 \section{Diferenças finitas por polinômios interpoladores}\label{cap_deriv_sec_df_pi}
 
@@ -429,4 +470,69 @@ Por exemplo, substituindo $x_1=x-2h$, $x_2=x-h$, $x_3=x$, $x_4=x+h$ e $x_5=x+2h$
   &+ \left. 8 f{\left (x + h \right )} - f{\left (x + 2 h \right )}\right].
 \end{align}
 
-\emconstrucao
+\subsection*{Exercícios}
+
+\begin{exer}\label{exer:dfch4_fun}
+  Use a fórmula de diferenças finitas central de ordem $h^4$ para computar a aproximação da derivada de
+  \begin{equation}
+    f(x) = \frac{\sen(x+2) - e^{-x^2}}{x^2 + \ln(x+2)}+x
+  \end{equation}
+no ponto $x=2,5$ com passo $h=0,1$.
+\end{exer}
+\begin{resp}
+  \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_deriv/dados/exer_dfch4_fun/exer_dfch4_fun.m}{Código.} 
+  \fi
+  $1,05913$
+\end{resp}
+
+\begin{exer}\label{exer:df_5pts_pi}
+  Obtenha as seguintes fórmulas de diferenças finitas de $5$ pontos com passo $h$ constante e com:
+  \begin{enumerate}
+  \item[a)] $4$ pontos para frente.
+  \item[b)] $1$ ponto para traz e $3$ pontos para frente.
+  \item[c)] $2$ pontos para traz e $2$ pontos para frente.
+  \item[d)] $3$ pontos para traz e $1$ pontos para frente.
+  \item[e)] $4$ pontos para traz.
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_deriv/dados/exer_df_5pts_pi/exer_df_5pts_pi.m}{Código.} 
+  \fi
+  \begin{tiny}
+    \begin{align*}
+      \text{a)}&~\frac{1}{12 h} \left[3 f{\left (x- 4h \right )} - 16 f{\left (x- 3 h \right )} + 36 f{\left (x- 2 h \right )} - 48 f{\left (x- h \right ) + 25 f{\left (x \right )}}\right]\\
+      \text{b)}&~\frac{1}{12 h} \left[- f{\left (x- 3 h \right )} + 6 f{\left ( x- 2 h \right )} - 18 f{\left (x- h \right )} + 10 f{\left (x \right )} + 3 f{\left (x+h \right )}\right]\\
+      \text{c)}&~\frac{1}{12h} \left[f{\left (x - 2 h\right )} - 8 f{\left(x - h \right )} + 8 f{\left (x + h \right )} - f{\left (x + 2 h \right )}\right]\\
+      \text{d)}&~\frac{1}{12 h} \left[- 3 f{\left ( x-h \right )} - 10 f{\left (x \right )} + 18 f{\left (x+h \right )} - 6 f{\left (x+2 h \right )} + f{\left ( x+3 h \right )}\right]\\
+      \text{d)}&~\frac{1}{12 h} \left[- 25 f{\left (x \right )} + 48 f{\left ( x+h \right )} - 36 f{\left ( x+2 h \right )} + 16 f{\left ( x+3 h \right )} - 3 f{\left ( x+4 h \right )}\right]
+    \end{align*}
+  \end{tiny}
+\end{resp}
+
+
+\begin{exer}\label{exer:dfh4_tab}
+  Considere a seguinte tabela de pontos
+  \begin{center}
+    \begin{tabular}{l|cccccc}
+      $i$ & $1$ & $2$ & $3$ & $4$ & $5$ & $6$ \\\hline
+      $x_i$ & $2,0$ & $2,1$ & $2,2$ & $2,3$ & $2,4$ & $2,5$ \\
+      $y_i$ & $1,86$ & $1,90$ & $2,01$ & $2,16$ & $2,23$ & $2,31$ \\\hline
+    \end{tabular}
+  \end{center}
+Calcule a aproximação $dy/dx$ nos pontos tabelados usando as fórmulas de diferenças finitas obtidas no exercício anteriores (Exercício~\ref{exer:df_5pts_pi}). Para tanto, dê preferência para fórmulas centrais sempre que possível.
+\end{exer}
+\begin{resp}
+  \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_deriv/dados/exer_dfh4_tab/exer_dfh4_tab.m}{Código.} 
+  \fi
+  \begin{tiny}
+    \begin{center}
+      \begin{tabular}{l|cccccc}\hline
+        $i$ & $1$ & $2$ & $3$ & $4$ & $5$ & $6$ \\
+        $dy/dx$ & $1,7500\E-1$ & $7,2500\E-1$ & $1,4250\E+0$ & $1,1250\E+0$ & $4,2500\E-1$ & $1,6750\E+0$ \\\hline
+      \end{tabular}
+    \end{center}
+  \end{tiny}
+\end{resp}

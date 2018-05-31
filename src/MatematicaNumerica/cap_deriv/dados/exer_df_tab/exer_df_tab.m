@@ -1,8 +1,10 @@
-f = @(x) (sin(x+2) - exp(-x^2))/(x^2+log(x+2))+x;
-x=2.5;
-h=1e-2;
-dfp = (f(x+h)-f(x))/h
-dfr = (f(x)-f(x-h))/h
-dfc = (f(x+h)-f(x-h))/(2*h)
+x = [2 2.1 2.2 2.3 2.4 2.5]';
+y = [1.86 1.90 2.01 2.16 2.23 2.31]';
 
-printf("%1.5E\n",dfp,dfr,dfc)
+h = 0.1;
+dy = zeros(size(y));
+dy(1) = (y(2)-y(1))/h;
+dy(2:5) = (y(3:6)-y(1:4))/(2*h);
+dy(6) = (y(6)-y(5))/h;
+
+printf("%1.1E\n",dy)
