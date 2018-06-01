@@ -10,6 +10,7 @@ import os
 
 #classes
 from index import *
+from sitemap import *
 from analisematematica import *
 from matematicanumerica import *
 
@@ -32,6 +33,9 @@ os.system('cp -rvf ../src/* '+srcdir+'/')
 #del o site antigo
 os.system('rm -rvf ../docs/*')
 
+#cria o README.md do ../docs
+os.system('cp docs_readme.md ../docs/README.md')
+
 #AnaliseMatematica
 am = AnaliseMatematica(srcdir,odir)
 am.build()
@@ -40,8 +44,9 @@ am.build()
 mn = MatematicaNumerica(srcdir,odir)
 mn.build()
 
-#put the google verification code
-os.system('cp googlee521115172992e66.html '+odir+'/')
+#make sitemap.txt
+sm = SiteMap(odir)
+sm.build()
 
 #publica o novo site
 os.system('cp -rvf '+odir+'/* ../docs/')
