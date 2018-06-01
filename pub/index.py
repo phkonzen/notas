@@ -28,6 +28,16 @@ class Index:
         head += '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">\n'
         head += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>\n'
         head += '<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>\n'
+
+        #google tracking
+        head += '\n<!-- Global site tag (gtag.js) - Google Analytics -->\n'
+        head += '<script async src="https://www.googletagmanager.com/gtag/js?id=UA-17226092-2"></script>\n'
+        head += '<script>\n'
+        head += 'window.dataLayer = window.dataLayer || [];\n'
+        head += 'function gtag(){dataLayer.push(arguments);}\n'
+        head += 'gtag("js", new Date());\n'
+        head += '\ngtag("config", "UA-17226092-2")\n';
+        head += '</script>\n'
         
         head += '</head>\n'
 
