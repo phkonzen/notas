@@ -40,5 +40,8 @@ am.build()
 mn = MatematicaNumerica(srcdir,odir)
 mn.build()
 
+#put the google verification code
+os.system('cp googlee521115172992e66.html '+odir+'/')
+
 #publica o novo site
 os.system('cp -rvf '+odir+'/* ../docs/')
