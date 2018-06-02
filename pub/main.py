@@ -7,11 +7,12 @@ Autor: Pedro H A Konzen - 05/2018
 
 #pacotes do Python
 import os
+from multiprocessing import Pool
 
 #classes
 from index import *
 from sitemap import *
-from analisematematica import *
+from analisematematicai import *
 from matematicanumerica import *
 
 #pastas temporárias
@@ -36,13 +37,17 @@ os.system('rm -rvf ../docs/*')
 #cria o README.md do ../docs
 os.system('cp docs_readme.md ../docs/README.md')
 
-#AnaliseMatematica
-am = AnaliseMatematica(srcdir,odir)
-am.build()
-
-#AnaliseMatematica
+#objs da cada nota
+am = AnaliseMatematicaI(srcdir,odir)
 mn = MatematicaNumerica(srcdir,odir)
-mn.build()
+
+def build(id):
+    id.build()
+
+#pallelized region
+if __name__ == '__main__':
+    p = Pool()
+    p.map(build,[am,mn])
 
 #make sitemap.txt
 sm = SiteMap(odir)

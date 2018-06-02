@@ -52,9 +52,12 @@ class Index:
         body += '<div class="col-xs-12 col-xs-offset-0 col-md-8 col-md-offset-2">\n'
         
         #jumbotron
+        body += '<div class="extjumbotron">\n'
         body += '<div class="jumbotron text-center">\n'
         body += '<h1>Notas de Aula</h1>\n'
         body += '<p>Pedro H A Konzen</p>\n'
+        body += '</div>\n'
+        body += '<p>Imagem: <a href="https://www.flickr.com/photos/elisfanclub/2189154850/" target="_blank">Eli Duke</a>.</p>\n'
         body += '</div>\n'
 
         #miolo
@@ -66,13 +69,13 @@ class Index:
 
         body += '<h3>Notas de aula</h3>\n'
         body += '<ul>\n'        
-        #AnaliseMatematica
-        body += '<li>Análise Matemática</li>\n'
+        #AnaliseMatematicaI
+        body += '<li>Análise Matemática I</li>\n'
         body += '<ul class="list-unstyled">\n'
         body += '<li>Versão corrente: '
-        body += '<a href="./AnaliseMatematica/main.html">HTML</a>'
+        body += '<a href="./AnaliseMatematicaI/main.html">HTML</a>'
         body += ' | '
-        body += '<a href="./AnaliseMatematica/main.pdf">PDF</a></li>'
+        body += '<a href="./AnaliseMatematicaI/main.pdf">PDF</a></li>'
         body += '</ul>\n'
         #MatematicaNumerica
         body += '<li>Matemática Numérica</li>\n'
