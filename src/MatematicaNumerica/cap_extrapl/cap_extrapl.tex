@@ -45,7 +45,7 @@ Para fazermos mais um passo, consideramos a aproximação de $I$ por $F_3(h/2)$,
 \end{equation}
 E, então, subtraindo~\eqref{eq:extrapl_aux5} de $8$ vezes~\eqref{eq:extrapl_aux6}, temos
 \begin{equation}
-  I = \underbrace{\left[F_3\left(\frac{h}{2} \right)+ \left(\frac{F_3\left(\frac{h}{2}\right)-F_3(h)}{7}\right)\right]}_{N_4(h)} + O(h^4).
+  I = \underbrace{\left[F_3\left(\frac{h}{2} \right)+ \left(\frac{F_3\left(\frac{h}{2}\right)-F_3(h)}{7}\right)\right]}_{F_4(h)} + O(h^4).
 \end{equation}
 Ou seja,
 \begin{equation}
@@ -58,22 +58,35 @@ Ou seja,
   \begin{equation}
     I-F_1(h) = \sum_{i=1}^n k_1h^i + O(h^{n+1}).
   \end{equation}
-Então,
+Então, para $j\geq 2$,
 \begin{equation}
-  F_k(h) := F_{k-1}\left(\frac{h}{2}\right) + \frac{F_{k-1}\left(\frac{h}{2}\right) - F_{k-1}(h)}{2^{k-1}-1}
+  F_j(h) := F_{j-1}\left(\frac{h}{2}\right) + \frac{F_{j-1}\left(\frac{h}{2}\right) - F_{j-1}(h)}{2^{j-1}-1}
 \end{equation}
 é uma aproximação de $I$ com erro de truncamento da forma
 \begin{equation}
-  I-F_{k}(h) = \sum_{i=k}^n (-1)^{i-1}\frac{\left(2^{i-1}-1\right)}{2(i-1)}h^i + O(h^{n+1}).
+  I-F_{j}(h) = \sum_{i=j}^n (-1)^{j-1}\frac{\left(2^{i-1}-1\right)\prod_{l=1}^{j-2}\left(2^{i-l-1}-1\right)}{2^{(j-1)(i-j+1)}d_j}k_ih^i + O(h^{n+1}),
 \end{equation}
+onde $d_{j}$ é dado recursivamente por $d_{j+1}=2^{j-1}d_j$, com $d_2=1$.
 \end{teo}
 \begin{dem}
   Fazemos a demonstração por indução. O quando $k=2$ segue de~\eqref{eq:extrapl_aux3}. Assumimos, agora, que vale
-  \begin{equation}
-    I-F_{k}(h) = \sum_{i=k}^n (-1)^{i-1}\frac{\left(2^{i-1}-1\right)}{2(i-1)}h^i + O(h^{n+1}).
-  \end{equation}
-
-\emconstrucao
+  \begin{align}
+    I-F_{j}(h) &= (-1)^{j-1}\frac{\left(2^{j-1}-1\right)\prod_{l=1}^{j-2}\left(2^{j-l-1}-1\right)}{2^{(j-1)}d_j}k_jh^j \nonumber \\
+              &+ \sum_{i=j+1}^n (-1)^{j-1}\frac{\left(2^{i-1}-1\right)\prod_{l=1}^{j-2}\left(2^{i-l-1}-1\right)}{2^{(j-1)(i-j+1)}d_j}k_ih^i \nonumber \\
+              & + O(h^{n+1}).\label{eq:extrapl_aux7}
+  \end{align}
+para $j\leq 2$. Então, tomamos
+\begin{align}
+  I-F_{j}\left(\frac{h}{2}\right) &= (-1)^{j-1}\frac{\left(2^{j-1}-1\right)\prod_{l=1}^{j-2}\left(2^{j-l-1}-1\right)}{2^{(j-1)}d_j}k_j\frac{h^j}{2^j} \nonumber \\
+              &+ \sum_{i=j+1}^n (-1)^{j-1}\frac{\left(2^{i-1}-1\right)\prod_{l=1}^{j-2}\left(2^{i-l-1}-1\right)}{2^{(j-1)(i-j+1)}d_j}k_i\frac{h^i}{2^i} \nonumber \\
+              & + O(h^{n+1}). \label{eq:extrapl_aux8}
+\end{align}
+Agora, subtraímos~\eqref{eq:extrapl_aux7} de $2^{j}$ vezes~\eqref{eq:extrapl_aux8}, o que nos fornece
+\begin{align}
+  I &= \left[F_{j}\left(\frac{h}{2}\right) + \frac{F_{j}\left(\frac{h}{2}\right) - F_{j}(h)}{2^{j}-1}\right] \nonumber\\
+    &+ + \sum_{i=j+1}^n (-1)^{(j+1)-1}\frac{\left(2^{i-1}-1\right)\prod_{l=1}^{(j+1)-2}\left(2^{i-l-1}-1\right)}{2^{((j+1)-1)(i-(j+1)+1)}2^{j-1}d_j}k_ih^i\nonumber \\
+              & + O(h^{n+1}).
+\end{align}
 \end{dem}
 
 
