@@ -216,7 +216,7 @@ usando a:
   \ifisoctave 
   \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_integr/dados/exer_int_NC_fun/exer_int_NC_fun.m}{Código.} 
   \fi
-  a)~$3,33647zE-1$; b)~$1,71368\E-1$; c)~$2,79554\E-1$
+  a)~$3,33647\E-1$; b)~$1,71368\E-1$; c)~$2,79554\E-1$
 \end{resp}
 
 \begin{exer}\label{exer:int_NC_tab}
@@ -473,5 +473,92 @@ Assumindo que $y = f(x)$, e usando o máximo de subintervalos possíveis, calcul
 \end{resp}
 
 \section{Quadratura de Romberg}\label{cap_integr_sec_Romberg}
+
+A quadratura de Romberg é construída por sucessivas extrapolações de Richardson da regra do trapézio composta. Sejam $h_k = (b-a)/(2k)$, $x_i = a + (i-1)h_k$ e
+\begin{equation}
+  R_{k,1} := \frac{h_k}{2}\left[f(a) + 2\sum_{i=2}^{2k}f(x_i) + f(b)\right]
+\end{equation}
+a regra do trapézio composta com $2k$ subintervalos de
+\begin{equation}
+  I := \int_a^b f(x)\,dx.
+\end{equation}
+Por sorte, o erro de truncamento de aproximar $I$ por $R_{k,1}$ tem a seguinte forma
+\begin{equation}
+  I - R_{k,1} = \sum_{i=1}^\infty k_ih_k^{2i},
+\end{equation}
+o que nos permite aplicar a extrapolação de Richardson para obter aproximações de mais alta ordem.
+
+Mais precisamente, para obtermos uma aproximação de $I$ com erro de truncamento da ordem $h^{2n}$, $h=(b-a)$, computamos $R_{k,1}$ para $k=1, 2, \dotsc, n$. Então, usamos das sucessivas extrapolações de Richardson
+\begin{equation}
+  R_{k,j} := R_{k,j-1} + \frac{R_{k,j-1}-R_{k-1,j-1}}{4^{j-1}-1},
+\end{equation}
+$j=2, 3, \dotsc, n$, de forma a computarmos $R_{n,n}$, a qual fornece a aproximação desejada.
+
+\begin{ex}\label{ex:Romberg}
+  Consideremos o problema de aproximar a integral de $f(x)=xe^{-x^2}$ no intervalo $[0, 1]$. Para obtermos uma quadratura de Romberg de ordem $4$, calculamos
+  \begin{align}
+    R_{1,1} &:= \frac{1}{2}[f(0) + f(1)] = 1,83940\E-1\\
+    R_{2,1} &:= \frac{1}{4}[f(0) + 2f(1/2) + f(1)] = 2,86670\E-1.
+  \end{align}
+Então, calculando
+\begin{equation}
+  R_{2,2} = R_{2,1} + \frac{R_{2,1}-R_{1,1}}{3} = 3,20914\E-1,
+\end{equation}
+a qual é a aproximação desejada.
+
+\begin{table}[h!]
+  \centering
+  \caption{Resultados referentes ao Exemplo~\ref{ex:Romberg}.}
+  \begin{tabular}{l|cccc}
+    k & $R_{k,1}$ & $R_{k,2}$ & $R_{k,3}$ & $R_{k,4}$ \\\hline
+    1 & $1,83940\E-1$ \\
+    2 & $2,86670\E-1$ & $3,20914\E-1$ \\
+    3 & $3,08883\E-1$ & $3,16287\E-1$ & $3,15978\E-1$ \\
+    4 & $3,14276\E-1$ & $3,16074\E-1$ & $3,16059\E-1$ &  $3,16061\E-1$\\\hline
+  \end{tabular}
+  \label{tab:ex_Romberg}
+\end{table}
+
+Na Tabela~\ref{tab:ex_Romberg}, temos os valores de aproximações computadas pela quadratura de Romberg até ordem $8$.
+
+\ifisoctave
+Podemos fazer estas computações com o auxílio do seguinte código \verb+GNU Octave+:
+\begin{verbatim}
+#integral
+f = @(x) x*exp(-x^2);
+a=0;
+b=1;
+
+#ordem 2n
+n=4;
+
+R = zeros(n,n);
+#R(k,1)
+for k=1:n
+  h = (b-a)/(2^(k-1));
+  R(k,1) = f(a);
+  for i=2:2^(k-1)
+    x = a + (i-1)*h;
+    R(k,1) += 2*f(x);
+  endfor
+  R(k,1) += f(b);
+  R(k,1) *= h/2;
+endfor
+#extrapola
+for j=2:n
+  for k=j:n
+    R(k,j) = R(k,j-1) + (R(k,j-1)-R(k-1,j-1))/(4^(j-1)-1);
+  endfor
+endfor
+#sol.
+for i = 1:n 
+  printf("%1.5E ",R(i,:))
+  printf("\n")
+end
+\end{verbatim}
+\fi
+\end{ex}
+
+\subsection*{Exercícios}
 
 \emconstrucao
