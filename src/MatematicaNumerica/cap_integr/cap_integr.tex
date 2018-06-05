@@ -575,4 +575,168 @@ usando a quadratura de Romberg de ordem 4.
   $2,68953\E-1$
 \end{resp}
 
+\section{Grau de exatidão}\label{cap_integr_sec_grau_exat}
+
+O grau de exatidão é uma medida de exatidão de uma quadratura numérica. Mais precisamente, dizemos que uma dada quadratura numérica de nodos e pesos $\{(x_i, w_i)\}_{i=1}^n$ tem grau de exatidão $m$, quando
+\begin{equation}
+  \int_a^b p(x)\,dx = \sum_{i=1}^n p(x_i)w_i
+\end{equation}
+para todo polinômio $p(x)$ de grau menor $m$. Ou ainda, conforme descrito na definição a seguir.
+
+\begin{defn}\index{grau de exatidão}
+  Dizemos que uma dada quadratura numérica de pontos e nodos $\{x_i, w_i\}_{i=1}^n$ tem \emph{grau de exatidão} $m$, quando
+  \begin{equation}
+    \int_a^b x^k\,dx = \sum_{i=1}^n x_i^kw_i,~\forall k\leq m.
+  \end{equation}
+\end{defn}
+
+\begin{ex}
+  Determinemos o grau de exatidão da regra do ponto médio. Para tanto, verificamos para quais $k$ vale
+  \begin{equation}
+    \int_a^b x^k\,dx = (b-a)\left(\frac{a+b}{2}\right)^k.
+  \end{equation}
+Vejamos:
+\begin{itemize}
+\item $k=0$:
+  \begin{align}
+    &\int_a^b x^0\,dx = \left. x\right|_a^b = b-a,\\
+    &(b-a)\left(\frac{a+b}{2}\right)^0 = b-a.
+  \end{align}
+\item $k=1$:
+  \begin{align}
+    &\int_a^b x^1\,dx = \left. \frac{x^2}{2}\right|_a^b = \frac{b^2}{2}-\frac{a^2}{2},\\
+    &(b-a)\left(\frac{a+b}{2}\right)^1 = (b-a)\frac{(a+b)}{2} = \frac{b^2}{2}-\frac{a^2}{2}.
+  \end{align}
+\item $k=2$:
+  \begin{align}
+    &\int_a^b x^2\,dx = \left. \frac{x^3}{3}\right|_a^b = \frac{b^3}{3}-\frac{a^3}{3},\\
+    &(b-a)\left(\frac{a+b}{2}\right)^2 \neq \frac{b^3}{3}-\frac{a^3}{3}.
+  \end{align}
+\end{itemize}
+Ou seja, a regra do ponto média tem grau de exatidão $1$.
+\end{ex}
+
+\begin{ex}
+  Determinemos o grau de exatidão da regra de Simpson. Para tanto, verificamos para quais $k$ vale
+  \begin{equation}
+    \int_a^b x^k\,dx = \frac{(b-a)}{6}\left(f(a) + 4f\left(\frac{a+b}{2}\right) + f(b)\right)^k.
+  \end{equation}
+Vejamos:
+\begin{itemize}
+\item $k=0$:
+  \begin{align}
+    &\int_a^b x^0\,dx = \left. x\right|_a^b = b-a,\\
+    &\frac{(b-a)}{6}\left(a^0 + 4\left(\frac{a+b}{2}\right)^0 + b^0\right) = b-a.
+  \end{align}
+\item $k=1$:
+  \begin{align}
+    &\int_a^b x^1\,dx = \left. \frac{x^2}{2}\right|_a^b = \frac{b^2}{2}-\frac{a^2}{2},\\
+    &\frac{(b-a)}{6}\left(a^1 + 4\left(\frac{a+b}{2}\right)^1 + b^1\right) = \frac{(b-a)}{2}(a+b) \\
+    &\qquad = \frac{b^2}{2}-\frac{a^2}{2}.
+  \end{align}
+\item $k=2$:
+  \begin{align}
+    &\int_a^b x^2\,dx = \left. \frac{x^3}{3}\right|_a^b = \frac{b^3}{3} - \frac{a^3}{3},\\
+    &\frac{(b-a)}{6}\left(a^2 + 4\left(\frac{a+b}{2}\right)^2 + b^2\right) = \frac{(b-a)}{3}(a^2 + ab + b^2)\\
+    &\qquad = \frac{b^3}{3} - \frac{a^3}{3}.
+  \end{align}
+\item $k=3$:
+  \begin{align}
+    &\int_a^b x^3\,dx = \left. \frac{x^4}{4}\right|_a^b = \frac{b^4}{4}-\frac{a^4}{4},\\
+    &\frac{(b-a)}{6}\left(a^3 + 4\left(\frac{a+b}{2}\right)^3 + b^3\right) \\
+    &\qquad = \frac{(b-a)}{6}\left[\frac{3 a^{3}}{2} + \frac{3 b}{2} a^{2} + \frac{3 a}{2} b^{2} + \frac{3 b^{3}}{2}\right]\\
+    &\qquad = \frac{b^4}{4}-\frac{a^4}{4}.
+  \end{align}
+\item $k=4$:
+  \begin{align}
+    &\int_a^b x^4\,dx = \left. \frac{x^5}{5}\right|_a^b = \frac{b^5}{5}-\frac{a^5}{5},\\
+    &\frac{(b-a)}{6}\left(a^4 + 4\left(\frac{a+b}{2}\right)^4 + b^4\right) \neq \frac{b^5}{5}-\frac{a^5}{5}.
+  \end{align}
+\end{itemize}
+Ou seja, a regra de Simpson tem grau de exatidão $3$.
+\end{ex}
+
+\subsection*{Exercícios}
+
+\begin{exer}
+  Determine o grau de exatidão da regra do trapézio.
+\end{exer}
+\begin{resp}
+  $1$
+\end{resp}
+
+\begin{exer}
+  Determine o nodo e o peso da quadratura numérica de um único nodo e de grau de exatidão $1$ para o intervalo de integração $[-1, 1]$.
+\end{exer}
+\begin{resp}
+  $x_1=0$, $w_1=2$
+\end{resp}
+
+\section{Quadratura Gauss-Legendre}\label{cap_integr_sec_Gauss-Legendre}
+
+Quadraturas gaussianas são quadraturas numéricas de máximo grau de exatidão. Especificamente, quadraturas de Gauss-Legendre são quadraturas gaussianas para integrais da forma
+\begin{equation}
+  \int_{-1}^1 f(x)\,dx.
+\end{equation}
+
+Consideremos o problema de determinar a quadratura de Gauss-Legendre de apenas um ponto. Começamos por exigir o grau de exatidão $0$, o que nos leva a
+\begin{equation}
+  w_1x_1^0 = \int_{-1}^1 x^0\,dx \Rightarrow w_1 = x|_{-1}^1 = 2.
+\end{equation}
+Agora, exigindo o grau de exatidão $1$, obtemos
+\begin{align}
+  w_1x_1^1 = \int_{-1}^1 x^1\,dx &\Rightarrow 2x_1 = \left.\frac{x^2}{2}\right|_{-1}^1 = 0\\
+  &\Rightarrow x_1=0.
+\end{align}
+Com isso, concluímos que a quadratura de apenas um nodo de maior grau de exatidão para tais integrais é a de nodo $x_1=0$ e $w_1=2$. A qual é, por acaso, a regra do ponto médio.
+
+Observamos, também, que cada grau de exatidão nos fornece uma condição para determinarmos os nodos e os pesos da desejada quadratura. Mais precisamente, seguindo o raciocínio anterior, para determinarmos a quadratura de $n$ pontos com maior grau de exatidão possível para integrais no intervalo $[-1, 1]$, acabaremos tendo que resolver um sistema de equações
+\begin{equation}
+  \sum_{i=1}^n x_i^kw_i = \int_{-1}^1 x^k\,dx,~k=0,1,2,\ldots
+\end{equation}
+Portanto, como teremos $2n$ incógnitas ($n$ nodos e $n$ pesos) a determinar, poderemos exigir o grau de exatidão máximo de $2n-1$.
+
+\emconstrucao
+
+\subsection*{Exercícios}
+
+\emconstrucao
+
+\section{Quadratura de Gauss-Chebyshev}\label{cap_integr_sec_Gauss-Chebyshev}
+
+Quadraturas de Gauss-Chebyshev são quadraturas gaussianas para integrais da forma
+\begin{equation}
+  \int_{-1}^1 \frac{f(x)}{\sqrt{1-x^2}}\,dx.
+\end{equation}
+
+\emconstrucao
+
+\subsection*{Exercícios}
+
+\emconstrucao
+
+\subsection{Quadratura de Gauss-Laguerre}\label{cap_integr_sec_Gauss-Laguerre}
+
+Quadraturas de Gauss-Laguerre são quadraturas gaussianas para integrais da forma
+\begin{equation}
+  \int_{0}^\infty f(x)e^{-x}\,dx.
+\end{equation}
+
+\emconstrucao
+
+\subsection*{Exercícios}
+
+\emconstrucao
+
+\subsection{Quadratura de Gauss-Hermite}\label{cap_integr_sec_Gauss-Hermite}
+
+Quadraturas de Gauss-Hermite são quadraturas gaussianas para integrais da forma
+\begin{equation}
+  \int_{-\infty}^\infty f(x)e^{-x^2}\,dx.
+\end{equation}
+
+\emconstrucao
+
+\subsection*{Exercícios}
+
 \emconstrucao
