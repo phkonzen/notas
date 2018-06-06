@@ -37,7 +37,7 @@ onde $\xi = \xi(x)$ pertencente ao intervalo $[x_1, x_{n+1}]$. Deste modo, temos
 \end{align}
 Ou seja, nas quadraturas (regras) de Newton-Cotes, os nodos são as abscissas dos pontos interpolados e os pesos são as integrais dos polinômios de Lagrange associados.
 
-Na sequência, abordaremos as regras de Newton-Cotes mais usuais e estimaremos o erro de truncamento caso a caso. Para uma abordagem mais geral, recomenda-se consultar~\cite[Ch 7.,Sec. 1.1]{Isaacson1994a}.
+Na sequência, abordaremos as regras de Newton-Cotes mais usuais e estimaremos o erro de truncamento caso a caso. Para uma abordagem mais geral, recomenda-se consultar~\cite[Cap. 7,Sec. 1.1]{Isaacson1994a}.
 
 \subsection{Regras de Newton-Cotes fechadas}
 
@@ -691,23 +691,336 @@ Agora, exigindo o grau de exatidão $1$, obtemos
 Com isso, concluímos que a quadratura de apenas um nodo de maior grau de exatidão para tais integrais é a de nodo $x_1=0$ e $w_1=2$. A qual é, por acaso, a regra do ponto médio.
 
 Observamos, também, que cada grau de exatidão nos fornece uma condição para determinarmos os nodos e os pesos da desejada quadratura. Mais precisamente, seguindo o raciocínio anterior, para determinarmos a quadratura de $n$ pontos com maior grau de exatidão possível para integrais no intervalo $[-1, 1]$, acabaremos tendo que resolver um sistema de equações
-\begin{equation}
-  \sum_{i=1}^n x_i^kw_i = \int_{-1}^1 x^k\,dx,~k=0,1,2,\ldots
+\begin{equation}\label{eq:quad_gauss_sys}
+  \sum_{i=1}^n x_i^kw_i = \int_{-1}^1 x^k\,dx,~k=0,1,2,\ldots, 2n-1.
 \end{equation}
-Portanto, como teremos $2n$ incógnitas ($n$ nodos e $n$ pesos) a determinar, poderemos exigir o grau de exatidão máximo de $2n-1$.
+Isto é, como teremos $2n$ incógnitas ($n$ nodos e $n$ pesos) a determinar, poderemos exigir o grau de exatidão máximo de $2n-1$.
 
-\emconstrucao
+O sistema~\eqref{eq:quad_gauss_sys} é um sistema não linear para os nodos e a determinação de soluções para $n$ grande não é uma tarefa trivial. Alternativamente, veremos que os pontos da quadratura de Gauss-Legendre de $n$ nodos são as raízes do polinômio de Legendre de grau $n$. Por definição, o polinômio de Legendre de grau $n$, denotado por $P_n(x)$, satisfaz a seguinte propriedade de ortogonalidade
+\begin{equation}\label{eq:ortogonalidade_pol_Legendre}
+  \int_{-1}^1 p(x)P_n(x)\,dx = 0,
+\end{equation}
+para todo polinômio $p(x)$ de grau menor que $n$. Com isso, estabelecemos o seguinte resultado.
+
+\begin{teo}\label{teo:Gauss-Legendre}
+  A quadratura de Gauss-Legendre de $n$ nodos tem as raízes do polinômio de Legendre de grau $n$ como seus nodos e seus pesos são dados por
+  \begin{equation}\label{eq:pesos_Gauss-Legendre_1}
+    w_i = \int_{-1}^1 \prod_{\overset{j=1}{j\neq i}}^n \frac{x-x_j}{x_i-x_j}\,dx.
+  \end{equation}
+\end{teo}
+\begin{dem}
+  Sejam $x_1, x_2, \dotsc, x_n$ as raízes do polinômio de Legendre de grau $n$. Queremos mostrar que
+  \begin{equation}
+    \int_{-1}^1 p(x)\,dx = \sum_{i=1}^n p(x_i)w_i,
+  \end{equation}
+para todo polinômio $p(x)$ de grau menor ou igual $2n-1$. Primeiramente, suponhamos que $p(x)$ seja um polinômio de grau menor que $n$. Então, tomando sua representação por polinômio de Lagrange nos nodos $x_i$, $i=1, 2, \ldots, n$, temos
+\begin{align}
+  \int_{-1}^1 p(x)\,dx &= \int_{-1}^1 \sum_{i=1}^n p(x_i)\prod_{\overset{j=1}{j\neq i}}^n \frac{x-x_j}{x_i-x_j}\,dx\\
+  &= \sum_{i=1}^n p(x_i) \int_{-1}^1 \prod_{\overset{j=1}{j\neq i}}^n \frac{x-x_j}{x_i-x_j}\,dx\\
+  &= \sum_{i=1}^n p(x_i)w_i.
+\end{align}
+Isto mostra o resultado para polinômios $p(x)$ de grau menor que $n$. Agora, suponhamos que $p(x)$ é um polinômio de grau maior ou igual que $n$ e menor ou igual a $2n-1$. Dividindo $p(x)$ pelo polinômio de Legendre de grau $n$, $P_n(x)$,  obtemos
+\begin{equation}
+  p(x) = q(x)P_n(x) + r(x),
+\end{equation}
+onde $q(x)$ e $r(x)$ são polinômio de grau menor que $n$. Ainda, nas raízes $x_1, x_2, \dotsc, x_n$ temos $p(x_i) = r(x_i)$ e da ortogonalidade dos polinômios de Legendre (veja, equação~\eqref{eq:ortogonalidade_pol_Legendre}), temos
+\begin{align}
+  \int_{-1}^1 p(x)\,dx &= \int_{-1}^1 q(x)P_n(x) + r(x)\,dx\\
+  &= \int_{-1}^1 r(x)\,dx.
+\end{align}
+Agora, do resultado anterior aplicado a $r(x)$, temos
+\begin{equation}
+  \int_{-1}^1 p(x)\,dx = \sum_{i=1}^n r(x_i)w_i = \sum_{i=1}^n p(x_i)w_i.
+\end{equation}
+Isto complete o resultado para polinômios de grau menor ou igual a $2n-1$.
+\end{dem}
+
+\begin{ex}
+  Consideremos a quadratura de Gauss-Legendre de $2$ nodos. Do teorema anterior (Teorema~\ref{teo:Gauss-Legendre}, seus nodos são as raízes do polinômio de Legendre de grau 2
+  \begin{equation}
+    P_2(x) = \frac{3}{2}x^2 - \frac{1}{2},
+  \end{equation}
+as quais são
+\begin{equation}
+  x_1 = -\frac{\sqrt{3}}{3},\quad x_2=\frac{\sqrt{3}}{3}.
+\end{equation}
+Os pesos são, então
+\begin{align}
+  w_1 &= \int_{-1}^1 \frac{x-x_1}{x_2-x_1}\,dx \\
+  &= \frac{\sqrt{3}}{2}\left[\frac{x^2}{2}+\frac{\sqrt{3}}{3}x\right]_{-1}^1\\
+  &= 1
+\end{align}
+e
+\begin{align}
+  w_2 &= \int_{-1}^1 \frac{x-x_2}{x_1-x_2}\,dx \\
+  &= -\frac{\sqrt{3}}{2}\left[\frac{x^2}{2}-\frac{\sqrt{3}}{3}x\right]_{-1}^1\\
+  &= 1
+\end{align}
+Ou seja, a quadratura de Gauss-Legendre de $2$ pontos tem o seguinte conjunto de nodos e pesos $\{(x_1=-\sqrt{3}/3, w_1=1), (x_2=\sqrt{3}/3, w_2=1)\}$. Esta, por sua vez, é exata para polinômios de grau menor ou igual a $3$. De fato, verificando para potência de $x^k$ temos:
+\begin{itemize}
+\item $k=0$:
+  \begin{align}
+    \int_{-1}^1 x^0\,dx &= 2\\
+    x_1^0w_1 + x_2^0w_2 &= \left(-\frac{\sqrt{3}}{3}\right)^0 + \left(\frac{\sqrt{3}}{3}\right)^0 = 2.
+  \end{align}
+\item $k=1$:
+  \begin{align}
+    \int_{-1}^1 x^1\,dx &= 0\\
+    x_1^1w_1 + x_2^1w_2 &= \left(-\frac{\sqrt{3}}{3}\right)^1 + \left(\frac{\sqrt{3}}{3}\right)^1 = 0.
+  \end{align}
+\item $k=2$:
+  \begin{align}
+    \int_{-1}^1 x^2\,dx &= \frac{2}{3}\\
+    x_1^2w_1 + x_2^2w_2 &= \left(-\frac{\sqrt{3}}{3}\right)^2 + \left(\frac{\sqrt{3}}{3}\right)^2 = \frac{2}{3}.
+  \end{align}
+\item $k=3$:
+  \begin{align}
+    \int_{-1}^1 x^3\,dx &= 0\\
+    x_1^3w_1 + x_2^3w_2 &= \left(-\frac{\sqrt{3}}{3}\right)^3 + \left(\frac{\sqrt{3}}{3}\right)^3 = 0.
+  \end{align}
+\item $k=4$:
+  \begin{align}
+    \int_{-1}^1 x^4\,dx &= \frac{2}{5}\\
+    x_1^4w_1 + x_2^4w_2 &= \left(-\frac{\sqrt{3}}{3}\right)^4 + \left(\frac{\sqrt{3}}{3}\right)^4 = \frac{2}{9}.
+  \end{align}
+\end{itemize}
+\end{ex}
+
+\begin{table}[h!]
+  \centering
+  \caption{Conjunto de nodos e pesos da quadratura de Gauss-Legendre.}
+  \begin{tabular}{lcc}
+    $n$ & $x_i$ & $w_i$ \\\hline\noalign{\smallskip}
+    $1$ & 0 & 2 \\\noalign{\smallskip}\hline
+    $2$ & $\displaystyle \pm \frac{\sqrt{3}}{3}$ & 1\\\noalign{\smallskip}\hline\noalign{\smallskip}
+    \multirow{2}{*}{$3$} & $0$ & $\displaystyle \frac{8}{9}$ \\
+      & $\displaystyle \pm\sqrt{\frac{3}{5}}$ & $\displaystyle \frac{5}{9}$\\\noalign{\smallskip}\hline\noalign{\smallskip}
+    \multirow{2}{*}{$4$} & $\displaystyle \pm\sqrt{\frac{3}{7}-\frac{2}{7}\sqrt{\frac{6}{5}}}$ & $\displaystyle \frac{18+\sqrt{30}}{36}$ \\\noalign{\smallskip}
+ & $\displaystyle \pm\sqrt{\frac{3}{7}+\frac{2}{7}\sqrt{\frac{6}{5}}}$ & $\displaystyle \frac{18-\sqrt{30}}{36}$\\\noalign{\smallskip}\hline\noalign{\smallskip}
+    \multirow{3}{*}{$5$} & $0$ & $\displaystyle \frac{128}{225}$ \\\noalign{\smallskip}
+        & $\displaystyle \pm\frac{1}{3}\sqrt{5-2\sqrt{\frac{10}{7}}}$ & $\displaystyle \frac{322+13\sqrt{70}}{900}$ \\\noalign{\smallskip}
+        & $\displaystyle \pm\frac{1}{3}\sqrt{5+2\sqrt{\frac{10}{7}}}$ & $\displaystyle \frac{322-13\sqrt{70}}{900}$ \\\noalign{\smallskip}\hline
+  \end{tabular}
+  \label{tab:Gauss-Legendre}
+\end{table}
+
+\begin{obs}\label{obs:quad_Gauss-Legendre}
+  O conjunto de nodos e pesos da quadratura de Gauss-Legendre para $n=1, 2, 3, 4, 5$ são apresentados na Tabela~\ref{tab:Gauss-Legendre}\footnote{Disponível em \url{https://en.wikipedia.org/w/index.php?title=Gaussian_quadrature&oldid=837460315}.}. Alternativamente, a quadratura de Gauss-Legendre com $n$ pontos tem seus nodos iguais as raízes de $P_n(x)$ (o polinômio de Legendre de gaus $n$), e os pesos dados por \eqref{eq:pesos_Gauss-Legendre_1} ou \cite[Cap.4, Sec. 4.6]{Press2007a}:
+  \begin{equation}
+    w_i = \frac{2}{(1-x_i^2)\left[P_n'(x_i)\right]^2},\quad i=1, 2, \dotsc, n.
+  \end{equation}
+\ifisoctave
+Assim sendo, no \verb+GNU Octave+ podemos encontrar os nodos e pesos da quadratura de Gauss-Legendre com o seguinte código:
+\begin{verbatim}
+pkg load miscellaneous
+n=6;
+Pn=legendrepoly(n);
+dPn=polyder(Pn);
+x=roots(Pn);
+w=2./((1-x.^2).*(polyval(dPn,x)).^2);
+printf("i xx_i w_i\n")
+for i=1:n
+  printf("%d %1.7E %1.7E\n",i,x(i),w(i))
+endfor
+\end{verbatim}
+\fi
+\end{obs}
+
+\begin{ex}\label{ex:GL_fun}
+  Considere o problema de obter uma aproximação para $I = \int_{-1}^1 \cos(x)\,dx$ usando a quadratura de Gauss-Legendre. Calculemos algumas aproximações com $n=1$, $2$ e $3$ pontos:
+  \begin{itemize}
+  \item $n=1$:
+    \begin{equation}
+      \int_{-1}^1 \cos(x)\,dx \approx 2 \cos 0 = 2.
+    \end{equation}
+  \item $n=2$:
+    \begin{equation}
+      \int_{-1}^1 xe^{-x^2}\,dx \approx \cos(-\sqrt{3}/3) + \cos(-\sqrt{3}/3) = 1,67582.
+    \end{equation}
+  \item $n=3$:
+    \begin{align}
+      \int_{-1}^1 xe^{-x^2}\,dx &\approx \frac{8}{9}\cos 0 + \frac{5}{9}\cos(-\sqrt{3/5}) \nonumber\\
+      &+ \frac{5}{9}\cos(\sqrt{3/5}) = 1,68300.
+    \end{align}
+  \end{itemize}
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{lcc}
+    $n$ & $\tilde{I}$ & $|I-\tilde{I}|$ \\\hline
+    $1$ & $2,00000$ & $3,2\E-01$ \\
+    $2$ & $1,67582$ & $7,1\E-03$ \\
+    $3$ & $1,68300$ & $6,2\E-05$ \\
+    $4$ & $1,68294$ & $2,8\E-07$ \\
+    $5$ & $1,68294$ & $7,9\E-10$ \\\hline
+  \end{tabular}
+  \caption{Resultados referentes ao Exemplo~\ref{ex:GL_fun}.}
+  \label{tab:ex_GL_fun}
+\end{table}
+
+Na Tabela~\ref{tab:ex_GL_fun}, temos as aproximações de $I$ com a quadratura de Gauss-Legendre de $n=1$, $2$, $3$, $4$ e $5$ pontos (detonado por $\tilde{I}$, bem como, o erro absoluto com respeito ao valor analítico da integral.
+
+\ifisoctave
+Os cálculos, aqui, apresentados podem ser realizados no \verb+GNU Octave+ com o seguinte código:
+\begin{verbatim}
+f = @(x) cos(x);
+
+#int. anlitc.
+ia = sin(1)-sin(-1);
+
+#GL-1
+x=0;
+w=2;
+s=w*f(x);
+printf("%1.5E %1.1\E\n",s,abs(s-ia))
+
+#GL-2
+x=[sqrt(3)/3];
+w=[1];
+s=w(1)*f(x(1));
+s+=w(1)*f(-x(1));
+printf("%1.5E %1.1\E\n",s,abs(s-ia))
+
+#GL-3
+x=[0 sqrt(3/5)];
+w=[8/9 5/9];
+s=w(1)*f(x(1)) + w(2)*f(x(2));
+s+=w(2)*f(-x(2));
+printf("%1.5E %1.1\E\n",s,abs(s-ia))
+
+#GL-4
+x=[sqrt(3/7-2/7*sqrt(6/5)) sqrt(3/7+2/7*sqrt(6/5))];
+w=[(18+sqrt(30))/36 (18-sqrt(30))/36];
+s=w(1)*f(x(1)) + w(2)*f(x(2));
+s+=w(1)*f(-x(1)) + w(2)*f(-x(2));
+printf("%1.5E %1.1\E\n",s,abs(s-ia))
+
+#GL-5
+x=[0 1/3*sqrt(5-2*sqrt(10/7)) 1/3*sqrt(5+2*sqrt(10/7))];
+w=[128/225 (322+13*sqrt(70))/900 (322-13*sqrt(70))/900];
+s=w(1)*f(x(1)) + w(2)*f(x(2)) + w(3)*f(x(3));
+s+=w(2)*f(-x(2)) + w(3)*f(-x(3));
+printf("%1.5E %1.1\E\n",s,abs(s-ia))
+\end{verbatim}
+\fi
+\end{ex}
+
+\subsection{Intervalos de integração arbitrários}
+
+Observamos que a quadratura de Gauss-Legendre foi desenvolvida para aproximar integrais definidas no intervalo $[-1, 1]$. Por sorte, uma integral definida em um intervalo arbitrário $[a, b]$ pode ser reescrita como uma integral no intervalo $[-1, 1]$ através de uma mudança de variável apropriada. Mais precisamente, assumindo a mudança de variável
+\begin{equation}
+  x = \frac{b-a}{2}(u+1)+a
+\end{equation}
+temos
+\begin{equation}
+  dx = \frac{b-a}{2}du
+\end{equation}
+e, portanto,
+\begin{equation}
+  \int_a^b f(x)\,dx = \int_{-1}^1 f\left(\frac{b-a}{2}(u+1)+a\right)\cdot \frac{b-a}{2}du.
+\end{equation}
+Portanto, para computarmos $\int_a^bf(x)\,dx$ podemos aplicar a quadratura de Gauss-Legendre na integral definida no $[-1, 1]$ dada conforme acima.
+
+\begin{ex}
+Usemos a quadratura de Gauss-Legendre com $2$ pontos para aproximar a integral
+\begin{equation}
+  \int_0^{1} xe^{-x^2}\,dx.
+\end{equation}
+Fazendo a mudança de variável $x=u/2 + 1/2$, temos
+\begin{equation}
+  \int_0^{1} xe^{-x^2}\,dx = \int_{-1}^1 \left(\frac{u}{2}+\frac{1}{2}\right)e^{-\left(\frac{u}{2}+\frac{1}{2}\right)^2}\,du.
+\end{equation}
+Então, aplicando a quadratura temos
+\begin{align}
+  \int_0^{1} xe^{-x^2}\,dx &= \left(-\frac{\sqrt{3}}{6}+\frac{1}{2}\right)e^{-\left(-\frac{\sqrt{3}}{6}+\frac{1}{2}\right)^2} + \left(\frac{\sqrt{3}}{6}+\frac{1}{2}\right)e^{-\left(\frac{\sqrt{3}}{6}+\frac{1}{2}\right)^2} \\
+  &= 3,12754\E-1.
+\end{align}
+
+\ifisoctave
+No \verb+GNU Octave+, pode usar o seguinte código:
+\begin{verbatim}
+f = @(x) x*exp(-x^2);
+a=0;
+b=1;
+F = @(u) (b-a)/2*f((b-a)/2*(u+1)+a);
+x=sqrt(3)/3;
+w=1;
+s=w*F(-x)+w*F(x);
+printf("%1.5E\n",s)
+\end{verbatim}
+\fi
+\end{ex}
 
 \subsection*{Exercícios}
 
-\emconstrucao
+\begin{exer}\label{exer:GL_fun}
+  Aproxime
+  \begin{equation}
+    \int_{-1}^1 \frac{\sen(x+2)-e^{-x^2}}{x^2+\ln(x+2)}\,dx
+  \end{equation}
+usando a quadratura de Gauss-Legendre com:
+\begin{enumerate}[a)]
+\item $n=1$ ponto.
+\item $n=2$ pontos.
+\item $n=3$ pontos.
+\item $n=4$ pontos.
+\item $n=5$ pontos.
+\end{enumerate}
+\end{exer}
+\begin{resp}
+  \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_integr/dados/exer_GL_fun/exer_GL_fun.m}{Código.} 
+  \fi
+  a)~$-2,61712\E-1$; b)~$2,55351\E-1$; c)~$8,97510\E-2$; d)~$1,27411\E-1$; e)~$1.21016\E-1$.
+\end{resp}
+
+\begin{exer}\label{exer:GL_mudvar}
+  Aproxime
+  \begin{equation}
+    \int_{0}^1 \frac{\sen(x+2)-e^{-x^2}}{x^2+\ln(x+2)}\,dx
+  \end{equation}
+usando a quadratura de Gauss-Legendre com:
+\begin{enumerate}[a)]
+\item $n=1$ ponto.
+\item $n=2$ pontos.
+\item $n=3$ pontos.
+\item $n=4$ pontos.
+\item $n=5$ pontos.
+\end{enumerate}
+\end{exer}
+\begin{resp}
+  \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_integr/dados/exer_GL_mudvar/exer_GL_mudvar.m}{Código.} 
+  \fi
+  a)~$-1,54617\E-1$; b)~$-1,50216\E-1$; c)~$-1,47026\E-1$; d)~$-1,47190\E-1$; e)~$-1,47193\E-1$.
+\end{resp}
+
+\begin{exer}\label{exer:GL_Npts}
+  Aproxime
+  \begin{equation}
+    \int_{-1}^1 \frac{\sen(x+2)-e^{-x^2}}{x^2+\ln(x+2)}\,dx
+  \end{equation}
+usando a quadratura de Gauss-Legendre com:
+\begin{enumerate}[a)]
+\item $n=5$ ponto.
+\item $n=10$ pontos.
+\item $n=20$ pontos.
+\end{enumerate}
+\end{exer}
+\begin{resp}
+  \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_integr/dados/exer_GL_Npts/exer_GL_Npts.m}{Código.} 
+  \fi
+  a)~$1,21016\E-1$; b)~$1,21744\E-1$; c)~$1,21744\E-1$
+\end{resp}
 
 \section{Quadratura de Gauss-Chebyshev}\label{cap_integr_sec_Gauss-Chebyshev}
 
 Quadraturas de Gauss-Chebyshev são quadraturas gaussianas para integrais da forma
 \begin{equation}
-  \int_{-1}^1 \frac{f(x)}{\sqrt{1-x^2}}\,dx.
+  \int_{-1}^1 f(x)w(x)\,dx.
 \end{equation}
+onde o peso $w(x)=1/(\sqrt{1-x^2})$.
 
 \emconstrucao
 
@@ -715,7 +1028,7 @@ Quadraturas de Gauss-Chebyshev são quadraturas gaussianas para integrais da for
 
 \emconstrucao
 
-\subsection{Quadratura de Gauss-Laguerre}\label{cap_integr_sec_Gauss-Laguerre}
+\section{Quadratura de Gauss-Laguerre}\label{cap_integr_sec_Gauss-Laguerre}
 
 Quadraturas de Gauss-Laguerre são quadraturas gaussianas para integrais da forma
 \begin{equation}
@@ -728,7 +1041,7 @@ Quadraturas de Gauss-Laguerre são quadraturas gaussianas para integrais da form
 
 \emconstrucao
 
-\subsection{Quadratura de Gauss-Hermite}\label{cap_integr_sec_Gauss-Hermite}
+\section{Quadratura de Gauss-Hermite}\label{cap_integr_sec_Gauss-Hermite}
 
 Quadraturas de Gauss-Hermite são quadraturas gaussianas para integrais da forma
 \begin{equation}
