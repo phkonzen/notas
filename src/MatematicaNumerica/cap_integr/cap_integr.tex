@@ -1109,7 +1109,7 @@ Na Tabela~\ref{tab:quad_GLa}, temos os pontos da quadratura de Gauss-Laguerre pa
 \begin{table}[h!]
   \centering
   \caption{Pontos da quadratura de Gauss-Laguerre.}
-  \begin{tabular}{lcc}
+  \begin{tabular}{lrr}
     $n$ & $x_i$ & $w_i$ \\\hline
     $1$ & $1,0000000\E+00$ & $1,0000000\E+00$ \\\hline
     \multirow{2}{*}{2}
@@ -1222,16 +1222,134 @@ printf("%d %1.5E\n",n,s)
 \fi
 \end{ex}
 
-\emconstrucao
-
 \subsection{Quadratura de Gauss-Hermite}
 
 Quadraturas de Gauss-Hermite são quadraturas gaussianas para integrais da forma
 \begin{equation}
   \int_{-\infty}^\infty f(x)e^{-x^2}\,dx.
 \end{equation}
+Seus nodos $x_i$, $i=1, 2, \dotsc, n$ são as raízes do $n$-ésimo polinômio de Hermite e os pesos são dados por
+\begin{equation}
+  w_i = \frac{2^{n+1}n!\sqrt{\pi}}{[H'(x_i)]^2}.
+\end{equation}
 
-\emconstrucao
+Na Tabela~\ref{tab:quad_GH}, temos os pontos da quadratura de Gauss-Hermite para diversos valores de $n$.
+
+\begin{table}[h!]
+  \centering
+  \caption{Pontos da quadratura de Gauss-Hermite.}
+  \begin{tabular}{lrr}
+    $n$ & $x_i$ & $w_i$ \\\hline
+    $1$ & $0,0000000\E+00$ & $1,7724539\E+00$ \\
+    \multirow{2}{*}{2}
+    & $-7,0710678\E-01$ & $8,8622693\E-01$ \\
+    & $7,0710678\E-01$ & $8,8622693\E-01$ \\\hline
+    \multirow{3}{*}{3}
+    & $-1,2247449\E+00$ & $2,9540898\E-01$ \\
+    & $1,2247449\E+00$ & $2,9540898\E-01$ \\
+    & $0,0000000\E+00$ & $1,1816359\E+00$ \\\hline
+    \multirow{4}{*}{4}
+    & $-1,6506801\E+00$ & $8,1312835\E-02$ \\
+    & $1,6506801\E+00$ & $8,1312835\E-02$ \\
+    & $-5,2464762\E-01$ & $8,0491409\E-01$ \\
+    & $5,2464762\E-01$ & $8,0491409\E-01$ \\\hline
+    \multirow{5}{*}{5}
+    & $-2,0201829\E+00$ & $1,9953242\E-02$ \\
+    & $2,0201829\E+00$ & $1,9953242\E-02$ \\
+    & $-9,5857246\E-01$ & $3,9361932\E-01$ \\
+    & $9,5857246\E-01$ & $3,9361932\E-01$ \\
+    & $0,0000000\E+00$ & $9,4530872\E-01$ \\\hline
+  \end{tabular}
+  \label{tab:quad_GH}
+\end{table}
+
+\ifisoctave
+No \verb+GNU Octave+, os pontos da quadratura de Gauss-Herminte podem ser obtido com o seguinte código:
+\begin{verbatim}
+pkg load miscellaneous
+n=2;
+Hn=hermitepoly(n);
+dHn=polyder(Hn);
+x=roots(Hn);
+w=2^(n+1)*factorial(n)*sqrt(pi)./((polyval(dHn,x)).^2);
+printf("i xx_i w_i\n")
+for i=1:n
+  printf("%1.7E %1.7E\n",x(i),w(i))
+endfor
+\end{verbatim}
+\fi
+
+\begin{ex}\label{ex:GH}
+  Na Tabela~\ref{tab:ex_GH}, temos as aproximações $\tilde{I}$ da integral $I = \int_{-\infty}^\infty x\sen(x)e^{-x^2}\,dx$ obtidas pela quadratura de Gauss-Hermite com diferentes pontos $n$.
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{lc}
+    $n$ & $\tilde{I}$\\\hline
+    $1$ & $0,00000E+00$ \\
+    $2$ & $8,14199\E-01$ \\
+    $3$ & $6,80706\E-01$ \\
+    $4$ & $6,90650\E-01$ \\
+    $5$ & $6,90178\E-01$
+  \end{tabular}
+  \caption{Resultados referentes ao Exemplo~\ref{ex:GH}.}
+  \label{tab:ex_GLa}
+\end{table}
+
+\ifisoctave
+Os resultados obtidos neste exemplo podem ser computados no \verb+GNU Octave+ com o seguinte código:
+\begin{verbatim}
+f = @(x) x*sin(x);
+
+n=1;
+xw = [0.0000000E+00 1.7724539E+00];
+s = f(xw(1,1))*xw(1,2);
+printf("%d %1.5E\n",n,s)
+
+n=2;
+xw = [-7.0710678E-01 8.8622693E-01;...
+       7.0710678E-01 8.8622693E-01];
+s=0;
+for i=1:n
+  s+=f(xw(i,1))*xw(i,2);
+endfor
+printf("%d %1.5E\n",n,s)
+
+n=3;
+xw = [-1.2247449E+00 2.9540898E-01;...
+       1.2247449E+00 2.9540898E-01;...
+       0.0000000E+00 1.1816359E+00];
+s=0;
+for i=1:n
+  s+=f(xw(i,1))*xw(i,2);
+endfor
+printf("%d %1.5E\n",n,s)
+
+n=4;
+xw = [-1.6506801E+00 8.1312835E-02;...
+       1.6506801E+00 8.1312835E-02;...
+      -5.2464762E-01 8.0491409E-01;...
+       5.2464762E-01 8.0491409E-01];
+s=0;
+for i=1:n
+  s+=f(xw(i,1))*xw(i,2);
+endfor
+printf("%d %1.5E\n",n,s)
+
+n=5;
+xw = [-2.0201829E+00 1.9953242E-02;...
+       2.0201829E+00 1.9953242E-02;...
+      -9.5857246E-01 3.9361932E-01;...
+       9.5857246E-01 3.9361932E-01;...
+       0.0000000E+00 9.4530872E-01];
+s=0;
+for i=1:n
+  s+=f(xw(i,1))*xw(i,2);
+endfor
+printf("%d %1.5E\n",n,s)
+\end{verbatim}
+\fi
+\end{ex}
 
 \subsection*{Exercícios}
 
