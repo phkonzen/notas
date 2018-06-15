@@ -174,7 +174,7 @@ E, com isso, dizemos que o método é \emph{convergente} quando
 bem como, dizemos que o método tem erro de discretização global de ordem $h^p$ quando $e(t,h_n) = O(h^p)$.
 
 \begin{obs}
-  Pode-se mostrar que, assumindo a devida suavidade de $f$, que a ordem do erro de discretização global de um método de passo simples é igual a sua ordem do erro de discretização local (veja, \cite[Cap. 7, Sec. 7.2]{Stoer1993a}). Portanto, o método de Euler é convergente e é de ordem $1$.
+  Pode-se mostrar que, assumindo a devida suavidade de $f$, que a ordem do erro de discretização global de um método de passo simples é igual a sua ordem do erro de discretização local (veja, \cite[Cap. 7, Seç. 7.2]{Stoer1993a}). Portanto, o método de Euler é convergente e é de ordem $1$.
 \end{obs}
 
 \begin{ex}\label{ex:Euler_1}
@@ -257,7 +257,7 @@ onde
 \end{align}
 $t^{(i)}=t_0+(i-1)h$ e $y^{(1)}=y_0$.
 
-Na sequência, discutimos alguns dos métodos de Runge-Kutta usualmente utilizados. Pode-se encontrar uma lista mais completa em~\cite[Cap. 8, Sec. 3.2]{Isaacson1994a}.
+Na sequência, discutimos alguns dos métodos de Runge-Kutta usualmente utilizados. Pode-se encontrar uma lista mais completa em~\cite[Cap. 8, Seç. 3.2]{Isaacson1994a}.
 
 \subsection{Métodos de Runge-Kutta de ordem 2}
 
@@ -493,3 +493,29 @@ Use os seguintes métodos de Runge-Kutta com passo $h=0,1$ para computar o valor
   \fi
   a)~$-6,00654\E-1$; b)~$-6,00703\E-1$; c)~$-5,99608\E-1$
 \end{resp}
+
+\section{Métodos de passo múltiplo}\label{cap_pvi_sec_passo_mult}
+
+Dado um problema de valor inicial
+\begin{align}
+  y'(t) &= f(t,y(t)),\quad t>t_0,\\
+  y(t_0) &= y_0.
+\end{align}
+temos
+\begin{equation}
+  y(t) = y(t_0) + \int_{t_0}^t f(s,y(s))\,ds.
+\end{equation}
+De forma mais geral, consideramos uma partição uniforme no tempo $\{t_0=t^{(1)} < t^{(2)} < \cdots < t^{(i)} < \cdots < t^{(n)}=t_f\}$, onde $t_f$ é um determinado tempo para o qual queremos computar uma aproximação para $t(t_f)$. Também, denotamos o passo no tempo por $h=(t_f-t_0)/n$. Com isso, a solução $y(t)$ satisfaz
+\begin{equation}
+  y\left(t^{(i+k)}\right) = y\left(t^{(i-j)}\right) + \int_{t^{(i-j)}}^{t^{(i+k)}} f(s,y(s))\,ds.
+\end{equation}
+A ideia é, então, aproximar a integral acima por uma quadratura numérica.
+
+Seguindo as regras de Newton-Cotes (veja, Cap.~\ref{cap_integr} Seç.~\ref{cap_integr_sec_NC}), temos
+\begin{equation}
+  \int_{t^{(i-j)}}^{t^{i+k}} f(s,y(s))\,ds \approx \sum_{l=i-j}^{i+k} f\left(t^{(l)},y(t^{(l)})\right)w_i,
+\end{equation}
+e
+\begin{equation}
+  w_i = \int_{t^{(i-j)}}^{t^{(i+k)}} \prod_{\overset{m=1}{j\neq l}}^n \frac{s-t^{(m)}}{t^{(l)}-t^{(m)}}\,ds.
+\end{equation}
