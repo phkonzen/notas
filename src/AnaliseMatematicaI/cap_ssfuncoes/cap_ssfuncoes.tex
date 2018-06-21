@@ -419,7 +419,7 @@ obtida da integração termo a termo, também tem raio de convergência $r$.
 \end{dem}
 
 \begin{teo}\normalfont{(Unicidade de séries de potências)}\label{teo:ser_pot_unicidade}
-  Se uma função $f:D\to\mathbb{R}$ admite desenvolvimento em série de potências num ponto $x_0\in D$, então esse desenvolvimento é único.
+  Sejam $\sum a_nx^n$ e $\sum b_nx^n$ duas séries de potências com raio de convergência $r$. Se Se $\sum a_nx^n = \sum b_nx^n$ para todo $x$ tal que $|x|<r$, então $a_n=b_n$ para todo $n$.
 \end{teo}
 \begin{dem}
   Suponhamos que $f$ tenha as seguintes duas representações em séries de potências
@@ -461,4 +461,107 @@ então $\sum a_nx$ é absolutamente convergente para todo $|x|<|x_0|$.
 
 \begin{exer}\label{exer:teo_ser_pot_unicidade}
   Complete a demonstração do Teorema~\ref{teo:ser_pot_unicidade}.
+\end{exer}
+
+\section{Funções analíticas}\label{cap_ssfuncoes_sec_fun_analit}
+
+Dizemos que uma função $f:D\to\mathbb{R}$ admite representação em série de potências num ponto $x_0\in D$, quando existe uma série $\sum a_n(x-x_0)^n$ com raio de convergência $r$ positivo (ou infinito) tal que
+\begin{equation}
+  f(x) = \sum a_n(x-x_0)^n,
+\end{equation}
+para todo $x$ tal que $|x-x_0|<r$.
+
+\begin{defn}\normalfont{(Funções analíticas)}
+  Dizemos que uma função $f:D\to\mathbb{R}$ é analítica num ponto $x_0\in D$, quando ela admite uma representação em série de potências neste ponto.
+\end{defn}
+
+\begin{obs}
+  Do Teorema~\ref{teo:ser_pot_deriv}, concluímos que toda função analítica em um dado ponto $x_0$ de seu domínio é de classe $C^\infty$ (infinitamente continuamente diferenciável) num intervalo $|x-x_0|<r$.
+\end{obs}
+
+As representações de várias funções em séries de potências são muitas vezes obtidas de seus desenvolvimentos em série de Taylor, i.e.
+\begin{align}
+  f(x) &= f(x_0) + f'(x_0)(x-x_0) + \frac{f''(x_0)}{2!}(x-x_0)^2 \nonumber \\
+  &+ \cdots + \frac{f^{(n)}(x_0)}{n!}(x-x_0)^n + \cdots \\
+  &= \sum_{n=0}^\infty \frac{f^{(n)}(x_0)}{n!}(x-x_0)^n.
+\end{align}
+Mais precisamente, temos o seguinte resultado.
+
+\begin{teo}\normalfont{(Desenvolvimento em série de Taylor)}\label{teo:resto_de_Lagrange_para_Taylor}
+  Se $f:D\to\mathbb{R}$ é uma função derivável até a ordem $n+1$ numa vizinhança $|x-x_0|<r$, $x_o\in D$ e $r>0$, então
+  \begin{align}
+    f(x) &= f(x_0) + f'(x_0)(x-x_0) + \frac{f''(x_0)}{2!}(x-x_0)^2 \\
+    &+ \cdots + \frac{f^{(n)}(x_0)}{n!}(x-x_0)^n + R_n(x)  \end{align} 
+onde $R_n(x)$ é o chamado \emph{resto de Lagrange}
+\begin{equation}
+  R_n(x) := \frac{f^{(n+1)}(c)}{(n+1)!}(x-x_0)^{n+1},
+\end{equation}
+onde $c$ é um número entre $x_0$ e $x$.
+\end{teo}
+\begin{dem}
+  Primeiramente, denotando $G(x) = (x-x_0)^{n+1}$ observamos que
+  \begin{equation}
+    \frac{R_n(x)}{(x-x_0)^{n+1}} = \frac{R_n(x)-R_n(x_0)}{G(x) - G(x_0)}.
+  \end{equation}
+Então, do teorema do valor médio generalizado, existe $x'$ entre $x$ e $x_0$ tal que
+\begin{equation}
+  \frac{R_n(x)}{(x-x_0)^{n+1}} = \frac{R_n'(x')}{G'(x')} = \frac{f'(x') - p_n'(x')}{(n+1)(x'-x0)^n},
+\end{equation}
+onde denotamos $p_n(x) := f(x) - R_n(x)$. Novamente, aplicando o teorema do valor médio generalizado para a razão do lado direito da equação acima, temos que existe $x''$ entre $x'$ e $x_0$ e, portanto, entre $x$ e $x_0$ tal que
+\begin{equation}
+  \frac{R_n(x)}{(x-x_0)^{n+1}} = \frac{R_n''(x'')}{G''(x'')} = \frac{f''(x'') - p_n''(x'')}{(n+1)n(x'-x0)^{n-1}}.
+\end{equation}
+Ou seja, da repetição deste procedimento $n+1$ vezes, temos garantida a existência de $c$ entre $x$ e $x_0$ tal que
+\begin{equation}
+  \frac{R_n(x)}{(x-x_0)^{n+1}} = \frac{f^{(n+1)}(c) - p_n^{(n+1)}(c)}{(n+1)!},
+\end{equation}
+o que mostra o resultado desejado, pois $p_n^{(n+1)}(x)\equiv 0$.
+\end{dem}
+
+\begin{ex}
+  A função $f(x) = e^x$ tem a seguinte representação em série de potências
+  \begin{equation}
+    e^x = \sum_{n=0}^\infty \frac{x^n}{n!},
+  \end{equation}
+com raio de convergência infinito, ou seja, $e^x$ é uma função analítica. De fato, sua representação em série de potências pode ser obtida de seu desenvolvimento por série de Taylor em torno de $x_0 = 0$. Daí, do teorema anterior (Teorema~\ref{teo:resto_de_Lagrange_para_Taylor}) segue que para cada $x$, existe $c$ entre $x$ e $0$ tal que
+\begin{equation}
+  |e^x - \sum_{n=0}^m \frac{x^n}{n!}| = e^c\frac{x^{m+1}}{(m+1)!}\to 0
+\end{equation}
+quando $m\to \infty$.
+\end{ex}
+
+\begin{obs}
+  Toda função analítica é $C^\infty$, mas a recíproca não é verdadeira.
+\end{obs}
+
+\begin{ex}
+  A função
+  \begin{equation}
+    f(x) = \left\{
+      \begin{array}{ll}
+        0 &, x\leq 0\\
+        e^{-1/x} &, x>0
+      \end{array}
+\right.,
+  \end{equation}
+é de classe $C^\infty$. Entretanto, ela não é analítica em $x=0$, pois $f^{(n)}(0)=0$ para todo o $n$ e, então, pelo Teorema~\ref{teo:ser_pot_unicidade}, teríamos que $f(x)= 0$ em uma vizinhança de $0$.
+\end{ex}
+
+\subsection*{Exercícios}
+
+\begin{exer}
+  Mostre que $f(x)=\sen(x)$ é analítica em $x=0$.
+\end{exer}
+
+\begin{exer}
+  Mostre que a seguinte função de classe $C^\infty$
+  \begin{equation}
+    f(x) = \left\{
+      \begin{array}{ll}
+        0 &,x\geq 0,\\
+        e^{-1/x^2} &,x\geq 0
+      \end{array}
+\right.
+  \end{equation}
+não é analítica em $x=0$.
 \end{exer}
