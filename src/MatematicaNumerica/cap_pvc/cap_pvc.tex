@@ -5,29 +5,104 @@
 
 Neste capítulo, discutimos sobre a aplicação do método de diferenças finitas para aproximar a solução de problemas de valores de contorno da forma
 \begin{align}
-  -\alpha u_{xx} &+ \beta u_{x} + \gamma u = f(x),\quad c_1 < x < c_2,\\
-  \eta_1 u'(a) &+ \theta_1 u(a) = g_1\\
-  -\eta_2 u'(b) &+ \theta_2 u(b) = g_2
+  \alpha(x) u'' &+ \beta(x) u' + \gamma(x) u = f(x),\quad c_1 < x < c_2,\\
+  \eta_1 u'(c_1) &+ \theta_1 u(c_1) = g_1\\
+  \eta_2 u'(c_2) &+ \theta_2 u(c_2) = g_2
 \end{align}
-onde a incógnita $u = u(x)$ e os coeficientes $\alpha$, $\beta$, $\gamma$, $\eta_1$, $\eta_2$, $\theta_1$ e $\theta_2$ são dados e podem ser função de $x$.
+onde a incógnita $u = u(x)$ e os são dados os coeficientes $\alpha(x)\neq 0$, $\beta(x)$, $\gamma(x)$ e a função $f(x)$. Nas condições de contorno, são dados os coeficientes $\eta_1$ e $\theta_1$ não simultaneamente nulos, bem como, os coeficientes $\eta_2$ e $\theta_2$, também, não simultaneamente nulos.
 
-\section{Equação de difusão}
+\section{Método de diferenças finitas}\label{cap_pvc_sec_mdf}
 
-A equação de difusão (ou equação do calor) é uma equação diferencial ordinária de segunda ordem da forma
-\begin{equation}\label{eq:diffusao}
-  -\alpha u_{xx} = f(x),
-\end{equation}
-onde, aqui, assumimos definida em um intervalo limitado $c_1 < x < c_2$.
+Consideramos o seguinte problema linear de valor de contorno
+\begin{align}
+  \alpha(x) u'' &+ \beta(x) u' + \gamma(x) u = f(x),\quad c_1 < x < c_2, \label{eq:pvc_eq}\\
+  \eta_1 u'(c_1) &+ \theta_1 u(c_1) = g_1 \label{eq:pvc_bc1}\\
+  \eta_2 u'(c_2) &+ \theta_2 u(c_2) = g_2 \label{eq:pvc_bc2}
+\end{align}
+onde a incógnita $u = u(x)$ e os são dados os coeficientes $\alpha(x)\neq 0$, $\beta(x)$, $\gamma(x)$ e a função $f(x)$. Nas condições de contorno, são dados os coeficientes $\eta_1$ e $\theta_1$ não simultaneamente nulos, bem como, os coeficientes $\eta_2$ e $\theta_2$, também, não simultaneamente nulos.
 
-A aplicação do método de diferenças aplicado a esta equação consiste em substituir a derivada $u_{xx}$ por uma fórmula de diferenças finitas adequada. Comumente, para a equação de difusão, escolhemos a aproximação dada pela fórmula de diferenças finitas central para a segunda derivada, i.e.
+A aproximação pelo método de diferenças finitas de \eqref{eq:pvc_eq}-\eqref{eq:pvc_bc2} surge da substituição das derivadas por fórmulas de diferenças finitas. Isto requer a aprévia discretação do domínio do problema. Mais precisamente, a aplicação do método de diferenças finitas envolve três procedimentos básicos: 1. discretização do domínio, 2. discretização das equações, 3. resolução do problema discreto.
+
+\begin{flushleft}
+  {\bf 1. Discretização do domínio}
+\end{flushleft}
+
+A discretização do domínio refere-se ao particionamento do mesmo em pontos espaçados uniformemente ou não. Aqui, para mantermos a simplicidade, vamos considerar apenas o caso de um particionamento uniforme. Desta forma, escolhemos o número $n$ de pontos da particição e, então, o passo é dado por
 \begin{equation}
-  u_{xx}(x) \approx \frac{u(x-h)-2u(x)+u(x+h)}{h^2},
+  h = \frac{c_2-c_1}{n-1},
 \end{equation}
-onde $c_1 < x < c_2$ e $h>0$ é um passo adequadamente escolhido. Utilizando esta aproximação em \eqref{eq:difusao} para um $x$ fixo, escrevemos o seguinte problema
+e os pontos da particição podem ser indexados da seguinte forma
 \begin{equation}
-  -\alpha \frac{u(x-h)-2u(x)+u(x+h)}{h^2} = f(x),
+  x_i = c_1 + (i-1)h.
 \end{equation}
-o qual é uma aproximação discreta de \label{eq:difusao} 
 
+\begin{flushleft}
+  {\bf 2. Discretização das equações}
+\end{flushleft}
+
+Começando pela equação \eqref{eq:pvc_eq}, no ponto $x=x_i$ temos
+\begin{equation}
+  \alpha(x_i) u''(x_i) + \beta(x_i) u'(x_i) + \gamma(x_i) u(x_i) = f(x_i) \label{eq:pvc_eq_no_ponto}
+\end{equation}
+para $i=2, 3, \dotsc, n-1$. Podemos substituir a segunda derivada de $u$ pela fórmula de diferenças finitas central de ordem $h^2$, i.e.
+\begin{equation}
+  u''(x_i) = \underbrace{\frac{u(x_i-h) - 2u(x_i) + u(x_i+h)}{h^2}}_{D_{0,h^2}^2u(x_i)} + O(h^2).
+\end{equation}
+A primeira derivada de $u$ também pode ser substituida pela fórmula de diferenças finitas central de ordem $h^2$, i.e.
+\begin{equation}
+  u'(x_i) = \underbrace{\frac{u(x_i+h)-u(x_i-h)}{2h}}_{D_{0,h^2}u(x_i)} + O(h^2).
+\end{equation}
+
+Agora, denotando $u_i \approx u(x_i)$, temos $u_{i-1}\approx u(x_i-h)$ e $u_{i+1}\approx u(x_i+h)$. Então, substuindo as derivadas pelas fórmulas de diferenças finitas acima na equação \eqref{eq:pvc_eq_no_ponto}, obtemos
+\begin{align}
+  \alpha(x_i)\left(\frac{u_{i-1}-2u_i+u_{i+1}}{h^2}\right) &+ \beta(x_i)\left(\frac{u_{i+1}-u_{i-1}}{2h}\right) \nonumber \\
+  &+ \gamma(x_i)u_i + O(h^2) = f(x_i),
+\end{align}
+para $i=2, 3, \dotsc, n-1$. Rearranjando os termos e desconsiderando o termo do erro de truncamento, obtemos o seguinte sistema discreto de equações lineares
+\begin{align}
+  \left(\frac{\alpha(x_i)}{h^2}-\frac{\beta(x_i)}{2h}\right)u_{i-1} &+ \left(\gamma(x_i) - \frac{2\alpha(x_i)}{h^2}\right)u_i \nonumber \\
+  &+ \left(\frac{\alpha(x_i)}{h^2}+\frac{\beta(x_i)}{2h}\right)u_{i+1} = f(x_i), \label{eq:pvc_mdf_sis1}
+\end{align}
+para $i=2, 3, \dotsc, n-1$. Observe que este sistema consiste em $n-2$ equações envolvendo as $n$ incógnitas $u_i$, $i=1, 2, \dotsc, n$. Para fechá-lo, usamos as condições de contorno.
+
+Usando a fórmula de diferenças finitas progressiva de ordem $h^2$ para a derivada $u'(c_1)$ temos
+\begin{equation}
+  u'(c_1) = \frac{-3u(c_1) + 4u(c_1+h) - u(c_1+2h}{2h} + O(h^2).
+\end{equation}
+Então, observando que $c_1$ corresponde ao ponto $x_1$ na particição do domínio, temos $u_1 \approx u(c_1)$, $u_2 = u(c_1+h)$ e $u_3 = u(c_1+2h)$ e, portanto de \eqref{eq:pvc_bc1} temos
+\begin{equation}
+  \eta_1\left(\frac{-3u_1 + 4u_2 - u_3}{2h}\right) + \theta_1u_1 + O(h^2) = g_1.
+\end{equation}
+Então, desconsiderando o termo do erro de truncamento, obtemos a seguinte equaçao discreta
+\begin{equation}
+  \left(\theta_1 - \frac{3\eta_1}{2h}\right)u_1 + \frac{2\eta_1}{h}u_2 - \frac{\eta_1}{2h}u_3 = g_1.\label{eq:pvc_mdf_sis0}
+\end{equation}
+
+Procedendo de forma análoga para a condição de contorno \eqref{eq:pvc_bc2}, usamos a fórmula de diferenças finitas regressiva de ordem $h^2$ para a derivada $u'(c_2)$, i.e.
+\begin{equation}
+  u'(c_2) = \frac{3u(c_2) - 4u(c_2-h)+u(c_2-2h)}{2h} + O(h^2).
+\end{equation}
+Aqui, temos $u_{n}\approx u(c_2)$, $u_{n-1}\approx u(c_2-h)$ e $u_{n-2}\approx u(c_2-2h)$, e de \eqref{eq:pvc_bc2} obtemos
+\begin{equation}
+  \eta_2\left(\frac{3u_n - 4u_{n-1} + u_{n-2}}{2h}\right) + \theta_2u_n + O(h^2) = g_2.
+\end{equation}
+Então, desconsiderando o termo do erro de truncamento, obtemos
+\begin{equation}
+  \frac{\eta_2}{2h}u_{n-2} - \frac{2\eta_2}{h}u_{n-1} + \left(\theta_2 + \frac{3\eta_2}{2h}\right)u_n = g_2.\label{eq:pvc_mdf_sis2}
+\end{equation}
+
+Por fim, as equações \eqref{eq:pvc_mdf_sis0}-\eqref{eq:pvc_mdf_sis2} formam o seguinte problema discretizado pelo método de diferenças finitas
+\begin{align}
+  &\left(\theta_1 - \frac{3\eta_1}{2h}\right)u_1 + \frac{2\eta_1}{h}u_2 - \frac{\eta_1}{2h}u_3 = g_1.\label{eq:pvc_mdf_bc1}\\
+  &~\nonumber\\
+  &\left(\frac{\alpha(x_i)}{h^2}-\frac{\beta(x_i)}{2h}\right)u_{i-1} + \left(\gamma(x_i) - \frac{2\alpha(x_i)}{h^2}\right)u_i \nonumber \\
+  &+ \left(\frac{\alpha(x_i)}{h^2}+\frac{\beta(x_i)}{2h}\right)u_{i+1} = f(x_i),~i=2, \dotsc, n-1, \label{eq:pvc_mdf_eq}\\
+  &~\nonumber\\
+  &\frac{\eta_2}{2h}u_{n-2} - \frac{2\eta_2}{h}u_{n-1} + \left(\theta_2 + \frac{3\eta_2}{2h}\right)u_n = g_2.\label{eq:pvc_mdf_bc2}
+\end{align}
+
+\begin{flushleft}
+  {\bf 3. Resolução do problema discreto}
+\end{flushleft}
 
 \emconstrucao
