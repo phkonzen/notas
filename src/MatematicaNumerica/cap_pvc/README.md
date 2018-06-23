@@ -1,6 +1,6 @@
-# Diretório: AnaliseMatematica/cap_intro
+# Diretório: AnaliseMatematica/cap_pvc
 
-Este diretório contém o código fonte do capítulo "Introdução".
+Este diretório contém o código fonte do capítulo "Problema de valor de contorno".
 
 ## Licença
 
