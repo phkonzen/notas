@@ -32,9 +32,9 @@ onde $i = 1, 2, \dotsc, n_x$, $j = 1, 2, \dotsc, n_y$, sendo $n_x$ e $n_y$ o nú
 
 O produto cartesiano das partições em $x$ e $y$ nos fornece uma partição do domínio $\overline{D}$ da forma
 \begin{equation}
-  P(\overline{D}) = \{(x_1, y_1), (x_2, y_1), \dotsc, (x_i, y_j), \dotsc, (x_{n_x}, y_{n_y})\},
+  P(\overline{D}) = \{(x_1, y_1), (x_1, y_2), \dotsc, (x_i, y_j), \dotsc, (x_{n_x}, y_{n_y})\},
 \end{equation}
-cujos nodos $(x_i, y_j)$ podem ser indexados (enumerados) por $k = i + (j-1)n_x$.  Por simplicidade, no decorrer do texto, assumiremos $n_x=n_y=:n$ e, por conseguinte, $h_x=h_y=h$.
+cujos nodos $(x_i, y_j)$ podem ser indexados (enumerados) por $k = j + (i-1)n_x$.  Por simplicidade, no decorrer do texto, assumiremos $n_x=n_y=:n$ e, por conseguinte, $h_x=h_y=h$.
 
 \begin{flushleft}
   {\bf 2. Discretização das equações}
@@ -54,7 +54,7 @@ Então, da equação~\ref{eq:edp_Poisson_eq} temos
 \begin{align}
   \frac{u_{i+1,j}-2u_{i,j}+u_{i-1,j}}{h^2} + \frac{u_{i,j+1}-2u_{i,j}+u_{i,j-1}}{h^2} + O(h^2) = f(x_i,y_j).
 \end{align}
-Adora, denotando $u_k := u_{i+(j-1)n}$, desprezando o termo do erro de truncamento e rearranjando os termos nesta última equação temos
+Adora, denotando $u_k := u_{j+(i-1)n}$, desprezando o termo do erro de truncamento e rearranjando os termos nesta última equação temos
 \begin{equation}\label{eq:edp_Poisson_mdf_sis0}
   \frac{1}{h^2}u_{k-n} + \frac{1}{h^2}u_{k-1} -\frac{4}{h^2}u_{k} + \frac{1}{h^2}u_{k+1} + \frac{1}{h^2}u_{k+n} = f(x_i,y_j),
 \end{equation}
@@ -74,7 +74,7 @@ Com isso, o problema discreto obtido da aplicação do método de diferenças fi
   {\bf 3. Resolução do problema discreto}
 \end{flushleft}
 
-O problema discreto \eqref{eq:edp_Poisson_mdf_sis0}-e\eqref{eq:edp_Poisson_mdf_sis2} pode ser escrito na forma matricial
+O problema discreto \eqref{eq:edp_Poisson_mdf_sis0}-\eqref{eq:edp_Poisson_mdf_sis2} pode ser escrito na forma matricial
 \begin{equation}
   A\tilde{u} = b,\label{eq:edp_Poisson_prob_disc}
 \end{equation}
@@ -149,7 +149,7 @@ x = linspace(0,pi,n);
 y = linspace(0,pi,n);
 
 #sistema MDF
-A = zeros(n*n,n*n);
+A = sparse(n*n,n*n);
 b = zeros(n*n,1);
 
 #cc x=0 e x=pi
@@ -212,28 +212,29 @@ printf("%d %1.5E %1.1E\n",n,h,norm(u-ua))
 \subsection*{Exercícios}
 
 \begin{exer}
-Considere o seguinte problema de valor inicial
   \begin{align}
-    -u'' &+ u' = f(x),~-1<x<1,\\
-    u(-1)&=0,\\
-    u'(1)&=0,
-  \end{align}
-  onde
-  \begin{equation}
-    f(x) = \left\{
-      \begin{array}{ll}
-        1 &, x\leq 0\\
-        0 &, x>0
-      \end{array}
-    \right.
-  \end{equation}
+    -(u_{xx} + u_{yy}) &= f(x),~(x, y)\in (0, 1)^2,\\
+    u(0, y) &= 0,~y\in [0, 1],\\
+    u(1, y) &= 0,~y\in [0, 1],\\
+    \left.\frac{\p u}{\p y}\right|_{y=0} &= 0,~x\in [0, 1],\\
+    u(x, 1) &= 0,~x\in [0, 1].
+\end{align}
+onde
+\begin{equation}
+  f(x) = \left\{
+    \begin{array}{ll}
+      1 &, x\leq 0,5\\
+      0 &, x>0,5
+    \end{array}
+  \right.
+\end{equation}
 \end{exer}
-Use uma aproximação adequada pelo método de diferenças finitas para obter o valor aproximado de $u(0)$ com precisão de $2$ dígitos significativos.
+Use uma aproximação adequada pelo método de diferenças finitas para obter o valor aproximado de $u(0,5,~0,5)$ com precisão de $2$ dígitos significativos.
 \begin{resp}
   \ifisoctave 
-  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_pvc/dados/exer_pvc_mdf_1/exer_pvc_mdf_1.m}{Código.} 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_pvc/dados/exer_edp_Poisson_1/exeredp_Possoin_1.m}{Código.} 
   \fi
-  $7,2\E-1$
+  $2,9\E-2$
 \end{resp}
 
 \section{Equação do calor}\label{cap_edp_sec_calor}\index{equação!do calor}
