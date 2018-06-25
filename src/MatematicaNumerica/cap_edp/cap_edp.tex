@@ -5,7 +5,7 @@
 
 Neste capítulo, discutimos alguns tópicos fundamentais da aplicação do método de diferenças finitas para a simulação (aproximação da solução) de equações diferenciais parciais.
 
-\section{Equação de Poisson}\label{cap_edp_sec_poisson}\index{equação! de Poisson}
+\section{Equação de Poisson}\label{cap_edp_sec_Poisson}\index{equação! de Poisson}
 
 A equação de Poisson em um domínio retangular $D = (x_{\text{ini}}, x_{\text{fin}})\times (y_{\text{ini}}, y_{\text{fin}})$ com condições de contorno de Dirichlet homogêneas refere-se o seguinte problema
 \begin{align}
@@ -239,6 +239,42 @@ Use uma aproximação adequada pelo método de diferenças finitas para obter o 
 
 \section{Equação do calor}\label{cap_edp_sec_calor}\index{equação!do calor}
 
+A equação do Calor em um domínio retangular $D = (x_{\text{ini}}, x_{\text{fin}})\times (y_{\text{ini}}, y_{\text{fin}})$ com condição inicial dada e condições de contorno de Dirichlet homogêneas refere-se o seguinte problema
+\begin{align}
+  u_t - \Delta u &= f(x, y),~t>0,~(x, y)\in D, \label{eq:edp_calor_eq}\\
+  u(0,x,y) &= u_0(x,y),~(x,y)\in D,\\
+  u(t, x_{\text{ini}}, y) &= 0,~t>0,~y_{\text{ini}}\leq y \leq y_{\text{fin}},\label{eq:edp_calor_bcxini}\\
+  u(t, x_{\text{fin}}, y) &= 0,~t>0,~y_{\text{ini}}\leq y \leq y_{\text{fin}},\label{eq:edp_calor_bcxfin}\\
+  u(t, x, y_{\text{ini}}) &= 0,~t>0,~x_{\text{ini}}\leq x \leq x_{\text{fin}},\label{eq:edp_calor_bcyini}\\
+  u(t, x, y_{\text{fin}}) &= 0,~t>0,~x_{\text{ini}}\leq x \leq x_{\text{fin}},\label{eq:edp_calor_bcyfin}
+\end{align}
+onde $u = u(x,y)$ é a incógnita e $\Delta u := u_{xx} + u_{yy}$.
+
+O problema acima é um problema de valor inicial com condições de contorno. Uma das estratégias numéricas de solução é o chamado método de Rothe, o qual trata separadamente as discretizaçoes espacial e temporal. Aqui, vamos começar pela discretização espacial e, então, trataremos a discretização temporal.
+
+\begin{flushleft}
+  {\bf Discretização espacial}
+\end{flushleft}
+
+Na discretização espacial, aplicaremos o método de diferenças finitas. De forma análoga a da discretização realizada para a equação de Poisson (veja, Seção~\ref{cap_edp_sec_Poisson}), começamos considerando a malha
+\begin{equation}
+  P(\overline{D}) := \{(x_1, y_1), (x_1, y_2), \dotsc, (x_i, y_j), \dotsc, (x_{n_x}, y_{n_y})\},
+\end{equation}
+de $n_xn_y$ nodos $(x_i, y_j)$, com $x_i = x_{\text{ini}}+(i-1)h_x$, $h_x = (x_{\text{fin}}-x_{\text{ini}})/(n_x-1)$, $y_j = y_{\text{ini}}+(j-1)h_y$, $h_y = (y_{\text{fin}}-y_{\text{ini}})/(n_y-1)$. Por simplicidade, no decorrer do texto desta seção, assumiremos $h = h_x = h_y$ e, por conseguinte, $n=n_x=n_y$.
+
+Agora, denotando $u_{i,j}=u_{i,j}(t)\approx u(t,x_i,y_j)$ e usando da fórmula de diferenças finitas central de ordem $h^2$ para as derivadas segundas na equação \eqref{eq:edp_calor_eq}, temos
+\begin{equation}
+  \frac{\p}{\p t}u_{i,j} - \frac{u_{i-1,j}-2u_{i,j}+u_{i+1,j}}{h^2} - \frac{u_{i-1,j}-2u_{i,j}+u_{i+1,j}}{h^2} = f(x_i,y_j),
+\end{equation}
+para $i,j=2, 3, \dotsc, n$. Equivalentemente, indexando os nodos por $k=j+(i-1)n$, podemos rerranjar os termos da seguinte forma
+\begin{equation}
+  \frac{\p}{\p t}u_k = \frac{u_{k-n}}{h^2}+\frac{u_{k-1}}{h^2}-\frac{4u_k}{h^2}+\frac{u_{k+1}}{h^2}+\frac{u_{k+n}}{h^2} + f(x_i,y_j).
+\end{equation}
+Esta última expressão pode ser escrita na forma matricial
+\begin{equation}
+  \frac{\p}{\p t}\tilde{u} = A\tilde{u} + f,
+\end{equation}
+onde $\tilde{u}$
 \emconstrucao
 
 \section{Equação da onda}\label{cap_edp_sec_onda}\index{equação!da onda}
