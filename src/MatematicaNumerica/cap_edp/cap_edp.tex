@@ -522,6 +522,7 @@ x=[0:hx:(nx-1)*hx]';
 
 #u
 u0=zeros(nx,1);
+u1=zeros(nx,1);
 u=zeros(nx,1);
 
 #c.i. 1
@@ -530,8 +531,9 @@ for i=2:nx-1
 endfor
 
 #c.i. 2
+u1=zeros(nx,1);
 for i=2:nx-1
-  u(i)=u0(i)+ht*0;
+  u1(i)=u0(i)+ht*0;
 endfor
 
 #matriz MDF
@@ -548,12 +550,13 @@ A(nx-2,nx-2)=2*(1-lambda);
 
 #iteracoes
 for k=2:nt-1
-  u(2:nx-1)=A*u(2:nx-1) - u0(2:nx-1);
-  u0=u;
+  u(2:nx-1)=A*u1(2:nx-1) - u0(2:nx-1);
+  u0=u1;
+  u1=u;
 endfor
 
 #visu
-plot(x,u,'b.-');grid
+plot(x,u1,'b-');grid
 xlabel('x');
 ylabel('u');
 \end{verbatim}
@@ -571,15 +574,11 @@ ylabel('u');
     u(t,0) &= 0,~t>0\\
     u(t,\pi) &= 0,~t>0.
   \end{align}
-Use o método de diferenças finitas para obter uma aproximação de $u(0.5,1)$ com dois dígitos significativos de precisão.
+Use o método de diferenças finitas para obter uma aproximação de $u(0,75,~1)$ com dois dígitos significativos de precisão.
 \end{exer}
 \begin{resp}
   \ifisoctave 
   \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_edp/dados/exer_edp_onda_1/exer_edp_onda_1.m}{Código.} 
   \fi
-  $$
+  $6,3\E-2$
 \end{resp}
-
-
-
-\emconstrucao

@@ -1,9 +1,9 @@
 #params
-nx=11;
+nx=12801;
 hx=1/(nx-1);
 
-tf=0.25;
-ht=10^-2;
+tf=0.75;
+ht=10^-5;
 nt=round(tf/ht)+1;
 
 lambda = ht^2/hx^2;
