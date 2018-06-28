@@ -407,4 +407,179 @@ Use o método de diferenças finitas para obter uma aproximação de $u(1,0.5)$ 
 
 \section{Equação da onda}\label{cap_edp_sec_onda}\index{equação!da onda}
 
+A equação da onda definida em  $D := (x_{\text{ini}}, x_{\text{fin}})$ com condições iniciais dadas e condições de contorno de Dirichlet homogêneas refere-se o seguinte problema
+\begin{align}
+  u_{tt} - \alpha u_{xx} &= 0,~t>t_0,~x\in D, \label{eq:edp_onda_eq}\\
+  u(x,t_0) &= f(x),~x\in D,\label{eq:edp_onda_ci1}\\
+  \frac{\p u}{\p t}(x,t_0) &= g(x),~x\in D,\label{eq:edp_onda_ci2}\\
+  u(x_{\text{ini}},t) &= 0,~t>t_0,\label{eq:edp_onda_bcxini}\\
+  u(x_{\text{fin}},t) &= 0,~t>t_0\label{eq:edp_onda_bcxfin}
+\end{align}
+onde $u = u(x,t)$ é a incógnita.
+
+Aqui, para aplicarmos o método de diferenças finitas, vamos escolher os tempos $t^{(j)} = t_0 + (j-1)h_t$, $j=1, 2, \dotsc, n_t$, com passo temporal $h_t>0$, e os pontos $x_i=x_{\text{ini}}+(i-1)h_x$, $i=1, 2, \dotsc, n_x$, com passo no espaço espacial $h_x = (x_{\text{fin}}-x_{\text{ini}})/(n_x-1)$.
+
+Da escolha das discretizações temporal e espacial, podemos usar a fóruma de diferenças finitas de ordem $2$ para discretizarmos a equação \eqref{eq:edp_onda_eq}. Para tanto, denotamos $u_{i,j} \approx u(x_i,t_j)$ e de \eqref{eq:edp_onda_eq} temos
+\begin{equation}
+  \frac{u_{i,j-1}-2u_{i,j}+u_{i,j+1}}{h_t^2} - \alpha\frac{u_{i-1,j}-2u_{i,j}+u_{i+1,j}}{h_x^2} = 0,
+\end{equation}
+para $j=2, 3, \dotsc, n_t-1$ e $i=2, 3, \dotsc, n_x-1$. Rearranjando os termos, temos
+\begin{equation}\label{eq:edp_onda_aux1}
+  u_{i,j+1} = \alpha\frac{h_t^2}{h_x^2}u_{i-1,j} + 2\left(1-\alpha\frac{h_t^2}{h_x^2}\right)u_{i,j} + \alpha\frac{h_t^2}{h_x^2}u_{i+1,j} - u_{i,j-1},
+\end{equation}
+para $j=2, 3, \dotsc, n_t-1$ e $i=2, 3, \dotsc, n_x-1$.
+
+Agora, das condições de contorno \eqref{eq:edp_onda_bcxini} e \eqref{eq:edp_onda_bcxfin}, temos $u_{1,j}=u_{n_x,j}=0$, $j=2, 3, \dotsc, n_t$. Com isso, o sistema \eqref{eq:edp_onda_aux1} torna-se
+\begin{align}
+  u_{2,j+1} &= 2\left(1-\alpha\frac{h_t^2}{h_x^2}\right)u_{2,j} + \alpha\frac{h_t^2}{h_x^2}u_{3,j} - u_{2,j-1},\\
+  u_{i,j+1} &= \alpha\frac{h_t^2}{h_x^2}u_{i-1,j} + 2\left(1-\alpha\frac{h_t^2}{h_x^2}\right)u_{i,j} + \alpha\frac{h_t^2}{h_x^2}u_{i+1,j} - u_{i,j-1},\\
+  u_{n_x-1,j+1} &= \alpha\frac{h_t^2}{h_x^2}u_{n_x-2,j} + 2\left(1-\alpha\frac{h_t^2}{h_x^2}\right)u_{n_x-1,j} - u_{i,j-1},\\
+\end{align}
+para $i=3, 4, \dotsc, n_x$ e $j=2, 3, \dotsc, n_t$. Este sistema de equações pode ser escrita na seguinte forma matricial
+\begin{align}
+  \begin{bmatrix}
+    u_{2,j+1}\\
+    u_{3,j+1}\\
+    \vdots\\
+    u_{n_x-1,j+1}
+  \end{bmatrix}
+  &=
+  \begin{bmatrix}
+    2(1-\lambda) & \lambda & 0 & \cdots & 0\\
+    \lambda & 2(1-\lambda) & \lambda & \cdots & 0\\
+    0  & \ddots & \ddots & \ddots & \cdots \\
+    0  & 0 & \cdots & \lambda & 2(1-\lambda)
+  \end{bmatrix}
+  \begin{bmatrix}
+    u_{2,j}\\
+    u_{3,j}\\
+    \vdots\\
+    u_{n_x-1,j}
+  \end{bmatrix}\nonumber\\
+  &-
+  \begin{bmatrix}
+    u_{2,j-1}\\
+    u_{3,j-1}\\
+    \vdots\\
+    u_{n_x-1,j-1}
+  \end{bmatrix},\label{eq:edp_onda_iter3}
+\end{align}
+para $j=2, 3, \cdots, n_t-1$, onde $\lambda := \alpha h_t^2/h_x^2$.
+
+Esta última equação~\eqref{eq:edp_onda_iter3} nos permite computar iterativamente a aproximação $u_{i,j+1}$ a partir das aproximações $u_{i,j}$ e $u_{i,j-1}$. Para inicializar as iterações, precisamos de $u_{i,1}$ e $u_{i,2}$, $i=2, 3, \dotsc, n_x$. A primeira é dada pela condição inicial \eqref{eq:edp_onda_ci1}, da qual temos
+\begin{equation}\label{eq:edp_onda_iter1}
+  u_{i,1} = f(x_i), ~i=2, 3, \dotsc, n_t.
+\end{equation}
+Agora, usando a fórmula de diferenças finitas progressiva de ordem $1$ na condições inicial \eqref{eq:edp_onda_ci2}, obtemos
+\begin{equation}\label{eq:edp_onda_iter2}
+  u_{i,2} = u_{i,1} + h_tg(x_i), ~i=2, 3, \dotsc, n_t.
+\end{equation}
+
+Com tudo isso, observamos que as equações \eqref{eq:edp_onda_iter1}, \eqref{eq:edp_onda_iter2} e \eqref{eq:edp_onda_iter3}, nesta ordem, nos fornece um algoritmo iterativo no tempo para computar as aproximações da solução $u$.
+
+\begin{obs}
+  Pode-se mostrar a seguinte condição de estabilidade
+  \begin{equation}
+    \alpha \frac{h_t^2}{h_x^2} \leq 1.
+  \end{equation}
+\end{obs}
+
+\begin{ex}\label{ex:edp_onda}
+  Consideremos o seguinte problema
+  \begin{align}
+    u_{tt} - u_{xx} &= 0,~t>0,~0< x < 1,\\
+    u(0,x) &= x(1-x),~0<x<1,\\
+    u_t(0,x) &= 0,~0<x<1,\\
+    u(t,0) &= 0,~t>0\\
+    u(t,\pi) &= 0,~t>0.
+  \end{align}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./cap_edp/dados/ex_edp_onda/ex_edp_onda}
+  \caption{Resultados referentes ao Exemplo~\ref{ex:edp_onda}.}
+  \label{fig:ex_edp_onda}
+\end{figure}
+
+Na Figura~\ref{fig:ex_edp_onda}, temos o esboço das soluções numéricas em diferentes tempos $t$ usando o esquema numérico acima com $h_t=10^{-2}$ e $h_x=10^{-1}$.
+
+\ifisoctave
+No \verb+GNU Octave+, podemos computar os resultados discutidos neste exemplo com o seguinte código:
+\begin{verbatim}
+#params
+nx=11;
+hx=1/(nx-1);
+
+tf=1;
+ht=10^-2;
+nt=round(tf/ht)+1;
+
+lambda = ht^2/hx^2;
+
+#malha
+t=[0:ht:(nt-1)*ht]'; 
+x=[0:hx:(nx-1)*hx]';
+
+#u
+u0=zeros(nx,1);
+u=zeros(nx,1);
+
+#c.i. 1
+for i=2:nx-1
+  u0(i)=x(i)*(1-x(i));
+endfor
+
+#c.i. 2
+for i=2:nx-1
+  u(i)=u0(i)+ht*0;
+endfor
+
+#matriz MDF
+A = sparse(nx-2,nx-2);
+A(1,1)=2*(1-lambda);
+A(1,2)=lambda;
+for i=2:nx-3
+  A(i,i-1)=lambda;
+  A(i,i)=2*(1-lambda);
+  A(i,i+1)=lambda;
+endfor
+A(nx-2,nx-3)=lambda;
+A(nx-2,nx-2)=2*(1-lambda);
+
+#iteracoes
+for k=2:nt-1
+  u(2:nx-1)=A*u(2:nx-1) - u0(2:nx-1);
+  u0=u;
+endfor
+
+#visu
+plot(x,u,'b.-');grid
+xlabel('x');
+ylabel('u');
+\end{verbatim}
+\fi
+\end{ex}
+
+\subsection*{Exercício}
+
+\begin{exer}
+  Considere o seguinte problema
+  \begin{align}
+    u_{tt} - u_{xx} &= 0,~t>0,~0< x < 1,\\
+    u(0,x) &= x(1-x),~0<x<1,\\
+    u_t(0,x) &= 1,~0<x<1,\\
+    u(t,0) &= 0,~t>0\\
+    u(t,\pi) &= 0,~t>0.
+  \end{align}
+Use o método de diferenças finitas para obter uma aproximação de $u(0.5,1)$ com dois dígitos significativos de precisão.
+\end{exer}
+\begin{resp}
+  \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_edp/dados/exer_edp_onda_1/exer_edp_onda_1.m}{Código.} 
+  \fi
+  $$
+\end{resp}
+
+
+
 \emconstrucao
