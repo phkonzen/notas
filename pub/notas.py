@@ -137,7 +137,7 @@ class Notas:
                         link_to_src += '/'+src_fname+'.tex'
 
                     link_to_src += '" target=_blank> <span class="glyphicon glyphicon-pencil"></span> </a>'
-                    link_to_src += '<a href="mailto:phkonzen@gmail.com?Subject=[Notas]'
+                    link_to_src += '<a href="mailto:phkonzen@gmail.com?subject=[Notas]'
                     link_to_src += srcref+'/'+p
                     link_to_src += '" target="_top"> <span class="glyphicon glyphicon-envelope"></span> </a></small>'
 
