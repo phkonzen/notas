@@ -69,6 +69,7 @@ class Index:
 
         body += '<h3>Notas de aula</h3>\n'
         body += '<ul>\n'        
+
         #AnaliseMatematicaI
         body += '<li>Análise Matemática I</li>\n'
         body += '<ul class="list-unstyled">\n'
@@ -85,6 +86,15 @@ class Index:
         body += ' | '
         body += '<a href="./MatematicaNumerica/main.pdf">PDF</a></li>'
         body += '</ul>\n'
+        #MetodoElementosFinitos
+        body += '<li>Método de Elementos Finitos</li>\n'
+        body += '<ul class="list-unstyled">\n'
+        body += '<li>Versão corrente: '
+        body += '<a href="./MetodoElementosFinitos/main.html">HTML</a>'
+        body += ' | '
+        body += '<a href="./MetodoElementosFinitos/main.pdf">PDF</a></li>'
+        body += '</ul>\n'
+        
         body += '</ul>\n'
 
         body += '</div> <!-- div class="col-md-6" -->\n'
