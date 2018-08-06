@@ -1,0 +1,521 @@
+<!DOCTYPE html><html>
+<head>
+<title>1.1 Fundamentos preliminares‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos</title>
+<!--Generated on Mon Aug  6 17:04:00 2018 by LaTeXML (version 0.8.1) http://dlmf.nist.gov/LaTeXML/.-->
+<!--Document created on 6 de agosto de 2018.-->
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="LaTeXML.css" type="text/css">
+<link rel="stylesheet" href="ltx-book.css" type="text/css">
+<link rel="stylesheet" href="ltx-ulem.css" type="text/css">
+<link rel="stylesheet" href="main.css" type="text/css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=MML_SVG" type="text/javascript"></script>
+<script src="mymathcfg.js" type="text/javascript"></script>
+<link rel="up" href="cap_mef1d.html" title="Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos">
+<link rel="up up" href="main.html" title="Método de Elementos Finitos">
+<link rel="start" href="main.html" title="Método de Elementos Finitos">
+<link rel="prev" href="cap_mef1d.html" title="Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos">
+<link rel="next" href="bib.html" title="Referências ‣ Método de Elementos Finitos">
+<link rel="chapter" href="licenca.html" title="Licença ‣ Método de Elementos Finitos">
+<link rel="chapter" href="prefacio.html" title="Prefácio ‣ Método de Elementos Finitos">
+<link rel="chapter" href="cap_mef1d.html" title="Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos">
+<link rel="bibliography" href="bib.html" title="Referências ‣ Método de Elementos Finitos">
+<meta name="keywords" lang="en-us" content="graus de liberdade, interpolação linear, malha, operador">
+<meta name="author" content="Pedro H A Konzen"/>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="goodies.css" type="text/css">
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-17226092-2"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag("js", new Date());
+
+gtag("config", "UA-17226092-2")
+</script>
+</head>
+
+<body>
+
+<div class="row">
+<div class="col-xs-12 col-xs-offset-0 col-md-8 col-md-offset-2">
+
+
+<!-- begin: navbar -->
+<nav class="navbar navbar-default">
+<div class="container-fluid">
+<div class="navbar-header">
+<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+<span class="sr-only">Toggle navigation</span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+</button>
+<a class="navbar-brand" href="main.html">Notas de Aula<br/><small>Introdução ao Método de Elementos Finitos<small/></a>
+</div>
+
+<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+<ul class="nav navbar-nav">
+<li><a href="https://github.com/phkonzen/notas">Repositório GitHub</a></li>
+<li><a href="main.pdf">Baixar PDF</a></li>
+<li><a href="../index.html">Outras Notas & Infos</a></li>
+</ul>
+</div><!-- /.navbar-collapse -->
+</div><!-- /.container-fluid -->
+</nav>
+
+
+<!-- end: navbar -->
+
+
+
+<div class="ltx_page_main">
+<header class="ltx_page_header">
+<div>
+<a href="cap_mef1d.html" title="Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref" rel="up"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">1 </span>Método de elementos finitos em 1D</span></a><a href="cap_mef1d.html" title="Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref" rel="prev"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">1 </span>Método de elementos finitos em 1D</span></a><a href="bib.html" title="Referências ‣ Método de Elementos Finitos" class="ltx_ref" rel="next"><span class="ltx_text ltx_ref_title">Referências</span></a>
+</div></header>
+<div class="ltx_page_content">
+<section class="ltx_section ltx_authors_1line">
+<h1 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">1.1 </span>Fundamentos preliminares<small><a href="https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/cap_mef1d.tex" target=_blank> <span class="glyphicon glyphicon-pencil"></span> </a><a href="contato_cap_mef1d_sec_fund.html" target="_blank"> <span class="glyphicon glyphicon-envelope"></span> </a></small></h1>
+<div class="ltx_date ltx_role_creation"></div>
+
+<div id="p1" class="ltx_para">
+<p class="ltx_p">Seja dado um intervalo <math id="p1.m1" class="ltx_Math" alttext="I=[x_{0},x_{1}]\subset\mathbb{R}" display="inline"><mrow><mi>I</mi><mo>=</mo><mrow><mo stretchy="false">[</mo><msub id="XM1"><mi>x</mi><mn>0</mn></msub><mo>,</mo><msub id="XM2"><mi>x</mi><mn>1</mn></msub><mo stretchy="false">]</mo></mrow><mo>⊂</mo><mi>ℝ</mi></mrow></math>, <math id="p1.m2" class="ltx_Math" alttext="x_{0}\neq x_{1}" display="inline"><mrow><msub><mi>x</mi><mn>0</mn></msub><mo>≠</mo><msub><mi>x</mi><mn>1</mn></msub></mrow></math>. O espaço vetorial das funções lineares em <math id="p1.m3" class="ltx_Math" alttext="I" display="inline"><mi>I</mi></math> é definido por</p>
+<table id="Ch1.E1" class="ltx_equation">
+
+<tr class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_align_center"><math id="Ch1.E1.m1" class="ltx_Math" alttext="P_{1}(I):=\{v:\leavevmode\nobreak\ v(x)=c_{0}+c_{1}x,\leavevmode\nobreak\ x\in
+I%
+,\leavevmode\nobreak\ c_{0},c_{1}\in\mathbb{R}\}." display="block"><mrow><mrow><mrow><msub><mi>P</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM3">I</mi><mo stretchy="false">)</mo></mrow></mrow><mo>:=</mo><mrow><mo stretchy="false">{</mo><mi id="XM11">v</mi><mo rspace="7.5pt">:</mo><mrow><mrow id="XM9"><mrow><mi>v</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM4">x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><msub><mi>c</mi><mn>0</mn></msub><mo>+</mo><mrow><msub><mi>c</mi><mn>1</mn></msub><mo>⁢</mo><mi>x</mi></mrow></mrow></mrow><mo rspace="7.5pt">,</mo><mrow><mrow id="XM7"><mi>x</mi><mo>∈</mo><mrow><mi id="XM5">I</mi><mo rspace="7.5pt">,</mo><msub id="XM6"><mi>c</mi><mn>0</mn></msub></mrow></mrow><mo>,</mo><mrow id="XM8"><msub><mi>c</mi><mn>1</mn></msub><mo>∈</mo><mi>ℝ</mi></mrow></mrow></mrow><mo stretchy="false">}</mo></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(1.1)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Observamos que dado <math id="p1.m4" class="ltx_Math" alttext="v\in P_{1}(I)" display="inline"><mrow><mi>v</mi><mo>∈</mo><mrow><msub><mi>P</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM13">I</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></math>, temos que <math id="p1.m5" class="ltx_Math" alttext="v" display="inline"><mi>v</mi></math> é unicamente determinada pelos valores <math id="p1.m6" class="ltx_Math" alttext="\alpha_{0}=v(x_{0})" display="inline"><mrow><msub><mi>α</mi><mn>0</mn></msub><mo>=</mo><mrow><mi>v</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub id="XM14"><mi>x</mi><mn>0</mn></msub><mo stretchy="false">)</mo></mrow></mrow></mrow></math> e <math id="p1.m7" class="ltx_Math" alttext="\alpha_{1}=v(x_{1})" display="inline"><mrow><msub><mi>α</mi><mn>1</mn></msub><mo>=</mo><mrow><mi>v</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub id="XM15"><mi>x</mi><mn>1</mn></msub><mo stretchy="false">)</mo></mrow></mrow></mrow></math>. Como consequência, existe exatamente uma única função <math id="p1.m8" class="ltx_Math" alttext="v\in P_{1}(I)" display="inline"><mrow><mi>v</mi><mo>∈</mo><mrow><msub><mi>P</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM16">I</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></math> para quaisquer dados valores <math id="p1.m9" class="ltx_Math" alttext="\alpha_{0}" display="inline"><msub><mi>α</mi><mn>0</mn></msub></math> e <math id="p1.m10" class="ltx_Math" alttext="\alpha_{1}" display="inline"><msub><mi>α</mi><mn>1</mn></msub></math>. Desta observação, introduzimos a chamada base nodal <math id="p1.m11" class="ltx_Math" alttext="\{\varphi_{0},\varphi_{1}\}" display="inline"><mrow><mo stretchy="false">{</mo><msub id="XM19"><mi>φ</mi><mn>0</mn></msub><mo>,</mo><msub id="XM20"><mi>φ</mi><mn>1</mn></msub><mo stretchy="false">}</mo></mrow></math> para <math id="p1.m12" class="ltx_Math" alttext="P_{1}(I)" display="inline"><mrow><msub><mi>P</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM21">I</mi><mo stretchy="false">)</mo></mrow></mrow></math>, definida por</p>
+<table id="Ch1.E2" class="ltx_equation">
+
+<tr class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_align_center"><math id="Ch1.E2.m1" class="ltx_Math" alttext="\varphi_{j}(x_{i})=\left\{\begin{array}[]{ll}1&amp;,i=j,\\
+0&amp;,i\neq j\end{array}\right.," display="block"><mrow><mrow><mrow><msub><mi>φ</mi><mi>j</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub id="XM22"><mi>x</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mo>{</mo><mtable displaystyle="true" id="XM23"><mtr id="XM23a"><mtd columnalign="left" id="XM23b"><mn>1</mn></mtd><mtd columnalign="left" id="XM23c"><mrow><mo>,</mo><mi>i</mi><mo>=</mo><mi>j</mi><mo>,</mo></mrow></mtd></mtr><mtr id="XM23d"><mtd columnalign="left" id="XM23e"><mn>0</mn></mtd><mtd columnalign="left" id="XM23f"><mrow><mo>,</mo><mi>i</mi><mo>≠</mo><mi>j</mi></mrow></mtd></mtr></mtable><mi></mi></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(1.2)</span></td>
+</tr>
+</table>
+<p class="ltx_p">com <math id="p1.m13" class="ltx_Math" alttext="i,j=0,1" display="inline"><mrow><mrow><mi id="XM24">i</mi><mo>,</mo><mi id="XM25">j</mi></mrow><mo>=</mo><mn>0,1</mn></mrow></math>. Com esta base, toda função <math id="p1.m14" class="ltx_Math" alttext="v\in P_{1}(I)" display="inline"><mrow><mi>v</mi><mo>∈</mo><mrow><msub><mi>P</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM26">I</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></math> pode ser escrita como uma combinação linear das funções <math id="p1.m15" class="ltx_Math" alttext="\varphi_{0}" display="inline"><msub><mi>φ</mi><mn>0</mn></msub></math> e <math id="p1.m16" class="ltx_Math" alttext="\varphi_{1}" display="inline"><msub><mi>φ</mi><mn>1</mn></msub></math> com coeficientes <math id="p1.m17" class="ltx_Math" alttext="\alpha_{0}" display="inline"><msub><mi>α</mi><mn>0</mn></msub></math> e <math id="p1.m18" class="ltx_Math" alttext="\alpha_{1}" display="inline"><msub><mi>α</mi><mn>1</mn></msub></math> (graus de liberdade), i.e.
+</p>
+<table id="Ch1.E3" class="ltx_equation">
+
+<tr class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_align_center"><math id="Ch1.E3.m1" class="ltx_Math" alttext="v(x)=\alpha_{0}\varphi_{0}(x)+\alpha_{1}\varphi_{1}(x_{1})." display="block"><mrow><mrow><mrow><mi>v</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM27">x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><msub><mi>α</mi><mn>0</mn></msub><mo>⁢</mo><msub><mi>φ</mi><mn>0</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM28">x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><msub><mi>α</mi><mn>1</mn></msub><mo>⁢</mo><msub><mi>φ</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub id="XM29"><mi>x</mi><mn>1</mn></msub><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(1.3)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Além disso, observamos que</p>
+<table id="Ch1.E4" class="ltx_equation">
+
+<tr class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_align_center"><math id="Ch1.E4.m1" class="ltx_Math" alttext="\varphi_{0}(x)=\frac{x_{1}-x}{x_{1}-x_{0}},\quad\varphi_{1}1(x)=\frac{x-x_{0}}%
+{x_{1}-x_{0}}." display="block"><mrow><mrow><mrow id="XM32"><mrow><msub><mi>φ</mi><mn>0</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM30">x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mfrac><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>-</mo><mi>x</mi></mrow><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>-</mo><msub><mi>x</mi><mn>0</mn></msub></mrow></mfrac></mrow><mo rspace="12.5pt">,</mo><mrow id="XM33"><mrow><msub><mi>φ</mi><mn>1</mn></msub><mo>⁢</mo><mn>1</mn><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM31">x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mfrac><mrow><mi>x</mi><mo>-</mo><msub><mi>x</mi><mn>0</mn></msub></mrow><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>-</mo><msub><mi>x</mi><mn>0</mn></msub></mrow></mfrac></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(1.4)</span></td>
+</tr>
+</table>
+</div>
+<div id="p2" class="ltx_para">
+<p class="ltx_p">Uma extensão do espaço <math id="p2.m1" class="ltx_Math" alttext="P_{1}(I)" display="inline"><mrow><msub><mi>P</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM34">I</mi><mo stretchy="false">)</mo></mrow></mrow></math> é o espaço das funções lineares por partes. Dado <math id="p2.m2" class="ltx_Math" alttext="I=[l_{0},l_{1}]" display="inline"><mrow><mi>I</mi><mo>=</mo><mrow><mo stretchy="false">[</mo><msub id="XM35"><mi>l</mi><mn>0</mn></msub><mo>,</mo><msub id="XM36"><mi>l</mi><mn>1</mn></msub><mo stretchy="false">]</mo></mrow></mrow></math>, <math id="p2.m3" class="ltx_Math" alttext="l_{0}\neq l_{1}" display="inline"><mrow><msub><mi>l</mi><mn>0</mn></msub><mo>≠</mo><msub><mi>l</mi><mn>1</mn></msub></mrow></math>, consideremos uma partição (malha) de <math id="p2.m4" class="ltx_Math" alttext="I" display="inline"><mi>I</mi></math> com <math id="p2.m5" class="ltx_Math" alttext="n+1" display="inline"><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></math> pontos <math id="p2.m6" class="ltx_Math" alttext="\mathcal{I}=\{l_{0}=x_{0},x_{1},\ldots,x_{n}=l_{1}\}" display="inline"><mrow><mi class="ltx_font_mathcaligraphic">ℐ</mi><mo>=</mo><mrow><mo stretchy="false">{</mo><msub><mi>l</mi><mn>0</mn></msub><mo>=</mo><msub><mi>x</mi><mn>0</mn></msub><mo>,</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><mi mathvariant="normal" id="XM39">…</mi><mo>,</mo><msub><mi>x</mi><mi>n</mi></msub><mo>=</mo><msub><mi>l</mi><mn>1</mn></msub><mo stretchy="false">}</mo></mrow></mrow></math> e, portanto, com <math id="p2.m7" class="ltx_Math" alttext="n" display="inline"><mi>n</mi></math> subintervalos <math id="p2.m8" class="ltx_Math" alttext="I_{i}=[x_{i-1},x_{i}]" display="inline"><mrow><msub><mi>I</mi><mi>i</mi></msub><mo>=</mo><mrow><mo stretchy="false">[</mo><msub id="XM42"><mi>x</mi><mrow><mi>i</mi><mo>-</mo><mn>1</mn></mrow></msub><mo>,</mo><msub id="XM43"><mi>x</mi><mi>i</mi></msub><mo stretchy="false">]</mo></mrow></mrow></math> de comprimento <math id="p2.m9" class="ltx_Math" alttext="h_{i}=x_{i}-x_{i-1}" display="inline"><mrow><msub><mi>h</mi><mi>i</mi></msub><mo>=</mo><mrow><msub><mi>x</mi><mi>i</mi></msub><mo>-</mo><msub><mi>x</mi><mrow><mi>i</mi><mo>-</mo><mn>1</mn></mrow></msub></mrow></mrow></math>, <math id="p2.m10" class="ltx_Math" alttext="i=1,2,\ldots,n" display="inline"><mrow><mi>i</mi><mo>=</mo><mrow><mrow id="XM44"><mn>1,2,</mn><mo>⁢</mo><mi mathvariant="normal">…</mi></mrow><mo>,</mo><mi id="XM45">n</mi></mrow></mrow></math>. Na malha <math id="p2.m11" class="ltx_Math" alttext="\mathcal{I}" display="inline"><mi class="ltx_font_mathcaligraphic">ℐ</mi></math> definimos o seguinte espaço das funções lineares por partes</p>
+<table id="Ch1.E5" class="ltx_equation">
+
+<tr class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_align_center"><math id="Ch1.E5.m1" class="ltx_Math" alttext="V_{h}:=\{v:\leavevmode\nobreak\ v\in C^{0}(\mathcal{I}),\leavevmode\nobreak\ v%
+|_{I_{i}}\in P_{1}(I_{i}),\leavevmode\nobreak\ i=1,2,\ldots,n\}." display="block"><mrow><mrow><msub><mi>V</mi><mi>h</mi></msub><mo>:=</mo><mrow><mo stretchy="false">{</mo><mi id="XM54">v</mi><mo rspace="7.5pt">:</mo><mrow><mrow id="XM52"><mi>v</mi><mo>∈</mo><mrow><msup><mi>C</mi><mn>0</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi class="ltx_font_mathcaligraphic" id="XM46">ℐ</mi><mo stretchy="false">)</mo></mrow></mrow></mrow><mo rspace="7.5pt">,</mo><mrow><mrow id="XM50"><msub><mrow><mi>v</mi><mo fence="true">|</mo></mrow><msub><mi>I</mi><mi>i</mi></msub></msub><mo>∈</mo><mrow><msub><mi>P</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub id="XM47"><mi>I</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow></mrow><mo rspace="7.5pt">,</mo><mrow id="XM51"><mi>i</mi><mo>=</mo><mrow><mrow id="XM48"><mn>1,2,</mn><mo>⁢</mo><mi mathvariant="normal">…</mi></mrow><mo>,</mo><mi id="XM49">n</mi></mrow></mrow></mrow></mrow><mo stretchy="false">}</mo></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(1.5)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Observamos que toda função <math id="p2.m12" class="ltx_Math" alttext="v\in V_{h}" display="inline"><mrow><mi>v</mi><mo>∈</mo><msub><mi>V</mi><mi>h</mi></msub></mrow></math> é unicamente determinadas por seus valores nodais <math id="p2.m13" class="ltx_Math" alttext="\{\alpha_{i}=v(x_{i})\}_{i=0}^{n}" display="inline"><msubsup><mrow><mo stretchy="false">{</mo><msub><mi>α</mi><mi>i</mi></msub><mo>=</mo><mi>v</mi><mrow><mo stretchy="false">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow><mo stretchy="false">}</mo></mrow><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mi>n</mi></msubsup></math>. Reciprocamente, todo conjunto de valores nodas <math id="p2.m14" class="ltx_Math" alttext="\{\alpha_{i}\}_{i=0}^{n}" display="inline"><msubsup><mrow><mo stretchy="false">{</mo><msub id="XM59"><mi>α</mi><mi>i</mi></msub><mo stretchy="false">}</mo></mrow><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mi>n</mi></msubsup></math> determina unicamente uma função <math id="p2.m15" class="ltx_Math" alttext="v\in V_{h}" display="inline"><mrow><mi>v</mi><mo>∈</mo><msub><mi>V</mi><mi>h</mi></msub></mrow></math>. Desta observação, temos que os valores nodais determinam os graus de liberdade com a base nodal <math id="p2.m16" class="ltx_Math" alttext="\{\varphi_{j}\}_{j=0}^{n}" display="inline"><msubsup><mrow><mo stretchy="false">{</mo><msub id="XM60"><mi>φ</mi><mi>j</mi></msub><mo stretchy="false">}</mo></mrow><mrow><mi>j</mi><mo>=</mo><mn>0</mn></mrow><mi>n</mi></msubsup></math> para <math id="p2.m17" class="ltx_Math" alttext="V_{h}" display="inline"><msub><mi>V</mi><mi>h</mi></msub></math> definida por</p>
+<table id="Ch1.E6" class="ltx_equation">
+
+<tr class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_align_center"><math id="Ch1.E6.m1" class="ltx_Math" alttext="\varphi_{j}(x_{i})=\left\{\begin{array}[]{ll}1&amp;,i=j,\\
+0&amp;,i\neq j\end{array}\right.," display="block"><mrow><mrow><mrow><msub><mi>φ</mi><mi>j</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub id="XM61"><mi>x</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mo>{</mo><mtable displaystyle="true" id="XM62"><mtr id="XM62a"><mtd columnalign="left" id="XM62b"><mn>1</mn></mtd><mtd columnalign="left" id="XM62c"><mrow><mo>,</mo><mi>i</mi><mo>=</mo><mi>j</mi><mo>,</mo></mrow></mtd></mtr><mtr id="XM62d"><mtd columnalign="left" id="XM62e"><mn>0</mn></mtd><mtd columnalign="left" id="XM62f"><mrow><mo>,</mo><mi>i</mi><mo>≠</mo><mi>j</mi></mrow></mtd></mtr></mtable><mi></mi></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(1.6)</span></td>
+</tr>
+</table>
+<p class="ltx_p">com <math id="p2.m18" class="ltx_Math" alttext="i,j=0,1,\ldots,n" display="inline"><mrow><mrow id="XM65"><mrow><mi id="XM63">i</mi><mo>,</mo><mi id="XM64">j</mi></mrow><mo>=</mo><mrow><mn>0,1,</mn><mo>⁢</mo><mi mathvariant="normal">…</mi></mrow></mrow><mo>,</mo><mi id="XM66">n</mi></mrow></math>. Podemos verificar que</p>
+<table id="Ch1.E7" class="ltx_equation">
+
+<tr class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_align_center"><math id="Ch1.E7.m1" class="ltx_Math" alttext="\varphi_{i}(x)=\left\{\begin{array}[]{ll}(x-x_{i-1})/h_{i}&amp;,x\in I_{i},\\
+(x_{i+1}-x)/h_{i+1}&amp;,x\in I_{i+1},\\
+0&amp;,\text{noutros casos}\end{array}\right." display="block"><mrow><mrow><msub><mi>φ</mi><mi>i</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM69">x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mo>{</mo><mtable displaystyle="true" id="XM70"><mtr id="XM70a"><mtd columnalign="left" id="XM70b"><mrow><mrow><mo stretchy="false">(</mo><mrow id="XM67"><mi>x</mi><mo>-</mo><msub><mi>x</mi><mrow><mi>i</mi><mo>-</mo><mn>1</mn></mrow></msub></mrow><mo stretchy="false">)</mo></mrow><mo>/</mo><msub><mi>h</mi><mi>i</mi></msub></mrow></mtd><mtd columnalign="left" id="XM70c"><mrow><mo>,</mo><mi>x</mi><mo>∈</mo><msub><mi>I</mi><mi>i</mi></msub><mo>,</mo></mrow></mtd></mtr><mtr id="XM70d"><mtd columnalign="left" id="XM70e"><mrow><mrow><mo stretchy="false">(</mo><mrow id="XM68"><msub><mi>x</mi><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>-</mo><mi>x</mi></mrow><mo stretchy="false">)</mo></mrow><mo>/</mo><msub><mi>h</mi><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow></msub></mrow></mtd><mtd columnalign="left" id="XM70f"><mrow><mo>,</mo><mi>x</mi><mo>∈</mo><msub><mi>I</mi><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>,</mo></mrow></mtd></mtr><mtr id="XM70g"><mtd columnalign="left" id="XM70h"><mn>0</mn></mtd><mtd columnalign="left" id="XM70i"><mrow><mo>,</mo><mtext>noutros casos</mtext></mrow></mtd></mtr></mtable><mi></mi></mrow></mrow></math></td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(1.7)</span></td>
+</tr>
+</table>
+<p class="ltx_p">veja, Figura <a href="#Ch1.F1" title="Figura 1.1 ‣ 1.1 Fundamentos preliminares ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.1</span></a>. É notável que <math id="p2.m19" class="ltx_Math" alttext="\phi_{i}(x)" display="inline"><mrow><msub><mi>ϕ</mi><mi>i</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM71">x</mi><mo stretchy="false">)</mo></mrow></mrow></math> tem suporte compacto <math id="p2.m20" class="ltx_Math" alttext="I_{i}\cup I_{i+1}" display="inline"><mrow><msub><mi>I</mi><mi>i</mi></msub><mo>∪</mo><msub><mi>I</mi><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow></msub></mrow></math>.</p>
+</div>
+<figure id="Ch1.F1" class="ltx_figure"><img src="x1.png" id="Ch1.F1.g1" class="ltx_graphics ltx_centering" width="677" height="308" alt="">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figura 1.1: </span>Base nodal para o espaço das funções lineares por parte.</figcaption>
+</figure>
+<section id="SS1" class="ltx_subsection">
+<h2 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">1.1.1 </span>Interpolação<small><a href="https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/cap_mef1d.tex" target=_blank> <span class="glyphicon glyphicon-pencil"></span> </a><a href="contato_cap_mef1d_sec_fund.html" target="_blank"> <span class="glyphicon glyphicon-envelope"></span> </a></small></h2>
+
+<div id="SS1.p1" class="ltx_para">
+<p class="ltx_p">A interpolação é uma das técnicas de aproximação de funções. Dada uma função contínua <math id="SS1.p1.m1" class="ltx_Math" alttext="f" display="inline"><mi>f</mi></math> em <math id="SS1.p1.m2" class="ltx_Math" alttext="I=[x_{0},x_{1}]" display="inline"><mrow><mi>I</mi><mo>=</mo><mrow><mo stretchy="false">[</mo><msub id="XM72"><mi>x</mi><mn>0</mn></msub><mo>,</mo><msub id="XM73"><mi>x</mi><mn>1</mn></msub><mo stretchy="false">]</mo></mrow></mrow></math>, definimos o operador de interpolação linear <math id="SS1.p1.m3" class="ltx_Math" alttext="\pi:C^{0}(I)\to P_{1}(I)" display="inline"><mrow><mi>π</mi><mo>:</mo><mrow><mrow><msup><mi>C</mi><mn>0</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM74">I</mi><mo stretchy="false">)</mo></mrow></mrow><mo>→</mo><mrow><msub><mi>P</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM75">I</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow></math> por</p>
+<table id="Ch1.E8" class="ltx_equation">
+
+<tr class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_align_center"><math id="Ch1.E8.m1" class="ltx_Math" alttext="\pi f(x)=f(x_{0})\varphi_{0}(x)+f(x_{1})\varphi_{1}(x)." display="block"><mrow><mrow><mrow><mi>π</mi><mo>⁢</mo><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM76">x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub id="XM77"><mi>x</mi><mn>0</mn></msub><mo stretchy="false">)</mo></mrow><mo>⁢</mo><msub><mi>φ</mi><mn>0</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM78">x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub id="XM79"><mi>x</mi><mn>1</mn></msub><mo stretchy="false">)</mo></mrow><mo>⁢</mo><msub><mi>φ</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM80">x</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(1.8)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Observamos que <math id="SS1.p1.m4" class="ltx_Math" alttext="\pi f" display="inline"><mrow><mi>π</mi><mo>⁢</mo><mi>f</mi></mrow></math> é igual a <math id="SS1.p1.m5" class="ltx_Math" alttext="f" display="inline"><mi>f</mi></math> nos nodos <math id="SS1.p1.m6" class="ltx_Math" alttext="x_{0}" display="inline"><msub><mi>x</mi><mn>0</mn></msub></math> e <math id="SS1.p1.m7" class="ltx_Math" alttext="x_{1}" display="inline"><msub><mi>x</mi><mn>1</mn></msub></math>. Agora, vamos buscar medir o erro de interpolação, i.e. <math id="SS1.p1.m8" class="ltx_Math" alttext="f-\pi f" display="inline"><mrow><mi>f</mi><mo>-</mo><mrow><mi>π</mi><mo>⁢</mo><mi>f</mi></mrow></mrow></math>. Para tanto, podemos usar a norma <math id="SS1.p1.m9" class="ltx_Math" alttext="L^{2}" display="inline"><msup><mi>L</mi><mn>2</mn></msup></math> definida por</p>
+<table id="Ch1.E9" class="ltx_equation">
+
+<tr class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_align_center"><math id="Ch1.E9.m1" class="ltx_Math" alttext="\|v\|_{L^{2}(I)}=\left(\int_{i}v^{2}\,dx\right)^{1/2}." display="block"><mrow><mrow><msub><mrow><mo>∥</mo><mi id="XM82">v</mi><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM81">I</mi><mo stretchy="false">)</mo></mrow></mrow></msub><mo>=</mo><msup><mrow><mo>(</mo><mrow id="XM83"><msub><mo largeop="true" symmetric="true">∫</mo><mi>i</mi></msub><mrow><mpadded width="+1.7pt"><msup><mi>v</mi><mn>2</mn></msup></mpadded><mo>⁢</mo><mi>d</mi><mo>⁢</mo><mi>x</mi></mrow></mrow><mo>)</mo></mrow><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(1.9)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Lembramos que valem as desigualdades triangular</p>
+<table id="Ch1.E10" class="ltx_equation">
+
+<tr class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_align_center"><math id="Ch1.E10.m1" class="ltx_Math" alttext="\|v+w\|_{{}^{2}(I)}\leq\|v\|_{L^{2}(I)}+\|w\|_{L^{2}(I)}" display="block"><mrow><msub><mrow><mo>∥</mo><mrow id="XM86"><mi>v</mi><mo>+</mo><mi>w</mi></mrow><mo>∥</mo></mrow><mmultiscripts><mrow><mo stretchy="false">(</mo><mi>I</mi><mo stretchy="false">)</mo></mrow><mprescripts></mprescripts><none></none><mn>2</mn></mmultiscripts></msub><mo>≤</mo><mrow><msub><mrow><mo>∥</mo><mi id="XM87">v</mi><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM84">I</mi><mo stretchy="false">)</mo></mrow></mrow></msub><mo>+</mo><msub><mrow><mo>∥</mo><mi id="XM88">w</mi><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM85">I</mi><mo stretchy="false">)</mo></mrow></mrow></msub></mrow></mrow></math></td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(1.10)</span></td>
+</tr>
+</table>
+<p class="ltx_p">e a de Cauchy-Schwarz</p>
+<table id="Ch1.E11" class="ltx_equation">
+
+<tr class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_align_center"><math id="Ch1.E11.m1" class="ltx_Math" alttext="\int_{I}vw\,dx\leq\|v\|_{L^{2}(I)}\|w\|_{L^{2}(I)}," display="block"><mrow><mrow><mrow><msub><mo largeop="true" symmetric="true">∫</mo><mi>I</mi></msub><mrow><mi>v</mi><mo>⁢</mo><mpadded width="+1.7pt"><mi>w</mi></mpadded><mo>⁢</mo><mi>d</mi><mo>⁢</mo><mi>x</mi></mrow></mrow><mo>≤</mo><mrow><msub><mrow><mo>∥</mo><mi id="XM91">v</mi><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM89">I</mi><mo stretchy="false">)</mo></mrow></mrow></msub><mo>⁢</mo><msub><mrow><mo>∥</mo><mi id="XM92">w</mi><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM90">I</mi><mo stretchy="false">)</mo></mrow></mrow></msub></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(1.11)</span></td>
+</tr>
+</table>
+<p class="ltx_p">para qualquer funções <math id="SS1.p1.m10" class="ltx_Math" alttext="v,w\in L^{2}(I)" display="inline"><mrow><mrow><mi id="XM94">v</mi><mo>,</mo><mi id="XM95">w</mi></mrow><mo>∈</mo><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM93">I</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></math>.</p>
+</div>
+<div id="Thmprop1" class="ltx_theorem ltx_theorem_prop">
+<h6 class="ltx_title ltx_runin ltx_font_bold ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem">Proposição 1.1.1</span>.</h6>
+<div id="Thmprop1.p1" class="ltx_para">
+<p class="ltx_p">(Erro da interpolação linear)
+O interpolador <math id="Thmprop1.p1.m1" class="ltx_Math" alttext="\pi f" display="inline"><mrow><mi>π</mi><mo>⁢</mo><mi>f</mi></mrow></math> satisfaz as estimativas</p>
+<table id="EGx1" class="ltx_equationgroup ltx_eqn_align">
+
+<tr id="Ch1.E12" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right">
+                      <math id="Ch1.E12.m1" class="ltx_Math" alttext="\displaystyle\|f-\pi f\|_{L^{2}(I)}\leq Ch^{2}\|f^{\prime\prime}\|_{L^{2}(I)}," display="inline"><mrow><mrow><msub><mrow><mo>∥</mo><mrow id="XM102"><mi>f</mi><mo>-</mo><mrow><mi>π</mi><mo>⁢</mo><mi>f</mi></mrow></mrow><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM100">I</mi><mo stretchy="false">)</mo></mrow></mrow></msub><mo>≤</mo><mrow><mi>C</mi><mo>⁢</mo><msup><mi>h</mi><mn>2</mn></msup><mo>⁢</mo><msub><mrow><mo>∥</mo><msup id="XM103"><mi>f</mi><mi>′′</mi></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM101">I</mi><mo stretchy="false">)</mo></mrow></mrow></msub></mrow></mrow><mo>,</mo></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(1.12)</span></td>
+</tr>
+<tr id="Ch1.E13" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right">
+                      <math id="Ch1.E13.m1" class="ltx_Math" alttext="\displaystyle\|(f-\pi f)^{\prime}\|_{L^{2}(I)}\leq Ch\|f^{\prime\prime}\|_{L^{%
+2}(I)}," display="inline"><mrow><mrow><msub><mrow><mo>∥</mo><msup id="XM112"><mrow><mo stretchy="false">(</mo><mrow id="XM111"><mi>f</mi><mo>-</mo><mrow><mi>π</mi><mo>⁢</mo><mi>f</mi></mrow></mrow><mo stretchy="false">)</mo></mrow><mo>′</mo></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM109">I</mi><mo stretchy="false">)</mo></mrow></mrow></msub><mo>≤</mo><mrow><mi>C</mi><mo>⁢</mo><mi>h</mi><mo>⁢</mo><msub><mrow><mo>∥</mo><msup id="XM113"><mi>f</mi><mi>′′</mi></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM110">I</mi><mo stretchy="false">)</mo></mrow></mrow></msub></mrow></mrow><mo>,</mo></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(1.13)</span></td>
+</tr>
+</table>
+<p class="ltx_p">onde <math id="Thmprop1.p1.m2" class="ltx_Math" alttext="C" display="inline"><mi>C</mi></math> é uma constante e <math id="Thmprop1.p1.m3" class="ltx_Math" alttext="h=x_{1}-x_{0}" display="inline"><mrow><mi>h</mi><mo>=</mo><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>-</mo><msub><mi>x</mi><mn>0</mn></msub></mrow></mrow></math>.</p>
+</div>
+</div>
+<div class="ltx_proof">
+<h6 class="ltx_title ltx_runin ltx_font_italic ltx_title_proof">Demonstração.</h6>
+<div id="SS1.p2" class="ltx_para">
+<p class="ltx_p">Denotemos o erro de interpolação por <math id="SS1.p2.m1" class="ltx_Math" alttext="e=f-\pi f" display="inline"><mrow><mi>e</mi><mo>=</mo><mrow><mi>f</mi><mo>-</mo><mrow><mi>π</mi><mo>⁢</mo><mi>f</mi></mrow></mrow></mrow></math>. Do teorema fundamental do cálculo, temos</p>
+<table id="Ch1.E14" class="ltx_equation">
+
+<tr class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_align_center"><math id="Ch1.E14.m1" class="ltx_Math" alttext="e(y)=e(x_{0})+\int_{x_{0}}^{y}e^{\prime}\,dx," display="block"><mrow><mrow><mrow><mi>e</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM114">y</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mi>e</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub id="XM115"><mi>x</mi><mn>0</mn></msub><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><msubsup><mo largeop="true" symmetric="true">∫</mo><msub><mi>x</mi><mn>0</mn></msub><mi>y</mi></msubsup><mrow><mpadded width="+1.7pt"><msup><mi>e</mi><mo>′</mo></msup></mpadded><mo>⁢</mo><mi>d</mi><mo>⁢</mo><mi>x</mi></mrow></mrow></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(1.14)</span></td>
+</tr>
+</table>
+<p class="ltx_p">onde <math id="SS1.p2.m2" class="ltx_Math" alttext="e(x_{0})=f(x_{0})-\pi f(x_{0})=0" display="inline"><mrow><mrow><mi>e</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub id="XM116"><mi>x</mi><mn>0</mn></msub><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub id="XM117"><mi>x</mi><mn>0</mn></msub><mo stretchy="false">)</mo></mrow></mrow><mo>-</mo><mrow><mi>π</mi><mo>⁢</mo><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub id="XM118"><mi>x</mi><mn>0</mn></msub><mo stretchy="false">)</mo></mrow></mrow></mrow><mo>=</mo><mn>0</mn></mrow></math>. Daí, usando a desigualdade de Cauchy-Schwarz (<a href="#Ch1.E11" title="(1.11) ‣ 1.1.1 Interpolação ‣ 1.1 Fundamentos preliminares ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.11</span></a>), temos</p>
+<table id="EGx2" class="ltx_equationgroup ltx_eqn_align">
+
+<tr id="Ch1.E15" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right">
+                      <math id="Ch1.E15.m1" class="ltx_Math" alttext="\displaystyle e(y)" display="inline"><mrow><mi>e</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM120">y</mi><mo stretchy="false">)</mo></mrow></mrow></math>
+                    </td>
+<td class="ltx_td ltx_align_left">
+                      <math id="Ch1.E15.m2" class="ltx_Math" alttext="\displaystyle=\int_{x_{0}}^{y}e^{\prime}\,dx" display="inline"><mrow><mi></mi><mo>=</mo><mrow><mstyle displaystyle="true"><msubsup><mo largeop="true" symmetric="true">∫</mo><msub><mi>x</mi><mn>0</mn></msub><mi>y</mi></msubsup></mstyle><mrow><mpadded width="+1.7pt"><msup><mi>e</mi><mo>′</mo></msup></mpadded><mo>⁢</mo><mi>d</mi><mo>⁢</mo><mi>x</mi></mrow></mrow></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(1.15)</span></td>
+</tr>
+<tr id="Ch1.E16" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right"></td>
+<td class="ltx_td ltx_align_left">
+                      <math id="Ch1.E16.m2" class="ltx_Math" alttext="\displaystyle\leq\int_{x_{0}}^{y}|e^{\prime}|\,dx" display="inline"><mrow><mi></mi><mo>≤</mo><mrow><mstyle displaystyle="true"><msubsup><mo largeop="true" symmetric="true">∫</mo><msub><mi>x</mi><mn>0</mn></msub><mi>y</mi></msubsup></mstyle><mrow><mrow><mo stretchy="false">|</mo><msup id="XM122"><mi>e</mi><mo>′</mo></msup><mo rspace="4.2pt" stretchy="false">|</mo></mrow><mo>⁢</mo><mi>d</mi><mo>⁢</mo><mi>x</mi></mrow></mrow></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(1.16)</span></td>
+</tr>
+<tr id="Ch1.E17" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right"></td>
+<td class="ltx_td ltx_align_left">
+                      <math id="Ch1.E17.m2" class="ltx_Math" alttext="\displaystyle\leq\int_{I}1\cdot|e^{\prime}|\,dx" display="inline"><mrow><mi></mi><mo>≤</mo><mrow><mstyle displaystyle="true"><msub><mo largeop="true" symmetric="true">∫</mo><mi>I</mi></msub></mstyle><mrow><mrow><mn>1</mn><mo>⋅</mo><mrow><mo stretchy="false">|</mo><msup id="XM124"><mi>e</mi><mo>′</mo></msup><mo rspace="4.2pt" stretchy="false">|</mo></mrow></mrow><mo>⁢</mo><mi>d</mi><mo>⁢</mo><mi>x</mi></mrow></mrow></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(1.17)</span></td>
+</tr>
+<tr id="Ch1.E18" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right"></td>
+<td class="ltx_td ltx_align_left">
+                      <math id="Ch1.E18.m2" class="ltx_Math" alttext="\displaystyle\leq\left(\int_{I}1^{2}\,dx\right)^{1/2}\left(\int_{I}e^{\prime 2%
+}\,dx\right)^{1/2}" display="inline"><mrow><mi></mi><mo>≤</mo><mrow><msup><mrow><mo>(</mo><mrow id="XM131"><mstyle displaystyle="true"><msub><mo largeop="true" symmetric="true">∫</mo><mi>I</mi></msub></mstyle><mrow><mpadded width="+1.7pt"><msup><mn>1</mn><mn>2</mn></msup></mpadded><mo>⁢</mo><mi>d</mi><mo>⁢</mo><mi>x</mi></mrow></mrow><mo>)</mo></mrow><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mo>⁢</mo><msup><mrow><mo>(</mo><mrow id="XM132"><mstyle displaystyle="true"><msub><mo largeop="true" symmetric="true">∫</mo><mi>I</mi></msub></mstyle><mrow><mpadded width="+1.7pt"><msup><mi>e</mi><mrow><mi mathvariant="normal" id="XM129">′</mi><mo>⁣</mo><mn id="XM130">2</mn></mrow></msup></mpadded><mo>⁢</mo><mi>d</mi><mo>⁢</mo><mi>x</mi></mrow></mrow><mo>)</mo></mrow><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup></mrow></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(1.18)</span></td>
+</tr>
+<tr id="Ch1.E19" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right"></td>
+<td class="ltx_td ltx_align_left">
+                      <math id="Ch1.E19.m2" class="ltx_Math" alttext="\displaystyle=h^{1/2}\left(\int_{I}e^{\prime 2}\,dx\right)^{1/2}," display="inline"><mrow><mrow><mi></mi><mo>=</mo><mrow><msup><mi>h</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mo>⁢</mo><msup><mrow><mo>(</mo><mrow id="XM138"><mstyle displaystyle="true"><msub><mo largeop="true" symmetric="true">∫</mo><mi>I</mi></msub></mstyle><mrow><mpadded width="+1.7pt"><msup><mi>e</mi><mrow><mi mathvariant="normal" id="XM136">′</mi><mo>⁣</mo><mn id="XM137">2</mn></mrow></msup></mpadded><mo>⁢</mo><mi>d</mi><mo>⁢</mo><mi>x</mi></mrow></mrow><mo>)</mo></mrow><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup></mrow></mrow><mo>,</mo></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(1.19)</span></td>
+</tr>
+</table>
+<p class="ltx_p">donde</p>
+<table id="Ch1.E20" class="ltx_equation">
+
+<tr class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_align_center"><math id="Ch1.E20.m1" class="ltx_Math" alttext="e(y)^{2}\leq h\int_{I}e^{\prime 2}\,dx=h\|e^{\prime}\|_{L^{2}(I)}^{2}." display="block"><mrow><mrow><mrow><mi>e</mi><mo>⁢</mo><msup><mrow><mo stretchy="false">(</mo><mi id="XM142">y</mi><mo stretchy="false">)</mo></mrow><mn>2</mn></msup></mrow><mo>≤</mo><mrow><mi>h</mi><mo>⁢</mo><mrow><msub><mo largeop="true" symmetric="true">∫</mo><mi>I</mi></msub><mrow><mpadded width="+1.7pt"><msup><mi>e</mi><mrow><mi mathvariant="normal" id="XM139">′</mi><mo>⁣</mo><mn id="XM140">2</mn></mrow></msup></mpadded><mo>⁢</mo><mi>d</mi><mo>⁢</mo><mi>x</mi></mrow></mrow></mrow><mo>=</mo><mrow><mi>h</mi><mo>⁢</mo><msubsup><mrow><mo>∥</mo><msup id="XM143"><mi>e</mi><mo>′</mo></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM141">I</mi><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(1.20)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Então, integrando em <math id="SS1.p2.m3" class="ltx_Math" alttext="I" display="inline"><mi>I</mi></math> obtemos</p>
+<table id="Ch1.E21" class="ltx_equation">
+
+<tr class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_align_center"><math id="Ch1.E21.m1" class="ltx_Math" alttext="\|e\|_{L^{2}(I)}^{2}=\int_{I}e^{2}(y)\,dy\leq\int_{I}h\|e^{\prime}\|_{L^{2}(I)%
+}^{2}\,dy=h^{2}\|e^{\prime}\|_{L^{2}(I)}^{2}," display="block"><mrow><mrow><msubsup><mrow><mo>∥</mo><mi id="XM147">e</mi><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM144">I</mi><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup><mo>=</mo><mrow><msub><mo largeop="true" symmetric="true">∫</mo><mi>I</mi></msub><mrow><msup><mi>e</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM148">y</mi><mo rspace="4.2pt" stretchy="false">)</mo></mrow><mo>⁢</mo><mi>d</mi><mo>⁢</mo><mi>y</mi></mrow></mrow><mo>≤</mo><mrow><msub><mo largeop="true" symmetric="true">∫</mo><mi>I</mi></msub><mrow><mi>h</mi><mo>⁢</mo><mpadded width="+1.7pt"><msubsup><mrow><mo>∥</mo><msup id="XM149"><mi>e</mi><mo>′</mo></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM145">I</mi><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup></mpadded><mo>⁢</mo><mi>d</mi><mo>⁢</mo><mi>y</mi></mrow></mrow><mo>=</mo><mrow><msup><mi>h</mi><mn>2</mn></msup><mo>⁢</mo><msubsup><mrow><mo>∥</mo><msup id="XM150"><mi>e</mi><mo>′</mo></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM146">I</mi><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(1.21)</span></td>
+</tr>
+</table>
+<p class="ltx_p">ou seja,</p>
+<table id="Ch1.E22" class="ltx_equation">
+
+<tr class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_align_center"><math id="Ch1.E22.m1" class="ltx_Math" alttext="\|e\|_{{}^{2}(I)}\leq h\|e^{\prime}\|_{L^{2}(I)}." display="block"><mrow><mrow><msub><mrow><mo>∥</mo><mi id="XM152">e</mi><mo>∥</mo></mrow><mmultiscripts><mrow><mo stretchy="false">(</mo><mi>I</mi><mo stretchy="false">)</mo></mrow><mprescripts></mprescripts><none></none><mn>2</mn></mmultiscripts></msub><mo>≤</mo><mrow><mi>h</mi><mo>⁢</mo><msub><mrow><mo>∥</mo><msup id="XM153"><mi>e</mi><mo>′</mo></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM151">I</mi><mo stretchy="false">)</mo></mrow></mrow></msub></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(1.22)</span></td>
+</tr>
+</table>
+</div>
+<div id="SS1.p3" class="ltx_para">
+<p class="ltx_p">Agora, observando que <math id="SS1.p3.m1" class="ltx_Math" alttext="e(x_{0})=e(x_{1})=0" display="inline"><mrow><mrow><mi>e</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub id="XM154"><mi>x</mi><mn>0</mn></msub><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mi>e</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub id="XM155"><mi>x</mi><mn>1</mn></msub><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>0</mn></mrow></math>, o teorema de Rolle garante a existência de um ponto <math id="SS1.p3.m2" class="ltx_Math" alttext="\tilde{x}\in I" display="inline"><mrow><mover accent="true"><mi>x</mi><mo stretchy="false">~</mo></mover><mo>∈</mo><mi>I</mi></mrow></math> tal que <math id="SS1.p3.m3" class="ltx_Math" alttext="e^{\prime}(\tilde{x})=0" display="inline"><mrow><mrow><msup><mi>e</mi><mo>′</mo></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mover accent="true" id="XM156"><mi>x</mi><mo stretchy="false">~</mo></mover><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>0</mn></mrow></math>, donde do teorema fundamental do cálculo e da desigualdade de Cauchy-Schwarz, segue</p>
+<table id="EGx3" class="ltx_equationgroup ltx_eqn_align">
+
+<tr id="Ch1.E23" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right">
+                      <math id="Ch1.E23.m1" class="ltx_Math" alttext="\displaystyle e^{\prime}(y)" display="inline"><mrow><msup><mi>e</mi><mo>′</mo></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM159">y</mi><mo stretchy="false">)</mo></mrow></mrow></math>
+                    </td>
+<td class="ltx_td ltx_align_left">
+                      <math id="Ch1.E23.m2" class="ltx_Math" alttext="\displaystyle=e^{\prime}(\tilde{x})+\int_{\tilde{x}}^{y}e^{\prime\prime}\,dx" display="inline"><mrow><mi></mi><mo>=</mo><mrow><mrow><msup><mi>e</mi><mo>′</mo></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mover accent="true" id="XM160"><mi>x</mi><mo stretchy="false">~</mo></mover><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><mstyle displaystyle="true"><msubsup><mo largeop="true" symmetric="true">∫</mo><mover accent="true"><mi>x</mi><mo stretchy="false">~</mo></mover><mi>y</mi></msubsup></mstyle><mrow><mpadded width="+1.7pt"><msup><mi>e</mi><mi>′′</mi></msup></mpadded><mo>⁢</mo><mi>d</mi><mo>⁢</mo><mi>x</mi></mrow></mrow></mrow></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(1.23)</span></td>
+</tr>
+<tr id="Ch1.E24" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right"></td>
+<td class="ltx_td ltx_align_left">
+                      <math id="Ch1.E24.m2" class="ltx_Math" alttext="\displaystyle=\int_{\tilde{x}}^{y}e^{\prime\prime}\,dx" display="inline"><mrow><mi></mi><mo>=</mo><mrow><mstyle displaystyle="true"><msubsup><mo largeop="true" symmetric="true">∫</mo><mover accent="true"><mi>x</mi><mo stretchy="false">~</mo></mover><mi>y</mi></msubsup></mstyle><mrow><mpadded width="+1.7pt"><msup><mi>e</mi><mi>′′</mi></msup></mpadded><mo>⁢</mo><mi>d</mi><mo>⁢</mo><mi>x</mi></mrow></mrow></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(1.24)</span></td>
+</tr>
+<tr id="Ch1.E25" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right"></td>
+<td class="ltx_td ltx_align_left">
+                      <math id="Ch1.E25.m2" class="ltx_Math" alttext="\displaystyle\leq\int_{I}1\cdot|e^{\prime\prime}|\,dx" display="inline"><mrow><mi></mi><mo>≤</mo><mrow><mstyle displaystyle="true"><msub><mo largeop="true" symmetric="true">∫</mo><mi>I</mi></msub></mstyle><mrow><mrow><mn>1</mn><mo>⋅</mo><mrow><mo stretchy="false">|</mo><msup id="XM162"><mi>e</mi><mi>′′</mi></msup><mo rspace="4.2pt" stretchy="false">|</mo></mrow></mrow><mo>⁢</mo><mi>d</mi><mo>⁢</mo><mi>x</mi></mrow></mrow></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(1.25)</span></td>
+</tr>
+<tr id="Ch1.E26" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right"></td>
+<td class="ltx_td ltx_align_left">
+                      <math id="Ch1.E26.m2" class="ltx_Math" alttext="\displaystyle\leq h^{1/2}\left(\int_{I}e^{\prime\prime 2}\right)^{1/2}." display="inline"><mrow><mrow><mi></mi><mo>≤</mo><mrow><msup><mi>h</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mo>⁢</mo><msup><mrow><mo>(</mo><mrow id="XM168"><mstyle displaystyle="true"><msub><mo largeop="true" symmetric="true">∫</mo><mi>I</mi></msub></mstyle><msup><mi>e</mi><mrow><mi id="XM166">′′</mi><mo>⁣</mo><mn id="XM167">2</mn></mrow></msup></mrow><mo>)</mo></mrow><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup></mrow></mrow><mo>.</mo></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(1.26)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Então, integrando em <math id="SS1.p3.m4" class="ltx_Math" alttext="I" display="inline"><mi>I</mi></math>, obtemos</p>
+<table id="Ch1.E27" class="ltx_equation">
+
+<tr class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_align_center"><math id="Ch1.E27.m1" class="ltx_Math" alttext="\|e^{\prime}\|_{{}^{2}(I)}^{2}\leq h^{2}\|e^{\prime\prime}\|_{L^{2}(I)}^{2}," display="block"><mrow><mrow><msubsup><mrow><mo>∥</mo><msup id="XM170"><mi>e</mi><mo>′</mo></msup><mo>∥</mo></mrow><mmultiscripts><mrow><mo stretchy="false">(</mo><mi>I</mi><mo stretchy="false">)</mo></mrow><mprescripts></mprescripts><none></none><mn>2</mn></mmultiscripts><mn>2</mn></msubsup><mo>≤</mo><mrow><msup><mi>h</mi><mn>2</mn></msup><mo>⁢</mo><msubsup><mrow><mo>∥</mo><msup id="XM171"><mi>e</mi><mi>′′</mi></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM169">I</mi><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(1.27)</span></td>
+</tr>
+</table>
+<p class="ltx_p">a qual, observando que <math id="SS1.p3.m5" class="ltx_Math" alttext="e^{\prime\prime}=f^{\prime\prime}" display="inline"><mrow><msup><mi>e</mi><mi>′′</mi></msup><mo>=</mo><msup><mi>f</mi><mi>′′</mi></msup></mrow></math>, equivale a segunda estimativa procurada, i.e.</p>
+<table id="Ch1.E28" class="ltx_equation">
+
+<tr class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_align_center"><math id="Ch1.E28.m1" class="ltx_Math" alttext="\|(f-\pi f)^{\prime}\|_{L^{2}(I)}\leq Ch\|f^{\prime\prime}\|_{L^{2}(I)}." display="block"><mrow><mrow><msub><mrow><mo>∥</mo><msup id="XM175"><mrow><mo stretchy="false">(</mo><mrow id="XM174"><mi>f</mi><mo>-</mo><mrow><mi>π</mi><mo>⁢</mo><mi>f</mi></mrow></mrow><mo stretchy="false">)</mo></mrow><mo>′</mo></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM172">I</mi><mo stretchy="false">)</mo></mrow></mrow></msub><mo>≤</mo><mrow><mi>C</mi><mo>⁢</mo><mi>h</mi><mo>⁢</mo><msub><mrow><mo>∥</mo><msup id="XM176"><mi>f</mi><mi>′′</mi></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM173">I</mi><mo stretchy="false">)</mo></mrow></mrow></msub></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(1.28)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Por fim, de (<a href="#Ch1.E22" title="(1.22) ‣ 1.1.1 Interpolação ‣ 1.1 Fundamentos preliminares ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.22</span></a>) e de (<a href="#Ch1.E22" title="(1.22) ‣ 1.1.1 Interpolação ‣ 1.1 Fundamentos preliminares ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.22</span></a>), obtemos a primeira estimativa desejada</p>
+<table id="Ch1.E29" class="ltx_equation">
+
+<tr class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_align_center"><math id="Ch1.E29.m1" class="ltx_Math" alttext="\|f-\pi f\|_{L^{2}(I)}\leq Ch^{2}\|f^{\prime\prime}\|_{L^{2}(I)}." display="block"><mrow><mrow><msub><mrow><mo>∥</mo><mrow id="XM179"><mi>f</mi><mo>-</mo><mrow><mi>π</mi><mo>⁢</mo><mi>f</mi></mrow></mrow><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM177">I</mi><mo stretchy="false">)</mo></mrow></mrow></msub><mo>≤</mo><mrow><mi>C</mi><mo>⁢</mo><msup><mi>h</mi><mn>2</mn></msup><mo>⁢</mo><msub><mrow><mo>∥</mo><msup id="XM180"><mi>f</mi><mi>′′</mi></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM178">I</mi><mo stretchy="false">)</mo></mrow></mrow></msub></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(1.29)</span></td>
+</tr>
+</table>
+<p class="ltx_p">∎</p>
+</div>
+</div>
+<div id="SS1.p4" class="ltx_para">
+<p class="ltx_p">Vamos, agora, generalizar este resultado para a interpolação no espaço <math id="SS1.p4.m1" class="ltx_Math" alttext="V_{h}" display="inline"><msub><mi>V</mi><mi>h</mi></msub></math> das funções lineares por parte. Dada uma função contínua <math id="SS1.p4.m2" class="ltx_Math" alttext="f" display="inline"><mi>f</mi></math> em <math id="SS1.p4.m3" class="ltx_Math" alttext="I=[l_{0},l_{1}]" display="inline"><mrow><mi>I</mi><mo>=</mo><mrow><mo stretchy="false">[</mo><msub id="XM181"><mi>l</mi><mn>0</mn></msub><mo>,</mo><msub id="XM182"><mi>l</mi><mn>1</mn></msub><mo stretchy="false">]</mo></mrow></mrow></math>, definimos o operador interpolador <math id="SS1.p4.m4" class="ltx_Math" alttext="\pi:C^{0}(I)\to V_{h}" display="inline"><mrow><mi>π</mi><mo>:</mo><mrow><mrow><msup><mi>C</mi><mn>0</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM183">I</mi><mo stretchy="false">)</mo></mrow></mrow><mo>→</mo><msub><mi>V</mi><mi>h</mi></msub></mrow></mrow></math> na malha <math id="SS1.p4.m5" class="ltx_Math" alttext="\mathcal{I}" display="inline"><mi class="ltx_font_mathcaligraphic">ℐ</mi></math> de <math id="SS1.p4.m6" class="ltx_Math" alttext="I" display="inline"><mi>I</mi></math> por</p>
+<table id="Ch1.E30" class="ltx_equation">
+
+<tr class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_align_center"><math id="Ch1.E30.m1" class="ltx_Math" alttext="\pi f(x)=\sum_{i=0}^{n}f(x_{i})\varphi_{i}(x)." display="block"><mrow><mrow><mrow><mi>π</mi><mo>⁢</mo><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM184">x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><munderover><mo largeop="true" movablelimits="false" symmetric="true">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mi>n</mi></munderover><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub id="XM185"><mi>x</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow><mo>⁢</mo><msub><mi>φ</mi><mi>i</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM186">x</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(1.30)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Neste caso, temos o seguinte resultado para o erro de interpolação.</p>
+</div>
+<div id="Thmprop2" class="ltx_theorem ltx_theorem_prop">
+<h6 class="ltx_title ltx_runin ltx_font_bold ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem">Proposição 1.1.2</span>.</h6>
+<div id="Thmprop2.p1" class="ltx_para">
+<p class="ltx_p">
+              <span class="ltx_text ltx_font_italic">O interpolador <math id="Thmprop2.p1.m1" class="ltx_Math" alttext="\pi f" display="inline"><mrow><mi>π</mi><mo mathvariant="italic">⁢</mo><mi>f</mi></mrow></math> satisfaz as estimativas</span>
+            </p>
+<table id="EGx4" class="ltx_equationgroup ltx_eqn_align">
+
+<tr id="Ch1.E31" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right">
+                      <math id="Ch1.E31.m1" class="ltx_Math" alttext="\displaystyle\|f-\pi f\|_{L^{2}(I)}^{2}" display="inline"><msubsup><mrow><mo>∥</mo><mrow id="XM192"><mi>f</mi><mo>-</mo><mrow><mi>π</mi><mo>⁢</mo><mi>f</mi></mrow></mrow><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM191">I</mi><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup></math>
+                    </td>
+<td class="ltx_td ltx_align_left">
+                      <math id="Ch1.E31.m2" class="ltx_Math" alttext="\displaystyle\leq C\sum_{i=1}^{n}h_{i}^{4}\|f^{\prime\prime}\|_{L^{2}(I)}^{2}," display="inline"><mrow><mrow><mi></mi><mo>≤</mo><mrow><mi>C</mi><mo>⁢</mo><mrow><mstyle displaystyle="true"><munderover><mo largeop="true" movablelimits="false" symmetric="true">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover></mstyle><mrow><msubsup><mi>h</mi><mi>i</mi><mn>4</mn></msubsup><mo>⁢</mo><msubsup><mrow><mo>∥</mo><msup id="XM194"><mi>f</mi><mi>′′</mi></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM193">I</mi><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup></mrow></mrow></mrow></mrow><mo>,</mo></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(1.31)</span></td>
+</tr>
+<tr id="Ch1.E32" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right">
+                      <math id="Ch1.E32.m1" class="ltx_Math" alttext="\displaystyle\|(f-\pi f)^{\prime}\|_{L^{2}(I)}^{2}" display="inline"><msubsup><mrow><mo>∥</mo><msup id="XM202"><mrow><mo stretchy="false">(</mo><mrow id="XM201"><mi>f</mi><mo>-</mo><mrow><mi>π</mi><mo>⁢</mo><mi>f</mi></mrow></mrow><mo stretchy="false">)</mo></mrow><mo>′</mo></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM200">I</mi><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup></math>
+                    </td>
+<td class="ltx_td ltx_align_left">
+                      <math id="Ch1.E32.m2" class="ltx_Math" alttext="\displaystyle\leq C\sum_{i=1}^{n}h_{i}^{2}\|f^{\prime\prime}\|_{L^{2}(I)}^{2}." display="inline"><mrow><mrow><mi></mi><mo>≤</mo><mrow><mi>C</mi><mo>⁢</mo><mrow><mstyle displaystyle="true"><munderover><mo largeop="true" movablelimits="false" symmetric="true">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover></mstyle><mrow><msubsup><mi>h</mi><mi>i</mi><mn>2</mn></msubsup><mo>⁢</mo><msubsup><mrow><mo>∥</mo><msup id="XM204"><mi>f</mi><mi>′′</mi></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM203">I</mi><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup></mrow></mrow></mrow></mrow><mo>.</mo></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(1.32)</span></td>
+</tr>
+</table>
+</div>
+</div>
+<div class="ltx_proof">
+<h6 class="ltx_title ltx_runin ltx_font_italic ltx_title_proof">Demonstração.</h6>
+<div id="SS1.p5" class="ltx_para">
+<p class="ltx_p">Ambas desigualdades seguem da desigualdade triangular e da Proposição <a href="#Thmprop1" title="Proposição 1.1.1. ‣ 1.1.1 Interpolação ‣ 1.1 Fundamentos preliminares ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.1.1</span></a>. Por exemplo, para a primeira desigualdade, temos</p>
+<table id="EGx5" class="ltx_equationgroup ltx_eqn_align">
+
+<tr id="Ch1.E34" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right">
+                      <math id="Ch1.E34.m1" class="ltx_Math" alttext="\displaystyle\|f-\pi f\|_{L^{2}(I)}^{2}" display="inline"><msubsup><mrow><mo>∥</mo><mrow id="XM210"><mi>f</mi><mo>-</mo><mrow><mi>π</mi><mo>⁢</mo><mi>f</mi></mrow></mrow><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM209">I</mi><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup></math>
+                    </td>
+<td class="ltx_td ltx_align_left">
+                      <math id="Ch1.E34.m2" class="ltx_Math" alttext="\displaystyle\leq\sum_{i=1}^{n}\|f-\pi f\|_{L^{2}(I_{i})}^{2}" display="inline"><mrow><mi></mi><mo>≤</mo><mrow><mstyle displaystyle="true"><munderover><mo largeop="true" movablelimits="false" symmetric="true">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover></mstyle><msubsup><mrow><mo>∥</mo><mrow id="XM212"><mi>f</mi><mo>-</mo><mrow><mi>π</mi><mo>⁢</mo><mi>f</mi></mrow></mrow><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub id="XM211"><mi>I</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup></mrow></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(1.34)</span></td>
+</tr>
+<tr id="Ch1.E35" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right"></td>
+<td class="ltx_td ltx_align_left">
+                      <math id="Ch1.E35.m2" class="ltx_Math" alttext="\displaystyle\leq\sum_{i=1}^{n}Ch_{i}^{4}\|f^{\prime\prime}\|_{L^{2}(I_{i})}^{%
+2}." display="inline"><mrow><mrow><mi></mi><mo>≤</mo><mrow><mstyle displaystyle="true"><munderover><mo largeop="true" movablelimits="false" symmetric="true">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover></mstyle><mrow><mi>C</mi><mo>⁢</mo><msubsup><mi>h</mi><mi>i</mi><mn>4</mn></msubsup><mo>⁢</mo><msubsup><mrow><mo>∥</mo><msup id="XM216"><mi>f</mi><mi>′′</mi></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub id="XM215"><mi>I</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup></mrow></mrow></mrow><mo>.</mo></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(1.35)</span></td>
+</tr>
+</table>
+<p class="ltx_p">∎</p>
+</div>
+</div>
+<div id="SS1.p6" class="ltx_para">
+<p class="ltx_p">Em construção …</p>
+</div>
+<div id="SS1.p7" class="ltx_para">
+<p class="ltx_p"><cite class="ltx_cite"></cite></p>
+</div>
+</section>
+</section>
+</div>
+<footer class="ltx_page_footer">
+<div>
+<a href="cap_mef1d.html" title="Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref" rel="prev"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">1 </span>Método de elementos finitos em 1D</span></a><a href="bib.html" title="Referências ‣ Método de Elementos Finitos" class="ltx_ref" rel="bibliography"><span class="ltx_text ltx_ref_title">Referências</span></a><a href="bib.html" title="Referências ‣ Método de Elementos Finitos" class="ltx_ref" rel="next"><span class="ltx_text ltx_ref_title">Referências</span></a>
+</div>
+<div class="ltx_page_logo">
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />O texto acima está sob Licença <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR">Creative Commons Atribuição-CompartilhaIgual 4.0 Internacional</a>. Generated  on Mon Aug  6 17:04:00 2018 by <a href="http://dlmf.nist.gov/LaTeXML/">LaTeXML <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg==" alt="[LOGO]"></a>
+</div></footer>
+</div>
+</div><!-- div class="row" -->
+</div><!-- div class="col-xs-12 col-xs-offset-0 col-md-8 col-md-offset-2 -->
+</body>
+</html>
