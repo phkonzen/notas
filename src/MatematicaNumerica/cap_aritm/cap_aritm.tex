@@ -11,11 +11,7 @@ ans = 0
 \end{verbatim}
 \fi
 
-<<<<<<< HEAD
 \section{Sistema de numeração posicional}\label{cap_aritm_sec_sisnumpos}
-=======
-\section{Sistema de numeração posicional}\label{cap_artm_sec_sisnumpos}
->>>>>>> dcc7491fb25d0fccd958b0f26b35c9115c81f65d
 
 Cotidianamente, usamos o sistema de numeração posicional na base decimal. Por exemplo, temos
 \begin{equation}
@@ -171,10 +167,145 @@ Por fim, dos passos 1. e 2., temos $(11010,101)_2 = (122,22)_4$.
   a)~$(1121,022)_4$; b)~$(1011,01)_2$  
 \end{resp}
 
-<<<<<<< HEAD
-\section{Representação de números em máquina}\label{cap_aritm_sec_nummaq}
-=======
 \section{Representação de números em máquina}\label{cap_artm_sec_repummaq}
->>>>>>> dcc7491fb25d0fccd958b0f26b35c9115c81f65d
+
+Usualmente, números são manipulados em máquina através de suas representações em registros com $n$-{\it bits}. Ao longo desta seção, vamos representar um tal registro por
+\begin{equation}
+  [b_0 ~ b_1 ~ b_2 ~ \cdots ~ b_{n-1}],
+\end{equation}
+onde cada {\it bit} é $b_i=0, 1$, $i=0, 1, 2, \dotsc, n-1$.
+
+Na sequência, fazemos uma breve discussão sobre as formas comumente usadas para a manipulação de números em computadores.
+
+\subsection{Números inteiros}
+
+A representação de complemento de 2 é usualmente utilizada em computadores para a manipulação de números inteiros. Nesta representação, um registro de $n$-{\it bits}
+\begin{equation}
+  [b_0 ~ b_1 ~ b_2 ~ \cdots ~ b_{n-1}],
+\end{equation}
+representa o número inteiro
+\begin{equation}
+  x = -d_{n-1}2^{n-1} + (d_{n-2}\ldots d_2d_1d_0)_2.
+\end{equation}
+
+\begin{ex}
+  O registro de 8 {\it bits}
+  \begin{equation}
+    [1 ~ 1 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0]
+  \end{equation}
+representa o número
+\begin{align}
+  x &= -0\cdots 2^{7} + (0000011)_2\\
+  &= 2^1 + 2^0 = 3.
+\end{align}
+
+\ifisoctave
+No \verb+GNU Octave+, podemos usar:
+\begin{verbatim}
+>> bitunpack(int8(3))
+ans =
+
+   1   1   0   0   0   0   0   0
+
+>> bitpack(logical([1 1 0 0 0 0 0 0]),'int8')
+ans = 3
+\end{verbatim}
+\fi
+\end{ex}
+
+Nesta representação de complemento de 2, o maior e o menor números inteiros que podem ser representados em um registro com $n$-{\it bits} são
+\begin{equation}
+  [1 ~ 1 ~ 1 ~ \cdots ~ 1 ~ 0] ~ \text{e} ~ [1 ~ 0 ~ 0 ~ 0 ~ \cdots ~ 0],
+\end{equation}
+respectivamente. Já o zero é obtido com o registro
+\begin{equation}
+  [0 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0].
+\end{equation}
+
+\begin{ex}
+  Com um registro de $8$-{\it bits}, temos que o maior e o menor números inteiros representados em complemento de 2 são
+  \begin{align}
+    [1 ~ 1 ~ 1 ~ 1 ~ 1 ~ 1 ~ 1 ~ 0] \sim x &= -0\cdot 2^7 + (1111111)_2 = 127,\\
+    [0 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0 ~ 1] \sim x &= -1\cdot 2^7 + (1111111)_2 = -128,\\
+  \end{align}
+  respectivamente.  
+\ifisoctave Confirmamos isso no \verb+GNU Octave+ com
+\begin{verbatim}
+>> intmax('int8')
+ans = 127
+>> intmin('int8')
+ans = -128
+\end{verbatim}
+  \fi
+\end{ex}
+
+A adição de números inteiros na representação de complemento de 2 pode ser feita de maneira simples. Por exemplo, consideremos a soma $3 + 9$ usando registros de 8 {\it bits}. Temos
+\begin{align}
+  3 &\sim [1 ~ 1 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0]\\
+  9 &\sim [1 ~ 0 ~ 0 ~ 1 ~ 0 ~ 0 ~ 0 ~ 0] ~ + \\
+  - & -------- \\
+ 12 &\sim [0 ~ 0 ~ 1 ~ 1 ~ 0 ~ 0 ~ 0 ~ 0]
+\end{align}
+
+Em representação de complemento de 2, a representação de um número negativo $-x$ pode ser obtida da representação de $x$, invertendo seus {\it bits} e somando 1. Por exemplo, a representação de $-3$ pode ser obtida da representação de $3$, como segue
+\begin{equation}
+  3 \sim [1 ~ 1 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0].
+\end{equation}
+Invertendo seus {\it bits} e somando 1, obtemos
+\begin{equation}
+  -3 \sim [1 ~ 0 ~ 1 ~ 1 ~ 1 ~ 1 ~ 1 ~ 1].
+\end{equation}
+
+A subtração de números inteiros usando a representação de complemento de 2 fica, então, tanto simples quanto a adição. Por exemplo:
+\begin{align}
+  3 &\sim [1 ~ 1 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0]\\
+ -9 &\sim [1 ~ 1 ~ 1 ~ 0 ~ 1 ~ 1 ~ 1 ~ 1] ~ + \\
+  - & -------- \\
+ -6 &\sim [0 ~ 1 ~ 0 ~ 1 ~ 1 ~ 1 ~ 1 ~ 1]
+\end{align}
+
+\ifisoctave
+\begin{obs}
+  Por padrão, o \verb+GNU Octave+ usa a representação de complemento de 2 com 32 {\it bits} para números inteiros. Com isso, temos
+\begin{verbatim}
+>> intmin()
+ans = -2147483648
+>> intmax()
+ans = 2147483647
+\end{verbatim}
+\end{obs}
+\fi
+
+\section{Ponto flutuante}
+
+A manipulação de números decimais em computadores é comumente realizada usando a representação de ponto flutuante de 64-{\it bits}. Nesta, um dado registro de 64-{\it bits}
+\begin{equation}
+  [m_{52} ~ m_{51} ~ m_{50} ~ \cdots ~ m_{1} ~ | ~ c_0 ~ c_1 ~ c_2 ~ \cdots ~ c_{10} ~ | ~ s]
+\end{equation}
+representa o número
+\begin{equation}
+  x = (-1)^s M\cdot 2^{c - 1023},
+\end{equation}
+onde $M$ é chamada de mantissa e $c$ da característica, as quais são definidas por
+\begin{align}
+  M &:= (1,m_1m_2m_3\ldots m_{52})_2,\\
+  c &:= (c_{10}\ldots c_2c_1c_0)_2.
+\end{align}
+
+\begin{ex}
+  Por exemplo, na representação em ponto flutuante de 64-{\it bits}, temos que o registro
+  \begin{equation}
+    [0 ~ 0 ~ 0 ~ \cdots ~ 0 ~ 1 ~ 0 ~ 1 ~ | ~ 0 ~ 0 ~ 0 ~ \cdots ~ 0 ~ 1 ~ | ~ 1]
+  \end{equation}
+representa o número $-3,25$.
+\end{ex}
+
+Dado um número real $x$, sua representação $fl(x)$ em ponto flutuante é dada pelo registro que representa o número mais próximo de $x$. Este procedimento é chamado de arredondamento. Por exemplo, $x = 0,1$ é representado pelo registro
+\begin{small}
+\begin{center}
+[0101100110011001100110011001100110011001100110011001110111111100]
+\end{center}
+\end{small}
+o qual é o número $fl(x) \approx 0,10000000000000000555111512312$. Desta forma, dados $x=0,1$ e $y=0,3$, a computação de $x + y$ em ponto flutuante passa, primeiro, por obtermos as representações $fl(x)$ e $fl(y)$, então computamos a soma $z = fl(x)+fl(y)$ e, por fim, obtemos a representação $fl(z)$, a qual será o valor computado de $x + y$.
 
 \emconstrucao
