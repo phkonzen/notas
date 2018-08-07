@@ -65,7 +65,28 @@ A interpolação é uma das técnicas de aproximação de funções. Dada uma fu
 \begin{equation}
   \pi f (x) = f(x_0)\varphi_0(x) + f(x_1)\varphi_1(x).
 \end{equation}
-Observamos que $\pi f$ é igual a $f$ nos nodos $x_0$ e $x_1$. Agora, vamos buscar medir o erro de interpolação, i.e. $f - \pi f$. Para tanto, podemos usar a norma $L^2$ definida por
+Observamos que $\pi f$ é igual a $f$ nos nodos $x_0$ e $x_1$. 
+
+\ifispython
+\begin{ex}\label{ex:interp_lin}
+  A Figura~\ref{fig:ex_interp_lin} ilustra a interpolação da função $f(x)=3\sen(2\pi x)$ no espaço $P_1([1/4, 3/4)]$. Neste caso
+  \begin{equation}
+    \pi f(x) = f\left(\frac{1}{4}\right)\frac{3/4-x}{1/2} + f\left(\frac{3}{4}\right)\frac{x-1/4}{1/2}.
+  \end{equation}
+
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./cap_mef1d/dados/ex_interp_lin/ex_interp_lin}
+    \caption{Interpolação linear de $f(x)=3\sen(2\pi x)$ no espaço $P_1([1/4, 3/4])$.}
+    \label{fig:ex_interp_lin}
+  \end{figure}
+
+Podemos computar a função interpolada $\pi f$ e o gráfico da Figura~\ref{fig:ex_interp_lin} no \verb+Python+ com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/dados/ex_interp_lin/ex_interp_lin.py}{código}:
+\verbatiminput{./cap_mef1d/dados/ex_interp_lin/ex_interp_lin.py}
+\end{ex}
+\fi
+
+Agora, vamos buscar medir o erro de interpolação, i.e. $f - \pi f$. Para tanto, podemos usar a norma $L^2$ definida por
 \begin{equation}
   \|v\|_{L^2(I)} = \left(\int_i v^2\, dx\right)^{1/2}.
 \end{equation}
@@ -79,7 +100,7 @@ e a de Cauchy-Schwarz
 \end{equation}
 para qualquer funções $v,w\in L^2(I)$.
 
-\begin{prop}\normalfont(Erro da interpolação linear)\label{prop:pif}
+\begin{prop}\normalfont(Erro da interpolação linear)\label{prop:interp_lin}
   O interpolador $\pi f$ satisfaz as estimativas
   \begin{align}
     \|f-\pi f\|_{L^2(I)} \leq Ch^2\|f''\|_{L^2(I)},\\
@@ -138,9 +159,26 @@ Vamos, agora, generalizar este resultado para a interpolação no espaço $V_h$ 
 \begin{equation}
   \pi f(x) = \sum_{i=0}^{n}f(x_i)\varphi_i(x).
 \end{equation}
-Neste caso, temos o seguinte resultado para o erro de interpolação.
 
-\begin{prop}
+\ifispython
+\begin{ex}\label{ex:interp_linpartes}
+  A Figura~\ref{fig:ex_interp_linpartes} ilustra a interpolação da função $f(x)=3\sen(2\pi x)$ no espaço $V_h$ das funções lineares por partes em uma malha uniforme do intervalo $I=[1/4, 3/4]$ com $n=4$ subintervalos ($5$ pontos). 
+
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./cap_mef1d/dados/ex_interp_linpartes/ex_interp_linpartes}
+    \caption{Interpolação linear de $f(x)=3\sen(2\pi x)$ no espaço $V_h$ das funções lineares por partes sobre uma malha com $5$ pontos.}
+    \label{fig:ex_interp_linpartes}
+  \end{figure}
+
+Podemos computar a função interpolada $\pi f$ e o gráfico da Figura~\ref{fig:ex_interp_linpartes} no \verb+Python+ com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/dados/ex_interp_linpartes/ex_interp_linpartes.py}{código}:
+\verbatiminput{./cap_mef1d/dados/ex_interp_linpartes/ex_interp_linpartes.py}
+\end{ex}
+\fi
+
+O seguinte resultado fornece uma estimativa do erro de interpolação em relação ao tamanho $h_i$ de cada elemento da malha.
+
+\begin{prop}\label{prop:interp_linpartes}
   O interpolador $\pi f$ satisfaz as estimativas
   \begin{align}
     \|f-\pi f\|_{L^2(I)}^2 &\leq C\sum_{i=1}^n h_i^4\|f''\|_{L^2(I)}^2,\\
@@ -148,11 +186,25 @@ Neste caso, temos o seguinte resultado para o erro de interpolação.
   \end{align}
 \end{prop}
 \begin{dem}
-  Ambas desigualdades seguem da desigualdade triangular e da Proposição~\ref{prop:pif}. Por exemplo, para a primeira desigualdade, temos
+  Ambas desigualdades seguem da desigualdade triangular e da Proposição~\ref{prop:interp_lin}. Por exemplo, para a primeira desigualdade, temos
   \begin{align}
     \|f - \pi f\|_{L^2(I)}^2 &\leq \sum_{i=1}^n \|f - \pi f\|_{L^2(I_i)}^2\\
     &\leq \sum_{i=1}^n Ch_i^4 \|f''\|_{L^2(I_i)}^2.
   \end{align}
 \end{dem}
+
+
+
+\emconstrucao
+
+\subsection{Exercícios}
+
+\begin{exer}
+  Faça um código para verificar as estimativas da Proposição~\ref{prop:interp_lin} no caso da interpolação da função $f(x) = 3\sen(2\pi x)$ no espaço $P_1$ das funções lineares.
+\end{exer}
+
+\begin{exer}
+  Faça um código para verificar as estimativas da Proposição~\ref{prop:interp_linpartes} no caso da interpolação da função $f(x) = 3\sen(2\pi x)$ no espaço $V_h$ das funções lineares por partes.
+\end{exer}
 
 \emconstrucao
