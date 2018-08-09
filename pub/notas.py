@@ -137,22 +137,22 @@ class Notas:
                         link_to_src += '/'+src_fname+'.tex'
 
                     link_to_src += '" target=_blank> <span class="glyphicon glyphicon-pencil"></span> </a>'
-                    link_to_src += '<a href="contato_'+p
-                    link_to_src += '" target="_blank"> <span class="glyphicon glyphicon-envelope"></span> </a></small>'
+                    link_to_src += '<a href="../contato.html" target="_blank">'
+                    link_to_src += ' <span class="glyphicon glyphicon-envelope"></span> </a></small>'
 
                     page = page.replace('</h1>',link_to_src+'</h1>')
                     page = page.replace('</h2>',link_to_src+'</h2>')
 
-                    #cria formulário de contato
-                    f = open("contato.html",'r')
-                    tcon = f.read()
-                    f.close()
+                    # #cria formulário de contato
+                    # f = open("contato.html",'r')
+                    # tcon = f.read()
+                    # f.close()
 
-                    tcon = tcon.replace('+++fromurl+++',srcref+'/'+p)
+                    # tcon = tcon.replace('+++fromurl+++',srcref+'/'+p)
 
-                    f = open(htmldir+'/contato_'+p,'w')
-                    f.write(tcon)
-                    f.close()
+                    # f = open(htmldir+'/contato_'+p,'w')
+                    # f.write(tcon)
+                    # f.close()
 
                 #colapsa as respostas dos exercícios
                 paux = page.find('ltx_theorem_resp')
