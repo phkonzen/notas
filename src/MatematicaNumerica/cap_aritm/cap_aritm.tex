@@ -300,12 +300,120 @@ onde $M$ é chamada de mantissa e $c$ da característica, as quais são definida
 representa o número $-3,25$.
 \end{ex}
 
-Dado um número real $x$, sua representação $fl(x)$ em ponto flutuante é dada pelo registro que representa o número mais próximo de $x$. Este procedimento é chamado de arredondamento. Por exemplo, $x = 0,1$ é representado pelo registro
+Dado um número real $x$, sua representação $fl(x)$ em ponto flutuante é dada pelo registro que representa o número mais próximo de $x$. Este procedimento é chamado de arredondamento por proximidade. Por exemplo, $x = 1,1$ é representado pelo registro
 \begin{small}
-\begin{center}
-[0101100110011001100110011001100110011001100110011001110111111100]
-\end{center}
+  \begin{center}
+    [0101100110011001100110011001100110011001100110011000111111111100]
+  \end{center}
 \end{small}
-o qual é o número $fl(x) \approx 0,10000000000000000555111512312$. Desta forma, dados $x=0,1$ e $y=0,3$, a computação de $x + y$ em ponto flutuante passa, primeiro, por obtermos as representações $fl(x)$ e $fl(y)$, então computamos a soma $z = fl(x)+fl(y)$ e, por fim, obtemos a representação $fl(z)$, a qual será o valor computado de $x + y$.
+o qual é o número 
+\begin{small}
+  \begin{center}
+    $fl(x) = 1,100000000000000088817841970012523233890533447265625,$
+  \end{center}
+\end{small}
+sendo o erro de arredondamento $|x - fl(x)| \approx 8,9\times 10^{-17}$.
+
+Observemos que o erro de arredondamento varia conforme o número dado, podendo ser zero no caso de $x = fl(x)$. Comumente, utiliza-se o \emph{épsilon de máquina}\index{épsilon de máquina} como uma aproximação deste erro. O épsilon de máquina é definido como a distância entre o número 1 e seu primeiro sucessor em ponto flutuante. Notemos que
+\begin{equation}
+  1 = fl(1) \sim [0 ~ 0 ~ 0 ~ \cdots ~ 0 ~ | ~ 1 ~ 1 ~ 1 ~ \cdots ~ 1 ~ 0 ~ | ~ 0].
+\end{equation}
+Assim sendo, o primeiro sucessor de $fl(1)$ é
+\begin{equation}
+  fl(1)+\mathrm{eps} \sim [1 ~ 0 ~ 0 ~ \cdots ~ 0 ~ | ~ 1 ~ 1 ~ 1 ~ \cdots ~ 1 ~ 0 ~ | ~ 0]
+\end{equation}
+onde $\mathrm{eps}$ é o épsilon de máquina e
+\begin{equation}
+  \mathrm{eps} = 2^{-52} \approx 2,22\times 10^{-16}.
+\end{equation}
+\ifisoctave
+No \verb+GNU Octave+, o $\mathrm{eps}$ está definido como constante:
+\begin{verbatim}
+>> eps
+ans =    2.2204e-16
+\end{verbatim}
+\fi
+
+A aritmética em ponto flutuante requer arredondamentos sucessivos de números. Por exemplo, a computação da soma de dois números dados $x$ e $y$ é feita a partir de suas representações em ponto flutuante $fl(x)$ e $fl(y)$. Então, computa-se $z = fl(x)+fl(y)$ e o resultado é $fl(z)$. Observe, inclusive que $fl(x+y)$ pode ser diferente de $fl(fl(x)+fl(y))$. Por exemplo
+\ifisoctave
+\begin{verbatim}
+>> 0.1+0.2 == 0.3
+ans = 0
+\end{verbatim}
+\fi
+
+\subsection{Exercício}
+
+\begin{exer}
+  Considerando a representação de complemento de 2 de números inteiros, obtenha os registros de $8$-{\it bits} dos seguintes números:
+  \begin{enumerate}[a)]
+  \item $15$
+  \item $-15$
+  \item $32$
+  \item $-32$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+     \ifisoctave 
+    \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/exer_int8/exer_int8.m}{Código.} 
+    \fi
+    a)~[11110000]; b)~[10001111]\\
+    c)~[00000100]; d)~[00000111]
+\end{resp}
+
+\begin{exer}
+  Considerando a representação de complemento de 2 de números inteiros, obtenha os registros de $16$-{\it bits} dos seguintes números:
+  \begin{enumerate}[a)]
+  \item $1024$
+  \item $-1024$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+     \ifisoctave 
+    \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/exer_int16/exer_int16.m}{Código.} 
+    \fi
+    a)~[0000000000100000]; \\
+    b)~[0000000000111111];
+\end{resp}
+
+\begin{exer}
+  Considerando a representação de complemento de 2 de números inteiros, qual é o maior número que pode ser representado por um registro de $32$-{\it bits} da forma
+  \begin{equation}
+    [1 ~ 0 ~ b_2 ~ b_3 ~ b_4 ~ \cdots ~ b_{30} ~ 1],
+  \end{equation}
+onde $b_i \in \{0, 1\}$, $i=2, 3, 4, \cdots, 15$.
+\end{exer}
+\begin{resp}
+  $[10111~\ldots~11] \sim -3$
+\end{resp}
+
+\begin{exer}
+  Obtenha os registros em ponto flutuante de $64$-{\it bits} dos seguintes números:
+  \begin{enumerate}[a)]
+  \item $-1,25$
+  \item $3$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+     \ifisoctave 
+    \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/exer_float64/exer_float64.m}{Código.} 
+    \fi
+    a)~$[000\ldots 0 10|111\ldots 10|1]$;\\
+    b)~$[000\ldots 01|000\ldots 01|0]$
+\end{resp}
+
+\begin{exer}
+  Considerando a representação em ponto flutuante de 64-{\it bits}, encontre o número que é representado pelos seguintes registros:
+  \begin{enumerate}[a)]
+  \item $[000\ldots 011|1000\ldots 01|0]$
+  \item $[111\ldots 1|111\ldots 1|1]$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+     \ifisoctave 
+    \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/exer_float2dec/exer_float2dec.m}{Código.} 
+    \fi  
+    a)~7; b)~\verb+NaN+
+\end{resp}
 
 \emconstrucao
