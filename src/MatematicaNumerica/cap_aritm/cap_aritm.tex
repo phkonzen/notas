@@ -120,7 +120,7 @@ F = 0
 Por fim, dos passos 1. e 2., temos $(11010,101)_2 = (122,22)_4$.
 \end{ex}
 
-\subsection{Exercícios}
+\subsection*{Exercícios}
 
 \begin{exer}\label{exer:base2dec}
   Obtenha a representação decimal dos seguinte números:
@@ -276,7 +276,7 @@ ans = 2147483647
 \end{obs}
 \fi
 
-\section{Ponto flutuante}
+\section{Ponto flutuante}\label{cap_aritm_sec_ptoflutuante}
 
 A manipulação de números decimais em computadores é comumente realizada usando a representação de ponto flutuante de 64-{\it bits}. Nesta, um dado registro de 64-{\it bits}
 \begin{equation}
@@ -342,7 +342,7 @@ ans = 0
 \end{verbatim}
 \fi
 
-\subsection{Exercício}
+\subsection*{Exercício}
 
 \begin{exer}
   Considerando a representação de complemento de 2 de números inteiros, obtenha os registros de $8$-{\it bits} dos seguintes números:
@@ -415,5 +415,232 @@ onde $b_i \in \{0, 1\}$, $i=2, 3, 4, \cdots, 15$.
     \fi  
     a)~7; b)~\verb+NaN+
 \end{resp}
+
+\section{Notação científica}\label{cap_aritm_sec_notcient}
+
+Enquanto que a manipulação de números decimais é comumente feita usando-se da aritmética em ponto flutuante, a interpretação dos parâmetros dos problemas de interesse e seus resultados é normalmente feita com poucos dígitos. Nesta seção, introduziremos algumas notações que serão utilizadas ao longo deste material.
+
+A \emph{notação científica}\index{notação científica} é a representação de um dado número na forma
+\begin{equation}
+  d_{n}\ldots d_2d_1d_0,d_{-1}d_{-2}d_{-3}\ldots \times 10^{E},
+\end{equation}
+onde $d_i$, $i=n, \ldots, 1, 0, -1, \ldots$, são algarismos da base 10. A parte à esquerda do sinal $\times$ é chamada de mantissa do número e $E$ é chamado de expoente (ou ordem de grandeza).
+
+\begin{ex}\label{ex:notacao_cientifica}
+  O número $31,515$ pode ser representado em notação científica das seguintes formas
+  \begin{align}
+    31,515\times 10^0 &= 3,1515\times 10^{1} \\
+                      &= 315,15\times 10^{-2} \\
+                      &= 0,031515\times 10^{3},
+  \end{align}
+entre outras tantas possibilidades.
+\end{ex}
+
+No exemplo anterior (Exemplo~\ref{ex:notacao_cientifica}), podemos observar que a representação em notação científica de um dado número não é única. Para contornar isto, introduzimos a \emph{notação científica normalizada}\index{notação científica!normalizada}, a qual tem a forma
+\begin{equation}
+  d_0,d_{-1}d_{-2}d_{-3}\ldots\times 10^{E},
+\end{equation}
+com $d_0 \neq 0$\footnote{No caso do número zero, temos $d_0=0$.}.
+
+\begin{ex}
+  O número $31,515$ representado em notação científica normalizada é $3,1515\times 10^{1}$.
+\end{ex}
+
+Como vimos na seção anterior, costumeiramente usamos da aritmética de ponto flutuante nas computações, com a qual os números são representados com muito mais dígitos dos quais estamos interessados na interpretação dos resultados. Isto nos leva de volta a questão do arredondamento.
+
+Dizemos que um número está representado com $n$ \emph{dígitos significativo}\index{dígitos significativo} (na notação científica normalizada) quando está escrito na forma
+\begin{equation}
+  d_0,d_{1}d_{2}\ldots d_{n-1}\times 10^{E},
+\end{equation}
+com $d_0\neq 0$. 
+
+\subsection{Arredondamento}
+
+Observamos que pode ocorrer a necessidade de se arredondar um número para obter sua representação com um número finito de dígitos significativos. Por exemplo, para representarmos o número $x=3,1415\times 10^1$ com 3 dígitos significativos, precisamos determinar de que forma vamos considerar a contribuição de seus demais dígitos a direita. Isto, por sua vez, é determinado pelo tipo de arredondamento que iremos utilizar.
+
+O tipo de arredondamento mais comumente utilizado é o chamado \emph{arredondamento por proximidade com desempate par}\index{arredondamento}. Neste, a representação escolhida é aquela mais próxima do número dado. Por exemplo, a representação de 
+\begin{equation}
+  x=3,1515\times 10^1
+\end{equation}
+ com três dígitos significativos é 
+ \begin{equation}
+   x=3,15\times 10^{1}. 
+\end{equation}
+Agora, sua representação com apenas dois dígitos significativos é
+\begin{equation}
+  x=3,2\times 10^{1}.
+\end{equation}
+No caso de empate, usa-se a seguinte regra: 1) no caso de o último dígito significativo ser par, este é mantido; 2) no caso de o último dígito significativo ser ímpar, este é acrescido de uma unidade. Por exemplo, no caso do número $x=3,1515\times 10^1$, sua representação com 4 dígitos significativos é
+\begin{equation}
+  x = 3,152\times 10^1.
+\end{equation}
+
+\ifisoctave
+No \verb+GNU Octave+, o arredondamento por proximidade com desempate par é o padrão para números em ponto flutuante. Vejamos os seguintes casos:
+\begin{verbatim}
+>> printf("%1.1\E\n",0.625)
+6.2E-01
+>> printf("%1.1\E\n",0.635)
+6.4E-01
+\end{verbatim}
+\fi
+
+No restante deste material estaremos assumindo a notação científica normalizada com arredondamento por proximidade.
+
+\subsection*{Exercícios}
+
+\begin{exer}
+  Obtenha a representação de $2718,2818$ em notação científica normalizada com:
+  \begin{enumerate}[a)]
+  \item 3 dígitos significativos.
+  \item 4 dígitos significativos.
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+    \ifisoctave 
+    \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/exer_notcient/exer_notcient.m}{Código.} 
+  \fi
+  a)~$2,72\times 10^3$; b)~$2,718\times 10^3$
+\end{resp}
+
+\ifisoctave
+Por padrão no \verb+GNU Octave+, números em ponto flutuante são arredondados por proximidade com desempate par. Então, explique o que está ocorrendo nos seguintes casos:
+\begin{verbatim}
+>> printf("%1.3\E\n",3.1515)
+3.151E+00
+>> printf("%1.3\E\n",3.1525)
+3.152E+00
+\end{verbatim}
+\fi
+
+\section{Tipos e medidas de erros}\label{cap_aritm_sec_erros}
+
+Ao utilizarmos computadores na resolução de problemas matemáticos, acabamos obtendo soluções aproximadas aproximadas. A diferença entre a solução exata e a computada solução aproximada é chamada de erro. O erro é comumente classificado nas seguintes duas categorias:
+\begin{itemize}
+\item \emph{Erro de arredondamento}\index{erro de!arredondamento}. Este é o erro que ocorre na representação aproximada de números na máquina.
+\item \emph{Erro de truncamento}\index{erro de!truncamento}. Este é o erro que ocorre na interrupção (truncamento) de um procedimento com infinitos passos.
+\end{itemize}
+
+\begin{ex}\label{ex:erro_de_arredondamento}
+  O erro de arredondamento em aproximar $\pi$ por $3,1415\times 10^0$ é de aproximadamente $9,3\times 10^{-5}$.
+\end{ex}
+
+\begin{ex}\label{ex:erro_de_truncamento}
+  Consideremos a seguinte série numérica $\sum_{k=0}^\infty 1/k! = e \approx 2,7183\times 10^0$. Ao computarmos esta série no computador, precisamos truncá-la em algum $k$ suficientemente grande. Por exemplo, trunca a série em seu décimo termo, temos
+  \begin{align}
+    \sum_{k=0}^\infty \frac{1}{k!} &\approx 1 + \frac{1}{2} + \frac{1}{3} + \cdots + \frac{1}{9} \\
+    &\approx 2,7182815\times 10^0 =: \tilde{e}.
+  \end{align}
+A diferença $e - \tilde{e} \approx 3\times 10^{-7}$ é o erro de truncamento associado.
+\end{ex}
+
+Suponhamos, agora, que $x$ seja o valor exato de uma quantidade de interesse e $\tilde{x}$ a quantidade computada (i.e., uma aproximação de $x$). Em matemática numérica, utilizamos frequentemente as seguintes medidas de erro:
+\begin{itemize}
+  \item Erro absoluto:
+    \begin{equation}
+      e_{abs} := |x - \tilde{x}|.
+    \end{equation}
+  \item Erro relativo:
+    \begin{equation}
+      e_{rel} := \frac{|x - \tilde{x}|}{|x|}\left(\times 100\%\right).
+    \end{equation}
+\end{itemize}
+
+A vantagem do erro relativo é em levar em conta a ordem de grandeza das quantidades $x$ e $\tilde{x}$. Vejamos o seguinte exemplo (Exemplo~\ref{ex:medidas_de_erros}).
+
+\begin{ex}\label{ex:medidas_de_erros}
+  Observemos os seguintes casos:
+  \begin{enumerate}[a)]
+  \item $x=1,0$ e $\tilde{x} = 1,1$:
+    \begin{align}
+      e_{abs} &= |x - \tilde{x}| = 1\times 10^{-1}.\\
+      e_{rel} &= \frac{|x - \tilde{x}|}{|x|} = 1\times 10^{-1} = 10\%.
+    \end{align}
+  \item $x=10000,0$ e $\tilde{x} = 11000,0$:
+    \begin{align}
+      e_{abs} &= |x - \tilde{x}| = 1\times 10^3.\\
+      e_{rel} &= \frac{|x - \tilde{x}|}{|x|} = 1\times 10^{-1} = 10\%.
+    \end{align}
+  \end{enumerate}
+\end{ex}
+
+Outra medida de erro comumente empregada é o \emph{número de dígitos significativos corretos}. Dizemos que $\tilde{x}$ aproxima $x$ com $n$ dígitos significativos corretos, quando
+\begin{equation}
+  \frac{|x - \tilde{x}|}{|x|} < 5\times 10^{-n}.
+\end{equation}
+
+\begin{ex}\label{ex:numdigsigcorr}
+  Vejamos o seguintes casos:
+  \begin{itemize}
+  \item $x=2$ e $\tilde{x} = 2,5$:
+    \begin{equation}
+      \frac{|x - \tilde{x}|}{|x|} = 0,25 < 5\times 10^{-1},
+    \end{equation}
+donde concluímos que $\tilde{x}=2,5$ é uma aproximação com $1$ dígito significativo correto de $x=2$.
+  \item $x=1$ e $\tilde{x} = 1,5$:
+    \begin{equation}
+      \frac{|x - \tilde{x}|}{|x|} = 0,5 < 5\times 10^{-0},
+    \end{equation}
+donde concluímos que $\tilde{x}=1,5$ é uma aproximação com zero dígito significativo correto de $x=1$.
+  \end{itemize}
+\end{ex}
+
+\subsection*{Exercícios}
+
+\begin{exer}\label{exer:erro_abs}
+  Calcule o erro absoluto na aproximação de
+  \begin{enumerate}[a)]
+  \item $\pi$ por $3,14$.
+  \item $10e$ por $27,18$.
+  \end{enumerate}
+  Forneça as respostas com $4$ dígitos significativos.
+\end{exer}
+\begin{resp}
+  \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/exer_erro_abs/exer_erro_abs.m}{Código.} 
+  \fi
+  a)~$1,593\times 10^{-3}$; b)~$2,818\times 10^{-1}$;
+\end{resp}
+
+\begin{exer}\label{exer:erro_rel}
+  Calcule o erro relativo na aproximação de
+  \begin{enumerate}[a)]
+  \item $\pi$ por $3,14$.
+  \item $10e$ por $27,18$.
+  \end{enumerate}
+  Forneça as respostas em porcentagem.
+\end{exer}
+\begin{resp}
+  \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/exer_erro_rel/exer_erro_rel.m}{Código.} 
+  \fi
+  a)~$0,051\%$; b)~$0,01\%$;
+\end{resp}
+
+\begin{exer}\label{exer:dig_corr}
+  Com quantos dígitos significativos corretos
+  \begin{enumerate}[a)]
+  \item $3,13$ aproxima $\pi$?
+  \item $27,21$ aproxima $10e$?
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/exer_dig_corr/exer_dig_corr.m}{Código.} 
+  \fi
+  a)~$3$; b)~$3$
+\end{resp}
+
+
+\begin{exer}
+  Obtenha uma estimativa do erro de truncamento em se aproximar o valor de $\sen(1)$ usando-se $p_5(1)$, onde $p_5(x)$ é o polinômio de Taylor de grau 5 da função $\sen(x)$ em torno de $x=0$.
+\end{exer}
+\begin{resp}
+  $1/6! \approx 1,4\times 10^{-3}$.
+\end{resp}
+
+\section{Propagação de erros}\label{cap_aritm_sec_properros}
+
+\subsection{Cancelamento catastrófico}
 
 \emconstrucao
