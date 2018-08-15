@@ -641,6 +641,106 @@ donde concluímos que $\tilde{x}=1,5$ é uma aproximação com zero dígito sign
 
 \section{Propagação de erros}\label{cap_aritm_sec_properros}
 
+Nesta seção, vamos introduzir uma estimativa para a propagação de erros (de arredondamento) na computação de um problema. Para tando, vamos considerar o caso de se calcular o valor de uma dada função $f$ em um dado ponto $x$, i.e. queremos calcular $y$ com
+\begin{equation}\label{eq:properros_aux1}
+  y = f(x).
+\end{equation}
+Agora, assumindo que $x$ seja conhecido com um erro $e(x)$, este se propaga no cálculo da $f$, levando a um erro $e(y)$ no valor calculado de $y$. Ou seja, temos
+\begin{equation}\label{eq:properros_aux2}
+  y + e(y) = f(x+e(x)).
+\end{equation}
+Notemos que $e_{abs}(x) = |e(x)|$ é o erro absoluto associado a $x$ e $e_{abs}(y) = |e(y)|$ é o erro absoluto associado a $y$.
+
+Nosso objetivo é de estimar $e_{abs}(y)$ com base em $e_{abs}(x)$. Para tanto, podemos tomar a aproximação de $f(x+e(x))$ dada pelo polinômio de Taylor de grau $1$ de $f$ em torno de $x$, i.e.
+\begin{equation}
+  f(x+e(x)) = f(x) + f'(x)e(x) + O\left(e^2(x)\right).
+\end{equation}
+Então, de \eqref{eq:properros_aux1} e \eqref{eq:properros_aux2}, temos
+\begin{equation}
+  e(y) = f'(x)e(x) + O(e^2(x)).
+\end{equation}
+Daí, passando ao valor absoluto e usando a desigualdade triangular, obtemos
+\begin{equation}
+  e_{abs}(y) \leq |f'(x)|e_{abs}(x) + O\left(e_{abs}^2(x)\right).
+\end{equation}
+Deste resultado, consideraremos a seguinte estimativa de propagação de erro
+\begin{equation}\label{eq:estproperro_1}
+  e_{abs}(y) \approx |f'(x)|e_{abs}(x).
+\end{equation}
+
+\begin{ex}\label{ex:properro_1}
+  Consideremos o problema em se calcular $y = f(x) = x^2\sen(x)$ com $x=\pi/3 \pm 0,1$. Usando \eqref{eq:estproperro_1} para estimarmos o erro absoluto $e_{abs}(y)$ no cálculo de $y$ com base no erro absoluto $e_{abs}(x)=0,1$, calculamos
+  \begin{align}
+    e_{abs}(y) &= |f'(x)|e_{abs}(x)\\
+             &= |2x\sen(x) + x^2\cos(x)|e_{abs}(x)\\
+             &= 2,3621\times 10^{-1}.
+  \end{align}
+Com isso, podemos concluir que um erro em $x$ de tamanho $0,1$ é propagado no cálculo de $f(x)$, causando um erro pelo menos duas vezes maior em $y$. Também, podemos interpretar este resultado do ponto de vista do erro relativo. O erro relativo associado a $x$ é
+\begin{equation}
+  e_{rel}(x) = \frac{e_{abs}(x)}{|x|} = \frac{0,1}{\pi/3} = 9,5493\times 10^{-2} \approx 1\%,
+\end{equation}
+acarretando um erro relativo em $y$ de
+\begin{equation}
+  e_{rel}(y) = \frac{e_{abs}(y)}{|y|} = \frac{e_{abs}(y)}{|f(x)|} = 2,4872\times 10^{-1} \approx 2\%.
+\end{equation}
+\ifisoctave
+Podemos fazer estas contas com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/ex_properro_1/ex_properro_1.m}{código} \verb+GNU Octave+:
+\verbatiminput{./cap_aritm/dados/ex_properro_1/ex_properro_1.m}
+\fi
+\end{ex}
+
+Associada à estimativa \eqref{ex:properro_1}, temos
+\begin{align*}
+  e_{rel}(y) = \frac{e_{abs}(y)}{|y|} &= \frac{|f'(x)|}{|y|}e_{abs}(x)\\
+  &= \frac{|x|\cdot |f'(x)|}{|f(x)|}\frac{e_{abs}(x)}{|x|}\\
+  &= \left|\frac{xf'(x)}{f(x)}\right|e_{rel}(x).
+\end{align*}
+Desta última equação, definimos o \emph{número de condicionamento} de $f$, denotado por
+\begin{equation}
+  \kappa_f(x) := \left|\frac{xf'(x)}{f(x)}\right|.
+\end{equation}
+Observamos que $\kappa_f(x)$ é a escala com que erros em $x$ são propagados no cálculo de $y = f(x)$.
+
+\begin{ex}\label{ex:numcond_1}
+  O número de condicionamento da função $f(x) = x^2\sen(x)$ no ponto $x=\pi/3$ pode ser calculado de
+  \begin{align}
+    \kappa_f(x) &= \left|\frac{xf'(x)}{f(x)}\right|\\
+                &= \left|\frac{x(2x\sen(x)+x^2\cos(x))}{x^2\sen(x)}\right|. 
+  \end{align}
+  Substituindo $x$ por $\pi/3$ temos
+  \begin{equation}
+    \kappa_f(\pi/3) = 2,6046.
+  \end{equation}
+  Notamos que este resultado é compatível com as observações feitas no Exemplo \ref{ex:properro_1}.
+  
+  \ifisoctave
+  Podemos computar $\kappa_f(x)$ com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/ex_numcond_1/ex_numcond_1.m}{código} \verb+GNU Octave+:
+  \verbatiminput{./cap_aritm/dados/ex_numcond_1/ex_numcond_1.m}
+  \fi
+\end{ex}
+
+A estimativa \eqref{eq:estproperro_1} pode ser generalizada para uma função de várias variáveis. No caso de uma função $y = f(x_1,x_2,\dotsc,x_n)$, temos
+\begin{equation}\label{eq:estproperro_n}
+  e_{abs}(y) = \sum_{k=1}^n \left|\frac{\p f}{\p x_k}\right|e_{abs}(x_k).
+\end{equation}
+
+\begin{ex}\label{ex:properro_2}
+  Consideremos o problema em se calcular $z = f(x,y) = x^2\sen(x)\cos(y)$ com $x=\pi/3 \pm 0,1$ e $y=\pi/4 \pm 0,02$. Usando \eqref{eq:estproperro_n} para estimarmos o erro absoluto $e_{abs}(z)$ no cálculo de $z$ com base nos erros absolutos $e_{abs}(x)=0,1$ e $e_{abs}(y)=0,02$, calculamos
+  \begin{align}
+    e_{abs}(z) &= \left|\frac{\p f}{\p x}\right|e_{abs}(x) + \left|\frac{\p f}{\p y}\right|e_{abs}(y)\\
+             &= |(2x\sen(x) + x^2\cos(x))\cos(y)|e_{abs}(x) + \left|-x^2\sen(x)\sen(y)\right|e_{abs}(y)\\
+             &= 1,8046\times 10^{-1}.
+  \end{align}
+\ifisoctave
+Podemos fazer estas contas com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/ex_properro_2/ex_properro_2.m}{código} \verb+GNU Octave+:
+\verbatiminput{./cap_aritm/dados/ex_properro_2/ex_properro_2.m}
+\fi
+\end{ex}
+
+
 \subsection{Cancelamento catastrófico}
 
 \emconstrucao
+
+\subsection*{Exercícios}
+
