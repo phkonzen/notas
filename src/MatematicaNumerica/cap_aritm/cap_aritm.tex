@@ -728,7 +728,8 @@ A estimativa \eqref{eq:estproperro_1} pode ser generalizada para uma função de
   Consideremos o problema em se calcular $z = f(x,y) = x^2\sen(x)\cos(y)$ com $x=\pi/3 \pm 0,1$ e $y=\pi/4 \pm 0,02$. Usando \eqref{eq:estproperro_n} para estimarmos o erro absoluto $e_{abs}(z)$ no cálculo de $z$ com base nos erros absolutos $e_{abs}(x)=0,1$ e $e_{abs}(y)=0,02$, calculamos
   \begin{align}
     e_{abs}(z) &= \left|\frac{\p f}{\p x}\right|e_{abs}(x) + \left|\frac{\p f}{\p y}\right|e_{abs}(y)\\
-             &= |(2x\sen(x) + x^2\cos(x))\cos(y)|e_{abs}(x) + \left|-x^2\sen(x)\sen(y)\right|e_{abs}(y)\\
+             &= |(2x\sen(x) + x^2\cos(x))\cos(y)|e_{abs}(x) \nonumber\\
+               &+ \left|-x^2\sen(x)\sen(y)\right|e_{abs}(y)\\
              &= 1,8046\times 10^{-1}.
   \end{align}
 \ifisoctave
@@ -740,7 +741,74 @@ Podemos fazer estas contas com o seguinte \href{https://github.com/phkonzen/nota
 
 \subsection{Cancelamento catastrófico}
 
-\emconstrucao
+No computador (com aritmética de ponto flutuante de 64-{\it bits}), as operações e funções elementares são computadas, usualmente, com um erro próximo do épsilon de máquina\index{épsilon de máquina} ($\mathrm{eps} \approx 10^{-16}$). Entretanto, em algumas situações estas operações fundamentais acarretam erros maiores, causando uma perda de precisão.
+
+O chamado cancelamento catastrófico ocorre quando ao computarmos a diferença entre dois números próximos. Para ilustrá-lo, consideremos os seguintes números
+\begin{align}
+  x &= 314150000001549,\\
+  y &= 314150000002356.
+\end{align}
+Suponhamos, ainda, os arredondamentos de $x$ e $y$ com $12$ dígitos significativos
+\begin{align}
+  \tilde{x} &= 314150000002,\\
+  \tilde{y} &= 314150000002.
+\end{align}
+Notemos que os erros relativos associados às aproximações de $x$ e $y$ por $\tilde{x}$ e $\tilde{y}$ são
+\begin{align}
+  e_{rel}(x) &= \frac{|x-\tilde{x}|}{|x|} \approx 1\%,\\
+  e_{rel}(y) &= \frac{|y-\tilde{y}|}{|y|} \approx 1\%,
+\end{align}
+respectivamente. Agora, temos
+\begin{align}
+  y-x = 807\quad\text{e}\quad\tilde{y}-\tilde{x}=0.
+\end{align}
+Ou seja, o erro relativa na aproximação de $y-x$ por $\tilde{y}-\tilde{x}$ é
+\begin{equation}
+  e_{rel}(y-x) = \frac{|(y-x)-(\tilde{y}-\tilde{x})|}{(y-x)} = \frac{807}{807} = 100\%!
+\end{equation}
+Vejamos outros exemplos.
+
+\begin{ex}\label{ex:cancela_1}
+  Na Tabela~\ref{tab:cancela_1} temos os erros em se computar
+  \begin{equation}
+    \frac{(1+x^4)-1}{x^4}
+  \end{equation}
+para diferentes valores de $x$. Observamos que, para o valor de $x=0,001$ o erro na computação já é da ordem de $10^{-5}$ e para valores de $x$ menores ou iguais a $0,0001$ o erro é catastrófico. Isto ocorre, pois se $x\leq 10^{-4}$, então $x^4 \leq 10^{-16} < \mathrm{eps}$ e, portanto, $(1+x^4)-1=0$.
+  \begin{table}[h!]
+    \centering
+    \begin{tabular}{l|r}
+      $x$     & erro \\\hline
+      $1$      & $0$ \\
+      $10^{-1}$ & $1,1\times 10^{-13}$\\
+      $10^{-2}$ & $6,1\times 10^{-9}$\\
+      $10^{-3}$ & $8,9\times 10^{-5}$\\
+      $10^{-4}$ & $1,0\times 10^{0}$\\
+      $10^{-5}$ & $1,0\times 10^{0}$\\\hline
+    \end{tabular}
+    \caption{Resultados referentes ao Exemplo~\ref{ex:cancela_1}.}
+    \label{tab:cancela_1}
+  \end{table}
+\end{ex}
+
+\begin{ex}\label{ex:solpq}
+  Uma equação de segundo grau $ax^2 + bx + c = 0$ tem raízes
+  \begin{align}
+    x_1 &= \frac{-b + \sqrt{b^2 - 4ac}}{2a},\label{eq:cancela_b}\\
+    x_2 &= \frac{-b - \sqrt{b^2 - 4ac}}{2a}.\label{eq:cancela_bx2}
+  \end{align}
+Entretanto, no caso de $b$ e $\sqrt{b^2 - 4ac}$ serem ambos positivos, a fórmula \eqref{eq:cancela_b} não é adequada para a computação da raiz $x_1$, pois pode ocorrer cancelamento catastrófico. Podemos contornar este problema reescrevendo $\eqref{eq:cancela_b}$ da seguinte forma
+\begin{align}
+  x_1 &= \frac{-b + \sqrt{b^2 - 4ac}}{2a}\frac{-b - \sqrt{b^2 - 4ac}}{-b - \sqrt{b^2 - 4ac}}\\
+  &= \frac{-b^2 + b^2 - 4ac}{2a(-b-\sqrt{b^2-4ac})}\\
+  &= \frac{2c}{b+\sqrt{b^2-4ac}},
+\end{align}
+a qual não sofre mais de cancelamento catastrófico. Observemos que também pode ocorrer cancelamento catastrófico no cálculo de $x_2$ pela fórmula \eqref{eq:cancela_bx2}, no caso de $b$ e $\sqrt{b^2 - 4ac}$ serem ambos negativos.
+\ifisoctave
+No \verb+GNU Octave+, podemos escrever a seguinte função para computar as raízes de um polinômio quadrático $ax^2 + bx + c$ (\href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/ex_solpq/ex_solpq.m}{código}):
+\verbatiminput{./cap_aritm/dados/ex_solpq/ex_solpq.m}
+\fi
+\end{ex}
 
 \subsection*{Exercícios}
 
+\emconstrucao
