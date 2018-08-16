@@ -18,8 +18,11 @@ pif = interpolate.interp1d(xx,f(xx))
 #grafico
 xpts = np.linspace(l0,l1)
 plt.plot(xpts,f(xpts),color="red",label="f")
-plt.plot(xx,f(xx),color="red",linestyle="",marker="o",label="pts")
-plt.plot(xpts,pif(xpts),color="blue",label=r"$\pi f$")
+plt.plot(xx,f(xx),
+         color="red",linestyle="",
+         marker="o",label="pts")
+plt.plot(xpts,pif(xpts),
+         color="blue",label=r"$\pi f$")
 plt.grid("on")
 plt.xlabel(r"$x$",fontsize=20)
 plt.ylim((-3.5,3.5))
