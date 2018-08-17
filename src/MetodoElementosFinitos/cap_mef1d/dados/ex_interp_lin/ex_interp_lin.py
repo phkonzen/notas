@@ -15,7 +15,7 @@ pif = interpolate.interp1d([x0,x1],[f(x0),f(x1)])
 
 #grafico
 xpts = np.linspace(x0,x1)
-plt.plot(xpts,f(xpts),color="red",label="f")
+plt.plot(xpts,f(xpts),color="red",label="$f$")
 plt.plot([x0,x1],[f(x0),f(x1)],
          color="red",linestyle="",
          marker="o",label="pts")
@@ -24,5 +24,5 @@ plt.plot(xpts,pif(xpts),
 plt.grid("on")
 plt.xlabel(r"$x$",fontsize=20)
 plt.ylim((-3.5,3.5))
-plt.legend()
+plt.legend(numpoints=1)
 plt.show()
