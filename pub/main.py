@@ -29,6 +29,9 @@ os.system('rm -rvf '+srcdir+'/*')
 index = Index(odir)
 index.build()
 
+#contato.html
+os.system('cp contato.html '+odir+'/')
+
 #copia src para pasta temporária
 os.system('cp -rvf ../src/* '+srcdir+'/')
 
