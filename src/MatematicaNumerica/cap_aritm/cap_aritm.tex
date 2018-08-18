@@ -276,7 +276,7 @@ ans = 2147483647
 \end{obs}
 \fi
 
-\section{Ponto flutuante}
+\subsection{Ponto flutuante}
 
 A manipulação de números decimais em computadores é comumente realizada usando a representação de ponto flutuante de 64-{\it bits}. Nesta, um dado registro de 64-{\it bits}
 \begin{equation}
@@ -300,12 +300,40 @@ onde $M$ é chamada de mantissa e $c$ da característica, as quais são definida
 representa o número $-3,25$.
 \end{ex}
 
+\section{Erro de arredondamento}
+
 Dado um número real $x$, sua representação $fl(x)$ em ponto flutuante é dada pelo registro que representa o número mais próximo de $x$. Este procedimento é chamado de arredondamento. Por exemplo, $x = 0,1$ é representado pelo registro
 \begin{small}
 \begin{center}
 [0101100110011001100110011001100110011001100110011001110111111100]
 \end{center}
 \end{small}
-o qual é o número $fl(x) \approx 0,10000000000000000555111512312$. Desta forma, dados $x=0,1$ e $y=0,3$, a computação de $x + y$ em ponto flutuante passa, primeiro, por obtermos as representações $fl(x)$ e $fl(y)$, então computamos a soma $z = fl(x)+fl(y)$ e, por fim, obtemos a representação $fl(z)$, a qual será o valor computado de $x + y$.
+o qual é o número $fl(x) \approx 0,10000000000000000555111512312$. 
+
+Desta forma, dados $x=0,1$ e $y=0,3$, a computação de $x + y$ em ponto flutuante passa, primeiro, por obtermos as representações $fl(x)$ e $fl(y)$, então computamos a soma $z = fl(x)+fl(y)$ e, por fim, obtemos a representação $fl(z)$, a qual será o valor computado de $x + y$.
+\ifisoctave
+Vejamos como isto ocorre no \verb+GNU Octave+.
+\begin{verbatim}
+>> x=0.1; printf("x=%1.50f\n",x)
+x=0.10000000000000000555111512312578270211815834045410
+>> y=0.2; printf("y=%1.50f\n",y)
+y=0.20000000000000001110223024625156540423631668090820
+>> z=x+y; printf("z=%1.50f\n",z)
+z=0.30000000000000004440892098500626161694526672363281
+\end{verbatim}
+\fi
+
+A diferença entre o número real $x$ e sua aproximação em ponto flutuante $fl(x)$ é chamada de erro de arredondamento.
+
+
+Aqui, discutiremos um pouco mais sobre o fato de que
+\ifisoctave
+\begin{verbatim}
+>> 0.1 + 0.2 == 0.3
+ans = 0
+\end{verbatim}
+\fi
+
+
 
 \emconstrucao
