@@ -1,10 +1,9 @@
-f = @(x) (2*x.^3-1.4*x.^2-0.98*x+0.686).*exp(-x.^2)-...
-         (x.^3-0.7*x.^2-0.49*x+0.343).*exp(-x.^4);
-xx=linspace(-2,2);
+f = @(x) sin(x+pi/4).^2-x.^3+pi*x.^2/4+5*pi^2*x/16+3*pi^3/64;
+xx=linspace(-2,3);
 plot(xx,f(xx));grid
-hold onx
-xx=[-0.7 0.7];
+hold on
+xx=[-pi/4 3*pi/4];
 plot(xx,f(xx),'ro');
-legend("f","zeros","location","northwest")
+legend("f","zeros","location","northest")
 set(gca,"fontsize",12)
 hold off

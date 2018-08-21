@@ -1,12 +1,11 @@
 pkg load symbolic
 syms x
-f = (2*x.^3-1.4*x.^2-0.98*x+0.686).*exp(-x.^2)-...
-         (x.^3-0.7*x.^2-0.49*x+0.343).*exp(-x.^4);
-         
-fl = matlabFunction(diff(f))
+f = @(x) sin(x+pi/4).^2-x.^3+pi*x.^2/4+5*pi^2*x/16+3*pi^3/64;
+fl = function_handle(diff(f(x)));
 
-xx=linspace(0.5,1);
-plot(xx,fl(xx),'b-',...
-     0.7,fl(0.7),'ro');grid
-legend("fl","zero","location","northwest")
+xx=linspace(-2,3);
+plot(xx,f(xx),'b-',...
+     xx,fl(xx),'r-',...
+     -pi/4,fl(-pi/4),'ro');grid
+legend("f","f'","zero","location","northeast")
 set(gca,"fontsize",12)

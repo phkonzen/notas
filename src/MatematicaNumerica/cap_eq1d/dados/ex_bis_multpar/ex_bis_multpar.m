@@ -1,25 +1,21 @@
 pkg load symbolic
 syms x
-f = @(x) (2*x.^3-1.4*x.^2-0.98*x+0.686).*exp(-x.^2)-...
-         (x.^3-0.7*x.^2-0.49*x+0.343).*exp(-x.^4);
+f = @(x) sin(x+pi/4).^2-x.^3+pi*x.^2/4+5*pi^2*x/16+3*pi^3/64;
 fl = function_handle(diff(f(x)));
 
 TOL=1e-3;
-a=0.5;
-b=1.0;
-x=(a+b)/2;
-printf("%d %1.4E %1.4E %1.4E %d\n",...
-       1,a,b,x,sign(fl(a)*fl(x)));
-for k=2:10
+a=-1;
+b=0;
+for k=1:15
+  x=(a+b)/2;
+  printf("%d %1.4E %1.4E %1.4E %d\n",...
+       k,a,b,x,sign(fl(a))*sign(fl(x)));
   if ((fl(x)==0) | ((b-a)/2<TOL))
     disp('convergiu')
     break;
-  elseif (sign(fl(a)*fl(x))<0)
+  elseif (sign(fl(a))*sign(fl(x))==-1)
     b=x;
   else
     a=x;
   end
-  x=(a+b)/2;
-  printf("%d %1.4E %1.4E %1.4E %d\n",...
-         k,a,b,x,sign(fl(a)*fl(x)));
 endfor

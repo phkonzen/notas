@@ -18,14 +18,13 @@ O método da bisseção explora o fato de que toda função contínua $f$ com $f
 \begin{ex}\label{ex:bis_intro}
   Consideremos o problema de resolver
   \begin{equation}
-    (2x^3-1,4x^2-0.98x+0.686)e^{-x^2} = (x^3-0,7x^2-0,49x+0,343)e^{-x^4}.
+    \sen^2\left(x+\frac{\pi}{4}\right) = x^3 - \frac{\pi}{4}x^2 - \frac{5\pi^2}{16}x - \frac{3\pi^3}{64}.
   \end{equation}
 Este problema é equivalente a encontrar os zeros da seguinte função
-\begin{align}
-  f(x) &= (2x^3-1,4x^2-0.98x+0.686)e^{-x^2} \nonumber\\
-       &- (x^3-0,7x^2-0,49x+0,343)e^{-x^4}.
-\end{align}
-Os zeros exatos\footnote{O problema foi construído para que tivesse estas soluções.} desta função são $x_1=-0,7$ e $x_2=x_3=0,7$ (veja a Figura \ref{fig:bis_intro}).
+\begin{equation}
+  f(x) = \sen^2\left(x+\frac{\pi}{4}\right) - x^3 + \frac{\pi}{4}x^2 + \frac{5\pi^2}{16}x + \frac{3\pi^3}{64}.
+\end{equation}
+Os zeros exatos\footnote{O problema foi construído para que tivesse estas soluções.} desta função são $x_1=3\pi/4\approx 2,3562$ e $x_2=x_3=-\pi/4\approx -0,78540$ (veja a Figura \ref{fig:bis_intro}).
 
 \begin{figure}[h!]
   \centering
@@ -34,7 +33,7 @@ Os zeros exatos\footnote{O problema foi construído para que tivesse estas solu�
   \label{fig:bis_intro}
 \end{figure}
 
-Observamos que esta função é contínua e que, por exemplo, $f(-1)<0$ e $f(1)>0$, logo $f(-1)\cdot f(1) < 0$ e, de fato, $f$ tem pelo menos um zero\footnote{De fato, $f$ tem três zeros no intervalo $(-1, 1)$.} no intervalo $(-1, 1)$.
+Observamos que esta função é contínua e que, por exemplo, $f(-2)>0$ e $f(3)<0$, logo $f(-2)\cdot f(3) < 0$ e, de fato, $f$ tem pelo menos um zero\footnote{De fato, $f$ tem três zeros no intervalo $(-2, 3)$.} no intervalo $(-2, 3)$.
 
 \ifisoctave
 O esboço do gráfico da função $f$ pode ser feito no \verb+GNU Octave+ com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/ex_bis_intro/ex_bis_intro.m}{código}:
@@ -54,29 +53,26 @@ Daí, o procedimento se repete até obtermos uma aproximação com a precisão d
 
 \begin{ex}\label{ex:bis_exec}
   Consideremos o problema de encontrar um zero da função
-  \begin{align}
-  f(x) &= (2x^3-1,4x^2-0.98x+0.686)e^{-x^2} \nonumber\\
-       &- (x^3-0,7x^2-0,49x+0,343)e^{-x^4}.
-  \end{align}
-Do esboço de seu gráfico (Figura \ref{fig:bis_intro}) vemos que $f(-1)\cdot f(1) \neq 0$. Então, aplicando o método da bisseção com intervalo inicial $(a^{(1)}, b^{(1)}) = (-1, 1)$ e aproximação inicial $x^{(1}) = (a^{(1)}+b^{(1)})/2$, obtemos as aproximações apresentadas na Tabela \ref{tab:bis_exec}.
-
-Da Tabela \ref{tab:bis_exec}, observamos que as iteradas $x^{(k)}$ do método da bisseção parecem estar convergindo para o zero $x_1 = -0,7$ da função $f$. De fato, já na segunda iterada o método fica restrito a encontrar uma solução no intervalo $(a^{(2)}, b^{(2)}) = (-1, 0)$, o que excluí a possibilidade de o mesmo convergir para os outros zeros de $f$.
+\begin{equation}
+  f(x) = \sen^2\left(x+\frac{\pi}{4}\right) - x^3 + \frac{\pi}{4}x^2 + \frac{5\pi^2}{16}x + \frac{3\pi^3}{64}.
+\end{equation}
+Do esboço de seu gráfico (Figura \ref{fig:bis_intro}) vemos que $f(2)\cdot f(3) \neq 0$ sendo que o zero $x=3\pi/4\approx 2,3562$ de $f$ está no intervalo $(2, 3)$. Então, aplicando o método da bisseção com intervalo inicial $(a^{(1)}, b^{(1)}) = (2, 3)$ e aproximação inicial $x^{(1}) = (a^{(1)}+b^{(1)})/2$, obtemos as aproximações apresentadas na Tabela \ref{tab:bis_exec}.
 
 \begin{table}[h!]
   \centering
   \caption{Resultados referentes ao Exemplo~\ref{ex:bis_exec}.}
   \begin{tabular}{r|rr|r|c}
     k & $a^{(k)}$ & $b^{(k)}$ & $x^{(k)}$ & $f(a^{(k)})\cdot f(x^{(k)})$\\\hline
-    1 & $-1,0000\E+0$ & $1,0000\E+0$ & $0,0000\E+0$ & -1 \\
-    2 & $-1,0000\E+0$ & $0,0000\E+0$ & $-5,0000\E-1$ & -1 \\
-    3 & $-1,0000\E+0$ & $-5,0000\E-1$ & $-7,5000\E-1$ & 1 \\
-    4 & $-7,5000\E-1$ & $-5,0000\E-1$ & $-6,2500\E-1$ &  -1 \\
-    5 & $-7,5000\E-1$ & $-6,2500\E-1$ & $-6,8750\E-1$ &  -1 \\
-    6 & $-7,5000\E-1$ & $-6,8750\E-1$ & $-7,1875\E-1$ &  1 \\
-    7 & $-7,1875\E-1$ & $-6,8750\E-1$ & $-7,0312\E-1$ & 1 \\
-    8 & $-7,0312\E-1$ & $-6,8750\E-1$ & $-6,9531\E-1$ & -1 \\
-    9 & $-7,0312\E-1$ & $-6,9531\E-1$ & $-6,9922\E-1$ & -1 \\
-    10 & $-7,0312\E-1$ & $-6,9922\E-1$ & $-7,0117\E-1$ & 1 \\\hline
+    1 & $2,0000$ & $3,0000$ & $2,5000$ & -1 \\
+    2 & $2,0000$ & $2,5000$ & $2,2500$ &  1 \\
+    3 & $2,2500$ & $2,5000$ & $2,3750$ & -1 \\
+    4 & $2,2500$ & $2,3750$ & $2,3125$ & 1 \\
+    5 & $2,3125$ & $2,3750$ & $2,3438$ & 1 \\
+    6 & $2,3438$ & $2,3750$ & $2,3594$ &  -1 \\
+    7 & $2,3438$ & $2,3594$ & $2,3516$ & 1 \\
+    8 & $2,3516$ & $2,3594$ & $2,3555$ &  1 \\
+    9 & $2,3555$ & $2,3594$ & $2,3574$ &  -1 \\
+    10 & $2,3555$ & $2,3574$ & $2,3564$ & -1 \\\hline
   \end{tabular}
   \label{tab:bis_exec}
 \end{table}
@@ -115,18 +111,17 @@ E, daí também, segue a convergência do método da bisseção, pois
 
 \begin{ex}\label{ex:bis_conv}
   No Exemplo \ref{ex:bis_exec} aplicamos o método da bisseção para a função
-  \begin{align}
-  f(x) &= (2x^3-1,4x^2-0.98x+0.686)e^{-x^2} \nonumber\\
-       &- (x^3-0,7x^2-0,49x+0,343)e^{-x^4}.
-  \end{align}
-no intervalo $(-1, 1)$. Observando os resultados mostrados na Tabela \ref{tab:bis_exec}, vemos que
 \begin{equation}
-  |x^{(10)}-x^*| = 1,1719\E-3,
+  f(x) = \sen^2\left(x+\frac{\pi}{4}\right) - x^3 + \frac{\pi}{4}x^2 + \frac{5\pi^2}{16}x + \frac{3\pi^3}{64}.
 \end{equation}
-com $x^* = x_1 = -0,7$. Observamos que este resultado está de acordo com a estimativa do erro de truncamento \eqref{eq:bis_est_trunc}, da qual temos
+no intervalo $(2, 3)$. Observando os resultados mostrados na Tabela \ref{tab:bis_exec}, vemos que
+\begin{equation}
+  |x^{(10)}-x^*| = 2,5\E-4,
+\end{equation}
+com $x^* = x_1 = 3\pi/4$. Observamos que este resultado é consistente com a estimativa do erro de truncamento \eqref{eq:bis_est_trunc}, da qual temos
 \begin{align}
   |x^{(10)} - x^*| &\leq \frac{b^{(1)}-a^{(1)}}{2^{10}}\\
-  &= \frac{2}{2^{10}} = 1,9531\E-3.
+  &= \frac{1}{2^{10}} = 9,8\E-4.
 \end{align}
 \end{ex}
 
@@ -153,48 +148,46 @@ tem $x^*$ como um zero de multiplicidade $2m-1$ (ímpar) e, desta forma, podemos
 
 \begin{ex}\label{ex:bis_multpar}
   A função
-  \begin{align}
-  f(x) &= (2x^3-1,4x^2-0.98x+0.686)e^{-x^2} \nonumber\\
-       &- (x^3-0,7x^2-0,49x+0,343)e^{-x^4}.
-  \end{align}
-tem $x=0,7$ como um zero de multiplicidade par (veja Figura \ref{fig:bis_intro}). Para aplicarmos o método da bisseção para aproximarmos este zero, primeiramente, derivamos $f$
-\begin{align}
-  f'(x) &= \left(\left(6.0 x^{2} - 2.0 x \left(2.0 x^{3} - 1.4 x^{2} - 0.98 x + 0.686\right)\right.\right. \nonumber \\
-        &\left.\left. - 2.8 x - 0.98\right) e^{x^{4}} + \left(x^{3} \left(4.0 x^{3} - 2.8 x^{2} - 1.96 x + 1.372\right)\right.\right.\nonumber\\
-        &\left.\left.- 3.0 x^{2} + 1.4 x + 0.49\right) e^{x^{2}}\right) e^{- x^{2} \left(x^{2} + 1\right)}
-\end{align}
-O esboço do gráfico de $f'$ (Figura \ref{fig:bis_multpar}) mostra que $f'(0,5)\cdot f'(1) < 0$. Então, aplicando o método da bisseção a $f'$ no intervalo inicial $(a^{(1)}, b^{(1)}) = (0,5, ~1)$, obtemos os resultados apresentados na Tabela~\ref{tab:bis_multpar}. Nesta tabela são apresentados as iteradas até a convergência da solução com precisão de $10^{-3}$.
+\begin{equation}
+  f(x) = \sen^2\left(x+\frac{\pi}{4}\right) - x^3 + \frac{\pi}{4}x^2 + \frac{5\pi^2}{16}x + \frac{3\pi^3}{64}.
+\end{equation}
+tem $x=-\pi/4\approx -0,7854$ como um zero de multiplicidade par (veja Figura \ref{fig:bis_intro}). Para aplicarmos o método da bisseção para aproximarmos este zero, primeiramente, derivamos $f$
+\begin{equation}
+  f'(x) = 2\sin(x+\pi/4)\cos(x+\pi/4) - 3x^2 + \frac{\pi}{2}x + \frac{5\pi^2}{16}.
+\end{equation}
+O esboço do gráfico de $f'$ (Figura \ref{fig:bis_multpar}) mostra que $f'(-1)\cdot f'(0) < 0$ sendo que no intervalo $(-1, 0)$ $f'$ tem um zero de multiplicidade ímpar. Então, aplicando o método da bisseção a $f'$ no intervalo inicial $(a^{(1)}, b^{(1)}) = (-1, ~0)$, obtemos os resultados apresentados na Tabela~\ref{tab:bis_multpar}. Nesta tabela são apresentados as iteradas até a convergência da solução com precisão de $10^{-3}$.
 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.8\textwidth]{./cap_eq1d/dados/ex_bis_multpar/fig_bis_multpar}
-  \caption{Esboço do gráfico da derivada da $f$ dada no Exemplo \ref{ex:bis_multpar}.}
+  \caption{Esboço do gráfico da $f$ e de sua derivada $f'$ dada no Exemplo \ref{ex:bis_multpar}.}
   \label{fig:bis_multpar}
 \end{figure}
-\end{ex}
 
 \begin{table}[h!]
   \centering
   \caption{Resultados referentes ao Exemplo~\ref{ex:bis_exec}.}
   \begin{tabular}{r|rr|r|c}
     k & $a^{(k)}$ & $b^{(k)}$ & $x^{(k)}$ & $f'(a^{(k)})\cdot f'(x^{(k)})$\\\hline
-    1 & $5,0000\E-1$ & $1,0000\E+0$ & $7,5000\E-1$ & -1 \\
-    2 & $5,0000\E-1$ & $7,5000\E-1$ & $6,2500\E-1$ &  1 \\
-    3 & $6,2500\E-1$ & $7,5000\E-1$ & $6,8750\E-1$ &  1 \\
-    4 & $6,8750\E-1$ & $7,5000\E-1$ & $7,1875\E-1$ &  -1 \\
-    5 & $6,8750\E-1$ & $7,1875\E-1$ & $7,0312\E-1$ &  -1 \\
-    6 & $6,8750\E-1$ & $7,0312\E-1$ & $6,9531\E-1$ &  1 \\
-    7 & $6,9531\E-1$ & $7,0312\E-1$ & $6,9922\E-1$ & 1 \\
-    8 & $6,9922\E-1$ & $7,0312\E-1$ & $7,0117\E-1$ & -1\\
-    9 & $6,9922\E-1$ & $7,0117\E-1$ & $7,0020\E-1$ &  -1\\\hline
+    1 & $-1,0000\E+0$ & $0,0000\E+0$ & $-5,0000\E-1$ & -1 \\
+    2 & $-1,0000\E+0$ & $-5,0000\E-1$ & $-7,5000\E-1$ & -1 \\
+    3 & $-1,0000\E+0$ & $-7,5000\E-1$ & $-8,7500\E-1$ & 1 \\
+    4 & $-8,7500\E-1$ & $-7,5000\E-1$ & $-8,1250\E-1$ &  1 \\
+    5 & $-8,1250\E-1$ & $-7,5000\E-1$ & $-7,8125\E-1$ & -1 \\
+    6 & $-8,1250\E-1$ & $-7,8125\E-1$ & $-7,9688\E-1$ & 1 \\
+    7 & $-7,9688\E-1$ & $-7,8125\E-1$ & $-7,8906\E-1$ & 1 \\
+    8 & $-7,8906\E-1$ & $-7,8125\E-1$ & $-7,8516\E-1$ & -1 \\
+    9 & $-7,8906\E-1$ & $-7,8516\E-1$ & $-7,8711\E-1$ & 1 \\
+    10 & $-7,8711\E-1$ & $-7,8516\E-1$ & $-7,8613\E-1$ & 1 \\\hline
   \end{tabular}
   \label{tab:bis_multpar}
+\end{table}
 
 \ifisoctave
 A tabela \ref{tab:bis_multpar} pode ser obtida no \verb+GNU Octave+ com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/ex_bis_multpar/ex_bis_multpar.m}{código}:
 \verbatiminput{./cap_eq1d/dados/ex_bis_multpar/ex_bis_multpar.m}
 \fi
-\end{table}
+\end{ex}
 
 \subsection*{Exercícios}
 
@@ -238,13 +231,89 @@ no intervalo $(0,55, ~0,65)$. Forneça a aproximação computada com $7$ dígito
 
 \section{Método da falsa posição}\label{cap_eq1d_sec_falsapos}
 
-O método da falsa posição é uma variação do método da bisseção.
+O método da falsa posição é uma variação do método da bisseção. Dada uma função $f$ contínua, escolhemos um intervalo inicial $(a, b)$ tal que $f(a)\cdot f(b) < 0$ (i.e. $f$ tem sinais trocados nos pontos $a$ e $b$). Então, uma aproximação para o zero de $f$ neste intervalo é computada como o ponto de interseção da reta secante a $f$ pelos pontos $(a, f(a))$ e $(b, f(b))$, i.e.
+\begin{equation}
+  x = a - \frac{b-a}{f(b)-f(a)}f(a).
+\end{equation}
+Veja a Figura \ref{fig:falsapos}.
 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.7\textwidth]{./cap_eq1d/dados/fig_falsapos/fig_falsapos}
-  \caption{Ilustração do método da falsa posição (veja no \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/fig_falsapos/fig_falsapos.ggb}{Geogebra}.}
+  \caption{Ilustração do método da falsa posição (veja no \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/fig_falsapos/fig_falsapos.ggb}{Geogebra}).}
   \label{fig:falsapos}
 \end{figure}
 
-\emconstrucao
+Mais explicitamente, o método da falsa posição consiste no seguinte procedimento iterativo:
+\begin{enumerate}
+\item Determinar um intervalo $(a^{(1)}, b^{(1)})$ tal que $f(a^{(1)})\cdot f(b^{(1)}) \neq 0$.
+\item Para $k = 1, 2, 3, \cdots, N$:
+  \begin{enumerate}[2.1]
+  \item $\displaystyle x^{(k)} = a^{(k)} - \frac{b^{(k)}-a^{(k)}}{f(b^{(k)})-f(a^{(k)})}f(a^{(k)})$
+  \item Verificar critério de parada.
+  \item Se $f(a^{(k)})\cdot f(x^{(k)}) \neq 0$, então $a^{(k+1)}=a^{(k)}$ e $b^{(k+1)}=x^{(k)}$.
+  \item Se $f(x^{(k)})\cdot f(b^{(k)}) \neq 0$, então $a^{(k+1)}=x^{(k)}$ e $b^{(k+1)}=b^{(k)}$.
+  \end{enumerate}
+\end{enumerate}
+
+\begin{ex}\label{ex:falsapos_exec}
+  Consideremos o problema de aproximar o zero de
+\begin{equation}
+  f(x) = \sen^2\left(x+\frac{\pi}{4}\right) - x^3 + \frac{\pi}{4}x^2 + \frac{5\pi^2}{16}x + \frac{3\pi^3}{64}.
+\end{equation}
+no intervalo $(0, 3)$. A Tabela \ref{tab:falsapos_exec} mostra os resultados obtidos da aplicação do método da falsa posição com intervalo inicial $(a^{(1)}, b^{(1)}) = (2, 3)$. Aqui, o método foi iterado até a convergência com cinco dígitos significativos.
+
+\begin{table}[h!]
+  \centering
+  \caption{Resultados referentes ao Exemplo~\ref{ex:falsapos_exec}.}
+  \begin{tabular}{r|rr|r|c}
+    k & $a^{(k)}$ & $b^{(k)}$ & $x^{(k)}$ & $f'(a^{(k)})\cdot f'(x^{(k)})$\\\hline
+    1 & $2,0000$ & $3,0000$ & $2,2455$ & 1 \\
+    2 & $2,2455$ & $3,0000$ & $2,3240$ &  1 \\
+    3 & $2,3240$ & $3,0000$ & $2,3470$ & 1 \\
+    4 & $2,3470$ & $3,0000$ & $2,3536$ & 1 \\
+    5 & $2,3536$ & $3,0000$ & $2,3555$ & 1 \\
+    6 & $2,3555$ & $3,0000$ & $2,3560$ & 1 \\
+    7 & $2,3560$ & $3,0000$ & $2,3561$ &  1 \\
+    8 & $2,3561$ & $3,0000$ & $2,3562$ & 1 \\
+    9 & $2,3562$ & $3,0000$ & $2,3562$ & 1 \\
+    10 & $2,3562$ & $3,0000$ & $2,3562$ & 1 \\\hline
+  \end{tabular}
+  \label{tab:bis_multpar}
+\end{table}
+
+\ifisoctave
+A tabela \ref{tab:falsapos_exec} pode ser obtida no \verb+GNU Octave+ com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/ex_falsapos_exec/ex_falsapos_exec.m}{código}:
+\verbatiminput{./cap_eq1d/dados/ex_falsapos_exec/ex_falsapos_exec.m}
+\fi
+\end{ex}
+
+\subsection*{Exercícios}
+
+\begin{exer}\label{exer:bis_1}
+  Use o método da falsa posição para aproximar um zero de $f(x)=x^3\sen(x)-\cos(x)$, aplicando como intervalo inicial $(a^{(1)}, b^{(1)}) = (0,5, ~1)$ e aproximação inicial
+  \begin{equation}
+    x^{(1)} = a^{(1)} - \frac{b^{(1)}-a^{(1)}}{f(b^{(1)})-f(a^{(1)})}f(a^{(1)}).
+  \end{equation}
+Faça, então, $4$ iterações deste método de forma a obter a aproximação $x^{(5)}$ e forneça-a com $7$ dígitos significativos por arredondamento.
+\end{exer}
+\begin{resp}
+    \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/exer_falsapos_1/exer_falsapos_1.m}{Código.} 
+  \fi
+  $9,158079\times 10^{-1}$
+\end{resp}
+
+\begin{exer}\label{exer:bis_multpar}
+  Use o método da bisseção para encontrar uma aproximação com precisão de $10^{-4}$ do zero de
+  \begin{equation}
+    f(x) = (-x^2+1,154x-0,332929)\cos(x) + x^2 - 1,154x + 0,332929
+  \end{equation}
+no intervalo $(0,55, ~0,65)$. Forneça a aproximação computada com $7$ dígitos significativos por arredondamento.
+\end{exer}
+\begin{resp}
+    \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/exer_falsapos_multpar/exer_falsapos_multpar.m}{Código.} 
+  \fi
+  $5,76984\times 10^{-1}$
+\end{resp}
