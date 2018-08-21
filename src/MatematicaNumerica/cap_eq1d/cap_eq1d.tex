@@ -1,15 +1,15 @@
 %Este trabalho está licenciado sob a Licença Atribuição-CompartilhaIgual 4.0 Internacional Creative Commons. Para visualizar uma cópia desta licença, visite http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR ou mande uma carta para Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
 
-\chapter{Equações com uma incógnita}\label{cap_eq1d}
+\chapter{Equação com uma incógnita}\label{cap_eq1d}
 \thispagestyle{fancy}
 
-Neste capítulo, discutiremos sobre equação com uma incógnita real. Para tanto, notemos que dada qualquer tal equação, esta pode ser ser equivalentemente reescrita na forma
+Neste capítulo, discutiremos sobre métodos numéricos para resolver equações com uma incógnita real. Para tanto, notemos que toda equação pode ser reescrita na seguinte forma equivalente
 \begin{equation}\label{eq:zero_fun}
   f(x) = 0,
 \end{equation}
 onde $f$ é uma função adequada. Isto é, o problema de se encontrar a incógnita de uma dada equação pode ser reescrito como um problema de encontrar os zeros (ou raízes) de uma função de uma variável real.
 
-Os métodos numéricos que abordaremos ao longo deste capítulo são descritos para problema da forma \eqref{eq:zero_fun}.
+Os métodos numéricos que abordaremos ao longo deste capítulo são descritos para problemas da forma \eqref{eq:zero_fun}.
 
 \section{Método da bisseção}\label{cap_eq1d_sec_bissec}
 
@@ -21,14 +21,15 @@ O método da bisseção explora o fato de que toda função contínua $f$ com $f
     (2x^3-1,4x^2-0.98x+0.686)e^{-x^2} = (x^3-0,7x^2-0,49x+0,343)e^{-x^4}.
   \end{equation}
 Este problema é equivalente a encontrar os zeros da seguinte função
-\begin{equation}
-  f(x) = (2x^3-1,4x^2-0.98x+0.686)e^{x^2} - x^3 + 0,7x^2 + 0,49x - 0,343.
-\end{equation}
+\begin{align}
+  f(x) &= (2x^3-1,4x^2-0.98x+0.686)e^{-x^2} \nonumber\\
+       &- (x^3-0,7x^2-0,49x+0,343)e^{-x^4}.
+\end{align}
 Os zeros exatos\footnote{O problema foi construído para que tivesse estas soluções.} desta função são $x_1=-0,7$ e $x_2=x_3=0,7$ (veja a Figura \ref{fig:bis_intro}).
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.7\textwidth]{./cap_eq1d/dados/ex_bis_intro/fig_bis_intro}
+  \includegraphics[width=0.8\textwidth]{./cap_eq1d/dados/ex_bis_intro/fig_bis_intro}
   \caption{Esboço da função $f$ do Exemplo~\ref{ex:bis_intro}.}
   \label{fig:bis_intro}
 \end{figure}
@@ -36,13 +37,8 @@ Os zeros exatos\footnote{O problema foi construído para que tivesse estas solu�
 Observamos que esta função é contínua e que, por exemplo, $f(-1)<0$ e $f(1)>0$, logo $f(-1)\cdot f(1) < 0$ e, de fato, $f$ tem pelo menos um zero\footnote{De fato, $f$ tem três zeros no intervalo $(-1, 1)$.} no intervalo $(-1, 1)$.
 
 \ifisoctave
-O esboço do gráfico da função $f$ pode ser feito no \verb+GNU Octave+ com o seguinte código
-\begin{verbatim}
-f = @(x) (2*x.^3-1.4*x.^2-0.98*x+0.686).*exp(-x.^2)-...
-         (x.^3-0.7*x.^2-0.49*x+0.343).*exp(-x.^4);
-xx=linspace(-2,2);
-plot(xx,f(xx));grid
-\end{verbatim}
+O esboço do gráfico da função $f$ pode ser feito no \verb+GNU Octave+ com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/ex_bis_intro/ex_bis_intro.m}{código}:
+\verbatiminput{./cap_eq1d/dados/ex_bis_intro/ex_bis_intro.m}
 \fi
 \end{ex}
 
@@ -58,12 +54,13 @@ Daí, o procedimento se repete até obtermos uma aproximação com a precisão d
 
 \begin{ex}\label{ex:bis_exec}
   Consideremos o problema de encontrar um zero da função
-  \begin{equation}
-    f(x) = (2x^3-1,4x^2-0.98x+0.686)e^{x^2} - x^3 + 0,7x^2 + 0,49x - 0,343.
-  \end{equation}
+  \begin{align}
+  f(x) &= (2x^3-1,4x^2-0.98x+0.686)e^{-x^2} \nonumber\\
+       &- (x^3-0,7x^2-0,49x+0,343)e^{-x^4}.
+  \end{align}
 Do esboço de seu gráfico (Figura \ref{fig:bis_intro}) vemos que $f(-1)\cdot f(1) \neq 0$. Então, aplicando o método da bisseção com intervalo inicial $(a^{(1)}, b^{(1)}) = (-1, 1)$ e aproximação inicial $x^{(1}) = (a^{(1)}+b^{(1)})/2$, obtemos as aproximações apresentadas na Tabela \ref{tab:bis_exec}.
 
-Da Tabela \ref{tab:bis_exec}, observamos que as iteradas $x^{(k)}$ do método da bisseção parecem estar convergindo para o zero $x_1 = -0,7$ da função $f$. De fato, já na segunda iterada o método fica restrito a encontrar uma solução no intervalo $(a^{(2)}, b^{(2)}) = (-1, 0)$, o excluí a possibilidade de o mesmo convergir para os outros zeros de $f$.
+Da Tabela \ref{tab:bis_exec}, observamos que as iteradas $x^{(k)}$ do método da bisseção parecem estar convergindo para o zero $x_1 = -0,7$ da função $f$. De fato, já na segunda iterada o método fica restrito a encontrar uma solução no intervalo $(a^{(2)}, b^{(2)}) = (-1, 0)$, o que excluí a possibilidade de o mesmo convergir para os outros zeros de $f$.
 
 \begin{table}[h!]
   \centering
@@ -118,9 +115,10 @@ E, daí também, segue a convergência do método da bisseção, pois
 
 \begin{ex}\label{ex:bis_conv}
   No Exemplo \ref{ex:bis_exec} aplicamos o método da bisseção para a função
-  \begin{equation}
-        f(x) = (2x^3-1,4x^2-0.98x+0.686)e^{x^2} - x^3 + 0,7x^2 + 0,49x - 0,343
-  \end{equation}
+  \begin{align}
+  f(x) &= (2x^3-1,4x^2-0.98x+0.686)e^{-x^2} \nonumber\\
+       &- (x^3-0,7x^2-0,49x+0,343)e^{-x^4}.
+  \end{align}
 no intervalo $(-1, 1)$. Observando os resultados mostrados na Tabela \ref{tab:bis_exec}, vemos que
 \begin{equation}
   |x^{(10)}-x^*| = 1,1719\E-3,
@@ -155,18 +153,21 @@ tem $x^*$ como um zero de multiplicidade $2m-1$ (ímpar) e, desta forma, podemos
 
 \begin{ex}\label{ex:bis_multpar}
   A função
-  \begin{equation}
-    f(x) = (2x^3-1,4x^2-0.98x+0.686)e^{x^2} - x^3 + 0,7x^2 + 0,49x - 0,343,
-  \end{equation}
+  \begin{align}
+  f(x) &= (2x^3-1,4x^2-0.98x+0.686)e^{-x^2} \nonumber\\
+       &- (x^3-0,7x^2-0,49x+0,343)e^{-x^4}.
+  \end{align}
 tem $x=0,7$ como um zero de multiplicidade par (veja Figura \ref{fig:bis_intro}). Para aplicarmos o método da bisseção para aproximarmos este zero, primeiramente, derivamos $f$
-\begin{equation}
-  f'(x) = \frac{1}{500} \left(10 x - 7\right) \left(200 x^{3} e^{x^{2}} + 202 x e^{x^{2}} - 150 x + 70 e^{x^{2}} - 35\right)
-\end{equation}
+\begin{align}
+  f'(x) &= \left(\left(6.0 x^{2} - 2.0 x \left(2.0 x^{3} - 1.4 x^{2} - 0.98 x + 0.686\right)\right.\right. \nonumber \\
+        &\left.\left. - 2.8 x - 0.98\right) e^{x^{4}} + \left(x^{3} \left(4.0 x^{3} - 2.8 x^{2} - 1.96 x + 1.372\right)\right.\right.\nonumber\\
+        &\left.\left.- 3.0 x^{2} + 1.4 x + 0.49\right) e^{x^{2}}\right) e^{- x^{2} \left(x^{2} + 1\right)}
+\end{align}
 O esboço do gráfico de $f'$ (Figura \ref{fig:bis_multpar}) mostra que $f'(0,5)\cdot f'(1) < 0$. Então, aplicando o método da bisseção a $f'$ no intervalo inicial $(a^{(1)}, b^{(1)}) = (0,5, ~1)$, obtemos os resultados apresentados na Tabela~\ref{tab:bis_multpar}. Nesta tabela são apresentados as iteradas até a convergência da solução com precisão de $10^{-3}$.
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.7\textwidth]{./cap_eq1d/dados/ex_bis_multpar/fig_bis_multpar}
+  \includegraphics[width=0.8\textwidth]{./cap_eq1d/dados/ex_bis_multpar/fig_bis_multpar}
   \caption{Esboço do gráfico da derivada da $f$ dada no Exemplo \ref{ex:bis_multpar}.}
   \label{fig:bis_multpar}
 \end{figure}

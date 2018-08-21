@@ -1,8 +1,8 @@
 pkg load symbolic
 syms x
-f = (2*x.^3-1.4*x.^2-0.98*x+0.686).*exp(x^2)-...
-    (x.^3-0.7*x.^2-0.49*x+0.343);
-fl = matlabFunction(diff(f));
+f = @(x) (2*x.^3-1.4*x.^2-0.98*x+0.686).*exp(-x.^2)-...
+         (x.^3-0.7*x.^2-0.49*x+0.343).*exp(-x.^4);
+fl = function_handle(diff(f(x)));
 
 TOL=1e-3;
 a=0.5;
