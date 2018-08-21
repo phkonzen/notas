@@ -196,7 +196,7 @@ A tabela \ref{tab:bis_multpar} pode ser obtida no \verb+GNU Octave+ com o seguin
 \end{exer}
 \begin{resp}
     \ifisoctave 
-  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/exer_bis_1/exer_bis_1.m}{Código.} 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/exer_bis_1/exer_bis_1.m}{Código.} 
   \fi
   $9,179688\times 10^{-1}$
 \end{resp}
@@ -210,7 +210,7 @@ para estimar o número mínimo de iterações $k_{conv}$ necessárias para se ob
 \end{exer}
 \begin{resp}
     \ifisoctave 
-  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/exer_bis_este_trunc/exer_bis_est_trunc.m}{Código.} 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/exer_bis_este_trunc/exer_bis_est_trunc.m}{Código.} 
   \fi
   $9,15833\E-1$
 \end{resp}
@@ -224,7 +224,7 @@ no intervalo $(0,55, ~0,65)$. Forneça a aproximação computada com $7$ dígito
 \end{exer}
 \begin{resp}
     \ifisoctave 
-  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/exer_bis_multpar/exer_bis_multpar.m}{Código.} 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/exer_bis_multpar/exer_bis_multpar.m}{Código.} 
   \fi
   $5,770508\times 10^{-1}$
 \end{resp}
@@ -299,7 +299,7 @@ Faça, então, $4$ iterações deste método de forma a obter a aproximação $x
 \end{exer}
 \begin{resp}
     \ifisoctave 
-  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/exer_falsapos_1/exer_falsapos_1.m}{Código.} 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/exer_falsapos_1/exer_falsapos_1.m}{Código.} 
   \fi
   $9,158079\times 10^{-1}$
 \end{resp}
@@ -313,7 +313,186 @@ no intervalo $(0,55, ~0,65)$. Forneça a aproximação computada com $7$ dígito
 \end{exer}
 \begin{resp}
     \ifisoctave 
-  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/exer_falsapos_multpar/exer_falsapos_multpar.m}{Código.} 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/exer_falsapos_multpar/exer_falsapos_multpar.m}{Código.} 
   \fi
   $5,76984\times 10^{-1}$
 \end{resp}
+
+\section{Iteração de ponto fixo}\label{cap_eq1d_pfixo}
+
+O ponto fixo de uma função dada $g$ é o ponto $x$ tal que
+\begin{equation}
+  g(x) = x.
+\end{equation}
+Geometricamente, pontos fixos são interseções do gráfico da $g$ com a reta $y=x$, veja a Figura \ref{fig:pfixo}.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./cap_eq1d/dados/fig_pfixo/fig_pfixo}
+  \caption{Exemplos de pontos fixos (veja no \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/fig_pfixo/fig_pfixo.ggb}{Geogebra}).}
+  \label{fig:pfixo}
+\end{figure}
+
+Observamos que toda equação de uma incógnita pode ser reescrita de forma equivalente como um problema de ponto fixo.
+
+\begin{ex}\label{ex:pfixo_intro}
+  Consideremos o problema de resolver
+  \begin{equation}
+    \sen^2\left(x+\frac{\pi}{4}\right) = x^3 - \frac{\pi}{4}x^2 - \frac{5\pi^2}{16}x - \frac{3\pi^3}{64}.
+  \end{equation}
+Podemos reescrevê-la como o problema de se obter os zeros da seguinte função
+\begin{equation}
+  f(x) = \sen^2\left(x+\frac{\pi}{4}\right) - x^3 + \frac{\pi}{4}x^2 + \frac{5\pi^2}{16}x + \frac{3\pi^3}{64}.
+\end{equation}
+Por sua vez, este problema é equivalente aos seguintes problemas de ponto fixo (entre outros):
+\begin{align}
+  &a)~g_1(x) = \frac{16}{5\pi^2}\left[-\sen^2\left(x+\frac{\pi}{4}\right) + x^3 - \frac{\pi}{4}x^2 - \frac{3\pi^3}{64}\right] = x.\\
+  &b)~g_2(x) = \sqrt[3]{\sen^2\left(x+\frac{\pi}{4}\right) + \frac{\pi}{4}x^2 + \frac{5\pi^2}{16}x + \frac{3\pi^3}{64}}
+\end{align}
+Na Figura \ref{fig:pfixo_intro} podemos observar que os zeros da $f$ (a saber, $x_1=3\pi/4\approx 2,3562$ e $x_2=x_3=-\pi/4\approx -0,78540$) coincidem com os pontos fixos das funções $g_1$ e $g_2$.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./cap_eq1d/dados/ex_pfixo_intro/fig_pfixo_intro}
+  \caption{Esboço da função $f$ do Exemplo~\ref{ex:pfixo_intro}.}
+  \label{fig:pfixo_intro}
+\end{figure}
+\end{ex}
+
+Em muitos casos, é possível obter aproximações de um ponto fixo de uma dada função $g$ pela chamada \emph{iteração de ponto fixo}:
+\begin{align}
+  x^{(1)} &= \text{aprox. inicial}\\
+  x^{(k+1)} = g(x^{(k)}),\quad k=1, 2, 3, \ldots
+\end{align}
+
+\begin{ex}\label{ex:pfixo_testes}
+  Observemos que para a função $g_1$ dada no Exemplo \ref{ex:pfixo_intro}, temos as seguintes iterações:
+  \begin{align}
+    x^{(1)} &= -0,70000,\\
+    x^{(2)} &= -0,70959,\\
+    x^{(3)} &= -0,71716,\\
+    &\vdots \\
+    x^{(100)} &= -0,77862,\\
+    &\vdots \\
+    x^{(1000)} &= -0,78466,\\    
+    &\vdots \\
+    x^{(20000)} &= -0,78536.
+  \end{align}
+Ou seja, neste caso as iterações de ponto fixo convergem (lentamente) para o ponto fixo $x=-\pi/4\approx -0,78540$.
+\ifisoctave
+Veja o \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/ex_pfixo_testes/ex_g1_t1.m}{código} no \verb+GNU Octave+.
+\fi
+
+Agora, se usarmos a iteração de ponto fixo com esta mesma função para aproximar o ponto fixo $x=3\pi/4\approx 2,3562$, obtemos
+  \begin{align}
+    x^{(1)} &= 2,50000,\\
+    x^{(2)} &= 2,9966,\\
+    x^{(3)} &= 5,8509,\\
+    &\vdots \\
+    x^{(8)} &= 4,8921e\times 10^{121}.
+  \end{align}
+Donde observamos que as iterações divergem rapidamente.
+
+Entretanto, se usarmos a iteração de ponto fixo com a função $f_2$ dada no Exemplo \ref{ex:pfixo_intro}, obtemos
+  \begin{align}
+    x^{(1)} &= 2,50000,\\
+    x^{(2)} &= 2,4155,\\
+    x^{(3)} &= 2,3805,\\
+    &\vdots \\
+    x^{(10)} &= 2,3562.
+  \end{align}
+A qual, portanto, converge para o ponto fixo esperado.
+\end{ex}
+
+Este último exemplo (Exemplo \ref{ex:pfixo_testes}) mostra que a iteração do ponto fixo nem sempre é convergente. Por sorte, o seguinte teorema nos fornece condições suficientes para a convergência destas iterações.
+
+\begin{teo}(\normalfont{Teorema do ponto fixo})\label{teo:pfixo}
+  Seja uma dada função $g$ continuamente diferenciável satisfazendo
+  \begin{enumerate}[a)]
+  \item $g([a, b]) \subset [a, b]$,
+  \item $|g'(x)|<K<1$ para todo $x\in [a, b]$.
+  \end{enumerate}
+Então, $g$ tem um único ponto fixo $x^*\in [a, b]$ e as iterações $x^{(k+1)}=x^{(k)}$, $k=1, 2, 3, \ldots$, convergem para $x^*$, para qualquer escolha de $x^{(1)}\in [a, b]$.
+\end{teo}
+\begin{dem}
+  Da hipótese b), temos que $g$ é uma contração com
+  \begin{equation}
+    |g(x) - g(y)| < K\cdot |x - y|,~\forall x,y\in [a, b].
+  \end{equation}
+Com isso, da hipótese a) e tomando $x^{(1)}\in [a, b]$, temos
+\begin{align}
+  |x^{(k+1)} - x^{(k)}| &= |g(x^{(k)}) - g(x^{(k-1)})|\\
+  &\leq K |x^{(k)} - x^{(k-1)}|\\
+  &\vdots \\
+  &\leq K^{k-1}|x^{(2)}-x^{(1)}|,
+\end{align}
+para todo $k=2, 3, \ldots$. Como $K<1$, temos $|x^{(k+1)}-x^{(k)}|\to 0$ quando $k\to\infty$ e, portanto, $x^{(k)}$ converge para algum $x^*\in [a, b]$.
+
+De fato, $x^*$ é ponto fixo de $g$, pois da continuidade da $g$, temos
+\begin{equation}
+  x^* = \lim_{k\to\infty} x^{(k+1)} = \lim_{k\to\infty} g(x^{(k)}) = g(x^*).
+\end{equation}
+
+Por fim, $x^*$ é único, pois assumindo a existência de outro ponto fixo $x^{**}\neq x^*$ teríamos
+\begin{equation}
+  |x^* - x^{**}| = |g(x^*) - g(x^{**})| < K|x^* - x^{**}|.
+\end{equation}
+\end{dem}
+
+Agora, dado um problema de encontrar um zero de uma dada função $f$, i.e. $f(x)=0$, podemos construir uma função $g$ para a iteração de ponto fixo associada da seguinte forma:
+\begin{align}
+  f(x) = 0 &\Leftrightarrow \underbrace{x - \alpha f(x)}_{g(x)} = x,
+\end{align}
+com $\alpha\in\mathbb{R}$ escolhido de forma a satisfazer as hipóteses do teorema do ponto fixo (Teorema \ref{teo:pfixo}).
+
+\begin{ex}\label{ex:pfixo_exec}
+  Retornamos ao problema de encontrar o zero da função
+  \begin{equation}
+    f(x) = \sen^2\left(x+\frac{\pi}{4}\right) - x^3 + \frac{\pi}{4}x^2 + \frac{5\pi^2}{16}x + \frac{3\pi^3}{64}.
+  \end{equation}
+  no intervalo $[2,3]$. Para construir uma função $g$ para a iteração de ponto fixo neste intervalo, podemos tomar
+  \begin{equation}
+    g(x) = x - \alpha f(x),
+  \end{equation}
+com $\alpha = -0,1$. A Figura \ref{fig:ex_pfixo_exec} mostra esboços dos gráficos de $g$ e $|g'|$ no intervalos $[2, 3]$ e podemos observar que esta escolha de $\alpha$ faz com que a $g$ satisfaça o teorema do ponto fixo.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./cap_eq1d/dados/ex_pfixo_exec/fig_ex_pfixo_exec}
+  \caption{Esboço dos gráficos de $g$ e $|g'|$ discutidas no Exemplo \ref{ex:pfixo_exec}.}
+  \label{fig:ex_pfixo_exec}
+\end{figure}
+
+Então, fazendo as iterações de ponto fixo com aproximação inicial $x^{(1)}=2,6$, obtemos os resultados apresentados na Tabela \ref{tab:ex_pfixo_exec}.
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{r|cc}
+    $k$ & $x^{(k)}$ & $|x^{(k)}-x^{(k-1)}|$ \\\hline
+    1 & $2,6000$ & -x-\\
+    2 & $2,3264$ & $2,7\E-1$ \\
+    3 & $2,3553$ & $2,9\E-2$ \\
+    4 & $2,3562$ & $8,4\E-4$ \\
+    5 & $2,3562$ & $1,1\E-5$ \\\hline
+  \end{tabular}
+  \caption{Resultados referentes ao Exemplo \ref{ex:pfixo_exec}.}
+  \label{tab:ex_pfixo_exec}
+\end{table}
+
+\ifisoctave
+Os resultados apresentados na Tabela \ref{tab:ex_pfixo_exec} podem ser computados no \verb+GNU Octave+ co o seguinte código:
+\verbatiminput{./cap_eq1d/dados/ex_pfixo_exec/ex_pfixo_exec.m}
+\fi
+\end{ex}
+
+\begin{obs}(\normalfont{Taxa de convergência})
+  A iteração de ponto fixo tem taxa de convergência linear
+  \begin{equation}
+    |x^{(k+1)} - x^{(k)}| < K|x^{(k)} - x^{(k-1)}|^{\pmb{1}},
+  \end{equation}
+onde $K > 0$ é a constante dada na hipótese $b)$ do teorema do ponto fixo (Teorema \ref{teo:pfixo}). Além disso, isso mostra que quanto menor o valor da constante $K$, mais rápida será a convergência das iterações de ponto fixo.
+\end{obs}
+
+\subsection*{Exercícios}
+
+\emconstrucao
