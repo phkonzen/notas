@@ -1,28 +1,26 @@
-from __future__ import division
+from __future__ import print_function, division
+from fenics import *
 import numpy as np
-from scipy import interpolate
 import matplotlib.pyplot as plt
 
-#fun obj
-f = lambda x: 3*np.sin(2*np.pi*x)
+# malha
+mesh = IntervalMesh(1,0.25,0.75)
 
-#intervalo
-x0=1/4
-x1=3/4
+# espaco
+V = FunctionSpace(mesh, 'P', 1)
 
-#interp
-pif = interpolate.interp1d([x0,x1],[f(x0),f(x1)])
+# funcao
+f = Expression('3*sin(2*pi*x[0])',element=V.ufl_element())
 
-#grafico
-xpts = np.linspace(x0,x1)
-plt.plot(xpts,f(xpts),color="red",label="$f$")
-plt.plot([x0,x1],[f(x0),f(x1)],
-         color="red",linestyle="",
-         marker="o",label="pts")
-plt.plot(xpts,pif(xpts),
-         color="blue",label=r"$\pi f$")
-plt.grid("on")
-plt.xlabel(r"$x$",fontsize=20)
-plt.ylim((-3.5,3.5))
+# interpolacao
+pif = Function(V)
+pif.interpolate(f)
+
+# grafico
+xx = IntervalMesh(100,0.25,0.75)
+plot(f,mesh=xx,label="$f$")
+plot(pif,mesh=mesh,
+     marker='o',label="$\pi f$")
 plt.legend(numpoints=1)
+plt.grid('on')
 plt.show()

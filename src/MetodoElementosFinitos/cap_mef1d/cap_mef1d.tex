@@ -67,7 +67,6 @@ A interpolação é uma das técnicas de aproximação de funções. Dada uma fu
 \end{equation}
 Observamos que $\pi f$ é igual a $f$ nos nodos $x_0$ e $x_1$. 
 
-\ifispython
 \begin{ex}\label{ex:interp_lin}
   A Figura~\ref{fig:ex_interp_lin} ilustra a interpolação da função $f(x)=3\sen(2\pi x)$ no espaço $P_1([1/4, 3/4)]$. Neste caso
   \begin{equation}
@@ -81,10 +80,11 @@ Observamos que $\pi f$ é igual a $f$ nos nodos $x_0$ e $x_1$.
     \label{fig:ex_interp_lin}
   \end{figure}
 
-Podemos computar a função interpolada $\pi f$ e o gráfico da Figura~\ref{fig:ex_interp_lin} no \verb+Python+ com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/dados/ex_interp_lin/ex_interp_lin.py}{código}:
+\ifispython
+Com o \fenics, podemos computar a função interpolada $\pi f$ com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/dados/ex_interp_lin/ex_interp_lin.py}{código}:
 \verbatiminput{./cap_mef1d/dados/ex_interp_lin/ex_interp_lin.py}
-\end{ex}
 \fi
+\end{ex}
 
 Agora, vamos buscar medir o erro de interpolação, i.e. $f - \pi f$. Para tanto, podemos usar a norma $L^2$ definida por
 \begin{equation}
@@ -160,7 +160,6 @@ Vamos, agora, generalizar este resultado para a interpolação no espaço $V_h$ 
   \pi f(x) = \sum_{i=0}^{n}f(x_i)\varphi_i(x).
 \end{equation}
 
-\ifispython
 \begin{ex}\label{ex:interp_linpartes}
   A Figura~\ref{fig:ex_interp_linpartes} ilustra a interpolação da função $f(x)=3\sen(2\pi x)$ no espaço $V_h$ das funções lineares por partes em uma malha uniforme do intervalo $I=[1/4, 3/4]$ com $n=4$ subintervalos ($5$ pontos). 
 
@@ -171,10 +170,11 @@ Vamos, agora, generalizar este resultado para a interpolação no espaço $V_h$ 
     \label{fig:ex_interp_linpartes}
   \end{figure}
 
-Podemos computar a função interpolada $\pi f$ e o gráfico da Figura~\ref{fig:ex_interp_linpartes} no \verb+Python+ com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/dados/ex_interp_linpartes/ex_interp_linpartes.py}{código}:
+\ifispython
+Com o \fenics, podemos computar a função interpolada $\pi f$ com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/dados/ex_interp_linpartes/ex_interp_linpartes.py}{código}:
 \verbatiminput{./cap_mef1d/dados/ex_interp_linpartes/ex_interp_linpartes.py}
-\end{ex}
 \fi
+\end{ex}
 
 O seguinte resultado fornece uma estimativa do erro de interpolação em relação ao tamanho $h_i$ de cada elemento da malha.
 
@@ -193,7 +193,63 @@ O seguinte resultado fornece uma estimativa do erro de interpolação em relaç�
   \end{align}
 \end{dem}
 
+\subsection{Projeção $L^2$}
 
+Dada uma função $f\in L^2(I)$, definimos o \emph{operador de projeção $L^2$}\index{operador de!projeção $L^2$} $P_h:L^2(I)\to V_h$ por
+\begin{equation}\label{eq:proj_def}
+  \int_I (f-P_hf)v\,dx=0,\quad\forall v\in V_h.
+\end{equation}
+
+Como $V_h$ é um espaço de dimensão finita, a condição \eqref{eq:proj_def} é equivalente a
+\begin{equation}\label{eq:proj_def}
+  \int_I (f-P_hf)\varphi_i\,dx=0,\quad i=0, 1, \cdots, n,
+\end{equation}
+onde $\varphi_i$ é a $i$-ésima função base de $V_h$. Além disso, como $P_hf\in V_h$, temos
+\begin{equation}
+  P_hf = \sum_{j=0}^n\xi_j\varphi_j,
+\end{equation}
+onde $\xi_j$, $j=0, 1, \dotsc, n$, são $n+1$ incógnitas a determinar. Logo,
+\begin{align}
+  \int_I (f-P_hf)\varphi_i\,dx=0 &\Leftrightarrow \int_I f\varphi_i\,dx = \int_I P_hf\varphi_i\,dx\\
+  &\Leftrightarrow \int_I f\varphi_i\,dx = \int_I \left(\sum_{j=0}^n \xi_j\varphi_j\right)\varphi_i\,dx\\
+  &\Leftrightarrow \sum_{j=0}^n \xi_j\int_I\varphi_j\varphi_i\,dx = \int_I f\varphi_i\,dx,\label{eq:proj_siseq}
+\end{align}
+para $i=0, 1, \dotsc, n$.
+
+Observemos, agora, que \eqref{eq:proj_siseq} consiste em um sistema de $n+1$ equações lineares para as $n+1$ incógnitas $\xi_j$, $j=0, 1, \dotsc, n$. Este, por sua vez, pode ser escrito na seguinte forma matricial
+\begin{equation}\label{eq:proj_sis}
+  M\xi = b,
+\end{equation}
+onde $M = [m_{i,j}]_{i,j=0}^{n+1}$ é chamada de matrix de massa
+\begin{equation}
+  m_{i,j} = \int_I\varphi_j\varphi_i\,dx
+\end{equation}
+e $b = (b_0, b_1, \dotsc, b_n)$ é chamado de vetor de carregamento
+\begin{equation}
+  b_i = \int_I f\varphi_i\,dx.
+\end{equation}
+
+Ou seja, a projeção $L^2$ de $f$ no espaço $V_h$ é
+\begin{equation}
+  P_hf = \sum_{j=0}^n\xi_j\varphi_j,
+\end{equation}
+onde $\xi = (\xi_0, \xi_1, \dotsc, \xi_n)$ é solução do sistema \eqref{eq:proj_sis}.
+
+\begin{ex}\label{ex:proj}
+  A Figura~\ref{fig:ex_proj} ilustra a projeção da função $f(x)=3\sen(2\pi x)$ no espaço $V_h$ das funções lineares por partes em uma malha uniforme do intervalo $I=[1/4, 3/4]$ com $n=4$ subintervalos ($5$ pontos). 
+
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./cap_mef1d/dados/ex_proj/ex_proj}
+    \caption{Projeção $L^2$ de $f(x)=3\sen(2\pi x)$ no espaço $V_h$ das funções lineares por partes sobre uma malha com $5$ pontos.}
+    \label{fig:ex_proj}
+  \end{figure}
+
+\ifispython
+Com o \fenics, podemos computar $P_h f$ com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/dados/ex_proj/ex_proj.py}{código}:
+\verbatiminput{./cap_mef1d/dados/ex_proj/ex_proj.py}
+\fi
+\end{ex}
 
 \emconstrucao
 
