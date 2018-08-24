@@ -10,17 +10,15 @@ mesh = IntervalMesh(4,0.25,0.75)
 V = FunctionSpace(mesh, 'P', 1)
 
 # funcao
-f = Expression('3*sin(2*pi*x[0])',element=V.ufl_element())
-xx = IntervalMesh(100,0.25,0.75)
-plot(f,mesh=xx,label="$f$")
+f = Expression('3*sin(2*pi*x[0])',
+                   degree=10)
 
-# interpolacao
-#Phf = Function(V)
-x = SpatialCoordinate(mesh)
-f = 3*sin(2*pi*x[0])
+# projecao
 Phf = project(f, V)
 
 # grafico
+xx = IntervalMesh(100,0.25,0.75)
+plot(f,mesh=xx,label="$f$")
 plot(Phf,mesh=mesh,
      marker='o',label="$P_h f$")
 plt.legend(numpoints=1)

@@ -10,11 +10,11 @@ mesh = IntervalMesh(4,0.25,0.75)
 V = FunctionSpace(mesh, 'P', 1)
 
 # funcao
-f = Expression('3*sin(2*pi*x[0])',element=V.ufl_element())
+f = Expression('3*sin(2*pi*x[0])',
+                   element=V.ufl_element())
 
 # interpolacao
-pif = Function(V)
-pif.interpolate(f)
+pif = interpolate(f,V)
 
 # grafico
 xx = IntervalMesh(100,0.25,0.75)
