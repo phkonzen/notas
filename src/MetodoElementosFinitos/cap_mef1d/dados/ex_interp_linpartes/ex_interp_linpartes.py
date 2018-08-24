@@ -11,7 +11,7 @@ V = FunctionSpace(mesh, 'P', 1)
 
 # funcao
 f = Expression('3*sin(2*pi*x[0])',
-                   element=V.ufl_element())
+                   degree=10)
 
 # interpolacao
 pif = interpolate(f,V)

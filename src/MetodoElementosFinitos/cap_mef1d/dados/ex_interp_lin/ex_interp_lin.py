@@ -4,14 +4,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # malha
-mesh = IntervalMesh(1,0.25,0.75)
+mesh = IntervalMesh(4,0.25,0.75)
 
 # espaco
 V = FunctionSpace(mesh, 'P', 1)
 
 # funcao
 f = Expression('3*sin(2*pi*x[0])',
-                   element=V.ufl_element())
+                   degree=10)
 
 # interpolacao
 pif = interpolate(f,V)

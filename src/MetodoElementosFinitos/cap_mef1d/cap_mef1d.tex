@@ -155,7 +155,24 @@ Por fim, de \eqref{eq:prop_pif_0} e de \eqref{eq:prop_pif_0}, obtemos a primeira
 \end{equation}
 \end{dem}
 
-Vamos, agora, generalizar este resultado para a interpolação no espaço $V_h$ das funções lineares por parte. Dada uma função contínua $f$ em $I = [l_0, l_1]$, definimos o operador interpolador $\pi: C^0(I)\to V_h$ na malha $\mathcal{I}$ de $I$ por
+\begin{ex}\label{ex:esterro_interp_lin}
+  A Figura \ref{fig:ex_esterro_interp_lin} mostra a evolução do erro na norma $L^2$ da interpolação de $f(x)=3\sen(2\pi x)$ no espaço $P_1([0, h)]$ para $h=10^{-5}, 10^{-4}, \cdots, 10^{-1}$.
+
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./cap_mef1d/dados/ex_esterro_interp_lin/ex_esterro_interp_lin}
+    \caption{Erro de interpolação de $f(x)=3\sen(2\pi x)$ no espaço $P_1([0, h])$.}
+    \label{fig:ex_esterro_interp_lin}
+  \end{figure}
+
+\ifispython
+Com o \fenics, podemos computar os erros de interpolação com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/dados/ex_esterro_interp_lin/ex_esterro_interp_lin.py}{código}:
+\verbatiminput{./cap_mef1d/dados/ex_esterro_interp_lin/ex_esterro_interp_lin.py}
+\fi
+\end{ex}
+
+
+Vamos, agora, generalizar o resultado da Proposição \ref{prop:interp_lin} para a interpolação no espaço $V_h$ das funções lineares por parte. Dada uma função contínua $f$ em $I = [l_0, l_1]$, definimos o operador interpolador $\pi: C^0(I)\to V_h$ na malha $\mathcal{I}$ de $I$ por
 \begin{equation}
   \pi f(x) = \sum_{i=0}^{n}f(x_i)\varphi_i(x).
 \end{equation}
@@ -220,7 +237,7 @@ Observemos, agora, que \eqref{eq:proj_siseq} consiste em um sistema de $n+1$ equ
 \begin{equation}\label{eq:proj_sis}
   M\xi = b,
 \end{equation}
-onde $M = [m_{i,j}]_{i,j=0}^{n+1}$ é chamada de matrix de massa
+onde $M = [m_{i,j}]_{i,j=0}^{n+1}$ é chamada de matriz de massa
 \begin{equation}
   m_{i,j} = \int_I\varphi_j\varphi_i\,dx
 \end{equation}
@@ -251,13 +268,50 @@ Com o \fenics, podemos computar $P_h f$ com o seguinte \href{https://github.com/
 \fi
 \end{ex}
 
+O próximo teorema mostra que $P_h f$ é a função que melhor aproxima $f$ dentre todas as funções do espaço $V_h$.
+
+\begin{teo}(\normalfont{A melhor aproximação.})\label{teo:melho_aprox}
+  A projeção $L^2$ satisfaz
+  \begin{equation}
+    \|f-P_hf\|_{L^2(I)} \leq \|f - v\|_{L^2(I)},\quad\forall v\in V_h.
+  \end{equation}
+\end{teo}
+\begin{dem}
+  Dado $v\in V_h$, temos
+  \begin{align}
+    \|f-P_hf\|_{L^2(I)}^2 &= \int_I |f-P_hf|^2\,dx\\
+    &= \int_I (f-P_hf)(f-v+v-P_hf)\,dx\\
+    &= \int_I(f-P_hf)(f-v)\,dx + \int_I(f-P_hf)(v-P_hf)\,dx\\
+    &= \int_I (f-P_hf)(f-v)\,dx\\
+    &\leq \int_I \|f-P_hf\|_{L^2(I)}\|f-v\|_{L^2(I)},
+  \end{align}
+donde segue o resultado.
+\end{dem}
+
+O próximo teorema fornece uma estimativa {\it a-priori} do erro $\|f-P_h f\|_{L^2(I)}$ em relação ao tamanho da malha.
+
+\begin{teo}
+  A projeção $L^2$ satisfaz
+  \begin{equation}
+    \|f-P_hf\|_{L^2(I)} \leq C\sum_{i=1}^n h_i^4\|f''\|_{L^2(I_i)}^2.
+  \end{equation}
+\end{teo}
+\begin{dem}
+  Tomando a interpolação $\pi f \in V_h$, temos do Teorema da melhor aproximação (Teorema \ref{teo:melhor_aprox}) e da estimativa do erro de interpolação (Proposição \ref{prop:interp_linpartes}) que
+  \begin{align}
+    \|f - P_hf\|_{L^2(I)}^2 &\leq \|f-\pi f\|_{L^2(I)}^2\\
+    &\leq C\sum_{i=1}^n h_i^4\|f''\|_{L^2(I_i)}^2.
+  \end{align}
+\end{dem}
+
 \emconstrucao
 
 \subsection{Exercícios}
 
 \begin{exer}
-  Faça um código para verificar as estimativas da Proposição~\ref{prop:interp_lin} no caso da interpolação da função $f(x) = 3\sen(2\pi x)$ no espaço $P_1$ das funções lineares.
+  Faça um código para verificar a segunda estimativa da Proposição~\ref{prop:interp_lin} no caso da interpolação da função $f(x) = 3\sen(2\pi x)$ no espaço $P_1$ das funções lineares.
 \end{exer}
+
 
 \begin{exer}
   Faça um código para verificar as estimativas da Proposição~\ref{prop:interp_linpartes} no caso da interpolação da função $f(x) = 3\sen(2\pi x)$ no espaço $V_h$ das funções lineares por partes.
