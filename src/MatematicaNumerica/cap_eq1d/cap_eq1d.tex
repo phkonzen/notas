@@ -550,7 +550,7 @@ aproxima $x^*$ com um erro da ordem de $(x^*-\tilde{x})^2$.
 Estes observações nos levam a \emph{iteração de Newton}\index{iteração de!Newton}
 \begin{align}
   x^{(1)} &= \text{aprox. inicial},\\
-  x^{(k+1)} &= x^{(k)} - \frac{f(x^{(k)}}{f'(x^{(k)}},
+  x^{(k+1)} &= x^{(k)} - \frac{f(x^{(k)})}{f'(x^{(k)})},
 \end{align}
 com $k=1, 2, \ldots$.
 
@@ -584,7 +584,62 @@ Os resultados apresentados na Tabela \ref{tab:ex_Newton_exec} podem ser computad
 
 \subsection{Interpretação geométrica}
 
-\emconstrucao
+Dada uma aproximação $x^{(k)}$ de um zero de uma dada função $f$, a iteração de Newton fornece uma nova aproximação $x^{(k+1)}$ com
+\begin{equation}
+  x^{(k+1)} = x^{(k)} - \frac{f(x^{(k)})}{f'(x^{(k)})}.
+\end{equation}
+Subtraindo $x^{(k+1)}$ e multiplicando por $-f'(x^{(k)})$, obtemos
+\begin{equation}\label{eq:Newton_geointerp}
+  0 = f'(x^{(k)})(x^{(k+1)}-x^{(k)}) + f(x^{(k)}),
+\end{equation}
+Observemos que o lado direito desta última equação corresponde a expressão da reta tangente ao gráfico de $f$ pelo ponto $(x^{(k)}, f(x^{(k)}))$, avaliada em $x^{(k+1)}$. Mais precisamente, a equação desta reta tangente é
+\begin{equation}
+  y = f'(x^{(k)})(x-x^{(k)}) + f(x^{(k)})
+\end{equation}
+e a equação \eqref{eq:Newton_geointerp} nos informa que em $x=x^{(k+1)}$ a reta tangente cruza o eixo $x$.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./cap_eq1d/dados/fig_Newton_geointerp/fig_Newton_geointerp}
+  \caption{Interpretação geométrica das iterações de Newton. Veja no \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/fig_Newton_geointerp/fig_Newton_geointerp.ggb}{Geogebra}.}
+  \label{fig:Newton_geointerp}
+\end{figure}
+
+
+Destas observações, concluímos que a iterada $x^{(k+1)}$ do método de Newton corresponde ao ponto de interseção da reta tangente ao gráfico da $f$ pelo ponto $(x^{k}, f(x^{k}))$. Veja a Figura \ref{fig:Newton_geointerp}.
+
+\begin{ex}\label{ex:Newton_init}
+  Consideremos que o método de Newton seja usado para aproximarmos o zero de
+  \begin{equation}
+    f(x) = (x-1)e^{-x^2}.
+  \end{equation}
+Observemos que esta função tem $x=1$ como seu único zero. Agora, se escolhermos $x^{(1)} = 0,5$ as iterações de Newton convergem para este zero, mas, se escolhermos $x^{(1)}=1,5$ não (veja a Tabela \ref{tab:ex_Newton_init}).
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{r|cc}
+    $k$ & $x^{(k)}$ & $x^{(k+1)}$ \\\hline
+    1 & $5,0000\E-1$ & $1,5000\E+0$ \\
+    2 & $8,3333\E-1$ & $2,5000\E+0$ \\
+    3 & $9,6377\E-1$ & $2,7308\E+0$ \\
+    4 & $9,9763\E-1$ & $2,9355\E+0$ \\
+    5 & $9,9999\E-1$ & $3,1223\E+0$ \\
+    6 & $1,0000\E+0$ & $3,2955\E+0$ \\
+    7 & $1,0000\E+0$ & $3,4580\E+0$ \\\hline    
+  \end{tabular}
+  \caption{Resultados referentes ao Exemplo \ref{ex:Newton_init}}
+  \label{tab:ex_Newton_init}
+\end{table}
+
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./cap_eq1d/dados/ex_Newton_init/fig_ex_Newton_init}
+    \caption{Escolha da aproximação inicial para o método de Newton.}
+    \label{fig:ex_Newton_init}
+  \end{figure}
+
+Embora ambas aproximações iniciais estão a mesma distância da solução $x=1$, quando tomamos $x^{(1)}=1,5$ as iterações irão divergir, como podemos observar da interpretação geométrica dada na Figura \ref{fig:ex_Newton_init}.
+\end{ex}
 
 \subsection{Análise de convergência}
 
