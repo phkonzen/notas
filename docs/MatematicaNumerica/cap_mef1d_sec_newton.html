@@ -1,0 +1,295 @@
+<!DOCTYPE html><html>
+<head>
+<title>2.4 Método de Newton‣ Capítulo 2 Equação com uma incógnita ‣ Matemática numérica</title>
+<!--Generated on Sat Aug 25 07:10:23 2018 by LaTeXML (version 0.8.1) http://dlmf.nist.gov/LaTeXML/.-->
+<!--Document created on 25 de agosto de 2018.-->
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="LaTeXML.css" type="text/css">
+<link rel="stylesheet" href="ltx-book.css" type="text/css">
+<link rel="stylesheet" href="ltx-ulem.css" type="text/css">
+<link rel="stylesheet" href="main.css" type="text/css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=MML_SVG" type="text/javascript"></script>
+<script src="mymathcfg.js" type="text/javascript"></script>
+<link rel="up" href="cap_eq1d.html" title="Capítulo 2 Equação com uma incógnita ‣ Matemática numérica">
+<link rel="up up" href="main.html" title="Matemática numérica">
+<link rel="start" href="main.html" title="Matemática numérica">
+<link rel="prev" href="cap_eq1d_pfixo.html" title="2.3 Iteração de ponto fixo ‣ Capítulo 2 Equação com uma incógnita ‣ Matemática numérica">
+<link rel="next" href="cap_ajuste.html" title="Capítulo 3 Aproximação por mínimos quadrados ‣ Matemática numérica">
+<link rel="section" href="cap_eq1d_sec_bissec.html" title="2.1 Método da bisseção ‣ Capítulo 2 Equação com uma incógnita ‣ Matemática numérica">
+<link rel="section" href="cap_eq1d_sec_falsapos.html" title="2.2 Método da falsa posição ‣ Capítulo 2 Equação com uma incógnita ‣ Matemática numérica">
+<link rel="section" href="cap_eq1d_pfixo.html" title="2.3 Iteração de ponto fixo ‣ Capítulo 2 Equação com uma incógnita ‣ Matemática numérica">
+<link rel="chapter" href="licenca.html" title="Licença ‣ Matemática numérica">
+<link rel="chapter" href="prefacio.html" title="Prefácio ‣ Matemática numérica">
+<link rel="chapter" href="cap_aritm.html" title="Capítulo 1 Aritmética de Máquina ‣ Matemática numérica">
+<link rel="chapter" href="cap_eq1d.html" title="Capítulo 2 Equação com uma incógnita ‣ Matemática numérica">
+<link rel="chapter" href="cap_ajuste.html" title="Capítulo 3 Aproximação por mínimos quadrados ‣ Matemática numérica">
+<link rel="chapter" href="cap_deriv.html" title="Capítulo 4 Derivação ‣ Matemática numérica">
+<link rel="chapter" href="cap_extrapl.html" title="Capítulo 5 Técnicas de extrapolação ‣ Matemática numérica">
+<link rel="chapter" href="cap_integr.html" title="Capítulo 6 Integração ‣ Matemática numérica">
+<link rel="chapter" href="cap_pvi.html" title="Capítulo 7 Problema de valor inicial ‣ Matemática numérica">
+<link rel="chapter" href="cap_pvc.html" title="Capítulo 8 Problema de valor de contorno ‣ Matemática numérica">
+<link rel="chapter" href="cap_edp.html" title="Capítulo 9 Equações Diferenciais Parciais ‣ Matemática numérica">
+<link rel="bibliography" href="bib.html" title="Referências ‣ Matemática numérica">
+<meta name="keywords" lang="en-us" content=", ">
+<meta name="author" content="Pedro H A Konzen"/>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="goodies.css" type="text/css">
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-17226092-2"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag("js", new Date());
+
+gtag("config", "UA-17226092-2")
+</script>
+</head>
+
+<body>
+
+<div class="row">
+<div class="col-xs-12 col-xs-offset-0 col-md-8 col-md-offset-2">
+
+
+<!-- begin: navbar -->
+<nav class="navbar navbar-default">
+<div class="container-fluid">
+<div class="navbar-header">
+<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+<span class="sr-only">Toggle navigation</span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+</button>
+<a class="navbar-brand" href="main.html">Notas de Aula<br/><small>Matemática Numérica<small/></a>
+</div>
+
+<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+<ul class="nav navbar-nav">
+<li><a href="https://github.com/phkonzen/notas">Repositório GitHub</a></li>
+<li><a href="main.pdf">Baixar PDF</a></li>
+<li><a href="../index.html">Outras Notas & Infos</a></li>
+</ul>
+</div><!-- /.navbar-collapse -->
+</div><!-- /.container-fluid -->
+</nav>
+
+
+<!-- end: navbar -->
+
+
+
+<div class="ltx_page_main">
+<header class="ltx_page_header">
+<div>
+<a href="cap_eq1d.html" title="Capítulo 2 Equação com uma incógnita ‣ Matemática numérica" class="ltx_ref" rel="up"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">2 </span>Equação com uma incógnita</span></a><a href="cap_eq1d_pfixo.html" title="2.3 Iteração de ponto fixo ‣ Capítulo 2 Equação com uma incógnita ‣ Matemática numérica" class="ltx_ref" rel="prev"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">2.3 </span>Iteração de ponto fixo</span></a><a href="cap_ajuste.html" title="Capítulo 3 Aproximação por mínimos quadrados ‣ Matemática numérica" class="ltx_ref" rel="next"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">3 </span>Aproximação por mínimos quadrados</span></a>
+</div></header>
+<div class="ltx_page_content">
+<section class="ltx_section ltx_authors_1line">
+<h1 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">2.4 </span>Método de Newton<small><a href="https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_mef1d/cap_mef1d.tex" target=_blank> <span class="glyphicon glyphicon-pencil"></span> </a><a href="../contato.html" target="_blank"> <span class="glyphicon glyphicon-envelope"></span> </a></small></h1>
+<div class="ltx_date ltx_role_creation"></div>
+
+<div id="p1" class="ltx_para">
+<p class="ltx_p">Seja <math id="p1.m1" class="ltx_Math" alttext="x^{*}" display="inline"><msup><mi>x</mi><mo>*</mo></msup></math> um zero de uma dada função <math id="p1.m2" class="ltx_Math" alttext="f" display="inline"><mi>f</mi></math>, i.e. <math id="p1.m3" class="ltx_Math" alttext="f(x^{*})=0" display="inline"><mrow><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup id="XM915"><mi>x</mi><mo>*</mo></msup><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>0</mn></mrow></math>. Usando de expansão em polinômio de Taylor da <math id="p1.m4" class="ltx_Math" alttext="f" display="inline"><mi>f</mi></math> em um dado ponto <math id="p1.m5" class="ltx_Math" alttext="\tilde{x}" display="inline"><mover accent="true"><mi>x</mi><mo stretchy="false">~</mo></mover></math>, temos</p>
+<table id="Ch2.E66" class="ltx_equation">
+
+<tr class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_align_center"><math id="Ch2.E66.m1" class="ltx_Math" alttext="f(x^{*})=f(\tilde{x})+f^{\prime}(\tilde{x})(x^{*}-\tilde{x})+O((x^{*}-\tilde{x%
+})^{2})." display="block"><mrow><mrow><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup id="XM916"><mi>x</mi><mo>*</mo></msup><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mover accent="true" id="XM917"><mi>x</mi><mo stretchy="false">~</mo></mover><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><msup><mi>f</mi><mo>′</mo></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mover accent="true" id="XM918"><mi>x</mi><mo stretchy="false">~</mo></mover><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow id="XM919"><msup><mi>x</mi><mo>*</mo></msup><mo>-</mo><mover accent="true"><mi>x</mi><mo stretchy="false">~</mo></mover></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><mi>O</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup id="XM924"><mrow><mo stretchy="false">(</mo><mrow id="XM923"><msup><mi>x</mi><mo>*</mo></msup><mo>-</mo><mover accent="true"><mi>x</mi><mo stretchy="false">~</mo></mover></mrow><mo stretchy="false">)</mo></mrow><mn>2</mn></msup><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.66)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Como <math id="p1.m6" class="ltx_Math" alttext="f(x^{*})=0" display="inline"><mrow><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup id="XM925"><mi>x</mi><mo>*</mo></msup><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>0</mn></mrow></math>, temos</p>
+<table id="Ch2.E67" class="ltx_equation">
+
+<tr class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_align_center"><math id="Ch2.E67.m1" class="ltx_Math" alttext="x^{*}+O((x^{*}-\tilde{x})^{2})=\tilde{x}-\frac{f(\tilde{x})}{f^{\prime}(\tilde%
+{x})}." display="block"><mrow><mrow><mrow><msup><mi>x</mi><mo>*</mo></msup><mo>+</mo><mrow><mi>O</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup id="XM932"><mrow><mo stretchy="false">(</mo><mrow id="XM931"><msup><mi>x</mi><mo>*</mo></msup><mo>-</mo><mover accent="true"><mi>x</mi><mo stretchy="false">~</mo></mover></mrow><mo stretchy="false">)</mo></mrow><mn>2</mn></msup><mo stretchy="false">)</mo></mrow></mrow></mrow><mo>=</mo><mrow><mover accent="true"><mi>x</mi><mo stretchy="false">~</mo></mover><mo>-</mo><mfrac><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mover accent="true" id="XM926"><mi>x</mi><mo stretchy="false">~</mo></mover><mo stretchy="false">)</mo></mrow></mrow><mrow><msup><mi>f</mi><mo>′</mo></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mover accent="true" id="XM927"><mi>x</mi><mo stretchy="false">~</mo></mover><mo stretchy="false">)</mo></mrow></mrow></mfrac></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.67)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Esta última expressão nos indica que dada uma aproximação <math id="p1.m7" class="ltx_Math" alttext="\tilde{x}" display="inline"><mover accent="true"><mi>x</mi><mo stretchy="false">~</mo></mover></math> do zero de <math id="p1.m8" class="ltx_Math" alttext="f" display="inline"><mi>f</mi></math> a expressão</p>
+<table id="Ch2.E68" class="ltx_equation">
+
+<tr class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_align_center"><math id="Ch2.E68.m1" class="ltx_Math" alttext="\tilde{x}-\frac{f(\tilde{x})}{f^{\prime}(\tilde{x})}," display="block"><mrow><mrow><mover accent="true"><mi>x</mi><mo stretchy="false">~</mo></mover><mo>-</mo><mfrac><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mover accent="true" id="XM933"><mi>x</mi><mo stretchy="false">~</mo></mover><mo stretchy="false">)</mo></mrow></mrow><mrow><msup><mi>f</mi><mo>′</mo></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mover accent="true" id="XM934"><mi>x</mi><mo stretchy="false">~</mo></mover><mo stretchy="false">)</mo></mrow></mrow></mfrac></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.68)</span></td>
+</tr>
+</table>
+<p class="ltx_p">aproxima <math id="p1.m9" class="ltx_Math" alttext="x^{*}" display="inline"><msup><mi>x</mi><mo>*</mo></msup></math> com um erro da ordem de <math id="p1.m10" class="ltx_Math" alttext="(x^{*}-\tilde{x})^{2}" display="inline"><msup><mrow><mo stretchy="false">(</mo><mrow id="XM935"><msup><mi>x</mi><mo>*</mo></msup><mo>-</mo><mover accent="true"><mi>x</mi><mo stretchy="false">~</mo></mover></mrow><mo stretchy="false">)</mo></mrow><mn>2</mn></msup></math>.</p>
+</div>
+<div id="p2" class="ltx_para">
+<p class="ltx_p">Estes observações nos levam a <span class="ltx_text ltx_font_bold">iteração de Newton</span></p>
+<table id="Ch9.S3.EGx35" class="ltx_equationgroup ltx_eqn_align">
+
+<tr id="Ch2.E69" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right">
+                  <math id="Ch2.E69.m1" class="ltx_Math" alttext="\displaystyle x^{(1)}" display="inline"><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mn id="XM937">1</mn><mo stretchy="false">)</mo></mrow></msup></math>
+                </td>
+<td class="ltx_td ltx_align_left">
+                  <math id="Ch2.E69.m2" class="ltx_Math" alttext="\displaystyle=\text{aprox. inicial}," display="inline"><mrow><mrow><mi></mi><mo>=</mo><mtext>aprox. inicial</mtext></mrow><mo>,</mo></mrow></math>
+                </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.69)</span></td>
+</tr>
+<tr id="Ch2.E70" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right">
+                  <math id="Ch2.E70.m1" class="ltx_Math" alttext="\displaystyle x^{(k+1)}" display="inline"><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mrow id="XM942"><mi>k</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup></math>
+                </td>
+<td class="ltx_td ltx_align_left">
+                  <math id="Ch2.E70.m2" class="ltx_Math" alttext="\displaystyle=x^{(k)}-\frac{f(x^{(k)}}{f^{\prime}(x^{(k)}}," display="inline"><mrow><mrow><mi></mi><mo>=</mo><mrow><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi id="XM943">k</mi><mo stretchy="false">)</mo></mrow></msup><mo>-</mo><mstyle displaystyle="true"><mfrac><mrow><mi>f</mi><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi id="XM944">k</mi><mo stretchy="false">)</mo></mrow></msup></mrow></mrow><mrow><msup><mi>f</mi><mo>′</mo></msup><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi id="XM945">k</mi><mo stretchy="false">)</mo></mrow></msup></mrow></mrow></mfrac></mstyle></mrow></mrow><mo>,</mo></mrow></math>
+                </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.70)</span></td>
+</tr>
+</table>
+<p class="ltx_p">com <math id="p2.m1" class="ltx_Math" alttext="k=1,2,\ldots" display="inline"><mrow><mi>k</mi><mo>=</mo><mrow><mn>1,2,</mn><mo>⁢</mo><mi mathvariant="normal">…</mi></mrow></mrow></math>.</p>
+</div>
+<div id="Thmex1" class="ltx_theorem ltx_theorem_ex">
+<h6 class="ltx_title ltx_runin ltx_font_bold ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem">Exemplo 2.4.1</span>.</h6>
+<div id="Thmex1.p1" class="ltx_para">
+<p class="ltx_p">Retornamos ao problema de encontrar o zero da função</p>
+<table id="Ch2.E71" class="ltx_equation">
+
+<tr class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_align_center"><math id="Ch2.E71.m1" class="ltx_Math" alttext="f(x)=\operatorname{sen}^{2}\left(x+\frac{\pi}{4}\right)-x^{3}+\frac{\pi}{4}x^{%
+2}+\frac{5\pi^{2}}{16}x+\frac{3\pi^{3}}{64}." display="block"><mrow><mrow><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM946">x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mrow><msup id="XM947"><mo>sen</mo><mn>2</mn></msup><mo>⁡</mo><mrow><mo>(</mo><mrow id="XM948"><mi>x</mi><mo>+</mo><mfrac><mi>π</mi><mn>4</mn></mfrac></mrow><mo>)</mo></mrow></mrow><mo>-</mo><msup><mi>x</mi><mn>3</mn></msup></mrow><mo>+</mo><mrow><mfrac><mi>π</mi><mn>4</mn></mfrac><mo>⁢</mo><msup><mi>x</mi><mn>2</mn></msup></mrow><mo>+</mo><mrow><mfrac><mrow><mn>5</mn><mo>⁢</mo><msup><mi>π</mi><mn>2</mn></msup></mrow><mn>16</mn></mfrac><mo>⁢</mo><mi>x</mi></mrow><mo>+</mo><mfrac><mrow><mn>3</mn><mo>⁢</mo><msup><mi>π</mi><mn>3</mn></msup></mrow><mn>64</mn></mfrac></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.71)</span></td>
+</tr>
+</table>
+<p class="ltx_p">no intervalo <math id="Thmex1.p1.m1" class="ltx_Math" alttext="[2,3]" display="inline"><mrow><mo stretchy="false">[</mo><mn id="XM949">2,3</mn><mo stretchy="false">]</mo></mrow></math>. Então, fazendo as iterações de Newton com aproximação inicial <math id="Thmex1.p1.m2" class="ltx_Math" alttext="x^{(1)}=2,6" display="inline"><mrow><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mn id="XM950">1</mn><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><mn>2,6</mn></mrow></math>, obtemos os resultados apresentados na Tabela <a href="#Ch2.T5" title="Tabela 2.5 ‣ Exemplo 2.4.1. ‣ 2.4 Método de Newton ‣ Capítulo 2 Equação com uma incógnita ‣ Matemática numérica" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.5</span></a>.</p>
+</div>
+<figure id="Ch2.T5" class="ltx_table">
+<table class="ltx_tabular ltx_centering ltx_align_middle">
+<thead class="ltx_thead">
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_right ltx_border_r">
+                  <math id="Ch2.T5.m1" class="ltx_Math" alttext="k" display="inline"><mi>k</mi></math>
+                </th>
+<th class="ltx_td ltx_align_center">
+                  <math id="Ch2.T5.m2" class="ltx_Math" alttext="x^{(k)}" display="inline"><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi id="XM951">k</mi><mo stretchy="false">)</mo></mrow></msup></math>
+                </th>
+<th class="ltx_td ltx_align_center">
+                  <math id="Ch2.T5.m3" class="ltx_Math" alttext="|x^{(k)}-x^{(k-1)}|" display="inline"><mrow><mo stretchy="false">|</mo><mrow id="XM954"><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi id="XM952">k</mi><mo stretchy="false">)</mo></mrow></msup><mo>-</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mrow id="XM953"><mi>k</mi><mo>-</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup></mrow><mo stretchy="false">|</mo></mrow></math>
+                </th>
+</tr>
+</thead>
+<tbody class="ltx_tbody">
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_right ltx_border_r ltx_border_t">1</th>
+<td class="ltx_td ltx_align_center ltx_border_t">
+                  <math id="Ch2.T5.m4" class="ltx_Math" alttext="2,6000" display="inline"><mn>2,6000</mn></math>
+                </td>
+<td class="ltx_td ltx_align_center ltx_border_t">-x-</td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_right ltx_border_r">2</th>
+<td class="ltx_td ltx_align_center">
+                  <math id="Ch2.T5.m5" class="ltx_Math" alttext="2,3836" display="inline"><mn>2,3836</mn></math>
+                </td>
+<td class="ltx_td ltx_align_center">
+                  <math id="Ch2.T5.m6" class="ltx_Math" alttext="2,2\mathrm{E}\!-\!1" display="inline"><mrow><mrow><mn>2,2</mn><mo>⁢</mo><mpadded width="-1.7pt"><mi mathvariant="normal">E</mi></mpadded></mrow><mo rspace="0.8pt">-</mo><mn>1</mn></mrow></math>
+                </td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_right ltx_border_r">3</th>
+<td class="ltx_td ltx_align_center">
+                  <math id="Ch2.T5.m7" class="ltx_Math" alttext="2,3566" display="inline"><mn>2,3566</mn></math>
+                </td>
+<td class="ltx_td ltx_align_center">
+                  <math id="Ch2.T5.m8" class="ltx_Math" alttext="2,7\mathrm{E}\!-\!2" display="inline"><mrow><mrow><mn>2,7</mn><mo>⁢</mo><mpadded width="-1.7pt"><mi mathvariant="normal">E</mi></mpadded></mrow><mo rspace="0.8pt">-</mo><mn>2</mn></mrow></math>
+                </td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_right ltx_border_r">4</th>
+<td class="ltx_td ltx_align_center">
+                  <math id="Ch2.T5.m9" class="ltx_Math" alttext="2,3562" display="inline"><mn>2,3562</mn></math>
+                </td>
+<td class="ltx_td ltx_align_center">
+                  <math id="Ch2.T5.m10" class="ltx_Math" alttext="3,9\mathrm{E}\!-\!4" display="inline"><mrow><mrow><mn>3,9</mn><mo>⁢</mo><mpadded width="-1.7pt"><mi mathvariant="normal">E</mi></mpadded></mrow><mo rspace="0.8pt">-</mo><mn>4</mn></mrow></math>
+                </td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_right ltx_border_b ltx_border_r">5</th>
+<td class="ltx_td ltx_align_center ltx_border_b">
+                  <math id="Ch2.T5.m11" class="ltx_Math" alttext="2,3562" display="inline"><mn>2,3562</mn></math>
+                </td>
+<td class="ltx_td ltx_align_center ltx_border_b">
+                  <math id="Ch2.T5.m12" class="ltx_Math" alttext="8,3\mathrm{E}\!-\!8" display="inline"><mrow><mrow><mn>8,3</mn><mo>⁢</mo><mpadded width="-1.7pt"><mi mathvariant="normal">E</mi></mpadded></mrow><mo rspace="0.8pt">-</mo><mn>8</mn></mrow></math>
+                </td>
+</tr>
+</tbody>
+</table>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_table">Tabela 2.5: </span>Resultados referentes ao Exemplo <a href="#Thmex1" title="Exemplo 2.4.1. ‣ 2.4 Método de Newton ‣ Capítulo 2 Equação com uma incógnita ‣ Matemática numérica" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.4.1</span></a>.</figcaption>
+</figure>
+<div id="Thmex1.p2" class="ltx_para">
+<p class="ltx_p">Os resultados apresentados na Tabela <a href="#Ch2.T5" title="Tabela 2.5 ‣ Exemplo 2.4.1. ‣ 2.4 Método de Newton ‣ Capítulo 2 Equação com uma incógnita ‣ Matemática numérica" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.5</span></a> podem ser computados no <code class="ltx_verbatim ltx_font_typewriter">GNU Octave</code> com o seguinte código:</p>
+<pre class="ltx_verbatim ltx_font_typewriter">f = @(x) sin(x+pi/4).^2-x.^3+pi/4*x.^2+5*pi^2/16*x+3*pi^3/64;
+fl = @(x) 2*sin(x+pi/4).*cos(x+pi/4)-3*x.^2+pi/2*x+5*pi^2/16;
+
+x = 2.6
+x0 = x;
+for k=2:5
+  x = x0 - f(x0)/fl(x0);
+  printf("%d %1.4E %1.1E\n",...
+          k,x,abs(x-x0))
+  x0=x;
+endfor
+</pre>
+</div>
+</div>
+<section id="SS1" class="ltx_subsection">
+<h2 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">2.4.1 </span>Interpretação geométrica<small><a href="https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_mef1d/cap_mef1d.tex" target=_blank> <span class="glyphicon glyphicon-pencil"></span> </a><a href="../contato.html" target="_blank"> <span class="glyphicon glyphicon-envelope"></span> </a></small></h2>
+
+<div id="SS1.p1" class="ltx_para">
+<p class="ltx_p">Em construção …</p>
+</div>
+</section>
+<section id="SS2" class="ltx_subsection">
+<h2 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">2.4.2 </span>Análise de convergência<small><a href="https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_mef1d/cap_mef1d.tex" target=_blank> <span class="glyphicon glyphicon-pencil"></span> </a><a href="../contato.html" target="_blank"> <span class="glyphicon glyphicon-envelope"></span> </a></small></h2>
+
+<div id="SS2.p1" class="ltx_para">
+<p class="ltx_p">Em construção …</p>
+</div>
+</section>
+<section id="SSx1" class="ltx_subsection">
+<h2 class="ltx_title ltx_title_subsection">Exercícios<small><a href="https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_mef1d/cap_mef1d.tex" target=_blank> <span class="glyphicon glyphicon-pencil"></span> </a><a href="../contato.html" target="_blank"> <span class="glyphicon glyphicon-envelope"></span> </a></small></h2>
+
+<div id="SSx1.p1" class="ltx_para">
+<p class="ltx_p">Em construção …
+</p>
+</div>
+</section>
+</section>
+</div>
+<footer class="ltx_page_footer">
+<div>
+<a href="cap_eq1d_pfixo.html" title="2.3 Iteração de ponto fixo ‣ Capítulo 2 Equação com uma incógnita ‣ Matemática numérica" class="ltx_ref" rel="prev"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">2.3 </span>Iteração de ponto fixo</span></a><a href="bib.html" title="Referências ‣ Matemática numérica" class="ltx_ref" rel="bibliography"><span class="ltx_text ltx_ref_title">Referências</span></a><a href="cap_ajuste.html" title="Capítulo 3 Aproximação por mínimos quadrados ‣ Matemática numérica" class="ltx_ref" rel="next"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">3 </span>Aproximação por mínimos quadrados</span></a>
+</div>
+<div class="ltx_page_logo">
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />O texto acima está sob Licença <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR">Creative Commons Atribuição-CompartilhaIgual 4.0 Internacional</a>. Generated  on Sat Aug 25 07:10:23 2018 by <a href="http://dlmf.nist.gov/LaTeXML/">LaTeXML <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg==" alt="[LOGO]"></a>
+</div></footer>
+</div>
+</div><!-- div class="row" -->
+</div><!-- div class="col-xs-12 col-xs-offset-0 col-md-8 col-md-offset-2 -->
+</body>
+</html>
