@@ -6,7 +6,7 @@ alpha=-0.1;
 x=2.6
 x0=x;
 for k=2:5
-  x=g(x,alpha);
+  x=g(x0,alpha);
   printf("%d %1.4E %1.1E\n",...
           k,x,abs(x-x0))
   x0=x;
