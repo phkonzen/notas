@@ -157,7 +157,7 @@ class Index:
         body += '<div class="panel-body" style="text-align: right">\n'
         body += 'Repositório GitHub: '
         body += '<a href="https://github.com/phkonzen/notas" target="_blank">https://github.com/phkonzen/notas</a>. Contato '
-        body += '<a href="mailto:phkonzen@gmail.com?Subject=[Notas]" target="_top"><span class="glyphicon glyphicon-envelope"></span></a>\n'
+        body += '<a href="contato.html" target="_blank"><span class="glyphicon glyphicon-envelope"></span></a>\n'
         body += '</div>\n'
         body += '</div>\n'
         #body += '</div>\n'
