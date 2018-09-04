@@ -283,7 +283,7 @@ O próximo teorema mostra que $P_h f$ é a função que melhor aproxima $f$ dent
     &= \int_I (f-P_hf)(f-v+v-P_hf)\,dx\\
     &= \int_I(f-P_hf)(f-v)\,dx + \int_I(f-P_hf)(v-P_hf)\,dx\\
     &= \int_I (f-P_hf)(f-v)\,dx\\
-    &\leq \int_I \|f-P_hf\|_{L^2(I)}\|f-v\|_{L^2(I)},
+    &\leq \|f-P_hf\|_{L^2(I)}\|f-v\|_{L^2(I)},
   \end{align}
 donde segue o resultado.
 \end{dem}
@@ -454,8 +454,93 @@ Com o \fenics, a computação do problema de elementos finitos pode ser feita co
 
 \subsection{Estimativa {\it a priori}}
 
+Existem dois tipos de estimativas do erro $e := u - u_h$. Estimativas {\it a priori}, são aqueles em que o erro é dado em relação da solução $u$, enquanto que nas estimativas {\it a posteriori} o erro é expresso em relação a solução de elementos finitos $u_h$.
 
-\emconstrucao
+\begin{teo}(\normalfont{Ortogonalidade de Galerkin})\label{teo:ortogonalidade_de_Galerkin}
+  A solução de elementos finitos $u_h$ de \eqref{eq:modelo_fem} satisfaz a seguinte propriedade de ortogonalidade
+  \begin{equation}
+    a(u-u_h,v) := \int_I (u-u_h)'v'\,dx = 0,\quad v\in V_{h,0},
+  \end{equation}
+onde $u$ é a solução de \eqref{eq:modelo_ffraca}.
+\end{teo}
+\begin{dem}
+  De \eqref{eq:modelo_fem}, \eqref{eq:modelo_ffraca} e lembrando que $V_{h,0}\subset V_0$, temos
+  \begin{equation}
+    a(u,v) = L(v) = a(u_h,v) \Rightarrow a(u-u_h, v) = 0,
+  \end{equation}
+para todo $v\in V_{h,0}$.
+\end{dem}
+
+\begin{teo}(\normalfont{A melhor aproximação})\label{teo:fem1d_melhor_aprox}
+  A solução de elementos finitos $u_h$ dada por \eqref{eq:modelo_fem} satisfaz a seguinte propriedade de melhor aproximação
+  \begin{equation}
+    \|(u-u_h)'\|_{L^2(I)} \leq \|(u-v)'\|_{L^2(I)},\quad v\in V_{h,0},\label{eq:modelo_melhor_aprox}
+  \end{equation}
+onde $u$ é a solução de \eqref{eq:modelo_ffraca}.
+\end{teo}
+\begin{dem}
+  Escrevendo $u-u_h = u-v+v-u_h$ para qualquer $v\in V_{h,0}$ e usando a ortogonalidade de Galerkin (Teorema \ref{teo:ortogonalidade_de_Galerkin}), temos
+  \begin{align}
+    \|(u-u_h)'\|^2 &= \int_{I} (u-u_h)'(u-u_h)'\,dx\\
+    &= \int_I (u-u_h)'(u-v+v-u_h)'\,dx\\
+    &= \int_I (u-u_h)'(u-v)'\,dx + \int_I (u-u_h)'(v-u_h)'\,dx\\
+    &= \int_I (u-u_h)'(u-v)'\,dx\\
+    &\leq \|(u-u_h)'\|_{L^2(I)}\|(u-v)'\|_{L^2(I)}.
+  \end{align}
+\end{dem}
+
+\begin{teo}(\normalfont{Estimativa {\it a priori}})
+  O erro em se aproximar a solução $u$ de \eqref{eq:modelo_ffraca} pela solução de elementos finitos $u_h$ dada por \eqref{eq:modelo_fem} satisfaz a seguinte estimativa {\it a priori}
+\begin{equation}
+  \|(u-u_h)'\|_{L^2(I)}^2 \leq C\sum_{i=1}^n h_i^2\|u''\|_{L^2(I)}^2.
+\end{equation}
+\end{teo}
+\begin{dem}
+  Tomando $v = \pi u$ no teorema da melhor aproximação (Teorema \ref{teo:fem1d_melhor_aprox}), obtemos
+  \begin{equation}
+    \|(u-u_h)'\|_{L^2(I)} \leq \|(u-\pi u)'\|_{L^2(I)}.
+  \end{equation}
+Daí, da estimativa do erro de interpolação (Proposição \ref{prop:interp_linpartes}), temos
+\begin{equation}
+  \|(u-u_h)'\|_{L^2(I)}^2 \leq C\sum_{i=1}^n h_i^2\|u''\|_{L^2(I)}^2.
+\end{equation}
+\end{dem}
+
+\begin{ex}\label{ex:modelo_estapriori}
+  
+  Consideremos o problema \eqref{eq:prob_eq}-\eqref{eq:prob_bc} com $f\equiv 1$ e $L=1$, i.e.
+  \begin{align}
+    -u'' &= 1,\quad x\in I=[0,1],\label{eq:ex_modelo_eq}\\
+    u(0) &= u(1) = 0.\label{eq:ex_modelo_bc}
+  \end{align}
+Neste caso, a solução analítica $u(x) = -x^2/2+x/2$ pode ser facilmente obtida por integração. Agora, vamos computar uma aproximação de elementos finitos no espaço das funções contínuas por partes $V_{h,0}$ construído numa malha uniforme de $5$ células no intervalo $I=[0, 1]$. Para tanto, montamos o sistema de elementos finitos \eqref{eq:modelo_fem_sis}, resolvemo-lo e computamos a solução com
+\begin{equation}
+  u_h = \sum_{j=1}^n \xi_j\varphi_j,
+\end{equation}
+onde a $j$-ésima função de base é
+\begin{equation}
+  \varphi_j = \left\{
+      \begin{array}{ll}
+        (x-x_{j-1})/(x_j - x_{j-1}) &, x_{j-1}\leq x < x_{j},\\
+        (x_{j}-x)/(x_j-x_{j+1}) &, x_j \leq x \leq x_{j+1}
+      \end{array}
+\right.
+\end{equation}
+A Figura \ref{fig:ex_modelo} apresenta o esboço dos gráficos da solução analítica $u$ e da sua aproximação de elementos finitos $u_h$.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./cap_mef1d/dados/ex_modelo/ex_modelo}
+  \caption{Esboço dos gráficos das soluções referentes ao Exemplo \ref{ex:modelo}.}
+  \label{fig:ex_modelo}
+\end{figure}
+
+\ifispython
+Com o \fenics, a computação do problema de elementos finitos pode ser feita com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/dados/ex_modelo/ex_modelo.py}{código}:
+\verbatiminput{./cap_mef1d/dados/ex_modelo/ex_modelo.py}
+\fi
+\end{ex}
+
 
 \subsection*{Exercícios}
 
