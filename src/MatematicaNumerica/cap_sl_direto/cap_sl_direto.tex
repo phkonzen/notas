@@ -1,0 +1,286 @@
+%Este trabalho está licenciado sob a Licença Atribuição-CompartilhaIgual 4.0 Internacional Creative Commons. Para visualizar uma cópia desta licença, visite http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR ou mande uma carta para Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+
+\chapter{Métodos diretos para sistemas lineares}\label{cap_sl_direto}
+\thispagestyle{fancy}
+
+Neste capítulo, discutiremos sobre métodos diretos para a resolução de sistemas lineares de $n$-equações com $n$-incógnitas. Isto é, sistemas que podem ser escritos na seguinte forma algébrica
+\begin{align}
+  a_{11}x_1 + a_{12}x_2 + \cdots + a_{1n}x_n &= b_1\\
+  a_{21}x_1 + a_{22}x_2 + \cdots + a_{2n}x_n &= b_2\\
+  &\vdots \\
+  a_{n1}x_1 + a_{n2}x_2 + \cdots + a_{nn}x_n &= b_n.
+\end{align}
+
+\section{Eliminação gaussiana}\label{cap_sl_direto_sec_egauss}
+
+Um sistema linear
+\begin{align}
+  a_{11}x_1 + a_{12}x_2 + \cdots + a_{1n}x_n &= b_1 \label{eq:sl_fa_1}\\
+  a_{21}x_1 + a_{22}x_2 + \cdots + a_{2n}x_n &= b_2\\
+  &\vdots \\
+  a_{n1}x_1 + a_{n2}x_2 + \cdots + a_{nn}x_n &= b_n.\label{eq:sl_fa_n}
+\end{align}
+pode ser escrito na forma matricial
+\begin{equation}
+  A\pmb{x} = \pmb{b},
+\end{equation}
+onde $A = [a_{ij}]_{i,j=1}^{n,n}$ é chamada de matriz dos coeficientes, $\pmb{x}=(x_1, x_2, \dotsc, x_n)$ é o vetor (coluna) das incógnitas e $\pmb{b}=(b_1, b_2, \dotsc, b_n)$ é o vetor (coluna) dos termos constantes.
+
+Outra forma matricial de representar o sistema \eqref{eq:sl_fa_1}-\eqref{eq:sl_fa_n} é pela chamada mattriz estendida
+\begin{equation}
+  E = [A ~\pmb{b}].
+\end{equation}
+No caso, $E$ é a seguinte matriz $n \times (n+1)$
+\begin{equation}
+  E =
+  \begin{bmatrix}
+    a_{11} & a_{12} & \cdots & a_{1n} & b_1\\
+    a_{21} & a_{22} & \cdots & a_{2n} & b_2\\
+    \vdots & \vdots & \vdots & \vdots & \vdots\\
+    a_{n1} & a_{n2} & \cdots & a_{nn} & b_n
+  \end{bmatrix}
+\end{equation}
+
+O método de eliminação gaussiana consistem em realizar operações sobre as equações (sobre as linhas) do sistema \eqref{eq:sl_fa_1}-\eqref{eq:sl_fa_n} (da matriz estendida $E$) de forma a reescrevê-lo como um sistema triangular, ou diagonal. Para tanto, podemos utilizar as seguintes operações:
+\begin{enumerate}[1.]
+\item permutação entre as equações (linhas) ($E_i \leftrightarrow E_j$).
+\item multiplicação de uma equação (linha) por um escalar não nulo ($E_i \leftarrow \lambda E_i$).
+\item substituição de uma equação (linha) por ela somada com a multiplicação de uma outra por um escalar não nulo ($E_i \leftarrow E_i + \lambda E_j$).
+\end{enumerate}
+
+\begin{ex}\label{ex:egauss_exec}
+  O sistema linear
+  \begin{align}
+    -2x_1 - 3x_2 + 2x_3 + 3x_4 &= 10\label{eq:ex_egauss_exec_sl_1}\\
+    -4x_1 - 6x_2 + 6x_3 + 6x_4 &= 20\\
+    -2x_1 + 4x_3 + 6x_4 &= 10\\
+    4x_1 + 3x_2 - 8x_3 - 6x_4 &= -17\label{eq:ex_egauss_exec_sl_4}
+  \end{align}
+pode ser escrito na forma matricial $A\pmb{x}=\pmb{b}$, onde
+\begin{equation}
+  A =
+  \begin{bmatrix}
+    -2 & -3 & 2 & 3\\
+    -4 & -6 & 6 & 6\\
+    -2 & 0 & 4 & 6 \\
+    4 & 3 & -8 & -6
+  \end{bmatrix},
+\end{equation}
+$\pmb{x} = (x_1, x_2, x_3, x_4)$ e $\pmb{b} = (10, 20, 10, -17)$. Sua matriz estendida é
+\begin{equation}
+  E =
+  \begin{bmatrix}
+    -2 & -3 & 2 & 3 & 10\\
+    -4 & -6 & 6 & 6 & 20\\
+    -2 & 0 & 4 & 6 & 10\\
+    4 & 3 & -8 & -6 & -17
+  \end{bmatrix}
+\end{equation}
+Então, usando o método de eliminação gaussiana, temos
+\begin{align}
+  E &=
+  \begin{bmatrix}
+    -2 & -3 & 2 & 3 & 10\\
+    -4 & -6 & 6 & 6 & 20\\
+    -2 & 0 & 4 & 6 & 10\\
+    4 & 3 & -8 & -6 & -17
+  \end{bmatrix}
+  \begin{matrix}
+  \\
+  E_2\leftarrow E_2 - (e_{21}/\pmb{e_{11}})E_1\\
+  \\
+  \\
+  \end{matrix}\\
+  &\sim 
+  \begin{bmatrix}
+    \pmb{-2} & -3 & 2 & 3 & 10\\
+    0 & 0 & 2 & 0 & 0\\
+    -2 & 0 & 4 & 6 & 10\\
+    4 & 3 & -8 & -6 & -17
+  \end{bmatrix}
+  \begin{matrix}
+  \\
+  \\
+  E_3\leftarrow E_3 - (e_{31}/\pmb{e_{11}})E_1\\
+  \\
+  \end{matrix}\\
+  &\sim 
+  \begin{bmatrix}
+    \pmb{-2} & -3 & 2 & 3 & 10\\
+    0 & 0 & 2 & 0 & 0\\
+    0 & 3 & 2 & 3 & 0\\
+    4 & 3 & -8 & -6 & -17
+  \end{bmatrix}
+  \begin{matrix}
+  \\
+  \\
+  \\
+  E_4\leftarrow E_4 - (e_{41}/\pmb{e_{11}})E_1\\
+  \end{matrix}\\  
+&\sim 
+  \begin{bmatrix}
+    \pmb{-2} & -3 & 2 & 3 & 10\\
+    0 & 0 & 2 & 0 & 0\\
+    0 & \pmb{3} & 2 & 3 & 0\\
+    0 & -3 & -4 & 0 & 3
+  \end{bmatrix}
+  \begin{matrix}
+  \\
+  E_2 \leftrightarrow E_3\\
+  \\
+  \\
+  \end{matrix}\\
+&\sim 
+  \begin{bmatrix}
+    \pmb{-2} & -3 & 2 & 3 & 10\\
+    0 & \pmb{3} & 2 & 3 & 0\\
+    0 & 0 & 2 & 0 & 0\\
+    0 & -3 & -4 & 0 & 3
+  \end{bmatrix}
+  \begin{matrix}
+  \\
+  \\
+  \\
+  E_4 \leftarrow E_4 - (e_{42}/\pmb{e_{22}})E_2\\
+  \end{matrix}\\
+&\sim 
+  \begin{bmatrix}
+    \pmb{-2} & -3 & 2 & 3 & 10\\
+    0 & 3 & 2 & 3 & 0\\
+    0 & 0 & \pmb{2} & 0 & 0\\
+    0 & 0 & -2 & 3 & 3
+  \end{bmatrix}
+  \begin{matrix}
+  \\
+  \\
+  \\
+  E_4 \leftarrow E_4 - (e_{43}/\pmb{e_{33}})E_3\\
+  \end{matrix}\\
+    &\sim 
+      \begin{bmatrix}
+        \pmb{-2} & -3 & 2 & 3 & 10\\
+        0 & \pmb{3} & 2 & 3 & 0\\
+        0 & 0 & \pmb{2} & 0 & 0\\
+        0 & 0 & 0 & \pmb{3} & 3
+      \end{bmatrix}
+\end{align}
+Esta última matriz estendida é chamada de \emph{matriz escalonada} do sistema. Desta, temos que \eqref{eq:ex_egauss_exec_sl_1}-\eqref{eq:ex_egauss_exec_sl_4} é equivalente ao seguinte sistema triangular
+\begin{align}
+  -2x_1 - 3x_2 + 2x_3 + 3x_4 &= 10\\
+  3x_2 + 2x_3 + 3x_4 &= 0\\
+  2x_3 &= 0\\
+  3x_4 &= 3.
+\end{align}
+Resulvendo da última equação para a primeira, temos
+\begin{align}
+  x_4 &= 1,\\
+  x_3 &= 0,\\
+  x_2 &= \frac{-2x_3 - 3x_4}{3} = -1,\\
+  x_1 &= \frac{10 + 3x_2 - 3x_3 - 3x_4}{-2} = -2.
+\end{align}
+
+\ifisoctave
+No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/ex_egauss_exec/ex_egauss_exec.m}{código}:
+\verbatiminput{./cap_sl_direto/dados/ex_egauss_exec/ex_egauss_exec.m}
+\fi
+\end{ex}
+
+\begin{obs}
+  Para a resolução de um sistema linear $n \times n$, o método de eliminação gaussiana demanda
+  \begin{equation}
+    \frac{n^3}{3} + n^2 - \frac{n}{3}
+  \end{equation}
+multiplicações/divisóes e
+\begin{equation}
+  \frac{n^3}{3} + \frac{n^2}{2} - \frac{5n}{6}
+\end{equation}
+adições/subtrações \cite{Burden2015a}.
+\end{obs}
+
+Com o mesmo custo computacional, podemos utilizar o método de eliminação gaussiana para transformar o sistema dado em um sistema diagonal.
+
+\begin{ex}\label{ex:egauss_reduzida}
+  Voltando ao exemplo anterior (Exemplo \ref{ex:egauss_exec}, vimos que a matriz estendida do sistema \eqref{eq:ex_egauss_exec_sl_1}-\eqref{eq:ex_egauss_exec_sl_4} é equivalente a
+  \begin{equation}
+    E \sim       
+    \begin{bmatrix}
+        -2 & -3 & 2 & 3 & 10\\
+        0 & 3 & 2 & 3 & 0\\
+        0 & 0 & 2 & 0 & 0\\
+        0 & 0 & 0 & 3 & 3
+      \end{bmatrix}.
+  \end{equation}
+Então, podemos continuar aplicando o método de eliminação gaussiana, agora de baixo para cima, até obtermos um sistema diagonal equivalente. Vejamos
+\begin{align}
+  E &\sim       
+      \begin{bmatrix}
+        -2 & -3 & 2 & 3 & 10\\
+        0 & 3 & 2 & 3 & 0\\
+        0 & 0 & 2 & 0 & 0\\
+        0 & 0 & 0 & \pmb{3} & 3
+      \end{bmatrix}
+      \begin{array}{l}
+      E_1 \leftarrow E_1 - (e_{14}/e_{44})E_4\\
+      E_2 \leftarrow E_2 - (e_{24}/e_{44})E_4\\
+      \\
+      \\
+    \end{array}\\
+    &\sim       
+      \begin{bmatrix}
+        -2 & -3 & 2 & 0 & 7\\
+        0 & 3 & 2 & 0 & -3\\
+        0 & 0 & \pmb{2} & 0 & 0\\
+        0 & 0 & 0 & 3 & 3
+      \end{bmatrix}
+      \begin{array}{l}
+      E_1 \leftarrow E_1 - (e_{13}/e_{33})E_3\\
+      E_2 \leftarrow E_2 - (e_{23}/e_{33})E_3\\
+      \\
+      \\
+    \end{array}\\
+    &\sim       
+      \begin{bmatrix}
+        -2 & -3 & 0 & 0 & 4\\
+        0 & \pmb{3} & 0 & 0 & -3\\
+        0 & 0 & 2 & 0 & 0\\
+        0 & 0 & 0 & 3 & 3
+      \end{bmatrix}
+      \begin{array}{l}
+      E_1 \leftarrow E_1 - (e_{12}/e_{22})E_2\\
+      \\
+      \\
+      \\
+    \end{array}\\
+    &\sim       
+      \begin{bmatrix}
+        \pmb{-2} & 0 & 0 & 0 & 4\\
+        0 & \pmb{3} & 0 & 0 & -3\\
+        0 & 0 & \pmb{2} & 0 & 0\\
+        0 & 0 & 0 & \pmb{3} & 3
+      \end{bmatrix}
+      \begin{array}{l}
+      E_1 \leftarrow E_1/e_{11}\\
+      E_2 \leftarrow E_2/e_{22}\\
+      E_3 \leftarrow E_3/e_{33}\\
+      E_4 \leftarrow E_4/e_{44}\\
+    \end{array}\\
+    &\sim       
+      \begin{bmatrix}
+        1 & 0 & 0 & 0 & -2\\
+        0 & 1 & 0 & 0 & -1\\
+        0 & 0 & 1 & 0 & 0\\
+        0 & 0 & 0 & 1 & 1
+      \end{bmatrix}
+  \end{align}
+Esta última matriz é chamada de matriz escalonada reduzida (por linhas) e a solução do sistema encontra-se em sua última coluna, i.e. $\pmb{x} = (-2, -1, 0, 1)$.
+
+\ifisoctave
+No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/ex_egauss_reduzida/ex_egauss_reduzida.m}{código}:
+\verbatiminput{./cap_sl_direto/dados/ex_egauss_reduzida/ex_egauss_reduzida.m}
+\fi
+\end{ex}
+
+\subsection*{Exercícios}
+
+
+\emconstrucao
