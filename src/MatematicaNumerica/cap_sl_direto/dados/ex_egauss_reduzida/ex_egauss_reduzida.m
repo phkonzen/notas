@@ -18,17 +18,13 @@ for i=1:n-1
     E(i,:)=E(j,:);
     E(j,:)=aux;
   end
-  for j=i+1:n
-    E(j,:) -= E(j,i)/E(i,i)*E(i,:);
-  endfor
+  E(i+1:n,:) -= E(i+1:n,i)/E(i,i)*E(i,:);
 endfor
 E
 
 %para cima
 for i=n:-1:2
   E(i,:) = E(i,:)/E(i,i);
-  for j=i-1:-1:1
-    E(j,:) -= E(j,i)*E(i,:);
-  endfor
+  E(1:i-1,:) -= E(1:i-1,i)*E(i,:);
 endfor
 E(1,:) = E(1,:)/E(1,1)
