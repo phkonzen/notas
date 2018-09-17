@@ -282,8 +282,8 @@ No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{
 
 \subsection*{Exercícios}
 
-\begin{exer}\label{exer:egauss_exec}
-  Use o método de eliminação gaussiana para obter a matriz reduzida do seguinte sistema
+\begin{exer}\label{exer:egauss_reduzida}
+  Use o método de eliminação gaussiana para obter a matriz escalonada reduzida do seguinte sistema
   \begin{align}
     -3x_1 + 2x_2 -5x_4 + x_5 &= -23\\
     -x_2 -3x_4 &= 9\\
@@ -296,7 +296,321 @@ No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{
     \ifisoctave 
   \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/exer_egauss_reduzida/exer_egauss_reduzida.m}{Código.} 
   \fi
-  $9,179688\times 10^{-1}$
+  $$
+  \begin{bmatrix}
+    1 & 0 & 0 & 0 & 0 & 1\\
+    0 & 1 & 0 & 0 & 0 & -3\\
+    0 & 0 & 1 & 0 & 0 & -2\\
+    0 & 0 & 0 & 1 & 0 & 2\\
+    0 & 0 & 0 & 0 & 1 & -4\\
+  \end{bmatrix}
+  $$
 \end{resp}
 
-\emconstrucao
+\begin{exer}\label{exer:egauss_arredondamento}
+  Use o método de eliminação gaussiana para obter a matriz escalonada reduzida do seguinte sistema
+  \begin{align}
+    -10^{-12}x_1 + 20x_2 - 3x_3 &= -1\\
+    2,001x_1 + 10^{-5}x_2 - x_3 &= -2\\
+    4x_1 - 2x_2 + x_3 &= 0,1
+  \end{align}
+\end{exer}
+\begin{resp}
+  \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/exer_egauss_arredondamento/exer_egauss_arredondamento.m}{Código.} 
+  \fi
+  $$
+  \begin{bmatrix}
+   1.0000 &  0.0000 &  0.0000 & -3.9435\E-1\\
+  -0.0000 &  1.0000 & -0.0000 & -2.3179\E-1\\
+   0.0000 &  0.0000 &  1.0000 &  1.2120\E+0
+  \end{bmatrix}
+  $$
+\end{resp}
+
+\section{Norma e número de condicionamento}
+
+Nesta seção, fazemos uma rápida discussão sobre normas de vetores e matrizes, bem como do número de condicionamento de uma matriz.
+
+\subsection{Norma $L^2$}
+
+A norma $L^2$ de um dado vetor $v = (v_1, v_2, \dotsc, v_n) \in \mathbb{R^n}$ é definida por
+\begin{equation}
+  \|v\| := \sqrt{v_1^2 + v_2^2 + \cdots + v_n^2}.
+\end{equation}
+
+\begin{prop}
+  Dados os vetores $u,v \in \mathbb{R^n}$ e um escalar $\lambda\in\mathbb{R}$, temos:
+  \begin{enumerate}[a)]
+  \item $\|v\| \geq 0$.
+  \item $\|v\| = 0 \Leftrightarrow v=0$.
+  \item $\|\lambda v\| = |\lambda|\cdot \|v\|$.
+  \item $\|u+v\| \leq \|u\| + \|v\|$ (desigualdade triangular).
+  \item $u\cdot v \leq \|u\|\cdot\|v\|$ (desigualdade de Cauchy-Schwarz).
+  \end{enumerate}
+\end{prop}
+
+\begin{ex}\label{ex:norma_vetor}
+  A norma $L^2$ do vetor $v = (1, -2, 3, -4)$ é
+  \begin{align}
+    \|v\| &= \sqrt{v_1^2 + v_2^2 + v_3^2 + v_4^2}\\
+    &= \sqrt{1^2 + (-2)^2 + 3^2 + (-4)^2}\\
+    &= 5,4772.
+  \end{align}
+
+\ifisoctave
+No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/ex_norma_vetor/ex_norma_vetor.m}{código}:
+\verbatiminput{./cap_sl_direto/dados/ex_norma_vetor/ex_norma_vetor.m}
+\fi
+\end{ex}
+
+
+A norma $L^2$ induzida de uma dada matriz real $A = [a_{ij}]_{i,j=1}^n$ é definida por
+\begin{equation}
+  \|A\| := \sup_{x\in\mathbb{R}^n, \|x\|=1} \|Ax\|.
+\end{equation}
+Pode-se mostrar que
+\begin{equation}
+  \|A\| = \sqrt{\lambda_{max}(A^TA)},
+\end{equation}
+onde $\lambda_{max}(A^TA) := \max\{|\lambda|;~\lambda\text{ é autovalor de }A^TA\}$.
+
+\begin{prop}
+  Dadas as matrizes reais $A, B$ $n\times n$, um vetor $v\in\mathbb{R}^2$ e um escalar $\lambda$, temos
+  \begin{enumerate}[a)]
+  \item $\|A\| \geq 0$.
+  \item $\|A\|=0 \Leftrightarrow A=0$.
+  \item $\|\lambda A\| = |\lambda|\cdot \|A\|$.
+  \item $\|A+B\| \leq \|A\| + \|B\|$ (desigualdade triangular).
+  \item $\|AB\| \leq \|A\|\|B\|$.
+  \item $\|Av\| \leq \|A\|\|v\|$.
+  \end{enumerate}
+\end{prop}
+
+\begin{ex}\label{ex:norma_matriz}
+  A matriz
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      1 & -1 & 2\\
+      -2 & \pi & 4\\
+      7 & -5 & \sqrt{2}
+    \end{bmatrix}
+  \end{equation}
+tem norma $L^2$
+\begin{equation}
+  \|A\| = 9,3909.
+\end{equation}
+
+\ifisoctave
+No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/ex_norma_matriz/ex_norma_matriz.m}{código}:
+\verbatiminput{./cap_sl_direto/dados/ex_norma_matriz/ex_norma_matriz.m}
+\fi
+\end{ex}
+
+\subsection{Número de condicionamento}
+
+O número de condicionamento de uma matriz é uma medida referente a propagação de erros de ocorre da sua aplicação. Mais especificamente, assumamos que seja dada uma matriz invertível $A = [a_{ij}]_{i,j=1}^{n,n}$, um vetor $x\in\mathbb{R}^n$ e uma perturbação $\delta_x\in\mathbb{R}^n$. Além disso, sejam
+\begin{align}
+  y &= Ax\\
+  y + \delta_y &= A(x+\delta_x).
+\end{align}
+Ou seja, $\delta_y$ é a perturbação em $y$ propagada da aplicação de $A$ em $x$ com perturbação $\delta_x$.
+
+Agora, podemos estimar a razão entre os erros relativos $e_{rel}(y) := \|\delta_y\|/\|y\|$ e $e_{rel}(x) := \|\delta_x\|/\|x\|$ da seguinte forma 
+\begin{align}
+  \frac{\frac{\|y\|}{\|\delta_y\|}}{\frac{\|x\|}{\|\delta_x\|}} &= \frac{\|y\|}{\|\delta_y\|}\frac{\|\delta_x\|}{\|x\|}\\
+  &=\frac{\|Ax\|}{\|\delta_y\|}\frac{\|A^{-1}\delta_y\|}{\|x\|} \\
+  &\leq \frac{\|A\|\|x\|\|A^{-1}\|\|\delta_y\|}{\|\delta_y\|\|x\|}\\
+  &\leq \|A\|\|A^{-1}\|.
+\end{align}
+Logo, temos a seguinte estimativa de propagação de erro
+\begin{equation}
+  e_{rel}(y) \leq \|A\|\|A^{-1}\|e_{rel}(x).
+\end{equation}
+
+Isto nos motiva a definir o \emph{número de condicionamento} da matriz $A$ por
+\begin{equation}
+  \kappa(A) := \|A\|\|A^{-1}\|.
+\end{equation}
+
+\begin{obs}
+  A matriz identidade tem o menor número de condicionamento, o qual é
+  \begin{equation}
+    \kappa(I) = 1.
+  \end{equation}
+\end{obs}
+
+\begin{ex}\label{ex:kappa}
+  Um exemplo de uma matriz bem condicionada é
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      1 & -1 & 2\\
+      -2 & \pi & 4\\
+      7 & -5 & \sqrt{2}
+    \end{bmatrix},
+  \end{equation}
+  cujo número de condicionamento é $\kappa(A) = 13,997$.
+
+  Já, a matriz
+  \begin{equation}
+    B =
+    \begin{bmatrix}
+      1 & 0 & 0\\
+      0 & 0 & -2\\
+      10^{5} & 10^{-4} & 10^{5}
+    \end{bmatrix},    
+  \end{equation}
+  tem número de condicionamento
+  \begin{equation}
+    \kappa(B) = 1,5811\times 10^{14},
+  \end{equation}
+  o que indica que $B$ é uma matriz mal condicionada.
+\end{ex}
+
+\subsection*{Exercícios}
+
+\begin{exer}\label{exer:norma_numcond}
+  Considere o seguinte sistema linear
+  \begin{align}
+    10^{-12}x_1 + 20x_2 + 3x_3 &= -1,\\
+    2,001x_1 + 10^{-5}x_2 + - x_3 &= -2,\\
+    x_1 - 2x_2 - 0,1x_3 &= 0,1.
+  \end{align}
+  \begin{enumerate}[a)]
+  \item Compute a norma $L^2$ do vetor dos termos constantes deste sistema.
+  \item Compute a norma $L^2$ da matriz dos coeficientes deste sistema.
+  \item Compute o número de condicionamento da matriz dos coeficientes deste sistema.
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/exer_norma_numcond/exer_norma_numcond.m}{Código.} 
+  \fi
+  a) $2,2383$; b) $2,0323\E+1$; c) $3,5128\E+1$
+\end{resp}
+
+
+\section{Método de eliminação gaussiana com pivotamento parcial com escala}
+
+O método de eliminação gaussiana é suscetível a propagação dos erros de arredondamento, em particular, quando os pivôs são números próximos de zero. Isto pode ser mitigado com o chamado pivotamento parcial com escala. Nesta variação do método de eliminação gaussiana, o pivô é escolhido como sendo o candidato que é o maior em relação aos elementos em sua linha.
+
+Dado um sistema $Ax = b$ com $n$-equações e $n$-incógnitas, o método pode ser descrito pelo seguinte pseudo-código:
+\begin{enumerate}
+ \item $E \leftarrow [A ~ b]$.
+ \item Para $i=1, 2, \dotsc, n$, faça $s_i \leftarrow \max_{1\leq j \leq n}|e_{i,j}|$.
+ \item Para $i=1, 2, \dotsc, n-1$:
+   \begin{enumerate}[3.1]
+   \item Compute $j$ tal que
+     \begin{equation}
+       \frac{e_{j,i}}{s_j} \geq \frac{e_{k,i}}{s_k},\quad\forall k=i, i+1, \dotsc, n.
+     \end{equation}
+     \item Permute as linhas $i$ e $j$, i.e. $E_i \leftrightarrow E_j$.
+     \item Para $j=i+1, i+2, \dotsc, n$:
+       \begin{enumerate}[3.3.1]
+       \item $E_j \leftarrow E_j - \frac{e_{ji}}{e_{ii}}E_i$.
+       \end{enumerate}
+   \end{enumerate}
+ \item Para $i=n, n-1, \dotsc, 2$:   
+   \begin{enumerate}[4.1]
+     \item Para $j=i-1, i-2, \dotsc, 1$:
+       \begin{enumerate}[4.1.1]
+         \item $E_j \leftarrow E_j - \frac{e_{ji}}{e_{ii}}E_i$.
+       \end{enumerate}
+   \end{enumerate}
+\end{enumerate}
+
+\begin{ex}\label{ex:egauss_pivo}
+  Vamos empregar o método de eliminação gaussiana com pivotamento parcial com escala para resolvermos o seguinte sistema linear
+  \begin{align}
+    10^{-12}x_1 + 20x_2 + 3x_3 &= -1,\\
+    2,001x_1 + 10^{-5}x_2 + - x_3 &= -2,\\
+    x_1 - 2x_2 - 0,1x_3 &= 0,1.
+  \end{align}
+  Para tanto, tomamos a matriz estendida
+  \begin{equation}
+    E =
+    \begin{bmatrix}
+      10^{-12} & 20 & 3 & -1\\
+      2,001 & 10^{-5} & -1 & -2\\
+      1 & -2 & -0,1 & 0,1
+    \end{bmatrix}
+  \end{equation}
+  e computamos os valores máximos em módulo dos elementos de cada linha da matriz $A$, i.e.
+  \begin{equation}
+    s = (20, 2,001, 2).
+  \end{equation}
+  Agora, observamos que $e_{2,1}$ é o maior pivô em escala, pois
+  \begin{equation}
+    \frac{e_{11}}{s_1} = 5\times 10^{-14}, \frac{e_{21}}{s_2} = 1, \frac{e_{31}}{s_3}=0,5.
+  \end{equation}
+  Então, fazemos a permutação entre as linhas $1$ e $2$, de forma a obtermos
+  \begin{equation}
+    E =
+    \begin{bmatrix}
+      2,001 & 10^{-5} & -1 & -2\\
+      10^{-12} & 20 & 3 & -1\\
+      1 & -2 & -0,1 & 0,1
+    \end{bmatrix}    
+  \end{equation}
+  Em seguida, eliminamos abaixo do pivô, e temos
+  \begin{equation}
+    E =
+    \begin{bmatrix}
+      2,001 & 10^{-5} & -1 & -2\\
+      0 & 20 & 3 & -1\\
+      0 & -2 & 3,9975\times 10^{-1} & 1,0995
+    \end{bmatrix}
+  \end{equation}
+  Daí, o novo pivô é escolhido como $e_{22}$, pois ambos candidatos tem o mesmo valor em escala
+  \begin{equation}
+    \frac{e_{2,2}}{s_2} = 1, \frac{e_{3,2}}{s_3} = 1.
+  \end{equation}
+  Logo, eliminamos abaixo do pivô para obtermos
+  \begin{equation}
+    E =
+    \begin{bmatrix}
+      2,001 & 10^{-5} & -1 & -2\\
+      0 & 20 & 3 & -1\\
+      0 & 0 & 6,9975\times 10^{-1} & 9,9950
+    \end{bmatrix}
+  \end{equation}
+  Procedendo a eliminação para cima, obtemos a matriz escalonada reduzida
+  \begin{equation}
+    E =
+    \begin{bmatrix}
+      1 & 0 & 0 & -2.8567\E-1\\
+      0 & 1 & 0 & -2.6425\E-1\\
+      0 & 0 & 1 & 1,4284\E+0
+    \end{bmatrix}
+  \end{equation}
+
+\ifisoctave
+No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/ex_egauss_pivo/ex_egauss_pivo.m}{código}:
+\verbatiminput{./cap_sl_direto/dados/ex_egauss_pivo/ex_egauss_pivo.m}
+\fi
+\end{ex}
+
+\subsection*{Exercícios}
+
+\begin{exer}\label{exer:egauss_pivo_exec}
+  Use o método de eliminação gaussiana com pivotamento parcial com escala para obter a matriz escalonada reduzida do seguinte sistema
+  \begin{align}
+    -2\times 10^{-12}x_1 + 10x_2 - 3\times 10^{-4}x_3 &= 2\\
+    10^5x_1 + 10^{-13}x_2 - x_3 &= -2\\
+    x_1 - 2x_2 + 3\times 10^{-7}x_3 &= 4
+  \end{align}
+\end{exer}
+\begin{resp}
+  \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/exer_egauss_pivo_exec/exer_egauss_pivo_exec.m}{Código.} 
+  \fi
+  $$
+  \begin{bmatrix}
+   1,0000 &  0,0000 &  0,0000 & 6,2588\E-1\\
+   0,0000 &  1,0000 &  0,0000 & -1,6777\E+0\\
+   0,0000 &  0,0000 &  1,0000 & 6,2589\E+4
+  \end{bmatrix}
+  $$
+\end{resp}
