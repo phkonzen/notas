@@ -355,7 +355,7 @@ Ou seja, se $v\in H^1(I)$, então $\|v\|_{L^2(I)}<\infty$, $\|v'\|_{L^2(I)}<\inf
 A formulação fraca é, então, obtida multiplicando-se a equação \eqref{eq:prob_eq} por uma função teste $v\in V_0$ (arbitrária) e integrando-se por partes, i.e.
 \begin{align}
   \int_I fv\,dx &= -\int_I u''v\,dx\\
-  &= \int_I u'v'\,dx - u'(L)v'(L) + u(0)v(0)\\
+  &= \int_I u'v'\,dx - u'(L)v(L) + u'(0)v(0)\\
 \end{align}
 Donde, das condições de contorno, temos
 \begin{equation}
@@ -507,41 +507,107 @@ Daí, da estimativa do erro de interpolação (Proposição \ref{prop:interp_lin
 \end{dem}
 
 \begin{ex}\label{ex:modelo_estapriori}
-  
-  Consideremos o problema \eqref{eq:prob_eq}-\eqref{eq:prob_bc} com $f\equiv 1$ e $L=1$, i.e.
-  \begin{align}
-    -u'' &= 1,\quad x\in I=[0,1],\label{eq:ex_modelo_eq}\\
-    u(0) &= u(1) = 0.\label{eq:ex_modelo_bc}
-  \end{align}
-Neste caso, a solução analítica $u(x) = -x^2/2+x/2$ pode ser facilmente obtida por integração. Agora, vamos computar uma aproximação de elementos finitos no espaço das funções contínuas por partes $V_{h,0}$ construído numa malha uniforme de $5$ células no intervalo $I=[0, 1]$. Para tanto, montamos o sistema de elementos finitos \eqref{eq:modelo_fem_sis}, resolvemo-lo e computamos a solução com
-\begin{equation}
-  u_h = \sum_{j=1}^n \xi_j\varphi_j,
-\end{equation}
-onde a $j$-ésima função de base é
-\begin{equation}
-  \varphi_j = \left\{
-      \begin{array}{ll}
-        (x-x_{j-1})/(x_j - x_{j-1}) &, x_{j-1}\leq x < x_{j},\\
-        (x_{j}-x)/(x_j-x_{j+1}) &, x_j \leq x \leq x_{j+1}
-      \end{array}
-\right.
-\end{equation}
-A Figura \ref{fig:ex_modelo} apresenta o esboço dos gráficos da solução analítica $u$ e da sua aproximação de elementos finitos $u_h$.
+  A Figura \ref{fig:ex_modelo_estapriori} apresenta o esboço da evolução do erro $\|(u - u_h)'\|_{L^2(I)}$ da solução de elementos finitos do problema \eqref{eq:ex_modelo_eq}-\eqref{eq:ex_modelo_bc} para malhas uniformes com $n=2, 4, 8, \ldots, 128$ células.
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.8\textwidth]{./cap_mef1d/dados/ex_modelo/ex_modelo}
-  \caption{Esboço dos gráficos das soluções referentes ao Exemplo \ref{ex:modelo}.}
-  \label{fig:ex_modelo}
+  \includegraphics[width=0.8\textwidth]{./cap_mef1d/dados/ex_modelo_estapriori/ex_modelo_estapriori}
+  \caption{Esboço dos gráficos das soluções referentes ao Exemplo \ref{ex:modelo_estapriori}.}
+  \label{fig:ex_modelo_estapriori}
 \end{figure}
 
 \ifispython
-Com o \fenics, a computação do problema de elementos finitos pode ser feita com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/dados/ex_modelo/ex_modelo.py}{código}:
-\verbatiminput{./cap_mef1d/dados/ex_modelo/ex_modelo.py}
+Com o \fenics, a computação do problema de elementos finitos pode ser feita com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/dados/ex_modelo_estapriori/ex_modelo_estapriori.py}{código}:
+\verbatiminput{./cap_mef1d/dados/ex_modelo_estapriori/ex_modelo_estapriori.py}
 \fi
 \end{ex}
 
+\subsection*{Exercícios}
+
+\emconstrucao
+
+
+\section{Condições de contorno}\label{cap_mef1d_sec_cc}
+
+Nesta seção, vamos discutir sobre soluções de elementos finitos para a equações diferencial
+\begin{equation}
+  -u'' = f,\quad x\in I=[0, L],
+\end{equation}
+com diferentes condições de contorno.
+
+\subsection{Condições de Dirichlet}
+
+Consideremos o seguinte problema com condições de contorno de Dirichlet\footnote{Johann Peter Gustav Lejeune Dirichlet, 1805 - 1859, matemático alemão. Fonte: \href{https://en.wikipedia.org/wiki/Peter_Gustav_Lejeune_Dirichlet}{Wikipedia}.}: encontrar $u$ tal que
+\begin{align}
+  &-u'' = f,\quad \forall x\in I=[0, L],\label{eq:cc_d_eq}\\
+  &u(0) = u_0,\quad u(L) = u_L,\label{eq:cc_d_bc}
+\end{align}
+com $u_0$, $u_L$ e $f$ dados.
+
+Tomando uma função teste $v\in V_0=H^1_0(I):=\{v\in H^1(I);~v(0)=v(L)=0\}$ e multiplicando-a em \eqref{eq:cc_d_eq}, obtemos
+\begin{equation}
+  - \int_I u''v\,dx = \int_I fv\,dx.
+\end{equation}
+Aplicando a integração por partes, temos
+\begin{equation}
+  \int_I u'v'\,dx = \int_I fc\,dx.
+\end{equation}
+Desta forma, definimos o seguinte problema fraco associado: encontrar $u\in V := \{v\in H^1(I);~v(0)=u_0,~v(L)=v_0\}$ tal que
+\begin{align}
+  a(u,v) = L(v),\quad\forall v\in V_0,
+\end{align}
+onde $a(u,v)$ é a forma bilinear
+\begin{equation}
+  a(u,v) = \int_I u'v'\,dx
+\end{equation}
+e $L(v)$ é a forma linear
+\begin{equation}
+  L(v) = \int_I fv\,dx.
+\end{equation}
+
+\begin{ex}\label{ex:cc_d}
+  Consideremos o problema
+  \begin{align}
+    &-u'' = 1,\quad x\in I=[0,1],\label{eq:ex_cc_d_eq}\\
+    &u(0) = 1/2,\quad u(1) = 1.\label{eq:ex_cc_d_bc}
+  \end{align}
+Sua solução analítica é $u(x) = -x^2/2+x+1/2$. A Figura \ref{fig:ex_cc_d} apresenta o esboço dos gráficos da solução analítica $u$ e da sua aproximação de elementos finitos $u_h$, esta construída no espaço dos polinômios lineares por partes sobre uma malha uniforme de $5$ células.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./cap_mef1d/dados/ex_cc_d/ex_cc_d}
+  \caption{Esboço dos gráficos das soluções referentes ao Exemplo \ref{ex:cc_d}.}
+  \label{fig:ex_cc_d}
+\end{figure}
+
+\ifispython
+Com o \fenics, a computação do problema de elementos finitos pode ser feita com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/dados/ex_cc_d/ex_cc_d.py}{código}:
+\verbatiminput{./cap_mef1d/dados/ex_cc_d/ex_cc_d.py}
+\fi
+\end{ex}
+
+\subsection{Condições de Neumann}
+
+\emconstrucao
+
+\subsection{Condições de Robin}
+
+\emconstrucao
 
 \subsection*{Exercícios}
+
+\begin{exer}\label{exer:dcr}
+  Considere o problema
+  \begin{align}
+    &-u'' + u' + 2u = -\cos(x),\quad x\in (0, \pi/2),\\
+    &u(0)=-0,3,\quad u(\pi/2)=-0,1.
+  \end{align}
+  Obtenha uma aproximação por elementos finitos para a solução deste problema, empregando o espaço de elementos finitos linear sobre uma malha uniforme com $10$ células. Então, compare a aproximação computada com sua solução analítica $u(x) = 0,1(\sen(x)+3\cos(x))$, bem como, compute o erro $\|u-u_h\|_{L^2}$.
+\end{exer}
+\begin{resp}
+  \ifispython
+  \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/dados/exer_dcr/exer_dcr.py}{Código}.
+  \fi
+\end{resp}
 
 \emconstrucao

@@ -3,21 +3,15 @@ from fenics import *
 import numpy as np
 import matplotlib.pyplot as plt
 
-#sol analitica
-ua = Expression('-x[0]*x[0]/2+x[0]/2',
-               degree=2)
+def boundary(x,on_boundary):
+    return on_boundary
 
-for n in [2,4,8,16,32,64,128]:
-
+def solver(n):
     # malha
     mesh = IntervalMesh(n,0,1)
 
     # espaco
     V = FunctionSpace(mesh, 'P', 1)
-
-    # condicoes de contorno
-    def boundary(x,on_boundary):
-        return on_boundary
 
     bc = DirichletBC(V,Constant(0.0),boundary)
 
@@ -29,16 +23,28 @@ for n in [2,4,8,16,32,64,128]:
     L = f*v*dx
 
     #computa a sol
-    uh = Function(V)
+    u = Function(V)
     solve(a == L, u, bc)
 
-    e = errornorm(u,ua,'')
+    return u
 
-#grafico
-#plot(u,marker="o",label="$u_h$")
+#sol analitica
+ua = Expression('-x[0]*x[0]/2+x[0]/2',
+                degree=2)
 
-xx = IntervalMesh(100,0,1)
-plot(ua,mesh=xx,label="$u$")
-plt.legend(numpoints=1)
+
+lerrors=[]
+for n in [2,4,8,16,32,64,128]:
+    u = solver(n)
+    e = errornorm(u,ua,norm_type='H10')
+    lerrors.append(e)
+
+plt.plot([2,4,8,16,32,64,128],lerrors)
+plt.xscale('log',base=2)
+#plt.yscale('log',base=2)
+plt.xlabel(r"$n$")
+plt.ylabel(r"$\|(u-u_h)'\|_{L^2(I)}$")
+plt.xlim((2,128))
+plt.xticks([2,4,8,16,32,64,128],[2,4,8,16,32,64,128])
 plt.grid('on')
 plt.show()
