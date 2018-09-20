@@ -19,7 +19,7 @@ bc = DirichletBC(V,Constant(0.0),boundary)
 u = TrialFunction(V)
 v = TestFunction(V)
 f = Constant(1.0)
-a = dot(grad(u), grad(v))*dx
+a = u.dx(0)*v.dx(0)*dx
 L = f*v*dx
 
 #computa a sol

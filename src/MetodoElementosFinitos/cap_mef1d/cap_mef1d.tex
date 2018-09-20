@@ -424,18 +424,20 @@ $\xi = (\xi_1,\xi_2,\dotsc,\xi_{n-1})$ é o vetor das incógnitas e $b = (b_{i})
     -u'' &= 1,\quad x\in I=[0,1],\label{eq:ex_modelo_eq}\\
     u(0) &= u(1) = 0.\label{eq:ex_modelo_bc}
   \end{align}
-Neste caso, a solução analítica $u(x) = -x^2/2+x/2$ pode ser facilmente obtida por integração. Agora, vamos computar uma aproximação de elementos finitos no espaço das funções contínuas por partes $V_{h,0}$ construído numa malha uniforme de $5$ células no intervalo $I=[0, 1]$. Para tanto, montamos o sistema de elementos finitos \eqref{eq:modelo_fem_sis}, resolvemo-lo e computamos a solução com
+Neste caso, a solução analítica $u(x) = -x^2/2+x/2$ pode ser facilmente obtida por integração.
+
+Agora, vamos computar uma aproximação de elementos finitos no espaço das funções lineares por partes $V_{h,0} = \{v\in P_1(I);~v(0)=v(1)=0\}$ construído numa malha uniforme de $5$ células no intervalo $I=[0, 1]$. Para tanto, consideramos o problema fraco: encontrar $u\in V_0 = \{v\in H^1(I);~v(0)=v(L)=0\}$ tal que
 \begin{equation}
-  u_h = \sum_{j=1}^n \xi_j\varphi_j,
+  a(u, v) = L(v),
 \end{equation}
-onde a $j$-ésima função de base é
+onde
 \begin{equation}
-  \varphi_j = \left\{
-      \begin{array}{ll}
-        (x-x_{j-1})/(x_j - x_{j-1}) &, x_{j-1}\leq x < x_{j},\\
-        (x_{j}-x)/(x_j-x_{j+1}) &, x_j \leq x \leq x_{j+1}
-      \end{array}
-\right.
+  a(u, v) = \int_I u'v'\,dx,\quad L(v)=\int_I fv\,dx.
+\end{equation}
+
+Então, a formulação de elementos finitos associada, lê-se: encontrar $u_h\in V_{h,0}$ tal que
+\begin{equation}
+  a(u_h, v_h) = L(v_h),\quad\forall v_h\in V_{h,0}.
 \end{equation}
 A Figura \ref{fig:ex_modelo} apresenta o esboço dos gráficos da solução analítica $u$ e da sua aproximação de elementos finitos $u_h$.
 
@@ -550,7 +552,7 @@ Tomando uma função teste $v\in V_0=H^1_0(I):=\{v\in H^1(I);~v(0)=v(L)=0\}$ e m
 \end{equation}
 Aplicando a integração por partes, temos
 \begin{equation}
-  \int_I u'v'\,dx = \int_I fc\,dx.
+  \int_I u'v'\,dx = \int_I fv\,dx.
 \end{equation}
 Desta forma, definimos o seguinte problema fraco associado: encontrar $u\in V := \{v\in H^1(I);~v(0)=u_0,~v(L)=v_L\}$ tal que
 \begin{align}
@@ -571,7 +573,24 @@ e $L(v)$ é a forma linear
     &-u'' = 1,\quad x\in I=[0,1],\label{eq:ex_cc_d_eq}\\
     &u(0) = 1/2,\quad u(1) = 1.\label{eq:ex_cc_d_bc}
   \end{align}
-Sua solução analítica é $u(x) = -x^2/2+x+1/2$. A Figura \ref{fig:ex_cc_d} apresenta o esboço dos gráficos da solução analítica $u$ e da sua aproximação de elementos finitos $u_h$, esta construída no espaço dos polinômios lineares por partes sobre uma malha uniforme de $5$ células.
+Sua solução analítica é $u(x) = -x^2/2+x+1/2$. 
+
+Para obtermos uma aproximação de elementos finitos, consideramos o seguinte problema fraco: encontrar $u\in V := \{v\in H^1(I);~v(0)=1/2,~v(1)=1\}$ tal que
+\begin{equation}
+  a(u,v) = L(v),
+\end{equation}
+para todo $v\in V_0 = \{v\in H^1(I);~v(0)=v(1)=0\}$, onde
+\begin{align}
+  a(u, v) &= \int_I u'v'\,dx,\quad L(v) &= \int_I fv\,dx.
+\end{align}
+
+Então, o problema de elementos finitos no espaço das funções lineares por partes lê-se: encontrar $u_h\in V_h = \{v\in P_1(I);~v(0)=1/2,~v(1)=1\}$ tal que
+\begin{equation}
+  a(u_h, v_h) = L(v_h),
+\end{equation}
+para todo $v_h\in V_{h,0} = \{v\in H^1(I);~v(0)=v(1)=0\}$.
+
+A Figura \ref{fig:ex_cc_d} apresenta o esboço dos gráficos da solução analítica $u$ e da sua aproximação de elementos finitos $u_h$, esta construída no espaço dos polinômios lineares por partes sobre uma malha uniforme de $5$ células.
 
 \begin{figure}[h!]
   \centering
