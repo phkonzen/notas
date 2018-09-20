@@ -94,7 +94,7 @@ Lembramos que valem as desigualdades triangular
 \begin{equation}
   \|v+w\|_{L^2(I)} \leq \|v\|_{L^2(I)} +  \|w\|_{L^2(I)}
 \end{equation}
-e a de Cauchy-Schwarz
+e a de Cauchy-Schwarz\footnote{Também conhecida como desigualdade de Cauchy–Bunyakovsky–Schwarz. Augustin-Louis Cauchy, 1789 - 1857, matemático francês. Viktor Yakovlevich Bunyakovsky, 1804 - 1889, matemático Russo. Karl Hermann Amandus Schwarz, 1843 - 1921, matemático alemão.}
 \begin{equation}\label{eq:Cauchy-Schwarz}
   \int_I vw\,dx \leq \|v\|_{L^2(I)}\|w\|_{L^2(I)},
 \end{equation}
@@ -134,7 +134,7 @@ ou seja,
   \|e\|_{L^2(I)} \leq h\|e'\|_{L^2(I)}.
 \end{equation}
 
-Agora, observando que $e(x_0)=e(x_1)=0$, o teorema de Rolle garante a existência de um ponto $\tilde{x}\in I$ tal que $e'(\tilde{x})=0$, donde do teorema fundamental do cálculo e da desigualdade de Cauchy-Schwarz, segue
+Agora, observando que $e(x_0)=e(x_1)=0$, o teorema de Rolle\footnote{Michel Rolle, 1652 - 1719, matemático francês.} garante a existência de um ponto $\tilde{x}\in I$ tal que $e'(\tilde{x})=0$, donde do teorema fundamental do cálculo e da desigualdade de Cauchy-Schwarz, segue
 \begin{align}
   e'(y) &= e'(\tilde{x}) + \int_{\tilde{x}}^y e''\,dx \\
         &= \int_{\tilde{x}}^y e''\,dx\\
@@ -552,7 +552,7 @@ Aplicando a integração por partes, temos
 \begin{equation}
   \int_I u'v'\,dx = \int_I fc\,dx.
 \end{equation}
-Desta forma, definimos o seguinte problema fraco associado: encontrar $u\in V := \{v\in H^1(I);~v(0)=u_0,~v(L)=v_0\}$ tal que
+Desta forma, definimos o seguinte problema fraco associado: encontrar $u\in V := \{v\in H^1(I);~v(0)=u_0,~v(L)=v_L\}$ tal que
 \begin{align}
   a(u,v) = L(v),\quad\forall v\in V_0,
 \end{align}
@@ -588,11 +588,158 @@ Com o \fenics, a computação do problema de elementos finitos pode ser feita co
 
 \subsection{Condições de Neumann}
 
-\emconstrucao
+Consideremos o seguinte problema com condições de contorno de Neumann\footnote{Carl Gottfried Neumann, 1832 - 1925, matemático alemão. Fonte: \href{https://en.wikipedia.org/wiki/Carl_Neumann}{Wikipedia}.} homogênea em $x=L$: encontrar $u$ tal que
+\begin{align}
+  &-u'' = f,\quad \forall x\in I=[0, L],\label{eq:cc_n_eq}\\
+  &u(0) = u_0,\quad u'(L) = 0,\label{eq:cc_n_bc}
+\end{align}
+com $u_0$ e $f$ dados.
+
+Tomando uma função teste $v\in V:=\{v\in H^1(I);~v(0)=0\}$ e multiplicando-a em \eqref{eq:cc_n_eq}, obtemos
+\begin{equation}
+  - \int_I u''v\,dx = \int_I fv\,dx.
+\end{equation}
+Aplicando a integração por partes, temos
+\begin{equation}
+  \int_I u'v'\,dx - \underbrace{u'(L)v(L)}_{u'(L)=0} + \underbrace{u'(0)v(0)}_{v(0)=0} = \int_I fc\,dx.
+\end{equation}
+Desta forma, definimos o seguinte problema fraco associado: encontrar $u\in \tilde{V} := \{v\in H^1(I);~v(0)=u_0\}$ tal que
+\begin{align}
+  a(u,v) = L(v),\quad\forall v\in V,
+\end{align}
+onde $a(u,v)$ é a forma bilinear
+\begin{equation}
+  a(u,v) = \int_I u'v'\,dx
+\end{equation}
+e $L(v)$ é a forma linear
+\begin{equation}
+  L(v) = \int_I fv\,dx.
+\end{equation}
+
+\begin{ex}\label{ex:cc_n}
+  Consideremos o problema
+  \begin{align}
+    &-u'' = 1,\quad x\in I=[0,1],\label{eq:ex_cc_n_eq}\\
+    &u(0) = 0,\quad u'(1) = 0.\label{eq:ex_cc_n_bc}
+  \end{align}
+Sua solução analítica é $u(x) = -x^2/2+x$. A Figura \ref{fig:ex_cc_n} apresenta o esboço dos gráficos da solução analítica $u$ e da sua aproximação de elementos finitos $u_h$, esta construída no espaço dos polinômios lineares por partes sobre uma malha uniforme de $5$ células.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./cap_mef1d/dados/ex_cc_n/ex_cc_n}
+  \caption{Esboço dos gráficos das soluções referentes ao Exemplo \ref{ex:cc_n}.}
+  \label{fig:ex_cc_n}
+\end{figure}
+
+\ifispython
+Com o \fenics, a computação do problema de elementos finitos pode ser feita com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/dados/ex_cc_n/ex_cc_n.py}{código}:
+\verbatiminput{./cap_mef1d/dados/ex_cc_n/ex_cc_n.py}
+\fi
+\end{ex}
+
+Agora, consideremos o seguinte problema com condições de Neumann não-homogênea em $x=L$: encontrar $u$ tal que
+\begin{align}
+  &-u'' = f,\quad \forall x\in I=[0, L],\label{eq:cc_n2_eq}\\
+  &u(0) = u_0,\quad u'(L) = \alpha,\label{eq:cc_n2_bc}
+\end{align}
+com $u_0$, $\alpha$ e $f$ dados.
+
+Tomando uma função teste $v\in V:=\{v\in H^1(I);~v(0)=0\}$ e multiplicando-a em \eqref{eq:cc_n2_eq}, obtemos
+\begin{equation}
+  - \int_I u''v\,dx = \int_I fv\,dx.
+\end{equation}
+Aplicando a integração por partes, temos
+\begin{equation}
+  \int_I u'v'\,dx - \alpha v(L)= \int_I fc\,dx.
+\end{equation}
+Desta forma, definimos o seguinte problema fraco associado: encontrar $u\in \tilde{V} := \{v\in H^1(I);~v(0)=u_0\}$ tal que
+\begin{align}
+  a(u,v) - b( = L(v),\quad\forall v\in V,
+\end{align}
+onde $a(u,v)$ é a forma bilinear
+\begin{equation}
+  a(u,v) = \int_I u'v'\,dx
+\end{equation}
+e $L(v)$ é a forma linear
+\begin{equation}
+  L(v) = \int_I fv\,dx + \alpha v(L).
+\end{equation}
+
+\begin{ex}\label{ex:cc_n2}
+  Consideremos o problema
+  \begin{align}
+    &-u'' = 1,\quad x\in I=[0,1],\label{eq:ex_cc_n2_eq}\\
+    &u(0) = 0,\quad u'(1) = 1.\label{eq:ex_cc_n2_bc}
+  \end{align}
+Sua solução analítica é $u(x) = -x^2/2+2x$. A Figura \ref{fig:ex_cc_n2} apresenta o esboço dos gráficos da solução analítica $u$ e da sua aproximação de elementos finitos $u_h$, esta construída no espaço dos polinômios lineares por partes sobre uma malha uniforme de $5$ células.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./cap_mef1d/dados/ex_cc_n2/ex_cc_n2}
+  \caption{Esboço dos gráficos das soluções referentes ao Exemplo \ref{ex:cc_n2}.}
+  \label{fig:ex_cc_n2}
+\end{figure}
+
+\ifispython
+Com o \fenics, a computação do problema de elementos finitos pode ser feita com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/dados/ex_cc_n2/ex_cc_n2.py}{código}:
+\verbatiminput{./cap_mef1d/dados/ex_cc_n2/ex_cc_n2.py}
+\fi
+\end{ex} 
 
 \subsection{Condições de Robin}
 
-\emconstrucao
+Consideremos o seguinte problema com condições de contorno de Robin\footnote{Victor Gustave Robin, 1855 - 1897, matemático francês. Fonte: \href{https://en.wikipedia.org/wiki/Victor_Robin}{Wikipedia}.}: encontrar $u$ tal que
+\begin{align}
+  &-u'' = f,\quad \forall x\in I=[0, L],\label{eq:cc_r_eq}\\
+  &u'(0) = r_0(u(0)-s_0),~ -u'(L) = r_L(u(L)-s_L),\label{eq:cc_r_bc}
+\end{align}
+com $r_0$, $r_L$, $s_0$, $s_L$ e $f$ dados.
+
+Tomando uma função teste $v\in V= H^1(I)$ e multiplicando-a em \eqref{eq:cc_r_eq}, obtemos
+\begin{equation}
+  - \int_I u''v\,dx = \int_I fv\,dx.
+\end{equation}
+Aplicando a integração por partes, temos
+\begin{equation}
+  \int_I u'v'\,dx - \underbrace{u'(L)v(L)}_{-u'(L)=r_L(u(L)-s_L)} + \underbrace{u'(0)v(0)}_{u'(0)=r_0(u(0)-s_0)} = \int_I fc\,dx.
+\end{equation}
+ou, mais adequadamente,
+\begin{equation}
+  \int_I u'v'\,dx + r_Lu(L)v(L) +r_0u(0)v(0) = \int_I fc\,dx + r_Ls_Lv(L) + r_0s_0v(0).
+\end{equation}
+Desta forma, definimos o seguinte problema fraco associado: encontrar $u\in H^1(I)$ tal que
+\begin{align}
+  a(u,v) = L(v),\quad\forall v\in V,
+\end{align}
+onde $a(u,v)$ é a forma bilinear
+\begin{equation}
+  a(u,v) = \int_I u'v'\,dx + r_Lu(L)v(L) + r_0u(0)v(0)
+\end{equation}
+e $L(v)$ é a forma linear
+\begin{equation}
+  L(v) = \int_I fv\,dx + r_Ls_Lv(L) + r_0s_0v(0).
+\end{equation}
+
+\begin{ex}\label{ex:cc_n}
+  Consideremos o problema
+  \begin{align}
+    &-u'' = 1,\quad x\in I=[0,1],\label{eq:ex_cc_r_eq}\\
+    &u'(0) = u(0),\quad -u'(1) = u(1) - 1.\label{eq:ex_cc_r_bc}
+  \end{align}
+Sua solução analítica é $u(x) = -x^2/2+5x/6+5/6$. A Figura \ref{fig:ex_cc_r} apresenta o esboço dos gráficos da solução analítica $u$ e da sua aproximação de elementos finitos $u_h$, esta construída no espaço dos polinômios lineares por partes sobre uma malha uniforme de $5$ células.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./cap_mef1d/dados/ex_cc_r/ex_cc_r}
+  \caption{Esboço dos gráficos das soluções referentes ao Exemplo \ref{ex:cc_r}.}
+  \label{fig:ex_cc_r}
+\end{figure}
+
+\ifispython
+Com o \fenics, a computação do problema de elementos finitos pode ser feita com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/dados/ex_cc_r/ex_cc_r.py}{código}:
+\verbatiminput{./cap_mef1d/dados/ex_cc_r/ex_cc_r.py}
+\fi
+\end{ex}
 
 \subsection*{Exercícios}
 
