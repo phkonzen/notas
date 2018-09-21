@@ -526,7 +526,18 @@ Com o \fenics, a computação do problema de elementos finitos pode ser feita co
 
 \subsection*{Exercícios}
 
-\emconstrucao
+\begin{exer}\label{exer:dc}
+  Obtenha uma aproximação por elementos finitos lineares por partes da solução de
+  \begin{align}
+    &-u'' + u = 2\sen x,\quad \forall x\in (-\pi, \pi),\\
+    &u(-\pi)=u(\pi)=0.
+  \end{align}
+\end{exer}
+\begin{resp}
+  \ifispython
+  \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/dados/exer_dc/exer_dc.py}{Código} FENiCS.
+  \fi
+\end{resp}
 
 
 \section{Condições de contorno}\label{cap_mef1d_sec_cc}
@@ -627,11 +638,11 @@ Desta forma, definimos o seguinte problema fraco associado: encontrar $u\in \til
   a(u,v) = L(v),\quad\forall v\in V,
 \end{align}
 onde $a(u,v)$ é a forma bilinear
-\begin{equation}
+\begin{equation}\label{eq:cc_n_bilinear}
   a(u,v) = \int_I u'v'\,dx
 \end{equation}
 e $L(v)$ é a forma linear
-\begin{equation}
+\begin{equation}\label{eq:cc_n_linear}
   L(v) = \int_I fv\,dx.
 \end{equation}
 
@@ -641,7 +652,20 @@ e $L(v)$ é a forma linear
     &-u'' = 1,\quad x\in I=[0,1],\label{eq:ex_cc_n_eq}\\
     &u(0) = 0,\quad u'(1) = 0.\label{eq:ex_cc_n_bc}
   \end{align}
-Sua solução analítica é $u(x) = -x^2/2+x$. A Figura \ref{fig:ex_cc_n} apresenta o esboço dos gráficos da solução analítica $u$ e da sua aproximação de elementos finitos $u_h$, esta construída no espaço dos polinômios lineares por partes sobre uma malha uniforme de $5$ células.
+Sua solução analítica é $u(x) = -x^2/2+x$. 
+
+Podemos construir uma aproximação por elementos finitos do seguinte problema fraco associado: encontrar $u\in V=\{v\in H^1(I);~v(0)=0\}$ tal que
+\begin{equation}
+  a(u, v) = L(v),
+\end{equation}
+para todo $v\in V$, com as formas bilinear $a(\cdot, \cdot)$ e linear $L(\cdot)$ dadas em \eqref{eq:cc_n_bilinear} e \eqref{eq:cc_n_linear}.
+
+Então, considerando elementos lineares por partes, temos o seguinte problema de elementos finitos: encontrar $u_h\in V_h=\{v_h\in P_1(I);~v_h(0)=0\}$ tal que
+\begin{equation}
+  a(u_h, v_h) = L(v_h),\quad\forall v_h\in V_h.
+\end{equation}
+
+A Figura \ref{fig:ex_cc_n} apresenta o esboço dos gráficos da solução analítica $u$ e da sua aproximação de elementos finitos $u_h$, esta construída no espaço dos polinômios lineares por partes sobre uma malha uniforme de $5$ células.
 
 \begin{figure}[h!]
   \centering
@@ -690,7 +714,27 @@ e $L(v)$ é a forma linear
     &-u'' = 1,\quad x\in I=[0,1],\label{eq:ex_cc_n2_eq}\\
     &u(0) = 0,\quad u'(1) = 1.\label{eq:ex_cc_n2_bc}
   \end{align}
-Sua solução analítica é $u(x) = -x^2/2+2x$. A Figura \ref{fig:ex_cc_n2} apresenta o esboço dos gráficos da solução analítica $u$ e da sua aproximação de elementos finitos $u_h$, esta construída no espaço dos polinômios lineares por partes sobre uma malha uniforme de $5$ células.
+Sua solução analítica é $u(x) = -x^2/2+2x$. 
+
+Agora, consideramos o seguinte problema fraco associado: encontrar $u\in V=\{v\in H^1(I);~v(0)=0\}$ tal que
+\begin{equation}
+  a(u,v) = L(v),\quad\forall v\in V,
+\end{equation}
+com
+\begin{equation}
+  a(u, v) = \int_I u'v'\,dx
+\end{equation}
+e
+\begin{equation}
+  L(v) = \int_I fv\,dx + 1\cdot v(1).
+\end{equation}
+
+Então, consideramos o seguinte problema de elementos finitos associado: encontrar $u_h\in V_h = \{v_h\in P_1(I);~v_h(0)=0\}$ tal que
+\begin{equation}
+  a(u_h, v_h) = L(v_h),\quad\forall v_h\in V_h.
+\end{equation}
+
+A Figura \ref{fig:ex_cc_n2} apresenta o esboço dos gráficos da solução analítica $u$ e da sua aproximação de elementos finitos $u_h$, esta construída no espaço dos polinômios lineares por partes sobre uma malha uniforme de $5$ células.
 
 \begin{figure}[h!]
   \centering
@@ -745,7 +789,27 @@ e $L(v)$ é a forma linear
     &-u'' = 1,\quad x\in I=[0,1],\label{eq:ex_cc_r_eq}\\
     &u'(0) = u(0),\quad -u'(1) = u(1) - 1.\label{eq:ex_cc_r_bc}
   \end{align}
-Sua solução analítica é $u(x) = -x^2/2+5x/6+5/6$. A Figura \ref{fig:ex_cc_r} apresenta o esboço dos gráficos da solução analítica $u$ e da sua aproximação de elementos finitos $u_h$, esta construída no espaço dos polinômios lineares por partes sobre uma malha uniforme de $5$ células.
+Sua solução analítica é $u(x) = -x^2/2+5x/6+5/6$. 
+
+Aqui, tomamos o seguinte problema fraco: encontrar $u\in V=H^1(I)$ tal que
+\begin{equation}
+  a(u, v) = L(v),\quad\forall v\in V,
+\end{equation}
+onde
+\begin{equation}
+  a(u, v) = \int_I u'v'\,dx + u(1)v(1) + u(0)v(0)
+\end{equation}
+e
+\begin{equation}
+  L(v) = \int_I fv\,dx + 1\cdot v(1).
+\end{equation}
+
+Então, uma aproximação por elementos finitos lineares por partes pode ser obtida resolvendo o seguinte problema: encontrar $u_h\in V_h=P_1(I)$ tal que
+\begin{equation}
+  a(u_h, v_h) = L(v_h),\quad\forall v_h\in V_h.
+\end{equation}
+
+A Figura \ref{fig:ex_cc_r} apresenta o esboço dos gráficos da solução analítica $u$ e da sua aproximação de elementos finitos $u_h$, esta construída no espaço dos polinômios lineares por partes sobre uma malha uniforme de $5$ células.
 
 \begin{figure}[h!]
   \centering
