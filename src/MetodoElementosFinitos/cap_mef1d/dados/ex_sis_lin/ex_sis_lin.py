@@ -46,9 +46,6 @@ u0a = Expression('sin(x[0])',
 u1a = Expression('cos(x[0])',
                  degree=10)
 
-# #erro L2
-# print("Erro L2: %1.2E\n" % errornorm(u,ua,norm_type="L2"))
-
 plot(u[0],mesh=mesh,marker='.',label=r"$u_{h0}$")
 plot(u[1],mesh=mesh,marker='.',label=r"$u_{h1}$")
 mesh = IntervalMesh(100,-pi,pi)

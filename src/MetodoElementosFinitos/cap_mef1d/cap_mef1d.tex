@@ -840,4 +840,73 @@ Com o \fenics, a computação do problema de elementos finitos pode ser feita co
   \fi
 \end{resp}
 
+\section{Sistemas de equações}\label{cap_mef1d_sec_sis_lin}
+
+Consideremos o seguinte problema de equações diferenciais ordinárias com valores de contorno
+\begin{align}
+  &-u_0'' + u_1 = f_0,\forall x\in (0, L)\\ 
+  &-u_1'' + u_0 = f_1,\forall x\in (0, L)\\
+  &u_0(0)=u_{00},\quad u_0(L)=u_{0L},\\
+  &u_1(0)=u_{10},\quad u_1(L)=u_{1L},
+\end{align}
+onde $f_0$, $f_1$, $u_{00}$, $u_{0L}$, $u_{10}$, $u_{1L}$ são dados.
+
+Para construirmos uma aproximação por elementos finitos podemos tomar o seguinte problema fraco associado: encontrar $u = (u_0, u_1)\in V_0\times V_1$ tal que
+\begin{equation}
+  a(u, v) = L(v), \forall v = (v_0, v_1)\in V\times V,
+\end{equation}
+onde $V_0 = \{v\in H^1(I);~v_0(0)=u_{00},~v_0(L)=u_{0L}\}$, $V_1=\{v_1\in H^1(I);~v_1(0)=u_{10},~v_1(L)=u_{1L}\}$, $V = \{v\in H^1(I);~v(0)=v(L)=0\}$, a forma bilinear é
+\begin{equation}\label{eq:sis_lin_bilinear}
+  a(u, v) = \int_{I} u_0'v_0'\,dx + \int_{I} u_1'v_1'\,dx + \int_{I} u_0v_0\,dx + \int_{I} u_1v_1\,dx
+\end{equation}
+e a forma linear é
+\begin{equation}\label{eq:sis_lin_linear}
+  L(v) = \int_I f_0v_0\,dx + \int_I f_1v_1\,dx.
+\end{equation}
+
+Então, o problema de elemento finitos associado no espaço das funções lineares por partes lê-se: encontrar $u_h = (u_{h0}, u_{h1})\in V_{h0}\times V_{h1}$ tal que
+\begin{equation}
+  a(u_h, v_h) = L(v_h), \forall v_h = (v_{h0}, v_{h1})\in V_h\times V_h,
+\end{equation}
+onde $V_{h0} = \{v_h\in P_1(I);~v_{h0}(0)=u_{00},~v_{h0}(L)=u_{0L}\}$, $V_{h1}=\{v_{h1}\in P_1(I);~v_{h1}(0)=u_{10},~v_{h1}(L)=u_{1L}\}$, $V_h = \{v_h\in P_1(I);~v_h(0)=v_h(L)=0\}$.
+
+\begin{ex}\label{ex:sis_lin}
+  Consideremos o seguinte problema de valor de contorno
+\begin{align}
+  &-u_0'' + u_1 = \sen(x)+\cos(x),\forall x\in (-\pi, \pi)\\ 
+  &-u_1'' + u_0 = \cos(x)-\sin(x),\forall x\in (-\pi, \pi)\\
+  &u_0(-\pi)=0,\quad u_0(\pi)=0,\\
+  &u_1(-\pi)=-1,\quad u_1(\pi)=-1.
+\end{align}
+Considerando elementos lineares por partes, temos a seguinte formulação de elementos finitos: encontrar $u_h = (u_{h0}, u_{h1})\in V_{h0}\times V_{h1}$ tal que
+\begin{equation}
+  a(u_h, v_h) = L(v_h), \forall v_h = (v_{h0}, v_{h1})\in V_h\times V_h,
+\end{equation}
+onde $V_{h0} = \{v_h\in P_1(I);~v_{h0}(0)=v_{h0}(L)=0\}$, $V_{h1}=\{v_{h1}\in P_1(I);~v_{h1}(0)=v_{h1}(L)=-1\}$, $V_h = \{v_h\in P_1(I);~v_h(0)=v_h(L)=0\}$, com as formas bilinear e linear são dadas em \eqref{eq:sis_lin_bilinear} e \eqref{eq:sis_lin_linear}, respectivamente.
+
+A Figura \ref{fig:ex_sis_lin} apresenta o esboço dos gráficos das soluções analíticas $u_0(x)=\sen(x)$ e $u_1(x)=\cos(x)$ e de suas aproximações de elementos finitos $u_{h0}$ e $u_{h1}$, estas construídas no espaço dos polinômios lineares por partes sobre uma malha uniforme de $5$ células.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./cap_mef1d/dados/ex_sis_lin/ex_sis_lin}
+  \caption{Esboço dos gráficos das soluções referentes ao Exemplo \ref{ex:sis_lin}.}
+  \label{fig:ex_sis_lin}
+\end{figure}
+
+\ifispython
+Com o \fenics, a computação do problema de elementos finitos pode ser feita com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/dados/ex_sis_lin/ex_sis_lin.py}{código}:
+\verbatiminput{./cap_mef1d/dados/ex_sis_lin/ex_sis_lin.py}
+\fi
+\end{ex}
+
+\subsection*{Exercícios}
+
+\emconstrucao
+
+\section{Malha adaptativa}\label{cap_mef1d_sec_malha_adapt}
+
+\emconstrucao
+
+\subsection*{Exercícios}
+
 \emconstrucao
