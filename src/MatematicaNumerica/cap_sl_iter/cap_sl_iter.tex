@@ -486,7 +486,55 @@ No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{
 
 \section{Método do gradiente conjugado}\label{cap_sl_iter_sec_metgc}
 
-\emconstrucao
+O método do gradiente conjugado é uma variação do método do gradiente (veja Seção \ref{cap_sl_iter_sec_metg}). Aqui, a solução de um dado sistema $A\pmb{x}=\pmb{b}$, com $A$ uma matriz positiva definida, é computada de forma iterativa por
+\begin{align}
+  \pmb{x}^{(1)} &= \text{aprox. inicial},\\
+  \pmb{d}^{(1)} &= \pmb{r}^{(1)},\\
+  &\\
+  \pmb{x}^{(k+1)} &= \pmb{x}^{(k)} + \alpha_k\pmb{d}^{(k)},\\
+  \alpha^{(k)} &= -\frac{\pmb{r}^{(k)}\cdot \pmb{d}^{(k)}}{\pmb{d}^{(k)}\cdot A\pmb{d}^{(k)}},\\
+  \pmb{d}^{(k+1)} &= -\pmb{r}^{(k+1)}+\beta_k\pmb{d}^{(k)},\\
+  \beta^{(k)} &= \frac{\pmb{r}^{(k+1)}\cdot A\pmb{d}^{(k)}}{\pmb{d}^{(k)}\cdot A\pmb{d}^{(k)}},
+\end{align}
+para $k = 1, 2, \ldots$, e $\pmb{r}^{(k)} = A\pmb{x}^{(k)}-\pmb{b}$.
+
+\begin{ex}\label{ex:metgc_exec}
+  Consideremos o sistema $Ax = b$ com
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      2 & -1 & 0 & 0\\
+      -1 & 2 & -1 & 0\\
+      0 & -1 & 2 & -1 \\
+      0 & 0 & -1 & 2
+    \end{bmatrix},\quad
+    b =
+    \begin{bmatrix}
+      -3\\
+      2\\
+      2\\
+      -3
+    \end{bmatrix}.
+  \end{equation}
+  Na Tabela \ref{tab:metgc_exec} temos os resultados do emprego do método do gradiente conjugado com $\pmb{x}^{(1)} = (0, 0, 0, 0)$.
+
+  \begin{table}[h!]
+    \centering
+    \begin{tabular}{l|c|c}
+      k & $\pmb{x}^{(k)}$ & $\|A\pmb{x}^{(k)}-\pmb{b}\|$\\\hline
+      1 & $(0,~0,~0,~0)$ & $5.1\E+0$\\
+      2 & $(-1,1,~0,8,~0,8,~-1,1)$ & $1,5\E-1$\\
+      3 & $(-1,0,~1,0,~1,0,~-1,0)$ & $0,0\E+0$\\\hline
+    \end{tabular}
+    \caption{Resultados referentes ao Exemplo \ref{ex:metgc_exec}.}
+    \label{tab:metg_alpha}
+  \end{table}
+
+\ifisoctave
+No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_iter/dados/ex_metgc_exec/ex_metgc_exec.m}{código}:
+\verbatiminput{./cap_sl_iter/dados/ex_metgc_exec/ex_metgc_exec.m}
+\fi
+\end{ex}
 
 \subsection*{Exercícios}
 
