@@ -325,3 +325,169 @@ então ambos os métodos de Jacobi e de Gauss-Seidel são convergentes.
   \fi
   $x^{(5)} = (-1,00423,~3,00316,~-2,00401,~0,99852)$; $\|Ax^{(5)}-b\| = 0,025883$
 \end{resp}
+
+\section{Método do gradiente}\label{cap_sl_iter_sec_metg}
+
+Começamos observando que se $A$ é uma matriz $n\times n$ positiva definida\footnote{$A$ é simétrica e $x^TAx > 0$ para todo $x\neq 0$.}, temos que $\pmb{x}\in\mathbb{R}^n$ é solução de
+\begin{equation}\label{eq:metg_sislin}
+  A\pmb{x} = \pmb{b}
+\end{equation}
+se, e somente se, $\pmb{x}$ é solução do seguinte problema de minimização
+\begin{equation}\label{eq:metg_minprob}
+  \min_{\pmb{x}\in\mathbb{R}^n}f(\pmb{x}) := \frac{1}{2}\pmb{x}^TA\pmb{x}-\pmb{x}^T\pmb{b}.
+\end{equation}
+
+O método do gradiente é um algoritmo da forma: dada uma aproximação inicial $\pmb{x}^{(1)}$ da solução de \eqref{eq:metg_minprob} (ou, equivalentemente, de \eqref{eq:metg_sislin}), computamos novas aproximações da forma iterativa
+\begin{equation}
+  \pmb{x}^{(k+1)} = \pmb{x}^{(k)} + \alpha^{(k)}\pmb{d}^{(k)},\quad k=1, 2, \ldots,
+\end{equation}
+onde $\alpha^{(k)}$ é o tamanho do passo (um escalar) e $\pmb{d}^{(k)}\in\mathbb{R}^n$ é a direção de busca.
+
+Para escolhermos a direção $\pmb{d}^{(k)}$, tomamos a fórmula de Taylor de $f$ em torno da aproximação $\pmb{x}^{(k)}$
+\begin{equation}\label{eq:metg_taylor}
+  f(\pmb{x}^{(k+1)}) = f(\pmb{x}^{(k)}) + \alpha^{(k)}\nabla f(\pmb{x}^{(k)})\cdot \pmb{d}^{(k)} + O\left((\alpha^{(k)})^2\right),
+\end{equation}
+com $\alpha^{(k)}\to 0$, onde $\nabla f$ denota o gradiente de $f$, i.e.
+\begin{align}
+  \nabla f(\pmb{x}^{(k)}) &= \left(\frac{\p f}{\p x_1}(\pmb{x}^{(k)}), \frac{\p f}{\p x_2}(\pmb{x}^{(k)}), \dotsc, \frac{\p f}{\p x_n}(\pmb{x}^{(k)})\right)\\
+  &= A\pmb{x}^{(k)}-\pmb{b}.
+\end{align}
+
+
+De \eqref{eq:metg_taylor}, segue que se
+\begin{equation}
+  \nabla f(\pmb{x}^{(k)})\cdot \pmb{d}^{(k)} < 0,
+\end{equation}
+então $f(\pmb{x}^{(k+1)}) < f(\pmb{x}^{(k)})$ se $\alpha^{(k)}$ é suficientemente pequeno. Em particular, podemos escolher
+\begin{equation}
+  \pmb{d}^{(k)} = -\nabla f(\pmb{x}^{(k)}),
+\end{equation}
+se $\nabla f(\pmb{x}^{(k)})\neq 0$.
+
+Do exposto acima, temos a \pmb{iteração do método do gradiente}
+\begin{align}
+  \pmb{x}^{(1)} &= \text{aprox. inicial}\\
+  \pmb{x}^{(k+1)} &= \pmb{x}^{(k)} - \alpha^{(k)}\pmb{r}^{(k)},~k=1, 2, \ldots,
+\end{align}
+onde $\pmb{r}^{(k)}$ é o resíduo da iterada $k$ dado por
+\begin{equation}
+  \pmb{r}^{(k)} = A\pmb{x^{(k)}}-\pmb{b}.
+\end{equation}
+
+\begin{ex}\label{ex:metg_pc}
+  Consideremos o sistema $Ax = b$ com
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      2 & -1 & 0 & 0\\
+      -1 & 2 & -1 & 0\\
+      0 & -1 & 2 & -1 \\
+      0 & 0 & -1 & 2
+    \end{bmatrix},\quad
+    b =
+    \begin{bmatrix}
+      -3\\
+      2\\
+      2\\
+      -3
+    \end{bmatrix}.
+  \end{equation}
+  Na Tabela \ref{tab:metg_pc} temos os resultados do emprego do método do gradiente com $\pmb{x}^{(1)} = (0, 0, 0, 0)$ e com passo constante $\alpha^{(k)}\equiv 0,5$.
+
+  \begin{table}[h!]
+    \centering
+    \begin{tabular}{l|c|c}
+      k & $\pmb{x}^{(k)}$ & $\|A\pmb{x}^{(k)}-\pmb{b}\|$\\\hline
+      1 & $(0,0,~0,0,~0,0,~0,0)$ & $5,1\E+0$\\
+      2 & $(-1,5,~1,0,~1,0,~-1,5)$ & $1,6\E+0$\\
+      3 & $(-1,0,~0,8,~0,8,~-1,0)$ & $5,0\E-1$\\
+      4 & $(-1,1,~0,9,~0,9,~-1,1)$ & $1,8\E-1$\\
+      5 & $(-1,1,~0,9,~0,9,~-1,1)$ & $8,8\E-2$\\
+      6 & $(-1,1,~0,9,~0,9,~-1,1)$ & $6,2\E-2$\\
+      7 & $(-1,0,~0,9,~0,9,~-1,0)$ & $4,9\E-2$\\
+      8 & $(-1,0,~0,9,~0,9,~-1,0)$ & $4,0\E-2$\\
+      9 & $(-1,0,~0,9,~0,9,~-1,0)$ & $3,2\E-2$\\
+      10 & $(-1,0,~1,0,~1,0,~-1,0)$ & $2,6\E-2$\\
+      11 & $(-1,0,~1,0,~1,0,~-1,0)$ & $2,1\E-2$\\\hline
+    \end{tabular}
+    \caption{Resultados referentes ao Exemplo \ref{ex:metg_pc}.}
+    \label{tab:metg_pc}
+  \end{table}
+
+\ifisoctave
+No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_iter/dados/ex_metg_pc/ex_metg_pc.m}{código}:
+\verbatiminput{./cap_sl_iter/dados/ex_metg_pc/ex_metg_pc.m}
+\fi
+\end{ex}
+
+\subsection{Escolha do passo}
+
+Da iteração do método do gradiente, temos que a melhor escolha do passo $\alpha^{(k)}$ é tal que
+\begin{equation}
+  f(\pmb{x}^{(k)}+\alpha^{(k)}\pmb{r}^{(k)}) = \min_{\alpha > 0} f(\pmb{x}^{(k)}+\alpha\pmb{r}^{(k)}).
+\end{equation}
+Desta forma,
+\begin{align}
+  \frac{\dd}{\dd \alpha}f(\pmb{x}^{(k)}+\alpha \pmb{r}^{(k)}) = 0 &\Rightarrow \nabla f(\pmb{x}^{(k+1)})\cdot \pmb{r}^{(k)} = 0,\\
+  &\Rightarrow \left(A(\pmb{x}^{(k)}+\alpha^{(k)}\pmb{r}^{(k)})-b\right)\cdot\pmb{r}^{(k)} = 0,\\
+  &\Rightarrow (A\pmb{x}^{(k)}-\pmb{b})\cdot\pmb{r}^{(k)}+\alpha^{(k)}\pmb{r}^{(k)}\cdot A\pmb{r}^{(k)} = 0,
+\end{align}
+donde
+\begin{equation}
+  \alpha^{(k)} = - \frac{\pmb{r}^{(k)}\cdot\pmb{r}^{(k)}}{\pmb{r}^{(k)}\cdot A\pmb{r}^{(k)}}.
+\end{equation}
+
+\begin{ex}\label{ex:metg_alpha}
+  Consideremos o sistema $Ax = b$ com
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      2 & -1 & 0 & 0\\
+      -1 & 2 & -1 & 0\\
+      0 & -1 & 2 & -1 \\
+      0 & 0 & -1 & 2
+    \end{bmatrix},\quad
+    b =
+    \begin{bmatrix}
+      -3\\
+      2\\
+      2\\
+      -3
+    \end{bmatrix}.
+  \end{equation}
+  Na Tabela \ref{tab:metg_alpha} temos os resultados do emprego do método do gradiente com $\pmb{x}^{(1)} = (0, 0, 0, 0)$ e com passo
+  \begin{equation}
+    \alpha^{(k)} = - \frac{\pmb{r}^{(k)}\cdot\pmb{r}^{(k)}}{\pmb{r}^{(k)}\cdot A\pmb{r}^{(k)}}.
+\end{equation}
+
+  \begin{table}[h!]
+    \centering
+    \begin{tabular}{l|c|c}
+      k & $\pmb{x}^{(k)}$ & $\|A\pmb{x}^{(k)}-\pmb{b}\|$\\\hline
+      1 & $(0,0,~0,0,~0,0,~0,0)$ & $5,1\E+0$\\
+      2 & $(-1,1,~0,8,~0,8,~-1,1)$ & $1,5\E-1$\\
+      3 & $(-1,0,~1,0,~1,0,~-1,0)$ & $3,0\E-2$\\
+      4 & $(-1,0,~1,0,~1,0,~-1,0)$ & $8,8\E-4$\\
+      5 & $(-1,0,~1,0,~1,0,~-1,0)$ & $1,8\E-4$\\\hline
+    \end{tabular}
+    \caption{Resultados referentes ao Exemplo \ref{ex:metg_alpha}.}
+    \label{tab:metg_alpha}
+  \end{table}
+
+\ifisoctave
+No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_iter/dados/ex_metg_alpha/ex_metg_alpha.m}{código}:
+\verbatiminput{./cap_sl_iter/dados/ex_metg_alpha/ex_metg_alpha.m}
+\fi
+\end{ex}
+
+\subsection*{Exercícios}
+
+\emconstrucao
+
+\section{Método do gradiente conjugado}\label{cap_sl_iter_sec_metgc}
+
+\emconstrucao
+
+\subsection*{Exercícios}
+
+\emconstrucao
