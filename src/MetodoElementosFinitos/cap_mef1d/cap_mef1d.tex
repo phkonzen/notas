@@ -524,6 +524,47 @@ Com o \fenics, a computação do problema de elementos finitos pode ser feita co
 \fi
 \end{ex}
 
+\subsection{Estimativa {\it a posteriori}}
+
+Aqui, vamos obter uma estimativa a posteriori para o erro $e = u - u_h$ da solução de elementos finitos $u_h$ do problema \eqref{eq:prob_eq}-\eqref{eq:prob_bc}.
+
+\begin{teo}\label{teo:fem_est_a_posteriori}
+  A solução de elementos finitos $u_h$ satisfaz
+  \begin{equation}
+    \|(u-u_h)'\|_{L^2(I)}^2 \leq C\sum_{i=1}^n \eta_i^2(u_h),
+  \end{equation}
+onde $\eta_i(u_h)$ é chamado de elemento residual e é dado por
+\begin{equation}
+  \eta_i(u_h) = h_i\|f - u_h''\|_{L^2(I_i)}.
+\end{equation}
+\end{teo}
+\begin{dem}
+  Tomando $e = u - u_h$ e usando a ortogonalidade de Galerkin (Teorema \ref{teo:ortogonalidade_de_Galerkin}) temos
+  \begin{equation}
+    \|e'\|_{L^2(I)}^2 = \int_I e'(e-\pi e)'\,dx = \sum_{i=1}^n\int_{I_i} e'(e-\pi e)'\,dx.
+  \end{equation}
+  Então, aplicando integração por partes
+  \begin{equation}
+    \|e'\|_{L^2(I)}^2 = \sum_{i=1}^n\int_{I_i}(-e'')(e-\pi e)\,dx + [e-\pi e]_{x_{i-1}}^{x_i}.
+  \end{equation}
+  Daí, observando que $e-\pi e = 0$ nos extremos dos intervalos $I_i$ e que $-e'' = -(u-u_h)'' = -u'' + u_h'' = f + u_h''$, temos
+  \begin{equation}
+    \|e'\|_{L^2(I)}^2 = \sum_{i=1}^n\int_{I_i}(f+u_h'')(e-\pi e)\,dx.
+  \end{equation}
+  Agora, usando as desigualdades de Cauchy-Schwarz e a estimativa de interpolação \eqref{eq:prop_pif_0}, obtemos
+  \begin{align}
+    \|e'\|_{L^2(I)}^2 &\leq \sum_{i=1}^n\|f+u_h\|_{L^2(I_i)}\|e-\pi e\|_{L^2(I_i)}\,dx\\
+    &\leq C\sum_{i=1}^nh_i\|f+u_h\|_{L^2(I_i)}\|e'\|_{L^2(I_i)}\\
+    &\leq C\left(\sum_{i=1}^n h_i^2\|f+u_h\|_{L^2(I_i)}^2\right)^{1/2}\left(\sum_{i=1}^n \|e'\|_{L^2(I_i)}^2\right)^{1/2}\\
+    &= C\left(\sum_{i=1}^n h_i^2\|f+u_h\|_{L^2(I_i)}^2\right)^{1/2}\|e'\|_{L^2(I)},
+  \end{align}
+  donde segue o resultado desejado.
+\end{dem}
+
+\begin{obs}
+  No caso da solução de elementos finitos no espaço das funções lineares por partes, temos $u_h'' = 0$. Logo, o elemento residual se resume em $\eta_i(u_h) = h_i\|f\|_{L^2(I_i)}$.
+\end{obs}
+
 \subsection*{Exercícios}
 
 \begin{exer}\label{exer:dc}
@@ -840,7 +881,87 @@ Com o \fenics, a computação do problema de elementos finitos pode ser feita co
   \fi
 \end{resp}
 
-\section{Sistemas de equações}\label{cap_mef1d_sec_sis_lin}
+\section{Malhas auto-adaptativas}\label{cap_mef1d_sec_adapt}
+
+Retornemos ao problema modelo \eqref{eq:prob_eq}-\eqref{eq:prob_bc}
+\begin{align}
+  -u'' &= f,\quad x\in I=[0,L],\\
+  u(0) &= u(L) = 0.
+\end{align}
+A estimativa {\it a posteriori} dada no Teorema \ref{teo:fem_est_a_posteriori}, indica que os elementos residuais $\eta_i(u_h)$ podem ser utilizados para estimarmos a precisão da aproximação por elementos finitos. Ou seja, espera-se que quanto menores forem os elementos residuais, mais precisa é a solução por elementos finitos. Além disso, como
+\begin{equation}
+  \eta_i(u_h) = h_i\|f - u_h''\|_{L^2(I_i)},
+\end{equation}
+podemos reduzir $\eta_i(u_h)$ diminuindo o tamanho da célula $I_i$.
+
+Do observado acima, motiva-se o seguinte algoritmo de elementos finitos com refinamento automático de malha:
+\begin{enumerate}
+\item Escolhemos uma malha inicial.
+\item Iteramos:
+  \begin{enumerate}[2.]
+  \item Resolvemos o problema de elementos finitos na malha corrente.
+  \item Computamos $\eta_i(u_h)$ em cada célula da malha corrente.
+  \item Com base na malha corrente, Contruímos uma nova malha pelo refinamento das células com os maiores valores de $\eta_i(u_h)$.
+  \item Verificamos o critério de parada.
+  \end{enumerate}
+\end{enumerate}
+
+Uma estratégia clássica para a escolha das células a serem refinadas é a seguinte: refina-se a $i$-ésima célula se
+\begin{equation}\label{eq:ref_estrategia}
+  \eta_i(u_h) > \alpha \max_{j=1, 2, \dotsc, n} \eta_j(u_h),
+\end{equation}
+onde escolhemos $0 < \alpha < 1$.
+
+\begin{ex}\label{ex:modelo_adapt}
+  Consideremos o problema
+  \begin{align}
+    -u'' &= e^{-100|x-\frac{1}{2}|},\quad x\in I=[0,1],\\
+    u(0) &= u(1) = 0.
+  \end{align}
+  Aqui, computamos aproximações de elementos finitos no espaço das funções lineares por partes $V_{h,0} = \{v\in P_1(I);~v(0)=v(1)=0\}$ com sucessivos refinamentos de malha. Utilizamos uma malha inicial uniforme com 10 células e fazemos, então, 5 refinamentos sucessivos utilizando como critério de refinamento a estratégia \eqref{eq:ref_estrategia} com $\alpha = 0,5$. A Figura \ref{fig:ex_modelo_adapt} apresenta o esboço do gráfico da solução de elementos finitos na malha mais refinada. Além disso, na Tabela \ref{tab:ex_modelo_adapt} temos os o número de células e o $\eta_i(u_h)$ máximo respectivo.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./cap_mef1d/dados/ex_modelo_adapt/ex_modelo_adapt}
+  \caption{Esboço dos gráficos das soluções referentes ao Exemplo \ref{ex:modelo_adapt}.}
+  \label{fig:ex_modelo_adapt}
+\end{figure}
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{lrc}
+    \#malha & \#células & $\max_i\eta_i(u_h)$\\\hline
+    0 & 10 & 5.0E-03\\
+    1 & 12 & 2.0E-03\\
+    2 & 14 & 8.6E-04\\
+    3 & 22 & 2.9E-04\\
+    4 & 30 & 1.4E-04\\
+    5 & 38 & 6.1E-05\\\hline
+  \end{tabular}
+  \caption{Resultados referente ao Exemplo \ref{ex:modelo_adapt}.}
+  \label{tab:ex_modelo_adapt}
+\end{table}
+
+\ifispython
+Com o \fenics, a computação do problema de elementos finitos pode ser feita com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/dados/ex_modelo_adapt/ex_modelo_adapt.py}{código}:
+\verbatiminput{./cap_mef1d/dados/ex_modelo_adapt/ex_modelo_adapt.py}
+\fi
+\end{ex}
+
+\subsection*{Exercícios}
+
+\begin{exer}\label{exer:modelo_refglobal}
+  Use uma estratégia de sucessivos refinamentos globais para resolver o problema dado no Exemplo \ref{ex:modelo_adapt}. Compare seus resultados com aqueles obtidos no exemplo.
+\end{exer}
+\begin{resp}
+  \ifispython
+  \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/dados/exer_dcr/exer_dcr.py}{Código}.
+  \fi  
+\end{resp}
+
+\section{Seleção de aplicações}\label{cap_mef1d_sec_aps}
+
+\subsection{Sistemas de equações}
 
 Consideremos o seguinte problema de equações diferenciais ordinárias com valores de contorno
 \begin{align}
@@ -903,10 +1024,3 @@ Com o \fenics, a computação do problema de elementos finitos pode ser feita co
 
 \emconstrucao
 
-\section{Malha adaptativa}\label{cap_mef1d_sec_malha_adapt}
-
-\emconstrucao
-
-\subsection*{Exercícios}
-
-\emconstrucao
