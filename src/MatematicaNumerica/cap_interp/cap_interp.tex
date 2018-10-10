@@ -118,7 +118,7 @@ Além disso, como $L_i(x_i) = 1$, temos
 \end{equation}
 Assim sendo, podemos concluir que
 \begin{equation}
-  L_i(x) = \frac{(x-x_1)\cdots(x-x_{i-1})(x-x_i)\cdots(x-x_n)}{(x_i-x_1)\cdots(x_i-x_{i-1})(x_i-x_i)\cdots(x_i-x_n)}.
+  L_i(x) = \frac{(x-x_1)\cdots(x-x_{i-1})(x-x_{i+1})\cdots(x-x_n)}{(x_i-x_1)\cdots(x_i-x_{i-1})(x_i-x_{i+1})\cdots(x_i-x_n)}.
 \end{equation}
 
 
@@ -189,5 +189,198 @@ No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{
 \fi
 $0,54x^3 - 0,15x^2 + 1,3x + 1$.
 \end{resp}
+
+\emconstrucao
+
+\section{Diferenças dividas de Newton}\label{cap_interp_difdiv}
+
+Dado um conjunto de pontos $\{(x_i, y_i)\}_{i=1}^n$, o método das diferenças divididas de Newton\footnote{Carl Gustav Jacob Jacobi, 1804 - 1851, matemático alemão. Fonte: \href{https://en.wikipedia.org/wiki/Carl_Gustav_Jacob_Jacobi}{Wikipedia}.} busca determinar o polinômio interpolar deste conjunto de pontos na forma
+\begin{align}
+  p(x) &= a_1 + a_2(x-x_1) + a_3(x-x_1)(x-x_2)\\
+       &+ \cdots + a_{n}(x-x_1)\cdot \cdots \cdot (x-x_{n-1}).
+\end{align}
+
+Por uma abordagem direta, temos que $p(x_i)=y_i$, $i=1, 2, \dotsc, n$, o que nos leva ao seguinte sistema triangular inferior
+\begin{align}
+  a_1 &= y_1, \\
+  a_1 + a_2(x_2-x_1) &= y_2, \\
+  a_1 + a_2(x_3-x_1) + a_3(x_3-x_1)(x_3-x_2) &= y_3, \\
+  a_1 + a_2(x_n-x_1) + \cdots + a_{n}(x_n-x_1)\cdot\cdots\cdot(x_n-x_{n-1}) &= y_n.
+\end{align}
+Entretanto, existe uma forma mais eficiente de se determinar os coeficientes $a_i$, $i=1, 2, \dotsc, n$.
+
+Denotemos por $p[x_j, x_{j+1}, \dotsc, x_{k}](x)$ o polinômio interpolador do conjunto de pontos $\{(x_i, y_i)\}_{i=j}^k$. Então, temos a seguinte recursão
+\begin{equation} \label{eq:interp_parc1}
+  p[x_j] = y_j,\quad j=1, 2, \dotsc, n,
+\end{equation}
+e
+\begin{align}
+  &p[x_j, x_{j+1}, \ldots, x_k](x) \nonumber\\
+  &= \frac{(x-x_j)p[x_{j+1},\dotsc,x_k](x)-(x-x_k)p[x_j,\dotsc,x_{k-1}](x)}{x_k-x_j},\label{eq:interp_parc2}
+\end{align}
+para todo $n\geq k > j \geq 1$. De fato, \eqref{eq:interp_parc1} é trivial. Agora, denotando por $r(x)$ o lado direito da equação \eqref{eq:interp_parc2}, vemos que $r(x)$ tem grau menor ou igual a $k-j$, o mesmo de $p[x_j, x_{j+1}, \ldots, x_k](x)$. Desta forma, para mostrar \eqref{eq:interp_parc2}, basta verificarmos que $r(x)$ interpola o conjunto de pontos $\{(x_i, y_i)\}_{i=j}^k$. O que de fato ocorre:
+\begin{align}
+  r(x_j) &= \frac{-(x_j-x_k)y_j}{x_k-x_j} = y_j,\\
+  r(x_{l}) &= \frac{(x_l-x_j)y_l-(x_l-x_k)y_l}{x_k-x_j}=y_l,~l=j+1,\dotsc,k-1,\\
+  r(x_k) &= \frac{(x_k-x_j)y_k}{x_k-x_j}=y_k.
+\end{align}
+Logo, pela unicidade do polinômio interpolador, temos demonstrado \eqref{eq:interp_parc2}.
+
+Observando que o polinômio interpolador $p(x)$ é igual a $p[x_1,\dotsc,x_n](x)$, temos que \eqref{eq:interp_parc1}-\eqref{eq:interp_parc2} nos fornece uma forma de computar $p(x)$ recursivamente\footnote{De fato, o método de Neville consistem em computar $p(x)$ por esta recursão.}. Além disso, observemos que $p[x_j,\dotsc,x_{k-1}](x)$ e $p[x_j,\dotsc,x_k]$ diferem por um polinômio de grau $k-j$ com zeros $x_j$, $x_{j+1}$, ..., $x_{k-1}$. Logo, temos
+\begin{align}
+  p[x_j,\dotsc,x_k](x) &= p[x_j,\dotsc,x_{k-1}](x) \nonumber \\
+                       &+ f[x_j,\dotsc,x_k](x-x_j)\cdot\cdots\cdot(x-x_{k-1}),
+\end{align}
+onde $f[x_j,\dotsc,x_k]$ são coeficientes a determinar. Ainda, tomando $p[x_i]=f[x_i]$, temos
+\begin{align}
+  p[x_j,\dotsc,x_k](x) &= f[x_j] + f[x_j,x_{j+1}](x-x_j) \nonumber \\
+                       &+ f[x_j,\dotsc,x_k](x-x_j)\cdot\cdots\cdot(x-x_{k-1}).
+\end{align}
+Por fim, a recursão \eqref{eq:interp_parc1}-\eqref{eq:interp_parc2} nos mostra que as diferenças divididas Newton podem ser obtidas de
+\begin{align}
+  &f[x_j] = y_j,\quad j=1,2,\dotsc,n,\label{eq:interp_difdiv1}\\
+  &f[x_j,\dotsc,x_k] = \frac{f[x_{j+1},\dotsc,x_k]-f[x_j,\dotsc,x_{k-1}]}{x_k-x_j},\label{eq:interp_difdiv2}
+\end{align}
+para todo $n\geq k>j\geq 1$. E, temos o polinômio interpolador do conjunto de pontos $\{(x_i,y_i)\}_{i=1}^n$ dado por
+\begin{align}\label{eq:interpoli_Newton}
+  p[x_1,\dotsc,x_n](x) &= f[x_1] + f[x_1,x_2](x-x_1) \nonumber \\
+                       &+\cdots + f[x_1,\dotsc,x_n](x-x_1)\cdot\cdots\cdot(x-x_n).  
+\end{align}
+
+\begin{obs}
+  A recursão \eqref{eq:interp_difdiv1}-\eqref{eq:interp_difdiv2} pode ser adequadamente organizada em uma matriz da forma
+  \begin{equation}
+    \begin{bmatrix}
+      \pmb{f[x_1]} & 0 & 0 & \ldots & 0 \\
+      f[x_2] & \pmb{f[x_1,x_2]} & 0 & \ldots & 0 \\
+      f[x_3] & f[x_2,x_3] & \pmb{f[x_1,x_2,x_3]} & \ldots & 0\\
+      \vdots & \vdots & \vdots & \ldots & \vdots \\
+      f[x_n] & f[x_{n-1},x_{n}] & f[x_{n-2},x_{n-1},x_n] & \ldots & \pmb{f[x_1,x_2,\dotsc,x_n]}
+    \end{bmatrix}
+  \end{equation}
+onde os elementos da diagonal correspondem aos coeficientes do polinômio interpolador na forma \eqref{eq:interpoli_Newton}.
+\end{obs}
+
+
+\begin{ex}
+  Consideremos o problema de encontrar o polinômio interpolador do conjunto de pontos $\{(-1,~-1), (0,~1), (1,~1/2)\}$. Usando o método das diferenças divididas de Newton, escrevemos o polinômio na forma
+  \begin{equation}
+    p(x) = f[x_1] + f[x_1,x_2](x-x_1) + f[x_1,x_2,x_3](x-x_1)(x-x_2).
+  \end{equation}
+  Então, computamos seus coeficientes pela recursão \eqref{eq:interp_difdiv1}-\eqref{eq:interp_difdiv2}. Ou seja, temos
+  \begin{equation}
+    f[x_1]=-1,~f[x_2]=1,~f[x_3]=1/2.
+  \end{equation}
+  Daí, segue
+  \begin{align}
+    f[x_1,x_2] &= \frac{f[x_2]-f[x_1]}{x_2-x_1} = 2\\
+    f[x_2,x_3] &= \frac{f[x_3]-f[x_2]}{x_3-x_2} = -\frac{1}{2}\\
+  \end{align}
+  e, então,
+  \begin{equation}
+    f[x_1,x_2,x_3] = \frac{f[x_2,x_3]-f[x_1,x_2]}{x_3-x_1}=-1,25.
+  \end{equation}
+  Logo, o polinômio interpolador é
+  \begin{equation}
+    p(x) = 0,5 + 2(x+1) - 1,25(x+1)(x-1),
+  \end{equation}
+  ou, equivalentemente,
+  \begin{equation}
+    p(x) = -1,25x^2 + 0,75x + 1.
+  \end{equation}
+
+\ifisoctave
+No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_interp/dados/ex_interpoli_difdiv/ex_interpoli_difdiv.m}{código}:
+\verbatiminput{./cap_interp/dados/ex_interpoli_difdiv/ex_interpoli_difdiv.m}
+\fi
+\end{ex}
+
+\subsection*{Exercícios}
+
+\begin{exer}\label{exer_interpoli_difdiv1}
+  Use o método das diferenças divididas de Newton para encontrar o polinômio interpolador que aproxima a função $f(x)=e^{x}$ pelos pontos $x_1=0$, $x_2=1$, $x_3=1,5$ e $x_4=2$.
+\end{exer}
+\begin{resp}
+\ifisoctave
+\href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_interp/dados/exer_interpoli_dfidiv1/exer_interpoli_difdiv1.m}{Código}.
+\fi
+$0,54x^3 - 0,15x^2 + 1,3x + 1$.
+\end{resp}
+
+\emconstrucao
+
+\section{Spline cúbico}\label{cap_interp_splines}
+
+Dado um conjunto de pontos $\{(x_i,y_i)\}_{i=1}^n$, um spline cúbico é uma função duas vezes continuamente diferenciável da forma
+\begin{equation}
+  \begin{small}
+    s(x)\!=\!\left\{
+      \begin{array}{ll}
+        \!s_{11}(x-x_1)^3 + s_{12}(x-x_1)^2 + s_{13}(x-x_1) + s_{14} &,x_1\!\leq\!x\!<\!x_2,\\
+        \!s_{21}(x-x_2)^3 + s_{22}(x-x_2)^2 + s_{23}(x-x_2) + s_{24} &,x_2\!\leq\!x\!<\!x_3,\\
+                                                                   &, \vdots \\
+        \!s_{n-1,1}(x-x_2)^3\!+\!s_{n-1,2}(x-x_2)^2\!+\!s_{n-1,3}(x-x_2)\!+\!s_{n-1,4}\!&,x_{n-1}\!\leq\!x\!\leq\!x_n.
+      \end{array}
+    \right.
+  \end{small}
+\end{equation}
+que satisfaz as seguintes propriedades
+\begin{enumerate}
+\item $s(x_i) = y_i$ para $i=1, 2, \dotsc, n$,
+\item $s_j(x_j) = s_{j+1}(x_j)$ para todo $j=1,2,\dotsc,n-2$,
+\item $s_j'(x_j) = s_{j+1}'(x_j)$ para todo $j=1,2,\dotsc,n-2$,  
+\item $s_j''(x_j) = s_{j+1}''(x_j)$ para todo $j=1,2,\dotsc,n-2$.
+\end{enumerate}
+
+Observemos que o spline tem $4(n-1)$ coeficientes a determinar, enquanto que as condições acima nos fornecem $4n-6$ equações. Assim sendo, nota-se a determinação de um spline requer ainda 2 condições. Conforme a escolha destas condições, diferentes splines cúbicos são computados.
+
+\subsection{Spline {\it Not-a-knot}}
+
+A condição {\it not-a-knot} exige que o spline cúbico tenha derivada terceira contínua nos pontos $x_2$ e $x_{n-1}$, i.e.
+\begin{equation}
+  s_1'''(x_2) = s_2'''(x_2)\quad\text{e}\quad s_{n-2}'''(x_{n-1}) = s_{n-1}'''(x_{n-1}).
+\end{equation}
+
+\begin{ex}\label{ex:interp_spline_nak}
+  Consideremos o problema de aproximar a função $f(x)=\sen(x)$ pelo spline cúbico {\it not-a-knot} com pontos suporte $x_1=0$, $x_2=\pi/3$, $x_3=\pi/6$ e $x_4=\pi/2$. Na Figura \ref{fig:interp_spline_nak} temos os esboços de $f$ e do spline cúbico computado.
+
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{./cap_interp/dados/ex_interp_spline_nak/fig_interp_spline_nak}
+    \caption{Esboço dos gráficos da função $f(x)=\sen(x)$ e do spline cúbico computado no Exemplo \ref{ex:interp_spline_nak}.}
+    \label{fig:interp_spline_nak}
+  \end{figure}
+
+\ifisoctave
+No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_interp/dados/ex_interp_spline_nak/ex_interp_spline_nak.m}{código}:
+\verbatiminput{./cap_interp/dados/ex_interp_spline_nak/ex_interp_spline_nak.m}
+\fi
+\end{ex}
+
+\subsection{Spline fixado}
+
+Os splines cúbicos fixados são obtidos com as condições de fronteira
+\begin{equation}
+  s'(x_1)=y_1',\quad\text{e}\quad s'(x_n)=y_n',
+\end{equation}
+onde $y_1'$ e $y_n'$ são escalares dados. Quando usamos splines para aproximarmos uma dada função $f$, usualmente, escolhemos $y_1'=f'(x_1)$ e $y_n'=f'(x_n)$.
+
+\begin{ex}\label{ex:interp_spline_fixado}
+  Consideremos o problema de aproximar a função $f(x)=\sen(x)$ pelo spline cúbico fixado com pontos suporte $x_1=0$, $x_2=\pi/3$, $x_3=\pi/6$ e $x_4=\pi/2$. Na Figura \ref{fig:interp_spline_fixado} temos os esboços de $f$ e do spline cúbico computado.
+
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{./cap_interp/dados/ex_interp_spline_fixado/fig_interp_spline_fixado}
+    \caption{Esboço dos gráficos da função $f(x)=\sen(x)$ e do spline cúbico computado no Exemplo \ref{ex:interp_spline_fixado}.}
+    \label{fig:interp_spline_fixado}
+  \end{figure}
+
+\ifisoctave
+No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_interp/dados/ex_interp_spline_fixado/ex_interp_spline_fixado.m}{código}:
+\verbatiminput{./cap_interp/dados/ex_interp_spline_fixado/ex_interp_spline_fixado.m}
+\fi
+\end{ex}
+
+\subsection*{Exercícios}
 
 \emconstrucao

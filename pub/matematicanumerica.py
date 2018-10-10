@@ -41,4 +41,4 @@ class MatematicaNumerica(Notas):
         #pdf
         self.make_pdf()
         os.system('mv '+self.srcdir+'/MatematicaNumerica/main.pdf'\
-                      +' '+self.odir+'/MatematicaNumerica/')
+                  +' '+self.odir+'/MatematicaNumerica/')
