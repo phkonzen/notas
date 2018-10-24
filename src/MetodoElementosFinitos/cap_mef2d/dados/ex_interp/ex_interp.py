@@ -11,6 +11,12 @@ mesh = UnitSquareMesh(Nx,Ny)
 # espaco
 V = FunctionSpace(mesh, 'P', 1)
 
-# esboço da malha
-plot(V.mesh())
-plt.show()
+# funcao
+f = Expression('sin(pi*x[0])*cos(pi*x[1])',degree=3)
+
+# interpolacao
+pif = interpolate(f,V)
+
+# exportanto em vtk
+vtkfile = File('pif.pvd')
+vtkfile << pif

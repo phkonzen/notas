@@ -9,7 +9,7 @@
 
 Seja $\Omega\subset \mathbb{R}^2$ um domínio limitado com fronteira $\p\Omega$ suave e poligonal. Uma malha (ou triangularização) $\mathcal{K}$ de $\Omega$ é um conjunto de $\{K\}$ células (ou elementos) $K$, tal que $\Omega = \cup_{K\in\mathcal{K}}K$ e tal que a interseção de duas células é ou um lado, um canto ou vazio.
 
-Classicamente as células $K$ são escolhidas como triangulos. O tamanho do lado de maior comprimento do triangulo $K$ define o chamado \emph{tamanho local da malha} $h_K$. O tamanho global da malha é definida por $h = \max_{K\in\mathcal{K}} h_K$.
+Classicamente as células $K$ são escolhidas como triângulos. O tamanho do lado de maior comprimento do triangulo $K$ define o chamado \emph{tamanho local da malha} $h_K$. O tamanho global da malha é definida por $h = \max_{K\in\mathcal{K}} h_K$.
 
 Uma malha é dita \emph{regular} quando existe uma constante $c_0 > 0$ tal que $c_K > c_0$ para todo $K\in\mathcal{K}$, sendo $c_K := h_k/d_k$ e $d_K$ o diâmetro do circulo inscrito em $K$. Esta condição significa que os triângulo $K$ da malha não podem ter ângulos muito grandes nem muito pequenos. Ao longo do texto, a menos que especificado o contrário, assumiremos trabalhar com malhas regulares.
 
@@ -79,6 +79,22 @@ Notemos que cada função base $\phi_j$ é contínua, linear por partes e com su
 \end{equation}
 onde $\alpha_i = v(N_i)$, $i=0, 1, \ldots, n_p$, são os valores nodais de $v$.
 
+\begin{ex}\label{ex:malha}
+  A Figura \ref{fig:ex_malha} mostra o esboço de uma malha triangular no domínio $D = [0, 1]\times [0, 1]$.
+
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{./cap_mef2d/dados/ex_malha/fig_ex_malha}
+    \caption{Esboço de uma malha triangular no domínio $D = [0, 1]\times [0, 1]$.}
+    \label{fig:ex_malha}
+  \end{figure}
+
+\ifispython
+Com o \fenics, podemos gerar esta malha com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef2d/dados/ex_malha/ex_malha.py}{código}:
+\verbatiminput{./cap_mef2d/dados/ex_malha/ex_malha.py}
+\fi
+\end{ex}
+
 \section{Interpolação e projeção}
 
 \subsection{Interpolação}
@@ -89,7 +105,7 @@ Dada uma função contínua $f$ em um triângulo $K$ com nodos $N_i$, $i=0, 1, 2
 \end{equation}
 Logo, temos $\pi f(N_i) = f(N_i)$ para todo $i=0, 1, 2$.
 
-Afim de determinarmos estimativas para o erro de interpolação, presisamos da chamada derivada total de primeira ordem
+Afim de determinarmos estimativas para o erro de interpolação, precisamos da chamada derivada total de primeira ordem
 \begin{equation}
   Df = \left(\left|\frac{\p f}{\p x_1}\right|^2 + \left|\frac{\p f}{\p x_2}\right|^2\right)^{1/2},
 \end{equation}
@@ -113,7 +129,7 @@ e da derivada total de segunda ordem
   A constante $C$ dependo do inverso de $\sen(\theta_K)$ onde $\theta_K$ é o menor angulo de $K$. Desta forma, para um triângulo com $\theta_K$ muito pequeno, as estimativas \eqref{eq:interpl_0} e \eqref{eq:interpl_1} perdem sentido. Este fato indica a necessidade de se trabalhar com malhas regulares.
 \end{obs}
 
-A interpolação no espaço $V_h$ de uma dada função $f$ no domímio $\Omega$ é denotada também por $\pi f\in V_h$ e definida por
+A interpolação no espaço $V_h$ de uma dada função $f$ no domínio $\Omega$ é denotada também por $\pi f\in V_h$ e definida por
 \begin{equation}
   \pi f = \sum_{i=0}^{n_p-1} f(N_i)\varphi_i.
 \end{equation}
@@ -128,6 +144,14 @@ A interpolação no espaço $V_h$ de uma dada função $f$ no domímio $\Omega$ 
 \begin{dem}
   Demonstração análoga a Proposição \ref{prop:interp_linpartes}.
 \end{dem}
+
+\ifispython
+\begin{ex}\label{ex:interp}
+Consideremos a função $f(x_0,x_1) = \sen(\pi x_0)\cos(\pi x_1)$ definida no domínio $D = [0, 1]\times [0, 1]$. O seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef2d/dados/ex_interp/ex_interp.py}{código} computa a interpolação de $f$ no espaço $V_h$ sobre uma malha triangular uniforme.
+
+\verbatiminput{./cap_mef2d/dados/ex_interp/ex_interp.py}
+\end{ex}
+\fi
 
 \subsection{Projeção $L^2$}
 
@@ -162,10 +186,24 @@ E, portanto, também temos a estimativa análoga para o erro de projeção (veja
   \|f-P_hf\|_{L^2(I)}^2 \leq C\sum_{K\in\mathcal{K}} h_K^4\|D^2 f\|_{L^2(K)}^2.
 \end{equation}
 Tomando o tamanho global da malha, temos
-\begin{equation}
+\begin{equation}\label{eq:erro_projec_2d}
   \|f-P_hf\|_{L^2(I)} \leq Ch^2\|D^2 f\|_{L^2(K)}.
 \end{equation}
 
+\ifispython
+\begin{ex}\label{ex:projec}
+Consideremos a função $f(x_0,x_1) = \sen(\pi x_0)\cos(\pi x_1)$ definida no domínio $D = [0, 1]\times [0, 1]$. O seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef2d/dados/ex_projec/ex_projec.py}{código} computa a projeção de $f$ no espaço $V_h$ sobre uma malha triangular uniforme.
 
+\verbatiminput{./cap_mef2d/dados/ex_projec/ex_projec.py}
+\end{ex}
+\fi
 
-\emconstrucao
+\subsection*{Exercícios}
+
+\begin{exer}
+  Verifique computacionalmente a Proposição \ref{prop:interpc} no caso da função $f(x_0,x_1) = \sen(\pi x_0)\cos(\pi x_1)$ interpolada sobre uma malha triangular uniforme sobre o domínio $D = [0, 1]\times [0, 1]$.
+\end{exer}
+
+\begin{exer}
+  Verifique computacionalmente a estimativa \eqref{eq:erro_projec_2d} no caso da função $f(x_0,x_1) = \sen(\pi x_0)\cos(\pi x_1)$ projetada sobre uma malha triangular uniforme sobre o domínio $D = [0, 1]\times [0, 1]$.
+\end{exer}
