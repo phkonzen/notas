@@ -207,3 +207,119 @@ Consideremos a função $f(x_0,x_1) = \sen(\pi x_0)\cos(\pi x_1)$ definida no do
 \begin{exer}
   Verifique computacionalmente a estimativa \eqref{eq:erro_projec_2d} no caso da função $f(x_0,x_1) = \sen(\pi x_0)\cos(\pi x_1)$ projetada sobre uma malha triangular uniforme sobre o domínio $D = [0, 1]\times [0, 1]$.
 \end{exer}
+
+\section{Problema modelo}\label{cap_mef2d_sec_probmodelo}
+
+Nesta seção, apresentaremos a aplicação do método de elementos finitos para a equação de Poisson\footnote{Siméon Denis Poisson, 1781 - 1840, matemático francês. Fonte: \href{https://en.wikipedia.org/wiki/Sim\%C3\%A9on_Denis_Poisson}{Wikipedia}.} com condições de Dirichlet\footnote{Johann Peter Gustav Lejeune Dirichlet, 1805 - 1859, matemático alemão. Fonte: \href{https://en.wikipedia.org/wiki/Peter_Gustav_Lejeune_Dirichlet}{Wikipedia}.}, i.e.: encontrar $u$ tal que
+\begin{align}
+  -\Delta u &= f,~x\in\Omega,\label{eq:mef2d_pm_eq}\\
+  u &= 0,~x\in\p\Omega,\label{eq:mef2d_pm_bc}
+\end{align}
+onde $\Delta = \p^2/\p x_0^2 + \p^2/\p x_1^2$ é o operador de Laplace\footnote{Pierre-Simon, marquis de Laplace, 1749 - 1827, matemático francês. Fonte: \href{https://en.wikipedia.org/wiki/Pierre-Simon_Laplace}{Wikipedia}.} e $f$ é uma função dada.
+
+\subsection{Formulação variacional}
+
+A aplicação do método de elementos finitos é construída sobre a formulação fraca do problema \eqref{eq:mef2d_pm_eq}-\eqref{eq:mef2d_pm_bc}. Para obtermos esta, multiplicamos \eqref{eq:mef2d_pm_eq} por uma função teste $v$ em um espaço adequado $V_0$ e integramos no domínio $\Omega$, i.e.
+\begin{equation}
+  - \int_\Omega \Delta uv\,dx = \int_\Omega fv\,dx.
+\end{equation}
+Então, usando a fórmula de Green\footnote{George Green, 1793 - 1841, matemático britânico. Fonte: \href{https://en.wikipedia.org/wiki/George_Green_(mathematician)}{Wikipedia}.}, obtemos
+\begin{equation}
+  \int_\Omega \nabla u\cdot\nabla v\,dx - \int_\Omega n\cdot\nabla uv\,ds.
+\end{equation}
+Então, observando critérios de regularidade e a condição de contorno \eqref{eq:mef2d_pm_bc}, escolhemos
+\begin{equation}
+  V_0 := \{v\in H^1(\Omega):~v|_{\p\Omega}=0\}.
+\end{equation}
+Lembramos que $H^1(\Omega) = \{v:~\|v\|_{L^2(\Omega)}+\|\nabla v\|_{L^2(\Omega)}<\infty\}$.
+
+Com isso, temos o seguinte problema fraco associado a \eqref{eq:mef2d_pm_eq}-\eqref{eq:mef2d_pm_bc}: encontrar $u\in V_0$ tal que
+\begin{equation}\label{eq:mef2d_probfraco}
+  a(u,v) = L(v),~\forall v\in V_0,
+\end{equation}
+onde $a(u, v)$ é chamada de forma bilinear e definida por
+\begin{equation}
+  a(u,v) := \int_\Omega \nabla u\cdot\nabla v\,dx
+\end{equation}
+e $L(v)$ é chamada de forma linear e definida por
+\begin{equation}
+  L(v) := \int_\Omega fv\,dx.
+\end{equation}
+
+\subsection{Formulação de elementos finitos}
+
+A formulação de elementos finitos é obtida da formulação fraca \eqref{eq:mef2d_probfraco} pela aproximação do espaço teste $V_0$ por uma espaço de dimensão finita. Tomando uma triangulação $\mathcal{K}\subset\Omega$ e considerando o espaço contínuo dos polinômios lineares por partes
+\begin{equation}
+  V_h := \{v:~v\in C^0(\Omega), v|_K\in P_1(K)~\forall K\in\mathcal{K}\},
+\end{equation}
+assumimos também o subconjunto $V_{h,0}:= \{v\in V_h:~v|_{\p\Omega}=0\}$.
+
+Com isso, temos o seguinte problema de elementos finitos associado \eqref{eq:mef2d_probfraco}: encontrar $u_h\in V_{h,0}$ tal que
+\begin{equation}\label{eq:mef2d_probfem}
+  a(u_h,v_h) = L(v_h),~\forall v_h\in V_{h,0}.
+\end{equation}
+
+Observemos que \eqref{eq:mef2d_probfem} é equivalente ao problema de encontrar $u_h\in V_{h,0}$ tal que
+\begin{equation}\label{eq:mef2d_proba1}
+  a(u_h,\varphi_i) = L(\varphi_i),
+\end{equation}
+com $i=0, 1, \cdots, n_p-1$, onde $\{\varphi_i\}_{i=0}^{n_i-1}$ é a base nodal de $V_{h,0}$ e $n_i$ é o número de funções bases (igual ao número de nodos internos da triangulação $\mathcal{K}$). Ainda, como
+\begin{equation}
+  u_h = \sum_{j=0}^{n_i-1} \xi_j\varphi_j,
+\end{equation}
+temos 
+\begin{align}
+  a(u_h, \varphi_i) &= a\left(\sum_{j=0}^{n_i-1}\xi_j\varphi_j,\varphi_i\right) \\
+  &= \sum_{j=0}^{n_i-1}\xi_ja(\varphi_j,\varphi_i).
+\end{align}
+
+Com isso, o problema de elementos finitos é equivalente a resolver o seguinte sistema linear
+\begin{equation}
+  \sum_{j=0}^{n_i-1}\xi_ja(\varphi_j,\varphi_i) = L(\varphi_i),~i=0, 1, \cdots, n_i-1,
+\end{equation}
+para as incógnitas $\xi_j$, $j=0, 1, \cdots, n_i-1$. Ou, equivalentemente, temos sua forma matricial
+\begin{equation}
+  A\pmb{\xi} = \pmb{b},
+\end{equation}
+onde $A = [a_{i,j}]_{i,j=0}^{n_i-1}$ é chamada de matriz de rigidez com
+\begin{equation}
+  a_{i,j} = a(\varphi_j, \varphi_i)
+\end{equation}
+e $\pmb{b} = (b_0, b_1, \cdots, b_{n_i-1})$ é o vetor de carga com
+\begin{equation}
+  b_i = L(\varphi_i).
+\end{equation}
+
+\begin{ex}\label{ex:mef2d_pm}
+  Consideremos o seguinte problema de Poisson
+  \begin{align}
+    -\Delta u &= x_0(1-x_0)x_1(1-x_1),~x\in\Omega:=(0, 1)\times (0, 1),\\
+    u &= 0,~x\in\p\Omega.
+  \end{align}
+  Na Figura \ref{fig:mef2d_pm} temos um esboço da aproximação de elementos finitos obtida em uma malha uniforme com $20\times 20$ nodos. As isolinhas correspondem aos ponto tais que $u=3\times 10^{-1}, 2\times 10^{-1}$, $10^{-1}$, $5\times 10^{-2}$.
+
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{./cap_mef2d/dados/ex_mef2d_pm/fig_mef2d_pm}
+    \caption{Esboço da solução de elementos finitos do problema discutido no Exemplo \ref{ex:mef2d_pm}.}
+    \label{fig:mef2d_pm}
+  \end{figure}
+
+\ifispython
+Com o \fenics, podemos computar a solução deste problema com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef2d/dados/ex_mef2d_pm/ex_mef2d_pm.py}{código}:
+\verbatiminput{./cap_mef2d/dados/ex_mef2d_pm/ex_mef2d_pm.py}
+\fi
+\end{ex}
+
+\subsection*{Exercícios}
+
+\begin{exer}
+  Compute uma aproximação de elementos finitos para o seguinte problema
+\begin{align}
+  -\Delta u &= 10,~x\in (0, 1)\times (0, 1)\\
+  u(x,0) &= 0,~0\leq x \leq 1,\\
+  u(1,y) &= 0,~0\leq y < 1,\\
+  u(x,1) &= 1,~0\leq x \leq 1,\\
+  u(0,y) &= 1,~0<x\leq 1.
+\end{align}
+\end{exer}
