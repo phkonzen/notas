@@ -281,7 +281,7 @@ para as incógnitas $\xi_j$, $j=0, 1, \cdots, n_i-1$. Ou, equivalentemente, temo
 \begin{equation}
   A\pmb{\xi} = \pmb{b},
 \end{equation}
-onde $A = [a_{i,j}]_{i,j=0}^{n_i-1}$ é chamada de matriz de rigidez com
+onde $A = [a_{i,j}]_{i,j=0}^{n_i-1}$ é chamada de \pmb{matriz de rigidez}\index{matriz de rigidez} com
 \begin{equation}
   a_{i,j} = a(\varphi_j, \varphi_i)
 \end{equation}
@@ -323,3 +323,149 @@ Com o \fenics, podemos computar a solução deste problema com o seguinte \href{
   u(0,y) &= 1,~0<x\leq 1.
 \end{align}
 \end{exer}
+
+\section{Fundamentos da análise de elementos finitos}
+
+\subsection{Existência e unicidade}
+
+\begin{teo}\normalfont{(Matriz positiva definida)}\label{teo:matriz_definida_positiva}
+  A matriz de rigidez é positiva definida.
+\end{teo}
+\begin{dem}
+  A matriz de rigidez $A = [a(\varphi_j,\varphi_i)]_{ij=0}^{n_i-1}$ é obviamente simétrica. Além disso, para todo $\pmb{\xi}\in\mathbb{R}^{n_i}$, $\pmb{\xi}\neq 0$, temos
+  \begin{align}
+    \pmb{\xi}^TA\pmb{\xi} &= \sum_{i,j=0}^{n_i-1} \xi_ja(\varphi_j,\varphi_i)\xi_i\\
+    &= \sum_{i,j=0}^{n_i-1}\xi_j\int_\Omega \nabla \varphi_j\cdot\nabla\varphi_i\,dx\\
+    &= \int_\Omega \nabla \left(\sum_{j=0}^{n_i-1}\xi_j\varphi_j\right)\cdot\nabla \left(\sum_{i=0}^{n_i-1}\xi_i\varphi_i\right)\,dx\\
+    &= \left\|\nabla \left(\sum_{j=0}^{n_i-1}\xi_j\varphi_j\right) \right\|_{L^2(\Omega)}^2.
+  \end{align}
+  Portanto, $\pmb{\xi}^TA\pmb{\xi} \leq 0$ e é nulo se, e somente se, $v = \sum_{j=0}^{n_i-1}\xi_j\varphi_j$ for constante. Como $v\in V_{h,0}$, temos que $v$ constante implica $v\equiv 0$, mas então $\pmb{\xi}=0$, o que é uma contradição. Logo, $\pmb{\xi}^TA\pmb{\xi} > 0$ para todo $\pmb{\xi}\in\mathbb{R}^{n_i}$, $\pmb{\xi}\neq 0$.
+\end{dem}
+
+\begin{teo}\normalfont{(Existência e unicidade)}
+  O problema de elementos finitos \eqref{eq:mef2d_probfem} tem solução única.
+\end{teo}
+\begin{dem}
+  O problema de elementos finitos \eqref{eq:mef2d_probfem} se resume a resolver o sistema linear $A\pmb{\xi} = \pmb{b}$. Do Teorema \ref{teo:matriz_definida_positiva}, temos que $A$ é uma matriz definida positiva e, portanto, invertível. Daí segue, imediatamente, que o problema \eqref{eq:mef2d_probfem} tem solução única.
+\end{dem}
+
+\subsection{Estimativa {\it a priori} do erro}
+
+\begin{teo}\normalfont{(Ortogonalidade de Galerkin)}\label{teo:mef2d_orto_Galergin}
+  A solução $u_h$ do problema de elementos finitos \eqref{eq:mef2d_probfem} satisfaz
+  \begin{equation}
+    a(u-u_h,v_h) = L(v_h),~\forall v_h\in V_{h,0},
+  \end{equation}
+onde $u$ é a solução do problema fraco \eqref{eq:mef2d_probfraco}.
+\end{teo}
+\begin{dem}
+  Segue, imediatamente, do fato de que $V_{h,0}\subset V_0$ e, portanto,
+  \begin{equation}
+    a(u,v_h) = L(v_h),~\forall v_h\in V_{h,0},
+  \end{equation}
+bem como
+  \begin{equation}
+    a(u_h,v_h) = L(v_h),~\forall v_h\in V_{h,0}.
+  \end{equation}
+\end{dem}
+
+\begin{defn}\normalfont{(Norma da energia.)}
+  Definimos a norma da energia por
+  \begin{equation}
+    \||v|\| := \left(\int_{\Omega} \nabla v\cdot\nabla v\,dx\right)^{1/2} = \|\nabla v\|_{L^2(\Omega)},
+  \end{equation}
+para todo $v\in V_0$.
+\end{defn}
+
+\begin{teo}\normalfont{(Melhor aproximação.)}\label{teo:mef2d_melhor_aprox}
+  A solução $u_h$ do problema de elementos finitos satisfaz
+  \begin{equation}
+    \||u-u_h|\| \leq \||u-v_h|\|,~\forall v_h\in V_{h,0}.
+  \end{equation}
+\end{teo}
+\begin{dem}
+  Observando que $u-u_h=u-v_h+v_h-u_h$ e usando a ortogonalidade de Galerkin (Teorema \ref{teo:mef2d_orto_Galerkin}), temos:
+  \begin{align}
+    \||u-u_h|\|^2 &= \int_\Omega \nabla (u-u_h)\cdot\nabla (u-u_h)\,dx\\
+    &= \int_{\Omega} \nabla (u-u_h)\cdot\nabla (u-v_h)\,dx + \int_{\Omega} \nabla (u-u_h)\cdot\nabla (v_h-u_h)\,dx\\
+    &= \int_{\Omega} \nabla (u-u_h)\cdot\nabla (u-v_h)\,dx\\
+    &= \|\nabla (u-u_h)\|_{L^2(\Omega)}^2\|\nabla (u-v_h)\|_{L^2(\Omega)}^2\\
+    &= \||u-u_h|\|^2\||u-v_h|\|.
+  \end{align}
+\end{dem}
+
+\begin{teo}\normalfont{(Estimativa {\it a priori} do erro.)}\label{teo:mef2d_est_apriori_energia}
+  A solução $u_h$ do problema de elementos finitos \eqref{eq:mef2d_probfem} satisfaz
+  \begin{equation}
+    \||u-u_h|\|^2 \leq C\sum_{K\in\mathcal{K}} h_K^2\|D^2u\|_{L^2(K)}^2.
+  \end{equation}
+\end{teo}
+\begin{dem}
+  O resultado segue do Teorema da melhor aproximação (Teorema \ref{teo:mef2d_melhor_aprox}) e da estimativa do erro de interpolação (Proposição \ref{prop:interpc}), pois
+  \begin{align}
+    \||u-u_h|\|^2 \leq \||u-\pi u|\|^2\\
+    = \|D(u-\pi u)\|_{L^2(\Omega)}^2\\
+    \leq C\sum_{K\in\mathcal{K}} h_K^2\|D^2u\|_{L^2(\Omega)}^2.
+  \end{align}
+\end{dem}
+
+Para obtermos uma estimativa na norma $L^2(\Omega)$, podemos usar a desigualdade de Poincaré.
+
+\begin{teo}\normalfont{(Desigualdade de Poincaré.)}
+  Seja $\Omega\subset \mathbb{R}^2$ um domínio limitado. Então, existe uma constante $C = C(\Omega)$, tal que
+  \begin{equation}
+    \|v\|_{L^2(\Omega)} \leq C\|\nabla v\|_{L^2(\Omega)},~\forall v\in V_0.
+  \end{equation}
+\end{teo}
+\begin{dem}
+  Se $\Omega$ tem contorno suficientemente suave, então existe $\phi$ tal que $-\Delta \phi = 1$ em $\Omega$ com $\sup_{x\in\Omega}|\nabla \phi| < C$. Com isso, temos
+  \begin{align}
+    \|v\|_{L^2(\Omega)}^2 &= \int_{\Omega} v^2\,dx\\
+    &= -\int_{\Omega} v^2\Delta\phi\,dx.
+  \end{align}
+Agora, usando o Teorema de Green e a desigualdade de Cauchy-Schwarz, obtemos
+\begin{align}
+  \|v\|_{L^2(\Omega)}^2 &= -\int_{\p\Omega} v^2n\cdot\nabla \phi\,ds + \int_\Omega \nabla v^2\cdot\nabla \phi\,dx\\
+  &= \int_\Omega 2v\nabla v\cdot\nabla \phi\,dx\\
+  &\leq \sup_{x\in\Omega} |\nabla \phi|\|v\|_{L^2(\Omega)}\|\nabla v\|_{L^2(\Omega)}.
+\end{align}
+\end{dem}
+
+Com a desigualdade de Poincaré e da estimativa {\it a priori} do erro (Teorema \ref{teo:mef2d_est_apriori_energia}), temos
+\begin{equation}\label{eq:mef2d_est_apriori}
+  \|u-u_h\|_{L^2(\Omega)} \leq C \||u-u_h|\| \leq Ch\|D^2u\|_{L^2(\Omega)},
+\end{equation}
+onde $h = \max_{K\in\mathcal{K}} h_K$. Entretanto, esta estimativa pode ser melhorada.
+
+\begin{teo}\normalfont{(Estimativa ótima {\it a priori} do erro.)}
+  A solução $u_h$ do problema de elementos finitos \eqref{eq:mef2d_probfem} satisfaz
+  \begin{equation}
+    \|u-u_h\|_{L^2(\Omega)} \leq Ch^2\|D^2u\|_{L^2(\Omega)}.
+  \end{equation}
+\end{teo}
+\begin{dem}
+  Seja $e = u-u_h$ o erro e $\phi$ a solução do problema dual (ou problema adjunto)
+  \begin{align}
+    -\Delta \phi &= e,~\forall x\in\Omega\\
+    \phi &= 0,~\forall x\in\p\Omega.
+  \end{align}
+Então, usando a fórmula de Green, a ortogonalidade de Galerkin e, então, a desigualdade de Cauchy-Schwarz, temos
+\begin{align}
+  \|e^2\|_{L^2(\Omega)} &= -\int_\Omega e\Delta\phi\,dx\\
+  &=\int_\Omega \nabla e\cdot\nabla\phi\,dx - \int_{\p\Omega} en\cdot\nabla \phi\,ds\\
+  &=\int_\Omega \nabla e\cdot\nabla(\phi-\pi\phi)\,dx\\
+  \leq\|\nabla e\|_{L^2(\Omega)}\|\nabla(\phi-\pi\phi)\|_{L^2(\Omega)}.
+\end{align}
+Da estimativa {\it a priori} \eqref{eq:mef2d_est_apriori} (que segue do Teorema \ref{teo:mef2d_est_apriori_energia}) temos
+\begin{equation}
+  \|\nabla e\|_{L^2(\Omega)} \leq Ch\|D^2u\|_{L^2(\Omega)}.
+\end{equation}
+Agora, da regularidade elíptica $\|D^2\phi\|_{L^2(\Omega)} \leq C\|\Delta\phi\|_{L^2(\Omega)}$ \cite{Evans1998a} e da estimativa do erro de interpolação (Proposição \ref{prop:interpc}), temos
+\begin{equation}
+  \|\nabla(\phi-\pi\phi)\|_{L^2(\Omega)} \leq Ch\|D^2\phi\|_{L^2(\Omega)}\leq Ch\|\Delta\phi\|_{L^2(\Omega)} \leq Ch\|e\|_{L^2(\Omega)}.
+\end{equation}
+Então, temos
+\begin{equation}
+  \|e\|_{L^2(\Omega)}^2 \leq Ch\|D^2u\|_{L^2(\Omega)}Ch\|e\|_{L^2(\Omega)}.
+\end{equation}
+\end{dem}
