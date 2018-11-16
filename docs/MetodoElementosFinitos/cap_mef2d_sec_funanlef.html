@@ -1,0 +1,744 @@
+<!DOCTYPE html><html>
+<head>
+<title>2.4 Fundamentos da análise de elementos finitos‣ Capítulo 2 Método de elementos finitos em 2D ‣ Método de Elementos Finitos</title>
+<!--Generated on Fri Nov 16 09:48:30 2018 by LaTeXML (version 0.8.1) http://dlmf.nist.gov/LaTeXML/.-->
+<!--Document created on 16 de novembro de 2018.-->
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="LaTeXML.css" type="text/css">
+<link rel="stylesheet" href="ltx-book.css" type="text/css">
+<link rel="stylesheet" href="ltx-ulem.css" type="text/css">
+<link rel="stylesheet" href="main.css" type="text/css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=MML_SVG" type="text/javascript"></script>
+<script src="mymathcfg.js" type="text/javascript"></script>
+<link rel="up" href="cap_mef2d.html" title="Capítulo 2 Método de elementos finitos em 2D ‣ Método de Elementos Finitos">
+<link rel="up up" href="main.html" title="Método de Elementos Finitos">
+<link rel="start" href="main.html" title="Método de Elementos Finitos">
+<link rel="prev" href="cap_mef2d_sec_probmodelo.html" title="2.3 Problema modelo ‣ Capítulo 2 Método de elementos finitos em 2D ‣ Método de Elementos Finitos">
+<link rel="next" href="bib.html" title="Referências ‣ Método de Elementos Finitos">
+<link rel="section" href="cap_mef2d_sec_malha.html" title="2.1 Malha e espaço ‣ Capítulo 2 Método de elementos finitos em 2D ‣ Método de Elementos Finitos">
+<link rel="section" href="cap_mef2d_sec_interp.html" title="2.2 Interpolação e projeção ‣ Capítulo 2 Método de elementos finitos em 2D ‣ Método de Elementos Finitos">
+<link rel="section" href="cap_mef2d_sec_probmodelo.html" title="2.3 Problema modelo ‣ Capítulo 2 Método de elementos finitos em 2D ‣ Método de Elementos Finitos">
+<link rel="chapter" href="licenca.html" title="Licença ‣ Método de Elementos Finitos">
+<link rel="chapter" href="prefacio.html" title="Prefácio ‣ Método de Elementos Finitos">
+<link rel="chapter" href="cap_mef1d.html" title="Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos">
+<link rel="chapter" href="cap_mef2d.html" title="Capítulo 2 Método de elementos finitos em 2D ‣ Método de Elementos Finitos">
+<link rel="bibliography" href="bib.html" title="Referências ‣ Método de Elementos Finitos">
+<meta name="author" content="Pedro H A Konzen"/>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="goodies.css" type="text/css">
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-17226092-2"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag("js", new Date());
+
+gtag("config", "UA-17226092-2")
+</script>
+</head>
+
+<body>
+
+<div class="row">
+<div class="col-xs-12 col-xs-offset-0 col-md-8 col-md-offset-2">
+
+
+<!-- begin: navbar -->
+<nav class="navbar navbar-default">
+<div class="container-fluid">
+<div class="navbar-header">
+<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+<span class="sr-only">Toggle navigation</span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+</button>
+<a class="navbar-brand" href="main.html">Notas de Aula<br/><small>Introdução ao Método de Elementos Finitos<small/></a>
+</div>
+
+<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+<ul class="nav navbar-nav">
+<li><a href="https://github.com/phkonzen/notas">Repositório GitHub</a></li>
+<li><a href="main.pdf">Baixar PDF</a></li>
+<li><a href="../index.html">Outras Notas & Infos</a></li>
+</ul>
+</div><!-- /.navbar-collapse -->
+</div><!-- /.container-fluid -->
+</nav>
+
+
+<!-- end: navbar -->
+
+
+
+<div class="ltx_page_main">
+<header class="ltx_page_header">
+<div>
+<a href="cap_mef2d.html" title="Capítulo 2 Método de elementos finitos em 2D ‣ Método de Elementos Finitos" class="ltx_ref" rel="up"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">2 </span>Método de elementos finitos em 2D</span></a><a href="cap_mef2d_sec_probmodelo.html" title="2.3 Problema modelo ‣ Capítulo 2 Método de elementos finitos em 2D ‣ Método de Elementos Finitos" class="ltx_ref" rel="prev"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">2.3 </span>Problema modelo</span></a><a href="bib.html" title="Referências ‣ Método de Elementos Finitos" class="ltx_ref" rel="next"><span class="ltx_text ltx_ref_title">Referências</span></a>
+</div></header>
+<div class="ltx_page_content">
+<section class="ltx_section ltx_authors_1line">
+<h1 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">2.4 </span>Fundamentos da análise de elementos finitos<small><a href="https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef2d/cap_mef2d.tex" target=_blank> <span class="glyphicon glyphicon-pencil"></span> </a><a href="../contato.html" target="_blank"> <span class="glyphicon glyphicon-envelope"></span> </a></small></h1>
+<div class="ltx_date ltx_role_creation"></div>
+
+<section id="SS1" class="ltx_subsection">
+<h2 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">2.4.1 </span>Existência e unicidade<small><a href="https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef2d/cap_mef2d.tex" target=_blank> <span class="glyphicon glyphicon-pencil"></span> </a><a href="../contato.html" target="_blank"> <span class="glyphicon glyphicon-envelope"></span> </a></small></h2>
+
+<div id="Thmteo1" class="ltx_theorem ltx_theorem_teo">
+<h6 class="ltx_title ltx_runin ltx_font_bold ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem">Teorema 2.4.1</span>.</h6>
+<div id="Thmteo1.p1" class="ltx_para">
+<p class="ltx_p">(Matriz positiva definida)
+A matriz de rigidez é positiva definida.</p>
+</div>
+</div>
+<div class="ltx_proof">
+<h6 class="ltx_title ltx_runin ltx_font_italic ltx_title_proof">Demonstração.</h6>
+<div id="SS1.p1" class="ltx_para">
+<p class="ltx_p">A matriz de rigidez <math id="SS1.p1.m1" class="ltx_Math" alttext="A=[a(\varphi_{j},\varphi_{i})]_{ij=0}^{n_{i}-1}" display="inline"><mrow><mi>A</mi><mo>=</mo><msubsup><mrow><mo stretchy="false">[</mo><mrow id="XM1549"><mi>a</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub id="XM1547"><mi>φ</mi><mi>j</mi></msub><mo>,</mo><msub id="XM1548"><mi>φ</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">]</mo></mrow><mrow><mrow><mi>i</mi><mo>⁢</mo><mi>j</mi></mrow><mo>=</mo><mn>0</mn></mrow><mrow><msub><mi>n</mi><mi>i</mi></msub><mo>-</mo><mn>1</mn></mrow></msubsup></mrow></math> é obviamente simétrica. Além disso, para todo <math id="SS1.p1.m2" class="ltx_Math" alttext="\boldsymbol{\xi}\in\mathbb{R}^{n_{i}}" display="inline"><mrow><mi>𝝃</mi><mo>∈</mo><msup><mi>ℝ</mi><msub><mi>n</mi><mi>i</mi></msub></msup></mrow></math>, <math id="SS1.p1.m3" class="ltx_Math" alttext="\boldsymbol{\xi}\neq 0" display="inline"><mrow><mi>𝝃</mi><mo>≠</mo><mn>0</mn></mrow></math>, temos</p>
+<table id="EGx41" class="ltx_equationgroup ltx_eqn_align">
+
+<tr id="Ch2.E49" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right">
+                      <math id="Ch2.E49.m1" class="ltx_Math" alttext="\displaystyle\boldsymbol{\xi}^{T}A\boldsymbol{\xi}" display="inline"><mrow><msup><mi>𝝃</mi><mi>T</mi></msup><mo>⁢</mo><mi>A</mi><mo>⁢</mo><mi>𝝃</mi></mrow></math>
+                    </td>
+<td class="ltx_td ltx_align_left">
+                      <math id="Ch2.E49.m2" class="ltx_Math" alttext="\displaystyle=\sum_{i,j=0}^{n_{i}-1}\xi_{j}a(\varphi_{j},\varphi_{i})\xi_{i}" display="inline"><mrow><mi></mi><mo>=</mo><mrow><mstyle displaystyle="true"><munderover><mo largeop="true" movablelimits="false" symmetric="true">∑</mo><mrow><mrow><mi id="XM1554">i</mi><mo>,</mo><mi id="XM1555">j</mi></mrow><mo>=</mo><mn>0</mn></mrow><mrow><msub><mi>n</mi><mi>i</mi></msub><mo>-</mo><mn>1</mn></mrow></munderover></mstyle><mrow><msub><mi>ξ</mi><mi>j</mi></msub><mo>⁢</mo><mi>a</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub id="XM1556"><mi>φ</mi><mi>j</mi></msub><mo>,</mo><msub id="XM1557"><mi>φ</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow><mo>⁢</mo><msub><mi>ξ</mi><mi>i</mi></msub></mrow></mrow></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.49)</span></td>
+</tr>
+<tr id="Ch2.E50" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right"></td>
+<td class="ltx_td ltx_align_left">
+                      <math id="Ch2.E50.m2" class="ltx_Math" alttext="\displaystyle=\sum_{i,j=0}^{n_{i}-1}\xi_{j}\int_{\Omega}\nabla\varphi_{j}\cdot%
+\nabla\varphi_{i}\,dx" display="inline"><mrow><mi></mi><mo>=</mo><mrow><mstyle displaystyle="true"><munderover><mo largeop="true" movablelimits="false" symmetric="true">∑</mo><mrow><mrow><mi id="XM1560">i</mi><mo>,</mo><mi id="XM1561">j</mi></mrow><mo>=</mo><mn>0</mn></mrow><mrow><msub><mi>n</mi><mi>i</mi></msub><mo>-</mo><mn>1</mn></mrow></munderover></mstyle><mrow><msub><mi>ξ</mi><mi>j</mi></msub><mo>⁢</mo><mrow><mstyle displaystyle="true"><msub><mo largeop="true" symmetric="true">∫</mo><mi mathvariant="normal">Ω</mi></msub></mstyle><mrow><mrow><mo>∇</mo><mo>⁡</mo><msub><mi>φ</mi><mi>j</mi></msub></mrow><mo>⋅</mo><mrow><mo>∇</mo><mo>⁡</mo><mrow><mpadded width="+1.7pt"><msub><mi>φ</mi><mi>i</mi></msub></mpadded><mo>⁢</mo><mi>d</mi><mo>⁢</mo><mi>x</mi></mrow></mrow></mrow></mrow></mrow></mrow></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.50)</span></td>
+</tr>
+<tr id="Ch2.E51" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right"></td>
+<td class="ltx_td ltx_align_left">
+                      <math id="Ch2.E51.m2" class="ltx_Math" alttext="\displaystyle=\int_{\Omega}\nabla\left(\sum_{j=0}^{n_{i}-1}\xi_{j}\varphi_{j}%
+\right)\cdot\nabla\left(\sum_{i=0}^{n_{i}-1}\xi_{i}\varphi_{i}\right)\,dx" display="inline"><mrow><mi></mi><mo>=</mo><mrow><mstyle displaystyle="true"><msub><mo largeop="true" symmetric="true">∫</mo><mi mathvariant="normal">Ω</mi></msub></mstyle><mrow><mrow><mo id="XM1566">∇</mo><mo>⁡</mo><mrow><mo>(</mo><mrow id="XM1567"><mstyle displaystyle="true"><munderover><mo largeop="true" movablelimits="false" symmetric="true">∑</mo><mrow><mi>j</mi><mo>=</mo><mn>0</mn></mrow><mrow><msub><mi>n</mi><mi>i</mi></msub><mo>-</mo><mn>1</mn></mrow></munderover></mstyle><mrow><msub><mi>ξ</mi><mi>j</mi></msub><mo>⁢</mo><msub><mi>φ</mi><mi>j</mi></msub></mrow></mrow><mo>)</mo></mrow></mrow><mo>⋅</mo><mrow><mrow><mo id="XM1568">∇</mo><mo>⁡</mo><mrow><mo>(</mo><mrow id="XM1569"><mstyle displaystyle="true"><munderover><mo largeop="true" movablelimits="false" symmetric="true">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mrow><msub><mi>n</mi><mi>i</mi></msub><mo>-</mo><mn>1</mn></mrow></munderover></mstyle><mrow><msub><mi>ξ</mi><mi>i</mi></msub><mo>⁢</mo><msub><mi>φ</mi><mi>i</mi></msub></mrow></mrow><mo rspace="4.2pt">)</mo></mrow></mrow><mo>⁡</mo><mrow><mi>d</mi><mo>⁢</mo><mi>x</mi></mrow></mrow></mrow></mrow></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.51)</span></td>
+</tr>
+<tr id="Ch2.E52" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right"></td>
+<td class="ltx_td ltx_align_left">
+                      <math id="Ch2.E52.m2" class="ltx_Math" alttext="\displaystyle=\left\|\nabla\left(\sum_{j=0}^{n_{i}-1}\xi_{j}\varphi_{j}\right)%
+\right\|_{L^{2}(\Omega)}^{2}." display="inline"><mrow><mrow><mi></mi><mo>=</mo><msubsup><mrow><mo>∥</mo><mrow><mo id="XM1575">∇</mo><mo>⁡</mo><mrow><mo>(</mo><mrow id="XM1576"><mstyle displaystyle="true"><munderover><mo largeop="true" movablelimits="false" symmetric="true">∑</mo><mrow><mi>j</mi><mo>=</mo><mn>0</mn></mrow><mrow><msub><mi>n</mi><mi>i</mi></msub><mo>-</mo><mn>1</mn></mrow></munderover></mstyle><mrow><msub><mi>ξ</mi><mi>j</mi></msub><mo>⁢</mo><msub><mi>φ</mi><mi>j</mi></msub></mrow></mrow><mo>)</mo></mrow></mrow><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi mathvariant="normal" id="XM1574">Ω</mi><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup></mrow><mo>.</mo></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.52)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Portanto, <math id="SS1.p1.m4" class="ltx_Math" alttext="\boldsymbol{\xi}^{T}A\boldsymbol{\xi}\leq 0" display="inline"><mrow><mrow><msup><mi>𝝃</mi><mi>T</mi></msup><mo>⁢</mo><mi>A</mi><mo>⁢</mo><mi>𝝃</mi></mrow><mo>≤</mo><mn>0</mn></mrow></math> e é nulo se, e somente se, <math id="SS1.p1.m5" class="ltx_Math" alttext="v=\sum_{j=0}^{n_{i}-1}\xi_{j}\varphi_{j}" display="inline"><mrow><mi>v</mi><mo>=</mo><mrow><msubsup><mo largeop="true" symmetric="true">∑</mo><mrow><mi>j</mi><mo>=</mo><mn>0</mn></mrow><mrow><msub><mi>n</mi><mi>i</mi></msub><mo>-</mo><mn>1</mn></mrow></msubsup><mrow><msub><mi>ξ</mi><mi>j</mi></msub><mo>⁢</mo><msub><mi>φ</mi><mi>j</mi></msub></mrow></mrow></mrow></math> for constante. Como <math id="SS1.p1.m6" class="ltx_Math" alttext="v\in V_{h,0}" display="inline"><mrow><mi>v</mi><mo>∈</mo><msub><mi>V</mi><mrow><mi>h</mi><mo>⁢</mo><mn>,0</mn></mrow></msub></mrow></math>, temos que <math id="SS1.p1.m7" class="ltx_Math" alttext="v" display="inline"><mi>v</mi></math> constante implica <math id="SS1.p1.m8" class="ltx_Math" alttext="v\equiv 0" display="inline"><mrow><mi>v</mi><mo>≡</mo><mn>0</mn></mrow></math>, mas então <math id="SS1.p1.m9" class="ltx_Math" alttext="\boldsymbol{\xi}=0" display="inline"><mrow><mi>𝝃</mi><mo>=</mo><mn>0</mn></mrow></math>, o que é uma contradição. Logo, <math id="SS1.p1.m10" class="ltx_Math" alttext="\boldsymbol{\xi}^{T}A\boldsymbol{\xi}&gt;0" display="inline"><mrow><mrow><msup><mi>𝝃</mi><mi>T</mi></msup><mo>⁢</mo><mi>A</mi><mo>⁢</mo><mi>𝝃</mi></mrow><mo>&gt;</mo><mn>0</mn></mrow></math> para todo <math id="SS1.p1.m11" class="ltx_Math" alttext="\boldsymbol{\xi}\in\mathbb{R}^{n_{i}}" display="inline"><mrow><mi>𝝃</mi><mo>∈</mo><msup><mi>ℝ</mi><msub><mi>n</mi><mi>i</mi></msub></msup></mrow></math>, <math id="SS1.p1.m12" class="ltx_Math" alttext="\boldsymbol{\xi}\neq 0" display="inline"><mrow><mi>𝝃</mi><mo>≠</mo><mn>0</mn></mrow></math>.
+∎</p>
+</div>
+</div>
+<div id="Thmteo2" class="ltx_theorem ltx_theorem_teo">
+<h6 class="ltx_title ltx_runin ltx_font_bold ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem">Teorema 2.4.2</span>.</h6>
+<div id="Thmteo2.p1" class="ltx_para">
+<p class="ltx_p">(Existência e unicidade)
+O problema de elementos finitos (<a href="cap_mef2d_sec_probmodelo.html#Ch2.E33" title="(2.33) ‣ 2.3.2 Formulação de elementos finitos ‣ 2.3 Problema modelo ‣ Capítulo 2 Método de elementos finitos em 2D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.33</span></a>) tem solução única.</p>
+</div>
+</div>
+<div class="ltx_proof">
+<h6 class="ltx_title ltx_runin ltx_font_italic ltx_title_proof">Demonstração.</h6>
+<div id="SS1.p2" class="ltx_para">
+<p class="ltx_p">O problema de elementos finitos (<a href="cap_mef2d_sec_probmodelo.html#Ch2.E33" title="(2.33) ‣ 2.3.2 Formulação de elementos finitos ‣ 2.3 Problema modelo ‣ Capítulo 2 Método de elementos finitos em 2D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.33</span></a>) se resume a resolver o sistema linear <math id="SS1.p2.m1" class="ltx_Math" alttext="A\boldsymbol{\xi}=\boldsymbol{b}" display="inline"><mrow><mrow><mi>A</mi><mo>⁢</mo><mi>𝝃</mi></mrow><mo>=</mo><mi>𝒃</mi></mrow></math>. Do Teorema <a href="#Thmteo1" title="Teorema 2.4.1. ‣ 2.4.1 Existência e unicidade ‣ 2.4 Fundamentos da análise de elementos finitos ‣ Capítulo 2 Método de elementos finitos em 2D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.4.1</span></a>, temos que <math id="SS1.p2.m2" class="ltx_Math" alttext="A" display="inline"><mi>A</mi></math> é uma matriz definida positiva e, portanto, invertível. Daí segue, imediatamente, que o problema (<a href="cap_mef2d_sec_probmodelo.html#Ch2.E33" title="(2.33) ‣ 2.3.2 Formulação de elementos finitos ‣ 2.3 Problema modelo ‣ Capítulo 2 Método de elementos finitos em 2D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.33</span></a>) tem solução única.
+∎</p>
+</div>
+</div>
+</section>
+<section id="SS2" class="ltx_subsection">
+<h2 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">2.4.2 </span>Estimativa <span class="ltx_text ltx_font_italic">a priori</span> do erro<small><a href="https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef2d/cap_mef2d.tex" target=_blank> <span class="glyphicon glyphicon-pencil"></span> </a><a href="../contato.html" target="_blank"> <span class="glyphicon glyphicon-envelope"></span> </a></small></h2>
+
+<div id="Thmteo3" class="ltx_theorem ltx_theorem_teo">
+<h6 class="ltx_title ltx_runin ltx_font_bold ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem">Teorema 2.4.3</span>.</h6>
+<div id="Thmteo3.p1" class="ltx_para">
+<p class="ltx_p">(Ortogonalidade de Galerkin)
+A solução <math id="Thmteo3.p1.m1" class="ltx_Math" alttext="u_{h}" display="inline"><msub><mi>u</mi><mi>h</mi></msub></math> do problema de elementos finitos (<a href="cap_mef2d_sec_probmodelo.html#Ch2.E33" title="(2.33) ‣ 2.3.2 Formulação de elementos finitos ‣ 2.3 Problema modelo ‣ Capítulo 2 Método de elementos finitos em 2D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.33</span></a>) satisfaz</p>
+<table id="Ch2.E53" class="ltx_equation">
+
+<tr class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_align_center"><math id="Ch2.E53.m1" class="ltx_Math" alttext="a(u-u_{h},v_{h})=L(v_{h}),\leavevmode\nobreak\ \forall v_{h}\in V_{h,0}," display="block"><mrow><mrow><mrow id="XM1581"><mrow><mi>a</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow id="XM1578"><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo>,</mo><msub id="XM1579"><mi>v</mi><mi>h</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mi>L</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub id="XM1580"><mi>v</mi><mi>h</mi></msub><mo stretchy="false">)</mo></mrow></mrow></mrow><mo rspace="7.5pt">,</mo><mrow id="XM1582"><mrow><mo>∀</mo><msub><mi>v</mi><mi>h</mi></msub></mrow><mo>∈</mo><msub><mi>V</mi><mrow><mi>h</mi><mo>⁢</mo><mn>,0</mn></mrow></msub></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.53)</span></td>
+</tr>
+</table>
+<p class="ltx_p">onde <math id="Thmteo3.p1.m2" class="ltx_Math" alttext="u" display="inline"><mi>u</mi></math> é a solução do problema fraco (<a href="cap_mef2d_sec_probmodelo.html#Ch2.E29" title="(2.29) ‣ 2.3.1 Formulação variacional ‣ 2.3 Problema modelo ‣ Capítulo 2 Método de elementos finitos em 2D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.29</span></a>).</p>
+</div>
+</div>
+<div class="ltx_proof">
+<h6 class="ltx_title ltx_runin ltx_font_italic ltx_title_proof">Demonstração.</h6>
+<div id="SS2.p1" class="ltx_para">
+<p class="ltx_p">Segue, imediatamente, do fato de que <math id="SS2.p1.m1" class="ltx_Math" alttext="V_{h,0}\subset V_{0}" display="inline"><mrow><msub><mi>V</mi><mrow><mi>h</mi><mo>⁢</mo><mn>,0</mn></mrow></msub><mo>⊂</mo><msub><mi>V</mi><mn>0</mn></msub></mrow></math> e, portanto,</p>
+<table id="Ch2.E54" class="ltx_equation">
+
+<tr class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_align_center"><math id="Ch2.E54.m1" class="ltx_Math" alttext="a(u,v_{h})=L(v_{h}),\leavevmode\nobreak\ \forall v_{h}\in V_{h,0}," display="block"><mrow><mrow><mrow id="XM1586"><mrow><mi>a</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM1583">u</mi><mo>,</mo><msub id="XM1584"><mi>v</mi><mi>h</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mi>L</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub id="XM1585"><mi>v</mi><mi>h</mi></msub><mo stretchy="false">)</mo></mrow></mrow></mrow><mo rspace="7.5pt">,</mo><mrow id="XM1587"><mrow><mo>∀</mo><msub><mi>v</mi><mi>h</mi></msub></mrow><mo>∈</mo><msub><mi>V</mi><mrow><mi>h</mi><mo>⁢</mo><mn>,0</mn></mrow></msub></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.54)</span></td>
+</tr>
+</table>
+<p class="ltx_p">bem como</p>
+<table id="Ch2.E55" class="ltx_equation">
+
+<tr class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_align_center"><math id="Ch2.E55.m1" class="ltx_Math" alttext="a(u_{h},v_{h})=L(v_{h}),\leavevmode\nobreak\ \forall v_{h}\in V_{h,0}." display="block"><mrow><mrow><mrow id="XM1591"><mrow><mi>a</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub id="XM1588"><mi>u</mi><mi>h</mi></msub><mo>,</mo><msub id="XM1589"><mi>v</mi><mi>h</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mi>L</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub id="XM1590"><mi>v</mi><mi>h</mi></msub><mo stretchy="false">)</mo></mrow></mrow></mrow><mo rspace="7.5pt">,</mo><mrow id="XM1592"><mrow><mo>∀</mo><msub><mi>v</mi><mi>h</mi></msub></mrow><mo>∈</mo><msub><mi>V</mi><mrow><mi>h</mi><mo>⁢</mo><mn>,0</mn></mrow></msub></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.55)</span></td>
+</tr>
+</table>
+<p class="ltx_p">∎</p>
+</div>
+</div>
+<div id="Thmdefn1" class="ltx_theorem ltx_theorem_defn">
+<h6 class="ltx_title ltx_runin ltx_font_bold ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem">Definição 2.4.1</span>.</h6>
+<div id="Thmdefn1.p1" class="ltx_para">
+<p class="ltx_p">(Norma da energia.)
+Definimos a norma da energia por</p>
+<table id="Ch2.E56" class="ltx_equation">
+
+<tr class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_align_center"><math id="Ch2.E56.m1" class="ltx_Math" alttext="\||v|\|:=\left(\int_{\Omega}\nabla v\cdot\nabla v\,dx\right)^{1/2}=\|\nabla v%
+\|_{L^{2}(\Omega)}," display="block"><mrow><mrow><mrow><mo>∥</mo><mrow><mo stretchy="false">|</mo><mi id="XM1594">v</mi><mo stretchy="false">|</mo></mrow><mo>∥</mo></mrow><mo>:=</mo><msup><mrow><mo>(</mo><mrow id="XM1596"><msub><mo largeop="true" symmetric="true">∫</mo><mi mathvariant="normal">Ω</mi></msub><mrow><mrow><mo>∇</mo><mo>⁡</mo><mi>v</mi></mrow><mo>⋅</mo><mrow><mo>∇</mo><mo>⁡</mo><mrow><mpadded width="+1.7pt"><mi>v</mi></mpadded><mo>⁢</mo><mi>d</mi><mo>⁢</mo><mi>x</mi></mrow></mrow></mrow></mrow><mo>)</mo></mrow><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mo>=</mo><msub><mrow><mo>∥</mo><mrow id="XM1597"><mo>∇</mo><mo id="XM1597a">⁡</mo><mi>v</mi></mrow><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi mathvariant="normal" id="XM1593">Ω</mi><mo stretchy="false">)</mo></mrow></mrow></msub></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.56)</span></td>
+</tr>
+</table>
+<p class="ltx_p">para todo <math id="Thmdefn1.p1.m1" class="ltx_Math" alttext="v\in V_{0}" display="inline"><mrow><mi>v</mi><mo>∈</mo><msub><mi>V</mi><mn>0</mn></msub></mrow></math>.</p>
+</div>
+</div>
+<div id="Thmteo4" class="ltx_theorem ltx_theorem_teo">
+<h6 class="ltx_title ltx_runin ltx_font_bold ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem">Teorema 2.4.4</span>.</h6>
+<div id="Thmteo4.p1" class="ltx_para">
+<p class="ltx_p">(Melhor aproximação.)
+A solução <math id="Thmteo4.p1.m1" class="ltx_Math" alttext="u_{h}" display="inline"><msub><mi>u</mi><mi>h</mi></msub></math> do problema de elementos finitos satisfaz</p>
+<table id="Ch2.E57" class="ltx_equation">
+
+<tr class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_align_center"><math id="Ch2.E57.m1" class="ltx_Math" alttext="\||u-u_{h}|\|\leq\||u-v_{h}|\|,\leavevmode\nobreak\ \forall v_{h}\in V_{h,0}." display="block"><mrow><mrow><mrow id="XM1602"><mrow><mo>∥</mo><mrow><mo stretchy="false">|</mo><mrow id="XM1598"><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo stretchy="false">|</mo></mrow><mo>∥</mo></mrow><mo>≤</mo><mrow><mo>∥</mo><mrow><mo stretchy="false">|</mo><mrow id="XM1600"><mi>u</mi><mo>-</mo><msub><mi>v</mi><mi>h</mi></msub></mrow><mo stretchy="false">|</mo></mrow><mo>∥</mo></mrow></mrow><mo rspace="7.5pt">,</mo><mrow id="XM1603"><mrow><mo>∀</mo><msub><mi>v</mi><mi>h</mi></msub></mrow><mo>∈</mo><msub><mi>V</mi><mrow><mi>h</mi><mo>⁢</mo><mn>,0</mn></mrow></msub></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.57)</span></td>
+</tr>
+</table>
+</div>
+</div>
+<div class="ltx_proof">
+<h6 class="ltx_title ltx_runin ltx_font_italic ltx_title_proof">Demonstração.</h6>
+<div id="SS2.p2" class="ltx_para">
+<p class="ltx_p">Observando que <math id="SS2.p2.m1" class="ltx_Math" alttext="u-u_{h}=u-v_{h}+v_{h}-u_{h}" display="inline"><mrow><mrow><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo>=</mo><mrow><mrow><mrow><mi>u</mi><mo>-</mo><msub><mi>v</mi><mi>h</mi></msub></mrow><mo>+</mo><msub><mi>v</mi><mi>h</mi></msub></mrow><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow></mrow></math> e usando a ortogonalidade de Galerkin (Teorema <a href="#Thmteo3" title="Teorema 2.4.3. ‣ 2.4.2 Estimativa a priori do erro ‣ 2.4 Fundamentos da análise de elementos finitos ‣ Capítulo 2 Método de elementos finitos em 2D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.4.3</span></a>), temos:</p>
+<table id="EGx42" class="ltx_equationgroup ltx_eqn_align">
+
+<tr id="Ch2.E58" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right">
+                      <math id="Ch2.E58.m1" class="ltx_Math" alttext="\displaystyle\||u-u_{h}|\|^{2}" display="inline"><msup><mrow><mo>∥</mo><mrow><mo stretchy="false">|</mo><mrow id="XM1610"><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo stretchy="false">|</mo></mrow><mo>∥</mo></mrow><mn>2</mn></msup></math>
+                    </td>
+<td class="ltx_td ltx_align_left">
+                      <math id="Ch2.E58.m2" class="ltx_Math" alttext="\displaystyle=\int_{\Omega}\nabla(u-u_{h})\cdot\nabla(u-u_{h})\,dx" display="inline"><mrow><mi></mi><mo>=</mo><mrow><mstyle displaystyle="true"><msub><mo largeop="true" symmetric="true">∫</mo><mi mathvariant="normal">Ω</mi></msub></mstyle><mrow><mrow><mo id="XM1612">∇</mo><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mrow id="XM1613"><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>⋅</mo><mrow><mrow><mo id="XM1614">∇</mo><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mrow id="XM1615"><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo rspace="4.2pt" stretchy="false">)</mo></mrow></mrow><mo>⁡</mo><mrow><mi>d</mi><mo>⁢</mo><mi>x</mi></mrow></mrow></mrow></mrow></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.58)</span></td>
+</tr>
+<tr id="Ch2.E59" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right"></td>
+<td class="ltx_td ltx_align_left">
+                      <math id="Ch2.E59.m2" class="ltx_Math" alttext="\displaystyle=\int_{\Omega}\nabla(u-u_{h})\cdot\nabla(u-v_{h})\,dx+\int_{%
+\Omega}\nabla(u-u_{h})\cdot\nabla(v_{h}-u_{h})\,dx" display="inline"><mrow><mi></mi><mo>=</mo><mrow><mrow><mstyle displaystyle="true"><msub><mo largeop="true" symmetric="true">∫</mo><mi mathvariant="normal">Ω</mi></msub></mstyle><mrow><mrow><mo id="XM1624">∇</mo><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mrow id="XM1625"><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>⋅</mo><mrow><mrow><mo id="XM1626">∇</mo><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mrow id="XM1627"><mi>u</mi><mo>-</mo><msub><mi>v</mi><mi>h</mi></msub></mrow><mo rspace="4.2pt" stretchy="false">)</mo></mrow></mrow><mo>⁡</mo><mrow><mi>d</mi><mo>⁢</mo><mi>x</mi></mrow></mrow></mrow></mrow><mo>+</mo><mrow><mstyle displaystyle="true"><msub><mo largeop="true" symmetric="true">∫</mo><mi mathvariant="normal">Ω</mi></msub></mstyle><mrow><mrow><mo id="XM1628">∇</mo><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mrow id="XM1629"><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>⋅</mo><mrow><mrow><mo id="XM1630">∇</mo><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mrow id="XM1631"><msub><mi>v</mi><mi>h</mi></msub><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo rspace="4.2pt" stretchy="false">)</mo></mrow></mrow><mo>⁡</mo><mrow><mi>d</mi><mo>⁢</mo><mi>x</mi></mrow></mrow></mrow></mrow></mrow></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.59)</span></td>
+</tr>
+<tr id="Ch2.E60" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right"></td>
+<td class="ltx_td ltx_align_left">
+                      <math id="Ch2.E60.m2" class="ltx_Math" alttext="\displaystyle=\int_{\Omega}\nabla(u-u_{h})\cdot\nabla(u-v_{h})\,dx" display="inline"><mrow><mi></mi><mo>=</mo><mrow><mstyle displaystyle="true"><msub><mo largeop="true" symmetric="true">∫</mo><mi mathvariant="normal">Ω</mi></msub></mstyle><mrow><mrow><mo id="XM1636">∇</mo><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mrow id="XM1637"><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>⋅</mo><mrow><mrow><mo id="XM1638">∇</mo><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mrow id="XM1639"><mi>u</mi><mo>-</mo><msub><mi>v</mi><mi>h</mi></msub></mrow><mo rspace="4.2pt" stretchy="false">)</mo></mrow></mrow><mo>⁡</mo><mrow><mi>d</mi><mo>⁢</mo><mi>x</mi></mrow></mrow></mrow></mrow></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.60)</span></td>
+</tr>
+<tr id="Ch2.E61" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right"></td>
+<td class="ltx_td ltx_align_left">
+                      <math id="Ch2.E61.m2" class="ltx_Math" alttext="\displaystyle=\|\nabla(u-u_{h})\|_{L^{2}(\Omega)}^{2}\|\nabla(u-v_{h})\|_{L^{2%
+}(\Omega)}^{2}" display="inline"><mrow><mi></mi><mo>=</mo><mrow><msubsup><mrow><mo>∥</mo><mrow><mo id="XM1650">∇</mo><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mrow id="XM1651"><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi mathvariant="normal" id="XM1648">Ω</mi><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup><mo>⁢</mo><msubsup><mrow><mo>∥</mo><mrow><mo id="XM1653">∇</mo><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mrow id="XM1654"><mi>u</mi><mo>-</mo><msub><mi>v</mi><mi>h</mi></msub></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi mathvariant="normal" id="XM1649">Ω</mi><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup></mrow></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.61)</span></td>
+</tr>
+<tr id="Ch2.E62" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right"></td>
+<td class="ltx_td ltx_align_left">
+                      <math id="Ch2.E62.m2" class="ltx_Math" alttext="\displaystyle=\||u-u_{h}|\|^{2}\||u-v_{h}|\|." display="inline"><mrow><mrow><mi></mi><mo>=</mo><mrow><msup><mrow><mo>∥</mo><mrow><mo stretchy="false">|</mo><mrow id="XM1660"><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo stretchy="false">|</mo></mrow><mo>∥</mo></mrow><mn>2</mn></msup><mo>⁢</mo><mrow><mo>∥</mo><mrow><mo stretchy="false">|</mo><mrow id="XM1662"><mi>u</mi><mo>-</mo><msub><mi>v</mi><mi>h</mi></msub></mrow><mo stretchy="false">|</mo></mrow><mo>∥</mo></mrow></mrow></mrow><mo>.</mo></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.62)</span></td>
+</tr>
+</table>
+<p class="ltx_p">∎</p>
+</div>
+</div>
+<div id="Thmteo5" class="ltx_theorem ltx_theorem_teo">
+<h6 class="ltx_title ltx_runin ltx_font_bold ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem">Teorema 2.4.5</span>.</h6>
+<div id="Thmteo5.p1" class="ltx_para">
+<p class="ltx_p">(Estimativa <span class="ltx_text ltx_font_italic">a priori</span> do erro.)
+A solução <math id="Thmteo5.p1.m1" class="ltx_Math" alttext="u_{h}" display="inline"><msub><mi>u</mi><mi>h</mi></msub></math> do problema de elementos finitos (<a href="cap_mef2d_sec_probmodelo.html#Ch2.E33" title="(2.33) ‣ 2.3.2 Formulação de elementos finitos ‣ 2.3 Problema modelo ‣ Capítulo 2 Método de elementos finitos em 2D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.33</span></a>) satisfaz</p>
+<table id="Ch2.E63" class="ltx_equation">
+
+<tr class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_align_center"><math id="Ch2.E63.m1" class="ltx_Math" alttext="\||u-u_{h}|\|^{2}\leq C\sum_{K\in\mathcal{K}}h_{K}^{2}\|D^{2}u\|_{L^{2}(K)}^{2}." display="block"><mrow><mrow><msup><mrow><mo>∥</mo><mrow><mo stretchy="false">|</mo><mrow id="XM1665"><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo stretchy="false">|</mo></mrow><mo>∥</mo></mrow><mn>2</mn></msup><mo>≤</mo><mrow><mi>C</mi><mo>⁢</mo><mrow><munder><mo largeop="true" movablelimits="false" symmetric="true">∑</mo><mrow><mi>K</mi><mo>∈</mo><mi class="ltx_font_mathcaligraphic">𝒦</mi></mrow></munder><mrow><msubsup><mi>h</mi><mi>K</mi><mn>2</mn></msubsup><mo>⁢</mo><msubsup><mrow><mo>∥</mo><mrow id="XM1667"><msup><mi>D</mi><mn>2</mn></msup><mo>⁢</mo><mi>u</mi></mrow><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM1664">K</mi><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup></mrow></mrow></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.63)</span></td>
+</tr>
+</table>
+</div>
+</div>
+<div class="ltx_proof">
+<h6 class="ltx_title ltx_runin ltx_font_italic ltx_title_proof">Demonstração.</h6>
+<div id="SS2.p3" class="ltx_para">
+<p class="ltx_p">O resultado segue do Teorema da melhor aproximação (Teorema <a href="#Thmteo4" title="Teorema 2.4.4. ‣ 2.4.2 Estimativa a priori do erro ‣ 2.4 Fundamentos da análise de elementos finitos ‣ Capítulo 2 Método de elementos finitos em 2D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.4.4</span></a>) e da estimativa do erro de interpolação (Proposição <a href="cap_mef2d_sec_interp.html#Thmprop2" title="Proposição 2.2.2. ‣ 2.2.1 Interpolação ‣ 2.2 Interpolação e projeção ‣ Capítulo 2 Método de elementos finitos em 2D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.2.2</span></a>), pois</p>
+<table id="EGx43" class="ltx_equationgroup ltx_eqn_align">
+
+<tr id="Ch2.E64" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right">
+                      <math id="Ch2.E64.m1" class="ltx_Math" alttext="\displaystyle\||u-u_{h}|\|^{2}\leq\||u-\pi u|\|^{2}" display="inline"><mrow><msup><mrow><mo>∥</mo><mrow><mo stretchy="false">|</mo><mrow id="XM1672"><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo stretchy="false">|</mo></mrow><mo>∥</mo></mrow><mn>2</mn></msup><mo>≤</mo><msup><mrow><mo>∥</mo><mrow><mo stretchy="false">|</mo><mrow id="XM1674"><mi>u</mi><mo>-</mo><mrow><mi>π</mi><mo>⁢</mo><mi>u</mi></mrow></mrow><mo stretchy="false">|</mo></mrow><mo>∥</mo></mrow><mn>2</mn></msup></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.64)</span></td>
+</tr>
+<tr id="Ch2.E65" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right">
+                      <math id="Ch2.E65.m1" class="ltx_Math" alttext="\displaystyle=\|D(u-\pi u)\|_{L^{2}(\Omega)}^{2}" display="inline"><mrow><mi></mi><mo>=</mo><msubsup><mrow><mo>∥</mo><mrow id="XM1681"><mi>D</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow id="XM1680"><mi>u</mi><mo>-</mo><mrow><mi>π</mi><mo>⁢</mo><mi>u</mi></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi mathvariant="normal" id="XM1679">Ω</mi><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.65)</span></td>
+</tr>
+<tr id="Ch2.E66" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right">
+                      <math id="Ch2.E66.m1" class="ltx_Math" alttext="\displaystyle\leq C\sum_{K\in\mathcal{K}}h_{K}^{2}\|D^{2}u\|_{L^{2}(\Omega)}^{%
+2}." display="inline"><mrow><mrow><mi></mi><mo>≤</mo><mrow><mi>C</mi><mo>⁢</mo><mrow><mstyle displaystyle="true"><munder><mo largeop="true" movablelimits="false" symmetric="true">∑</mo><mrow><mi>K</mi><mo>∈</mo><mi class="ltx_font_mathcaligraphic">𝒦</mi></mrow></munder></mstyle><mrow><msubsup><mi>h</mi><mi>K</mi><mn>2</mn></msubsup><mo>⁢</mo><msubsup><mrow><mo>∥</mo><mrow id="XM1685"><msup><mi>D</mi><mn>2</mn></msup><mo>⁢</mo><mi>u</mi></mrow><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi mathvariant="normal" id="XM1684">Ω</mi><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup></mrow></mrow></mrow></mrow><mo>.</mo></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.66)</span></td>
+</tr>
+</table>
+<p class="ltx_p">∎</p>
+</div>
+</div>
+<div id="SS2.p4" class="ltx_para">
+<p class="ltx_p">Para obtermos uma estimativa na norma <math id="SS2.p4.m1" class="ltx_Math" alttext="L^{2}(\Omega)" display="inline"><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi mathvariant="normal" id="XM1686">Ω</mi><mo stretchy="false">)</mo></mrow></mrow></math>, podemos usar a desigualdade de Poincaré.</p>
+</div>
+<div id="Thmteo6" class="ltx_theorem ltx_theorem_teo">
+<h6 class="ltx_title ltx_runin ltx_font_bold ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem">Teorema 2.4.6</span>.</h6>
+<div id="Thmteo6.p1" class="ltx_para">
+<p class="ltx_p">(Desigualdade de Poincaré.)
+Seja <math id="Thmteo6.p1.m1" class="ltx_Math" alttext="\Omega\subset\mathbb{R}^{2}" display="inline"><mrow><mi mathvariant="normal">Ω</mi><mo>⊂</mo><msup><mi>ℝ</mi><mn>2</mn></msup></mrow></math> um domínio limitado. Então, existe uma constante <math id="Thmteo6.p1.m2" class="ltx_Math" alttext="C=C(\Omega)" display="inline"><mrow><mi>C</mi><mo>=</mo><mrow><mi>C</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi mathvariant="normal" id="XM1687">Ω</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></math>, tal que</p>
+<table id="Ch2.E67" class="ltx_equation">
+
+<tr class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_align_center"><math id="Ch2.E67.m1" class="ltx_Math" alttext="\|v\|_{L^{2}(\Omega)}\leq C\|\nabla v\|_{L^{2}(\Omega)},\leavevmode\nobreak\ %
+\forall v\in V_{0}." display="block"><mrow><mrow><mrow id="XM1692"><msub><mrow><mo>∥</mo><mi id="XM1690">v</mi><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi mathvariant="normal" id="XM1688">Ω</mi><mo stretchy="false">)</mo></mrow></mrow></msub><mo>≤</mo><mrow><mi>C</mi><mo>⁢</mo><msub><mrow><mo>∥</mo><mrow id="XM1691"><mo>∇</mo><mo id="XM1691a">⁡</mo><mi>v</mi></mrow><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi mathvariant="normal" id="XM1689">Ω</mi><mo stretchy="false">)</mo></mrow></mrow></msub></mrow></mrow><mo rspace="7.5pt">,</mo><mrow id="XM1693"><mrow><mo>∀</mo><mi>v</mi></mrow><mo>∈</mo><msub><mi>V</mi><mn>0</mn></msub></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.67)</span></td>
+</tr>
+</table>
+</div>
+</div>
+<div class="ltx_proof">
+<h6 class="ltx_title ltx_runin ltx_font_italic ltx_title_proof">Demonstração.</h6>
+<div id="SS2.p5" class="ltx_para">
+<p class="ltx_p">Se <math id="SS2.p5.m1" class="ltx_Math" alttext="\Omega" display="inline"><mi mathvariant="normal">Ω</mi></math> tem contorno suficientemente suave, então existe <math id="SS2.p5.m2" class="ltx_Math" alttext="\phi" display="inline"><mi>ϕ</mi></math> tal que <math id="SS2.p5.m3" class="ltx_Math" alttext="-\Delta\phi=1" display="inline"><mrow><mrow><mo>-</mo><mrow><mi mathvariant="normal">Δ</mi><mo>⁢</mo><mi>ϕ</mi></mrow></mrow><mo>=</mo><mn>1</mn></mrow></math> em <math id="SS2.p5.m4" class="ltx_Math" alttext="\Omega" display="inline"><mi mathvariant="normal">Ω</mi></math> com <math id="SS2.p5.m5" class="ltx_Math" alttext="\sup_{x\in\Omega}|\nabla\phi|&lt;C" display="inline"><mrow><mrow><msub><mo>sup</mo><mrow><mi>x</mi><mo>∈</mo><mi mathvariant="normal">Ω</mi></mrow></msub><mo>⁡</mo><mrow><mo stretchy="false">|</mo><mrow id="XM1694"><mo>∇</mo><mo id="XM1694a">⁡</mo><mi>ϕ</mi></mrow><mo stretchy="false">|</mo></mrow></mrow><mo>&lt;</mo><mi>C</mi></mrow></math>. Com isso, temos</p>
+<table id="EGx44" class="ltx_equationgroup ltx_eqn_align">
+
+<tr id="Ch2.E68" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right">
+                      <math id="Ch2.E68.m1" class="ltx_Math" alttext="\displaystyle\|v\|_{L^{2}(\Omega)}^{2}" display="inline"><msubsup><mrow><mo>∥</mo><mi id="XM1698">v</mi><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi mathvariant="normal" id="XM1697">Ω</mi><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup></math>
+                    </td>
+<td class="ltx_td ltx_align_left">
+                      <math id="Ch2.E68.m2" class="ltx_Math" alttext="\displaystyle=\int_{\Omega}v^{2}\,dx" display="inline"><mrow><mi></mi><mo>=</mo><mrow><mstyle displaystyle="true"><msub><mo largeop="true" symmetric="true">∫</mo><mi mathvariant="normal">Ω</mi></msub></mstyle><mrow><mpadded width="+1.7pt"><msup><mi>v</mi><mn>2</mn></msup></mpadded><mo>⁢</mo><mi>d</mi><mo>⁢</mo><mi>x</mi></mrow></mrow></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.68)</span></td>
+</tr>
+<tr id="Ch2.E69" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right"></td>
+<td class="ltx_td ltx_align_left">
+                      <math id="Ch2.E69.m2" class="ltx_Math" alttext="\displaystyle=-\int_{\Omega}v^{2}\Delta\phi\,dx." display="inline"><mrow><mrow><mi></mi><mo>=</mo><mrow><mo>-</mo><mrow><mstyle displaystyle="true"><msub><mo largeop="true" symmetric="true">∫</mo><mi mathvariant="normal">Ω</mi></msub></mstyle><mrow><msup><mi>v</mi><mn>2</mn></msup><mo>⁢</mo><mi mathvariant="normal">Δ</mi><mo>⁢</mo><mpadded width="+1.7pt"><mi>ϕ</mi></mpadded><mo>⁢</mo><mi>d</mi><mo>⁢</mo><mi>x</mi></mrow></mrow></mrow></mrow><mo>.</mo></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.69)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Agora, usando o Teorema de Green e a desigualdade de Cauchy-Schwarz, obtemos</p>
+<table id="EGx45" class="ltx_equationgroup ltx_eqn_align">
+
+<tr id="Ch2.E70" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right">
+                      <math id="Ch2.E70.m1" class="ltx_Math" alttext="\displaystyle\|v\|_{L^{2}(\Omega)}^{2}" display="inline"><msubsup><mrow><mo>∥</mo><mi id="XM1702">v</mi><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi mathvariant="normal" id="XM1701">Ω</mi><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup></math>
+                    </td>
+<td class="ltx_td ltx_align_left">
+                      <math id="Ch2.E70.m2" class="ltx_Math" alttext="\displaystyle=-\int_{\partial\Omega}v^{2}n\cdot\nabla\phi\,ds+\int_{\Omega}%
+\nabla v^{2}\cdot\nabla\phi\,dx" display="inline"><mrow><mi></mi><mo>=</mo><mrow><mrow><mo>-</mo><mrow><mstyle displaystyle="true"><msub><mo largeop="true" symmetric="true">∫</mo><mrow><mo>∂</mo><mo>⁡</mo><mi mathvariant="normal">Ω</mi></mrow></msub></mstyle><mrow><mrow><msup><mi>v</mi><mn>2</mn></msup><mo>⁢</mo><mi>n</mi></mrow><mo>⋅</mo><mrow><mo>∇</mo><mo>⁡</mo><mrow><mpadded width="+1.7pt"><mi>ϕ</mi></mpadded><mo>⁢</mo><mi>d</mi><mo>⁢</mo><mi>s</mi></mrow></mrow></mrow></mrow></mrow><mo>+</mo><mrow><mstyle displaystyle="true"><msub><mo largeop="true" symmetric="true">∫</mo><mi mathvariant="normal">Ω</mi></msub></mstyle><mrow><mrow><mo>∇</mo><mo>⁡</mo><msup><mi>v</mi><mn>2</mn></msup></mrow><mo>⋅</mo><mrow><mo>∇</mo><mo>⁡</mo><mrow><mpadded width="+1.7pt"><mi>ϕ</mi></mpadded><mo>⁢</mo><mi>d</mi><mo>⁢</mo><mi>x</mi></mrow></mrow></mrow></mrow></mrow></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.70)</span></td>
+</tr>
+<tr id="Ch2.E71" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right"></td>
+<td class="ltx_td ltx_align_left">
+                      <math id="Ch2.E71.m2" class="ltx_Math" alttext="\displaystyle=\int_{\Omega}2v\nabla v\cdot\nabla\phi\,dx" display="inline"><mrow><mi></mi><mo>=</mo><mrow><mstyle displaystyle="true"><msub><mo largeop="true" symmetric="true">∫</mo><mi mathvariant="normal">Ω</mi></msub></mstyle><mrow><mrow><mn>2</mn><mo>⁢</mo><mi>v</mi><mo>⁢</mo><mrow><mo>∇</mo><mo>⁡</mo><mi>v</mi></mrow></mrow><mo>⋅</mo><mrow><mo>∇</mo><mo>⁡</mo><mrow><mpadded width="+1.7pt"><mi>ϕ</mi></mpadded><mo>⁢</mo><mi>d</mi><mo>⁢</mo><mi>x</mi></mrow></mrow></mrow></mrow></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.71)</span></td>
+</tr>
+<tr id="Ch2.E72" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right"></td>
+<td class="ltx_td ltx_align_left">
+                      <math id="Ch2.E72.m2" class="ltx_Math" alttext="\displaystyle\leq\sup_{x\in\Omega}|\nabla\phi|\|v\|_{L^{2}(\Omega)}\|\nabla v%
+\|_{L^{2}(\Omega)}." display="inline"><mrow><mrow><mi></mi><mo>≤</mo><mrow><munder><mo movablelimits="false">sup</mo><mrow><mi>x</mi><mo>∈</mo><mi mathvariant="normal">Ω</mi></mrow></munder><mo>⁡</mo><mrow><mrow><mo stretchy="false">|</mo><mrow id="XM1710"><mo>∇</mo><mo id="XM1710a">⁡</mo><mi>ϕ</mi></mrow><mo stretchy="false">|</mo></mrow><mo>⁢</mo><msub><mrow><mo>∥</mo><mi id="XM1711">v</mi><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi mathvariant="normal" id="XM1708">Ω</mi><mo stretchy="false">)</mo></mrow></mrow></msub><mo>⁢</mo><msub><mrow><mo>∥</mo><mrow id="XM1712"><mo>∇</mo><mo id="XM1712a">⁡</mo><mi>v</mi></mrow><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi mathvariant="normal" id="XM1709">Ω</mi><mo stretchy="false">)</mo></mrow></mrow></msub></mrow></mrow></mrow><mo>.</mo></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.72)</span></td>
+</tr>
+</table>
+<p class="ltx_p">∎</p>
+</div>
+</div>
+<div id="SS2.p6" class="ltx_para">
+<p class="ltx_p">Com a desigualdade de Poincaré e da estimativa <span class="ltx_text ltx_font_italic">a priori</span> do erro (Teorema <a href="#Thmteo5" title="Teorema 2.4.5. ‣ 2.4.2 Estimativa a priori do erro ‣ 2.4 Fundamentos da análise de elementos finitos ‣ Capítulo 2 Método de elementos finitos em 2D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.4.5</span></a>), temos</p>
+<table id="Ch2.E73" class="ltx_equation">
+
+<tr class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_align_center"><math id="Ch2.E73.m1" class="ltx_Math" alttext="\|u-u_{h}\|_{L^{2}(\Omega)}\leq C\||u-u_{h}|\|\leq Ch\|D^{2}u\|_{L^{2}(\Omega)}," display="block"><mrow><mrow><msub><mrow><mo>∥</mo><mrow id="XM1716"><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi mathvariant="normal" id="XM1713">Ω</mi><mo stretchy="false">)</mo></mrow></mrow></msub><mo>≤</mo><mrow><mi>C</mi><mo>⁢</mo><mrow><mo>∥</mo><mrow><mo stretchy="false">|</mo><mrow id="XM1717"><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo stretchy="false">|</mo></mrow><mo>∥</mo></mrow></mrow><mo>≤</mo><mrow><mi>C</mi><mo>⁢</mo><mi>h</mi><mo>⁢</mo><msub><mrow><mo>∥</mo><mrow id="XM1719"><msup><mi>D</mi><mn>2</mn></msup><mo>⁢</mo><mi>u</mi></mrow><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi mathvariant="normal" id="XM1714">Ω</mi><mo stretchy="false">)</mo></mrow></mrow></msub></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.73)</span></td>
+</tr>
+</table>
+<p class="ltx_p">onde <math id="SS2.p6.m1" class="ltx_Math" alttext="h=\max_{K\in\mathcal{K}}h_{K}" display="inline"><mrow><mi>h</mi><mo>=</mo><mrow><msub><mi>max</mi><mrow><mi>K</mi><mo>∈</mo><mi class="ltx_font_mathcaligraphic">𝒦</mi></mrow></msub><mo>⁡</mo><msub><mi>h</mi><mi>K</mi></msub></mrow></mrow></math>. Entretanto, esta estimativa pode ser melhorada.</p>
+</div>
+<div id="Thmteo7" class="ltx_theorem ltx_theorem_teo">
+<h6 class="ltx_title ltx_runin ltx_font_bold ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem">Teorema 2.4.7</span>.</h6>
+<div id="Thmteo7.p1" class="ltx_para">
+<p class="ltx_p">(Estimativa ótima <span class="ltx_text ltx_font_italic">a priori</span> do erro.)
+A solução <math id="Thmteo7.p1.m1" class="ltx_Math" alttext="u_{h}" display="inline"><msub><mi>u</mi><mi>h</mi></msub></math> do problema de elementos finitos (<a href="cap_mef2d_sec_probmodelo.html#Ch2.E33" title="(2.33) ‣ 2.3.2 Formulação de elementos finitos ‣ 2.3 Problema modelo ‣ Capítulo 2 Método de elementos finitos em 2D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.33</span></a>) satisfaz</p>
+<table id="Ch2.E74" class="ltx_equation">
+
+<tr class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_align_center"><math id="Ch2.E74.m1" class="ltx_Math" alttext="\|u-u_{h}\|_{L^{2}(\Omega)}\leq Ch^{2}\|D^{2}u\|_{L^{2}(\Omega)}." display="block"><mrow><mrow><msub><mrow><mo>∥</mo><mrow id="XM1722"><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi mathvariant="normal" id="XM1720">Ω</mi><mo stretchy="false">)</mo></mrow></mrow></msub><mo>≤</mo><mrow><mi>C</mi><mo>⁢</mo><msup><mi>h</mi><mn>2</mn></msup><mo>⁢</mo><msub><mrow><mo>∥</mo><mrow id="XM1723"><msup><mi>D</mi><mn>2</mn></msup><mo>⁢</mo><mi>u</mi></mrow><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi mathvariant="normal" id="XM1721">Ω</mi><mo stretchy="false">)</mo></mrow></mrow></msub></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.74)</span></td>
+</tr>
+</table>
+</div>
+</div>
+<div class="ltx_proof">
+<h6 class="ltx_title ltx_runin ltx_font_italic ltx_title_proof">Demonstração.</h6>
+<div id="SS2.p7" class="ltx_para">
+<p class="ltx_p">Seja <math id="SS2.p7.m1" class="ltx_Math" alttext="e=u-u_{h}" display="inline"><mrow><mi>e</mi><mo>=</mo><mrow><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow></mrow></math> o erro e <math id="SS2.p7.m2" class="ltx_Math" alttext="\phi" display="inline"><mi>ϕ</mi></math> a solução do problema dual (ou problema adjunto)</p>
+<table id="EGx46" class="ltx_equationgroup ltx_eqn_align">
+
+<tr id="Ch2.E75" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right">
+                      <math id="Ch2.E75.m1" class="ltx_Math" alttext="\displaystyle-\Delta\phi" display="inline"><mrow><mo>-</mo><mrow><mi mathvariant="normal">Δ</mi><mo>⁢</mo><mi>ϕ</mi></mrow></mrow></math>
+                    </td>
+<td class="ltx_td ltx_align_left">
+                      <math id="Ch2.E75.m2" class="ltx_Math" alttext="\displaystyle=e,\leavevmode\nobreak\ \forall x\in\Omega" display="inline"><mrow><mrow id="XM1726"><mi></mi><mo>=</mo><mi>e</mi></mrow><mo rspace="7.5pt">,</mo><mrow id="XM1727"><mrow><mo>∀</mo><mi>x</mi></mrow><mo>∈</mo><mi mathvariant="normal">Ω</mi></mrow></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.75)</span></td>
+</tr>
+<tr id="Ch2.E76" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right">
+                      <math id="Ch2.E76.m1" class="ltx_Math" alttext="\displaystyle\phi" display="inline"><mi>ϕ</mi></math>
+                    </td>
+<td class="ltx_td ltx_align_left">
+                      <math id="Ch2.E76.m2" class="ltx_Math" alttext="\displaystyle=0,\leavevmode\nobreak\ \forall x\in\partial\Omega." display="inline"><mrow><mrow><mi></mi><mo>=</mo><mrow><mpadded width="+5pt"><mn>0,</mn></mpadded><mo>⁢</mo><mrow><mo>∀</mo><mi>x</mi></mrow></mrow><mo>∈</mo><mrow><mo>∂</mo><mo>⁡</mo><mi mathvariant="normal">Ω</mi></mrow></mrow><mo>.</mo></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.76)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Então, usando a fórmula de Green, a ortogonalidade de Galerkin e, então, a desigualdade de Cauchy-Schwarz, temos</p>
+<table id="EGx47" class="ltx_equationgroup ltx_eqn_align">
+
+<tr id="Ch2.E77" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right">
+                      <math id="Ch2.E77.m1" class="ltx_Math" alttext="\displaystyle\|e^{2}\|_{L^{2}(\Omega)}" display="inline"><msub><mrow><mo>∥</mo><msup id="XM1731"><mi>e</mi><mn>2</mn></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi mathvariant="normal" id="XM1730">Ω</mi><mo stretchy="false">)</mo></mrow></mrow></msub></math>
+                    </td>
+<td class="ltx_td ltx_align_left">
+                      <math id="Ch2.E77.m2" class="ltx_Math" alttext="\displaystyle=-\int_{\Omega}e\Delta\phi\,dx" display="inline"><mrow><mi></mi><mo>=</mo><mrow><mo>-</mo><mrow><mstyle displaystyle="true"><msub><mo largeop="true" symmetric="true">∫</mo><mi mathvariant="normal">Ω</mi></msub></mstyle><mrow><mi>e</mi><mo>⁢</mo><mi mathvariant="normal">Δ</mi><mo>⁢</mo><mpadded width="+1.7pt"><mi>ϕ</mi></mpadded><mo>⁢</mo><mi>d</mi><mo>⁢</mo><mi>x</mi></mrow></mrow></mrow></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.77)</span></td>
+</tr>
+<tr id="Ch2.E78" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right"></td>
+<td class="ltx_td ltx_align_left">
+                      <math id="Ch2.E78.m2" class="ltx_Math" alttext="\displaystyle=\int_{\Omega}\nabla e\cdot\nabla\phi\,dx-\int_{\partial\Omega}en%
+\cdot\nabla\phi\,ds" display="inline"><mrow><mi></mi><mo>=</mo><mrow><mrow><mstyle displaystyle="true"><msub><mo largeop="true" symmetric="true">∫</mo><mi mathvariant="normal">Ω</mi></msub></mstyle><mrow><mrow><mo>∇</mo><mo>⁡</mo><mi>e</mi></mrow><mo>⋅</mo><mrow><mo>∇</mo><mo>⁡</mo><mrow><mpadded width="+1.7pt"><mi>ϕ</mi></mpadded><mo>⁢</mo><mi>d</mi><mo>⁢</mo><mi>x</mi></mrow></mrow></mrow></mrow><mo>-</mo><mrow><mstyle displaystyle="true"><msub><mo largeop="true" symmetric="true">∫</mo><mrow><mo>∂</mo><mo>⁡</mo><mi mathvariant="normal">Ω</mi></mrow></msub></mstyle><mrow><mrow><mi>e</mi><mo>⁢</mo><mi>n</mi></mrow><mo>⋅</mo><mrow><mo>∇</mo><mo>⁡</mo><mrow><mpadded width="+1.7pt"><mi>ϕ</mi></mpadded><mo>⁢</mo><mi>d</mi><mo>⁢</mo><mi>s</mi></mrow></mrow></mrow></mrow></mrow></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.78)</span></td>
+</tr>
+<tr id="Ch2.E79" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right"></td>
+<td class="ltx_td ltx_align_left">
+                      <math id="Ch2.E79.m2" class="ltx_Math" alttext="\displaystyle=\int_{\Omega}\nabla e\cdot\nabla(\phi-\pi\phi)\,dx" display="inline"><mrow><mi></mi><mo>=</mo><mrow><mstyle displaystyle="true"><msub><mo largeop="true" symmetric="true">∫</mo><mi mathvariant="normal">Ω</mi></msub></mstyle><mrow><mrow><mo>∇</mo><mo>⁡</mo><mi>e</mi></mrow><mo>⋅</mo><mrow><mrow><mo id="XM1734">∇</mo><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mrow id="XM1735"><mi>ϕ</mi><mo>-</mo><mrow><mi>π</mi><mo>⁢</mo><mi>ϕ</mi></mrow></mrow><mo rspace="4.2pt" stretchy="false">)</mo></mrow></mrow><mo>⁡</mo><mrow><mi>d</mi><mo>⁢</mo><mi>x</mi></mrow></mrow></mrow></mrow></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.79)</span></td>
+</tr>
+<tr id="Ch2.E80" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right">
+                      <math id="Ch2.E80.m1" class="ltx_Math" alttext="\displaystyle\leq\|\nabla e\|_{L^{2}(\Omega)}\|\nabla(\phi-\pi\phi)\|_{L^{2}(%
+\Omega)}." display="inline"><mrow><mrow><mi></mi><mo>≤</mo><mrow><msub><mrow><mo>∥</mo><mrow id="XM1744"><mo>∇</mo><mo id="XM1744a">⁡</mo><mi>e</mi></mrow><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi mathvariant="normal" id="XM1742">Ω</mi><mo stretchy="false">)</mo></mrow></mrow></msub><mo>⁢</mo><msub><mrow><mo>∥</mo><mrow><mo id="XM1745">∇</mo><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mrow id="XM1746"><mi>ϕ</mi><mo>-</mo><mrow><mi>π</mi><mo>⁢</mo><mi>ϕ</mi></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi mathvariant="normal" id="XM1743">Ω</mi><mo stretchy="false">)</mo></mrow></mrow></msub></mrow></mrow><mo>.</mo></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.80)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Da estimativa <span class="ltx_text ltx_font_italic">a priori</span> (<a href="#Ch2.E73" title="(2.73) ‣ 2.4.2 Estimativa a priori do erro ‣ 2.4 Fundamentos da análise de elementos finitos ‣ Capítulo 2 Método de elementos finitos em 2D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.73</span></a>) (que segue do Teorema <a href="#Thmteo5" title="Teorema 2.4.5. ‣ 2.4.2 Estimativa a priori do erro ‣ 2.4 Fundamentos da análise de elementos finitos ‣ Capítulo 2 Método de elementos finitos em 2D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.4.5</span></a>) temos</p>
+<table id="Ch2.E81" class="ltx_equation">
+
+<tr class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_align_center"><math id="Ch2.E81.m1" class="ltx_Math" alttext="\|\nabla e\|_{L^{2}(\Omega)}\leq Ch\|D^{2}u\|_{L^{2}(\Omega)}." display="block"><mrow><mrow><msub><mrow><mo>∥</mo><mrow id="XM1750"><mo>∇</mo><mo id="XM1750a">⁡</mo><mi>e</mi></mrow><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi mathvariant="normal" id="XM1748">Ω</mi><mo stretchy="false">)</mo></mrow></mrow></msub><mo>≤</mo><mrow><mi>C</mi><mo>⁢</mo><mi>h</mi><mo>⁢</mo><msub><mrow><mo>∥</mo><mrow id="XM1751"><msup><mi>D</mi><mn>2</mn></msup><mo>⁢</mo><mi>u</mi></mrow><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi mathvariant="normal" id="XM1749">Ω</mi><mo stretchy="false">)</mo></mrow></mrow></msub></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.81)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Agora, da regularidade elíptica <math id="SS2.p7.m3" class="ltx_Math" alttext="\|D^{2}\phi\|_{L^{2}(\Omega)}\leq C\|\Delta\phi\|_{L^{2}(\Omega)}" display="inline"><mrow><msub><mrow><mo>∥</mo><mrow id="XM1754"><msup><mi>D</mi><mn>2</mn></msup><mo>⁢</mo><mi>ϕ</mi></mrow><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi mathvariant="normal" id="XM1752">Ω</mi><mo stretchy="false">)</mo></mrow></mrow></msub><mo>≤</mo><mrow><mi>C</mi><mo>⁢</mo><msub><mrow><mo>∥</mo><mrow id="XM1755"><mi mathvariant="normal">Δ</mi><mo>⁢</mo><mi>ϕ</mi></mrow><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi mathvariant="normal" id="XM1753">Ω</mi><mo stretchy="false">)</mo></mrow></mrow></msub></mrow></mrow></math> <cite class="ltx_cite">[<a href="bib.html#bib1" title="Partial differential equations" class="ltx_ref">2</a>]</cite> e da estimativa do erro de interpolação (Proposição <a href="cap_mef2d_sec_interp.html#Thmprop2" title="Proposição 2.2.2. ‣ 2.2.1 Interpolação ‣ 2.2 Interpolação e projeção ‣ Capítulo 2 Método de elementos finitos em 2D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.2.2</span></a>), temos</p>
+<table id="Ch2.E82" class="ltx_equation">
+
+<tr class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_align_center"><math id="Ch2.E82.m1" class="ltx_Math" alttext="\|\nabla(\phi-\pi\phi)\|_{L^{2}(\Omega)}\leq Ch\|D^{2}\phi\|_{L^{2}(\Omega)}%
+\leq Ch\|\Delta\phi\|_{L^{2}(\Omega)}\leq Ch\|e\|_{L^{2}(\Omega)}." display="block"><mrow><mrow><msub><mrow><mo>∥</mo><mrow><mo id="XM1760">∇</mo><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mrow id="XM1761"><mi>ϕ</mi><mo>-</mo><mrow><mi>π</mi><mo>⁢</mo><mi>ϕ</mi></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi mathvariant="normal" id="XM1756">Ω</mi><mo stretchy="false">)</mo></mrow></mrow></msub><mo>≤</mo><mrow><mi>C</mi><mo>⁢</mo><mi>h</mi><mo>⁢</mo><msub><mrow><mo>∥</mo><mrow id="XM1763"><msup><mi>D</mi><mn>2</mn></msup><mo>⁢</mo><mi>ϕ</mi></mrow><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi mathvariant="normal" id="XM1757">Ω</mi><mo stretchy="false">)</mo></mrow></mrow></msub></mrow><mo>≤</mo><mrow><mi>C</mi><mo>⁢</mo><mi>h</mi><mo>⁢</mo><msub><mrow><mo>∥</mo><mrow id="XM1764"><mi mathvariant="normal">Δ</mi><mo>⁢</mo><mi>ϕ</mi></mrow><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi mathvariant="normal" id="XM1758">Ω</mi><mo stretchy="false">)</mo></mrow></mrow></msub></mrow><mo>≤</mo><mrow><mi>C</mi><mo>⁢</mo><mi>h</mi><mo>⁢</mo><msub><mrow><mo>∥</mo><mi id="XM1765">e</mi><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi mathvariant="normal" id="XM1759">Ω</mi><mo stretchy="false">)</mo></mrow></mrow></msub></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.82)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Então, temos</p>
+<table id="Ch2.E83" class="ltx_equation">
+
+<tr class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_align_center"><math id="Ch2.E83.m1" class="ltx_Math" alttext="\|e\|_{L^{2}(\Omega)}^{2}\leq Ch\|D^{2}u\|_{L^{2}(\Omega)}Ch\|e\|_{L^{2}(%
+\Omega)}." display="block"><mrow><mrow><msubsup><mrow><mo>∥</mo><mi id="XM1769">e</mi><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi mathvariant="normal" id="XM1766">Ω</mi><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup><mo>≤</mo><mrow><mi>C</mi><mo>⁢</mo><mi>h</mi><mo>⁢</mo><msub><mrow><mo>∥</mo><mrow id="XM1770"><msup><mi>D</mi><mn>2</mn></msup><mo>⁢</mo><mi>u</mi></mrow><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi mathvariant="normal" id="XM1767">Ω</mi><mo stretchy="false">)</mo></mrow></mrow></msub><mo>⁢</mo><mi>C</mi><mo>⁢</mo><mi>h</mi><mo>⁢</mo><msub><mrow><mo>∥</mo><mi id="XM1771">e</mi><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi mathvariant="normal" id="XM1768">Ω</mi><mo stretchy="false">)</mo></mrow></mrow></msub></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.83)</span></td>
+</tr>
+</table>
+<p class="ltx_p">∎</p>
+</div>
+</div>
+<div id="Thmex1" class="ltx_theorem ltx_theorem_ex">
+<h6 class="ltx_title ltx_runin ltx_font_bold ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem">Exemplo 2.4.1</span>.</h6>
+<div id="Thmex1.p1" class="ltx_para">
+<p class="ltx_p">Consideremos o seguinte problema de Poisson
+</p>
+<table id="EGx48" class="ltx_equationgroup ltx_eqn_align">
+
+<tr id="Ch2.E84" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right">
+                      <math id="Ch2.E84.m1" class="ltx_Math" alttext="\displaystyle-\Delta u" display="inline"><mrow><mo>-</mo><mrow><mi mathvariant="normal">Δ</mi><mo>⁢</mo><mi>u</mi></mrow></mrow></math>
+                    </td>
+<td class="ltx_td ltx_align_left">
+                      <math id="Ch2.E84.m2" class="ltx_Math" alttext="\displaystyle=-2(x_{0}^{2}-x_{0})-2(x_{1}^{2}-x_{1}),\leavevmode\nobreak\ x\in%
+\Omega:=(0,1)\times(0,1)," display="inline"><mrow><mrow><mrow id="XM1782"><mi></mi><mo>=</mo><mrow><mrow><mo>-</mo><mrow><mn>2</mn><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow id="XM1778"><msubsup><mi>x</mi><mn>0</mn><mn>2</mn></msubsup><mo>-</mo><msub><mi>x</mi><mn>0</mn></msub></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow><mo>-</mo><mrow><mn>2</mn><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow id="XM1779"><msubsup><mi>x</mi><mn>1</mn><mn>2</mn></msubsup><mo>-</mo><msub><mi>x</mi><mn>1</mn></msub></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow><mo rspace="7.5pt">,</mo><mrow id="XM1783"><mi>x</mi><mo>∈</mo><mi mathvariant="normal">Ω</mi><mo>:=</mo><mrow><mrow><mo stretchy="false">(</mo><mn id="XM1780">0,1</mn><mo stretchy="false">)</mo></mrow><mo>×</mo><mrow><mo stretchy="false">(</mo><mn id="XM1781">0,1</mn><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow><mo>,</mo></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.84)</span></td>
+</tr>
+<tr id="Ch2.E85" class="ltx_equation ltx_align_baseline">
+<td class="ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right">
+                      <math id="Ch2.E85.m1" class="ltx_Math" alttext="\displaystyle u" display="inline"><mi>u</mi></math>
+                    </td>
+<td class="ltx_td ltx_align_left">
+                      <math id="Ch2.E85.m2" class="ltx_Math" alttext="\displaystyle=0,\leavevmode\nobreak\ x\in\partial\Omega." display="inline"><mrow><mrow><mi></mi><mo>=</mo><mrow><mpadded width="+5pt"><mn>0,</mn></mpadded><mo>⁢</mo><mi>x</mi></mrow><mo>∈</mo><mrow><mo>∂</mo><mo>⁡</mo><mi mathvariant="normal">Ω</mi></mrow></mrow><mo>.</mo></mrow></math>
+                    </td>
+<td class="ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation">(2.85)</span></td>
+</tr>
+</table>
+<p class="ltx_p">A solução analítica deste problema é <math id="Thmex1.p1.m1" class="ltx_Math" alttext="u(x)=(x_{0}^{2}-x_{0})(x_{1}^{2}-x_{1})" display="inline"><mrow><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi id="XM1784">x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mo stretchy="false">(</mo><mrow id="XM1785"><msubsup><mi>x</mi><mn>0</mn><mn>2</mn></msubsup><mo>-</mo><msub><mi>x</mi><mn>0</mn></msub></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow id="XM1786"><msubsup><mi>x</mi><mn>1</mn><mn>2</mn></msubsup><mo>-</mo><msub><mi>x</mi><mn>1</mn></msub></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow></math>. Aqui, obtemos aproximações por elementos finitos <math id="Thmex1.p1.m2" class="ltx_Math" alttext="u_{h}" display="inline"><msub><mi>u</mi><mi>h</mi></msub></math> usando uma malha triangular uniforme <math id="Thmex1.p1.m3" class="ltx_Math" alttext="n\times n" display="inline"><mrow><mi>n</mi><mo>×</mo><mi>n</mi></mrow></math> nodos, i.e. <math id="Thmex1.p1.m4" class="ltx_Math" alttext="h=1/n" display="inline"><mrow><mi>h</mi><mo>=</mo><mrow><mn>1</mn><mo>/</mo><mi>n</mi></mrow></mrow></math>. A Tabela <a href="#Ch2.T1" title="Tabela 2.1 ‣ Exemplo 2.4.1. ‣ 2.4.2 Estimativa a priori do erro ‣ 2.4 Fundamentos da análise de elementos finitos ‣ Capítulo 2 Método de elementos finitos em 2D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.1</span></a> mostra os valores dos erros <math id="Thmex1.p1.m5" class="ltx_Math" alttext="\|u-u_{h}\|_{L^{2}(\Omega)}" display="inline"><msub><mrow><mo>∥</mo><mrow id="XM1788"><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi mathvariant="normal" id="XM1787">Ω</mi><mo stretchy="false">)</mo></mrow></mrow></msub></math> para diferentes valores de <math id="Thmex1.p1.m6" class="ltx_Math" alttext="h" display="inline"><mi>h</mi></math>.</p>
+</div>
+<figure id="Ch2.T1" class="ltx_table">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_table">Tabela 2.1: </span>Erros de aproximações por elementos finitos referente ao problema dado no Exemplo <a href="#Thmex1" title="Exemplo 2.4.1. ‣ 2.4.2 Estimativa a priori do erro ‣ 2.4 Fundamentos da análise de elementos finitos ‣ Capítulo 2 Método de elementos finitos em 2D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.4.1</span></a>.</figcaption>
+<table class="ltx_tabular ltx_centering ltx_align_middle">
+<thead class="ltx_thead">
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_left">#nodos</th>
+<th class="ltx_td ltx_align_center ltx_border_r">
+                    <math id="Ch2.T1.m1" class="ltx_Math" alttext="h" display="inline"><mi>h</mi></math>
+                  </th>
+<th class="ltx_td ltx_align_center">
+                    <math id="Ch2.T1.m2" class="ltx_Math" alttext="\|u-u_{h}\|_{L^{2}(\Omega)}" display="inline"><msub><mrow><mo>∥</mo><mrow id="XM1790"><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi mathvariant="normal" id="XM1789">Ω</mi><mo stretchy="false">)</mo></mrow></mrow></msub></math>
+                  </th>
+</tr>
+</thead>
+<tbody class="ltx_tbody">
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_left ltx_border_t">
+                    <math id="Ch2.T1.m3" class="ltx_Math" alttext="10\times 10" display="inline"><mrow><mn>10</mn><mo>×</mo><mn>10</mn></mrow></math>
+                  </th>
+<td class="ltx_td ltx_align_center ltx_border_r ltx_border_t">
+                    <math id="Ch2.T1.m4" class="ltx_Math" alttext="1\mathrm{E}\!-\!1" display="inline"><mrow><mrow><mn>1</mn><mo>⁢</mo><mpadded width="-1.7pt"><mi mathvariant="normal">E</mi></mpadded></mrow><mo rspace="0.8pt">-</mo><mn>1</mn></mrow></math>
+                  </td>
+<td class="ltx_td ltx_align_center ltx_border_t">
+                    <math id="Ch2.T1.m5" class="ltx_Math" alttext="9.29\mathrm{E}\!-\!4" display="inline"><mrow><mrow><mn>9.29</mn><mo>⁢</mo><mpadded width="-1.7pt"><mi mathvariant="normal">E</mi></mpadded></mrow><mo rspace="0.8pt">-</mo><mn>4</mn></mrow></math>
+                  </td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_left">
+                    <math id="Ch2.T1.m6" class="ltx_Math" alttext="20\times 20" display="inline"><mrow><mn>20</mn><mo>×</mo><mn>20</mn></mrow></math>
+                  </th>
+<td class="ltx_td ltx_align_center ltx_border_r">
+                    <math id="Ch2.T1.m7" class="ltx_Math" alttext="5\mathrm{E}\!-\!2" display="inline"><mrow><mrow><mn>5</mn><mo>⁢</mo><mpadded width="-1.7pt"><mi mathvariant="normal">E</mi></mpadded></mrow><mo rspace="0.8pt">-</mo><mn>2</mn></mrow></math>
+                  </td>
+<td class="ltx_td ltx_align_center">
+                    <math id="Ch2.T1.m8" class="ltx_Math" alttext="2.34\mathrm{E}\!-\!4" display="inline"><mrow><mrow><mn>2.34</mn><mo>⁢</mo><mpadded width="-1.7pt"><mi mathvariant="normal">E</mi></mpadded></mrow><mo rspace="0.8pt">-</mo><mn>4</mn></mrow></math>
+                  </td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_left ltx_border_b">
+                    <math id="Ch2.T1.m9" class="ltx_Math" alttext="100\times 100" display="inline"><mrow><mn>100</mn><mo>×</mo><mn>100</mn></mrow></math>
+                  </th>
+<td class="ltx_td ltx_align_center ltx_border_b ltx_border_r">
+                    <math id="Ch2.T1.m10" class="ltx_Math" alttext="1\mathrm{E}\!-\!3" display="inline"><mrow><mrow><mn>1</mn><mo>⁢</mo><mpadded width="-1.7pt"><mi mathvariant="normal">E</mi></mpadded></mrow><mo rspace="0.8pt">-</mo><mn>3</mn></mrow></math>
+                  </td>
+<td class="ltx_td ltx_align_center ltx_border_b">
+                    <math id="Ch2.T1.m11" class="ltx_Math" alttext="9.40\mathrm{E}\!-\!6" display="inline"><mrow><mrow><mn>9.40</mn><mo>⁢</mo><mpadded width="-1.7pt"><mi mathvariant="normal">E</mi></mpadded></mrow><mo rspace="0.8pt">-</mo><mn>6</mn></mrow></math>
+                  </td>
+</tr>
+</tbody>
+</table>
+</figure>
+<div id="Thmex1.p2" class="ltx_para">
+<p class="ltx_p">Com o <a href="https://fenicsproject.org/" title="" class="ltx_ref">FENiCS</a>, podemos computar a solução deste problema e o erro na norma <math id="Thmex1.p2.m1" class="ltx_Math" alttext="L^{2}" display="inline"><msup><mi>L</mi><mn>2</mn></msup></math> com o seguinte <a href="https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef2d/dados/ex_mef2d_erro/ex_mef2d_erro.py" title="" class="ltx_ref">código</a>:</p>
+<pre class="ltx_verbatim ltx_font_typewriter">from __future__ import print_function, division
+from fenics import *
+import numpy as np
+import matplotlib.pyplot as plt
+
+# malha
+Nx = 100
+Ny = 100
+mesh = UnitSquareMesh(Nx,Ny)
+
+# espaco
+V = FunctionSpace(mesh, ’P’, 1)
+
+# cond. contorno
+def boundary(x,on_boundary):
+    return on_boundary
+
+bc = DirichletBC(V,Constant(0.0),boundary)
+
+# f
+f = Expression(’-2*(x[1]*x[1]-x[1])-2*(x[0]*x[0]-x[0])’,degree=2)
+
+# MEF problem
+u = TrialFunction(V)
+v = TestFunction(V)
+a = dot(grad(u), grad(v))*dx
+L = f*v*dx
+
+#computa a sol
+u = Function(V)
+solve(a == L, u, bc)
+
+# sol. analitica
+ua = Expression(’x[0]*(x[0]-1)*x[1]*(x[1]-1)’,degree=4)
+
+# erro norma L2
+erro_L2 = errornorm(ua, u, ’L2’)
+print("||u-u_h||_L2 = %1.2E\n" % erro_L2)
+
+# exportanto em vtk
+vtkfile = File(’u.pvd’)
+vtkfile &lt;&lt; u
+</pre>
+</div>
+</div>
+</section>
+<section id="SSx1" class="ltx_subsection">
+<h2 class="ltx_title ltx_title_subsection">Exercícios<small><a href="https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef2d/cap_mef2d.tex" target=_blank> <span class="glyphicon glyphicon-pencil"></span> </a><a href="../contato.html" target="_blank"> <span class="glyphicon glyphicon-envelope"></span> </a></small></h2>
+
+<div id="SSx1.p1" class="ltx_para">
+<p class="ltx_p">Em construção …</p>
+</div>
+<div id="SSx1.p2" class="ltx_para">
+<p class="ltx_p"><cite class="ltx_cite"></cite></p>
+</div>
+</section>
+</section>
+</div>
+<footer class="ltx_page_footer">
+<div>
+<a href="cap_mef2d_sec_probmodelo.html" title="2.3 Problema modelo ‣ Capítulo 2 Método de elementos finitos em 2D ‣ Método de Elementos Finitos" class="ltx_ref" rel="prev"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">2.3 </span>Problema modelo</span></a><a href="bib.html" title="Referências ‣ Método de Elementos Finitos" class="ltx_ref" rel="bibliography"><span class="ltx_text ltx_ref_title">Referências</span></a><a href="bib.html" title="Referências ‣ Método de Elementos Finitos" class="ltx_ref" rel="next"><span class="ltx_text ltx_ref_title">Referências</span></a>
+</div>
+<div class="ltx_page_logo">
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />O texto acima está sob Licença <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR">Creative Commons Atribuição-CompartilhaIgual 4.0 Internacional</a>. Generated  on Fri Nov 16 09:48:30 2018 by <a href="http://dlmf.nist.gov/LaTeXML/">LaTeXML <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg==" alt="[LOGO]"></a>
+</div></footer>
+</div>
+</div><!-- div class="row" -->
+</div><!-- div class="col-xs-12 col-xs-offset-0 col-md-8 col-md-offset-2 -->
+</body>
+</html>

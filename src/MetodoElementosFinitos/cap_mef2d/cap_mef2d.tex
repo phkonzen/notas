@@ -324,7 +324,7 @@ Com o \fenics, podemos computar a solução deste problema com o seguinte \href{
 \end{align}
 \end{exer}
 
-\section{Fundamentos da análise de elementos finitos}
+\section{Fundamentos da análise de elementos finitos}\label{cap_mef2d_sec_funanlef}
 
 \subsection{Existência e unicidade}
 
@@ -384,7 +384,7 @@ para todo $v\in V_0$.
   \end{equation}
 \end{teo}
 \begin{dem}
-  Observando que $u-u_h=u-v_h+v_h-u_h$ e usando a ortogonalidade de Galerkin (Teorema \ref{teo:mef2d_orto_Galerkin}), temos:
+  Observando que $u-u_h=u-v_h+v_h-u_h$ e usando a ortogonalidade de Galerkin (Teorema \ref{teo:mef2d_orto_Galergin}), temos:
   \begin{align}
     \||u-u_h|\|^2 &= \int_\Omega \nabla (u-u_h)\cdot\nabla (u-u_h)\,dx\\
     &= \int_{\Omega} \nabla (u-u_h)\cdot\nabla (u-v_h)\,dx + \int_{\Omega} \nabla (u-u_h)\cdot\nabla (v_h-u_h)\,dx\\
@@ -469,3 +469,33 @@ Então, temos
   \|e\|_{L^2(\Omega)}^2 \leq Ch\|D^2u\|_{L^2(\Omega)}Ch\|e\|_{L^2(\Omega)}.
 \end{equation}
 \end{dem}
+
+\begin{ex}\label{ex:mef2d_erro}
+  Consideremos o seguinte problema de Poisson
+  \begin{align}
+    -\Delta u &= -2(x_0^2-x_0)-2(x_1^2-x_1),~x\in\Omega:=(0, 1)\times (0, 1),\\
+    u &= 0,~x\in\p\Omega.
+  \end{align}
+  A solução analítica deste problema é $u(x) = (x_0^2-x_0)(x_1^2-x_1)$. Aqui, obtemos aproximações por elementos finitos $u_h$ usando uma malha triangular uniforme $n\times n$ nodos, i.e. $h=1/n$. A Tabela \ref{tab:mef2d_erro} mostra os valores dos erros $\|u-u_h\|_{L^2(\Omega)}$ para diferentes valores de $h$.
+
+  \begin{table}[h!]
+    \centering
+    \caption{Erros de aproximações por elementos finitos referente ao problema dado no Exemplo \ref{ex:mef2d_erro}.}
+    \begin{tabular}{lc|c}
+      \#nodos & $h$   & $\|u-u_h\|_{L^2(\Omega)}$ \\\hline
+      $10\times 10$   & $1\E-1$  & $9.29\E-4$\\
+      $20\times 20$   & $5\E-2$  & $2.34\E-4$\\
+      $100\times 100$ & $1\E-3$ & $9.40\E-6$ \\\hline 
+    \end{tabular}
+    \label{tab:mef2d_erro}
+  \end{table}
+
+\ifispython
+Com o \fenics, podemos computar a solução deste problema e o erro na norma $L^2$ com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef2d/dados/ex_mef2d_erro/ex_mef2d_erro.py}{código}:
+\verbatiminput{./cap_mef2d/dados/ex_mef2d_erro/ex_mef2d_erro.py}
+\fi
+\end{ex}
+
+\subsection*{Exercícios}
+
+\emconstrucao
