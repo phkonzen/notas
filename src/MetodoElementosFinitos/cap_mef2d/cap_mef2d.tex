@@ -496,6 +496,90 @@ Com o \fenics, podemos computar a solução deste problema e o erro na norma $L^
 \fi
 \end{ex}
 
+\subsection{Estimativa {\it a posteriori}}
+
+Para obtermos uma estimativa {\it a posteriori} vamos precisar da chamada desigualdade do traço.
+
+\begin{teo}\normalfont{(Desigualdade do traço)}
+  Seja $\Omega\subset \mathbb{R}^2$ um domínio limitado com fronteira $\p\Omega$ convexa e suave. Então, existe uma constante $C = C(\Omega)$, tal que para qualquer $v\in V$ temos
+  \begin{equation}
+    \|v\|_{L^2(\p\Omega)} \leq C\left(\|v\|_{L^2(\Omega)}^2 + \|\nabla v\|_{L^2(\Omega)}^2\right)^{1/2}.
+  \end{equation}
+\end{teo}
+\begin{dem}
+  Veja \cite{Larson2013a}.
+\end{dem}
+
+\begin{teo}\normalfont{(Estimativa {\it a posteriori})}
+  A solução $u_h$ do problema de elementos finitos \eqref{eq:mef2d_probfem} satisfaz
+  \begin{equation}
+    |||u-u_h|||^2 \leq C\sum_{K\in\mathcal{K}} \eta_K^2(u_h),
+  \end{equation}
+onde o elemento residual $\eta_K(u_h)$ é definido por
+\begin{equation}
+  \eta_K(u_h) = h_K\|f + \Delta u_h\|_{L^2(K)} + \frac{1}{2}h_K^{1/2}\|[n\cdot\nabla u_h]\|_{L^2(\p K\setminus\p \Omega)}.
+\end{equation}
+Aqui, $[n\cdot\nabla u_h]|_K$ denota o salto na derivada normal de $u_h$ nos lados interiores dos elementos de $\mathcal{K}$. Além disso, lembremos que $\Delta u_h = 0$.
+\end{teo}
+\begin{dem}
+  Denotando $e := u - u_h$ o erro entre a solução do problema forte e a solução de elementos finitos, temos
+  \begin{align}
+    |||e||||^2 &= \|\nabla e\|_{L^2(\Omega)}^2 \\
+               &= \int_\Omega \nabla e \cdot \nabla e\,dx\\
+               &= \int_\Omega \nabla e \cdot \nabla (e - \pi e)\,dx.
+  \end{align}
+Nesta última equação, temos usado a ortogonalidade de Galerkin (Teorema \ref{teo:mef2d_orto_Galergin}). Daí, temos
+\begin{align}
+  \int_\Omega \nabla e \cdot \nabla (e - \pi e)\,dx &= \sum_{K\in\mathcal{K}} \int_K \nabla e \cdot \nabla (e - \pi e)\,dx\\
+  &= \sum_{K\in\mathcal{K}} -\int_K\Delta e (e-\pi e)\,dx \nonumber\\
+  &+ \int_{\p K} n\cdot \nabla e(e-\pi e)\,ds,\\
+  &= \sum_{K\in\mathcal{K}} \int_K (f + \Delta u_h)(e-\pi e)\,dx \nonumber\\
+  &+ \int_{\p K\setminus\p\Omega} n\cdot\nabla e(e-\pi e)\,ds,\label{eq:aux_pos}
+\end{align}
+uma vez que $-\delta e|_{K} = f + \Delta u_h|_{K}$ e, ambos, $e$ e $\pi e$ se anulam em $\p \Omega$.
+
+Para computarmos o segundo termo do lado direito da ultima equação, observamos que o erro em lado $E$ recebe contribuições dos dois elementos $K^{\pm}$ que compartilham $E$. Com isso, temos
+\begin{align}
+  \int_{\p K^+\cap \p K^-} n\cdot \nabla e(e - \pi e)\,ds = \int_E &(n^+\cdot \nabla e^+(e^+-\pi e^+) \nonumber\\
+  &+ n^-\cdot\nabla e^-(e^--\pi e^-))\,ds,
+\end{align}
+onde utilizamos a notação $v^\pm = v|_{K^\pm}$. Lembremos que o erro $e$ é contínuo e, portanto, $(e^+-\pi e^+)|_E = (e^--\pi e^-)|_E$. Ainda, $\nabla u$ é contínuo, logo $(n^+\cdot\nabla u^+ + n^-\cdot\nabla u^-)|_E = 0$. Entretanto, $\nabla u_h|_E$ não é geralmente contínuo, sendo apenas constante por partes. Assim sendo e denotando o salto $[n\cdot \nabla u_h] := (n^+\cdot\nabla u_h^+ + n^-\cdot\nabla u_h^-)$, temos
+\begin{align}
+  \int_E (n^+\cdot \nabla e^+(e-\pi e) &+ n^-\cdot\nabla e^-(e-\pi e))\,ds \nonumber\\
+  &= -\int_E [n\cdot\nabla u_h](e-\pi e)\,ds.
+\end{align}
+Com isso, temos
+\begin{align}
+  \sum_{K\in\mathcal{K}}\int_{\p K\setminus\p\Omega} n\cdot\nabla e(e-\pi e)\,ds = -\sum_{E\in\mathcal{E}_I}\int_E [n\cdot\nabla u_h](e-\pi e)\,ds,
+\end{align}
+onde $\mathcal{E}_I$ é o conjunto dos lados interiores na triangularização $\mathcal{K}$.
+Logo, retornando a \eqref{eq:aux_pos}, obtemos
+\begin{align}
+  |||e|||^2 &= \sum_{K\in\mathcal{K}}\int_K (f+\nabla u_h)(e-\pi e)\,dx \nonumber\\
+  &- \frac{1}{2}\int_{\p K\setminus\p \omega} [n\cdot\nabla u_h](e-\pi e)\,ds.
+\end{align}
+Nos resta, agora, estimarmos estes dois termos do lado direito.
+
+A estimativa do primeiro, segue da desigualdade de Cauchy-Schwarz seguida da estimativa padrão do erro de interpolação, i.e.
+\begin{align}
+  \int_K (f + \Delta u_h)(e-\pi e)\,dx &\leq \|f+\delta u_h\|_{L^2(\Omega)}\|e-\pi e\|_{L^2(\Omega)}\\
+  &\leq \|f + \Delta u_h\|_{L^2(\Omega)}Ch_K\|D e\|_{L^2(\Omega)}\label{eq:aux_pos1}
+\end{align}
+
+Para estimarmos as contribuições dos lados, usamos a desigualdade do Traço\cite{Larson2013a}
+\begin{equation}
+  \|v\|_{L^2(\Omega)}^2 \leq C\left(h_K^{-1}\|v\|_{L^2(K)}^2 + h_K\|\nabla v\|_{L^2(\Omega)}^2\right).
+\end{equation}
+Com esta, a desigualdade de Cauchy-Schwarz e a estimativa padrão do erro de interpolação, temos
+\begin{align}
+  \int_{\p K\setminus\p\Omega} [n\cdot\nabla u_h](e-\pi e)\,ds &\leq \|[n\cdot\nabla u_h]\|_{L^2(\p K)}\|e-\pi e\|_{L^2(\p K)}\\
+  &\leq \|[n\cdot\nabla u_h]\|_{L^2(\p K)}C\left(h_K^{-1}\|e-\pi e\|_{L^2(K)}^2 \right.\nonumber\\
+  &\left. + h_K\|D(e-\pi e)\|_{L^2(K)}^2\right)^{1/2}\\
+  &\leq \|[n\cdot \nabla u_h]\|_{L^2(\p K)}Ch_K^{1/2}\|De\|_{L^2(K)}.\label{eq:aux_pos2}.
+\end{align}
+Daí, a estimativa segue das \eqref{eq:aux_pos1} e \eqref{eq:aux_pos2}.
+\end{dem}
+
 \subsection*{Exercícios}
 
 \emconstrucao
