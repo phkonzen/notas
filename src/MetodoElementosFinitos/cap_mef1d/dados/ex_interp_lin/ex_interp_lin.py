@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # malha
-mesh = IntervalMesh(4,0.25,0.75)
+mesh = IntervalMesh(1,0.25,0.75)
 
 # espaco
 V = FunctionSpace(mesh, 'P', 1)
