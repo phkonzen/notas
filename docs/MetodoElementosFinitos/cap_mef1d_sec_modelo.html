@@ -1,8 +1,8 @@
 <!DOCTYPE html><html lang="pt-BR">
 <head>
 <title>1.2 Problema modelo‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos</title>
-<!--Generated on Mon Jan 28 11:03:07 2019 by LaTeXML (version 0.8.2) http://dlmf.nist.gov/LaTeXML/.-->
-<!--Document created on 28 de janeiro de 2019.-->
+<!--Generated on Tue Jan 29 13:41:46 2019 by LaTeXML (version 0.8.2) http://dlmf.nist.gov/LaTeXML/.-->
+<!--Document created on 29 de janeiro de 2019.-->
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="LaTeXML.css" type="text/css">
@@ -554,7 +554,7 @@ O erro em se aproximar a solução <math id="Thmteo3.p1.m1" class="ltx_Math" alt
 <tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
 <td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
 <td class="ltx_eqn_cell ltx_align_center"><math id="Ch1.E90.m1" class="ltx_Math" alttext="\|(u-u_{h})^{\prime}\|_{L^{2}(I)}^{2}\leq C\sum_{i=1}^{n}h_{i}^{2}\|u^{\prime%
-\prime}\|_{L^{2}(I)}^{2}." display="block"><mrow><mrow><msubsup><mrow><mo>∥</mo><msup><mrow><mo stretchy="false">(</mo><mrow><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo stretchy="false">)</mo></mrow><mo>′</mo></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>I</mi><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup><mo>≤</mo><mrow><mi>C</mi><mo>⁢</mo><mrow><munderover><mo largeop="true" movablelimits="false" symmetric="true">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><msubsup><mi>h</mi><mi>i</mi><mn>2</mn></msubsup><mo>⁢</mo><msubsup><mrow><mo>∥</mo><msup><mi>u</mi><mi>′′</mi></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>I</mi><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup></mrow></mrow></mrow></mrow><mo>.</mo></mrow></math></td>
+\prime}\|_{L^{2}(I_{i})}^{2}." display="block"><mrow><mrow><msubsup><mrow><mo>∥</mo><msup><mrow><mo stretchy="false">(</mo><mrow><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo stretchy="false">)</mo></mrow><mo>′</mo></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>I</mi><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup><mo>≤</mo><mrow><mi>C</mi><mo>⁢</mo><mrow><munderover><mo largeop="true" movablelimits="false" symmetric="true">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><msubsup><mi>h</mi><mi>i</mi><mn>2</mn></msubsup><mo>⁢</mo><msubsup><mrow><mo>∥</mo><msup><mi>u</mi><mi>′′</mi></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>I</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup></mrow></mrow></mrow></mrow><mo>.</mo></mrow></math></td>
 <td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
 <td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.90)</span></td>
 </tr>
@@ -601,7 +601,7 @@ def solver(n):
     u = Function(V)
     solve(a == L, u, bc)
 
-    return u
+    return u, mesh
 
 #sol analitica
 ua = Expression(’-x[0]*x[0]/2+x[0]/2’,
@@ -610,15 +610,15 @@ ua = Expression(’-x[0]*x[0]/2+x[0]/2’,
 
 lerrors=[]
 for n in [2,4,8,16,32,64,128]:
-    u = solver(n)
-    e = errornorm(u,ua,norm_type=’H10’)
+    u, mesh = solver(n)
+    e = errornorm(u,ua,norm_type=’H10’,mesh=mesh)
     lerrors.append(e)
 
 plt.plot([2,4,8,16,32,64,128],lerrors)
-plt.xscale(’log’,base=2)
+plt.xscale(’log’,basex=2)
 #plt.yscale(’log’,base=2)
 plt.xlabel(r"$n$")
-plt.ylabel(r"$\|(u-u_h)’\|_{L^2(I)}$")
+plt.ylabel(r"$|\!|(u-u_h)’|\!|_{L^2(I)}$")
 plt.xlim((2,128))
 plt.xticks([2,4,8,16,32,64,128],[2,4,8,16,32,64,128])
 plt.grid(’on’)
@@ -681,7 +681,7 @@ plt.show()
 <tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
 <td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
 <td class="ltx_eqn_cell ltx_align_center"><math id="Ch1.E94.m1" class="ltx_Math" alttext="\|e^{\prime}\|_{L^{2}(I)}^{2}=\sum_{i=1}^{n}\int_{I_{i}}(-e^{\prime\prime})(e-%
-\pi e)\,dx+[e-\pi e]_{x_{i-1}}^{x_{i}}." display="block"><mrow><mrow><msubsup><mrow><mo>∥</mo><msup><mi>e</mi><mo>′</mo></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>I</mi><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup><mo>=</mo><mrow><mrow><munderover><mo largeop="true" movablelimits="false" symmetric="true">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><msub><mo largeop="true" symmetric="true">∫</mo><msub><mi>I</mi><mi>i</mi></msub></msub><mrow><mrow><mo stretchy="false">(</mo><mrow><mo>-</mo><msup><mi>e</mi><mi>′′</mi></msup></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>e</mi><mo>-</mo><mrow><mi>π</mi><mo>⁢</mo><mi>e</mi></mrow></mrow><mo rspace="4.2pt" stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo>𝑑</mo><mi>x</mi></mrow></mrow></mrow></mrow><mo>+</mo><msubsup><mrow><mo stretchy="false">[</mo><mrow><mi>e</mi><mo>-</mo><mrow><mi>π</mi><mo>⁢</mo><mi>e</mi></mrow></mrow><mo stretchy="false">]</mo></mrow><msub><mi>x</mi><mrow><mi>i</mi><mo>-</mo><mn>1</mn></mrow></msub><msub><mi>x</mi><mi>i</mi></msub></msubsup></mrow></mrow><mo>.</mo></mrow></math></td>
+\pi e)\,dx+[e^{\prime}(e-\pi e)]_{x_{i-1}}^{x_{i}}." display="block"><mrow><mrow><msubsup><mrow><mo>∥</mo><msup><mi>e</mi><mo>′</mo></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>I</mi><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup><mo>=</mo><mrow><mrow><munderover><mo largeop="true" movablelimits="false" symmetric="true">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><msub><mo largeop="true" symmetric="true">∫</mo><msub><mi>I</mi><mi>i</mi></msub></msub><mrow><mrow><mo stretchy="false">(</mo><mrow><mo>-</mo><msup><mi>e</mi><mi>′′</mi></msup></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>e</mi><mo>-</mo><mrow><mi>π</mi><mo>⁢</mo><mi>e</mi></mrow></mrow><mo rspace="4.2pt" stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo>𝑑</mo><mi>x</mi></mrow></mrow></mrow></mrow><mo>+</mo><msubsup><mrow><mo stretchy="false">[</mo><mrow><msup><mi>e</mi><mo>′</mo></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>e</mi><mo>-</mo><mrow><mi>π</mi><mo>⁢</mo><mi>e</mi></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">]</mo></mrow><msub><mi>x</mi><mrow><mi>i</mi><mo>-</mo><mn>1</mn></mrow></msub><msub><mi>x</mi><mi>i</mi></msub></msubsup></mrow></mrow><mo>.</mo></mrow></math></td>
 <td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
 <td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.94)</span></td>
 </tr>
@@ -698,7 +698,7 @@ plt.show()
 <td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.95)</span></td>
 </tr>
 </table>
-<p class="ltx_p">Agora, usando as desigualdades de Cauchy-Schwarz e a estimativa de interpolação (<a href="cap_mef1d_sec_interproj.html#Ch1.E23" title="(1.23) ‣ 1.1.1 Interpolação ‣ 1.1 Interpolação e projeção ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.23</span></a>), obtemos</p>
+<p class="ltx_p">Agora, usando as desigualdades de Cauchy-Schwarz e a estimativa padrão de interpolação (<a href="cap_mef1d_sec_interproj.html#Ch1.E23" title="(1.23) ‣ 1.1.1 Interpolação ‣ 1.1 Interpolação e projeção ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.23</span></a>), obtemos</p>
 <table id="Ch2.S4.EGx15" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
 
 <tr id="Ch1.E96" class="ltx_equation ltx_eqn_row ltx_align_baseline">
@@ -789,7 +789,7 @@ _{L^{2}(I_{i})}" display="inline"><mrow><mi></mi><mo>≤</mo><mrow><mi>C</mi><mo
 <a href="cap_mef1d_sec_interproj.html" title="1.1 Interpolação e projeção ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref" rel="prev"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">1.1 </span>Interpolação e projeção</span></a><a href="bib.html" title="Referências ‣ Método de Elementos Finitos" class="ltx_ref" rel="bibliography"><span class="ltx_text ltx_ref_title">Referências</span></a><a href="cap_mef1d_sec_cc.html" title="1.3 Condições de contorno ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref" rel="next"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">1.3 </span>Condições de contorno</span></a>
 </div>
 <div class="ltx_page_logo">
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />O texto acima está sob Licença <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR">Creative Commons Atribuição-CompartilhaIgual 4.0 Internacional</a>. Generated  on Mon Jan 28 11:03:07 2019 by <a href="http://dlmf.nist.gov/LaTeXML/">LaTeXML <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg==" alt="[LOGO]"></a>
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />O texto acima está sob Licença <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR">Creative Commons Atribuição-CompartilhaIgual 4.0 Internacional</a>. Generated  on Tue Jan 29 13:41:46 2019 by <a href="http://dlmf.nist.gov/LaTeXML/">LaTeXML <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg==" alt="[LOGO]"></a>
 </div></footer>
 </div>
 </div><!-- div class="row" -->

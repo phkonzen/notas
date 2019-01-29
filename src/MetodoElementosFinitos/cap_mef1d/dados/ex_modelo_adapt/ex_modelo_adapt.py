@@ -44,16 +44,17 @@ for iter in np.arange(6):
     DG = FunctionSpace(mesh, "DG", 0)
     v = TestFunction(DG)
     a = CellVolume(mesh)
-    eta = assemble(f**2*v*a*dx).array()
+    eta = assemble(f**2*v*a*dx)
 
     # refinamento da malha
     cell_markers = MeshFunction("bool", mesh, mesh.topology().dim(), False)
-    eta_max = np.amax(eta)
+    eta_max = np.amax(eta[:])
+    print(eta_max)
     print("%d %d %1.1E\n" % (iter,mesh.num_cells(),eta_max))
     alpha = 0.5
     for i,cell in enumerate(cells(mesh)):
         if (eta[i] > alpha*eta_max):
             cell_markers[cell] = True
 
-    mesh = adapt(mesh, cell_markers)
-    V = adapt(V,mesh)
+    mesh = refine(mesh, cell_markers)
+    V = FunctionSpace(mesh, 'P', 1)
