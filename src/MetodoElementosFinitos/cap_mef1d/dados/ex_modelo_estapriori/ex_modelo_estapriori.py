@@ -26,7 +26,7 @@ def solver(n):
     u = Function(V)
     solve(a == L, u, bc)
 
-    return u
+    return u, mesh
 
 #sol analitica
 ua = Expression('-x[0]*x[0]/2+x[0]/2',
@@ -35,15 +35,15 @@ ua = Expression('-x[0]*x[0]/2+x[0]/2',
 
 lerrors=[]
 for n in [2,4,8,16,32,64,128]:
-    u = solver(n)
-    e = errornorm(u,ua,norm_type='H10')
+    u, mesh = solver(n)
+    e = errornorm(u,ua,norm_type='H10',mesh=mesh)
     lerrors.append(e)
 
 plt.plot([2,4,8,16,32,64,128],lerrors)
-plt.xscale('log',base=2)
+plt.xscale('log',basex=2)
 #plt.yscale('log',base=2)
 plt.xlabel(r"$n$")
-plt.ylabel(r"$\|(u-u_h)'\|_{L^2(I)}$")
+plt.ylabel(r"$|\!|(u-u_h)'|\!|_{L^2(I)}$")
 plt.xlim((2,128))
 plt.xticks([2,4,8,16,32,64,128],[2,4,8,16,32,64,128])
 plt.grid('on')
