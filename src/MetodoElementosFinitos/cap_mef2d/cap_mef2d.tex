@@ -9,23 +9,23 @@
 
 Seja $\Omega\subset \mathbb{R}^2$ um domínio limitado com fronteira $\p\Omega$ suave e poligonal. Uma malha (ou triangularização) $\mathcal{K}$ de $\Omega$ é um conjunto de $\{K\}$ células (ou elementos) $K$, tal que $\Omega = \cup_{K\in\mathcal{K}}K$ e tal que a interseção de duas células é ou um lado, um canto ou vazio.
 
-Classicamente as células $K$ são escolhidas como triângulos. O tamanho do lado de maior comprimento do triangulo $K$ define o chamado \emph{tamanho local da malha} $h_K$. O tamanho global da malha é definida por $h = \max_{K\in\mathcal{K}} h_K$.
+Classicamente as células $K$ são escolhidas como triângulos. O comprimento do maior lado do triangulo $K$ define o chamado \emph{tamanho local da malha} $h_K$. O tamanho global da malha é definida por $h = \max_{K\in\mathcal{K}} h_K$.
 
-Uma malha é dita \emph{regular} quando existe uma constante $c_0 > 0$ tal que $c_K > c_0$ para todo $K\in\mathcal{K}$, sendo $c_K := h_K/d_k$ e $d_K$ o diâmetro do circulo inscrito em $K$. Esta condição significa que os triângulo $K$ da malha não podem ter ângulos muito grandes nem muito pequenos. Ao longo do texto, a menos que especificado o contrário, assumiremos trabalhar com malhas regulares.
+Uma malha é dita \emph{regular} quando existe uma constante $c_0 > 0$ tal que $c_K > c_0$ para todo $K\in\mathcal{K}$, sendo $c_K := h_K/d_K$ e $d_K$ o diâmetro do circulo inscrito em $K$. Esta condição significa que os triângulo $K$ da malha não podem ter ângulos muito grandes nem muito pequenos. Ao longo do texto, a menos que especificado o contrário, assumiremos trabalhar com malhas regulares.
 
 \subsection{Espaço dos polinômios lineares por partes}
 
 Seja $K$ um triângulo e seja $P_1(K)$ o espaço das funções lineares em $K$, i.e.
 \begin{equation}
-  P_1(K) = \{v;~v=c_0+c_1x_1+c_2x+2,~(x_1,x_2)\in K,~c_0,c_1,c_2\in\mathbb{R}\}.
+  P_1(K) = \{v;~v=c_0+c_1x_0+c_2x_1,~(x_0,x_1)\in K,~c_0,c_1,c_2\in\mathbb{R}\}.
 \end{equation}
 
-Observemos que toda função $v\in P_1(K)$ é unicamente determinada por seus valores nodais $\alpha_i = v(N_i)$, $i=0, 1, 2$, onde $N_i = (x_1^{(i)}, x_2^{(i)})$ é o $i$-ésimo nodo (vértice) do triângulo $K$. Isto segue do fato de que
+Observemos que toda função $v\in P_1(K)$ é unicamente determinada por seus valores nodais $\alpha_i = v(N_i)$, $i=0, 1, 2$, onde $N_i = (x_0^{(i)}, x_1^{(i)})$ é o $i$-ésimo nodo (vértice) do triângulo $K$. Isto segue do fato de que
 \begin{equation}
   \begin{bmatrix}
-    1 & x_1^{(1)} & x_2^{(1)}\\
-    1 & x_1^{(2)} & x_2^{(2)}\\
-    1 & x_1^{(3)} & x_2^{(2)}
+    1 & x_0^{(0)} & x_1^{(0)}\\
+    1 & x_0^{(1)} & x_1^{(1)}\\
+    1 & x_0^{(2)} & x_1^{(2)}
   \end{bmatrix}
   \begin{bmatrix}
     c_0\\
@@ -33,14 +33,14 @@ Observemos que toda função $v\in P_1(K)$ é unicamente determinada por seus va
     c_2
   \end{bmatrix} = 
   \begin{bmatrix}
+    \alpha_0\\
     \alpha_1\\
-    \alpha_2\\
-    \alpha_3
+    \alpha_2
   \end{bmatrix}
 \end{equation}
 Computando o valor absoluto do determinante da matriz de coeficientes, obtemos $2|K|$, onde $|K|$ denota a área de $K$, a qual é não nula.
 
-Afim de usarmos os valores nodais como graus de liberdade (incógnitas), nós introduzimos a seguinte base nodal $\{\lambda_1, \lambda_2, \lambda_3\}$ com
+Afim de usarmos os valores nodais como graus de liberdade (incógnitas), nós introduzimos a seguinte base nodal $\{\lambda_0, \lambda_1, \lambda_2\}$ com
 \begin{equation}
   \lambda_j(N_i) = \left\{
     \begin{array}{ll}
@@ -51,7 +51,7 @@ Afim de usarmos os valores nodais como graus de liberdade (incógnitas), nós in
 \end{equation}
 Com esta base, toda função $v\in P_1(K)$ pode ser escrita como
 \begin{equation}
-  v = \alpha_1\lambda_1 + \alpha_2\lambda_2 + \alpha_3\lambda_3,
+  v = \alpha_0\lambda_0 + \alpha_1\lambda_1 + \alpha_2\lambda_2,
 \end{equation}
 onde $\alpha_i = v(N_i)$.
 
@@ -62,9 +62,9 @@ O espaço contínuo dos polinômios lineares por partes na malha $\mathcal{K}$ �
   V_h = \{v;~v\in C^0(\Omega),~v|_K\in P_1(K),~\forall K\in\mathcal{K}\}.
 \end{equation}
 
-Observemos que toda função $v\in V_h$ é unicamente determinada por seus valores nodais $\{v(N_j)\}_{j=1}^{n_p}$, onde $n_p$ é número de nodos da malha $\mathcal{K}$. De fato, os valores nodais determinam uma única função em $P_1(K)$ para cada $K\in\mathcal{K}$ e, portanto, uma função em $V_h$ é unicamente determinada por seus valores nos nodos. Agora, consideremos dois triângulos $K_1$ e $K_2$ compartilhando um lado $E = K_1\cap K_2$. Sejam $v_1$ e $v_2$ os dois únicos polinômios em $v_1\in P_1(K_1)$ e $v_2\in P_2(K_2)$, respectivamente determinados pelos valores nodais em $K_1$ e $K_2$. Como $v_1$ e $v_2$ também são polinômios lineares em $E$ e seus valores coincidem nos nodos de $E$, temos $v_1 = v_2$. Portanto, concluímos que toda função $v\in V_h$ é unicamente determinada por seus valores nodais.
+Observemos que toda função $v\in V_h$ é unicamente determinada por seus valores nodais $\{v(N_j)\}_{j=0}^{n_p-1}$, onde $n_p$ é número de nodos da malha $\mathcal{K}$. De fato, os valores nodais determinam uma única função em $P_1(K)$ para cada $K\in\mathcal{K}$ e, portanto, uma função em $V_h$ é unicamente determinada por seus valores nos nodos. Agora, consideremos dois triângulos $K_1$ e $K_2$ compartilhando um lado $E = K_1\cap K_2$. Sejam $v_1$ e $v_2$ os dois únicos polinômios em $v_1\in P_1(K_1)$ e $v_2\in P_2(K_2)$, respectivamente determinados pelos valores nodais em $K_1$ e $K_2$. Como $v_1$ e $v_2$ também são polinômios lineares em $E$ e seus valores coincidem nos nodos de $E$, temos $v_1 = v_2$. Portanto, concluímos que toda função $v\in V_h$ é unicamente determinada por seus valores nodais.
 
-Afim de termos os valores nodais como graus de liberdade (incógnitas), definimos a base nodas $\{\phi_j\}_{j=1}^{n_p}\subset V_h$ tal que
+Afim de termos os valores nodais como graus de liberdade (incógnitas), definimos a base nodas $\{\varphi_j\}_{j=1}^{n_p}\subset V_h$ tal que
 \begin{equation}
   \varphi_j(N_i) = \left\{
     \begin{array}{ll}
@@ -73,7 +73,7 @@ Afim de termos os valores nodais como graus de liberdade (incógnitas), definimo
     \end{array}
 \right.,~i,j=0, 1, \dotsc, n_p-1.
 \end{equation}
-Notemos que cada função base $\phi_j$ é contínua, linear por partes e com suporte somente em um pequeno conjunto de triângulos que compartilham o nodo $N_j$. Além disso, todo a função $v\in V_h$ pode, então, ser escrita como
+Notemos que cada função base $\varphi_j$ é contínua, linear por partes e com suporte somente em um pequeno conjunto de triângulos que compartilham o nodo $N_j$. Além disso, todo a função $v\in V_h$ pode, então, ser escrita como
 \begin{equation}
   v = \sum_{i=0}^{n_p-1}\alpha_i\varphi_i,
 \end{equation}
@@ -99,7 +99,7 @@ Com o \fenics, podemos gerar esta malha com o seguinte \href{https://github.com/
 
 \subsection{Interpolação}
 
-Dada uma função contínua $f$ em um triângulo $K$ com nodos $N_i$, $i=0, 1, 2$, sua interpolação linear $\phi f \in P_1(K)$ é definida por
+Dada uma função contínua $f$ em um triângulo $K$ com nodos $N_i$, $i=0, 1, 2$, sua interpolação linear $\pi f \in P_1(K)$ é definida por
 \begin{equation}
   \pi f = \sum_{i=0}^3 f(N_i)\varphi_i.
 \end{equation}
@@ -107,11 +107,11 @@ Logo, temos $\pi f(N_i) = f(N_i)$ para todo $i=0, 1, 2$.
 
 Afim de determinarmos estimativas para o erro de interpolação, precisamos da chamada derivada total de primeira ordem
 \begin{equation}
-  Df = \left(\left|\frac{\p f}{\p x_1}\right|^2 + \left|\frac{\p f}{\p x_2}\right|^2\right)^{1/2},
+  Df = \left(\left|\frac{\p f}{\p x_0}\right|^2 + \left|\frac{\p f}{\p x_1}\right|^2\right)^{1/2},
 \end{equation}
 e da derivada total de segunda ordem
 \begin{equation}
-  D^2f = \left(\left|\frac{\p^2 f}{\p x_1^2}\right|^2 + \left|\frac{\p^2 f}{\p x_1\p x_2}\right|^2 + \left|\frac{\p^2 f}{\p x_2^2}\right|^2\right)^{1/2}.
+  D^2f = \left(\left|\frac{\p^2 f}{\p x_0^2}\right|^2 + \left|\frac{\p^2 f}{\p x_0\p x_1}\right|^2 + \left|\frac{\p^2 f}{\p x_1^2}\right|^2\right)^{1/2}.
 \end{equation}
 
 \begin{prop}\normalfont{(Erro da interpolação no espaço linear)}\label{prop:interpl}
@@ -293,7 +293,7 @@ e $\pmb{b} = (b_0, b_1, \cdots, b_{n_i-1})$ é o vetor de carga com
 \begin{ex}\label{ex:mef2d_pm}
   Consideremos o seguinte problema de Poisson
   \begin{align}
-    -\Delta u &= x_0(1-x_0)x_1(1-x_1),~x\in\Omega:=(0, 1)\times (0, 1),\\
+    -\Delta u &= 100x_0(1-x_0)x_1(1-x_1),~x\in\Omega:=(0, 1)\times (0, 1),\\
     u &= 0,~x\in\p\Omega.
   \end{align}
   Na Figura \ref{fig:mef2d_pm} temos um esboço da aproximação de elementos finitos obtida em uma malha uniforme com $20\times 20$ nodos. As isolinhas correspondem aos ponto tais que $u=3\times 10^{-1}, 2\times 10^{-1}$, $10^{-1}$, $5\times 10^{-2}$.
@@ -339,7 +339,7 @@ Com o \fenics, podemos computar a solução deste problema com o seguinte \href{
     &= \int_\Omega \nabla \left(\sum_{j=0}^{n_i-1}\xi_j\varphi_j\right)\cdot\nabla \left(\sum_{i=0}^{n_i-1}\xi_i\varphi_i\right)\,dx\\
     &= \left\|\nabla \left(\sum_{j=0}^{n_i-1}\xi_j\varphi_j\right) \right\|_{L^2(\Omega)}^2.
   \end{align}
-  Portanto, $\pmb{\xi}^TA\pmb{\xi} \leq 0$ e é nulo se, e somente se, $v = \sum_{j=0}^{n_i-1}\xi_j\varphi_j$ for constante. Como $v\in V_{h,0}$, temos que $v$ constante implica $v\equiv 0$, mas então $\pmb{\xi}=0$, o que é uma contradição. Logo, $\pmb{\xi}^TA\pmb{\xi} > 0$ para todo $\pmb{\xi}\in\mathbb{R}^{n_i}$, $\pmb{\xi}\neq 0$.
+  Portanto, $\pmb{\xi}^TA\pmb{\xi} \geq 0$ e é nulo se, e somente se, $v = \sum_{j=0}^{n_i-1}\xi_j\varphi_j$ for constante. Como $v\in V_{h,0}$, temos que $v$ constante implica $v\equiv 0$, mas então $\pmb{\xi}=0$, o que é uma contradição. Logo, $\pmb{\xi}^TA\pmb{\xi} > 0$ para todo $\pmb{\xi}\in\mathbb{R}^{n_i}$, $\pmb{\xi}\neq 0$.
 \end{dem}
 
 \begin{teo}\normalfont{(Existência e unicidade)}
@@ -403,9 +403,9 @@ para todo $v\in V_0$.
 \begin{dem}
   O resultado segue do Teorema da melhor aproximação (Teorema \ref{teo:mef2d_melhor_aprox}) e da estimativa do erro de interpolação (Proposição \ref{prop:interpc}), pois
   \begin{align}
-    \||u-u_h|\|^2 \leq \||u-\pi u|\|^2\\
-    = \|D(u-\pi u)\|_{L^2(\Omega)}^2\\
-    \leq C\sum_{K\in\mathcal{K}} h_K^2\|D^2u\|_{L^2(\Omega)}^2.
+    \||u-u_h|\|^2 &\leq \||u-\pi u|\|^2\\
+    &= \|D(u-\pi u)\|_{L^2(\Omega)}^2\\
+    &\leq C\sum_{K\in\mathcal{K}} h_K^2\|D^2u\|_{L^2(\Omega)}^2.
   \end{align}
 \end{dem}
 
@@ -452,9 +452,9 @@ onde $h = \max_{K\in\mathcal{K}} h_K$. Entretanto, esta estimativa pode ser melh
 Então, usando a fórmula de Green, a ortogonalidade de Galerkin e, então, a desigualdade de Cauchy-Schwarz, temos
 \begin{align}
   \|e^2\|_{L^2(\Omega)} &= -\int_\Omega e\Delta\phi\,dx\\
-  &=\int_\Omega \nabla e\cdot\nabla\phi\,dx - \int_{\p\Omega} en\cdot\nabla \phi\,ds\\
+  &=\int_\Omega \nabla e\cdot\nabla\phi\,dx - \int_{\p\Omega} e\,n\cdot\nabla \phi\,ds\\
   &=\int_\Omega \nabla e\cdot\nabla(\phi-\pi\phi)\,dx\\
-  \leq\|\nabla e\|_{L^2(\Omega)}\|\nabla(\phi-\pi\phi)\|_{L^2(\Omega)}.
+  &\leq\|\nabla e\|_{L^2(\Omega)}\|\nabla(\phi-\pi\phi)\|_{L^2(\Omega)}.
 \end{align}
 Da estimativa {\it a priori} \eqref{eq:mef2d_est_apriori} (que segue do Teorema \ref{teo:mef2d_est_apriori_energia}) temos
 \begin{equation}
@@ -536,7 +536,7 @@ Nesta última equação, temos usado a ortogonalidade de Galerkin (Teorema \ref{
   &= \sum_{K\in\mathcal{K}} \int_K (f + \Delta u_h)(e-\pi e)\,dx \nonumber\\
   &+ \int_{\p K\setminus\p\Omega} n\cdot\nabla e(e-\pi e)\,ds,\label{eq:aux_pos}
 \end{align}
-uma vez que $-\delta e|_{K} = f + \Delta u_h|_{K}$ e, ambos, $e$ e $\pi e$ se anulam em $\p \Omega$.
+uma vez que $-\Delta e|_{K} = f + \Delta u_h|_{K}$ e, ambos, $e$ e $\pi e$ se anulam em $\p \Omega$.
 
 Para computarmos o segundo termo do lado direito da ultima equação, observamos que o erro em lado $E$ recebe contribuições dos dois elementos $K^{\pm}$ que compartilham $E$. Com isso, temos
 \begin{align}
@@ -575,11 +575,7 @@ Com esta, a desigualdade de Cauchy-Schwarz e a estimativa padrão do erro de int
   \int_{\p K\setminus\p\Omega} [n\cdot\nabla u_h](e-\pi e)\,ds &\leq \|[n\cdot\nabla u_h]\|_{L^2(\p K)}\|e-\pi e\|_{L^2(\p K)}\\
   &\leq \|[n\cdot\nabla u_h]\|_{L^2(\p K)}C\left(h_K^{-1}\|e-\pi e\|_{L^2(K)}^2 \right.\nonumber\\
   &\left. + h_K\|D(e-\pi e)\|_{L^2(K)}^2\right)^{1/2}\\
-  &\leq \|[n\cdot \nabla u_h]\|_{L^2(\p K)}Ch_K^{1/2}\|De\|_{L^2(K)}.\label{eq:aux_pos2}.
+  &\leq \|[n\cdot \nabla u_h]\|_{L^2(\p K)}Ch_K^{1/2}\|De\|_{L^2(K)}.\label{eq:aux_pos2}
 \end{align}
 Daí, a estimativa segue das \eqref{eq:aux_pos1} e \eqref{eq:aux_pos2}.
 \end{dem}
-
-\subsection*{Exercícios}
-
-\emconstrucao
