@@ -94,6 +94,14 @@ class Index:
         body += ' | '
         body += '<a href="./MetodoElementosFinitos/main.pdf">PDF</a></li>'
         body += '</ul>\n'
+        #VetoresGeometriaAnalitica
+        body += '<li>Vetores e Geometria Analítica</li>\n'
+        body += '<ul class="list-unstyled">\n'
+        body += '<li>Versão corrente: '
+        body += '<a href="./VetoresGeometriaAnalitica/main.html">HTML</a>'
+        body += ' | '
+        body += '<a href="./VetoresGeometriaAnalitica/main.pdf">PDF</a></li>'
+        body += '</ul>\n'
         
         body += '</ul>\n'
 

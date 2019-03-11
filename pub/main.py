@@ -15,6 +15,7 @@ from sitemap import *
 from analisematematicai import *
 from matematicanumerica import *
 from metodoelementosfinitos import *
+from vetoresgeometriaanalitica import *
 
 #pastas temporárias
 odir = '.docs'
@@ -45,6 +46,7 @@ os.system('cp docs_readme.md ../docs/README.md')
 am = AnaliseMatematicaI(srcdir,odir)
 mn = MatematicaNumerica(srcdir,odir)
 ef = MetodoElementosFinitos(srcdir,odir)
+vgm = VetoresGeometriaAnalitica(srcdir,odir)
 
 def build(id):
     id.build()
@@ -52,7 +54,7 @@ def build(id):
 #pallelized region
 if __name__ == '__main__':
     p = Pool()
-    p.map(build,[am,mn,ef])
+    p.map(build,[am,mn,ef,vgm])
 
 #make sitemap.txt
 sm = SiteMap(odir)
