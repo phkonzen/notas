@@ -1,0 +1,798 @@
+<!DOCTYPE html><html lang="pt-BR">
+<head>
+<title>1.2 Problema modelo‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos</title>
+<!--Generated on Tue Mar 12 17:16:30 2019 by LaTeXML (version 0.8.2) http://dlmf.nist.gov/LaTeXML/.-->
+<!--Document created on 12 de março de 2019.-->
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="LaTeXML.css" type="text/css">
+<link rel="stylesheet" href="ltx-book.css" type="text/css">
+<link rel="stylesheet" href="ltx-ulem.css" type="text/css">
+<link rel="stylesheet" href="main.css" type="text/css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=MML_SVG" type="text/javascript"></script>
+<script src="mymathcfg.js" type="text/javascript"></script>
+<link rel="up" href="cap_mef1d.html" title="Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos">
+<link rel="up up" href="main.html" title="Método de Elementos Finitos">
+<link rel="start" href="main.html" title="Método de Elementos Finitos">
+<link rel="prev" href="cap_mef1d_sec_interproj.html" title="1.1 Interpolação e projeção ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos">
+<link rel="next" href="cap_mef1d_sec_cc.html" title="1.3 Condições de contorno ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos">
+<link rel="section" href="cap_mef1d_sec_interproj.html" title="1.1 Interpolação e projeção ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos">
+<link rel="section" href="cap_mef1d_sec_cc.html" title="1.3 Condições de contorno ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos">
+<link rel="section" href="cap_mef1d_sec_adapt.html" title="1.4 Malhas auto-adaptativas ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos">
+<link rel="section" href="cap_mef1d_sec_aps.html" title="1.5 Seleção de aplicações ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos">
+<link rel="chapter" href="licenca.html" title="Licença ‣ Método de Elementos Finitos">
+<link rel="chapter" href="prefacio.html" title="Prefácio ‣ Método de Elementos Finitos">
+<link rel="chapter" href="cap_mef1d.html" title="Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos">
+<link rel="chapter" href="cap_mef2d.html" title="Capítulo 2 Método de elementos finitos em 2D ‣ Método de Elementos Finitos">
+<link rel="bibliography" href="bib.html" title="Referências ‣ Método de Elementos Finitos">
+<meta name="author" content="Pedro H A Konzen"/>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="goodies.css" type="text/css">
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-17226092-2"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag("js", new Date());
+
+gtag("config", "UA-17226092-2")
+</script>
+</head>
+
+<body>
+
+<div class="row">
+<div class="col-xs-12 col-xs-offset-0 col-md-8 col-md-offset-2">
+
+
+<!-- begin: navbar -->
+<nav class="navbar navbar-default">
+<div class="container-fluid">
+<div class="navbar-header">
+<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+<span class="sr-only">Toggle navigation</span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+</button>
+<a class="navbar-brand" href="main.html">Notas de Aula<br/><small>Introdução ao Método de Elementos Finitos<small/></a>
+</div>
+
+<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+<ul class="nav navbar-nav">
+<li><a href="https://github.com/phkonzen/notas">Repositório GitHub</a></li>
+<li><a href="main.pdf">Baixar PDF</a></li>
+<li><a href="../index.html">Outras Notas & Infos</a></li>
+</ul>
+</div><!-- /.navbar-collapse -->
+</div><!-- /.container-fluid -->
+</nav>
+
+
+<!-- end: navbar -->
+
+
+
+<div class="ltx_page_main">
+<header class="ltx_page_header">
+<div>
+<a href="cap_mef1d.html" title="Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref" rel="up"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">1 </span>Método de elementos finitos em 1D</span></a><a href="cap_mef1d_sec_interproj.html" title="1.1 Interpolação e projeção ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref" rel="prev"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">1.1 </span>Interpolação e projeção</span></a><a href="cap_mef1d_sec_cc.html" title="1.3 Condições de contorno ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref" rel="next"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">1.3 </span>Condições de contorno</span></a>
+</div></header>
+<div class="ltx_page_content">
+<section class="ltx_section ltx_authors_1line">
+<h1 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">1.2 </span>Problema modelo<small><a href="https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/cap_mef1d.tex" target=_blank> <span class="glyphicon glyphicon-pencil"></span> </a><a href="../contato.html" target="_blank"> <span class="glyphicon glyphicon-envelope"></span> </a></small></h1>
+<div class="ltx_date ltx_role_creation"></div>
+
+<div id="p1" class="ltx_para">
+<p class="ltx_p">Nesta seção, discutiremos sobre a aplicação do método de elementos finitos para o seguinte problema de valor de contorno: encontrar <math id="p1.m1" class="ltx_Math" alttext="u" display="inline"><mi>u</mi></math> tal que</p>
+<table id="Ch2.S4.EGx9" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tr id="Ch1.E56" class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch1.E56.m1" class="ltx_Math" alttext="\displaystyle-u^{\prime\prime}" display="inline"><mrow><mo>-</mo><msup><mi>u</mi><mi>′′</mi></msup></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch1.E56.m2" class="ltx_Math" alttext="\displaystyle=f,\quad x\in I=[0,L]," display="inline"><mrow><mrow><mrow><mi></mi><mo>=</mo><mi>f</mi></mrow><mo rspace="12.5pt">,</mo><mrow><mi>x</mi><mo>∈</mo><mi>I</mi><mo>=</mo><mrow><mo stretchy="false">[</mo><mn>0</mn><mo>,</mo><mi>L</mi><mo stretchy="false">]</mo></mrow></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.56)</span></td>
+</tr>
+<tr id="Ch1.E57" class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch1.E57.m1" class="ltx_Math" alttext="\displaystyle u(0)" display="inline"><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch1.E57.m2" class="ltx_Math" alttext="\displaystyle=u(L)=0," display="inline"><mrow><mrow><mi></mi><mo>=</mo><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>0</mn></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.57)</span></td>
+</tr>
+</table>
+<p class="ltx_p">onde <math id="p1.m2" class="ltx_Math" alttext="f" display="inline"><mi>f</mi></math> é uma função dada.</p>
+</div>
+<section id="SS1" class="ltx_subsection">
+<h2 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">1.2.1 </span>Formulação fraca<small><a href="https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/cap_mef1d.tex" target=_blank> <span class="glyphicon glyphicon-pencil"></span> </a><a href="../contato.html" target="_blank"> <span class="glyphicon glyphicon-envelope"></span> </a></small></h2>
+
+<div id="SS1.p1" class="ltx_para">
+<p class="ltx_p">A derivação de um método de elementos finitos inicia-se da formulação fraca do problema em um espaço de funções apropriado. No caso do problema (<a href="#Ch1.E56" title="(1.56) ‣ 1.2 Problema modelo ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.56</span></a>)-(<a href="#Ch1.E57" title="(1.57) ‣ 1.2 Problema modelo ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.57</span></a>), tomamos o espaço
+</p>
+<table id="Ch1.E58" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch1.E58.m1" class="ltx_Math" alttext="V_{0}=\{v\in H^{1}(I):\leavevmode\nobreak\ v(0)=v(1)=0\}." display="block"><mrow><mrow><msub><mi>V</mi><mn>0</mn></msub><mo>=</mo><mrow><mo stretchy="false">{</mo><mrow><mi>v</mi><mo>∈</mo><mrow><msup><mi>H</mi><mn>1</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>I</mi><mo stretchy="false">)</mo></mrow></mrow></mrow><mo rspace="7.5pt">:</mo><mrow><mrow><mi>v</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mi>v</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>0</mn></mrow><mo stretchy="false">}</mo></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.58)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Ou seja, se <math id="SS1.p1.m1" class="ltx_Math" alttext="v\in H^{1}(I)" display="inline"><mrow><mi>v</mi><mo>∈</mo><mrow><msup><mi>H</mi><mn>1</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>I</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></math>, então <math id="SS1.p1.m2" class="ltx_Math" alttext="\|v\|_{L^{2}(I)}&lt;\infty" display="inline"><mrow><msub><mrow><mo>∥</mo><mi>v</mi><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>I</mi><mo stretchy="false">)</mo></mrow></mrow></msub><mo>&lt;</mo><mi mathvariant="normal">∞</mi></mrow></math>, <math id="SS1.p1.m3" class="ltx_Math" alttext="\|v^{\prime}\|_{L^{2}(I)}&lt;\infty" display="inline"><mrow><msub><mrow><mo>∥</mo><msup><mi>v</mi><mo>′</mo></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>I</mi><mo stretchy="false">)</mo></mrow></mrow></msub><mo>&lt;</mo><mi mathvariant="normal">∞</mi></mrow></math>, bem como <math id="SS1.p1.m4" class="ltx_Math" alttext="v" display="inline"><mi>v</mi></math> satisfaz as condições de contorno do problema.</p>
+</div>
+<div id="SS1.p2" class="ltx_para">
+<p class="ltx_p">A formulação fraca é, então, obtida multiplicando-se a equação (<a href="#Ch1.E56" title="(1.56) ‣ 1.2 Problema modelo ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.56</span></a>) por uma função teste <math id="SS1.p2.m1" class="ltx_Math" alttext="v\in V_{0}" display="inline"><mrow><mi>v</mi><mo>∈</mo><msub><mi>V</mi><mn>0</mn></msub></mrow></math> (arbitrária) e integrando-se por partes, i.e.</p>
+<table id="Ch2.S4.EGx10" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tr id="Ch1.E59" class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch1.E59.m1" class="ltx_Math" alttext="\displaystyle\int_{I}fv\,dx" display="inline"><mrow><mstyle displaystyle="true"><msub><mo largeop="true" symmetric="true">∫</mo><mi>I</mi></msub></mstyle><mrow><mi>f</mi><mo>⁢</mo><mpadded width="+1.7pt"><mi>v</mi></mpadded><mo>⁢</mo><mrow><mo>𝑑</mo><mi>x</mi></mrow></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch1.E59.m2" class="ltx_Math" alttext="\displaystyle=-\int_{I}u^{\prime\prime}v\,dx" display="inline"><mrow><mi></mi><mo>=</mo><mrow><mo>-</mo><mrow><mstyle displaystyle="true"><msub><mo largeop="true" symmetric="true">∫</mo><mi>I</mi></msub></mstyle><mrow><msup><mi>u</mi><mi>′′</mi></msup><mo>⁢</mo><mpadded width="+1.7pt"><mi>v</mi></mpadded><mo>⁢</mo><mrow><mo>𝑑</mo><mi>x</mi></mrow></mrow></mrow></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.59)</span></td>
+</tr>
+<tr id="Ch1.E60" class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch1.E60.m2" class="ltx_Math" alttext="\displaystyle=\int_{I}u^{\prime}v^{\prime}\,dx-u^{\prime}(L)v(L)+u^{\prime}(0)%
+v(0)" display="inline"><mrow><mi></mi><mo>=</mo><mrow><mrow><mrow><mstyle displaystyle="true"><msub><mo largeop="true" symmetric="true">∫</mo><mi>I</mi></msub></mstyle><mrow><msup><mi>u</mi><mo>′</mo></msup><mo>⁢</mo><mpadded width="+1.7pt"><msup><mi>v</mi><mo>′</mo></msup></mpadded><mo>⁢</mo><mrow><mo>𝑑</mo><mi>x</mi></mrow></mrow></mrow><mo>-</mo><mrow><msup><mi>u</mi><mo>′</mo></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mi>v</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow></mrow><mo>+</mo><mrow><msup><mi>u</mi><mo>′</mo></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mi>v</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.60)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Donde, das condições de contorno, temos</p>
+<table id="Ch1.E62" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch1.E62.m1" class="ltx_Math" alttext="\int_{I}u^{\prime}v^{\prime}\,dx=\int_{I}fv\,dx." display="block"><mrow><mrow><mrow><msub><mo largeop="true" symmetric="true">∫</mo><mi>I</mi></msub><mrow><msup><mi>u</mi><mo>′</mo></msup><mo>⁢</mo><mpadded width="+1.7pt"><msup><mi>v</mi><mo>′</mo></msup></mpadded><mo>⁢</mo><mrow><mo>𝑑</mo><mi>x</mi></mrow></mrow></mrow><mo>=</mo><mrow><msub><mo largeop="true" symmetric="true">∫</mo><mi>I</mi></msub><mrow><mi>f</mi><mo>⁢</mo><mpadded width="+1.7pt"><mi>v</mi></mpadded><mo>⁢</mo><mrow><mo>𝑑</mo><mi>x</mi></mrow></mrow></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.62)</span></td>
+</tr>
+</table>
+</div>
+<div id="SS1.p3" class="ltx_para">
+<p class="ltx_p">Desta forma, o problema fraco associado a (<a href="#Ch1.E56" title="(1.56) ‣ 1.2 Problema modelo ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.56</span></a>)-(<a href="#Ch1.E57" title="(1.57) ‣ 1.2 Problema modelo ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.57</span></a>) lê-se: encontrar <math id="SS1.p3.m1" class="ltx_Math" alttext="u\in V_{0}" display="inline"><mrow><mi>u</mi><mo>∈</mo><msub><mi>V</mi><mn>0</mn></msub></mrow></math> tal que</p>
+<table id="Ch1.E63" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch1.E63.m1" class="ltx_Math" alttext="a(u,v)=L(v),\quad\forall v\in V_{0}," display="block"><mrow><mrow><mrow><mrow><mi>a</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mi>L</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>v</mi><mo stretchy="false">)</mo></mrow></mrow></mrow><mo rspace="12.5pt">,</mo><mrow><mrow><mo>∀</mo><mi>v</mi></mrow><mo>∈</mo><msub><mi>V</mi><mn>0</mn></msub></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.63)</span></td>
+</tr>
+</table>
+<p class="ltx_p">onde</p>
+<table id="Ch2.S4.EGx11" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tr id="Ch1.E64" class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch1.E64.m1" class="ltx_Math" alttext="\displaystyle a(u,v)" display="inline"><mrow><mi>a</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="false">)</mo></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch1.E64.m2" class="ltx_Math" alttext="\displaystyle=\int_{I}u^{\prime}v^{\prime}\,dx" display="inline"><mrow><mi></mi><mo>=</mo><mrow><mstyle displaystyle="true"><msub><mo largeop="true" symmetric="true">∫</mo><mi>I</mi></msub></mstyle><mrow><msup><mi>u</mi><mo>′</mo></msup><mo>⁢</mo><mpadded width="+1.7pt"><msup><mi>v</mi><mo>′</mo></msup></mpadded><mo>⁢</mo><mrow><mo>𝑑</mo><mi>x</mi></mrow></mrow></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.64)</span></td>
+</tr>
+<tr id="Ch1.E65" class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch1.E65.m1" class="ltx_Math" alttext="\displaystyle L(v)" display="inline"><mrow><mi>L</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>v</mi><mo stretchy="false">)</mo></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch1.E65.m2" class="ltx_Math" alttext="\displaystyle=\int_{I}fv\,dx," display="inline"><mrow><mrow><mi></mi><mo>=</mo><mrow><mstyle displaystyle="true"><msub><mo largeop="true" symmetric="true">∫</mo><mi>I</mi></msub></mstyle><mrow><mi>f</mi><mo>⁢</mo><mpadded width="+1.7pt"><mi>v</mi></mpadded><mo>⁢</mo><mrow><mo>𝑑</mo><mi>x</mi></mrow></mrow></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.65)</span></td>
+</tr>
+</table>
+<p class="ltx_p">são chamadas de forma bilinear e forma linear, respectivamente.
+</p>
+</div>
+</section>
+<section id="SS2" class="ltx_subsection">
+<h2 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">1.2.2 </span>Formulação de elementos finitos<small><a href="https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/cap_mef1d.tex" target=_blank> <span class="glyphicon glyphicon-pencil"></span> </a><a href="../contato.html" target="_blank"> <span class="glyphicon glyphicon-envelope"></span> </a></small></h2>
+
+<div id="SS2.p1" class="ltx_para">
+<p class="ltx_p">Uma formulação de elementos finitos é um aproximação do problema fraco (<a href="#Ch1.E63" title="(1.63) ‣ 1.2.1 Formulação fraca ‣ 1.2 Problema modelo ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.63</span></a>) em um espaço de dimensão finita. Aqui, vamos usar o espaço <math id="SS2.p1.m1" class="ltx_Math" alttext="V_{h,0}" display="inline"><msub><mi>V</mi><mrow><mi>h</mi><mo>,</mo><mn>0</mn></mrow></msub></math> das funções lineares por partes em <math id="SS2.p1.m2" class="ltx_Math" alttext="I" display="inline"><mi>I</mi></math> que satisfazem as condições de contorno, i.e.</p>
+<table id="Ch1.E66" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch1.E66.m1" class="ltx_Math" alttext="V_{h,0}=\{v\in V_{h}:\leavevmode\nobreak\ v(0)=v(L)=0\}." display="block"><mrow><mrow><msub><mi>V</mi><mrow><mi>h</mi><mo>,</mo><mn>0</mn></mrow></msub><mo>=</mo><mrow><mo stretchy="false">{</mo><mrow><mi>v</mi><mo>∈</mo><msub><mi>V</mi><mi>h</mi></msub></mrow><mo rspace="7.5pt">:</mo><mrow><mrow><mi>v</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mi>v</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>0</mn></mrow><mo stretchy="false">}</mo></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.66)</span></td>
+</tr>
+</table>
+</div>
+<div id="SS2.p2" class="ltx_para">
+<p class="ltx_p">Então, substituindo o espaço <math id="SS2.p2.m1" class="ltx_Math" alttext="V_{0}" display="inline"><msub><mi>V</mi><mn>0</mn></msub></math> pelo subespaço <math id="SS2.p2.m2" class="ltx_Math" alttext="V_{h,0}\subset V_{0}" display="inline"><mrow><msub><mi>V</mi><mrow><mi>h</mi><mo>,</mo><mn>0</mn></mrow></msub><mo>⊂</mo><msub><mi>V</mi><mn>0</mn></msub></mrow></math> em (<a href="#Ch1.E63" title="(1.63) ‣ 1.2.1 Formulação fraca ‣ 1.2 Problema modelo ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.63</span></a>), obtemos o seguinte problema de elementos finitos: encontrar <math id="SS2.p2.m3" class="ltx_Math" alttext="u_{h}\in V_{h,0}" display="inline"><mrow><msub><mi>u</mi><mi>h</mi></msub><mo>∈</mo><msub><mi>V</mi><mrow><mi>h</mi><mo>,</mo><mn>0</mn></mrow></msub></mrow></math> tal que</p>
+<table id="Ch1.E67" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch1.E67.m1" class="ltx_Math" alttext="a(u_{h},v)=L(v),\quad\forall v\in V_{h,0}." display="block"><mrow><mrow><mrow><mrow><mi>a</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>u</mi><mi>h</mi></msub><mo>,</mo><mi>v</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mi>L</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>v</mi><mo stretchy="false">)</mo></mrow></mrow></mrow><mo rspace="12.5pt">,</mo><mrow><mrow><mo>∀</mo><mi>v</mi></mrow><mo>∈</mo><msub><mi>V</mi><mrow><mi>h</mi><mo>,</mo><mn>0</mn></mrow></msub></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.67)</span></td>
+</tr>
+</table>
+</div>
+<div id="Thmobs1" class="ltx_theorem ltx_theorem_obs">
+<h6 class="ltx_title ltx_runin ltx_font_bold ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem">Observação 1.2.1</span>.</h6>
+<div id="Thmobs1.p1" class="ltx_para">
+<p class="ltx_p">A formulação de elementos finitos não é única, podendo-se trabalhar com outros espaços de funções. No caso em que o espaço da solução é igual ao espaço das funções testes, a abordagem é chamada de método de Galerkin<span class="ltx_note ltx_role_footnote"><sup class="ltx_note_mark">3</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">3</sup>Boris Grigoryevich Galerkin, matemático e engenheiro soviético. Fonte: <a href="https://pt.wikipedia.org/wiki/Boris_Galerkin" title="" class="ltx_ref">Wikipédia</a>.</span></span></span>.</p>
+</div>
+</div>
+<div id="SS2.p3" class="ltx_para">
+<p class="ltx_p">Observemos que o problema (<a href="#Ch1.E67" title="(1.67) ‣ 1.2.2 Formulação de elementos finitos ‣ 1.2 Problema modelo ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.67</span></a>) é equivalente a: encontrar <math id="SS2.p3.m1" class="ltx_Math" alttext="u_{h}\in V_{h,0}" display="inline"><mrow><msub><mi>u</mi><mi>h</mi></msub><mo>∈</mo><msub><mi>V</mi><mrow><mi>h</mi><mo>,</mo><mn>0</mn></mrow></msub></mrow></math> tal que</p>
+<table id="Ch1.E68" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch1.E68.m1" class="ltx_Math" alttext="a(u_{h},\varphi_{i})=L(\varphi_{i}),\quad i=1,\ldots,n-1," display="block"><mrow><mrow><mrow><mrow><mi>a</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>u</mi><mi>h</mi></msub><mo>,</mo><msub><mi>φ</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mi>L</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>φ</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow></mrow><mo rspace="12.5pt">,</mo><mrow><mi>i</mi><mo>=</mo><mrow><mn>1</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mrow><mi>n</mi><mo>-</mo><mn>1</mn></mrow></mrow></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.68)</span></td>
+</tr>
+</table>
+<p class="ltx_p">onde <math id="SS2.p3.m2" class="ltx_Math" alttext="\varphi_{i}" display="inline"><msub><mi>φ</mi><mi>i</mi></msub></math>, <math id="SS2.p3.m3" class="ltx_Math" alttext="i=1,\ldots,n-1" display="inline"><mrow><mi>i</mi><mo>=</mo><mrow><mn>1</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mrow><mi>n</mi><mo>-</mo><mn>1</mn></mrow></mrow></mrow></math>, são as funções base de <math id="SS2.p3.m4" class="ltx_Math" alttext="V_{h,0}" display="inline"><msub><mi>V</mi><mrow><mi>h</mi><mo>,</mo><mn>0</mn></mrow></msub></math>. Então, como <math id="SS2.p3.m5" class="ltx_Math" alttext="u_{h}\in V_{h,0}" display="inline"><mrow><msub><mi>u</mi><mi>h</mi></msub><mo>∈</mo><msub><mi>V</mi><mrow><mi>h</mi><mo>,</mo><mn>0</mn></mrow></msub></mrow></math>, temos</p>
+<table id="Ch1.E69" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch1.E69.m1" class="ltx_Math" alttext="u_{h}=\sum_{j=1}^{n-1}\xi_{j}\varphi_{j}," display="block"><mrow><mrow><msub><mi>u</mi><mi>h</mi></msub><mo>=</mo><mrow><munderover><mo largeop="true" movablelimits="false" symmetric="true">∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>n</mi><mo>-</mo><mn>1</mn></mrow></munderover><mrow><msub><mi>ξ</mi><mi>j</mi></msub><mo>⁢</mo><msub><mi>φ</mi><mi>j</mi></msub></mrow></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.69)</span></td>
+</tr>
+</table>
+<p class="ltx_p">onde <math id="SS2.p3.m6" class="ltx_Math" alttext="\xi_{j}" display="inline"><msub><mi>ξ</mi><mi>j</mi></msub></math>, <math id="SS2.p3.m7" class="ltx_Math" alttext="j=1,2,\ldots,n-1" display="inline"><mrow><mi>j</mi><mo>=</mo><mrow><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mrow><mi>n</mi><mo>-</mo><mn>1</mn></mrow></mrow></mrow></math>, são incógnitas a determinar. I.e., ao computarmos <math id="SS2.p3.m8" class="ltx_Math" alttext="\xi_{j}" display="inline"><msub><mi>ξ</mi><mi>j</mi></msub></math>, <math id="SS2.p3.m9" class="ltx_Math" alttext="j=1,2,\ldots,n-1" display="inline"><mrow><mi>j</mi><mo>=</mo><mrow><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mrow><mi>n</mi><mo>-</mo><mn>1</mn></mrow></mrow></mrow></math>, temos obtido a solução <math id="SS2.p3.m10" class="ltx_Math" alttext="u_{h}" display="inline"><msub><mi>u</mi><mi>h</mi></msub></math> do problema de elementos finitos <a href="#Ch1.E67" title="(1.67) ‣ 1.2.2 Formulação de elementos finitos ‣ 1.2 Problema modelo ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.67</span></a>.</p>
+</div>
+<div id="SS2.p4" class="ltx_para">
+<p class="ltx_p">Agora, da forma bilinear (<a href="#Ch1.E64" title="(1.64) ‣ 1.2.1 Formulação fraca ‣ 1.2 Problema modelo ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.64</span></a>), temos</p>
+<table id="Ch2.S4.EGx12" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tr id="Ch1.E70" class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch1.E70.m1" class="ltx_Math" alttext="\displaystyle a(u_{h},\varphi_{i})" display="inline"><mrow><mi>a</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>u</mi><mi>h</mi></msub><mo>,</mo><msub><mi>φ</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch1.E70.m2" class="ltx_Math" alttext="\displaystyle=a\left(\sum_{j=1}^{n-1}\xi_{j}\varphi_{j},\varphi_{i}\right)" display="inline"><mrow><mi></mi><mo>=</mo><mrow><mi>a</mi><mo>⁢</mo><mrow><mo>(</mo><mrow><mstyle displaystyle="true"><munderover><mo largeop="true" movablelimits="false" symmetric="true">∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>n</mi><mo>-</mo><mn>1</mn></mrow></munderover></mstyle><mrow><msub><mi>ξ</mi><mi>j</mi></msub><mo>⁢</mo><msub><mi>φ</mi><mi>j</mi></msub></mrow></mrow><mo>,</mo><msub><mi>φ</mi><mi>i</mi></msub><mo>)</mo></mrow></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.70)</span></td>
+</tr>
+<tr id="Ch1.E71" class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch1.E71.m2" class="ltx_Math" alttext="\displaystyle=\sum_{j=1}^{n-1}\xi_{j}a(\varphi_{j},\varphi_{i})." display="inline"><mrow><mrow><mi></mi><mo>=</mo><mrow><mstyle displaystyle="true"><munderover><mo largeop="true" movablelimits="false" symmetric="true">∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>n</mi><mo>-</mo><mn>1</mn></mrow></munderover></mstyle><mrow><msub><mi>ξ</mi><mi>j</mi></msub><mo>⁢</mo><mi>a</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>φ</mi><mi>j</mi></msub><mo>,</mo><msub><mi>φ</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.71)</span></td>
+</tr>
+</table>
+</div>
+<div id="SS2.p5" class="ltx_para">
+<p class="ltx_p">Daí, o problema (<a href="#Ch1.E67" title="(1.67) ‣ 1.2.2 Formulação de elementos finitos ‣ 1.2 Problema modelo ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.67</span></a>) é equivalente a resolvermos o seguinte sistema de equações lineares</p>
+<table id="Ch1.E72" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch1.E72.m1" class="ltx_Math" alttext="A\xi=b," display="block"><mrow><mrow><mrow><mi>A</mi><mo>⁢</mo><mi>ξ</mi></mrow><mo>=</mo><mi>b</mi></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.72)</span></td>
+</tr>
+</table>
+<p class="ltx_p">onde <math id="SS2.p5.m1" class="ltx_Math" alttext="A=[a_{i,j}]_{i,j=1}^{n-1}" display="inline"><mrow><mi>A</mi><mo>=</mo><msubsup><mrow><mo stretchy="false">[</mo><msub><mi>a</mi><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow></msub><mo stretchy="false">]</mo></mrow><mrow><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow><mo>=</mo><mn>1</mn></mrow><mrow><mi>n</mi><mo>-</mo><mn>1</mn></mrow></msubsup></mrow></math> é a matriz de rigidez com</p>
+<table id="Ch1.E73" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch1.E73.m1" class="ltx_Math" alttext="a_{i,j}=a(\varphi_{j},\varphi_{i})=\int_{I}\varphi_{j}^{\prime}\varphi_{i}^{%
+\prime}\,dx," display="block"><mrow><mrow><msub><mi>a</mi><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow></msub><mo>=</mo><mrow><mi>a</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>φ</mi><mi>j</mi></msub><mo>,</mo><msub><mi>φ</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><msub><mo largeop="true" symmetric="true">∫</mo><mi>I</mi></msub><mrow><msubsup><mi>φ</mi><mi>j</mi><mo>′</mo></msubsup><mo>⁢</mo><mpadded width="+1.7pt"><msubsup><mi>φ</mi><mi>i</mi><mo>′</mo></msubsup></mpadded><mo>⁢</mo><mrow><mo>𝑑</mo><mi>x</mi></mrow></mrow></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.73)</span></td>
+</tr>
+</table>
+<p class="ltx_p"><math id="SS2.p5.m2" class="ltx_Math" alttext="\xi=(\xi_{1},\xi_{2},\ldots,\xi_{n-1})" display="inline"><mrow><mi>ξ</mi><mo>=</mo><mrow><mo stretchy="false">(</mo><msub><mi>ξ</mi><mn>1</mn></msub><mo>,</mo><msub><mi>ξ</mi><mn>2</mn></msub><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><msub><mi>ξ</mi><mrow><mi>n</mi><mo>-</mo><mn>1</mn></mrow></msub><mo stretchy="false">)</mo></mrow></mrow></math> é o vetor das incógnitas e <math id="SS2.p5.m3" class="ltx_Math" alttext="b=(b_{i})_{i=1}^{n-1}" display="inline"><mrow><mi>b</mi><mo>=</mo><msubsup><mrow><mo stretchy="false">(</mo><msub><mi>b</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>n</mi><mo>-</mo><mn>1</mn></mrow></msubsup></mrow></math> é o vetor de carregamento com</p>
+<table id="Ch1.E74" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch1.E74.m1" class="ltx_Math" alttext="b_{i}=L(\varphi_{i})=\int_{I}\varphi_{i}\,dx." display="block"><mrow><mrow><msub><mi>b</mi><mi>i</mi></msub><mo>=</mo><mrow><mi>L</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>φ</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><msub><mo largeop="true" symmetric="true">∫</mo><mi>I</mi></msub><mrow><mpadded width="+1.7pt"><msub><mi>φ</mi><mi>i</mi></msub></mpadded><mo>⁢</mo><mrow><mo>𝑑</mo><mi>x</mi></mrow></mrow></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.74)</span></td>
+</tr>
+</table>
+</div>
+<div id="Thmex1" class="ltx_theorem ltx_theorem_ex">
+<h6 class="ltx_title ltx_runin ltx_font_bold ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem">Exemplo 1.2.1</span>.</h6>
+<div id="Thmex1.p1" class="ltx_para">
+<p class="ltx_p">Consideremos o problema (<a href="#Ch1.E56" title="(1.56) ‣ 1.2 Problema modelo ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.56</span></a>)-(<a href="#Ch1.E57" title="(1.57) ‣ 1.2 Problema modelo ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.57</span></a>) com <math id="Thmex1.p1.m1" class="ltx_Math" alttext="f\equiv 1" display="inline"><mrow><mi>f</mi><mo>≡</mo><mn>1</mn></mrow></math> e <math id="Thmex1.p1.m2" class="ltx_Math" alttext="L=1" display="inline"><mrow><mi>L</mi><mo>=</mo><mn>1</mn></mrow></math>, i.e.</p>
+<table id="Ch2.S4.EGx13" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tr id="Ch1.E75" class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch1.E75.m1" class="ltx_Math" alttext="\displaystyle-u^{\prime\prime}" display="inline"><mrow><mo>-</mo><msup><mi>u</mi><mi>′′</mi></msup></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch1.E75.m2" class="ltx_Math" alttext="\displaystyle=1,\quad x\in I=[0,1]," display="inline"><mrow><mrow><mrow><mi></mi><mo>=</mo><mn>1</mn></mrow><mo rspace="12.5pt">,</mo><mrow><mi>x</mi><mo>∈</mo><mi>I</mi><mo>=</mo><mrow><mo stretchy="false">[</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false">]</mo></mrow></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.75)</span></td>
+</tr>
+<tr id="Ch1.E76" class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch1.E76.m1" class="ltx_Math" alttext="\displaystyle u(0)" display="inline"><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch1.E76.m2" class="ltx_Math" alttext="\displaystyle=u(1)=0." display="inline"><mrow><mrow><mi></mi><mo>=</mo><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>0</mn></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.76)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Neste caso, a solução analítica <math id="Thmex1.p1.m3" class="ltx_Math" alttext="u(x)=-x^{2}/2+x/2" display="inline"><mrow><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mo>-</mo><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>/</mo><mn>2</mn></mrow></mrow><mo>+</mo><mrow><mi>x</mi><mo>/</mo><mn>2</mn></mrow></mrow></mrow></math> pode ser facilmente obtida por integração.</p>
+</div>
+<div id="Thmex1.p2" class="ltx_para">
+<p class="ltx_p">Agora, vamos computar uma aproximação de elementos finitos no espaço das funções lineares por partes <math id="Thmex1.p2.m1" class="ltx_Math" alttext="V_{h,0}=\{v\in P_{1}(I);\leavevmode\nobreak\ v(0)=v(1)=0\}" display="inline"><mrow><msub><mi>V</mi><mrow><mi>h</mi><mo>,</mo><mn>0</mn></mrow></msub><mo>=</mo><mrow><mo stretchy="false">{</mo><mi>v</mi><mo>∈</mo><msub><mi>P</mi><mn>1</mn></msub><mrow><mo stretchy="false">(</mo><mi>I</mi><mo stretchy="false">)</mo></mrow><mo rspace="7.5pt">;</mo><mi>v</mi><mrow><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo></mrow><mo>=</mo><mi>v</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><mo>=</mo><mn>0</mn><mo stretchy="false">}</mo></mrow></mrow></math> construído numa malha uniforme de <math id="Thmex1.p2.m2" class="ltx_Math" alttext="5" display="inline"><mn>5</mn></math> células no intervalo <math id="Thmex1.p2.m3" class="ltx_Math" alttext="I=[0,1]" display="inline"><mrow><mi>I</mi><mo>=</mo><mrow><mo stretchy="false">[</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false">]</mo></mrow></mrow></math>. Para tanto, consideramos o problema fraco: encontrar <math id="Thmex1.p2.m4" class="ltx_Math" alttext="u\in V_{0}=\{v\in H^{1}(I);\leavevmode\nobreak\ v(0)=v(L)=0\}" display="inline"><mrow><mi>u</mi><mo>∈</mo><msub><mi>V</mi><mn>0</mn></msub><mo>=</mo><mrow><mo stretchy="false">{</mo><mi>v</mi><mo>∈</mo><msup><mi>H</mi><mn>1</mn></msup><mrow><mo stretchy="false">(</mo><mi>I</mi><mo stretchy="false">)</mo></mrow><mo rspace="7.5pt">;</mo><mi>v</mi><mrow><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo></mrow><mo>=</mo><mi>v</mi><mrow><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow><mo>=</mo><mn>0</mn><mo stretchy="false">}</mo></mrow></mrow></math> tal que</p>
+<table id="Ch1.E77" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch1.E77.m1" class="ltx_Math" alttext="a(u,v)=L(v)," display="block"><mrow><mrow><mrow><mi>a</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mi>L</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>v</mi><mo stretchy="false">)</mo></mrow></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.77)</span></td>
+</tr>
+</table>
+<p class="ltx_p">onde</p>
+<table id="Ch1.E78" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch1.E78.m1" class="ltx_Math" alttext="a(u,v)=\int_{I}u^{\prime}v^{\prime}\,dx,\quad L(v)=\int_{I}fv\,dx." display="block"><mrow><mrow><mrow><mrow><mi>a</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><msub><mo largeop="true" symmetric="true">∫</mo><mi>I</mi></msub><mrow><msup><mi>u</mi><mo>′</mo></msup><mo>⁢</mo><mpadded width="+1.7pt"><msup><mi>v</mi><mo>′</mo></msup></mpadded><mo>⁢</mo><mrow><mo>𝑑</mo><mi>x</mi></mrow></mrow></mrow></mrow><mo rspace="12.5pt">,</mo><mrow><mrow><mi>L</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>v</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><msub><mo largeop="true" symmetric="true">∫</mo><mi>I</mi></msub><mrow><mi>f</mi><mo>⁢</mo><mpadded width="+1.7pt"><mi>v</mi></mpadded><mo>⁢</mo><mrow><mo>𝑑</mo><mi>x</mi></mrow></mrow></mrow></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.78)</span></td>
+</tr>
+</table>
+</div>
+<div id="Thmex1.p3" class="ltx_para">
+<p class="ltx_p">Então, a formulação de elementos finitos associada, lê-se: encontrar <math id="Thmex1.p3.m1" class="ltx_Math" alttext="u_{h}\in V_{h,0}" display="inline"><mrow><msub><mi>u</mi><mi>h</mi></msub><mo>∈</mo><msub><mi>V</mi><mrow><mi>h</mi><mo>,</mo><mn>0</mn></mrow></msub></mrow></math> tal que</p>
+<table id="Ch1.E79" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch1.E79.m1" class="ltx_Math" alttext="a(u_{h},v_{h})=L(v_{h}),\quad\forall v_{h}\in V_{h,0}." display="block"><mrow><mrow><mrow><mrow><mi>a</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>u</mi><mi>h</mi></msub><mo>,</mo><msub><mi>v</mi><mi>h</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mi>L</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>v</mi><mi>h</mi></msub><mo stretchy="false">)</mo></mrow></mrow></mrow><mo rspace="12.5pt">,</mo><mrow><mrow><mo>∀</mo><msub><mi>v</mi><mi>h</mi></msub></mrow><mo>∈</mo><msub><mi>V</mi><mrow><mi>h</mi><mo>,</mo><mn>0</mn></mrow></msub></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.79)</span></td>
+</tr>
+</table>
+<p class="ltx_p">A Figura <a href="#Ch1.F7" title="Figura 1.7 ‣ Exemplo 1.2.1. ‣ 1.2.2 Formulação de elementos finitos ‣ 1.2 Problema modelo ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.7</span></a> apresenta o esboço dos gráficos da solução analítica <math id="Thmex1.p3.m2" class="ltx_Math" alttext="u" display="inline"><mi>u</mi></math> e da sua aproximação de elementos finitos <math id="Thmex1.p3.m3" class="ltx_Math" alttext="u_{h}" display="inline"><msub><mi>u</mi><mi>h</mi></msub></math>.</p>
+</div>
+<figure id="Ch1.F7" class="ltx_figure"><img src="cap_mef1d/dados/ex_modelo/ex_modelo.jpg" id="Ch1.F7.g1" class="ltx_graphics ltx_centering" width="432" height="324" alt="">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figura 1.7: </span>Esboço dos gráficos das soluções referentes ao Exemplo <a href="#Thmex1" title="Exemplo 1.2.1. ‣ 1.2.2 Formulação de elementos finitos ‣ 1.2 Problema modelo ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.2.1</span></a>.</figcaption>
+</figure>
+<div id="Thmex1.p4" class="ltx_para">
+<p class="ltx_p">Com o <a href="https://fenicsproject.org/" title="" class="ltx_ref">FENiCS</a>, a computação do problema de elementos finitos pode ser feita com o seguinte <a href="https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/dados/ex_modelo/ex_modelo.py" title="" class="ltx_ref">código</a>:</p>
+<pre class="ltx_verbatim ltx_font_typewriter">from __future__ import print_function, division
+from fenics import *
+import numpy as np
+import matplotlib.pyplot as plt
+
+# malha
+mesh = IntervalMesh(5,0,1)
+
+# espaco
+V = FunctionSpace(mesh, ’P’, 1)
+
+# condicoes de contorno
+def boundary(x,on_boundary):
+    return on_boundary
+
+bc = DirichletBC(V,Constant(0.0),boundary)
+
+#MEF problem
+u = TrialFunction(V)
+v = TestFunction(V)
+f = Constant(1.0)
+a = u.dx(0)*v.dx(0)*dx
+L = f*v*dx
+
+#computa a sol
+u = Function(V)
+solve(a == L, u, bc)
+
+#grafico
+plot(u,marker="o",label="$u_h$")
+
+#sol analitica
+ua = Expression(’-x[0]*x[0]/2+x[0]/2’,
+               degree=2)
+xx = IntervalMesh(100,0,1)
+plot(ua,mesh=xx,label="$u$")
+plt.legend(numpoints=1)
+plt.grid(’on’)
+plt.show()
+</pre>
+</div>
+</div>
+</section>
+<section id="SS3" class="ltx_subsection">
+<h2 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">1.2.3 </span>Estimativa <span class="ltx_text ltx_font_italic">a priori</span>
+<small><a href="https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/cap_mef1d.tex" target=_blank> <span class="glyphicon glyphicon-pencil"></span> </a><a href="../contato.html" target="_blank"> <span class="glyphicon glyphicon-envelope"></span> </a></small></h2>
+
+<div id="SS3.p1" class="ltx_para">
+<p class="ltx_p">Existem dois tipos de estimativas do erro <math id="SS3.p1.m1" class="ltx_Math" alttext="e:=u-u_{h}" display="inline"><mrow><mi>e</mi><mo>:=</mo><mrow><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow></mrow></math>. Estimativas <span class="ltx_text ltx_font_italic">a priori</span>, são aqueles em que o erro é dado em relação da solução <math id="SS3.p1.m2" class="ltx_Math" alttext="u" display="inline"><mi>u</mi></math>, enquanto que nas estimativas <span class="ltx_text ltx_font_italic">a posteriori</span> o erro é expresso em relação a solução de elementos finitos <math id="SS3.p1.m3" class="ltx_Math" alttext="u_{h}" display="inline"><msub><mi>u</mi><mi>h</mi></msub></math>.</p>
+</div>
+<div id="Thmteo1" class="ltx_theorem ltx_theorem_teo">
+<h6 class="ltx_title ltx_runin ltx_font_bold ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem">Teorema 1.2.1</span>.</h6>
+<div id="Thmteo1.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">(</span>Ortogonalidade de Galerkin)
+A solução de elementos finitos <math id="Thmteo1.p1.m1" class="ltx_Math" alttext="u_{h}" display="inline"><msub><mi>u</mi><mi>h</mi></msub></math> de (<a href="#Ch1.E67" title="(1.67) ‣ 1.2.2 Formulação de elementos finitos ‣ 1.2 Problema modelo ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.67</span></a>) satisfaz a seguinte propriedade de ortogonalidade</p>
+<table id="Ch1.E80" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch1.E80.m1" class="ltx_Math" alttext="a(u-u_{h},v):=\int_{I}(u-u_{h})^{\prime}v^{\prime}\,dx=0,\quad v\in V_{h,0}," display="block"><mrow><mrow><mrow><mrow><mi>a</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo>,</mo><mi>v</mi><mo stretchy="false">)</mo></mrow></mrow><mo>:=</mo><mrow><msub><mo largeop="true" symmetric="true">∫</mo><mi>I</mi></msub><mrow><msup><mrow><mo stretchy="false">(</mo><mrow><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo stretchy="false">)</mo></mrow><mo>′</mo></msup><mo>⁢</mo><mpadded width="+1.7pt"><msup><mi>v</mi><mo>′</mo></msup></mpadded><mo>⁢</mo><mrow><mo>𝑑</mo><mi>x</mi></mrow></mrow></mrow><mo>=</mo><mn>0</mn></mrow><mo rspace="12.5pt">,</mo><mrow><mi>v</mi><mo>∈</mo><msub><mi>V</mi><mrow><mi>h</mi><mo>,</mo><mn>0</mn></mrow></msub></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.80)</span></td>
+</tr>
+</table>
+<p class="ltx_p">onde <math id="Thmteo1.p1.m2" class="ltx_Math" alttext="u" display="inline"><mi>u</mi></math> é a solução de (<a href="#Ch1.E63" title="(1.63) ‣ 1.2.1 Formulação fraca ‣ 1.2 Problema modelo ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.63</span></a>).</p>
+</div>
+</div>
+<div class="ltx_proof">
+<h6 class="ltx_title ltx_runin ltx_font_italic ltx_title_proof">Demonstração.</h6>
+<div id="SS3.p2" class="ltx_para">
+<p class="ltx_p">De (<a href="#Ch1.E67" title="(1.67) ‣ 1.2.2 Formulação de elementos finitos ‣ 1.2 Problema modelo ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.67</span></a>), (<a href="#Ch1.E63" title="(1.63) ‣ 1.2.1 Formulação fraca ‣ 1.2 Problema modelo ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.63</span></a>) e lembrando que <math id="SS3.p2.m1" class="ltx_Math" alttext="V_{h,0}\subset V_{0}" display="inline"><mrow><msub><mi>V</mi><mrow><mi>h</mi><mo>,</mo><mn>0</mn></mrow></msub><mo>⊂</mo><msub><mi>V</mi><mn>0</mn></msub></mrow></math>, temos</p>
+<table id="Ch1.E81" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch1.E81.m1" class="ltx_Math" alttext="a(u,v)=L(v)=a(u_{h},v)\Rightarrow a(u-u_{h},v)=0," display="block"><mrow><mrow><mrow><mi>a</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mi>L</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>v</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mi>a</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>u</mi><mi>h</mi></msub><mo>,</mo><mi>v</mi><mo stretchy="false">)</mo></mrow></mrow><mo>⇒</mo><mrow><mi>a</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo>,</mo><mi>v</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>0</mn></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.81)</span></td>
+</tr>
+</table>
+<p class="ltx_p">para todo <math id="SS3.p2.m2" class="ltx_Math" alttext="v\in V_{h,0}" display="inline"><mrow><mi>v</mi><mo>∈</mo><msub><mi>V</mi><mrow><mi>h</mi><mo>,</mo><mn>0</mn></mrow></msub></mrow></math>.
+∎</p>
+</div>
+</div>
+<div id="Thmteo2" class="ltx_theorem ltx_theorem_teo">
+<h6 class="ltx_title ltx_runin ltx_font_bold ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem">Teorema 1.2.2</span>.</h6>
+<div id="Thmteo2.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">(</span>A melhor aproximação)
+A solução de elementos finitos <math id="Thmteo2.p1.m1" class="ltx_Math" alttext="u_{h}" display="inline"><msub><mi>u</mi><mi>h</mi></msub></math> dada por (<a href="#Ch1.E67" title="(1.67) ‣ 1.2.2 Formulação de elementos finitos ‣ 1.2 Problema modelo ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.67</span></a>) satisfaz a seguinte propriedade de melhor aproximação</p>
+<table id="Ch1.E82" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch1.E82.m1" class="ltx_Math" alttext="\|(u-u_{h})^{\prime}\|_{L^{2}(I)}\leq\|(u-v)^{\prime}\|_{L^{2}(I)},\quad v\in V%
+_{h,0}," display="block"><mrow><mrow><mrow><msub><mrow><mo>∥</mo><msup><mrow><mo stretchy="false">(</mo><mrow><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo stretchy="false">)</mo></mrow><mo>′</mo></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>I</mi><mo stretchy="false">)</mo></mrow></mrow></msub><mo>≤</mo><msub><mrow><mo>∥</mo><msup><mrow><mo stretchy="false">(</mo><mrow><mi>u</mi><mo>-</mo><mi>v</mi></mrow><mo stretchy="false">)</mo></mrow><mo>′</mo></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>I</mi><mo stretchy="false">)</mo></mrow></mrow></msub></mrow><mo rspace="12.5pt">,</mo><mrow><mi>v</mi><mo>∈</mo><msub><mi>V</mi><mrow><mi>h</mi><mo>,</mo><mn>0</mn></mrow></msub></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.82)</span></td>
+</tr>
+</table>
+<p class="ltx_p">onde <math id="Thmteo2.p1.m2" class="ltx_Math" alttext="u" display="inline"><mi>u</mi></math> é a solução de (<a href="#Ch1.E63" title="(1.63) ‣ 1.2.1 Formulação fraca ‣ 1.2 Problema modelo ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.63</span></a>).</p>
+</div>
+</div>
+<div class="ltx_proof">
+<h6 class="ltx_title ltx_runin ltx_font_italic ltx_title_proof">Demonstração.</h6>
+<div id="SS3.p3" class="ltx_para">
+<p class="ltx_p">Escrevendo <math id="SS3.p3.m1" class="ltx_Math" alttext="u-u_{h}=u-v+v-u_{h}" display="inline"><mrow><mrow><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo>=</mo><mrow><mrow><mrow><mi>u</mi><mo>-</mo><mi>v</mi></mrow><mo>+</mo><mi>v</mi></mrow><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow></mrow></math> para qualquer <math id="SS3.p3.m2" class="ltx_Math" alttext="v\in V_{h,0}" display="inline"><mrow><mi>v</mi><mo>∈</mo><msub><mi>V</mi><mrow><mi>h</mi><mo>,</mo><mn>0</mn></mrow></msub></mrow></math> e usando a ortogonalidade de Galerkin (Teorema <a href="#Thmteo1" title="Teorema 1.2.1. ‣ 1.2.3 Estimativa a priori ‣ 1.2 Problema modelo ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.2.1</span></a>), temos</p>
+<table id="Ch2.S4.EGx14" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tr id="Ch1.E83" class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch1.E83.m1" class="ltx_Math" alttext="\displaystyle\|(u-u_{h})^{\prime}\|_{L^{2}(I)}^{2}" display="inline"><msubsup><mrow><mo>∥</mo><msup><mrow><mo stretchy="false">(</mo><mrow><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo stretchy="false">)</mo></mrow><mo>′</mo></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>I</mi><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch1.E83.m2" class="ltx_Math" alttext="\displaystyle=\int_{I}(u-u_{h})^{\prime}(u-u_{h})^{\prime}\,dx" display="inline"><mrow><mi></mi><mo>=</mo><mrow><mstyle displaystyle="true"><msub><mo largeop="true" symmetric="true">∫</mo><mi>I</mi></msub></mstyle><mrow><msup><mrow><mo stretchy="false">(</mo><mrow><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo stretchy="false">)</mo></mrow><mo>′</mo></msup><mo>⁢</mo><mpadded width="+1.7pt"><msup><mrow><mo stretchy="false">(</mo><mrow><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo stretchy="false">)</mo></mrow><mo>′</mo></msup></mpadded><mo>⁢</mo><mrow><mo>𝑑</mo><mi>x</mi></mrow></mrow></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.83)</span></td>
+</tr>
+<tr id="Ch1.E84" class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch1.E84.m2" class="ltx_Math" alttext="\displaystyle=\int_{I}(u-u_{h})^{\prime}(u-v+v-u_{h})^{\prime}\,dx" display="inline"><mrow><mi></mi><mo>=</mo><mrow><mstyle displaystyle="true"><msub><mo largeop="true" symmetric="true">∫</mo><mi>I</mi></msub></mstyle><mrow><msup><mrow><mo stretchy="false">(</mo><mrow><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo stretchy="false">)</mo></mrow><mo>′</mo></msup><mo>⁢</mo><mpadded width="+1.7pt"><msup><mrow><mo stretchy="false">(</mo><mrow><mrow><mrow><mi>u</mi><mo>-</mo><mi>v</mi></mrow><mo>+</mo><mi>v</mi></mrow><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo stretchy="false">)</mo></mrow><mo>′</mo></msup></mpadded><mo>⁢</mo><mrow><mo>𝑑</mo><mi>x</mi></mrow></mrow></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.84)</span></td>
+</tr>
+<tr id="Ch1.E85" class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch1.E85.m2" class="ltx_Math" alttext="\displaystyle=\int_{I}(u-u_{h})^{\prime}(u-v)^{\prime}\,dx+\int_{I}(u-u_{h})^{%
+\prime}(v-u_{h})^{\prime}\,dx" display="inline"><mrow><mi></mi><mo>=</mo><mrow><mrow><mstyle displaystyle="true"><msub><mo largeop="true" symmetric="true">∫</mo><mi>I</mi></msub></mstyle><mrow><msup><mrow><mo stretchy="false">(</mo><mrow><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo stretchy="false">)</mo></mrow><mo>′</mo></msup><mo>⁢</mo><mpadded width="+1.7pt"><msup><mrow><mo stretchy="false">(</mo><mrow><mi>u</mi><mo>-</mo><mi>v</mi></mrow><mo stretchy="false">)</mo></mrow><mo>′</mo></msup></mpadded><mo>⁢</mo><mrow><mo>𝑑</mo><mi>x</mi></mrow></mrow></mrow><mo>+</mo><mrow><mstyle displaystyle="true"><msub><mo largeop="true" symmetric="true">∫</mo><mi>I</mi></msub></mstyle><mrow><msup><mrow><mo stretchy="false">(</mo><mrow><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo stretchy="false">)</mo></mrow><mo>′</mo></msup><mo>⁢</mo><mpadded width="+1.7pt"><msup><mrow><mo stretchy="false">(</mo><mrow><mi>v</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo stretchy="false">)</mo></mrow><mo>′</mo></msup></mpadded><mo>⁢</mo><mrow><mo>𝑑</mo><mi>x</mi></mrow></mrow></mrow></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.85)</span></td>
+</tr>
+<tr id="Ch1.E86" class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch1.E86.m2" class="ltx_Math" alttext="\displaystyle=\int_{I}(u-u_{h})^{\prime}(u-v)^{\prime}\,dx" display="inline"><mrow><mi></mi><mo>=</mo><mrow><mstyle displaystyle="true"><msub><mo largeop="true" symmetric="true">∫</mo><mi>I</mi></msub></mstyle><mrow><msup><mrow><mo stretchy="false">(</mo><mrow><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo stretchy="false">)</mo></mrow><mo>′</mo></msup><mo>⁢</mo><mpadded width="+1.7pt"><msup><mrow><mo stretchy="false">(</mo><mrow><mi>u</mi><mo>-</mo><mi>v</mi></mrow><mo stretchy="false">)</mo></mrow><mo>′</mo></msup></mpadded><mo>⁢</mo><mrow><mo>𝑑</mo><mi>x</mi></mrow></mrow></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.86)</span></td>
+</tr>
+<tr id="Ch1.E87" class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch1.E87.m2" class="ltx_Math" alttext="\displaystyle\leq\|(u-u_{h})^{\prime}\|_{L^{2}(I)}\|(u-v)^{\prime}\|_{L^{2}(I)}." display="inline"><mrow><mrow><mi></mi><mo>≤</mo><mrow><msub><mrow><mo>∥</mo><msup><mrow><mo stretchy="false">(</mo><mrow><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo stretchy="false">)</mo></mrow><mo>′</mo></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>I</mi><mo stretchy="false">)</mo></mrow></mrow></msub><mo>⁢</mo><msub><mrow><mo>∥</mo><msup><mrow><mo stretchy="false">(</mo><mrow><mi>u</mi><mo>-</mo><mi>v</mi></mrow><mo stretchy="false">)</mo></mrow><mo>′</mo></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>I</mi><mo stretchy="false">)</mo></mrow></mrow></msub></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.87)</span></td>
+</tr>
+</table>
+<p class="ltx_p">∎</p>
+</div>
+</div>
+<div id="Thmteo3" class="ltx_theorem ltx_theorem_teo">
+<h6 class="ltx_title ltx_runin ltx_font_bold ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem">Teorema 1.2.3</span>.</h6>
+<div id="Thmteo3.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">(</span>Estimativa <span class="ltx_text ltx_font_italic">a priori</span>)
+O erro em se aproximar a solução <math id="Thmteo3.p1.m1" class="ltx_Math" alttext="u" display="inline"><mi>u</mi></math> de (<a href="#Ch1.E63" title="(1.63) ‣ 1.2.1 Formulação fraca ‣ 1.2 Problema modelo ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.63</span></a>) pela solução de elementos finitos <math id="Thmteo3.p1.m2" class="ltx_Math" alttext="u_{h}" display="inline"><msub><mi>u</mi><mi>h</mi></msub></math> dada por (<a href="#Ch1.E67" title="(1.67) ‣ 1.2.2 Formulação de elementos finitos ‣ 1.2 Problema modelo ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.67</span></a>) satisfaz a seguinte estimativa <span class="ltx_text ltx_font_italic">a priori</span></p>
+<table id="Ch1.E88" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch1.E88.m1" class="ltx_Math" alttext="\|(u-u_{h})^{\prime}\|_{L^{2}(I)}^{2}\leq C\sum_{i=1}^{n}h_{i}^{2}\|u^{\prime%
+\prime}\|_{L^{2}(I_{i})}^{2}." display="block"><mrow><mrow><msubsup><mrow><mo>∥</mo><msup><mrow><mo stretchy="false">(</mo><mrow><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo stretchy="false">)</mo></mrow><mo>′</mo></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>I</mi><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup><mo>≤</mo><mrow><mi>C</mi><mo>⁢</mo><mrow><munderover><mo largeop="true" movablelimits="false" symmetric="true">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><msubsup><mi>h</mi><mi>i</mi><mn>2</mn></msubsup><mo>⁢</mo><msubsup><mrow><mo>∥</mo><msup><mi>u</mi><mi>′′</mi></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>I</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup></mrow></mrow></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.88)</span></td>
+</tr>
+</table>
+</div>
+</div>
+<div class="ltx_proof">
+<h6 class="ltx_title ltx_runin ltx_font_italic ltx_title_proof">Demonstração.</h6>
+<div id="SS3.p4" class="ltx_para">
+<p class="ltx_p">Tomando <math id="SS3.p4.m1" class="ltx_Math" alttext="v=\pi u" display="inline"><mrow><mi>v</mi><mo>=</mo><mrow><mi>π</mi><mo>⁢</mo><mi>u</mi></mrow></mrow></math> no teorema da melhor aproximação (Teorema <a href="#Thmteo2" title="Teorema 1.2.2. ‣ 1.2.3 Estimativa a priori ‣ 1.2 Problema modelo ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.2.2</span></a>), obtemos</p>
+<table id="Ch1.E89" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch1.E89.m1" class="ltx_Math" alttext="\|(u-u_{h})^{\prime}\|_{L^{2}(I)}\leq\|(u-\pi u)^{\prime}\|_{L^{2}(I)}." display="block"><mrow><mrow><msub><mrow><mo>∥</mo><msup><mrow><mo stretchy="false">(</mo><mrow><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo stretchy="false">)</mo></mrow><mo>′</mo></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>I</mi><mo stretchy="false">)</mo></mrow></mrow></msub><mo>≤</mo><msub><mrow><mo>∥</mo><msup><mrow><mo stretchy="false">(</mo><mrow><mi>u</mi><mo>-</mo><mrow><mi>π</mi><mo>⁢</mo><mi>u</mi></mrow></mrow><mo stretchy="false">)</mo></mrow><mo>′</mo></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>I</mi><mo stretchy="false">)</mo></mrow></mrow></msub></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.89)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Daí, da estimativa do erro de interpolação (Proposição <a href="cap_mef1d_sec_interproj.html#Thmprop2" title="Proposição 1.1.2. ‣ 1.1.1 Interpolação ‣ 1.1 Interpolação e projeção ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.1.2</span></a>), temos</p>
+<table id="Ch1.E90" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch1.E90.m1" class="ltx_Math" alttext="\|(u-u_{h})^{\prime}\|_{L^{2}(I)}^{2}\leq C\sum_{i=1}^{n}h_{i}^{2}\|u^{\prime%
+\prime}\|_{L^{2}(I_{i})}^{2}." display="block"><mrow><mrow><msubsup><mrow><mo>∥</mo><msup><mrow><mo stretchy="false">(</mo><mrow><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo stretchy="false">)</mo></mrow><mo>′</mo></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>I</mi><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup><mo>≤</mo><mrow><mi>C</mi><mo>⁢</mo><mrow><munderover><mo largeop="true" movablelimits="false" symmetric="true">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><msubsup><mi>h</mi><mi>i</mi><mn>2</mn></msubsup><mo>⁢</mo><msubsup><mrow><mo>∥</mo><msup><mi>u</mi><mi>′′</mi></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>I</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup></mrow></mrow></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.90)</span></td>
+</tr>
+</table>
+<p class="ltx_p">∎</p>
+</div>
+</div>
+<div id="Thmex2" class="ltx_theorem ltx_theorem_ex">
+<h6 class="ltx_title ltx_runin ltx_font_bold ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem">Exemplo 1.2.2</span>.</h6>
+<div id="Thmex2.p1" class="ltx_para">
+<p class="ltx_p">A Figura <a href="#Ch1.F8" title="Figura 1.8 ‣ Exemplo 1.2.2. ‣ 1.2.3 Estimativa a priori ‣ 1.2 Problema modelo ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.8</span></a> apresenta o esboço da evolução do erro <math id="Thmex2.p1.m1" class="ltx_Math" alttext="\|(u-u_{h})^{\prime}\|_{L^{2}(I)}" display="inline"><msub><mrow><mo>∥</mo><msup><mrow><mo stretchy="false">(</mo><mrow><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo stretchy="false">)</mo></mrow><mo>′</mo></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>I</mi><mo stretchy="false">)</mo></mrow></mrow></msub></math> da solução de elementos finitos do problema (<a href="#Ch1.E75" title="(1.75) ‣ Exemplo 1.2.1. ‣ 1.2.2 Formulação de elementos finitos ‣ 1.2 Problema modelo ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.75</span></a>)-(<a href="#Ch1.E76" title="(1.76) ‣ Exemplo 1.2.1. ‣ 1.2.2 Formulação de elementos finitos ‣ 1.2 Problema modelo ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.76</span></a>) para malhas uniformes com <math id="Thmex2.p1.m2" class="ltx_Math" alttext="n=2,4,8,\ldots,128" display="inline"><mrow><mi>n</mi><mo>=</mo><mrow><mn>2</mn><mo>,</mo><mn>4</mn><mo>,</mo><mn>8</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mn>128</mn></mrow></mrow></math> células.</p>
+</div>
+<figure id="Ch1.F8" class="ltx_figure"><img src="cap_mef1d/dados/ex_modelo_estapriori/ex_modelo_estapriori.jpg" id="Ch1.F8.g1" class="ltx_graphics ltx_centering" width="432" height="324" alt="">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figura 1.8: </span>Esboço dos gráficos das soluções referentes ao Exemplo <a href="#Thmex2" title="Exemplo 1.2.2. ‣ 1.2.3 Estimativa a priori ‣ 1.2 Problema modelo ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.2.2</span></a>.</figcaption>
+</figure>
+<div id="Thmex2.p2" class="ltx_para">
+<p class="ltx_p">Com o <a href="https://fenicsproject.org/" title="" class="ltx_ref">FENiCS</a>, a computação do problema de elementos finitos pode ser feita com o seguinte <a href="https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/dados/ex_modelo_estapriori/ex_modelo_estapriori.py" title="" class="ltx_ref">código</a>:</p>
+<pre class="ltx_verbatim ltx_font_typewriter">from __future__ import print_function, division
+from fenics import *
+import numpy as np
+import matplotlib.pyplot as plt
+
+def boundary(x,on_boundary):
+    return on_boundary
+
+def solver(n):
+    # malha
+    mesh = IntervalMesh(n,0,1)
+
+    # espaco
+    V = FunctionSpace(mesh, ’P’, 1)
+
+    bc = DirichletBC(V,Constant(0.0),boundary)
+
+    #MEF problem
+    u = TrialFunction(V)
+    v = TestFunction(V)
+    f = Constant(1.0)
+    a = u.dx(0)*v.dx(0)*dx
+    L = f*v*dx
+
+    #computa a sol
+    u = Function(V)
+    solve(a == L, u, bc)
+
+    return u, mesh
+
+#sol analitica
+ua = Expression(’-x[0]*x[0]/2+x[0]/2’,
+                degree=2)
+
+
+lerrors=[]
+for n in [2,4,8,16,32,64,128]:
+    u, mesh = solver(n)
+    e = errornorm(u,ua,norm_type=’H10’,mesh=mesh)
+    lerrors.append(e)
+
+plt.plot([2,4,8,16,32,64,128],lerrors)
+plt.xscale(’log’,basex=2)
+#plt.yscale(’log’,base=2)
+plt.xlabel(r"$n$")
+plt.ylabel(r"$|\!|(u-u_h)’|\!|_{L^2(I)}$")
+plt.xlim((2,128))
+plt.xticks([2,4,8,16,32,64,128],[2,4,8,16,32,64,128])
+plt.grid(’on’)
+plt.show()
+</pre>
+</div>
+</div>
+</section>
+<section id="SS4" class="ltx_subsection">
+<h2 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">1.2.4 </span>Estimativa <span class="ltx_text ltx_font_italic">a posteriori</span>
+<small><a href="https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/cap_mef1d.tex" target=_blank> <span class="glyphicon glyphicon-pencil"></span> </a><a href="../contato.html" target="_blank"> <span class="glyphicon glyphicon-envelope"></span> </a></small></h2>
+
+<div id="SS4.p1" class="ltx_para">
+<p class="ltx_p">Aqui, vamos obter uma estimativa a posteriori para o erro <math id="SS4.p1.m1" class="ltx_Math" alttext="e=u-u_{h}" display="inline"><mrow><mi>e</mi><mo>=</mo><mrow><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow></mrow></math> da solução de elementos finitos <math id="SS4.p1.m2" class="ltx_Math" alttext="u_{h}" display="inline"><msub><mi>u</mi><mi>h</mi></msub></math> do problema (<a href="#Ch1.E56" title="(1.56) ‣ 1.2 Problema modelo ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.56</span></a>)-(<a href="#Ch1.E57" title="(1.57) ‣ 1.2 Problema modelo ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.57</span></a>).</p>
+</div>
+<div id="Thmteo4" class="ltx_theorem ltx_theorem_teo">
+<h6 class="ltx_title ltx_runin ltx_font_bold ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem">Teorema 1.2.4</span>.</h6>
+<div id="Thmteo4.p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">A solução de elementos finitos <math id="Thmteo4.p1.m1" class="ltx_Math" alttext="u_{h}" display="inline"><msub><mi>u</mi><mi>h</mi></msub></math> satisfaz</span></p>
+<table id="Ch1.E91" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch1.E91.m1" class="ltx_Math" alttext="\|(u-u_{h})^{\prime}\|_{L^{2}(I)}^{2}\leq C\sum_{i=1}^{n}\eta_{i}^{2}(u_{h})," display="block"><mrow><mrow><msubsup><mrow><mo>∥</mo><msup><mrow><mo stretchy="false">(</mo><mrow><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo stretchy="false">)</mo></mrow><mo>′</mo></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>I</mi><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup><mo>≤</mo><mrow><mi>C</mi><mo>⁢</mo><mrow><munderover><mo largeop="true" movablelimits="false" symmetric="true">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><msubsup><mi>η</mi><mi>i</mi><mn>2</mn></msubsup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>u</mi><mi>h</mi></msub><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.91)</span></td>
+</tr>
+</table>
+<p class="ltx_p"><span class="ltx_text ltx_font_italic">onde <math id="Thmteo4.p1.m2" class="ltx_Math" alttext="\eta_{i}(u_{h})" display="inline"><mrow><msub><mi>η</mi><mi>i</mi></msub><mo mathvariant="italic">⁢</mo><mrow><mo mathvariant="normal" stretchy="false">(</mo><msub><mi>u</mi><mi>h</mi></msub><mo mathvariant="normal" stretchy="false">)</mo></mrow></mrow></math> é chamado de elemento residual e é dado por</span></p>
+<table id="Ch1.E92" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch1.E92.m1" class="ltx_Math" alttext="\eta_{i}(u_{h})=h_{i}\|f-u_{h}^{\prime\prime}\|_{L^{2}(I_{i})}." display="block"><mrow><mrow><mrow><msub><mi>η</mi><mi>i</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>u</mi><mi>h</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><msub><mi>h</mi><mi>i</mi></msub><mo>⁢</mo><msub><mrow><mo>∥</mo><mrow><mi>f</mi><mo>-</mo><msubsup><mi>u</mi><mi>h</mi><mi>′′</mi></msubsup></mrow><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>I</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow></msub></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.92)</span></td>
+</tr>
+</table>
+</div>
+</div>
+<div class="ltx_proof">
+<h6 class="ltx_title ltx_runin ltx_font_italic ltx_title_proof">Demonstração.</h6>
+<div id="SS4.p2" class="ltx_para">
+<p class="ltx_p">Tomando <math id="SS4.p2.m1" class="ltx_Math" alttext="e=u-u_{h}" display="inline"><mrow><mi>e</mi><mo>=</mo><mrow><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow></mrow></math> e usando a ortogonalidade de Galerkin (Teorema <a href="#Thmteo1" title="Teorema 1.2.1. ‣ 1.2.3 Estimativa a priori ‣ 1.2 Problema modelo ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.2.1</span></a>) temos</p>
+<table id="Ch1.E93" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch1.E93.m1" class="ltx_Math" alttext="\|e^{\prime}\|_{L^{2}(I)}^{2}=\int_{I}e^{\prime}(e-\pi e)^{\prime}\,dx=\sum_{i%
+=1}^{n}\int_{I_{i}}e^{\prime}(e-\pi e)^{\prime}\,dx." display="block"><mrow><mrow><msubsup><mrow><mo>∥</mo><msup><mi>e</mi><mo>′</mo></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>I</mi><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup><mo>=</mo><mrow><msub><mo largeop="true" symmetric="true">∫</mo><mi>I</mi></msub><mrow><msup><mi>e</mi><mo>′</mo></msup><mo>⁢</mo><mpadded width="+1.7pt"><msup><mrow><mo stretchy="false">(</mo><mrow><mi>e</mi><mo>-</mo><mrow><mi>π</mi><mo>⁢</mo><mi>e</mi></mrow></mrow><mo stretchy="false">)</mo></mrow><mo>′</mo></msup></mpadded><mo>⁢</mo><mrow><mo>𝑑</mo><mi>x</mi></mrow></mrow></mrow><mo>=</mo><mrow><munderover><mo largeop="true" movablelimits="false" symmetric="true">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><msub><mo largeop="true" symmetric="true">∫</mo><msub><mi>I</mi><mi>i</mi></msub></msub><mrow><msup><mi>e</mi><mo>′</mo></msup><mo>⁢</mo><mpadded width="+1.7pt"><msup><mrow><mo stretchy="false">(</mo><mrow><mi>e</mi><mo>-</mo><mrow><mi>π</mi><mo>⁢</mo><mi>e</mi></mrow></mrow><mo stretchy="false">)</mo></mrow><mo>′</mo></msup></mpadded><mo>⁢</mo><mrow><mo>𝑑</mo><mi>x</mi></mrow></mrow></mrow></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.93)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Então, aplicando integração por partes</p>
+<table id="Ch1.E94" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch1.E94.m1" class="ltx_Math" alttext="\|e^{\prime}\|_{L^{2}(I)}^{2}=\sum_{i=1}^{n}\int_{I_{i}}(-e^{\prime\prime})(e-%
+\pi e)\,dx+[e^{\prime}(e-\pi e)]_{x_{i-1}}^{x_{i}}." display="block"><mrow><mrow><msubsup><mrow><mo>∥</mo><msup><mi>e</mi><mo>′</mo></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>I</mi><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup><mo>=</mo><mrow><mrow><munderover><mo largeop="true" movablelimits="false" symmetric="true">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><msub><mo largeop="true" symmetric="true">∫</mo><msub><mi>I</mi><mi>i</mi></msub></msub><mrow><mrow><mo stretchy="false">(</mo><mrow><mo>-</mo><msup><mi>e</mi><mi>′′</mi></msup></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>e</mi><mo>-</mo><mrow><mi>π</mi><mo>⁢</mo><mi>e</mi></mrow></mrow><mo rspace="4.2pt" stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo>𝑑</mo><mi>x</mi></mrow></mrow></mrow></mrow><mo>+</mo><msubsup><mrow><mo stretchy="false">[</mo><mrow><msup><mi>e</mi><mo>′</mo></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>e</mi><mo>-</mo><mrow><mi>π</mi><mo>⁢</mo><mi>e</mi></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">]</mo></mrow><msub><mi>x</mi><mrow><mi>i</mi><mo>-</mo><mn>1</mn></mrow></msub><msub><mi>x</mi><mi>i</mi></msub></msubsup></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.94)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Daí, observando que <math id="SS4.p2.m2" class="ltx_Math" alttext="e-\pi e=0" display="inline"><mrow><mrow><mi>e</mi><mo>-</mo><mrow><mi>π</mi><mo>⁢</mo><mi>e</mi></mrow></mrow><mo>=</mo><mn>0</mn></mrow></math> nos extremos dos intervalos <math id="SS4.p2.m3" class="ltx_Math" alttext="I_{i}" display="inline"><msub><mi>I</mi><mi>i</mi></msub></math> e que <math id="SS4.p2.m4" class="ltx_Math" alttext="-e^{\prime\prime}=-(u-u_{h})^{\prime\prime}=-u^{\prime\prime}+u_{h}^{\prime%
+\prime}=f+u_{h}^{\prime\prime}" display="inline"><mrow><mrow><mo>-</mo><msup><mi>e</mi><mi>′′</mi></msup></mrow><mo>=</mo><mrow><mo>-</mo><msup><mrow><mo stretchy="false">(</mo><mrow><mi>u</mi><mo>-</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo stretchy="false">)</mo></mrow><mi>′′</mi></msup></mrow><mo>=</mo><mrow><mrow><mo>-</mo><msup><mi>u</mi><mi>′′</mi></msup></mrow><mo>+</mo><msubsup><mi>u</mi><mi>h</mi><mi>′′</mi></msubsup></mrow><mo>=</mo><mrow><mi>f</mi><mo>+</mo><msubsup><mi>u</mi><mi>h</mi><mi>′′</mi></msubsup></mrow></mrow></math>, temos</p>
+<table id="Ch1.E95" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch1.E95.m1" class="ltx_Math" alttext="\|e^{\prime}\|_{L^{2}(I)}^{2}=\sum_{i=1}^{n}\int_{I_{i}}(f+u_{h}^{\prime\prime%
+})(e-\pi e)\,dx." display="block"><mrow><mrow><msubsup><mrow><mo>∥</mo><msup><mi>e</mi><mo>′</mo></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>I</mi><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup><mo>=</mo><mrow><munderover><mo largeop="true" movablelimits="false" symmetric="true">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><msub><mo largeop="true" symmetric="true">∫</mo><msub><mi>I</mi><mi>i</mi></msub></msub><mrow><mrow><mo stretchy="false">(</mo><mrow><mi>f</mi><mo>+</mo><msubsup><mi>u</mi><mi>h</mi><mi>′′</mi></msubsup></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>e</mi><mo>-</mo><mrow><mi>π</mi><mo>⁢</mo><mi>e</mi></mrow></mrow><mo rspace="4.2pt" stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo>𝑑</mo><mi>x</mi></mrow></mrow></mrow></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.95)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Agora, usando as desigualdades de Cauchy-Schwarz e a estimativa padrão de interpolação (<a href="cap_mef1d_sec_interproj.html#Ch1.E23" title="(1.23) ‣ 1.1.1 Interpolação ‣ 1.1 Interpolação e projeção ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.23</span></a>), obtemos</p>
+<table id="Ch2.S4.EGx15" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tr id="Ch1.E96" class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch1.E96.m1" class="ltx_Math" alttext="\displaystyle\|e^{\prime}\|_{L^{2}(I)}^{2}" display="inline"><msubsup><mrow><mo>∥</mo><msup><mi>e</mi><mo>′</mo></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>I</mi><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch1.E96.m2" class="ltx_Math" alttext="\displaystyle\leq\sum_{i=1}^{n}\|f+u_{h}\|_{L^{2}(I_{i})}\|e-\pi e\|_{L^{2}(I_%
+{i})}\,dx" display="inline"><mrow><mi></mi><mo>≤</mo><mrow><mstyle displaystyle="true"><munderover><mo largeop="true" movablelimits="false" symmetric="true">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover></mstyle><mrow><msub><mrow><mo>∥</mo><mrow><mi>f</mi><mo>+</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>I</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow></msub><mo>⁢</mo><mpadded width="+1.7pt"><msub><mrow><mo>∥</mo><mrow><mi>e</mi><mo>-</mo><mrow><mi>π</mi><mo>⁢</mo><mi>e</mi></mrow></mrow><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>I</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow></msub></mpadded><mo>⁢</mo><mi>d</mi><mo>⁢</mo><mi>x</mi></mrow></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.96)</span></td>
+</tr>
+<tr id="Ch1.E97" class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch1.E97.m2" class="ltx_Math" alttext="\displaystyle\leq C\sum_{i=1}^{n}h_{i}\|f+u_{h}\|_{L^{2}(I_{i})}\|e^{\prime}\|%
+_{L^{2}(I_{i})}" display="inline"><mrow><mi></mi><mo>≤</mo><mrow><mi>C</mi><mo>⁢</mo><mrow><mstyle displaystyle="true"><munderover><mo largeop="true" movablelimits="false" symmetric="true">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover></mstyle><mrow><msub><mi>h</mi><mi>i</mi></msub><mo>⁢</mo><msub><mrow><mo>∥</mo><mrow><mi>f</mi><mo>+</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>I</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow></msub><mo>⁢</mo><msub><mrow><mo>∥</mo><msup><mi>e</mi><mo>′</mo></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>I</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow></msub></mrow></mrow></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.97)</span></td>
+</tr>
+<tr id="Ch1.E98" class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch1.E98.m2" class="ltx_Math" alttext="\displaystyle\leq C\left(\sum_{i=1}^{n}h_{i}^{2}\|f+u_{h}\|_{L^{2}(I_{i})}^{2}%
+\right)^{1/2}\left(\sum_{i=1}^{n}\|e^{\prime}\|_{L^{2}(I_{i})}^{2}\right)^{1/2}" display="inline"><mrow><mi></mi><mo>≤</mo><mrow><mi>C</mi><mo>⁢</mo><msup><mrow><mo>(</mo><mrow><mstyle displaystyle="true"><munderover><mo largeop="true" movablelimits="false" symmetric="true">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover></mstyle><mrow><msubsup><mi>h</mi><mi>i</mi><mn>2</mn></msubsup><mo>⁢</mo><msubsup><mrow><mo>∥</mo><mrow><mi>f</mi><mo>+</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>I</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup></mrow></mrow><mo>)</mo></mrow><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mo>⁢</mo><msup><mrow><mo>(</mo><mrow><mstyle displaystyle="true"><munderover><mo largeop="true" movablelimits="false" symmetric="true">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover></mstyle><msubsup><mrow><mo>∥</mo><msup><mi>e</mi><mo>′</mo></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>I</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup></mrow><mo>)</mo></mrow><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.98)</span></td>
+</tr>
+<tr id="Ch1.E99" class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch1.E99.m2" class="ltx_Math" alttext="\displaystyle=C\left(\sum_{i=1}^{n}h_{i}^{2}\|f+u_{h}\|_{L^{2}(I_{i})}^{2}%
+\right)^{1/2}\|e^{\prime}\|_{L^{2}(I)}," display="inline"><mrow><mrow><mi></mi><mo>=</mo><mrow><mi>C</mi><mo>⁢</mo><msup><mrow><mo>(</mo><mrow><mstyle displaystyle="true"><munderover><mo largeop="true" movablelimits="false" symmetric="true">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover></mstyle><mrow><msubsup><mi>h</mi><mi>i</mi><mn>2</mn></msubsup><mo>⁢</mo><msubsup><mrow><mo>∥</mo><mrow><mi>f</mi><mo>+</mo><msub><mi>u</mi><mi>h</mi></msub></mrow><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>I</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mn>2</mn></msubsup></mrow></mrow><mo>)</mo></mrow><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mo>⁢</mo><msub><mrow><mo>∥</mo><msup><mi>e</mi><mo>′</mo></msup><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>I</mi><mo stretchy="false">)</mo></mrow></mrow></msub></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.99)</span></td>
+</tr>
+</table>
+<p class="ltx_p">donde segue o resultado desejado.
+∎</p>
+</div>
+</div>
+<div id="Thmobs2" class="ltx_theorem ltx_theorem_obs">
+<h6 class="ltx_title ltx_runin ltx_font_bold ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem">Observação 1.2.2</span>.</h6>
+<div id="Thmobs2.p1" class="ltx_para">
+<p class="ltx_p">No caso da solução de elementos finitos no espaço das funções lineares por partes, temos <math id="Thmobs2.p1.m1" class="ltx_Math" alttext="u_{h}^{\prime\prime}=0" display="inline"><mrow><msubsup><mi>u</mi><mi>h</mi><mi>′′</mi></msubsup><mo>=</mo><mn>0</mn></mrow></math>. Logo, o elemento residual se resume em <math id="Thmobs2.p1.m2" class="ltx_Math" alttext="\eta_{i}(u_{h})=h_{i}\|f\|_{L^{2}(I_{i})}" display="inline"><mrow><mrow><msub><mi>η</mi><mi>i</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>u</mi><mi>h</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><msub><mi>h</mi><mi>i</mi></msub><mo>⁢</mo><msub><mrow><mo>∥</mo><mi>f</mi><mo>∥</mo></mrow><mrow><msup><mi>L</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>I</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow></msub></mrow></mrow></math>.</p>
+</div>
+</div>
+</section>
+<section id="SSx1" class="ltx_subsection">
+<h2 class="ltx_title ltx_title_subsection">Exercícios<small><a href="https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/cap_mef1d.tex" target=_blank> <span class="glyphicon glyphicon-pencil"></span> </a><a href="../contato.html" target="_blank"> <span class="glyphicon glyphicon-envelope"></span> </a></small></h2>
+
+<div id="Thmexer1" class="ltx_theorem ltx_theorem_exer">
+<h6 class="ltx_title ltx_runin ltx_font_bold ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem">E 1.2.1</span>.</h6>
+<div id="Thmexer1.p1" class="ltx_para">
+<p class="ltx_p">Obtenha uma aproximação por elementos finitos lineares por partes da solução de</p>
+<table id="Ch2.S4.EGx16" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tr id="Ch1.E100" class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch1.E100.m1" class="ltx_Math" alttext="\displaystyle-u^{\prime\prime}+u=2\operatorname{sen}x,\quad\forall x\in(-\pi,%
+\pi)," display="inline"><mrow><mrow><mrow><mrow><mrow><mo>-</mo><msup><mi>u</mi><mi>′′</mi></msup></mrow><mo>+</mo><mi>u</mi></mrow><mo>=</mo><mrow><mn>2</mn><mo>⁢</mo><mrow><mo>sen</mo><mo>⁡</mo><mi>x</mi></mrow></mrow></mrow><mo rspace="12.5pt">,</mo><mrow><mrow><mo>∀</mo><mi>x</mi></mrow><mo>∈</mo><mrow><mo stretchy="false">(</mo><mrow><mo>-</mo><mi>π</mi></mrow><mo>,</mo><mi>π</mi><mo stretchy="false">)</mo></mrow></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.100)</span></td>
+</tr>
+<tr id="Ch1.E101" class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch1.E101.m1" class="ltx_Math" alttext="\displaystyle u(-\pi)=u(\pi)=0." display="inline"><mrow><mrow><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mo>-</mo><mi>π</mi></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>π</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>0</mn></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1.101)</span></td>
+</tr>
+</table>
+</div>
+</div>
+<small><button data-toggle="collapse" data-target="#Thmrespx1">Resp.</button></small>
+<div id="Thmrespx1" class="collapse">
+
+<h6 class="ltx_title ltx_runin ltx_font_bold ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem">Resp</span>.</h6>
+<div id="Thmrespx1.p1" class="ltx_para">
+<p class="ltx_p"><a href="https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/dados/exer_dc/exer_dc.py" title="" class="ltx_ref">Código</a> FENiCS.</p>
+</div>
+</div>
+</section>
+</section>
+</div>
+<footer class="ltx_page_footer">
+<div>
+<a href="cap_mef1d_sec_interproj.html" title="1.1 Interpolação e projeção ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref" rel="prev"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">1.1 </span>Interpolação e projeção</span></a><a href="bib.html" title="Referências ‣ Método de Elementos Finitos" class="ltx_ref" rel="bibliography"><span class="ltx_text ltx_ref_title">Referências</span></a><a href="cap_mef1d_sec_cc.html" title="1.3 Condições de contorno ‣ Capítulo 1 Método de elementos finitos em 1D ‣ Método de Elementos Finitos" class="ltx_ref" rel="next"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">1.3 </span>Condições de contorno</span></a>
+</div>
+<div class="ltx_page_logo">
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />O texto acima está sob Licença <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR">Creative Commons Atribuição-CompartilhaIgual 4.0 Internacional</a>. Generated  on Tue Mar 12 17:16:30 2019 by <a href="http://dlmf.nist.gov/LaTeXML/">LaTeXML <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg==" alt="[LOGO]"></a>
+</div></footer>
+</div>
+</div><!-- div class="row" -->
+</div><!-- div class="col-xs-12 col-xs-offset-0 col-md-8 col-md-offset-2 -->
+</body>
+</html>
