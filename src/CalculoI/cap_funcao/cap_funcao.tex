@@ -1,0 +1,191 @@
+%Este trabalho está licenciado sob a Licença Atribuição-CompartilhaIgual 4.0 Internacional Creative Commons. Para visualizar uma cópia desta licença, visite http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR ou mande uma carta para Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+
+\chapter{Fundamentos sobre funções}\label{cap_funcao}
+\thispagestyle{fancy}
+
+\section{Definição e gráfico}\label{cap_funcao_sec_defgrafico}
+
+Uma \pmb{função}\index{função} de um conjunto $D$ em um conjunto $Y$ é uma regra que associa um único elemento $y\in Y$\footnote{$y\in Y$ denota que $y$ é um elemento do conjunto $Y$.} a cada elemento $x\in D$. Costumeiramente, identificamos uma função por uma letra, por exemplo, $f$ e escrevemos $f:D\to Y$, $y=f(x)$, para denotar que a função $f$ toma valores de entrada em $D$ e de saída em $Y$.
+
+O conjunto $D$ de todos os possíveis valores de entrada da função é chamado de \pmb{domínio}\index{domínio}. O conjunto de todos os valores $f(x)$ tal que $x\in D$ é chamado de \pmb{imagem}\index{imagem} da função.
+
+Ao longo do curso de cálculo, as funções serão definidas apenas por expressões matemáticas. Nestes casos, salvo explicitado o contrário, suporemos que a função tem números reais como valores de entrada e de saída. O domínio e a imagem deverão ser inferidos da regra algébrica da função ou da aplicação de interesse.
+
+\begin{ex}
+  Determinemos o domínio e a imagem de cada uma das seguintes funções:
+  \begin{itemize}
+  \item $y=x^2$:
+    \begin{itemize}
+    \item Para qualquer número real $x$, temos que $x^2$ também é um número real. Então, dizemos que seu domínio (natural)\footnote{O \pmb{domínio natural}\index{domínio!natural} é o conjunto de todos os números reais tais que a expressão matemática que define a função seja possível.} é o conjunto $\mathbb{R} = (-\infty, \infty)$.
+    \item Para cada número real $x$, temos $y=x^2\geq0$. Além disso, para cada número real não negativo $y$, temos que $x=\sqrt{y}$ é tal que $y=x^2$. Assim sendo, concluímos que a imagem da função é o conjunto de todos os números reais não negativos, i.e. $[0, \infty)$.
+    \end{itemize}
+  \item $y=1/x$:
+    \begin{itemize}
+    \item Lembremos que divisão por zeros não está definida. Logo, o domínio desta função é o conjunto dos números reais não nulos, i.e. $(-\infty, 0)\cup (0, \infty)$.
+    \item Primeiramente, observemos que se $y=0$, então não existe número real tal que $0=1/x$. Ou seja, $0$ não pertence a imagem desta função. Por outro lado, dado qualquer número $y\neq 0$, temos que $x=1/y$ é tal que $y=1/x$. Logo, concluímos que a imagem desta função é o conjunto de todos os números reais não nulos, i.e. $(-\infty, 0)\cup (0, \infty)$.
+    \end{itemize}
+  \item $y=\sqrt{1-x^2}$:
+    \begin{itemize}
+    \item Lembremos que a raiz quadrada de números negativos não está definida. Portanto, precisamos que:
+      \begin{align}
+        1-x^2\geq 0 &\Rightarrow x^2 \leq 1\\
+                    &\Rightarrow -1 \leq x \leq 1.
+      \end{align}
+      Donde concluímos que o domínio desta função é o conjunto de todos os números $x$ tal que $-1\leq x \leq 1$ (ou, equivalentemente, o intervalo $[-1, 1]$).
+    \item Uma vez que $-1 \leq x \leq 1$, temos que $0 \leq 1-x^2 \leq 1$ e, portanto, $0\leq \sqrt{1-x^2} \leq 1$. Ou seja, a imagem desta função é o intervalo $[0, 1]$.
+    \end{itemize}
+  \end{itemize}
+\end{ex}
+
+O \pmb{gráfico}\index{gráfico} de uma função é o conjunto dos pares ordenados $(x, f(x))$ tal que $x$ pertence ao domínio da função. Mais especificamente, para uma função $f:D\to \mathbb{R}$, o gráfico é o conjunto
+\begin{equation}
+  \{(x, f(x))| x\in D\}.
+\end{equation}
+O \pmb{esboço do gráfico} de uma função é, costumeiramente, uma representação geométrica dos pontos de seu gráfico em um plano cartesiano.
+
+\begin{ex}\label{ex:grafico}
+  A Figura \ref{fig:ex_grafico} mostra os esboços dos gráficos das funções $f(x)=x^2$, $g(x)=1/x$ e $h(x)=\sqrt{1-x^2}$.
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.3\textwidth]{./cap_funcao/dados/fig_ex_grafico/f}~
+    \includegraphics[width=0.3\textwidth]{./cap_funcao/dados/fig_ex_grafico/g}~
+    \includegraphics[width=0.3\textwidth]{./cap_funcao/dados/fig_ex_grafico/h}
+    \caption{Esboço dos gráficos das funções $f(x)=x^2$, $g(x)=1/x$ e $h(x)=\sqrt{1-x^2}$ dadas no Exemplo \ref{ex:grafico}.}
+    \label{fig:ex_grafico}
+  \end{figure}
+
+  \ifismaxima
+  Para plotarmos os gráficos destas funções no \verb+wxMaxima+ podemos usar os seguintes comandos:
+\begin{verbatim}
+wxplot2d(x^2,[x,-2,2]);
+wxplot2d(1/x,[x,-1,1],[y,-10,10]);
+wxplot2d(sqrt(1-x^2),[x,-1,1]);
+\end{verbatim}
+  \fi
+\end{ex}
+
+\subsection*{Exercícios}
+
+\emconstrucao
+
+\section{Tipos de funções}\label{cap_funcao_sec_tipofun}
+
+Nesta seção, vamos ressaltar alguns tipos de funções que aparecerem com frequência nos estudos de cálculo.
+
+\subsection{Tipos de funções fundamentais}
+
+Uma \pmb{função linear}\index{função!linear} é uma função da forma $f(x) = mx + b$, sendo $m$ e $b$ parâmetros\footnote{números reais.} dados. Recebe este nome, pois seu gráfico é uma linha (uma reta)\footnote{Não confundir com o conceito de linearidade de operadores.}.
+
+Quando $m=0$, temos uma \pmb{função constante}\index{função!constante} $f(x) = b$. Esta tem domínio $(-\infty, \infty)$ e imagem $\{b\}$. Por outro lado, toda função linear com $m\neq 0$ tem $(-\infty, \infty)$ como domínio e imagem.
+
+\begin{ex}\label{ex:funlinear}
+  A Figura \ref{fig:ex_funlinear} mostra esboços dos gráficos das funções lineares $f(x)=-5/2$, $f(x)=2$ e $f(x)=2x-1$.
+  
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{./cap_funcao/dados/fig_ex_funlinear/fig_ex_funlinear}
+    \caption{Esboços dos gráficos das funções lineares $y=-5/2$, $y=2$ e $y=2x-1$ discutidas no Exemplo \ref{ex:funlinear}.}
+    \label{fig:ex_funlinear}
+  \end{figure}
+\end{ex}
+
+\begin{obs}
+  O lugar geométrico do gráfico de uma função linear é uma reta (ou linha). O parâmetro $m$ controla a inclinação da reta em relação ao eixo $x$\footnote{eixo das abscissas}. Quando $m=0$, temos uma reta horizontal. Quando $m>0$ temos uma reta com inclinação positiva (crescente) e, quando $m<0$ temos uma reta com inclinação negativa. Verifique!
+\end{obs}
+
+Quaisquer dois pontos $(x_0, y_0)$ e $(x_1, y_1)$, com $x_0\neq x_1$, determinam uma única função linear (reta) que passa por estes pontos. Para encontrar a expressão desta função, basta resolver o seguinte sistema linear
+\begin{align}
+  mx_0 + b &= y_0\\
+  mx_1 + b &= y_1
+\end{align}
+Subtraindo a primeira equação da segunda, obtemos
+\begin{equation}
+  m(x_0-x_1) = y_0-y_1 \Rightarrow m = \frac{y_0-y_1}{x_0-x_1}.
+\end{equation}
+Daí, substituindo o valor de $m$ na primeira equação do sistema, obtemos
+\begin{equation}
+  \frac{y_0-y_1}{x_0-x_1}x_0 + b = y_0 \Rightarrow b = -\frac{y_0-y_1}{x_0-x_1}x_0 + y_0.
+\end{equation}
+Ou seja, a expressão da função linear (equação da reta) que passa pelos pontos $(x_0, y_0)$ e $(x_1, y_1)$ é
+\begin{equation}
+  y = \underbrace{\frac{y_0-y_1}{x_0-x_1}}_{m}(x-x_0) + y_0.
+\end{equation}
+
+\subsection{Funções potência}
+
+\emconstrucao
+
+\subsection{Funções polinomiais}
+
+\emconstrucao
+
+\subsection{Funções racionais}
+
+\emconstrucao
+
+\subsection{Funções algébricas}
+
+\emconstrucao
+
+\subsection{Funções transcendentes}
+
+\emconstrucao
+
+\subsection{Funções definidas por partes}
+
+\pmb{Funções definidas por partes}\index{função!definida por partes} são funções definidas por diferentes expressões matemáticas em diferentes partes de seu domínio.
+
+\begin{ex}\label{ex:funpartes}
+  Consideremos a seguinte função definida por partes:
+  \begin{equation}
+    f(x) = \left\{
+      \begin{array}{ll}
+        -x &, x<0,\\
+        x^2 &, x\geq0
+      \end{array}
+\right.
+\end{equation}
+Observemos que tanto o domínio como a imagem desta função são $(-\infty, \infty)$. A Figura \ref{fig:ex_funpartes} mostra o esboço do gráfico desta função.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.7\textwidth]{./cap_funcao/dados/fig_ex_funpartes/fig_ex_funpartes}
+  \caption{Esboço do gráfico da função definida por partes $f(x)$ dada no Exemplo \ref{ex:funpartes}.}
+  \label{fig:ex_funpartes}
+\end{figure}
+\end{ex}
+
+Um exemplo de função definida por partes fundamental é a \pmb{função valor absoluto}\index{função!valor absoluto}\footnote{Esta função também pode ser definida por $|x| = \sqrt{x^2}$.}
+\begin{equation}
+  |x| = \left\{
+    \begin{array}{ll}
+      x &, x\leq 0\\
+      -x &, x<0
+    \end{array}
+\right.
+\end{equation}
+Vejamos o esboço do seu gráfico dado na Figura \ref{fig:funabs}.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.7\textwidth]{./cap_funcao/dados/fig_funabs/fig_funabs}
+  \caption{Esboço do gráfico da função valor absoluto $y=|x|$.}
+  \label{fig:funabs}
+\end{figure}
+
+
+\subsection*{Exercícios}
+
+\emconstrucao
+
+\section{Funções trigonométricas}\label{cap_funcao_sec_funtri}
+
+\subsection*{Exercícios}
+
+\emconstrucao
+
+\section{Funções exponenciais e logarítmicas}\label{cap_funcao_sec_funexplog}
+
+\emconstrucao
+
+\subsection*{Exercícios}

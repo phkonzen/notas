@@ -13,6 +13,7 @@ from multiprocessing import Pool
 from index import *
 from sitemap import *
 from analisematematicai import *
+from calculoi import *
 from matematicanumerica import *
 from metodoelementosfinitos import *
 from vetoresgeometriaanalitica import *
@@ -43,9 +44,10 @@ os.system('rm -rvf ../docs/*')
 os.system('cp docs_readme.md ../docs/README.md')
 
 #objs da cada nota
-am = AnaliseMatematicaI(srcdir,odir)
+ami = AnaliseMatematicaI(srcdir,odir)
+ci = CalculoI(srcdir,odir)
 mn = MatematicaNumerica(srcdir,odir)
-ef = MetodoElementosFinitos(srcdir,odir)
+mef = MetodoElementosFinitos(srcdir,odir)
 vgm = VetoresGeometriaAnalitica(srcdir,odir)
 
 def build(id):
@@ -54,7 +56,7 @@ def build(id):
 #pallelized region
 if __name__ == '__main__':
     p = Pool()
-    p.map(build,[am,mn,ef,vgm])
+    p.map(build,[ami,ci,mn,mef,vgm])
 
 #make sitemap.txt
 sm = SiteMap(odir)

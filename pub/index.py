@@ -78,6 +78,14 @@ class Index:
         body += ' | '
         body += '<a href="./AnaliseMatematicaI/main.pdf">PDF</a></li>'
         body += '</ul>\n'
+        #CalculoI
+        body += '<li>Cálculo I</li>\n'
+        body += '<ul class="list-unstyled">\n'
+        body += '<li>Versão corrente: '
+        body += '<a href="./CalculoI/main.html">HTML</a>'
+        body += ' | '
+        body += '<a href="./CalculoI/main.pdf">PDF</a></li>'
+        body += '</ul>\n'
         #MatematicaNumerica
         body += '<li>Matemática Numérica</li>\n'
         body += '<ul class="list-unstyled">\n'
