@@ -3,6 +3,14 @@
 \chapter{Fundamentos sobre funções}\label{cap_funcao}
 \thispagestyle{fancy}
 
+\ifispython
+Ao longo deste capítulo, contaremos com o suporte de alguns códigos \verb+Python+ com o seguinte preâmbulo:
+\begin{verbatim}
+from sympy import *
+init_session()
+\end{verbatim}
+\fi
+
 \section{Definição e gráfico}\label{cap_funcao_sec_defgrafico}
 
 Uma \pmb{função}\index{função} de um conjunto $D$ em um conjunto $Y$ é uma regra que associa um único elemento $y\in Y$\footnote{$y\in Y$ denota que $y$ é um elemento do conjunto $Y$.} a cada elemento $x\in D$. Costumeiramente, identificamos uma função por uma letra, por exemplo, $f$ e escrevemos $f:D\to Y$, $y=f(x)$, para denotar que a função $f$ toma valores de entrada em $D$ e de saída em $Y$.
@@ -32,6 +40,14 @@ Ao longo do curso de cálculo, as funções serão definidas apenas por express�
                     &\Rightarrow -1 \leq x \leq 1.
       \end{align}
       Donde concluímos que o domínio desta função é o conjunto de todos os números $x$ tal que $-1\leq x \leq 1$ (ou, equivalentemente, o intervalo $[-1, 1]$).
+      
+      \ifispython
+      Com o \verb+Sympy+, podemos usar o comando
+\begin{verbatim}
+reduce_inequalities(1-x**2>=0,[x])
+\end{verbatim}
+      para resolvermos a inequação $1-x^2\geq 0$.
+      \fi
     \item Uma vez que $-1 \leq x \leq 1$, temos que $0 \leq 1-x^2 \leq 1$ e, portanto, $0\leq \sqrt{1-x^2} \leq 1$. Ou seja, a imagem desta função é o intervalo $[0, 1]$.
     \end{itemize}
   \end{itemize}
@@ -45,21 +61,22 @@ O \pmb{esboço do gráfico} de uma função é, costumeiramente, uma representa�
 
 \begin{ex}\label{ex:grafico}
   A Figura \ref{fig:ex_grafico} mostra os esboços dos gráficos das funções $f(x)=x^2$, $g(x)=1/x$ e $h(x)=\sqrt{1-x^2}$.
-  \begin{figure}[h!]
+  
+  \begin{figure}[H]
     \centering
-    \includegraphics[width=0.3\textwidth]{./cap_funcao/dados/fig_ex_grafico/f}~
-    \includegraphics[width=0.3\textwidth]{./cap_funcao/dados/fig_ex_grafico/g}~
-    \includegraphics[width=0.3\textwidth]{./cap_funcao/dados/fig_ex_grafico/h}
+    \includegraphics[width=0.3\textwidth]{./cap_funcao/dados/fig_ex_grafico/fig_ex_grafico_x2}~
+    \includegraphics[width=0.3\textwidth]{./cap_funcao/dados/fig_ex_grafico/fig_ex_grafico_1x}~
+    \includegraphics[width=0.3\textwidth]{./cap_funcao/dados/fig_ex_grafico/fig_ex_grafico_s1x2}
     \caption{Esboço dos gráficos das funções $f(x)=x^2$, $g(x)=1/x$ e $h(x)=\sqrt{1-x^2}$ dadas no Exemplo \ref{ex:grafico}.}
     \label{fig:ex_grafico}
   \end{figure}
 
-  \ifismaxima
-  Para plotarmos os gráficos destas funções no \verb+wxMaxima+ podemos usar os seguintes comandos:
+  \ifispython
+  Para plotarmos os gráficos destas funções usando \verb+SymPy+ podemos usar os seguintes comandos:
 \begin{verbatim}
-wxplot2d(x^2,[x,-2,2]);
-wxplot2d(1/x,[x,-1,1],[y,-10,10]);
-wxplot2d(sqrt(1-x^2),[x,-1,1]);
+plot(x**2,(x,-2,2))
+plot(1/x,(x,-1,1),ylim=(-10,10))
+plot(sqrt(1-x**2),(x,-1,1))
 \end{verbatim}
   \fi
 \end{ex}
@@ -113,7 +130,46 @@ Ou seja, a expressão da função linear (equação da reta) que passa pelos pon
 
 \subsection{Funções potência}
 
-\emconstrucao
+Uma função da forma $f(x)=x^n$, onde $n\neq 0$ é uma constante, é chamada de \pmb{função potência}\index{função!potência}.
+
+Funções potências têm comportamentos característicos, conforme o valor de $n$. Quando $n$ é um inteiro positivo ímpar, seu domínio e sua imagem são $(-\infty, \infty)$. Veja a Figura \ref{fig:funpot_impar}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{./cap_funcao/dados/fig_funpot_impar/fig_funpot_impar}
+  \caption{Esboços dos gráficos das funções potências $y=x$, $y=x^3$ e $y=x^5$.}
+  \label{fig:funpot_impar}
+\end{figure}
+
+Funções potências com $n$ positivo par estão definidas em toda parte e têm imagem $[0, \infty)$. Veja a Figura \ref{fig:funpot_par}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{./cap_funcao/dados/fig_funpot_par/fig_funpot_par}
+  \caption{Esboços dos gráficos das funções potências $y=x^2$, $y=x^4$ e $y=x^6$.}
+  \label{fig:funpot_par}
+\end{figure}
+
+Funções potências com $n$ inteiro negativo ímpar não são definidas em $x=0$, tendo domínio e imagem igual a $(-\infty, 0)\cup (0, \infty)$. Também, quando $n$ inteiro negativo par, a função potência não está definida em $x=0$, tem domínio $(-\infty, 0)\cup (0, \infty)$, mas imagem $(0, \infty)$. Veja a Figura \ref{fig:funpot_negativo}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{./cap_funcao/dados/fig_funpot_negativo/fig_funpot_negativo_impar}~
+    \includegraphics[width=0.5\textwidth]{./cap_funcao/dados/fig_funpot_negativo/fig_funpot_negativo_par}
+  \caption{Esboços dos gráficos das funções potências $y=1/x$ (esquerda), $y=1/x^2$ (direita).}
+  \label{fig:funpot_negativo}
+\end{figure}
+
+Há, ainda, comportamentos característicos quando $n=1/2$, $1/3$, $3/2$ e $2/3$. Veja a Figura \ref{fig:funpot_racional}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{./cap_funcao/dados/fig_funpot_racional/fig_funpot_racional_par}~
+    \includegraphics[width=0.5\textwidth]{./cap_funcao/dados/fig_funpot_racional/fig_funpot_racional_impar}
+  \caption{Esboços dos gráficos das funções potências. Esquerda $y=\sqrt{x}$ e $y=\sqrt{x^3}$. Direita: $y=\sqrt[3]{x}$ e $y=\sqrt[3]{x^2}$.}
+  \label{fig:funpot_racional}
+\end{figure}
+
 
 \subsection{Funções polinomiais}
 
@@ -147,7 +203,7 @@ Ou seja, a expressão da função linear (equação da reta) que passa pelos pon
 \end{equation}
 Observemos que tanto o domínio como a imagem desta função são $(-\infty, \infty)$. A Figura \ref{fig:ex_funpartes} mostra o esboço do gráfico desta função.
 
-\begin{figure}[h!]
+\begin{figure}[H]
   \centering
   \includegraphics[width=0.7\textwidth]{./cap_funcao/dados/fig_ex_funpartes/fig_ex_funpartes}
   \caption{Esboço do gráfico da função definida por partes $f(x)$ dada no Exemplo \ref{ex:funpartes}.}
@@ -166,7 +222,7 @@ Um exemplo de função definida por partes fundamental é a \pmb{função valor 
 \end{equation}
 Vejamos o esboço do seu gráfico dado na Figura \ref{fig:funabs}.
 
-\begin{figure}[h!]
+\begin{figure}[H]
   \centering
   \includegraphics[width=0.7\textwidth]{./cap_funcao/dados/fig_funabs/fig_funabs}
   \caption{Esboço do gráfico da função valor absoluto $y=|x|$.}
