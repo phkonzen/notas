@@ -23,9 +23,16 @@ circle = plt.Circle((0,0),1,facecolor='none',edgecolor='blue')
 ax.add_artist(circle)
 
 a = 1.5*np.pi/6
-plt.plot([0,np.cos(a)],[0,np.sin(a)],color='black')
+xx = np.linspace(-1,1)
+ax.plot(xx,np.tan(a)*xx,color='gray',alpha=0.5)
+ax.text(1-0.1,1,'$r$')
+
+ax.plot([0,np.cos(a)],[0,np.sin(a)],color='black')
 ax.add_patch(Arc((0,0),0.4,0.4,theta1=0,theta2=a*180/np.pi,edgecolor='k'))
 ax.text(0.25,0.1,"$x$")
+
+ax.plot(np.cos(a),np.sin(a),marker='o',markersize=4)
+ax.text(np.cos(a)+0.075,np.sin(a)-0.05,'$(a,b)$')
 
 ax.plot([-0.025,np.cos(a)],[np.sin(a),np.sin(a)],ls='--',color='gray')
 ax.text(-0.4,np.sin(a),'$\mathrm{sen}(x)$')
@@ -48,5 +55,5 @@ ax.text(-1.175,-0.15,'$-1$')
 ax.text(-0.175,-1.125,'$-1$')
 ax.text(-0.08,1.05,'$1$')
 
-plt.savefig('fig_seno_cosseno.png',bbox_inches='tight')
+plt.savefig('fig_cos_seno.png',bbox_inches='tight')
 
