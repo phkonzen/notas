@@ -15,4 +15,9 @@ p[1].label="$y=x^3$"
 p[2].label="$y=x^5$"
 p.legend = True
 p.ylabel="$y$"
-p.show()
+p.save('fig_funpot_impar.png')
+
+fig = p._backend.fig
+ax = fig.axes[0]
+ax.legend(loc='upper left')
+fig.savefig('fig_funpot_impar.png')
