@@ -109,7 +109,7 @@ com $x_0, L_1, L_2$ números reais. Então, valem as seguintes regras:
     \lim_{x\to x_0} \frac{f(x)}{g(x)} = \frac{\lim_{x\to x_0} f(x)}{\lim_{x\to x_0} g(x)} = \frac{L_1}{L_2},
   \end{equation}
   desde que $L_2\neq 0$.
-\item Regra da potênciação:
+\item Regra da potenciação:
   \begin{equation}
     \lim_{x\to x_0} (f(x))^s = L_1^s,
   \end{equation}
@@ -235,7 +235,7 @@ limit((x**2-1)*(x-2)/((x-1)*(x-2)),x,2)
   \fi
 \end{ex}
 
-Quando o fator em comum não aparece explicitamente, podemos tentar trabalhar algébricamente de forma a explicitá-lo.
+Quando o fator em comum não aparece explicitamente, podemos tentar trabalhar algebricamente de forma a explicitá-lo.
 
 \begin{ex}
   No caso do limite
@@ -269,7 +269,7 @@ simplify((x**2+x-2)/(x-1))
   \begin{equation}
     \lim_{x\to 0} \frac{\sqrt{1-x}-1}{x}
   \end{equation}
-  temos uma indeterminação do tipo $0/0$ envolvendo uma raíz. Neste caso, podemos calcular o limite usando de racionalização
+  temos uma indeterminação do tipo $0/0$ envolvendo uma raiz. Neste caso, podemos calcular o limite usando de racionalização
   \begin{align}
     \lim_{x\to 0} \frac{\sqrt{1-x}-1}{x} &= \lim_{x\to 0} \frac{\sqrt{1-x}-1}{x}\frac{\sqrt{1-x}+1}{\sqrt{1-x}+1}\\
                                          &= \lim_{x\to 0} \frac{1-x-1}{x(\sqrt{1-x}+1)} \\
@@ -314,6 +314,115 @@ limit((sqrt(1-x)-1)/x,x,0)
 
 \emconstrucao
 
+\section{Limites laterais}\label{cap_lim_sec_lateral}
+
+Seja dada uma função $f$ definida para todo $x$ em um intervalo aberto $(L, a)$, sendo $a$ um número real com $L<a$ podendo ser $L=-\infty$. O {\bf limite lateral à esquerda} de $f$ no ponto $a$ é denotado por
+\begin{equation}
+  \lim_{x\to a^-} f(x)
+\end{equation}
+e é computado tendo em vista a tendência da função apenas para pontos $x<a$. Em outras palavras, o
+\begin{equation}
+  \lim_{x\to a^-} f(x) = L
+\end{equation}
+quando $f(x)$ pode ser tomado arbitrariamente próximo de $L$, desde que tomemos $x<a$ suficientemente próximo de $a$.
+
+Para uma função $f$ definida para todo $x$ em um intervalo aberto $(a, L)$, sendo $a$ um número real com $L>a$ podendo ser $L=\infty$, o {\bf limite lateral à direita} de $f$ no ponto $a$ é denotado por
+\begin{equation}
+  \lim_{x\to a^+} f(x)
+\end{equation}
+e é computado tendo em vista a tendência da função apenas para pontos $x>a$. Em outras palavras, temos
+\begin{equation}
+  \lim_{x\to a^+} f(x) = L,
+\end{equation}
+quando $f(x)$ pode ser tomado arbitrariamente próximo de $L$, desde que tomemos $x>a$ suficientemente próximo de $a$.
+
+\begin{obs}
+  Por inferência direta, temos
+  \begin{equation}
+    \lim_{x\to a^{\pm}} k = k\quad\text{e}\quad\lim_{x\to a^{\pm}} x = a^{\pm},
+  \end{equation}
+  onde $a$ e $k$ são quaisquer números reais.
+\end{obs}
+
+\begin{exer}\label{ex:lim_absx}
+  Vamos calcular
+  \begin{equation}
+    \lim_{x\to 0^-} |x|.
+  \end{equation}
+  Por definição, temos
+  \begin{equation}
+    |x| := \left\{
+      \begin{array}{ll}
+        x &, x\geq 0,\\
+        -x &, x< 0.
+      \end{array}
+    \right.
+  \end{equation}
+  Como estamos interessados no limite lateral à esquerda de $x=0$, trabalhamos com $x<0$ e, então
+  \begin{equation}
+    \lim_{x\to 0^-} |x| = \lim_{x\to 0^-} -x = -\lim_{x\to 0^-} x = 0.
+  \end{equation}
+  
+  Analogamente, calculamos
+  \begin{equation}
+    \lim_{x\to 0^+} |x| = \lim_{x\to 0^+} x = 0.
+  \end{equation}
+  Verifique!
+
+  \ifispython
+  Usando o \verb+SymPy+, podemos computar os limites acima com os seguintes comandos:
+\begin{verbatim}
+limit(abs(x),x,0,'-')
+limit(abs(x),x,0,'+')
+\end{verbatim}
+  \fi
+\end{exer}
+
+\begin{teo}\label{teo:lim_existe}
+  Existe o limite de uma dada função $f$ no ponto $x=a$ e $\lim_{x\to a} f(x) = L$ se, e somente se, existem e são iguais a $L$ os limites laterais à esquerda e à direita de $f$ no ponto $x=a$.
+\end{teo}
+
+\begin{exer}
+  No exemplo anterior (Exemplo \ref{ex:lim_absx}), vimos que
+  \begin{equation}
+    \lim_{x\to 0^-} |x| = \lim_{x\to 0^+} |x| = 0.
+  \end{equation}
+  Logo, pelo teorema acima (Teorema \ref{teo:lim_existe}), podemos concluir que
+  \begin{equation}
+    \lim_{x\to 0} |x| = 0.
+  \end{equation}
+\end{exer}
+
+\begin{exer}
+  Vamos verificar a existência de
+  \begin{equation}
+    \lim_{x\to 0} \frac{|x|}{x}.
+  \end{equation}
+  Começamos pelo limite lateral à esquerda, temos
+  \begin{align}
+    \lim_{x\to 0^-} \frac{|x|}{x} &= \lim_{x\to 0^-} \frac{-x}{x}\\
+    &= \lim_{x\to 0^-} -1 = -1.
+  \end{align}
+  Agora, calculando o limite lateral à direta, obtemos
+  \begin{align}
+    \lim_{x\to 0^+} \frac{|x|}{x} &= \lim_{x\to 0^+} \frac{x}{x}\\
+    &= \lim_{x\to 0^+} 1 = 1.
+  \end{align}
+  Como os limites laterais à esquerda e à direita são diferentes, concluímos que não existe o limite de $|x|/x$ no ponto $x=0$.
+
+  \ifispython
+  No \verb+Sympy+, por padrão o limite computado é sempre o limite lateral à direita. É por isso que o comando
+\begin{verbatim}
+limit(abs(x)/x,x,0)
+\end{verbatim}
+  fornece o valor $1$ como saída.
+  \fi
+\end{exer}
+
+\subsection*{Exercícios}
+
+\emconstrucao
+
 \section{Limites e desigualdades}\label{cap_lim_sec_limdes}
 
 Se $f$ e $g$ são funções tais que $f(x)<g(x)$ para todo $x$ em um certo intervalo aberto contendo $a$, exceto possivelmente em $x=a$, e existem os limites de $f$ e $g$ no ponto $x=a$, então
@@ -321,6 +430,232 @@ Se $f$ e $g$ são funções tais que $f(x)<g(x)$ para todo $x$ em um certo inter
   \lim_{x\to a} f(x) \leq \lim_{x\to a} g(x).
 \end{equation}
 Observe que a tomada do limite não preserva a desigualdade estrita.
+
+\begin{exer}
+  As funções $f(x) = x^2/3$ e $g(x) = x^2/2$ são tais que $f(x) < g(x)$ para todo $x\neq 0$. Ainda, temos
+  \begin{equation}
+    \lim_{x\to 0} f(x) = 0\quad\text{e}\quad\lim_{x\to 0} g(x) = 0.
+  \end{equation}
+\end{exer}
+
+\begin{obs}
+  A preservação da desigualdade também ocorre para limites laterais. Mais precisamente, se $f$ e $g$ são funções tais que $f(x)<g(x)$ para todo $x < a$ e existem os limites lateral à esquerda de $f$ e $g$ no ponto $x=a$, então
+  \begin{equation}
+    \lim_{x\to a^-} f(x) \leq \lim_{x\to a^-} g(x).
+  \end{equation}
+  Vale o resultado análogo para limite lateral à direito. Escreva-o!
+\end{obs}
+
+\subsection{Teorema do confronto}
+
+\begin{teo}\normalfont{(Teorema do confronto)}\label{teo:confronto}
+  Se $g(x) \leq f(x) \leq h(x)$ para todo $x$ em um intervalo aberto contendo $a$, exceto possivelmente em $x=a$, e
+  \begin{equation}
+    \lim_{x\to a} g(x) = \lim_{x\to a} h(x) = L,
+  \end{equation}
+  então
+  \begin{equation}
+    \lim_{x\to a} f(x) = L.
+  \end{equation}
+\end{teo}
+\begin{dem}
+  Da preservação da desigualdade, temos
+  \begin{equation}
+    \lim_{x\to a} g(x) \leq \lim_{x\to a} f(x) \leq \lim_{x\to a} h(x)
+  \end{equation}
+  donde
+  \begin{equation}
+    L \leq \lim_{x\to a} f(x) \leq L.
+  \end{equation}
+\end{dem}
+
+\begin{exer}
+  Toda função $f(x)$ tal que $-1+x^2/2 \leq f(x) \leq -1+x^2/3$, para todo $x\neq 0$, tem
+  \begin{equation}
+    \lim_{x\to 0} f(x) = -1.
+  \end{equation}
+\end{exer}
+
+\begin{obs}
+  O Teorema do confronto também se aplica a limites laterais.
+\end{obs}
+
+\begin{ex}\label{ex:senx}
+  \begin{equation}
+    \lim_{x\to 0} \sen x = 0.
+  \end{equation}
+  De fato, começamos assumindo $0<x<\pi/2$. Tomando $O = (0,0)$, $A=(1,0)$ e $P = (\cos x, \sen x)$, observamos que
+  \begin{equation}
+    \text{Área do triâng.} OAP < \text{Área do setor} OAP,
+  \end{equation}
+  i.e.
+  \begin{equation}
+    \frac{\sen x}{2} < \frac{x}{2} \Rightarrow \sen x < x,
+  \end{equation}
+  para todo $0< x < \pi/2$. 
+
+  É certo que $\sen x < -x$ para $-\pi/2 < x < 0$. Com isso e o resultado acima, temos
+  \begin{equation}\label{eq:senx0}
+    \sen x \leq |x|,\quad -\pi/2 < x < \pi/2.
+  \end{equation}
+
+  Lembrando que $\sen x$ é uma função ímpar, temos
+  \begin{equation}\label{eq:senx1}
+    -|x| \leq -\sen x = \sen -x,\quad -\pi/2 < x < \pi/2.
+  \end{equation}
+  Logo, de \eqref{eq:senx0} e \eqref{eq:senx1}, temos
+  \begin{equation}
+    -|x| \leq \sen x \leq |x|.
+  \end{equation}
+
+  Por fim, como
+  \begin{equation}
+    \lim_{x\to 0} -|x| = \lim_{x\to 0} |x| = 0,
+  \end{equation}
+  do Teorema do confronto, concluímos
+  \begin{equation}
+    \lim_{x\to 0} \sen x = 0.
+  \end{equation}
+\end{ex}
+
+\begin{obs}
+  Do exemplo anterior (Exemplo \ref{ex:senx}), podemos mostrar que
+\begin{equation}
+  \lim_{x\to 0} \cos x = 1.
+\end{equation}
+
+De fato, da identidade trigonométrica de ângulo metade \eqref{eq:id_trig_cos_x2}
+\begin{equation}
+  \sen^2 \frac{x}{2} = \frac{1 - \cos x}{2}
+\end{equation}
+temos
+\begin{equation}
+  \cos x = 1 + 2\sen^2 \frac{x}{2}.
+\end{equation}
+Então, aplicando as regras de cálculo de limites, obtemos
+\begin{align}
+  \lim_{x\to 0} \cos x &= \lim_{x\to 0} \left[1 + 2\sen^2 \frac{x}{2}\right] \\
+                       &= 1 + 2\left(\lim_{x\to 0} \sen \frac{x}{2}\right)^2.\label{eq:senx2}
+\end{align}
+Agora, fazemos a mudança de variável $y = x/2$. Neste caso, temos $y\to 0$ quando $x\to 0$ e, então
+\begin{equation}
+  \lim_{x\to 0} \sen \frac{x}{2} = \lim_{y\to 0} \sen y = 0.
+\end{equation}
+Então, retornando a equação \eqref{eq:senx2}, concluímos
+\begin{equation}
+  \lim_{x\to 0} \cos x = 1.
+\end{equation}
+\end{obs}
+
+\subsection{Limites envolvendo $(\sen x)/x$}
+
+Verificamos o seguinte resultado
+\begin{equation}
+  \lim_{x\to 0} \frac{\sen x}{x} = 1.
+\end{equation}
+
+Para verificarmos este resultado, calcularemos os limites laterais à esquerda e à direita. Começamos com o limite lateral a direita e assumimos $0<x<\pi/2$. Sendo os pontos $O=(0,0)$, $P=(\cos x,\sen x)$, $A = (1,0)$ e $T = (1, \tg x)$, observamos que
+\begin{equation}
+  \text{Área do triâng. } OAP < \text{Área do setor} OAP < \text{Área do triâng. } OAT.
+\end{equation}
+Ou seja, temos
+\begin{equation}
+  \frac{\sen x}{2} < \frac{x}{2} < \frac{\tg x}{2}.
+\end{equation}
+Multiplicando por $2$ e dividindo por $\sen x$\footnote{$\sen x > 0$ para todo $0< x < \pi/2$.}, obtemos
+\begin{equation}
+  1 < \frac{x}{\sen x} < \frac{1}{\cos x}.
+\end{equation}
+Tomando os recíprocos, temos
+\begin{equation}
+  1 > \frac{\sen x}{x} > \cos x.
+\end{equation}
+Agora, passando ao limite
+\begin{equation}
+  1 = \lim_{x\to 0^+} 1 \geq \lim_{x\to 0^+} \frac{\sen x}{x} \geq \lim_{x\to 0^+} \cos x = 1.
+\end{equation}
+Logo, concluímos que
+\begin{equation}
+  \lim_{x\to 0^+} \frac{\sen x}{x} = 1.
+\end{equation}
+
+Agora, usando o fato de que $\sen x/x$ é uma função par, temos
+\begin{align}
+  \lim_{x\to 0^-} \frac{\sen x}{x} &= \lim_{x\to 0^-} \frac{\sen(-x)}{-x} \\
+  &= \lim_{x\to 0^+} \frac{\sen x}{x} = 1.
+\end{align}
+
+Calculados os limites laterais, concluímos o que queríamos.
+
+\begin{ex}
+  Com o resultado acima e as regras de cálculo de limites, temos
+  \begin{equation}
+    \lim_{x\to 0} \frac{\cos(x) - 1}{x} = 0.
+  \end{equation}
+  Veja o Exercício \ref{exer:lim_cosx_1}.
+\end{ex}
+
+% \begin{exer}
+%   Pode-se mostrar que $|-x| \leq \sen x \leq |x|$ (veja a Figura \ref{fig:}). Ainda, como
+%   \begin{equation}
+%     \lim_{x\to 0} -|x| = \lim_{x\to 0} |x| = 0,
+%   \end{equation}
+%   temos, pelo Teorema do confronto (Teorema \ref{teo:confronto}),
+%   \begin{equation}
+%     \lim_{x\to 0} \sen x = 0.
+%   \end{equation}
+% \end{exer}
+
+\subsection*{Exercícios}
+
+\begin{exer}
+  Supondo que $1-x^2/3 \leq u(x) \leq 1-x^2/2$ para todo $x\neq 0$, determine o $\lim_{x\to 0} u(x)$.
+\end{exer}
+\begin{resp}
+  $1$
+\end{resp}
+
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \lim_{x\to 0} \frac{\sen 3x}{6x}.
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $0$
+\end{resp}
+
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \lim_{x\to 0} \frac{\cos(x)-1}{x}.
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $0$
+\end{resp}
+
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \lim_{x\to 0} \frac{\cos(3x)-1}{6x}.
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $\frac{1}{2}$
+\end{resp}
+
+\emconstrucao
+
+\section{Limites no infinito}\label{cap_lim_sec_liminf}
+
+\emconstrucao
+
+\subsection*{Exercícios}
+
+\section{Limites infinitos}\label{cap_lim_sec_lim_inf}
+
+\emconstrucao
 
 \subsection*{Exercícios}
 
