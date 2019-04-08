@@ -412,8 +412,66 @@ Para a função exponencial natural $y = e^x$, temos
                         &= e^x.
 \end{align}
 
+
 \begin{ex}
-  
+Vejamos os seguintes casos:
+\begin{enumerate}[a)]
+\item $\displaystyle\frac{\dd 2^x}{\dd x} = 2^x\ln 2$.
+\item
+  \begin{align}
+    \frac{\dd e^{2x}}{\dd x} &= \frac{\dd}{\dd x}(e^xe^x)\\
+                             &= e^xe^x + e^xe^x\\
+                             &= 2e^{2x}.
+  \end{align}
+\end{enumerate}  
+\end{ex}
+
+\subsection{Derivadas de ordens mais altas}
+
+A derivada de uma função $y = f(x)$ em relação a $x$ é a função $y = f'(x)$. Quando esta é diferenciável, podemos calcular a derivada da derivada. Esta é conhecida como a {\bf segunda derivada} de $f$, denotamos
+\begin{equation}
+  f''(x) := (f'(x))' ~ \text{ou} ~ \frac{\dd^2}{\dd x}f(x) = \frac{\dd}{\dd x}\left(\frac{\dd}{\dd x}f(x)\right).
+\end{equation}
+
+\begin{ex}
+  Seja $f(x) = 1/x$. Então, a primeira derivada de $f$ é
+  \begin{equation}
+    f'(x) = [x^{-1}]' = -x^{-2}.
+  \end{equation}
+  De posse da primeira derivada, podemos calculamos a segunda derivada de $f$, como segue:
+  \begin{equation}
+    f''(x) = [f'(x)]' = [-x^{-2}]' = 2x^{-3}.
+  \end{equation}
+\end{ex}
+
+Generalizando, quando existe, a $n$-ésima derivada de uma função $y = f(x)$, $n\geq 1$, é recursivamente definida (e denotada) por
+\begin{equation}
+  f^{(n)}(x) := [f^{(n-1)}]' ~ \text{ou} ~ \frac{\dd^n}{\dd x^n}f(x) := \frac{\dd}{\dd x}\left[\frac{\dd^{n-1}}{\dd x^{n-1}}f(x)\right],
+\end{equation}
+com $f^{(3)}\equiv f'''$, $f^{(2)}\equiv f''$, $f^{(1)}\equiv f'$ e $f^{(0)}\equiv f$.
+
+\begin{ex}
+  \begin{enumerate}[a)]
+  \item Para obtermos a terceira derivada de $f(x) = x^3 -2x$, calculamos
+    \begin{equation}
+      f'(x) = 3x^2-2.
+    \end{equation}
+    então
+    \begin{equation}
+      f''(x) = 6x
+    \end{equation}
+    e, finalmente,
+    \begin{equation}
+      f'''(x) = 6.
+    \end{equation}
+    \ifispython
+    Com o \verb+Sympy+, podemos computar esta derivada com o seguinte comando:
+\begin{verbatim}
+diff(x**3-2*x,x,3)
+\end{verbatim}
+    \fi
+  \item A milionésima primeira derivada de $f(x) = e^x$ é $f^{(1001)}(x) = e^x$. Verifique!
+  \end{enumerate}
 \end{ex}
 
 \emconstrucao
@@ -422,7 +480,7 @@ Para a função exponencial natural $y = e^x$, temos
 
 \emconstrucao
 
-\section{Aplicações}\label{cap_deriv_sec_apl}
+\section{Taxa de variação}\label{cap_deriv_sec_apl}
 
 Observamos que a razão
 \begin{equation}
@@ -434,8 +492,8 @@ pode ser entendida como a {\bf taxa de variação média} de $f$ no intervalo de
 \end{equation}
 temos a {\bf taxa de variação instantânea} de $f$ em relação a $x$ no ponto $x_0$, i.e. a taxa com que $f$ varia no ponto $x=x_0$.
 
-\begin{ex}
-  Suponhemos que o número de litros de água em um tanque, $t$ minutos depois de iniciar seu esvaziamento, é dado por $V = 2000(40-t)^2$. Deste modelo, podemos tirar várias conclusões.
+\begin{ex}\normalfont{(Taxa de variação)}
+  Suponhamos que o número de litros de água em um tanque, $t$ minutos depois de iniciar seu esvaziamento, é dado por $V = 2000(40-t)^2$. Deste modelo, podemos tirar várias conclusões.
   \begin{enumerate}[a)]
   \item A taxa média do volume de água no tanque nos primeiros $10$ minutos é:
     \begin{align}
@@ -443,7 +501,7 @@ temos a {\bf taxa de variação instantânea} de $f$ em relação a $x$ no ponto
                                &= \frac{2000\cdot 30^2-2000\cdot 40^2}{10} \\
                                &= 200(900-1600) = 100\,000 ~ \text{L}/\text{min}.
     \end{align}
-  \item Podemos obter a taxa instantânea do volume de áqua no tanque em $t=10$ minutos. Para tanto, calculamos a derivada
+  \item Podemos obter a taxa instantânea do volume de água no tanque em $t=10$ minutos. Para tanto, calculamos a derivada
     \begin{align}
       V'(t) &= -160\,000 + 4000t. 
     \end{align}
@@ -454,7 +512,31 @@ temos a {\bf taxa de variação instantânea} de $f$ em relação a $x$ no ponto
   \end{enumerate}
 \end{ex}
 
-\emconstrucao
+\begin{ex}\normalfont{(Movimento de uma partícula)}
+  Consideremos que, no instante $t\geq 0$ segundos ($s$), a posição (em metros, $m$) de uma partícula sobre o eixo $s$ é modelada por $s = t^2-3t$. Vejamos, então, as seguintes conclusões.
+  \begin{enumerate}[a)]
+  \item A {\bf velocidade} é, por definição, a derivada da função posição em relação ao tempo (taxa de variação da posição em relação ao tempo). Desta forma, temos que a velocidade da partícula no instante $t$ é
+    \begin{equation}
+      v(t) := \frac{\dd s}{\dd t} = \frac{\dd}{\dd t}(t^2-3t) = 2t-3 ~ \text{m}/\text{s}.
+    \end{equation}
+  \item A {\bf aceleração} é, por definição, a derivada da função velocidade em relação ao tempo\footnote{A aceleração é a segunda derivada da função velocidade em relação ao tempo.}. Desta forma, temos que a aceleração da partícula no instante $t$ é
+    \begin{equation}
+      a(t) := \frac{\dd v}{\dd t} = \frac{\dd}{\dd t}(2t-3) = 2 ~ \text{m}/\text{s}^2.
+    \end{equation}
+  \end{enumerate}
+\end{ex}
+
+\begin{ex}
+  O volume de um balão esférico é dado em função de seu raio por $\displaystyle V = \frac{4\pi}{3}r^2$. Então, podemos concluir que:
+  \begin{enumerate}[a)]
+  \item A taxa de variação do volume do balão em relação ao raio quando $r=1$ é
+    \begin{align}
+      V'(1) &= \left.\frac{\dd V}{\dd r}\right|_{r=1}\\
+            &= \left.\frac{8\pi}{3}r\right|_{r=1} = \frac{8\pi}{3}.
+    \end{align}
+  \item A taxa de variação calculada no item a), significa que, quando $r=1$, o volume do balão está aumentando $16\pi/3$ unidades por unidade do raio. Assim, aproximadamente, se o raio aumentar de $1$ para $1,1$, o volume do balão aumentará $V'(1)(1,1-1) = 0,8\pi/3$. Observamos que, fazendo o cálculo exato, temos que o aumento do volume é de $0,84\pi/3$. 
+  \end{enumerate}
+\end{ex}
 
 \subsection*{Exercícios}
 
