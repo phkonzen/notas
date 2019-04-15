@@ -1,4 +1,4 @@
-# Diretório: VetoresGeometriaAnalitica/cap_intro
+# Diretório: VetoresGeometriaAnalitica/cap_prodvet
 
 Este diretório contém o código fonte do capítulo "Produto vetorial".
 
