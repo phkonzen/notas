@@ -11,12 +11,12 @@ q = plot(-1,(x,-2,2),line_color='none',show=False)
 p.extend(q)
 p.xlabel = '$x$'
 p.ylabel = '$f(x) = x^2$'
-p.save('fig_f.pdf')
+p.save('fig_f.png')
 
 fig = p._backend.fig
 ax = fig.axes[0]
 ax.plot([0],[0],marker='o',color='blue')
-fig.savefig('fig_f.pdf')
+fig.savefig('fig_f.png')
 
 # g(x) = -x^2
 p = plot(-x**2,(x,-2,2),ylim=[-4,1],show=False)
@@ -24,18 +24,18 @@ q = plot(1,(x,-2,2),line_color='none',show=False)
 p.extend(q)
 p.xlabel = '$x$'
 p.ylabel = '$g(x) = -x^2$'
-p.save('fig_g.pdf')
+p.save('fig_g.png')
 
 fig = p._backend.fig
 ax = fig.axes[0]
 ax.plot([0],[0],marker='o',color='blue')
-fig.savefig('fig_g.pdf')
+fig.savefig('fig_g.png')
 
 # h(x) = x^3
 p = plot(x**3,(x,-2,2),ylim=[-4,4],show=False)
 p.xlabel = '$x$'
 p.ylabel = '$h(x) = x^3$'
-p.save('fig_h.pdf')
+p.save('fig_h.png')
 
 
 

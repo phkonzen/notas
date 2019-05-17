@@ -19,4 +19,4 @@ plt.arrow(0.6,0.25,0.2,0.8*0.2,head_width=0.02,facecolor='black')
 plt.text(0.7,0.25,'$\\vec{v}$')
 
 
-fig.savefig("fig_er_vet.pdf", bbox_inches="tight")
+fig.savefig("fig_er_vet.png", bbox_inches="tight")

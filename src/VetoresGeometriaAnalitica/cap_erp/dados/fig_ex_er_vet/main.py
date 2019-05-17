@@ -40,4 +40,4 @@ ax.add_artist(Arrow3D([-1,2],[-1,1],[-2,3],mutation_scale=20,
 ax.text(0,0,0.5,'$\\vec{v}$')
 ax.text(-1.5,-2,-2,'$r$')
 
-fig.savefig("fig_ex_er_vet.pdf", bbox_inches="tight")
+fig.savefig("fig_ex_er_vet.png", bbox_inches="tight")

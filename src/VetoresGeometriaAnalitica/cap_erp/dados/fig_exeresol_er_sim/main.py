@@ -27,4 +27,4 @@ ax.text(-1,2,1.25,'$A=(-1,2,1)$')
 plt.plot([1],[5],[-1],marker='o',color='black')
 ax.text(1,5,-0.75,'$B=(1,5,-1)$')
 
-fig.savefig("fig_exeresol_er_sim.pdf", bbox_inches="tight")
+fig.savefig("fig_exeresol_er_sim.png", bbox_inches="tight")
