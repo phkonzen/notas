@@ -286,7 +286,13 @@ O teorema do valor médio é uma generalização do teorema de Rolle.
   Segue, imediatamente, da aplicação do corolário anterior à função $h(x)=f(x)-g(x)$.
 \end{dem}
 
-
+\begin{corol}\normalfont{(Monotonicidade e o sinal da derivada)}\label{corol:mono_deriv}
+  Suponha que $f$ seja contínua em $[a,b]$ e derivável em $(a,b)$.
+  \begin{itemize}
+  \item Se $f'(x)>0$ para todo $x\in (a,b)$, então $f$ é crescente em $[a,b]$.
+  \item Se $f'(x)<0$ para todo $x\in (a,b)$, então $f$ é decrescente em $[a,b]$.
+  \end{itemize}
+\end{corol}
 
 \subsection*{Exercícios resolvidos}
 
@@ -308,3 +314,87 @@ O teorema do valor médio é uma generalização do teorema de Rolle.
 \begin{exer}
   Demonstre que um polinômio cúbico pode ter no máximo $3$ raízes reais.
 \end{exer}
+
+\section{Teste da primeira derivada}\label{cap_apderiv_sec_tder1}
+
+Na Seção \label{cap_apderiv_sec_tder1}, vimos que os extremos de uma função ocorrem nos extremos de seu domínio ou em um ponto crítico. Aliado a isso, o Corolário \ref{corol:mono_deriv} nos fornece condições suficientes para classicar os pontos críticos como extremos locais.
+
+Mais precisamente, seja $c$ um ponto crítico de uma função contínua $f$ e diferenciável em todos os pontos de um intervalo aberto $(a,b)$ contendo $c$, exceto possivelmente no ponto $c$. Movendo-se no sentido positivo em $x$:
+\begin{itemize}
+\item se $f'$ muda de negativa para positiva em $c$, então $f$ possui um mínimo local em $c$;
+\item se $f'$ muda de positiva para negativa em $c$, então $f$ possui um máximo local em $c$;
+\item se $f'$ não muda de sinal em $c$, então $c$ não é um extremo local de $f$.
+\end{itemize}
+
+\begin{ex}
+  Consideremos a função $f(x)=(x+1)(x-1)(x-2)$. Como $f$ é diferenciável em toda parte, seus pontos críticos são aqueles tais que
+  \begin{equation}
+    f'(x)=0.
+  \end{equation}
+  Temos $f'(x) = 3x^2-4x-1$. Segue, que os pontos críticos são
+  \begin{align}
+    3x^2-4x-1=0 &\Rightarrow x = \frac{2\pm \sqrt{7}}{3}
+  \end{align}
+  Com isso, temos
+  
+  \begin{tabular}{lccc}\hline
+    Intervalos & $x<\frac{2-\sqrt{7}}{3}$ & $\frac{2-\sqrt{7}}{3}<x<\frac{2+\sqrt{7}}{3}$ & $\frac{2+\sqrt{7}}{3}<x$ \\\hline
+    $f'$ & + & - & + \\
+    $f$ & crescente & decrescente & crescente\\\hline
+  \end{tabular}
+
+  Então, do teste da primeira derivada, concluímos que $x=\frac{2-\sqrt{7}}{3}$ é ponto de máximo local e que $x=\frac{2+\sqrt{7}}{3}$ é ponto de mínimo local.
+
+  \ifispython
+  Podemos usar o \verb+Sympy+ para computarmos a derivada de $f$ com o comando
+\begin{verbatim}
+fl = diff((x - 2)*(x - 1)*(x + 1))
+\end{verbatim}
+  Então, podemos resolver $f'(x)=0$ com o comando
+\begin{verbatim}
+solve(fl)
+\end{verbatim}
+  e, por fim, podemos fazer o estudo de sinal da $f'$ com os comandos
+\begin{verbatim}
+reduce_inequalities(fl<0)
+reduce_inequalities(fl>0)
+\end{verbatim}
+  \fi
+\end{ex}
+
+\subsection*{Exercícios resolvidos}
+
+\begin{exeresol}
+  Determine e classifique os extremos da função
+  \begin{equation}
+    f(x) = x^4 - 4x^3 + 4x^2.
+  \end{equation}
+\end{exeresol}
+\begin{resol}
+  Como o domínio da $f$ é $(-\infty,\infty)$ e $f$ é diferenciável em toda parte, temos que seus extremos ocorrem em pontos críticos tais que
+  \begin{equation}
+    f'(x)=0.
+  \end{equation}
+  Resolvendo, obtemos
+  \begin{align}
+    4x^3-12x^2+8x=0 &\Rightarrow 4x(x^2-3x+2)=0
+  \end{align}
+  Logo,
+  \begin{align}
+    4x=0 \quad\text{ou}\quad &x^2-3x+2=0\\
+                             &x = \frac{-3\pm 1}{2}.
+  \end{align}
+  Portanto, os ponto críticos são $x_1=0$, $x_2=-2$ e $x_3=-1$. Fazendo o estudo de sinal da $f'$, temos
+
+  \begin{tabular}{lcccc}\hline
+             & $x<x_1$ & $x_1<x<x_2$ & $x_2<x<x_3$ & $x_3<x$ \\\hline
+    $4x$       & -       &     +       &     +      &   +      \\
+    $x^2-3x+2$ & +       &     +       &     -      &   +   \\
+    $f'(x)$    & -       &     +       &     -      &   +   \\
+    $f$        & decrescente & crescente & decrescente & crescente \\\hline
+  \end{tabular}\\
+  
+  Então, do teste da primeira derivada, concluímos que $x_1=0$ é ponto de mínimo local, $x_2=-2$ é ponto de máximo local e $x_3=-1$ é ponto de máximo local.
+\end{resol}
+
+\subsection*{Exercícios}
