@@ -1,0 +1,159 @@
+%Este trabalho está licenciado sob a Licença Atribuição-CompartilhaIgual 4.0 Internacional Creative Commons. Para visualizar uma cópia desta licença, visite http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR ou mande uma carta para Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+
+\chapter{Integração}\label{cap_int}
+\thispagestyle{fancy}
+
+\ifispython
+\begin{obs}\label{obs:cap_int_python}
+  Nos códigos \verb+Python+ apresentados neste capítulo, assumimos o seguinte preâmbulo:
+\begin{verbatim}
+from sympy import *
+var('x',real=True)
+\end{verbatim}
+\end{obs}
+\fi
+
+\section{Integrais indefinidas}
+
+Seja $f(x)$ uma função. Dizemos que $F(x)$ é uma \emph{primitiva} de $f(x)$ quando
+\begin{equation}
+  F'(x) = f(x)
+\end{equation}
+para todo $x$ no domínio da $f$.
+
+\begin{ex}\label{ex:primitiva}
+  Seja $f(x) = 2x$. Notemos que $F(x) = x^2$ é uma primitiva de $f$, pois
+  \begin{equation}
+    F'(x) = 2x = f(x).
+  \end{equation}
+  Também, se $C$ é uma constante qualquer, $F(x) = x^2 + C$ é primitiva de $f(x)$. De fato, lembrando que a derivada de uma constante é zero, temos
+  \begin{equation}
+    F'(x) = 2x + 0 = 2x = f(x).
+  \end{equation}
+\end{ex}
+
+\begin{obs}
+  Se $F(x)$ é uma primitiva de $f(x)$, então $F(x)+C$, com $C$ constante, também é primitiva de $f(x)$.
+\end{obs}
+
+A \emph{integral indefinida} de uma função $f(x)$ é denotada por
+\begin{equation}
+  \int f(x)\,dx
+\end{equation}
+e é definida por
+\begin{equation}
+  \int f(x)\,dx = F(x) + C,
+\end{equation}
+onde $F(x)$ é uma primitiva de $f(x)$.
+
+\begin{ex}
+  Do observado no exemplo anterior (Exemplo \ref{ex:primitiva}), temos
+  \begin{equation}
+    \int 2x\,dx = x^2 + C.
+  \end{equation}
+
+  \ifispython
+  Com o \verb+Sympy+, podemos computar a integral indefinida acima com o comando\footnote{Veja a Observação \ref{obs:cap_int_python}.}:
+\begin{verbatim}
+integrate(2*x)
+\end{verbatim}
+  \fi
+  Observe que o \verb+Sympy+ não adiciona a constante indeterminada.
+\end{ex}
+
+\subsection{Regras básicas de integração}
+
+Das regras básicas de derivação, podemos inferir as seguintes regras para integração:
+\begin{itemize}
+\item $\displaystyle \int 0\,dx = C$.
+\item $\displaystyle \int 1\,dx = x + C$.
+\item $\displaystyle \int af(x)\,dx = a\int f(x)\,dx$, $a\neq 0$ constante.
+\item $\displaystyle \int f(x)\pm g(x)\,dx = \int f(x)\,dx \pm \int g(x)\,dx$.
+\end{itemize}
+
+\begin{ex}\label{ex:int_poli}
+  \begin{align}
+    \int x - 3x^2\,dx &= \int x\,dx - \int 3x^2\,dx\\
+                      &= \int \frac{2}{2}x\,dx - x^3 + C\\
+                      &= \frac{1}{2}\int 2x\,dx - x^3 + C\\
+                      &= \frac{x^2}{2} - x^3 + C.
+  \end{align}
+\end{ex}
+
+No exemplo anterior (Exemplo \ref{ex:int_poli}) integramos funções potências. Da regra de derivação
+\begin{equation}
+  [x^n]' = nx^{n-1}, \quad n\neq 0,
+\end{equation}
+temos
+\begin{align}
+  \int x^n\,dx &= \int \frac{n+1}{n+1}x^n\,dx, \quad n\neq -1,\\
+               &= \frac{1}{n+1}\int (n+1)x^n\,dx,\\
+               &= \frac{x^{n+1}}{n+1} + C.
+\end{align}
+Ou seja, obtemos a seguinte regra de integração para função potência
+\begin{equation}
+  \int x^n\,dx = \frac{x^{n+1}}{n+1} + C, \quad n\neq -1.
+\end{equation}
+
+\begin{ex}
+  \begin{equation}
+    \int 3x^{-2}\,dx = 3\int x^{-2}\,dx = 3\frac{x^{-2+1}}{-2+1} + C = -3x^{-1} + C = -\frac{3}{x} + C.
+  \end{equation}
+\end{ex}
+
+Das regras de derivação para a função exponencial natural e logaritmo natural, temos
+\begin{itemize}
+\item $\displaystyle \int e^x\,dx = e^x + C$.
+\item $\displaystyle \int \frac{1}{x}\,dx = \ln x + C$.
+\end{itemize}
+Também, como $(a^x)' = a^x\ln a$, temos
+\begin{equation}
+  \int a^x\,dx = \frac{a^x}{\ln a} + C.
+\end{equation}
+
+\subsection*{Exercícios resolvidos}
+
+\emconstrucao
+
+\subsection{Exercícios}
+
+\emconstrucao
+
+\section{Integração por substituição}
+
+Seja $u = u(x)$. Usando de diferenciais, temos $du = u'(x)dx$. Logo,
+\begin{equation}
+  \int f(u(x))u'(x)\,dx = \int f(u)\,du.
+\end{equation}
+Esta é chamada de regra de integração por substituição.
+
+\begin{ex}
+  Consideremos
+  \begin{equation}
+    \int (2x+1)^2\,dx.
+  \end{equation}
+  Substituindo
+  \begin{equation}
+    u = 2x+1
+  \end{equation}
+  temos
+  \begin{equation}
+    du = 2dx.
+  \end{equation}
+  Portanto,
+  \begin{align}
+    \int (x+1)^2\,dx &= \int u^2\,\frac{du}{2}\\
+                     &= \frac{1}{2}\int u^2\,du\\
+                     &= \frac{1}{2}\frac{u^{2+1}}{2+1} + C\\
+                     &= \frac{u^3}{6} + C\\
+                     &= \frac{1}{6}(2x+1)^3 + C.
+  \end{align}
+\end{ex}
+
+\subsection*{Exercícios resolvidos}
+
+\emconstrucao
+
+\subsection*{Exercícios}
+
+\emconstrucao
