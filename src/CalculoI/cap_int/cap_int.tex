@@ -152,6 +152,35 @@ Esta é chamada de regra de integração por substituição.
 
 \subsection*{Exercícios resolvidos}
 
+\begin{exeresol}
+  Calcule
+  \begin{equation}
+    \int \frac{7}{(x-1)^2}\,dx.
+  \end{equation}
+\end{exeresol}
+\begin{resol}
+  Usamos a regra de integração por substituição
+  \begin{equation}
+    \int f(u(x))u'(x)\,dx = \int f(u)\,du.
+  \end{equation}
+  Escolhemos
+  \begin{equation}
+    u = x-1,
+  \end{equation}
+  e calculamos
+  \begin{equation}
+    \frac{du}{dx} = 1 \Rightarrow du = dx.
+  \end{equation}
+  Então, da fórmula, obtemos
+  \begin{align}
+    \int \frac{7}{(x-1)^2}\,dx &= \int \frac{7}{u^2}\,du\\
+                               &= 7\int u^{-2}\,du\\
+                               &= 7\frac{u^{-2+1}}{-2+1}\\
+                               &= -\frac{7}{u}\\
+                               &= \frac{7}{1-x}.
+  \end{align}
+\end{resol}
+
 \emconstrucao
 
 \subsection*{Exercícios}
@@ -193,8 +222,219 @@ Daí, segue a \emph{fórmula de integração por partes}
 
 \subsection*{Exercícios resolvidos}
 
+\begin{exeresol}
+  Calcule
+  \begin{equation}
+    \int x\ln x\,dx.
+  \end{equation}
+\end{exeresol}
+\begin{resol}
+  Usamos a fórmula de integração por partes
+  \begin{equation}
+    \int udv = uv - \int vdu.
+  \end{equation}
+  Para tanto, escolhemos
+  \begin{align}
+    &u = \ln x \Rightarrow du = \frac{1}{x}\,dx\\
+    &dv = x\,dx \Rightarrow v = \int x\,dx = \frac{x^2}{2}+C.
+  \end{align}
+  Tomando $C=0$, e usando a fórmula, obtemos
+  \begin{align}
+    \int x\ln x\,dx &= \int udv\\
+                    &= uv - \int v\,du\\
+                    &= \frac{x^2}{2}\ln x - \int \frac{x^2}{2}\frac{1}{x}\,dx\\
+                    &= \frac{x^2}{2}\ln x - \frac{1}{2}\int x\,dx\\
+                    &= \frac{x^2}{2}\ln x - \frac{1}{2}\frac{x^2}{2} + C\\
+                    &= \frac{x^2}{2}\ln x - \frac{x^2}{4} + C.
+  \end{align}
+
+  \ifispython
+  Podemos computar esta integral, usando o seguinte comando do \verb+Sympy+\footnote{Veja a Observação \ref{obs:cap_int_python}.}:
+\begin{verbatim}
+integrate(x*log(x),x)
+\end{verbatim}
+  \fi
+\end{resol}
+
 \emconstrucao
 
 \subsection*{Exercícios}
 
 \emconstrucao
+
+\section{Integral definida}\label{cap_int_intdef}
+
+\emconstrucao
+
+\subsection{Teorema fundamental do cálculo}
+
+O teorema fundamental do cálculo estabelece uma relação entre a integral definida de uma função e suas primitivas.
+
+\begin{teo}\normalfont{(Teorema fundamental do cálculo)}
+  Se $f$ é uma função contínua em um intervalo fechado $[a, b]$ e $F$ é qualquer primitiva de $f$ em $[a, b]$, então
+  \begin{equation}
+    \int_a^b f(x)\,dx = F(b)-F(a).
+  \end{equation}
+\end{teo}
+
+\begin{obs}\label{obs:tfc1}
+  Uma outra forma do teorema fundamental do cálculo é a seguinte: se $f$ é contínua em $[a, b]$, então
+  \begin{equation}
+    F(x) = \int_a^x f(t)\,dt
+  \end{equation}
+  é contínua em $[a, b]$, derivável em $(a, b)$ e sua derivada é
+  \begin{equation}
+    F'(x) = \frac{d}{dx}\int_a^x f(t)\,dt = f(x).
+  \end{equation}
+\end{obs}
+
+\subsection{Substituição em integrais definidas}
+
+Em algumas situações, faz-se necessário a aplicação da técnica de integração por substituição para integrais definidas. Neste contexto, sejam $f$ e $u$ funções dadas e $F$ uma primitiva de $f$. Então,
+\begin{equation}
+  [F(u)]' = F'(u)u' = f(u)u'.
+\end{equation}
+Portanto, pelo teorema fundamental do cálculo, temos
+\begin{align}
+  \int_a^b f(u(x))u'(x)\,dx &= F(u(x))|_{x=a}^{x=b}\\
+                            &= F(u)|_{u=u(a)}^{u=u(b)}\\
+                            &= \int_{u(a)}^{u(b)} f(u)\,du.
+\end{align}
+Resumidamente, temos que a \emph{regra da substituição em integrais definidas}, lê-se
+\begin{equation}
+  \int_a^b f(u(x))u'(x)\,dx = \int_{u(a)}^{u(b)} f(u)\,du.
+\end{equation}
+
+\subsection{Integração por partes para integrais definidas}
+
+Podemos aplicar a fórmula de integração por partes para integrais definidas. Neste caso, temos
+\begin{equation}
+  \int_a^b f(x)g'(x)\,dx = f(x)g(x)|_{a}^b - \int_a^b g(x)f'(x)\,dx.
+\end{equation}
+
+\subsection*{Exercícios resolvidos}
+
+\begin{exeresol}
+  Calcule
+  \begin{equation}
+    \int_0^1x\sqrt{1-x^2}\,dx.
+  \end{equation}
+\end{exeresol}
+\begin{resol}
+  Vejamos as seguintes formas de calcular esta integral definida.
+  \begin{itemize}
+  \item Solução 1: aplicando a regra de substituição em integrais definidas.
+    \begin{equation}
+      \int_a^bf(u(x))u'(x)\,dx = \int_{u(a)}^{u(b)} f(u)\,du.
+    \end{equation}
+    Escolhendo, $u = 1-x^2$, temos $du = -2x\,dx$. Daí, segue
+    \begin{align}
+      \int_0^1x\sqrt{1-x^2}\,dx &= \int_{u(0)}^{u(1)}x\sqrt{u}\,\frac{du}{-2x}\\
+                                &= -\frac{1}{2}\int_{1}^0 u^{\frac{1}{2}}\,du\\
+                                &= -\frac{1}{2}\left.\frac{u^{\frac{1}{2}+1}}{\frac{1}{2}+1}\right|_{u=1}^0\\
+                                &= -\frac{1}{3}\left.\sqrt{u^3}\right|_{u=1}^0\\
+                                &= \frac{1}{3}.
+    \end{align}
+  \item Solução 2: calculando uma primitiva em função de $x$.
+    Para obtermos uma primitiva em função de $x$, calculamos a integral indefinida
+    \begin{equation}
+      \int x\sqrt{1-x^2}\,dx.
+    \end{equation}
+    Como anteriormente, usamos a regra de substituição. Escolhendo $u=1-x^2$, temos $du = -2x\,dx$ e, portanto
+    \begin{align}
+      \int x\sqrt{1-x^2}\,dx &= \int x\sqrt{u}\,\frac{du}{-2x}\\
+                             &= -\frac{1}{2}\int u^{\frac{1}{2}}\,du\\
+                             &= -\frac{1}{2}\frac{u^{\frac{1}{2}+1}}{\frac{1}{2}+1}\\
+                             &= -\frac{1}{3}\sqrt{u^3}\\
+                             &= -\frac{1}{3}\sqrt{(1-x^2)^3} + C.
+    \end{align}
+    Então, do teorema fundamental do cálculo, temos
+    \begin{equation}
+      \int_0^1 x\sqrt{1-x^2}\,dx = -\frac{1}{3}\left.\sqrt{(1-x^2)^3}\right|_{0}^1 = \frac{1}{3}.
+    \end{equation}
+  \end{itemize}
+
+  \ifispython
+  Para computarmos esta integral definida, podemos usar o seguinte comando do \verb+Sympy+:
+\begin{verbatim}
+integrate(x*sqrt(1-x**2),(x,0,1))
+\end{verbatim}
+  \fi
+\end{resol}
+
+\begin{exeresol}
+  Calcule
+  \begin{equation}
+    \int_{-1}^1 xe^x\,dx.
+  \end{equation}
+\end{exeresol}
+\begin{resol}
+  Vamos usar a fórmula de integração por partes para integrais definidadas
+  \begin{equation}
+    \int_a^b f(x)g'(x)\,dx = f(x)g(x)|_{a}^b - \int g(x)f'(x)\,dx.
+  \end{equation}
+  Para tanto, escolhemos $f(x) = x$ e $g'(x) = e^x$, donde
+  \begin{equation}
+    f'(x) = 1,\quad\text{e}\quad g(x) = \int g'(x)\,dx = \int e^x\,dx = e^x + C.
+  \end{equation}
+  Escolhendo $C=0$ e usando a fórmula, temos
+  \begin{align}
+    \int_{-1}^1 xe^x\,dx &= \int_{-1}^1 f(x)g'(x)\,dx\\
+                         &= f(x)g(x)|_{-1}^1 - \int_{-1}^1 g(x)f'(x)\,dx\\
+                         &= xe^x|_{-1}^1 - \int_{-1}^1 e^x\,dx\\
+                         &= e+e^{-1}-[e^x]_{-1}^1\\
+                         &= e+e^{-1}-(e-e^{-1})\\
+                         &= 2e^{-1}.
+  \end{align}
+  \ifispython
+  Para computarmos esta integral definida, podemos usar o seguinte comando do \verb+Sympy+:
+\begin{verbatim}
+integrate(x*exp(x),(x,-1,1))
+\end{verbatim}
+  \fi
+\end{resol}
+
+\emconstrucao
+
+\subsection*{Exercícios}
+
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \int \frac{7}{(x-1)^2}\,dx.
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $\frac{7}{2}$
+\end{resp}
+
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \int_0^{\ln 3} e^{2x}\,dx.
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $4$
+\end{resp}
+
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \int_0^{\sqrt{e-1}} \frac{x}{x^2+1}\,dx.
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $\frac{1}{2}$
+\end{resp}
+
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \int_{-1}^1 x^2e^x\,dx.
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $-\frac{5}{e}+e$
+\end{resp}
+
