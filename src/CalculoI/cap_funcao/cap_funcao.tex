@@ -86,7 +86,29 @@ plot(sqrt(1-x**2),(x,-1,1))
 
 \subsection*{Exercícios}
 
-\emconstrucao
+\begin{ex}
+  Determine o domínio e a imagem da função identidade, i.e. $f(x) = x$.
+\end{ex}
+\begin{resp}
+  Domínio: $(-\infty, \infty)$; Imagem: $(-\infty, \infty)$
+\end{resp}
+
+\begin{ex}
+  Determine o domínio e a imagem da função $f(x) = x^2 + 1$.
+\end{ex}
+\begin{resp}
+  Domínio: $(-\infty, \infty)$; Imagem: $[1, \infty)$.
+\end{resp}
+
+\begin{ex}
+  Determine o domínio e a imagem da função
+  \begin{equation}
+    h(x) = \frac{1}{x-1} - 2.
+  \end{equation}
+\end{ex}
+\begin{resp}
+  Domínio: $(-\infty, 1)\cup (1, \infty)$; Imagem: $(-\infty, -2)\cup (-2, \infty)$.
+\end{resp}
 
 \section{Função afim}\label{cap_funcao_sec_funafim}
 
@@ -140,7 +162,7 @@ O lugar geométrico do gráfico de uma função afim é uma reta (ou linha). O c
   \centering
   \includegraphics[width=0.7\textwidth]{./cap_funcao/dados/fig_declividade/fig_declividade}
   \caption{Declividade e o coeficiente angular.}
-  \label{fig:ex_funlinear}
+  \label{fig:declividade}
 \end{figure}
 
 A inclinação de uma reta é, normalmente, medida pelo ângulo de declividade (veja a Figura \ref{fig:declividade}). Para definirmos este ângulo, sejam $(x_0, y_0)$ e $(x_1, y_1)$, $x_0<x_1$, pontos sobre uma dada reta, gráfico da função afim $f(x)=mx+b$. O ângulo de declividade (ou, simplesmente, a declividade) da reta é, por definição, o ângulo formado pelo segmento que parte de $(x_0, y_0)$ e termina em $(x_1, y_0)$ e o segmente que parte de $(x_0, y_0)$ e termina em $(x_1, y_1)$. Denotando este ângulo por $\theta$, temos
@@ -165,7 +187,7 @@ Daí, substituindo o valor de $m$ na primeira equação do sistema, obtemos
   \frac{y_0-y_1}{x_0-x_1}x_0 + b = y_0 \Rightarrow b = -\frac{y_0-y_1}{x_0-x_1}x_0 + y_0.
 \end{equation}
 Ou seja, a expressão da função linear (equação da reta) que passa pelos pontos $(x_0, y_0)$ e $(x_1, y_1)$ é
-\begin{equation}
+\begin{equation}\label{eq:funafim_eq}
   y = \underbrace{\frac{y_0-y_1}{x_0-x_1}}_{m}(x-x_0) + y_0.
 \end{equation}
 
@@ -200,9 +222,95 @@ plot(-x-1,(x,-3,3))
 \fi
 \end{resol}
 
+\begin{exeresol}
+  Determine a função afim $f(x) = mx + b$, cujo gráfico contém os pontos $(1, -1)$ e $(2, 1)$.
+\end{exeresol}
+\begin{resol}
+  Vamos usar \eqref{eq:funafim_eq}. Para tanto, tomamos $(x_0, y_0) = (1, -1)$ e $(x_1, y_1) = (2, 1)$. Desta forma, temos
+  \begin{equation}
+    m = \frac{y_1 - y_0}{x_1 - x_0} = \frac{1 - (-1)}{2 - 1} = 2.
+  \end{equation}
+  De \eqref{eq:funafim_eq}, temos
+  \begin{align}
+    f(x) &= m(x-x_0) + y_0\\
+         &= 2(x - 1) + (-1) \\
+         &= 2x -3.
+  \end{align}
+  Ou seja, a função afim desejada é $f(x) = 2x - 3$.
+
+  \ifispython
+  Com o \verb+Sympy+, podemos resolver este exercício utilizando o seguinte código\footnote{Veja a Observação \label{obs:cap_funafom_python}}:
+\begin{verbatim}
+x0 = 1
+y0 = -1
+
+x1 = 2
+y1 = 1
+
+m = (y1-y0)/(x1-x0)
+
+print(m*(x-x0) + y0)
+\end{verbatim}
+  \fi
+\end{resol}
+
+\begin{exeresol}
+  Verifique se as retas $y = -x - 1$ e $y = 2x - 3$ se interceptam e, caso afirmativo, determine o ponto de interseção.
+\end{exeresol}
+\begin{resol}
+  As retas dadas são gráficos das funções afins $f(x) = -x - 1$ e $g(x) = 2x - 3$. Como os coeficientes angulares de $f(x)$ e $g(x)$ são diferentes, temos que as retas têm ângulos de declividade diferentes e, portanto, são retas concorrentes\footnote{Retas concorrentes são retas que se interceptam em um ponto.}.
+
+  Agora, vamos determinar o ponto de interseção. No ponto de interseção dos gráficos de $f(x)$ e $g(x)$ deve ocorrer que $f(x) = g(x)$. Segue
+  \begin{align}
+    f(x)=g(x) &\Rightarrow -x-1 = 2x-3\\
+              &\Rightarrow 3x = 2\\
+              &\Rightarrow x = \frac{2}{3}.
+  \end{align}
+  Assim, temos que as retas se interseptam no ponto de abscissa $x = 2/3$. Para determinar a ordenada deste ponto, podemos usar qualquer uma das funções. Usando $f(x)$ temos
+  \begin{align}
+    y = f\left(\frac{2}{3}\right) = 2\frac{2}{3} - 3 = \frac{4 - 9}{3} = -\frac{5}{3}.
+  \end{align}
+  Conluimos que as retas se interceptam no ponto $(\frac{2}{3}, -\frac{5}{3})$.
+
+    \ifispython
+    Com o \verb+Sympy+, podemos resolver este exercício utilizando o seguinte código\footnote{Veja a Observação \label{obs:cap_funafom_python}}:
+\begin{verbatim}
+f = lambda x: -x-1
+g = lambda x: 2*x-3
+
+px = solve(f(x)-g(x))[0]
+py = f(px)
+
+print(px, py)
+\end{verbatim}
+  \fi
+\end{resol}
+
 \subsection*{Exercícios}
 
-\emconstrucao
+\begin{ex}
+  Faça um esboço do gráfico de cada uma das seguintes funções:
+  \begin{enumerate}[a)]
+  \item $f_1(x) = x$
+  \item $f_2(x) = -x$
+  \item $f_3(x) = x-1$
+  \item $f_4(x) = -x+1$
+  \end{enumerate}
+\end{ex}
+
+\begin{ex}
+  Determine a função afim $f(x)=mx+b$, cujo gráfico contém os pontos $(-2, 1)$ e $(0, -2)$.
+\end{ex}
+\begin{resp}
+  $f(x) = -\frac{3}{2}x - 2$
+\end{resp}
+
+\begin{ex}
+  Determine o ponto de interseção dos gráficos das funções afins $f(x) = 2x + 1$ e $g(x) = 2x -1$.
+\end{ex}
+\begin{resp}
+  não há.
+\end{resp}
 
 \section{Função potência}\label{cap_funcao_sec_funpot}
 
@@ -308,7 +416,7 @@ Função racionais não estão definidas nos zeros de $q(x)$. Além disso, suas 
 
 \emconstrucao
 
-\section{Categorizações de funções}
+\section{Categorizações de funções}\label{cap_funcao_sec_catfun}
 
 \subsection{Funções algébricas}
 
