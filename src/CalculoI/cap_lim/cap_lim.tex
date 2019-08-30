@@ -952,6 +952,527 @@ limit(abs(x)/x,x,0)
   $0$; Não está definido, pois o domínio de $f(x)=\sqrt{1-x^2}$ é $[-1, 1]$.
 \end{resp}
 
+\section{Limites no infinito}\label{cap_lim_sec_liminf}
+
+Limites no infinito descrevem a tendência de uma dada função $f(x)$ quando $x\to -\infty$ ou $x\to\infty$.
+
+Dizemos que o limite de $f(x)$ é $L$ quando $x$ tende a $-\infty$, se os valores de $f(x)$ podem ser tomados arbitrariamente próximos de $L$ para valores de $x$ suficientemente pequenos. Neste caso, escrevemos
+\begin{equation}
+  \lim_{x\to -\infty} f(x) = L.
+\end{equation}
+Veja a Figura \ref{fig:lim_x-infty}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{./cap_lim/dados/fig_lim_x-infty/fig_lim_x-infty}
+  \caption{Ilustração da noção de limite de uma função quando $x\to -\infty$.}
+  \label{fig:lim_x-infty}
+\end{figure}
+
+Analogamente, dizemos que o limite de $f(x)$ é $L$ quando $x$ tende $\infty$, se os valores de $f(x)$ são arbitrariamente próximos de $L$ para valores de $x$ suficientemente grandes. Neste caso, escrevemos
+\begin{equation}
+  \lim_{x\to \infty} f(x) = L.
+\end{equation}
+Veja a Figura \ref{fig:lim_x2infty}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{./cap_lim/dados/fig_lim_x2infty/fig_lim_x2infty}
+  \caption{Ilustração da noção de limite de uma função quando $x\to \infty$.}
+  \label{fig:lim_x2infty}
+\end{figure}
+
+
+\begin{ex}
+  Vamos inferir os limites de $f(x) = 1/x$ para $x\to -\infty$ e $x\to \infty$. A Figura \ref{fig:lim_xinf_1x} é um esboço do gráfico desta função.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{./cap_lim/dados/fig_lim_xinf_1x/fig_lim_xinf_1x}
+  \caption{Esboço do gráfico de $f(x) = 1/x$.}
+  \label{fig:lim_xinf_1x}
+\end{figure}
+
+Observamos que quanto menores os valores de $x$, mais próximos de $0$ são os valores de $f(x)=1/x$. Daí, inferimos que
+\begin{equation}
+  \lim_{x\to -\infty} \frac{1}{x} = 0.
+\end{equation}
+
+Também, quanto maiores os valores de $x$, mais próximos de $0$ são os valores de $f(x)=1/x$. Com isso, podemos concluir que
+\begin{equation}
+  \lim_{x\to \infty} \frac{1}{x} = 0.
+\end{equation}
+
+\ifispython
+Podemos computar estes limites com o \sympy, usando os seguintes comandos\footnote{Veja a Observação \ref{obs:cap_lim_python}.}:
+\begin{verbatim}
+limit(1/x,x,-oo)
+limit(1/x,x,oo)
+\end{verbatim}
+\fi
+\end{ex}
+
+\begin{obs}\normalfont{(Regras para o cálculo de limites no infinito)}\label{obs:lim_regras_xinf}
+Supondo que $L$, $M$ e $k$ são números reais e
+\begin{equation}
+  \lim_{x\to \pm\infty} f(x) = L\quad\text{e}\quad\lim_{x\to\pm\infty}g(x) = M.
+\end{equation}
+Então, temos as seguintes regras para limites no infinito:
+\begin{itemize}
+\item Regra da soma/diferença
+  \begin{equation}
+    \lim_{x\to\pm\infty} (f(x)\pm g(x)) = L\pm M
+  \end{equation}
+\item Regra do produto
+  \begin{equation}
+    \lim_{x\to\pm\infty} f(x)g(x) = LM
+  \end{equation}
+\item Regra da multiplicação por escalar
+  \begin{equation}
+    \lim_{x\to\pm\infty} kf(x) = kL
+  \end{equation}
+\item Regra do quociente
+  \begin{equation}
+    \lim_{x\to\pm\infty} \frac{f(x)}{g(x)} = \frac{L}{M},\quad M\neq 0.
+  \end{equation}
+\item Regra da potenciação
+  \begin{equation}
+    \lim_{x\to\pm\infty} (f(x))^k = L^k,\text{ se } L^k\in\mathbb{R}.
+  \end{equation}
+\end{itemize}
+\end{obs}
+
+\begin{ex}
+  \begin{align}
+    \lim_{x\to \infty} \frac{1}{x^2}+1 &= \lim_{x\to \infty} \frac{1}{x^2} + \lim_{x\to \infty}1 \\
+                                       &= \left(\lim_{x\to\infty} \frac{1}{x}\right)^2 + 1\\
+                                       &= 0^2 + 1 = 1.
+\end{align}
+\end{ex}
+
+\begin{ex}\label{ex:liminf_funracio}
+  Consideramos o seguinte caso
+  \begin{equation}
+    \lim_{x\to \infty} \frac{x^3 - 2x + 1}{2 - 3x^3}.
+  \end{equation}
+  Observe que não podemos usar a regra do quociente diretamente, pois, por exemplo, não existe o limite do numerador. Para contornar este problema, podemos multiplicar e dividir por $1/x^3$ (grau dominante), obtendo
+  \begin{align}
+    \lim_{x\to\infty} \frac{x^3 - 2x + 1}{2 - 3x^3}\cdot\frac{\frac{1}{x^3}}{\frac{1}{x^3}} = \lim_{x\to\infty} \frac{1-\frac{2}{x^2} + \frac{1}{x^3}}{\frac{2}{x^3}-3}. 
+  \end{align}
+  Então, aplicando a regras do quociente, da soma/subtração e da multiplicação por escalar, temos
+  \begin{equation}
+    \lim_{x\to\infty} \frac{x^3 - 2x + 1}{2 - 3x^3} = \lim_{x\to\infty} \frac{1-\frac{2}{x^2} + \frac{1}{x^3}}{\frac{2}{x^3}-3} = -\frac{1}{3}.
+  \end{equation}
+\end{ex}
+
+\begin{obs}
+  Dados dois polinômios $p(x) = a_nx^n+a_{n-1}x^{n-1}+\cdots + a_0$ e $q(x) = b_nx^n+b_{n-1}x^{n-1}+\cdots + b_0$, temos
+  \begin{equation}
+    \lim_{x\to \pm\infty} \frac{p(x)}{q(x)} = \frac{a_n}{b_n}.
+  \end{equation}
+\end{obs}
+
+\begin{ex}
+  Retornando ao exemplo anterior (Exemplo \ref{ex:liminf_funracio}), temos
+  \begin{equation}
+    \lim_{x\to\infty} \frac{x^3 - 2x + 1}{2 - 3x^3} = \frac{1}{-3} = -\frac{1}{3}.
+  \end{equation}
+\end{ex}
+
+\subsection{Assíntotas horizontais}
+
+A reta $y = L$ é uma assíntota horizontal do gráfico da função $y = f(x)$ se
+\begin{equation}
+  \lim_{x\to -\infty} f(x) = L\quad\text{ou}\quad\lim_{x\to\infty} f(x) = L.
+\end{equation}
+
+\begin{ex}\label{ex:ass_hor}
+  No Exemplo \ref{ex:liminf_funracio}, vimos que
+  \begin{equation}
+    \lim_{x\to\infty} \frac{x^3 - 2x + 1}{2 - 3x^3} = -\frac{1}{3}.
+  \end{equation}
+  Logo, temos que $y=-1/3$ é uma assíntota horizontal do gráfico da função
+  \begin{equation}
+    f(x) = \frac{x^3 - 2x + 1}{2 - 3x^3}.
+  \end{equation}
+  . Veja a Figura \ref{fig:ex_ass_horizon}.
+
+      \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.7\textwidth]{./cap_lim/dados/fig_ex_ass_horizon/fig_ex_ass_horizon}
+      \caption{Esboço do gráfico da função $\displaystyle f(x) = \frac{x^3 - 2x + 1}{2 - 3x^3}$.}
+      \label{fig:ex_ass_horizon}
+    \end{figure}
+
+  Também, temos
+  \begin{equation}
+    \lim_{x\to -\infty} \frac{x^3 - 2x + 1}{2 - 3x^3} = \lim_{x\to\infty} \frac{x^3}{-3x^3} = -\frac{1}{3}.
+  \end{equation}
+  O que reforça que $y = -1/3$ é uma assíntota horizontal desta função.
+\end{ex}
+
+\begin{ex}\normalfont{(Função exponencial natural)}
+  \begin{equation}
+    \lim_{x\to -\infty} e^x = 0,
+  \end{equation}
+  donde temos que $y=0$ é uma assíntota horizontal da função exponencial natural. Veja a Figura \ref{fig:lim_ex_xinf_exp}.
+\end{ex}
+
+\subsection{Exercícios resolvidos}
+
+\begin{exeresol}
+  Calcule
+  \begin{equation}
+    \lim_{x\to \infty} \frac{1}{x-1}+1.
+  \end{equation}
+\end{exeresol}
+\begin{resol}
+  \emconstrucao
+\end{resol}
+
+\begin{exeresol}
+  Determine a(s) assíntota(s) horizontal(ais) da função
+  \begin{equation}
+    f(x) = \frac{3 - x + 4x^4 - 10x^3}{x^2 + 2x^4 -x}.
+  \end{equation}
+\end{exeresol}
+\begin{resol}
+  \emconstrucao
+\end{resol}
+
+\begin{exeresol}
+  Calcule
+  \begin{equation}
+    \lim_{x\to \infty} e^{-x}.
+  \end{equation}
+\end{exeresol}
+\begin{resol}
+  \emconstrucao
+\end{resol}
+
+\subsection*{Exercícios}
+
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \lim_{x\to -\infty} 2 - \frac{1}{x+1}.
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $2$
+\end{resp}
+
+\begin{exer}
+  Calcule
+\end{exer}
+\begin{enumerate}[a)]
+\item $\displaystyle \lim_{x\to -\infty} e^x+1$
+\item $\displaystyle \lim_{x\to \infty} 3 + e^{-x}$
+\item $\displaystyle \lim_{x\to \infty} 2e^{-x}-1$
+\item $\displaystyle \lim_{x\to -\infty} e-e^{-x}$
+\end{enumerate}
+\begin{resp}
+  a)~$1$; b)~$3$; c)~$-1$; d)~$e$
+\end{resp}
+
+\emconstrucao
+
+
+\section{Limites infinitos}\label{cap_lim_sec_lim_inf}
+
+O limite de uma função nem sempre existe. Por exemplo,
+\begin{equation}
+  \lim_{x\to 0} \frac{1}{x^2}.
+\end{equation}
+Entretanto, como é o caso acima, em muitos casos podemos concluir mais sobre a tendência da função. Por exemplo, no caso acima, quando $x\to 0$ os valores de $f(x)$ crescem arbitrariamente, i.e. $f(x)\to \infty$.
+
+Mais precisamente, dizemos que o limite de uma dada função $f(x)$ é infinito quando $x$ tende a um número $a$, quando $f(x)$ torna-se arbitrariamente grande para valores de $x$ suficientemente próximos de $a$. Neste caso, escrevemos
+\begin{equation}
+  \lim_{x\to a} f(x) = \infty.
+\end{equation}
+Similarmente, definimos os limites laterais
+\begin{equation}
+  \lim_{x\to a^-} f(x) = \infty\quad\text{e}\quad\lim_{x\to a^+} f(x) = \infty.
+\end{equation}
+
+\begin{ex}
+  \begin{equation}
+    \lim_{x\to 0} \frac{1}{|x|} = \infty.
+  \end{equation}
+  Observe que $1/|x|$ torna-se arbitrariamente grande para valores de $x$ suficientemente próximos a $a$.
+\end{ex}
+
+Analogamente, dizemos que o limite de uma dada função $f(x)$ é menos infinito quando $x$ tende a $a$, quando $f(x)$ torna-se arbitrariamente pequeno para valores de $x$ suficientemente próximos de $a$. Neste caso, escrevemos
+\begin{equation}
+  \lim_{x\to a} f(x) = -\infty.
+\end{equation}
+De forma similar, definimos os limites laterais $f(x)\to -\infty$ quando $x\to a^{\pm}$.
+
+\begin{ex}
+  \begin{equation}
+    \lim_{x\to 0} \frac{-1}{|x|} = -\infty.
+  \end{equation}
+\end{ex}
+
+\begin{ex}
+  Observe que
+  \begin{equation}
+    \nexists \lim_{x\to 0} \frac{1}{x}
+  \end{equation}
+  e que não podemos concluir que este limite é $\infty$ ou $-\infty$. Isto ocorre, pois
+  \begin{equation}
+    \lim_{x\to 0^-} \frac{1}{x} = -\infty\quad\text{e}\quad\lim_{x\to 0^+} \frac{1}{x} = +\infty.
+  \end{equation}
+
+  Por outro lado, também não existe
+  \begin{equation}
+    \lim_{x\to 0} \frac{1}{x^2},
+  \end{equation}
+  mas temos
+  \begin{equation}
+    \lim_{x\to 0^-} \frac{1}{x^2} = \infty\quad\text{e}\quad\lim_{x\to 0^+} \frac{1}{x^2} = \infty.
+  \end{equation}
+  Com isso, podemos concluir que
+  \begin{equation}
+    \lim_{x\to 0} \frac{1}{x^2} = \infty.
+  \end{equation}
+\end{ex}
+
+\subsection{Assíntotas verticais}
+
+Uma reta $x=a$ é uma {\bf assíntota vertical} do gráfico de uma função $y = f(x)$ se
+\begin{equation}
+  \lim_{x\to a^-} f(x) = \pm\infty\quad\text{ou}\quad\lim_{x\to a^+} f(x) = \pm\infty.
+\end{equation}
+
+\begin{ex}
+  Vejamos os seguintes casos:
+  \begin{itemize}
+  \item A função $f(x) = 1/x$ tem $y = 0$ como assíntota vertical.
+  \item A função $\displaystyle f(x) = \frac{x^3 - 2x + 1}{2 - 3x^3}$ não está definida para valores de $x$ tais que seu denominador se anule, i.e.
+    \begin{equation}
+      2 - 3x^3 = 0 \Rightarrow x = \sqrt[3]{\frac{2}{3}}.
+    \end{equation}
+    Este ponto é um candidato para ter uma assíntota vertical. Isto é, de fato, o caso, pois
+    \begin{equation}
+      \lim_{x\to \sqrt[3]{\frac{2}{3}}^-} = -\infty, 
+    \end{equation}
+    e, ainda, temos
+    \begin{equation}
+      \lim_{x\to \sqrt[3]{\frac{2}{3}}^+} = \infty.
+    \end{equation}
+    Com isso, dizemos que $x = \sqrt[3]{2/3}$ é uma assintota vertical do gráfico desta função. Veja a Figura \ref{fig:ex_ass}.
+  \end{itemize}
+\end{ex}
+
+\begin{ex}\normalfont{(Função logarítmica)}
+  A função logarítmica natural $y = \ln x$ é tal que
+  \begin{equation}
+    \lim_{x\to 0^+} \ln x = -\infty
+  \end{equation}
+  i.e., $x=0$ é uma assíntota vertical ao gráfico de $\ln x$. Isto decorre do fato de $y = \ln x$ ser a função inversa de $y = e^x$ e, esta, ter uma assíntota horizontal $y=0$.
+\end{ex}
+
+\begin{ex}
+  As funções trigonométricas $y = \sec x$ e $\displaystyle y = \tg x$ têm assíntotas verticais $x = (2k+1)\frac{\pi}{2}$ para $k$ inteiro. Veja as Figuras \ref{fig:co_tg_graficos}.
+\end{ex}
+
+\begin{ex}
+  As funções trigonométricas $y = \cosec x$ e $\displaystyle y = \cotg x$ têm assíntotas verticais $x = k\pi$ para $k$ inteiro. Veja as Figuras \ref{fig:co_sec_graficos}.
+\end{ex}
+
+\subsection{Assíntotas oblíquas}
+
+Além de assíntotas horizontais e verticais, gráficos de funções podem ter assintota oblíquas. Isto ocorre, particularmente, para funções racionais cujo grau do numerador é maior que o do denominador.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{./cap_lim/dados/fig_ex_ass_obl/fig_ex_ass_obl}
+  \caption{Esboço do gráfico da função $\displaystyle f(x) = \frac{x^2-1}{5x-4}$.}
+  \label{fig:ex_ass_obl}
+\end{figure}
+
+
+\begin{ex}
+  Consideremos a função racional
+  \begin{equation}
+    f(x) = \frac{x^2-1}{5x-4}.
+  \end{equation}
+  Para buscarmos determinar a assíntota oblíqua desta função, dividimos o numerador pelo denominador, de forma a obtermos
+  \begin{equation}
+    f(x) = \underbrace{\left(\frac{x}{5}+\frac{4}{25}\right)}_{\text{quociente}} + \underbrace{\frac{-\frac{9}{25}}{5x-4}}_{\text{resto}}.
+  \end{equation}
+  Observamos, agora, que o resto tende a zero quando $x\to\pm\infty$, i.e. $\displaystyle f(x)\to \frac{x}{5}+\frac{4}{25}$ quando $x\to\pm\infty$. Com isso, concluímos que $\displaystyle y = \frac{x}{5}+\frac{4}{25}$ é uma assíntota oblíqua ao gráfico de $f(x)$. Veja a Figura \ref{fig:ex_ass_obl}.
+\end{ex}
+
+\begin{obs}
+  Analogamente à assintotas oblíquas, podemos ter outros tipos de assíntotas determinadas por funções de diversos tipos, por exemplo, assíntotas quadráticas.
+\end{obs}
+
+\subsection*{Exercícios}
+
+\begin{exer}
+  Determine as assíntotas verticais ao gráfico da função
+  \begin{equation}
+    f(x) = \frac{8}{x^2-4}.
+  \end{equation}
+\end{exer}
+
+\emconstrucao
+
+\section{Continuidade}\label{cap_lim_sec_cont}
+
+Dizemos que uma {\bf função} $f$ é {\bf contínua} \index{função!contínua} em um ponto $c$, quando $f(c)$ está definida, existe o limite $\lim_{x\to c} f(x)$ e
+\begin{equation}
+  \lim_{x\to c} f(x) = f(c).
+\end{equation}
+Usando de limites laterais, definimos os conceitos de {\bf função contínua à esquerda} ou à {\bf direta}. Quando a {\bf função} $f$ não é contínua em um dado ponto $c$, dizemos que $f$ é {\bf descontínua} neste ponto.
+
+\begin{ex}\label{ex:conta}
+  Consideremos a seguinte função
+  \begin{equation}
+    f(x) = \left\{
+      \begin{array}{ll}
+        \frac{(x-2)}{(x+1)(x-2)} &, x\neq 2,\\
+        -4 &, x=2.
+      \end{array}
+\right.
+\end{equation}
+Na Figura \ref{fig:ex_conta}, temos um esboço do gráfico de $f$.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{./cap_lim/dados/fig_ex_conta/fig_ex_conta}
+  \caption{Esboço do gráfico da função $f(x) = (x-2)/((x+1)(x-2))$ estudada no Exemplo \ref{ex:conta}.}
+  \label{fig:ex_conta}
+\end{figure}
+
+
+Vejamos a continuidade desta função nos seguintes pontos:
+\begin{enumerate}
+\item $x=-2$. Neste ponto, temos $f(-2) = -1$ e
+  \begin{equation}
+    \lim_{x\to -2} \frac{x-2}{(x+1)(x-2)} = \frac{-4}{-1\cdot(-4)} = -1 = f(-2).
+  \end{equation}
+  Com isso, concluímos que $f$ é contínua no ponto $x=-2$.
+\item $x=-1$. Neste ponto, $f(-1)$ não está definida e, portanto, $f$ é descontínua neste ponto. Observemos que $f$ tem uma assíntota vertical em $x=-1$, verifique!
+\item $x=2$. Neste ponto, temos $f(2)=-4$ e
+  \begin{equation}
+    \lim_{x\to 2} \frac{x-2}{(x+1)(x-2)} = \lim_{x\to 2} \frac{1}{x+1} = \frac{1}{3} \neq f(2).
+  \end{equation}
+  Portanto, concluímos que $f$ é descontínua em $x=2$.
+\end{enumerate}
+\end{ex}
+
+Uma função $f$ é dita ser {\bf contínua em um intervalo} $(a, b)$, quando $f$ é contínua em todos os pontos $c\in (a, b)$. Para intervalos, $[a, b)$, $(a, b]$ ou $[a, b]$, empregamos a noção de continuidade lateral nos pontos de extremos fechados dos intervalos. Quando uma função é contínua em $(-\infty, \infty)$, dizemos que ela é {\bf contínua em toda parte}.
+
+\begin{ex}
+  Retornando ao exemplo anterior (Exemplo \ref{ex:conta}), temos que
+  \begin{equation}
+    f(x) = \left\{
+      \begin{array}{ll}
+        \frac{(x-2)}{(x+1)(x-2)} &, x\neq 2,\\
+        -4 &, x=2.
+      \end{array}
+    \right.
+  \end{equation}
+  é contínua nos intervalos $(-\infty, -1)$, $(-1, 2)$ e $(2, \infty)$.
+\end{ex}
+
+\begin{ex}\normalfont{(Continuidade da função valor absoluto.)}
+  A função valor absoluto é contínua em toda parte. De fato, ela é definida por
+  \begin{equation}
+    |x| = \left\{
+      \begin{array}{ll}
+        x &, x\geq 0,\\
+        -x &, x<0.
+      \end{array}
+    \right.
+  \end{equation}
+  Portanto, para $x\in(-\infty, 0)$ temos $|x| = x$ que é contínua para todos estes valores de $x$. Também, para $x\in(0,\infty)$ temos $|x|=-x$ que é contínua para todos estes valores de $x$. Agora, em $x=0$, temos $|0|=0$ e
+  \begin{align}
+    \lim_{x\to 0^+} |x| &= \lim_{x\to 0^+} x = 0,\\
+    \lim_{x\to 0^-} |x| &= \lim_{x\to 0^-} -x = 0.
+  \end{align}
+  Logo,
+  \begin{equation}
+    \lim_{x\to 0} |x| = 0 = |0|,
+  \end{equation}
+  donde concluímos que a função valor absoluto é contínua em toda parte.
+\end{ex}
+
+\begin{prop}\normalfont{(Propriedades de funções contínuas)}
+  Se $f$ e $g$ funções contínuas em $x=c$ e $k$ um número real, então também são contínuas:
+  \begin{itemize}
+  \item $kf$
+  \item $f\pm g$
+  \item $f\cdot g$
+  \item $f/g$, se $g(c)\neq 0$
+  \item $f^k$, se existe $f^k(c)$.
+  \end{itemize}
+\end{prop}
+
+\begin{corol}
+  Funções polinomiais $p(x) = a_nx^n+a_{n-1}x^{n-1}+\cdots+a_1x+a_0$ são contínuas em toda parte.
+\end{corol}
+
+\begin{corol}
+  Funções racionais $r(x) = p(x)/q(x)$, com $p$ e $q$ polinômios, são contínuas em todos os pontos de seus domínios.
+\end{corol}
+
+\begin{ex}
+  A função racional
+  \begin{equation}
+    f(x) = \frac{x^3-2x+2}{x^2-1}
+  \end{equation}
+  é descontínua nos pontos $x$ tais que
+  \begin{equation}
+    x^2-1=0\Rightarrow x=\pm 1.
+  \end{equation}
+\end{ex}
+
+\begin{prop}\normalfont{(Composição de funções contínuas)}
+  Se $f$ é contínua no ponto $c$ e $g$ é contínua no ponto $f(c)$, então $g\circ f$ é contínua no ponto $c$.
+\end{prop}
+
+\begin{ex}
+  Vejamos os seguintes casos:
+  \begin{enumerate}[a)]
+  \item $y = \sqrt{x^2-1}$ é descontínua nos pontos $x$ tais que
+    \begin{equation}
+      x^2-1<0\Rightarrow -1<x<1.
+    \end{equation}
+    Isto é, esta função é contínua em $(-\infty,-1]\cup[1,\infty)$.
+  \item $\displaystyle y = \left|\frac{x-1}{x^2-1}\right|$ é descontínua nos pontos $x$ tais que
+    \begin{equation}
+      x^2-1=0\Rightarrow x=\pm 1.
+    \end{equation}
+  \end{enumerate}
+\end{ex}
+
+\begin{obs}
+  São contínuas em todo seu domínio as funções potência, polinomiais, racionais, trigonométricas, exponenciais e logarítmicas.
+\end{obs}
+
+\begin{ex}
+  Podemos explorar a continuidade para calcularmos limites. Por exemplo,
+  \begin{equation}
+    \lim_{x\to 0^+} \sqrt{x+4}e^{\sen x} = \sqrt{\lim_{x\to 0}x+4}\cdot e^{\sen \lim_{x\to 0^+} x} = 2.
+  \end{equation}
+\end{ex}
+
+\begin{teo}\normalfont{(Teorema do valor intermediário)}
+  Uma função $f$ contínua em um intervalo fechado $[a, b]$, assume todos os valores entre $f(a)$ e $f(b)$.
+\end{teo}
+
+\begin{ex}
+  Podemos afirmar que $f(x)=x^3-x-1$ tem um zero entre $(0, 2)$. De fato, $f$ é contínua no intervalo $[0,2]$ e, pelo teorema do valor intermediário, assume todos os valores entre $f(0)=-1<0$ e $f(2)=5>0$. Observemos que $y = 0$ está entre $f(0)$ e $f(2)$.
+\end{ex}
+
+\subsection*{Exercícios}
+
+\emconstrucao
+
 \section{Limites e desigualdades}\label{cap_lim_sec_limdes}
 
 Se $f$ e $g$ são funções tais que $f(x)<g(x)$ para todo $x$ em um certo intervalo aberto contendo $a$, exceto possivelmente em $x=a$, e existem os limites de $f$ e $g$ no ponto $x=a$, então
@@ -1175,463 +1696,3 @@ Calculados os limites laterais, concluímos o que queríamos.
 \end{resp}
 
 \emconstrucao
-
-\section{Limites no infinito}\label{cap_lim_sec_liminf}
-
-Limites no infinito descrevem a tendência de uma dada função $f(x)$ quando $x\to -\infty$ ou $x\to\infty$.
-
-Dizemos que o limite de $f(x)$ é $L$ quando $x$ tende a $-\infty$, se os valores de $f(x)$ são arbitrariamente próximos de $L$ para valores de $x$ suficientemente pequenos. Neste caso, escrevemos
-\begin{equation}
-  \lim_{x\to -\infty} f(x) = L.
-\end{equation}
-Analogamente, dizemos que o limite de $f(x)$ é $L$ quando $x$ tende $\infty$, se os valores de $f(x)$ são arbitrariamente próximos de $L$ para valores de $x$ suficientemente grandes. Neste caso, escrevemos
-\begin{equation}
-  \lim_{x\to \infty} f(x) = L.
-\end{equation}
-
-\begin{ex}
-  Vejamos os seguintes casos:
-  \begin{enumerate}[a)]
-  \item $\displaystyle \lim_{x\to -\infty} \frac{1}{x} = 0$
-  \item $\displaystyle \lim_{x\to \infty} \frac{1}{x} = 0$
-  \end{enumerate}
-\end{ex}
-
-Supondo que $L$, $M$ e $k$ são números reais e
-\begin{equation}
-  \lim_{x\to \pm\infty} f(x) = L\quad\text{e}\quad\lim_{x\to\pm\infty}g(x) = M.
-\end{equation}
-Então, temos as seguintes regras para limites no infinito:
-\begin{itemize}
-\item Regra da soma/diferença
-  \begin{equation}
-    \lim_{x\to\pm\infty} (f(x)\pm g(x)) = L\pm M
-  \end{equation}
-\item Regra do produto
-  \begin{equation}
-    \lim_{x\to\pm\infty} f(x)g(x) = LM
-  \end{equation}
-\item Regra da multiplicação por escalar
-  \begin{equation}
-    \lim_{x\to\pm\infty} kf(x) = kL
-  \end{equation}
-\item Regra do quociente
-  \begin{equation}
-    \lim_{x\to\pm\infty} \frac{f(x)}{g(x)} = \frac{L}{M},\quad M\neq 0.
-  \end{equation}
-\item Regra da potenciação
-  \begin{equation}
-    \lim_{x\to\pm\infty} (f(x))^k = L^k,\text{ se } L^k\in\mathbb{R}.
-  \end{equation}
-\end{itemize}
-
-\begin{ex}
-  \begin{align}
-    \lim_{x\to \infty} \frac{1}{x^2}+1 &= \lim_{x\to \infty} \frac{1}{x^2} + \lim_{x\to \infty}1 \\
-                                       &= \left(\lim_{x\to\infty} \frac{1}{x}\right)^2 + 1\\
-                                       &= 0^2 + 1 = 1.
-\end{align}
-\end{ex}
-
-\begin{ex}\normalfont{(Limites no infinito de funções racionais)}\label{ex:liminf_funracio}
-  Consideramos o seguinte caso
-  \begin{equation}
-    \lim_{x\to \infty} \frac{x^3 - 2x + 1}{2 - 3x^3}.
-  \end{equation}
-  Observe que não podemos usar a regra do quociente diretamente, pois, por exemplo, não existe o limite do numerador. Para contornar este problema, podemos multiplicar e dividir por $1/x^3$ (grau dominante), obtendo
-  \begin{align}
-    \lim_{x\to\infty} \frac{x^3 - 2x + 1}{2 - 3x^3}\frac{\frac{1}{x^3}}{\frac{1}{x^3}} = \lim_{x\to\infty} \frac{1-\frac{2}{x^2} + \frac{1}{x^3}}{\frac{2}{x^3}-3}. 
-  \end{align}
-  Então, aplicando a regras do quociente, da soma/subtração e da multiplicação por escalar, temos
-  \begin{equation}
-    \lim_{x\to\infty} \frac{x^3 - 2x + 1}{2 - 3x^3} = \lim_{x\to\infty} \frac{1-\frac{2}{x^2} + \frac{1}{x^3}}{\frac{2}{x^3}-3} = -\frac{1}{3}.
-  \end{equation}
-\end{ex}
-
-\begin{obs}
-  Dados dois polinômios $p(x) = a_nx^n+a_{n-1}x^{n-1}+\cdots + a_0$ e $q(x) = b_mx^m+b_{m-1}x^{m-1}+\cdots + b_0$, temos
-  \begin{equation}
-    \lim_{x\to \pm\infty} \frac{p(x)}{q(x)} = \lim_{x\to\pm\infty} \frac{a_nx^n}{b_mx^m}.
-  \end{equation}
-\end{obs}
-
-\begin{ex}
-  Retornando ao exemplo anterior (Exemplo \ref{ex:liminf_funracio}), temos
-  \begin{equation}
-    \lim_{x\to\infty} \frac{x^3 - 2x + 1}{2 - 3x^3} = \lim_{x\to\infty} \frac{x^3}{-3x^3} = -\frac{1}{3}.
-  \end{equation}
-\end{ex}
-
-\subsection{Assíntotas horizontais}
-
-A reta $y = L$ é uma assíntota horizontal do gráfico da função $y = f(x)$ se
-\begin{equation}
-  \lim_{x\to -\infty} f(x) = L\quad\text{ou}\quad\lim_{x\to\infty} f(x) = L.
-\end{equation}
-
-\begin{ex}\label{ex:ass_hor}
-  No Exemplo \ref{ex:liminf_funracio}, vimos que
-  \begin{equation}
-    \lim_{x\to\infty} \frac{x^3 - 2x + 1}{2 - 3x^3} = \lim_{x\to\infty} \frac{x^3}{-3x^3} = -\frac{1}{3}.
-  \end{equation}
-  Logo, temos que $y=-1/3$ é uma assíntota horizontal do gráfico desta função.
-
-      \begin{figure}[H]
-      \centering
-      \includegraphics[width=0.7\textwidth]{./cap_lim/dados/fig_ex_ass/fig_ex_ass}
-      \caption{Esboço do gráfico da função $\displaystyle f(x) = \frac{x^3 - 2x + 1}{2 - 3x^3}$.}
-      \label{fig:ex_ass}
-    \end{figure}
-
-
-  Também, temos
-  \begin{equation}
-    \lim_{x\to -\infty} \frac{x^3 - 2x + 1}{2 - 3x^3} = \lim_{x\to\infty} \frac{x^3}{-3x^3} = -\frac{1}{3}.
-  \end{equation}
-  O que reforça que $y = -1/3$ é uma assíntota horizontal desta função. Veja a Figura \ref{fig:ex_ass}.
-\end{ex}
-
-\begin{ex}\normalfont{(Função exponencial natural)}
-  \begin{equation}
-    \lim_{x\to -\infty} e^x = 0,
-  \end{equation}
-  donde temos que $y=0$ é uma assíntota horizontal da função exponencial natil.
-
-  Também, temos
-  \begin{equation}
-    \lim_{x\to \infty} e^{-x} = 0,
-  \end{equation}
-  e, portanto, $y=0$ é assíntota horizontal do gráfico da recíproca da função exponencial natural.
-\end{ex}
-
-\subsection{Assíntotas oblíquas}
-
-Além de assíntotas horizontais e verticais, gráficos de funções podem ter assintota oblíquas. Isto ocorre, particularmente, para funções racionais cujo grau do numerador é maior que o do denominador.
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.7\textwidth]{./cap_lim/dados/fig_ex_ass_obl/fig_ex_ass_obl}
-  \caption{Esboço do gráfico da função $\displaystyle f(x) = \frac{x^2-1}{5x-4}$.}
-  \label{fig:ex_ass_obl}
-\end{figure}
-
-
-\begin{ex}
-  Consideremos a função racional
-  \begin{equation}
-    f(x) = \frac{x^2-1}{5x-4}.
-  \end{equation}
-  Para buscarmos determinar a assíntota oblíqua desta função, dividimos o numerador pelo denominador, de forma a obtermos
-  \begin{equation}
-    f(x) = \underbrace{\left(\frac{x}{5}+\frac{4}{25}\right)}_{\text{quociente}} + \underbrace{\frac{-\frac{9}{25}}{5x-4}}_{\text{resto}}.
-  \end{equation}
-  Observamos, agora, que o resto tende a zero quando $x\to\pm\infty$, i.e. $\displaystyle f(x)\to \frac{x}{5}+\frac{4}{25}$ quando $x\to\pm\infty$. Com isso, concluímos que $\displaystyle y = \frac{x}{5}+\frac{4}{25}$ é uma assíntota oblíqua ao gráfico de $f(x)$. Veja a Figura \ref{fig:ex_ass_obl}.
-\end{ex}
-
-\begin{obs}
-  Analogamente à assintotas oblíquas, podemos ter outros tipos de assíntotas determinadas por funções de diversos tipos, por exemplo, assíntotas quadráticas.
-\end{obs}
-
-
-\subsection*{Exercícios}
-
-\emconstrucao
-
-
-\section{Limites infinitos}\label{cap_lim_sec_lim_inf}
-
-O limite de uma função nem sempre existe. Por exemplo,
-\begin{equation}
-  \lim_{x\to 0} \frac{1}{x^2}.
-\end{equation}
-Entretanto, como é o caso acima, em muitos casos podemos concluir mais sobre a tendência da função. Por exemplo, no caso acima, quando $x\to 0$ os valores de $f(x)$ crescem arbitrariamente, i.e. $f(x)\to \infty$.
-
-Mais precisamente, dizemos que o limite de uma dada função $f(x)$ é infinito quando $x$ tende a um número $a$, quando $f(x)$ torna-se arbitrariamente grande para valores de $x$ suficientemente próximos de $a$. Neste caso, escrevemos
-\begin{equation}
-  \lim_{x\to a} f(x) = \infty.
-\end{equation}
-Similarmente, definimos os limites laterais
-\begin{equation}
-  \lim_{x\to a^-} f(x) = \infty\quad\text{e}\quad\lim_{x\to a^+} f(x) = \infty.
-\end{equation}
-
-\begin{ex}
-  \begin{equation}
-    \lim_{x\to 0} \frac{1}{|x|} = \infty.
-  \end{equation}
-  Observe que $1/|x|$ torna-se arbitrariamente grande para valores de $x$ suficientemente próximos a $a$.
-\end{ex}
-
-Analogamente, dizemos que o limite de uma dada função $f(x)$ é menos infinito quando $x$ tende a $a$, quando $f(x)$ torna-se arbitrariamente pequeno para valores de $x$ suficientemente próximos de $a$. Neste caso, escrevemos
-\begin{equation}
-  \lim_{x\to a} f(x) = -\infty.
-\end{equation}
-De forma similar, definimos os limites laterais $f(x)\to -\infty$ quando $x\to a^{\pm}$.
-
-\begin{ex}
-  \begin{equation}
-    \lim_{x\to 0} \frac{-1}{|x|} = -\infty.
-  \end{equation}
-\end{ex}
-
-\begin{ex}
-  Observe que
-  \begin{equation}
-    \nexists \lim_{x\to 0} \frac{1}{x}
-  \end{equation}
-  e que não podemos concluir que este limite é $\infty$ ou $-\infty$. Isto ocorre, pois
-  \begin{equation}
-    \lim_{x\to 0^-} \frac{1}{x} = -\infty\quad\text{e}\quad\lim_{x\to 0^+} \frac{1}{x} = +\infty.
-  \end{equation}
-
-  Por outro lado, também não existe
-  \begin{equation}
-    \lim_{x\to 0} \frac{1}{x^2},
-  \end{equation}
-  mas temos
-  \begin{equation}
-    \lim_{x\to 0^-} \frac{1}{x^2} = \infty\quad\text{e}\quad\lim_{x\to 0^+} \frac{1}{x^2} = \infty.
-  \end{equation}
-  Com isso, podemos concluir que
-  \begin{equation}
-    \lim_{x\to 0} \frac{1}{x^2} = \infty.
-  \end{equation}
-\end{ex}
-
-\subsection{Assíntotas verticais}
-
-Uma reta $x=a$ é uma {\bf assíntota vertical} do gráfico de uma função $y = f(x)$ se
-\begin{equation}
-  \lim_{x\to a^-} f(x) = \pm\infty\quad\text{ou}\quad\lim_{x\to a^+} f(x) = \pm\infty.
-\end{equation}
-
-\begin{ex}
-  Vejamos os seguintes casos:
-  \begin{itemize}
-  \item A função $f(x) = 1/x$ tem $y = 0$ como assíntota vertical.
-  \item A função $\displaystyle f(x) = \frac{x^3 - 2x + 1}{2 - 3x^3}$ não está definida para valores de $x$ tais que seu denominador se anule, i.e.
-    \begin{equation}
-      2 - 3x^3 = 0 \Rightarrow x = \sqrt[3]{\frac{2}{3}}.
-    \end{equation}
-    Este ponto é um candidato para ter uma assíntota vertical. Isto é, de fato, o caso, pois
-    \begin{equation}
-      \lim_{x\to \sqrt[3]{\frac{2}{3}}^-} = -\infty, 
-    \end{equation}
-    e, ainda, temos
-    \begin{equation}
-      \lim_{x\to \sqrt[3]{\frac{2}{3}}^+} = \infty.
-    \end{equation}
-    Com isso, dizemos que $x = \sqrt[3]{2/3}$ é uma assintota vertical do gráfico desta função. Veja a Figura \ref{fig:ex_ass}.
-  \end{itemize}
-\end{ex}
-
-\begin{ex}\normalfont{(Função logarítmica)}
-  A função logarítmica natural $y = \ln x$ é tal que
-  \begin{equation}
-    \lim_{x\to 0^+} \ln x = -\infty
-  \end{equation}
-  i.e., $x=0$ é uma assíntota vertical ao gráfico de $\ln x$. Isto decorre do fato de $y = \ln x$ ser a função inversa de $y = e^x$ e, esta, ter uma assíntota horizontal $y=0$.
-\end{ex}
-
-\begin{ex}
-  As funções trigonométricas $y = \sec x$ e $\displaystyle y = \tg x$ têm assíntotas verticais $x = (2k+1)\frac{\pi}{2}$ para $k$ inteiro. Veja as Figuras \ref{fig:co_tg_graficos}.
-\end{ex}
-
-\begin{ex}
-  As funções trigonométricas $y = \cosec x$ e $\displaystyle y = \cotg x$ têm assíntotas verticais $x = k\pi$ para $k$ inteiro. Veja as Figuras \ref{fig:co_sec_graficos}.
-\end{ex}
-
-\subsection*{Exercícios}
-
-\begin{exer}
-  Determine as assíntotas verticais ao gráfico da função
-  \begin{equation}
-    f(x) = \frac{8}{x^2-4}.
-  \end{equation}
-\end{exer}
-
-\emconstrucao
-
-\section{Continuidade}\label{cap_lim_sec_cont}
-
-Dizemos que uma {\bf função} $f$ é {\bf contínua} \index{função!contínua} em um ponto $c$, quando $f(c)$ está definida, existe o limite $\lim_{x\to c} f(x)$ e
-\begin{equation}
-  \lim_{x\to c} f(x) = f(c).
-\end{equation}
-Usando de limites laterais, definimos os conceitos de {\bf função contínua à esquerda} ou à {\bf direta}. Quando a {\bf função} $f$ não é contínua em um dado ponto $c$, dizemos que $f$ é {\bf descontínua} neste ponto.
-
-\begin{ex}\label{ex:conta}
-  Consideremos a seguinte função
-  \begin{equation}
-    f(x) = \left\{
-      \begin{array}{ll}
-        \frac{(x-2)}{(x+1)(x-2)} &, x\neq 2,\\
-        -4 &, x=2.
-      \end{array}
-\right.
-\end{equation}
-Na Figura \ref{fig:ex_conta}, temos um esboço do gráfico de $f$.
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.7\textwidth]{./cap_lim/dados/fig_ex_conta/fig_ex_conta}
-  \caption{Esboço do gráfico da função $f(x) = (x-2)/((x+1)(x-2))$ estudada no Exemplo \ref{ex:conta}.}
-  \label{fig:ex_conta}
-\end{figure}
-
-
-Vejamos a continuidade desta função nos seguintes pontos:
-\begin{enumerate}
-\item $x=-2$. Neste ponto, temos $f(-2) = -1$ e
-  \begin{equation}
-    \lim_{x\to -2} \frac{x-2}{(x+1)(x-2)} = \frac{-4}{-1\cdot(-4)} = -1 = f(-2).
-  \end{equation}
-  Com isso, concluímos que $f$ é contínua no ponto $x=-2$.
-\item $x=-1$. Neste ponto, $f(-1)$ não está definida e, portanto, $f$ é descontínua neste ponto. Observemos que $f$ tem uma assíntota vertical em $x=-1$, verifique!
-\item $x=2$. Neste ponto, temos $f(2)=-4$ e
-  \begin{equation}
-    \lim_{x\to 2} \frac{x-2}{(x+1)(x-2)} = \lim_{x\to 2} \frac{1}{x+1} = \frac{1}{3} \neq f(2).
-  \end{equation}
-  Portanto, concluímos que $f$ é descontínua em $x=2$.
-\end{enumerate}
-\end{ex}
-
-Uma função $f$ é dita ser {\bf contínua em um intervalo} $(a, b)$, quando $f$ é contínua em todos os pontos $c\in (a, b)$. Para intervalos, $[a, b)$, $(a, b]$ ou $[a, b]$, empregamos a noção de continuidade lateral nos pontos de extremos fechados dos intervalos. Quando uma função é contínua em $(-\infty, \infty)$, dizemos que ela é {\bf contínua em toda parte}.
-
-\begin{ex}
-  Retornando ao exemplo anterior (Exemplo \ref{ex:conta}), temos que
-  \begin{equation}
-    f(x) = \left\{
-      \begin{array}{ll}
-        \frac{(x-2)}{(x+1)(x-2)} &, x\neq 2,\\
-        -4 &, x=2.
-      \end{array}
-    \right.
-  \end{equation}
-  é contínua nos intervalos $(-\infty, -1)$, $(-1, 2)$ e $(2, \infty)$.
-\end{ex}
-
-\begin{ex}\normalfont{(Continuidade da função valor absoluto.)}
-  A função valor absoluto é contínua em toda parte. De fato, ela é definida por
-  \begin{equation}
-    |x| = \left\{
-      \begin{array}{ll}
-        x &, x\geq 0,\\
-        -x &, x<0.
-      \end{array}
-    \right.
-  \end{equation}
-  Portanto, para $x\in(-\infty, 0)$ temos $|x| = x$ que é contínua para todos estes valores de $x$. Também, para $x\in(0,\infty)$ temos $|x|=-x$ que é contínua para todos estes valores de $x$. Agora, em $x=0$, temos $|0|=0$ e
-  \begin{align}
-    \lim_{x\to 0^+} |x| &= \lim_{x\to 0^+} x = 0,\\
-    \lim_{x\to 0^-} |x| &= \lim_{x\to 0^-} -x = 0.
-  \end{align}
-  Logo,
-  \begin{equation}
-    \lim_{x\to 0} |x| = 0 = |0|,
-  \end{equation}
-  donde concluímos que a função valor absoluto é contínua em toda parte.
-\end{ex}
-
-\begin{prop}\normalfont{(Propriedades de funções contínuas)}
-  Se $f$ e $g$ funções contínuas em $x=c$ e $k$ um número real, então também são contínuas:
-  \begin{itemize}
-  \item $kf$
-  \item $f\pm g$
-  \item $f\cdot g$
-  \item $f/g$, se $g(c)\neq 0$
-  \item $f^k$, se existe $f^k(c)$.
-  \end{itemize}
-\end{prop}
-
-\begin{corol}
-  Funções polinomiais $p(x) = a_nx^n+a_{n-1}x^{n-1}+\cdots+a_1x+a_0$ são contínuas em toda parte.
-\end{corol}
-
-\begin{corol}
-  Funções racionais $r(x) = p(x)/q(x)$, com $p$ e $q$ polinômios, são contínuas em todos os pontos de seus domínios.
-\end{corol}
-
-\begin{ex}
-  A função racional
-  \begin{equation}
-    f(x) = \frac{x^3-2x+2}{x^2-1}
-  \end{equation}
-  é descontínua nos pontos $x$ tais que
-  \begin{equation}
-    x^2-1=0\Rightarrow x=\pm 1.
-  \end{equation}
-\end{ex}
-
-\begin{prop}\normalfont{(Composição de funções contínuas)}
-  Se $f$ é contínua no ponto $c$ e $g$ é contínua no ponto $f(c)$, então $g\circ f$ é contínua no ponto $c$.
-\end{prop}
-
-\begin{ex}
-  Vejamos os seguintes casos:
-  \begin{enumerate}[a)]
-  \item $y = \sqrt{x^2-1}$ é descontínua nos pontos $x$ tais que
-    \begin{equation}
-      x^2-1<0\Rightarrow -1<x<1.
-    \end{equation}
-    Isto é, esta função é contínua em $(-\infty,-1]\cup[1,\infty)$.
-  \item $\displaystyle y = \left|\frac{x-1}{x^2-1}\right|$ é descontínua nos pontos $x$ tais que
-    \begin{equation}
-      x^2-1=0\Rightarrow x=\pm 1.
-    \end{equation}
-  \end{enumerate}
-\end{ex}
-
-\begin{obs}
-  São contínuas em todo seu domínio as funções potência, polinomiais, racionais, trigonométricas, exponenciais e logarítmicas.
-\end{obs}
-
-\begin{ex}
-  Podemos explorar a continuidade para calcularmos limites. Por exemplo,
-  \begin{equation}
-    \lim_{x\to 0^+} \sqrt{x+4}e^{\sen x} = \sqrt{\lim_{x\to 0}x+4}\cdot e^{\sen \lim_{x\to 0^+} x} = 2.
-  \end{equation}
-\end{ex}
-
-\begin{teo}\normalfont{(Teorema do valor intermediário)}
-  Uma função $f$ contínua em um intervalo fechado $[a, b]$, assume todos os valores entre $f(a)$ e $f(b)$.
-\end{teo}
-
-\begin{ex}
-  Podemos afirmar que $f(x)=x^3-x-1$ tem um zero entre $(0, 2)$. De fato, $f$ é contínua no intervalo $[0,2]$ e, pelo teorema do valor intermediário, assume todos os valores entre $f(0)=-1<0$ e $f(2)=5>0$. Observemos que $y = 0$ está entre $f(0)$ e $f(2)$.
-\end{ex}
-
-\subsection*{Exercícios}
-
-\emconstrucao
-
-% \section{Taxas de variação e limites}\label{cap_lim_sec_taxa}
-
-% A {\bf taxa de variação}\index{taxa de variação} de $y=f(x)$ em relação a $x$ no intervalo $[x_1, x_2]$ é
-% \begin{equation}
-%   \frac{\Delta y}{\Delta x} = \frac{f(x_2)-f(x_1)}{x_2-x_1}.
-% \end{equation}
-
-% \begin{ex} Vejamos as seguintes aplicações:
-%   \begin{itemize}
-%   \item Em 1990 o lucro de uma micro empresa foi de $150$ mil reais e em 1992 foi de $165$ mil reais. Desta forma, temos que a taxa de variação do lucro da empresa foi de
-%     \begin{equation}
-%       \frac{165 - 150}{1992 - 1990} = 7,5\,\mathrm{ mil reais}/\mathrm{ano}.
-%     \end{equation}
-%   \item Um carro saio do estacionamento às 14h e chegou no seu destino, 150 km do estacionamento, às 16h. Assim sendo, temos que o carro fez o percurso com uma velocidade média (taxa de variação da distância em relação ao tempo) de
-%     \begin{equation}
-%       \frac{150-0}{16-14} = 75\,\mathrm{km}/\mathrm{h}.
-%     \end{equation}
-%   \item A taxa de variação da função $f(x) = 2x+x^2$ no intervalo $[-1, 1]$ é
-%     \begin{equation}
-%       \frac{\Delta y}{\Delta x} = \frac{f(1)-f(-1)}{1-(-1)} = \frac{3-(-1)}{2} = 2.
-%     \end{equation}
-%     \ifispython
-%     No \href{https://www.sympy.org}{SymPy}, podemos computar este último exemplo com o código
-% \begin{verbatim}
-% f = lambda x: 2*x+x**2
-% (f(1)-f(-1))/(1-(-1))
-% \end{verbatim}
-%     \fi
-%   \end{itemize}
-% \end{ex}
