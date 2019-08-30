@@ -1111,11 +1111,60 @@ A reta $y = L$ é uma assíntota horizontal do gráfico da função $y = f(x)$ s
   O que reforça que $y = -1/3$ é uma assíntota horizontal desta função.
 \end{ex}
 
-\begin{ex}\normalfont{(Função exponencial natural)}
+\begin{ex}\normalfont{(Função exponencial natural)}\label{ex:lim_exp_x-inf}
   \begin{equation}
     \lim_{x\to -\infty} e^x = 0,
   \end{equation}
   donde temos que $y=0$ é uma assíntota horizontal da função exponencial natural. Veja a Figura \ref{fig:lim_ex_xinf_exp}.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{./cap_lim/dados/fig_ex_xinf_exp/fig_ex_xinf_exp}
+    \caption{Esboço do gráfico de $f(x)=e^x$.}
+    \label{fig:lim_ex_xinf_exp}
+  \end{figure}
+\end{ex}
+
+\subsection{Limite no infinito de funções periódicas}
+
+Uma função $f$ é periódica quando existe um número $T$ tal que
+\begin{equation}
+  f(x) = f(x+T),
+\end{equation}
+para todo $x\in\mathbb{R}$ no domínio de $f$. As funções trigonométricas são exemplos de funções periódicas (veja a Seção \ref{cap_funcao_sec_funtri}).
+
+O limite no infinito de funções periódicas não existe\footnote{À exceção de funções constantes.}. De fato, se $f$ não é constante, então existem números $x_1\neq x_2$ tal que $y_1=f(x_1)\neq f(x_2)=y_2$. Como a função é periódica, $f(x_1+kT)=y_1$ e $f(x_2+kT) = y_2$ para todo número inteiro $k$. Desta forma, não existe número $L$ que possamos tomar $f(x)$ arbitráriamente próxima, para todos os valores de $x$ suficientemente grandes (ou pequenos).
+
+\begin{ex}
+  Não existe
+  \begin{equation}
+    \lim_{x\to \infty} \sen(x),
+  \end{equation}
+  pois os valores de $\sen x$ oscilam periódicamente no intervalo $[-1, 1]$. Veja a Figura \ref{fig:lim_senx_xinf}.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{./cap_lim/dados/fig_lim_senx_xinf/fig_lim_senx_xinf}
+    \caption{Esboço do gráfico de $f(x)=\sen x$.}
+    \label{fig:lim_senx_xinf}
+  \end{figure}
+
+  \ifispython
+  No \sympy, ao computarmos $\lim_{x\to \infty} \sen x$ com o comando\footnote{Veja a Observação \ref{obs:cap_lim_python}}:
+\begin{verbatim}
+limit(sin(x),x,oo)
+\end{verbatim}
+  obtemos como saída o intevalo $[-1, 1]$, indicando que o limite não existe, pois $\sen x$ oscila indefinidamente com valores neste intervalo.
+  \fi
+\end{ex}
+
+\begin{ex}
+  Vamos calcular o seguinte limite
+  \begin{equation}
+    \lim_{x\to \infty} e^x\sen x.
+  \end{equation}
+
+  \emconstrucao
 \end{ex}
 
 \subsection{Exercícios resolvidos}
@@ -1127,17 +1176,62 @@ A reta $y = L$ é uma assíntota horizontal do gráfico da função $y = f(x)$ s
   \end{equation}
 \end{exeresol}
 \begin{resol}
-  \emconstrucao
+  Utilizando a regra da soma para limites no infinito, temos
+  \begin{align}
+    \lim_{x\to\infty} \frac{1}{x-1} + 1 &= \lim_{x\to 1} \frac{1}{x-1} + \lim_{x\to 1} 1\\
+                                        &= \lim_{x\to 1} \left(\frac{1}{x-1}\right)+1,
+  \end{align}
+  observando que $\lim_{x\to 1}1/(x-1)$ existe. De fato, o gráfico de $g(x) = 1/(x-1)$ é uma translação de uma unidade à esquerda da função $f(x)=1/x$. Uma translação horizontal finita não altera o comportamento da função para $x\to \infty$. Portanto, como $f(x)=1/x\to\infty$ quando $x\to\infty$, temos que $g(x)=f(x-1)=1/(x-1)\to\infty$ quando $x\to\infty$, i.e.
+  \begin{equation}
+    \lim_{x\to\infty}\frac{1}{x-1} = 0.
+  \end{equation}
+  Portanto, concluímos que
+  \begin{equation}
+    \lim_{x\to \infty} \frac{1}{x-1} + 1 = 1. 
+  \end{equation}
+
+  \ifispython
+  Com o \sympy, podemos computar este limite com o seguinte comando\footnote{Veja a Observação \ref{obs:cap_lim_python}.}:
+\begin{verbatim}
+limit(1/(x-1)+1,x,oo)
+\end{verbatim}
+  \fi
 \end{resol}
 
 \begin{exeresol}
-  Determine a(s) assíntota(s) horizontal(ais) da função
+  Determine a(s) assíntota(s) horizontal(ais) do gráfico da função
   \begin{equation}
     f(x) = \frac{3 - x + 4x^4 - 10x^3}{x^2 + 2x^4 -x}.
   \end{equation}
 \end{exeresol}
 \begin{resol}
-  \emconstrucao
+  Uma reta $y = L$ é assíntota horizontal do gráfico de $f$, quando
+  \begin{equation}
+    \lim_{x\to\pm\infty} f(x) = L.
+  \end{equation}
+  Começamos com $x\to-\infty$, temos
+  \begin{equation}
+    \lim_{x\to-\infty} f(x) = \lim_{x\to-\infty} \frac{3 - x + 4x^4 - 10x^3}{x^2 + 2x^4 -x} = \frac{4}{2} = 2.
+  \end{equation}
+  Logo, $y=2$ é assíntota horizontal ao gráfico de $f(x)$.
+
+  Agora, vamos ver a tendência da função para $x\to\infty$, temos
+  \begin{equation}
+    \lim_{x\to\infty} f(x) = \lim_{x\to\infty} \frac{3 - x + 4x^4 - 10x^3}{x^2 + 2x^4 -x} = \frac{4}{2} = 2.
+  \end{equation}
+  Portanto, concluímos que $y=2$ é a única assíntota horizontal ao gráfico da função $f$.
+
+  \ifispython
+  Os seguintes comandos\footnote{Veja a Observação \ref{obs:cap_lim_python}.} permitem plotar o esboço do gráfico da função $f$ (linha azul) e sua assíntota horizontal (linha vermelha):
+\begin{verbatim}
+f = lambda x: (3-x+4*x**4-10*x**3)/(x**2+2*x**4-x)
+L = limit(f(x),x,oo)
+p = plot(f(x),(x,-15,15),ylim=[-4,6],line_color="blue",show=False)
+q = plot(L,(x,-15,15),line_color="red",show=False)
+p.extend(q)
+p.show()
+\end{verbatim}
+  \fi
 \end{resol}
 
 \begin{exeresol}
@@ -1147,7 +1241,29 @@ A reta $y = L$ é uma assíntota horizontal do gráfico da função $y = f(x)$ s
   \end{equation}
 \end{exeresol}
 \begin{resol}
-  \emconstrucao
+  Observamos que o gráfico de $f(x)=e^{-x}$ é uma reflexão em torno do eixo $y$ do gráfico da função $g(x)=e^x$. No Exemplo \ref{ex:lim_exp_x-inf}, vimos que
+  \begin{equation}
+    \lim_{x\to -\infty} g(x) = \lim_{x\to -\infty} e^{x} = 0,
+  \end{equation}
+  logo
+  \begin{equation}
+    \lim_{x\to \infty} e^{-x} = \lim_{x\to \infty} g(-x) = \lim_{x\to -\infty} g(x) = 0.
+  \end{equation}
+  Veja o esboço do gráfico de $f(x)=e^{-x}$ na Figura \ref{fig:exeresol_lim_exp_xinf}.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{./cap_lim/dados/fig_exeresol_lim_exp_xinf/fig_exeresol_lim_exp_xinf}
+    \caption{Esboço do gráfico de $f(x)=e^{-x}$.}
+    \label{fig:exeresol_lim_exp_xinf}
+  \end{figure}  
+
+  \ifispython
+  Com o \sympy, podemos computar este limite com o seguinte comando\footnote{Veja a Observação \ref{obs:cap_lim_python}.}:
+\begin{verbatim}
+limit(exp(-x),x,oo)
+\end{verbatim}
+  \fi
 \end{resol}
 
 \subsection*{Exercícios}
@@ -1175,8 +1291,23 @@ A reta $y = L$ é uma assíntota horizontal do gráfico da função $y = f(x)$ s
   a)~$1$; b)~$3$; c)~$-1$; d)~$e$
 \end{resp}
 
-\emconstrucao
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \lim_{x\to -\infty} \cos x.
+  \end{equation}
+\end{exer}
+\begin{resp}
+  não existe.
+\end{resp}
 
+\begin{exer}
+  Calcule:
+  \begin{enumerate}[a)]
+  \item $\displaystyle\lim_{x\to \infty} \sqrt{1+e^{-x}}$.
+  \item $\displaystyle\lim_{x\to -\infty} \frac{1-2x}{x+3} -e^{x} - 1$.
+  \end{enumerate}
+\end{exer}
 
 \section{Limites infinitos}\label{cap_lim_sec_lim_inf}
 
