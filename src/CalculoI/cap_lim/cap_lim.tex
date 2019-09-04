@@ -1304,33 +1304,114 @@ limit(exp(-x),x,oo)
 
 \section{Limites infinitos}\label{cap_lim_sec_lim_inf}
 
-O limite de uma função nem sempre existe. Por exemplo,
+O limite de uma função nem sempre existe. Entretanto, em muitos destes casos, podemos concluir mais sobre a tendência da função. Por exemplo, dizemos que o limite de uma dada função $f(x)$ é infinito quando $x$ tende a um número $x_0$, quando $f(x)$ torna-se arbitrariamente grande para todos os valores de $x$ suficientemente próximos de $x_0$, mas $x\neq 0$. Neste caso, escrevemos
 \begin{equation}
-  \lim_{x\to 0} \frac{1}{x^2}.
+  \lim_{x\to x_0} f(x) = \infty.
 \end{equation}
-Entretanto, como é o caso acima, em muitos casos podemos concluir mais sobre a tendência da função. Por exemplo, no caso acima, quando $x\to 0$ os valores de $f(x)$ crescem arbitrariamente, i.e. $f(x)\to \infty$.
+A Figura \ref{fig:liminf}, é uma ilustração de $f(x)\to\infty$ quando $x\to x_0$.
 
-Mais precisamente, dizemos que o limite de uma dada função $f(x)$ é infinito quando $x$ tende a um número $a$, quando $f(x)$ torna-se arbitrariamente grande para valores de $x$ suficientemente próximos de $a$. Neste caso, escrevemos
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{./cap_lim/dados/fig_liminf/fig_liminf}
+  \caption{Ilustração de $f(x)\to\infty$ quando $x\to x_0$.}
+  \label{fig:liminf}
+\end{figure}
+
+
+\begin{ex}
+  Vejamos o caso de
+  \begin{equation}
+    \lim_{x\to 0} \frac{1}{x^2}.
+  \end{equation}
+  Ao tomarmos $x$ próximo de $x_0=0$, obtemos os seguintes valores de $f(x)$:
+  \begin{center}
+    \begin{tabular}[H]{l|ccc|c|ccc}
+      x & $-10^{-1}$ & $-10^{-2}$ & $-10^{-3}$ & $\rightarrow 0 \leftarrow$ & $10^{-3}$ & $10^{-2}$ & $10^{-1}$ \\\hline
+      f(x) & $-10^{2}$ & $-10^{4}$ & $-10^{6}$ & $\rightarrow \infty \leftarrow$ & $10^{6}$ & $10^{4}$ & $10^{2}$
+    \end{tabular}
+  \end{center}
+  Veja o esboço do gráfico de $f(x)$ na Figura \ref{fig:ex_liminf_1x2}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{./cap_lim/dados/fig_ex_liminf_1x2/fig_ex_liminf_1x2}
+  \caption{Esboço do gráfico de $f(x)=1/x^2$.}
+  \label{fig:ex_liminf_1x2}
+\end{figure}  
+
+  Podemos concluir que os valores de $f(x)$ podem ser tomados arbitrariamente grandes ao escolhermos qualquer $x$ suficientemente próximo de $0$, com $x\neq 0$. I.e.,
+  \begin{equation}
+    \lim_{x\to 0}\frac{1}{x^2} = \infty.
+  \end{equation}
+
+  \ifispython
+  No \sympy, podemos computar este limite com o seguinte comando\footnote{Veja a Observação \ref{obs:cap_lim_python}.}:
+\begin{verbatim}
+limit(1/x**2,x,0)
+\end{verbatim}
+  Atenção! Na verdade, este comando computa o limite lateral à direita. Na sequência, discutimos sobre limites laterais infinitos.
+  \fi
+\end{ex}
+
+Definimos os limites laterais infinitos
 \begin{equation}
-  \lim_{x\to a} f(x) = \infty.
+  \lim_{x\to x_0^-} f(x) = \infty\quad\text{e}\quad\lim_{x\to x_0^+} f(x) = \infty.
 \end{equation}
-Similarmente, definimos os limites laterais
-\begin{equation}
-  \lim_{x\to a^-} f(x) = \infty\quad\text{e}\quad\lim_{x\to a^+} f(x) = \infty.
-\end{equation}
+No primeiro caso, os valores de $f(x)$ são arbitrariamente grandes conforme os valores de $x\to x_0$ e $x<x_0$. No segundo caso, os valores de $f(x)$ são arbitrariamente grandes conforme os valores de $x\to x_0$ e $x>x_0$.
 
 \begin{ex}
   \begin{equation}
-    \lim_{x\to 0} \frac{1}{|x|} = \infty.
+    \lim_{x\to 1^+} \frac{1}{x-1} = \infty.
   \end{equation}
-  Observe que $1/|x|$ torna-se arbitrariamente grande para valores de $x$ suficientemente próximos a $a$.
+  De fato, conforme tomamos valores de $x$ próximos de $1$, com $x>1$, os valores de $f(x) = 1/(x-1)$ tornam-se cada vez maiores. Veja o esboço do gráfico de $f(x)$ na Figura \ref{fig:ex_liminf_1x}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{./cap_lim/dados/fig_ex_liminf_1x/fig_ex_liminf_1x}
+  \caption{Esboço do gráfico de $f(x)=1/(x-1)$.}
+  \label{fig:ex_liminf_1x}
+\end{figure}  
+
+\ifispython
+  No \sympy, podemos computar este limite com o seguinte comando\footnote{Veja a Observação \ref{obs:cap_lim_python}.}:
+\begin{verbatim}
+limit(1/(x-1),x,0,'+')
+\end{verbatim}
+\fi
 \end{ex}
 
-Analogamente, dizemos que o limite de uma dada função $f(x)$ é menos infinito quando $x$ tende a $a$, quando $f(x)$ torna-se arbitrariamente pequeno para valores de $x$ suficientemente próximos de $a$. Neste caso, escrevemos
+
+Analogamente a definição de limite infinito, dizemos que o limite de uma dada função $f(x)$ é menos infinito quando $x$ tende a $x_0$, quando $f(x)$ torna-se arbitrariamente pequeno para valores de $x$ suficientemente próximos de $x_0$, com $x\neq x_0$. Neste caso, escrevemos
 \begin{equation}
-  \lim_{x\to a} f(x) = -\infty.
+  \lim_{x\to x_0} f(x) = -\infty.
 \end{equation}
-De forma similar, definimos os limites laterais $f(x)\to -\infty$ quando $x\to a^{\pm}$.
+De forma similar, definimos os limites laterais $f(x)\to -\infty$ quando $x\to x_0^{\pm}$.
+
+\begin{ex}
+  \begin{equation}
+    \lim_{x\to -1} \frac{-1}{(x+1)^2} = -\infty.
+  \end{equation}
+  De fato, podemos inferir este limite a partir do gráfico da função $f(x) = 1/(x+1)^2$. Este é uma translação de uma unidade à esquerda do gráfico de $y = 1/x^2$, seguida de uma reflexão em torno de eixo $x$. Veja a Figura \ref{fig:ex_liminf-1x2}.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{./cap_lim/dados/fig_ex_liminf-1x2/fig_ex_liminf-1x2}
+    \caption{Esboço do gráfico de $f(x)=-1/(x+1)^2$.}
+    \label{fig:ex_liminf-1x2}
+  \end{figure}
+
+  \ifispython
+  No \sympy, podemos computar este limite com o seguinte comando\footnote{Veja a Observação \ref{obs:cap_lim_python}.}:
+\begin{verbatim}
+limit(-1/(x+1)**2,x,-1)
+\end{verbatim}
+  Novamente, observamos que este comando computa apenas o limite lateral à direita.
+  \fi
+\end{ex}
+
+\subsection{Cálculo de limite infinitos}
+
+\emconstrucao
 
 \begin{ex}
   \begin{equation}
@@ -1439,6 +1520,10 @@ Além de assíntotas horizontais e verticais, gráficos de funções podem ter a
 \begin{obs}
   Analogamente à assintotas oblíquas, podemos ter outros tipos de assíntotas determinadas por funções de diversos tipos, por exemplo, assíntotas quadráticas.
 \end{obs}
+
+\subsection*{Exercícios resolvidos}
+
+\emconstrucao
 
 \subsection*{Exercícios}
 
