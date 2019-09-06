@@ -1562,6 +1562,27 @@ quando os valores da função $f$ são arbitrariamente grandes para todos os val
   \end{enumerate}
 \end{ex}
 
+\begin{ex}\label{ex:liminf_poli}
+  \begin{align}
+    \lim_{x\to \infty} x^3 - 10x^2 + 300 &= \lim_{x\to \infty} \frac{x^3 - 10x^2 + 300}{1}\cdot\frac{\frac{1}{x^3}}{\frac{1}{x^3}}\\
+                                         &= \lim_{x\to \infty} \frac{1 - \cancelto{0^+}{\frac{10}{x}} + \cancelto{0^+}{\frac{300}{x^3}}}{\cancelto{0^+}{\frac{1}{x^3}}} = \infty.                                   
+  \end{align}
+\end{ex}
+
+\begin{prop}
+  Dado um polinômio $p(x) = a_nx^n + a_{n-1}x^{n-1} + \cdots + a_0$, temos
+  \begin{equation}
+    \lim_{x\to \pm\infty} p(x) = \lim_{x\to\pm} a_nx^n.
+  \end{equation}
+\end{prop}
+
+\begin{ex}
+  Retornando ao exemplo anterior (Exemplo \ref{ex:liminf_poli}, temos
+  \begin{align}
+    \lim_{x\to \infty} x^3 - 10x^2 + 300 &= \lim_{x\to \infty} x^3 = \infty.
+  \end{align}
+\end{ex}
+
 \subsection*{Exercícios resolvidos}
 
 \begin{exeresol}
@@ -1680,6 +1701,16 @@ limit(log(abs(x-1)),x,1,'+')
 \end{exer}
 \begin{resp}
   $\infty$
+\end{resp}
+
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \lim_{x\to -\infty} x^3 + 10x^2 - 300.
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $-\infty$
 \end{resp}
 
 \section{Continuidade}\label{cap_lim_sec_cont}
@@ -1926,9 +1957,9 @@ Uma função $f$ é dita ser {\bf contínua em um intervalo} $(a, b)$, quando $f
 
 \section{Limites e desigualdades}\label{cap_lim_sec_limdes}
 
-Se $f$ e $g$ são funções tais que $f(x)<g(x)$ para todo $x$ em um certo intervalo aberto contendo $a$, exceto possivelmente em $x=a$, e existem os limites de $f$ e $g$ no ponto $x=a$, então
+Se $f$ e $g$ são funções tais que $f(x)<g(x)$ para todo $x$ em um certo intervalo aberto contendo $x_0$, exceto possivelmente em $x=x_0$, e existem os limites de $f$ e $g$ no ponto $x=x_0$, então
 \begin{equation}
-  \lim_{x\to a} f(x) \leq \lim_{x\to a} g(x).
+  \lim_{x\to x_0} f(x) \leq \lim_{x\to x_0} g(x).
 \end{equation}
 Observe que a tomada do limite não preserva a desigualdade estrita.
 
@@ -1940,20 +1971,35 @@ Observe que a tomada do limite não preserva a desigualdade estrita.
 \end{exer}
 
 \begin{obs}
-  A preservação da desigualdade também ocorre para limites laterais. Mais precisamente, se $f$ e $g$ são funções tais que $f(x)<g(x)$ para todo $x < a$ e existem os limites lateral à esquerda de $f$ e $g$ no ponto $x=a$, então
+  A preservação da desigualdade também ocorre para limites laterais. Mais precisamente, se $f$ e $g$ são funções tais que $f(x)<g(x)$ para todo $x < x_0$ e existem os limites laterais à esquerda de $f$ e $g$ no ponto $x=x_0$, então
   \begin{equation}
-    \lim_{x\to a^-} f(x) \leq \lim_{x\to a^-} g(x).
+    \lim_{x\to x_0^-} f(x) \leq \lim_{x\to x_0^-} g(x).
   \end{equation}
-  Vale o resultado análogo para limite lateral à direito. Escreva-o!
+  Vale o resultado análogo para limite lateral à direita e limites no infinito.
 \end{obs}
+
+\subsection{Limites de funções limitadas}
+
+Se $f(x) \leq L$ para todo $x$ em um intervalo aberto contendo $x_0$, exceto possivelmente em $x_0$, então
+\begin{equation}
+  \lim_{x\to x_0} f(x) \leq L.
+\end{equation}
+Resultados análogos valem para limites laterais e limites no infinito.
 
 \begin{ex}
   Vamos calcular o seguinte limite
   \begin{equation}
-    \lim_{x\to \infty} e^x\sen x.
+    \lim_{x\to \infty} e^{-x}\sen x.
   \end{equation}
-
-  \emconstrucao
+  Como $|\sen x| \leq 1$, temos
+  \begin{align}
+    & \lim_{x\to \infty} e^{-x}\sen x \leq \lim_{x\to \infty} e^{-x} = 0,
+    & \lim_{x\to \infty} e^{-x}\sen x \geq \lim_{x\to \infty} -e^{-x} = 0.
+  \end{align}
+  Logo, temos
+  \begin{equation}
+    \lim_{x\to \infty} e^{-x}\sen x = 0.
+  \end{equation}
 \end{ex}
 
 
@@ -2106,16 +2152,26 @@ Calculados os limites laterais, concluímos o que queríamos.
   Veja o Exercício \ref{exer:lim_cosx_1}.
 \end{ex}
 
-% \begin{exer}
-%   Pode-se mostrar que $|-x| \leq \sen x \leq |x|$ (veja a Figura \ref{fig:}). Ainda, como
-%   \begin{equation}
-%     \lim_{x\to 0} -|x| = \lim_{x\to 0} |x| = 0,
-%   \end{equation}
-%   temos, pelo Teorema do confronto (Teorema \ref{teo:confronto}),
-%   \begin{equation}
-%     \lim_{x\to 0} \sen x = 0.
-%   \end{equation}
-% \end{exer}
+\subsection*{Exercícios resolvidos}
+
+\begin{exeresol}
+  Sabendo que $x^3 \leq f(x) \leq \sqrt{x}$ para $0 < x < 1$, calcule
+  \begin{equation}
+    \lim_{x\to 0^+} f(x).
+  \end{equation}
+\end{exeresol}
+\begin{resol}
+  Pelo Teorema do Confronto, temos
+  \begin{equation}
+    \lim_{x\to 0^+} \cancelto{0}{x^3} \leq \lim_{x\to 0^+} f(x) \leq \lim_{x\to 0^+} \cancelto{0}{\sqrt{x}}.
+  \end{equation}
+  Logo,
+  \begin{equation}
+    \lim_{x\to 0^+} f(x) = 0.
+  \end{equation}
+\end{resol}
+
+\emconstrucao
 
 \subsection*{Exercícios}
 
@@ -2124,6 +2180,16 @@ Calculados os limites laterais, concluímos o que queríamos.
 \end{exer}
 \begin{resp}
   $1$
+\end{resp}
+
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \lim_{x\to \infty} e^{-x}\cos x.
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $0$
 \end{resp}
 
 \begin{exer}
@@ -2155,8 +2221,6 @@ Calculados os limites laterais, concluímos o que queríamos.
 \begin{resp}
   $\frac{1}{2}$
 \end{resp}
-
-\emconstrucao
 
 \section{Exercícios finais}\label{cap_lim_sec_exfinal}
 
