@@ -4,8 +4,8 @@
 \thispagestyle{fancy}
 
 \ifispython
-\begin{obs}\normalfont{(Códigos \verb+Python+)}\label{obs:deriv_python}
-  Nos códigos \verb+Python+ inseridos ao longo deste capítulos, estaremos assumindo o seguinte preâmbulo:
+\begin{obs}\normalfont{(Códigos \verb+Python+)}\label{obs:cap_deriv_python}
+  Nos códigos \python~inseridos ao longo deste capítulos, estaremos assumindo o seguinte preâmbulo:
 \begin{verbatim}
 %matplotlib inline
 from sympy import *
@@ -15,7 +15,11 @@ var('x',real=True)
 \end{obs}
 \fi
 
-\section{Retas tangentes e derivadas}\label{cap_deriv_sec_retg}
+\section{Derivada em ponto}\label{cap_deriv_sec_derivpt}
+
+Nesta seção, vamos discutir sobre a noção de {\bf derivada de uma função em um ponto}. Começamos pelas noções de {\bf reta secante} e de {\bf reta tangente} ao gráfico de uma função. Em seguide, discutimos sobre as noções de {\bf taxa de variação média} e {\bf taxa de variação instantânea}. Por fim, definimos a derivada de uma função em um ponto.
+
+\subsection{Retas secante e tangente}
 
 Definimos a {\bf reta secante} ao gráfico de uma dada função $f$ pelos pontos $x_0$ e $x_1$, $x_0\neq x_1$, como sendo a reta determinada pela equação
 \begin{equation}
@@ -51,7 +55,27 @@ Menos formal, é a reta limite das retas secantes ao gráfico da função pelos 
 \end{obs}
 
 \begin{ex}
-  Seja $f(x)=x^2$ e $x_0 = 1$. O coeficiente angular da reta tangente ao gráfico de $f$ no ponto $x_0$ é
+  Seja $f(x)=x^2$ e $x_0 = 1$. O coeficiente angular da reta secante ao gráfico de $f$ pelos pontos $x_0=1$ e $x_1 = 2$ é
+  \begin{align}
+    m_{\text{sec}} &= \frac{f(x_1)-f(x_0)}{x_1-x_0}\\
+                   &= \frac{f(2) - f(1)}{2-1}\\
+                   &= 4-1 = 3.
+  \end{align}
+  Logo, a reta secante ao gráfico de $f$ pelos pontos $x_0=1$ e $x_1=2$ tem equação
+  \begin{align}
+    y = m_{\text{sec}}(x-x_0) + f(x_0) &\Rightarrow y = 3(x-1)+f(1)\\
+                                       &\Rightarrow y = 3x - 2.
+  \end{align}
+  Na Figura \ref{fig:cap_deriv_ex_rt_x2}, temos os esboços dos gráfico da função e da reta secante (verde).
+  
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{./cap_deriv/dados/fig_cap_deriv_ex_rt_x2/fig_cap_deriv_ex_rt_x2}
+    \caption{Esboços dos gráficos de $f(x)=x^2$ (azul), da reta secante pelos pontos $x_0=1$ e $x_1=2$ (verde) e da reta tangente ao gráfico de $f$ no ponto $x_0 = 1$ (vermelho).}
+    \label{fig:cap_deriv_ex_rt_x2}
+  \end{figure}
+
+  Agora, o coeficiente angular da reta tangente ao gráfico de $f$ no ponto $x_0$ é
   \begin{align}
     m_{\text{tg}} &= \lim_{h\to 0} \frac{f(x_0+h)-f(x_0)}{h}\\
                   &= \lim_{h\to 0} \frac{(1+h)^2-1}{h}\\
@@ -62,22 +86,33 @@ Menos formal, é a reta limite das retas secantes ao gráfico da função pelos 
   \begin{equation}
     y = 2(x-1)+1 = 2x-1.
   \end{equation}
+  Na Figura \ref{fig:cap_deriv_ex_rt_x2}, temos os esboços dos gráfico da função e da reta tangente (vermelho).
+  
   \ifispython
-  Com o \verb+SymPy+, podemos obter a reta tangente com os seguintes comandos:
+  Com o \sympy, podemos obter a expressão da reta secante com os seguintes comandos\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}:
 \begin{verbatim}
-h = symbols('h',real=True)
-f = lambda x: x**2
 x0 = 1
-# coef. angular
+x1 = 2
+f = lambda x: x**2
+msec = (f(x1)-f(x0))/(x1-x0)
+msec*(x-x0)+f(x0)
+\end{verbatim}
+A expressão da reta tangente pode ser obtida com os seguintes comandos\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}:
+\begin{verbatim}
+h = var("h",real=True)
+x0 = 1
+f = lambda x: x**2
 mtg = limit((f(x0+h)-f(x0))/h,h,0)
-
-# reta tangente
 mtg*(x-x0)+f(x0)
 \end{verbatim}
   \fi
 \end{ex}
 
-\subsection{A derivada em um ponto}
+\subsection{Taxas de variação}
+
+\emconstrucao
+
+\subsection{Derivada em um ponto}
 
 A {\bf derivada} de uma função $f$ {\bf em um ponto} $x=x_0$ é denotada por $f'(x_0)$ ou $\displaystyle \frac{\dd f}{\dd x}(x_0)$ e é definida por
 \begin{equation}
@@ -106,11 +141,15 @@ A {\bf derivada} de uma função $f$ {\bf em um ponto} $x=x_0$ é denotada por $
   \end{enumerate}
 \end{ex}
 
+\subsection*{Exercícios resolvidos}
+
+\emconstrucao
+
 \subsection*{Exercícios}
 
 \emconstrucao
 
-\section{Função derivada}\label{cap_deriv_sec_deriv}
+\section{Função derivada}\label{cap_deriv_sec_funder}
 
 A {\bf derivada} de uma função $f$ em relação à variável $x$ é a função $\displaystyle f' = \frac{\dd f}{\dd x}$ cujo valor em $x$ é
 \begin{equation}\label{eq:derivada}
@@ -336,7 +375,7 @@ simplify(diff(u/v,x))
                                                      &= 5x^4+4x^3+2x+1.
     \end{align}
     \ifispython
-    Com o \verb+SymPy+, podemos computar esta derivada com o seguinte comando\footnote{Veja a Observação \ref{obs:deriv_python}.}:
+    Com o \sympy, podemos computar esta derivada com o seguinte comando\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}:
 \begin{verbatim}
 d = diff((x**2+x)*(1+x**3),x)
 simplify(d)
@@ -351,7 +390,7 @@ simplify(d)
                                                       &= \frac{x^4+2x^3+2x+1}{x^6-2x^3+1}
   \end{align}
   \ifispython
-  Com o \verb+SymPy+, podemos computar esta derivada com o seguinte comando\footnote{Veja a Observação \ref{obs:deriv_python}.}:
+  Com o \sympy, podemos computar esta derivada com o seguinte comando\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}:
 \begin{verbatim}
 d = diff((x**2+x)/(1-x**3),x)
 simplify(d)
