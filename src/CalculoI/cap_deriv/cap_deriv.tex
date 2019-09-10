@@ -4,8 +4,8 @@
 \thispagestyle{fancy}
 
 \ifispython
-\begin{obs}\normalfont{(Códigos \verb+Python+)}\label{obs:cap_deriv_python}
-  Nos códigos \python~inseridos ao longo deste capítulos, estaremos assumindo o seguinte preâmbulo:
+\begin{obs}\normalfont{(Códigos \python}\label{obs:cap_deriv_python}
+  Nos códigos \python~inseridos ao longo deste capítulo, estaremos assumindo o seguinte preâmbulo:
 \begin{verbatim}
 %matplotlib inline
 from sympy import *
@@ -331,7 +331,7 @@ A {\bf derivada} de uma função $f$ {\bf em um ponto} $x=x_0$ é denotada por $
 
 A {\bf derivada} de uma função $f$ em relação à variável $x$ é a função $\displaystyle f' = \frac{\dd f}{\dd x}$ cujo valor em $x$ é
 \begin{equation}\label{eq:derivada}
-  \lim_{h\to 0} \frac{f(x+h)-f(x)}{h},
+  f'(x) = \lim_{h\to 0} \frac{f(x+h)-f(x)}{h},
 \end{equation}
 quando este limite existe. Dizemos que $f$ é {\bf derivável} (ou {\bf diferenciável}) em um ponto $x$ de seu domínio, quando o limite dado em \eqref{eq:derivada} existe. Se isso ocorre para todo número real $x$, dizemos que $f$ é derivável em toda parte.
 
@@ -343,13 +343,32 @@ quando este limite existe. Dizemos que $f$ é {\bf derivável} (ou {\bf diferenc
           &= \lim_{h\to 0} \frac{x^2+2xh+h^2-x^2}{h}\\
           &= \lim_{h\to 0} 2x+h = 2x.
   \end{align}
+  Observamos que este é o caso de uma função derivável em toda parte.A Figura \ref{fig:deriv_ex_ffl_x2}.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{./cap_deriv/dados/fig_deriv_ex_ffl_x2/fig_deriv_ex_ffl_x2}
+    \caption{Esboços dos gráficos da função $f(x)=x^2$ e de sua derivada $f'(x) = 2x$.}
+    \label{fig:deriv_ex_ffl_x2}
+  \end{figure}  
+  
   \ifispython
-  Com o \verb+SymPy+, podemos usar os seguintes comandos para verificarmos este resultado:
+  Com o \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}, podemos usar os seguintes comandos para verificarmos este resultado:
 \begin{verbatim}
 h = symbols('h',real=True)
 f = lambda x: x**2
 limit((f(x+h)-f(x))/h,h,0)
 \end{verbatim}
+
+  Mais adequadamente, podemos usar o comando:
+\begin{verbatim}
+diff(x**2,x)
+\end{verbatim}
+  ou, equivalentemente,
+\begin{verbatim}
+diff(x**2)
+\end{verbatim}
+  para computar a derivada de $x^2$ em relação a $x$.
   \fi
 \end{ex}
 
@@ -362,43 +381,173 @@ limit((f(x+h)-f(x))/h,h,0)
 \end{obs}
 
 \begin{ex}
+  Vamos calcular a derivada de $f(x) = \sqrt{x}$. Para $x=0$, só faz sentido calcular a derivada lateral à direta:
+  \begin{align}
+    f'_{+}(0) &= \lim_{h\to 0^+} \frac{\sqrt{0+h}-\sqrt{0}}{h} \\
+              &= \lim_{h\to 0^+} \frac{\sqrt{h}}{h} \\
+              &= \lim_{h\to 0^+} \frac{1}{\cancelto{0^+}{\sqrt{h}}} = +\infty.
+  \end{align}
+  Ou seja, $f(x) = \sqrt{x}$ não é derivável em $x=0$. Agora, para $x> 0$, temos
+  \begin{align}
+    f'(x) &= \lim_{h\to 0} \frac{\sqrt{x+h}-\sqrt{x}}{h}\\
+          &= \lim_{h\to 0} \frac{\sqrt{x+h}-\sqrt{x}}{h}\cdot \frac{\sqrt{x+h}+\sqrt{x}}{\sqrt{x+h}+\sqrt{x}}\\
+          &= \lim_{h\to 0} \frac{x+h-x}{h(\sqrt{x+h}+\sqrt{x})}\\
+          &= \frac{1}{2\sqrt{x}}.
+  \end{align}
+  Na Figura \ref{fig:deriv_ex_ffl_sqrtx}, temos os esboços dos gráficos desta função e de sua derivada.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{./cap_deriv/dados/fig_deriv_ex_ffl_sqrtx/fig_deriv_ex_ffl_sqrtx}
+    \caption{Esboços dos gráficos da função $f(x)=\sqrt{x}$ e de sua derivada.}
+    \label{fig:deriv_ex_ffl_sqrtx}
+  \end{figure}
+
+  \ifispython
+  No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}, a computação de $f'_{+}(0)$ pode ser feita com os comandos\footnote{Por padrão no \sympy, o limite é tomado à direita.}:
+\begin{verbatim}
+var('h', real=True)
+limit((sqrt(0+h)-sqrt(0))/h,h,0)
+\end{verbatim}
+  E, a derivada de $f(x) = \sqrt{x}$ (nos pontos de diferenciabilidade) pode ser obtida com o comando:
+\begin{verbatim}
+diff(sqrt(x),x)
+\end{verbatim}
+  \fi
+\end{ex}
+
+\begin{ex}
   A função valor absoluto é derivável para todo $x\neq 0$ e não é derivável em $x=0$. De fato, para $x<0$ temos
   \begin{align}
-    f'(x) &= \lim_{x\to 0} \frac{|x+h|-|x|}{h}\\
+    f'(x) &= \lim_{h\to 0} \frac{|x+h|-|x|}{h}\\
           &= \lim_{h\to 0} \frac{-(x+h)+x}{h}\\
           &= \lim_{h\to 0} \frac{h}{h} = 1.
   \end{align}
   Analogamente, para $x>0$ temos
   \begin{align}
-    f'(x) &= \lim_{x\to 0} \frac{|x+h|-|x|}{h}\\
-          &= \lim_{x\to 0} \frac{x+h-x}{h}\\
-          &= \lim_{x\to 0} \frac{h}{h} = 1.
+    f'(x) &= \lim_{h\to 0} \frac{|x+h|-|x|}{h}\\
+          &= \lim_{h\to 0} \frac{x+h-x}{h}\\
+          &= \lim_{h\to 0} \frac{h}{h} = 1.
   \end{align}
   Agora, para $x=0$, devemos verificar as derivadas laterais:
   \begin{align}
     f'_+(0) &= \lim_{h\to 0^+} \frac{|h|-|0|}{h} = \lim_{h\to 0^+} \frac{h}{h} = 1,\\
     f'_-(0) &= \lim_{h\to 0^-} \frac{|h|-|0|}{h} = \lim_{h\to 0^-} \frac{-h}{h} = -1.
   \end{align}
-  Como as derivadas laterais são diferentes, temos que $y = |x|$ não é derivável em $x=0$.
+  Como as derivadas laterais são diferentes, temos que $y = |x|$ não é derivável em $x=0$. Na figura \ref{fig:deriv_ex_ffl_absx}, temos os esboços dos gráficos de $f(x) = |x|$ e sua derivada
+  \begin{equation}\label{eq:deriv_signx}
+    f'(x) = \left\{
+      \begin{array}[H]{rr}
+        -1 &, x<0,\\
+        1 &, x> 0
+      \end{array}
+    \right.
+  \end{equation}
+  Esta é chamada de {\bf função sinal} e denotada por $\sign(x)$. Ou seja, a função sinal é a derivada da função valor absoluto.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{./cap_deriv/dados/fig_deriv_ex_ffl_absx/fig_deriv_ex_ffl_absx}
+    \caption{Esboços dos gráficos da função $f(x)=|x|$ e de sua derivada.}
+    \label{fig:deriv_ex_ffl_absx}
+  \end{figure}
+
+  \ifispython
+  No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}, podemos computar a derivada da função valor absoluto com o comando:
+\begin{verbatim}
+diff(abs(x))
+\end{verbatim}
+  \fi
 \end{ex}
 
-\begin{ex}
-  Vamos calcular a derivada de $f(x) = \sqrt{x}$. Para $x=0$, só faz sentido calcular a derivada lateral à direta:
-  \begin{equation}
-    f'(0) = \lim_{h\to 0^+} \frac{\sqrt{h}-\sqrt{0}}{h} = +\infty.
-  \end{equation}
-  Ou seja, $f(x) = \sqrt{x}$ não é derivável em $x=0$. Agora, para $x> 0$, temos
+\subsection*{Exercícios resolvidos}
+
+\begin{exeresol}
+  Calcule a derivada da função $f(x) = x^2 + 2x + 1$ em relação a $x$.
+\end{exeresol}
+\begin{resol}
+  Por definição da derivada, temos
   \begin{align}
-    f'(x) &= \lim_{h\to 0} \frac{\sqrt{x+h}-\sqrt{x}}{h}\\
-          &= \lim_{h\to 0} \frac{\sqrt{x+h}-\sqrt{x}}{h}\frac{\sqrt{x+h}+\sqrt{x}}{\sqrt{x+h}+\sqrt{x}}\\
-          &= \lim_{h\to 0} \frac{x+h-x}{h(\sqrt{x+h}+\sqrt{x})}\\
-          &= \frac{1}{2\sqrt{x}}.
+    f'(x) &= \lim_{h\to 0} \frac{f(x+h)-f(x)}{h}\\
+          &= \lim_{h\to 0} \frac{(x+h)^2 + 2(x+h) + 1 - (x^2+2x+1)}{h}\\
+          &= \lim_{h\to 0} \frac{x^2+2xh+h^2+2x+2h+1-x^2-2x-1}{h}\\
+          &= \lim_{h\to 0} \frac{2xh+h^2+2h}{h}\\
+          &= \lim_{h\to 0} 2x+h+2 = 2x+2.
   \end{align}
-\end{ex}
+\end{resol}
+
+\begin{exeresol}
+  Determine os pontos de diferenciabilidade da função $f(x) = |x-1|$.
+\end{exeresol}
+\begin{resol}
+  O gráfico da função $f(x) = |x-1|$ tem um bico no ponto $x=1$ (verifique!). Para valores de $x<1$, temos
+  \begin{align}
+    f'(x) &= \lim_{h\to 0} \frac{f(x+h) - f(x)}{h}\\
+          &= \lim_{h\to 0} \frac{|\overbrace{x+h-1}^{<0}| - |\overbrace{x-1}^{<0}|}{h}\\
+          &= \lim_{h\to 0} \frac{-x-h+1+x-1}{h}\\
+          &= \lim_{h\to 0} \frac{-h}{h} = -1.
+  \end{align}
+  Para valores de $x > 1$, temos
+  \begin{align}
+    f'(x) &= \lim_{h\to 0} \frac{f(x+h) - f(x)}{h}\\
+          &= \lim_{h\to 0} \frac{|\overbrace{x+h-1}^{>0}| - |\overbrace{x-1}^{>0}|}{h}\\
+          &= \lim_{h\to 0} \frac{x+h-1-x+1}{h}\\
+          &= \lim_{h\to 0} \frac{h}{h} = 1.
+  \end{align}
+  Ou seja, temos que $f(x) = |x-1|$ é diferenciável para $x\neq 1$. Agora, para $x=1$, temos
+  \begin{align}
+    f'_{-}(x) &= \lim_{h\to 0^{-}} \frac{f(1+h) - f(1)}{h}\\
+              &= \lim_{h\to 0^{-}} \frac{|\overbrace{h}^{<0}| - |1-1|}{h}\\
+              &= \lim_{h\to 0^{-}} \frac{-h}{h} = -1\\
+    f'_{+}(x) &= \lim_{h\to 0^{+}} \frac{f(1+h) - f(1)}{h}\\
+          &= \lim_{h\to 0^{+}} \frac{|\overbrace{h}^{>0}| - |1-1|}{h}\\
+              &= \lim_{h\to 0^{+}} \frac{h}{h} = 1\\
+  \end{align}
+  Como $f'_{-}(1)\neq f'_{+}(1)$, temos que $\nexists f'(1)$. Concluímos que $f(x) = |x-1|$ é diferenciável nos pontos $\mathbb{R}\setminus\{1\}$. 
+\end{resol}
 
 \subsection*{Exercícios}
 
-\emconstrucao
+\begin{exer}
+  Calcule a derivada em relação a $x$ de cada uma das seguintes funções:
+  \begin{enumerate}[a)]
+  \item $f(x) = 2$
+  \item $g(x) = -3$
+  \item $h(x) = \sqrt{e}$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a)~$0$; b)~$0$; c)~$0$
+\end{resp}
+
+\begin{exer}
+  Calcule a derivada em relação a $x$ de cada uma das seguintes funções:
+  \begin{enumerate}[a)]
+  \item $f(x) = 2x$
+  \item $g(x) = -3x$
+  \item $h(x) = \sqrt{e}x$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a)~$2$; b)~$-3$; c)~$\sqrt{e}$
+\end{resp}
+
+\begin{exer}
+  Calcule a derivada em relação a $x$ da função
+  \begin{equation}
+    f(x) = x^2 - 2x + 1.
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $f'(x) = 2x - 2$
+\end{resp}
+
+\begin{exer}
+  Determine os pontos de diferenciabilidade da função $f(x) = \sqrt{x-1}$.
+\end{exer}
+\begin{resp}
+  $(1, \infty)$
+\end{resp}
 
 \section{Regras básicas de derivação}\label{cap_deriv_sec_regras}
 
