@@ -19,7 +19,7 @@ var('x',real=True)
 
 Nesta seção, vamos discutir sobre a noção de {\bf derivada de uma função em um ponto}. Começamos pelas noções de {\bf reta secante} e de {\bf reta tangente} ao gráfico de uma função. Em seguida, discutimos sobre as noções de {\bf taxa de variação média} e {\bf taxa de variação instantânea}. Por fim, definimos a derivada de uma função em um ponto.
 
-\subsection{Retas secante e tangente}
+\subsection{Reta secante e reta tangente}
 
 Definimos a {\bf reta secante} ao gráfico de uma dada função $f$ pelos pontos $x_0$ e $x_1$, $x_0\neq x_1$, como sendo a reta determinada pela equação
 \begin{equation}
@@ -108,7 +108,7 @@ mtg*(x-x0)+f(x0)
   \fi
 \end{ex}
 
-\subsection{Taxas de variação}
+\subsection{Taxa de variação}
 
 A {\bf taxa de variação média} de uma função $f$ quando $x$ varia de $x_0$ a $x_1$ é definida como
 \begin{equation}
@@ -551,83 +551,169 @@ diff(abs(x))
 
 \section{Regras básicas de derivação}\label{cap_deriv_sec_regras}
 
+Nesta seção, vamos discutir sobre algumas regras fundamentais para o cálculo da derivada de funções. Começaremos pelas derivadas de função constante, de função potência e de função exponencial. Em seguida, passamos a derivadas da soma, multiplicação e quociente de funções.
+
+\subsection{Derivadas de função constante e função potência}
+
 Vejamos as derivadas da função constante e da função potência.
 \begin{itemize}
-\item $\displaystyle \frac{\dd k}{\dd x} = 0$, onde $k$ é uma constante.
+\item $\pmb{(k)' = 0}$, onde $k$ é uma constante.
 
-  Dem.: Com $f(x) \equiv k$ temos
+  De fato, para $f(x) \equiv k$ temos
   \begin{align}
-    \frac{\dd k}{\dd x} &= \lim_{h\to 0} \frac{f(x+h)-f(x)}{h}\\
-                        &= \lim_{h\to 0} \frac{k-k}{h} \\
-                        &= \lim_{h\to 0} 0 = 0.
+    f'(x) &= \lim_{h\to 0} \frac{f(x+h)-f(x)}{h}\\
+          &= \lim_{h\to 0} \frac{k-k}{h} \\
+          &= \lim_{h\to 0} 0 = 0.
   \end{align}
-  \ifispython
-  No \verb+SymPy+, podemos usar os seguintes comandos para obtermos tal regra de derivação:
-\begin{verbatim}
-k = symbols('k',real=True)
-diff(k,x)
-\end{verbatim}
-  \fi
-  
 
-\item $\displaystyle \frac{\dd x^n}{\dd x} = nx^{n-1}$, para $n$ inteiro positivo.
+\item $\pmb{(x)' = 1}$.
 
-  Dem.: Com $f(x) = x^n$, temos
+  De fato, para a função identidade $f(x) = x$ temos
   \begin{align}
-    \frac{\dd x^n}{\dd x} &= \lim_{h\to 0} \frac{f(x+h)-f(x)}{h}\\
-                          &= \lim_{h\to 0} \frac{(x+h)^n-x^n}{h} \\
-                          &= \lim_{h\to 0} \frac{x^n+nx^{n-1}h+\frac{n(n-1)}{2}x^{n-2}h^2 + \cdots +h^n-x^n}{h}\\
-                          &= \lim_{h\to 0} nx^{n-1}+\frac{n(n-1)}{2}x^{n-2}h+\cdots+h^{n-1}\\
-                          &= nx^{n-1}.
+    f'(x) &= \lim_{h\to 0} \frac{f(x+h)-f(x)}{h}\\
+          &= \lim_{h\to 0} \frac{x+h-x}{h}\\
+          &= \lim_{h\to 0} \frac{h}{h} = 1.\\
   \end{align}
-  \ifispython
-  No \verb+SymPy+, podemos usar os seguintes comandos para obtermos tal regra de derivação:
-\begin{verbatim}
-n = symbols('n',integer=True, positive=True)
-simplify(diff(x**n,x))
-\end{verbatim}
-  \fi
+
+\item $\pmb{(x^n)' = nx^{n-1}}$, para $n > 1$ inteiro positivo.
+
+  De fato, para $f(x) = x^n$ temos
+  \begin{align}
+    f'(x) &= \lim_{h\to 0} \frac{f(x+h)-f(x)}{h}\\
+          &= \lim_{h\to 0} \frac{(x+h)^n-x^n}{h} \\
+          &= \lim_{h\to 0} \frac{x^n+nx^{n-1}h+\frac{n(n-1)}{2}x^{n-2}h^2 + \cdots +h^n-x^n}{h}\\
+          &= \lim_{h\to 0} nx^{n-1}+\frac{n(n-1)}{2}x^{n-2}h+\cdots+h^{n-1}\\
+          &= nx^{n-1}.
+  \end{align}
 \end{itemize}
+
+\ifispython
+No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}, podemos usar os seguintes comandos para obtermos as regras de derivação acima:
+\begin{verbatim}
+# (k)' = 0
+var('k', real=True, constant=True)
+diff(k,x)
+
+# (x)' = 1
+diff(x,x)
+
+# (x^n)' = nx^(n-1)
+var('n',integer=True, positive=True)
+diff(x**n,x)
+\end{verbatim}
+\fi
 
 \begin{ex}
   Vejamos os seguintes casos:
   \begin{enumerate}[a)]
-  \item $\displaystyle \frac{\dd \sqrt{2}}{\dd x} = 0$.
-  \item $\displaystyle \frac{\dd x^3}{\dd x} = 3x^2$.
+  \item $(-1)' = 0$.
+  \item $(\sqrt{2})' = 0$.
+  \item $(x^3)' = 3x^2$.
+  \item $(x^{11})' = 11x^{10}$.
   \end{enumerate}
 \end{ex}
 
-\subsection{Multiplicação por constante e soma}
+\subsection{Derivada de função exponencial}
 
-Sejam $c$ um número real, $u$ e $v$ funções. Temos as seguintes regras básicas de derivação:
+Vejamos o cálculo da derivada de função exponencial.
+
 \begin{itemize}
-\item $\displaystyle (cu)' = cu'$.
-
-  Dem.:
+\item $\pmb{(a^x)' = a^x\ln a}$, para $a>0$ e $a\neq 1$.
+  
+  De fato, tomando $f(x) = a^x$, $a>0$ e $a\neq 1$ temos
   \begin{align}
-    \frac{\dd}{\dd x}(cu)(x) &= \lim_{h\to 0} \frac{cu(x+h)-cu(x)}{h} \\
-                          &= c\lim_{h\to 0} \frac{u(x+h)-u(x)}{h} \\
-                          &= c\frac{\dd u}{\dd x}.
+    f'(x) &= \lim_{h\to 0} \frac{f(x+h)-f(x)}{h}\\
+          &= \lim_{h\to 0} \frac{a^{x+h}-a^x}{h} \\
+          &= \lim_{h\to 0} \frac{a^xa^h-a^x}{h} \\
+          &= a^x \lim_{h\to 0} \frac{a^h-1}{h}
   \end{align}
-  \ifispython
-  No \verb+SymPy+, podemos usar os seguintes comandos para obtermos tal regra de derivação:
+  Pode-se mostrar que\footnote{Pode-se mostrar isso a partir da definição integral da função logarítmo.}
+  \begin{equation}
+    \lim_{h\to 0} \frac{a^h-1}{h} = \ln a.
+  \end{equation}
+  Desta forma, temos
+  \begin{equation}
+    f'(x) = a^x\ln a = (a^x)'.
+  \end{equation}
+
+\item $\pmb{(e^x)' = e^x}$.
+
+  De fato, $(a^x)' = a^x\ln a$, para $a>0$ e $a\neq 1$. Tomando $a = e$, temos
+  \begin{equation}
+    (e^x)' = e^x\underbrace{\ln e}_{=1} = e^x.
+  \end{equation}
+\end{itemize}
+
+\ifispython
+No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}, podemos usar os seguintes comandos para computarmos as derivadas acima:
 \begin{verbatim}
-c = symbols('c', real=True)
+var('a', real=True)
+# (a^x)'
+diff(a**x,x)
+# (e^x)'
+diff(E**x,x)
+\end{verbatim}
+\fi
+
+
+\begin{ex}
+Vejamos os seguintes casos:
+\begin{enumerate}[a)]
+\item $(2^x)' = 2^x\ln 2$.
+\item $(e^x)' = e^x$.
+\end{enumerate}
+
+\ifispython
+No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}, podemos usar os seguintes comandos para computarmos as derivadas acima:
+\begin{verbatim}
+# a)
+diff(2**x,x)
+# b)
+diff(E**x,x)
+\end{verbatim}
+\fi
+\end{ex}
+
+\subsection{Regras da multiplicação por constante e da soma}
+
+Sejam $k$ um número real, $u = u(x)$ e $v = v(x)$ funções deriváveis. Temos as seguintes regras básicas de derivação:
+\begin{itemize}
+\item $\pmb{(k\cdot u)' = k\cdot u'}$.
+
+  De fato, pela definição da derivada temos
+  \begin{align}
+    (k\cdot u)'(x) &= \lim_{h\to 0} \frac{k\cdot u(x+h)-k\cdot u(x)}{h} \\
+                   &= \lim_{h\to 0} k\cdot \left(\frac{u(x+h)-u(x)}{h}\right) \\
+                   &= k\cdot \lim_{h\to 0} \cancelto{u'}{\frac{u(x+h)-u(x)}{h}} \\
+                   &= k\cdot u'.
+  \end{align}
+  
+  \ifispython
+  No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}, podemos usar os seguintes comandos para obtermos esta regra de derivação:
+\begin{verbatim}
+var('k', real=True)
 u = Function('u', real=True)(x)
-diff(c*u,x)
+diff(k*u,x)
 \end{verbatim}
   \fi
 
-\item $\displaystyle (u\pm v)' = u'\pm v'$.
+\item $\pmb{(u\pm v)' = u'\pm v'}$.
 
-  Dem.:
+  De fato, temos
   \begin{align}
-    (u\pm v)'(x) &= \lim_{h\to 0} \frac{(u\pm v)(x+h)-(u\pm v)(x)}{h}\\
-                              &= \lim_{h\to 0} \left[\frac{u(x+h)-u(x)}{h}\pm\frac{v(x+h)-v(x)}{h}\right]\\
-              &= u'(x) \pm v'(x).
+    (u + v)'(x) &= \lim_{h\to 0} \frac{(u + v)(x+h)-(u + v)(x)}{h}\\
+                &= \lim_{h\to 0} \frac{u(x+h)+v(x+h)-[u(x)+v(x)]}{h}\\
+                &= \lim_{h\to 0} \left[\cancelto{u'}{\frac{u(x+h)-u(x)}{h}} + \cancelto{v'}{\frac{v(x+h)-v(x)}{h}}\right]\\
+              &= u'(x) + v'(x).
   \end{align}
+
+  Também, como $(-v)' = (-1\cdot v)' = -1\cdot v' = -v'$, temos
+  \begin{equation}
+    (u-v)' = [u+(-v)]' = u' + (-v)' = u' - v'.
+  \end{equation}
+  
   \ifispython
-  No \verb+SymPy+, podemos usar os seguintes comandos para obtermos a regra de derivação para soma:
+  No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}, podemos usar os seguintes comandos para obtermos a regra de derivação para soma:
 \begin{verbatim}
 u = Function('u', real=True)(x)
 v = Function('v', real=True)(x)
@@ -637,19 +723,60 @@ diff(u+v,x)
 \end{itemize}
 
 \begin{ex}
-  \begin{align}
-    \frac{\dd}{\dd x}(x^3-2x -1) &= \frac{\dd}{\dd x}x^3 -2\frac{\dd x}{\dd x} - \frac{\dd 1}{\dd x}\\
-                                 &= 3x^2-2.
-  \end{align}
+  Vejamos os seguintes casos:
+  \begin{enumerate}[a)]
+  \item $f(x) = 2x$.
+
+    Para calcularmos $f'$, podemos identificar $f = k\cdot u$, com $k=2$ e $u(x) = x$. Então, usando a regra da multiplicação por constante $(ku)' = ku'$, temos
+    \begin{equation}
+      f'(x) = (2x)' = 2(x') = 2\cdot 1 = 2.
+    \end{equation}
+
+  \ifispython
+  No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}, podemos computar esta derivada com o comando:
+\begin{verbatim}
+diff(2*x,x)
+\end{verbatim}
+  \fi
+    
+
+  \item $f(x) = 2x + 3$.
+
+    Observamos que $f = u + v$, com $u(x) = 2x$ e $v(x)\equiv 3$. Então, da regra da soma $(u+v)' = u' + v'$, temos
+    \begin{equation}
+      f'(x) = (2x + 3)' = (2x)' + (3)' = 2 + 0 = 2.
+    \end{equation}
+
+    \ifispython
+    No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}, podemos computar esta derivada com o comando:
+\begin{verbatim}
+diff(2*x+3,x)
+\end{verbatim}
+    \fi
+
+  \item $f(x) = e^x - x^2$.
+
+    Observamos que $f = u-v$, com $u(x) = e^x$ e $v(x)= x^2$. Usando a regra da subtração $(u-v)' = u' - v'$ temos
+    \begin{equation}
+      f'(x) = (e^x - x^2)' = (e^x)' - (x^2)' = e^x - 2x.
+    \end{equation}
+
+    \ifispython
+    No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}, podemos computar esta derivada com o comando:
+\begin{verbatim}
+diff(exp(x)-x**2,x)
+\end{verbatim}
+    \fi
+  \end{enumerate}
 \end{ex}
 
-\subsection{Produto e quocientes}
+\subsection{Regras do produto e do quociente}
 
-Sejam $y = u(x)$ e $y = v(x)$ funções deriváveis, com $v(x)\neq 0$. Então:
+Sejam $y = u(x)$ e $y = v(x)$ funções deriváveis. Então:
 \begin{itemize}
-\item $(uv)' = u'v+uv'$.
+\item $\pmb{(u\cdot v)' = u'\cdot v+u\cdot v'}$.
 
-  Dem.:
+  De fato, da definição da derivada temos
   \begin{align}
     (uv)'(x) &= \lim_{h\to 0} \frac{(uv)(x+h)-(uv)(x)}{h}\\
              &= \lim_{h\to 0} \frac{u(x+h)v(x+h)-u(x)v(x)}{h}\\
@@ -659,28 +786,31 @@ Sejam $y = u(x)$ e $y = v(x)$ funções deriváveis, com $v(x)\neq 0$. Então:
              &+ \lim_{h\to 0} u(x)\frac{v(x+h)-v(x)}{h}\\
              &= u'(x)v(x) + u(x)v'(x).
   \end{align}
+  
   \ifispython
-  No \verb+SymPy+, podemos usar os seguintes comandos para obtermos tal regra de derivação:
+  No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}, podemos usar os seguintes comandos para obtermos tal regra de derivação:
 \begin{verbatim}
 u = Function('u', real=True)(x)
 v = Function('v', real=True)(x)
 diff(u*v,x)
 \end{verbatim}
   \fi
-\item $\displaystyle\left(\frac{u}{v}\right)' = \frac{u'v-uv'}{v^2}$.
+  
+\item $\displaystyle\pmb{\left(\frac{u}{v}\right)' = \frac{u'v-uv'}{v^2}}$, no caso de $v(x)\neq 0$.
 
-  Dem.:
+  De fato, da definição de derivada temos
   \begin{align}
     \left(\frac{u}{v}\right)'(x) &= \lim_{h\to 0} \frac{\left(\frac{u}{v}\right)(x+h)-\left(\frac{u}{v}\right)(x)}{h} \\
                                  &= \lim_{h\to 0} \frac{\frac{u(x+h)v(x)-u(x)v(x+h)}{v(x+h)v(x)}}{h}\\
                                  &= \lim_{h\to 0} \left[\frac{u(x+h)v(x)-u(x)v(x)}{h}\right. \\
                                  &\qquad\quad - \left.\frac{u(x)v(x+h)-u(x)v(x)}{h}\right]\frac{1}{v(x)v(x+h)}\\
-                                 &= \left[\lim_{h\to 0} \frac{u(x+h)-u(x)}{h}v(x)\right. \\
-                                 &\left. - \lim_{h\to 0} u(x)\frac{v(x+h)-v(x)}{h}\right]\lim_{h\to 0} \frac{1}{v(x)v(x+h)}\\
+                                 &= \left[\lim_{h\to 0} \cancelto{u'(x)v(x)}{\frac{u(x+h)-u(x)}{h}v(x)}\right. \\
+                                 &\left. - \lim_{h\to 0} \cancelto{u(x)v'(x)}{u(x)\frac{v(x+h)-v(x)}{h}}\right]\lim_{h\to 0} \cancelto{\frac{1}{v^2(x)}}{\frac{1}{v(x)v(x+h)}}\\
                                  &= \frac{u'(x)v(x)-u(x)v'(x)}{v^2(x)}.
   \end{align}
+  
   \ifispython
-  No \verb+SymPy+, podemos usar os seguintes comandos para obtermos tal regra de derivação:
+  No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}, podemos usar os seguintes comandos para obtermos tal regra de derivação:
 \begin{verbatim}
 u = Function('u', real=True)(x)
 v = Function('v', real=True)(x)
@@ -690,105 +820,59 @@ simplify(diff(u/v,x))
 \end{itemize}
 
 \begin{ex}
-  Vejamos os seguintes casos:
-  \begin{enumerate}[a)]
-  \item
+  Vamos calcular a derivada em relação a $x$ da função $f(x) = x^2(x-1)$ de duas formas.
+  \begin{enumerate}[1.]
+  \item Por expansão da expressão e utilização da regra da subtração.
     \begin{align}
-      \frac{\dd}{\dd x}\left[(x^2+x)(1 + x^3)\right] &= \left[\frac{\dd}{\dd x} (x^2+x)\right](1+x^3) \\
-                                                     &+ (x^2+x)\left[\frac{\dd}{\dd x}(1+x^3)\right]\\
-                                                     &= (2x+1)(1+x^3)+(x^2+x)3x^2\\
-                                                     &= 2x+2x^4+1+x^3+3x^4+3x^3\\
-                                                     &= 5x^4+4x^3+2x+1.
+      f'(x) &= [x^2(x-1)]'\\
+            &= (x^3-x^2)' \\
+            &= \overbrace{(x^3)'-(x^2)'}^{(u-v)'=u'-v'}\\
+            &= 3x^2-2x,\quad\quad(x^n)' = nx^{n-1}.
     \end{align}
-    \ifispython
-    Com o \sympy, podemos computar esta derivada com o seguinte comando\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}:
-\begin{verbatim}
-d = diff((x**2+x)*(1+x**3),x)
-simplify(d)
-\end{verbatim}
-    \fi
+  \item Utilizando a regra do produto.
 
-\item
-  \begin{align}
-    \frac{\dd}{\dd x}\left(\frac{x^2+x}{1-x^3}\right) &= \frac{\left[\frac{\dd}{\dd x}(x^2+x)\right](1-x^3)-(x^2+x)\left[\frac{\dd}{\dd x}(1-x^3)\right]}{(1-x^3)^2}\\
-                                                      &= \frac{(2x+1)(1-x^3)+(x^2+x)3x^2}{1-2x^3+x^6} \\
-                                                      &= \frac{2x-2x^4+1-x^3+3x^4+3x^3}{1-2x^3+x^6} \\
-                                                      &= \frac{x^4+2x^3+2x+1}{x^6-2x^3+1}
-  \end{align}
-  \ifispython
-  Com o \sympy, podemos computar esta derivada com o seguinte comando\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}:
-\begin{verbatim}
-d = diff((x**2+x)/(1-x**3),x)
-simplify(d)
-\end{verbatim}
-  \fi
+    Observamos que $f = u\cdot v$, com $u(x) = x^2$ e $v(x) = x-1$. Então, da regra do produto $(uv)' = u'v + uv'$, com $u'(x) = 2x$ e $v'(x) = 1$, temos
+    \begin{align}
+      f'(x) &= [\overbrace{x^2}^{u}\overbrace{(x-1)}^{v}]'\\
+            &= \overbrace{2x\cdot (x-1)}^{u'\cdot v} + \overbrace{x^2\cdot 1}^{u\cdot v'}\\
+            &= 2x^2 - 2x + x^2\\
+            &= 3x^2 - 2x.
+    \end{align}
   \end{enumerate}
 \end{ex}
 
-\begin{obs}\normalfont{(Derivada de funções potência)}
-  No início desta seção, vimos que
-  \begin{equation}
-    \frac{\dd x^n}{\dd x} = nx^{n-1},
-  \end{equation}
-  para $n>0$ inteiro. Agora, podemos afirmar que este é, também, o caso quando $n<0$ inteiro. De fato, se $n < 0$, então
+\begin{ex}\label{ex:deriv_x-2}
+  Vamos calcular a derivada em relação a $x$ de $f(x) = 1/x^2$ para $x\neq 0$. Observamos que $f = (u/v)$ com $u(x) \equiv 1$ e $v(x) = x^2$. Tendo em vista que $u'(x) \equiv 0$ e $v'(x) = 2x$, temos da regra do quociente que
   \begin{align}
-    (x^n)' &= \left(\frac{1}{x^{-n}}\right)\\
-           &= \frac{(1)'x^{-n}-1\cdot\left(x^{-n}\right)'}{\left(x^{-n}\right)^2}\\
-           &= \frac{0-(-n)x^{-n-1}}{x^{-2n}}\\
-           &= nx^{2n-n-1} = nx^{n-1}.
+    f'(x) &= \left(\frac{1}{x^2}\right)' \\
+          &= \frac{0\cdot x^2 - 1\cdot 2x}{(x^2)^2},\quad\quad\left[\left(\frac{u}{v}\right)' = \frac{u'v-uv'}{v^2}\right]\\
+          &= -\frac{2x}{x^4} = -\frac{2}{x^3}\\
+          &= -2x^{-3}.
   \end{align}
-  \ifispython
-  O \verb+SymPy+, obtém o mesmo resultado, verifique usando os comandos:
-\begin{verbatim}
-var('n',integer=True)
-simplify(diff(x**n,x))
-\end{verbatim}
-  \fi
+\end{ex}
+
+\begin{obs}
+  Com abuso de linguagem, temos
+  \begin{equation}
+    \pmb{(x^n)' = nx^{n-1}}.
+  \end{equation}
+  No caso de $n=1$, temos $(x)' \equiv 1$. No caso de $n <= 0$, devemos ter $x\neq 0$\footnote{Devido a indeterminação de $0^0$ e a inexistência de $0^n$ com $n$ negativo}.
 \end{obs}
 
 \begin{ex}
+  Voltando ao exemplo anterior (Exemplo \ref{ex:deriv_x-2}), temos
   \begin{equation}
-    \frac{\dd}{\dd x}x^{-5} = -5x^{-5-1} = -5x^{-4}.
+    \left(\frac{1}{x^2}\right)' = \overbrace{(x^{-2})'}^{(x^n)'} = \overbrace{-2x^{-2-1}}^{nx^{n-1}} = -2x^{-3}.
   \end{equation}
 \end{ex}
 
-
-\subsection{Derivadas de funções exponenciais}
-
-Seja $f(x) = a^x$, $a>0$ e $a\neq 1$. Então
-\begin{align}
-  f'(x) &= \lim_{h\to 0} \frac{f(x+h)-f(x)}{h}\\
-        &= \lim_{h\to 0} \frac{a^{x+h}-a^x}{h} \\
-        &= \lim_{h\to 0} \frac{a^xa^h-a^x}{h} \\
-        &= a^x \lim_{h\to 0} \frac{a^h-1}{h}
-\end{align}
-Pode-se mostrar que
-\begin{equation}
-  \lim_{h\to 0} \frac{a^h-1}{h} = \ln a.
-\end{equation}
-Desta forma, temos
-\begin{equation}
-  \frac{\dd a^x}{\dd x} = a^x\ln a.
-\end{equation}
-
-Para a função exponencial natural $y = e^x$, temos
-\begin{align}
-  \frac{\dd e^x}{\dd x} &= e^x\ln e\\
-                        &= e^x.
-\end{align}
-
-
 \begin{ex}
-Vejamos os seguintes casos:
-\begin{enumerate}[a)]
-\item $\displaystyle\frac{\dd 2^x}{\dd x} = 2^x\ln 2$.
-\item
+  Vamos calcular a derivada em relação a $x$ de $f(x) = xe^x$. Usando a regra do produto $(uv)' = u'v + uv'$ com $u(x) = x$ e $v(x) = e^x$, temos
   \begin{align}
-    \frac{\dd e^{2x}}{\dd x} &= \frac{\dd}{\dd x}(e^xe^x)\\
-                             &= e^xe^x + e^xe^x\\
-                             &= 2e^{2x}.
+    f'(x) &= \overbrace{(xe^x)'}^{(uv)'}\\
+          &= \overbrace{1\cdot e^x}^{u'\cdot v} + \overbrace{x\cdot e^x}^{u\cdot v'}\\
+          &= (x + 1)e^x.
   \end{align}
-\end{enumerate}  
 \end{ex}
 
 \subsection{Derivadas de ordens mais altas}
@@ -839,7 +923,56 @@ diff(x**3-2*x,x,3)
   \end{enumerate}
 \end{ex}
 
+\subsection{Resumo de regras de derivação}
+
+\begin{align*}
+  (k)' &= 0 & (x^n)' &= nx^{n-1}\\
+  (a^x)' &= a^x\ln a & (e^x)' &= e^x \\
+  (ku)' &= ku' & (u\pm v)' &= u' \pm v'\\
+  (uv)' &= u'v + uv' & \left(\frac{u}{v}\right)' &= \frac{u'v - uv'}{v^2}
+\end{align*}
+
+
+\subsection*{Exercícios resolvidos}
+
 \emconstrucao
+
+\begin{ex}
+  Vejamos os seguintes casos:
+  \begin{enumerate}[a)]
+  \item
+    \begin{align}
+      \frac{\dd}{\dd x}\left[(x^2+x)(1 + x^3)\right] &= \left[\frac{\dd}{\dd x} (x^2+x)\right](1+x^3) \\
+                                                     &+ (x^2+x)\left[\frac{\dd}{\dd x}(1+x^3)\right]\\
+                                                     &= (2x+1)(1+x^3)+(x^2+x)3x^2\\
+                                                     &= 2x+2x^4+1+x^3+3x^4+3x^3\\
+                                                     &= 5x^4+4x^3+2x+1.
+    \end{align}
+    \ifispython
+    Com o \sympy, podemos computar esta derivada com o seguinte comando\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}:
+\begin{verbatim}
+d = diff((x**2+x)*(1+x**3),x)
+simplify(d)
+\end{verbatim}
+    \fi
+
+\item
+  \begin{align}
+    \frac{\dd}{\dd x}\left(\frac{x^2+x}{1-x^3}\right) &= \frac{\left[\frac{\dd}{\dd x}(x^2+x)\right](1-x^3)-(x^2+x)\left[\frac{\dd}{\dd x}(1-x^3)\right]}{(1-x^3)^2}\\
+                                                      &= \frac{(2x+1)(1-x^3)+(x^2+x)3x^2}{1-2x^3+x^6} \\
+                                                      &= \frac{2x-2x^4+1-x^3+3x^4+3x^3}{1-2x^3+x^6} \\
+                                                      &= \frac{x^4+2x^3+2x+1}{x^6-2x^3+1}
+  \end{align}
+  \ifispython
+  Com o \sympy, podemos computar esta derivada com o seguinte comando\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}:
+\begin{verbatim}
+d = diff((x**2+x)/(1-x**3),x)
+simplify(d)
+\end{verbatim}
+  \fi
+  \end{enumerate}
+\end{ex}
+
 
 \subsection*{Exercícios}
 
