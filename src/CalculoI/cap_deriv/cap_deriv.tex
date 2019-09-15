@@ -460,6 +460,64 @@ diff(abs(x))
   \fi
 \end{ex}
 
+\subsection{Derivadas de ordens mais altas}
+
+A derivada de uma função $y = f(x)$ em relação a $x$ é a função $y = f'(x)$. Quando esta é diferenciável, podemos calcular a derivada da derivada. Esta é conhecida como a {\bf segunda derivada} de $f$, denotamos
+\begin{equation}
+  f''(x) := (f'(x))' ~ \text{ou} ~ \frac{\dd^2}{\dd x^2}f(x) = \frac{\dd}{\dd x}\left(\frac{\dd}{\dd x}f(x)\right).
+\end{equation}
+
+\begin{ex}\label{ex:deriv_fll}
+  Seja $f(x) = x^3$. Então, a primeira derivada de $f$ é
+  \begin{align}
+    f'(x) &= \lim_{h\to 0} \frac{f(x+h)-f(x)}{h} \\
+          &= \lim_{h\to 0} \frac{(x+h)^3-x^3}{h}\\
+          &= \lim_{h\to 0} \frac{x^3+3x^2h+3xh^2+h^3-x^3}{h}\\
+          &= \lim_{h\to 0} 3x^2+\cancelto{0}{3xh}+\cancelto{0}{h^2} = 3x^2.
+  \end{align}
+  De posse da primeira derivada $f'(x) = 3x^2$, podemos calcular a segunda derivada de $f$, como segue:
+  \begin{align}
+    f''(x) &= [f'(x)]' \\
+           &= \lim_{h\to 0} \frac{f'(x+h)-f'(x)}{h} \\
+           &= \lim_{h\to 0} \frac{3(x+h)^2-3x^2}{h} \\
+           &= \lim_{h\to 0} \frac{3x^2+6xh+h^2-3x^2}{h} \\
+           &= \lim_{h\to 0} 6x+\cancelto{0}{h} = 6x,
+  \end{align}
+  i.e. $f''(x) = 6x$.
+
+  \ifispython
+  No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}, podemos computar a segunda derivada da função com o comando:
+\begin{verbatim}
+diff(x**3,x,2)
+\end{verbatim}
+  \fi  
+\end{ex}
+
+Generalizando, quando existe, a $n$-ésima derivada de uma função $y = f(x)$, $n\geq 1$, é recursivamente definida (e denotada) por
+\begin{equation}
+  f^{(n)}(x) := [f^{(n-1)}]' ~ \text{ou} ~ \frac{\dd^n}{\dd x^n}f(x) := \frac{\dd}{\dd x}\left[\frac{\dd^{n-1}}{\dd x^{n-1}}f(x)\right],
+\end{equation}
+com $f^{(3)}\equiv f'''$, $f^{(2)}\equiv f''$, $f^{(1)}\equiv f'$ e $f^{(0)}\equiv f$.
+
+\begin{ex}
+  A terceira derivada de $f(x) = x^3$ em relação a $x$ é $f'''(x) = [f''(x)]'$. No exemplo anterior (Exemplo \ref{ex:deriv_fll}), calculamos $f''(x) = 6x$. Logo,
+    \begin{align}
+      f'''(x) &= [6x]' \\
+              &= \lim_{h\to 0} \frac{6(x+h)-6x}{h} \\
+              &= \lim_{h\to 0} 6 = 6.
+    \end{align}
+
+    A quarta derivada de $f(x) = x^3$ em relação a $x$ é $f^{(4)}(x) \equiv 0$, bem como $f^{(5)}(x) \equiv 0$. Verifique!
+
+    \ifispython
+    No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}, podemos computar a terceira derivada da função com o comando:
+\begin{verbatim}
+diff(x**3,x,3)
+\end{verbatim}
+  \fi  
+\end{ex}
+
+
 \subsection*{Exercícios resolvidos}
 
 \begin{exeresol}
@@ -506,6 +564,29 @@ diff(abs(x))
   Como $f'_{-}(1)\neq f'_{+}(1)$, temos que $\nexists f'(1)$. Concluímos que $f(x) = |x-1|$ é diferenciável nos pontos $\mathbb{R}\setminus\{1\}$. 
 \end{resol}
 
+\begin{exeresol}
+  Calcule a segunda derivada em relação a $x$ da função
+  \begin{equation}
+    f(x) = x - x^2.
+  \end{equation}
+\end{exeresol}
+\begin{resol}
+  Começamos calculando a primeira derivada da função:
+  \begin{align}
+    f'(x) &= \lim_{h\to 0} \frac{f(x+h)-f(x)}{h} \\
+          &= \lim_{h\to 0} \frac{(x+h)-(x+h)^2-(x-x^2)}{h} \\
+          &= \lim_{h\to 0} \frac{x+h-x^2-2xh-h^2-x+x^2}{h} \\
+          &= \lim_{h\to 0} 1-2x-\cancelto{0}{h} = 1 - 2x.
+  \end{align}
+  Então, calculamos a segunda derivada como segue
+  \begin{align}
+    f''(x) &= [f'(x)]' \\
+           &= \lim_{h\to 0} \frac{f'(x+h)-f'(x)}{h} \\
+           &= \lim_{h\to 0} \frac{1-2(x+h)-(1-2x)}{h} \\
+           &= \lim_{h\to 0} -2 = -2.
+  \end{align}
+\end{resol}
+
 \subsection*{Exercícios}
 
 \begin{exer}
@@ -547,6 +628,24 @@ diff(abs(x))
 \end{exer}
 \begin{resp}
   $(1, \infty)$
+\end{resp}
+
+\begin{exer}
+  Considerando
+  \begin{equation}
+    f(x) = x^2-x^3,
+  \end{equation}
+  calcule:
+  \begin{enumerate}[a)]
+  \item $f'(x)$
+  \item $f''(x)$
+  \item $f'''(x)$
+  \item $f^{(4)}$
+  \item $f^{(1001)}(x)$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a)~$2x-3x^2$; b)~$2-6x$; c)~$-6$; d)~$0$; e)~$0$
 \end{resp}
 
 \section{Regras básicas de derivação}\label{cap_deriv_sec_regras}
@@ -627,7 +726,7 @@ Vejamos o cálculo da derivada de função exponencial.
           &= \lim_{h\to 0} \frac{a^xa^h-a^x}{h} \\
           &= a^x \lim_{h\to 0} \frac{a^h-1}{h}
   \end{align}
-  Pode-se mostrar que\footnote{Pode-se mostrar isso a partir da definição integral da função logarítmo.}
+  Pode-se mostrar que\footnote{Pode-se mostrar isso a partir da definição integral da função logaritmo.}
   \begin{equation}
     \lim_{h\to 0} \frac{a^h-1}{h} = \ln a.
   \end{equation}
@@ -875,54 +974,6 @@ simplify(diff(u/v,x))
   \end{align}
 \end{ex}
 
-\subsection{Derivadas de ordens mais altas}
-
-A derivada de uma função $y = f(x)$ em relação a $x$ é a função $y = f'(x)$. Quando esta é diferenciável, podemos calcular a derivada da derivada. Esta é conhecida como a {\bf segunda derivada} de $f$, denotamos
-\begin{equation}
-  f''(x) := (f'(x))' ~ \text{ou} ~ \frac{\dd^2}{\dd x}f(x) = \frac{\dd}{\dd x}\left(\frac{\dd}{\dd x}f(x)\right).
-\end{equation}
-
-\begin{ex}
-  Seja $f(x) = 1/x$. Então, a primeira derivada de $f$ é
-  \begin{equation}
-    f'(x) = [x^{-1}]' = -x^{-2}.
-  \end{equation}
-  De posse da primeira derivada, podemos calculamos a segunda derivada de $f$, como segue:
-  \begin{equation}
-    f''(x) = [f'(x)]' = [-x^{-2}]' = 2x^{-3}.
-  \end{equation}
-\end{ex}
-
-Generalizando, quando existe, a $n$-ésima derivada de uma função $y = f(x)$, $n\geq 1$, é recursivamente definida (e denotada) por
-\begin{equation}
-  f^{(n)}(x) := [f^{(n-1)}]' ~ \text{ou} ~ \frac{\dd^n}{\dd x^n}f(x) := \frac{\dd}{\dd x}\left[\frac{\dd^{n-1}}{\dd x^{n-1}}f(x)\right],
-\end{equation}
-com $f^{(3)}\equiv f'''$, $f^{(2)}\equiv f''$, $f^{(1)}\equiv f'$ e $f^{(0)}\equiv f$.
-
-\begin{ex}
-  \begin{enumerate}[a)]
-  \item Para obtermos a terceira derivada de $f(x) = x^3 -2x$, calculamos
-    \begin{equation}
-      f'(x) = 3x^2-2.
-    \end{equation}
-    então
-    \begin{equation}
-      f''(x) = 6x
-    \end{equation}
-    e, finalmente,
-    \begin{equation}
-      f'''(x) = 6.
-    \end{equation}
-    \ifispython
-    Com o \verb+Sympy+, podemos computar esta derivada com o seguinte comando:
-\begin{verbatim}
-diff(x**3-2*x,x,3)
-\end{verbatim}
-    \fi
-  \item A milionésima primeira derivada de $f(x) = e^x$ é $f^{(1001)}(x) = e^x$. Verifique!
-  \end{enumerate}
-\end{ex}
-
 \subsection{Resumo de regras de derivação}
 
 \begin{align*}
@@ -935,110 +986,203 @@ diff(x**3-2*x,x,3)
 
 \subsection*{Exercícios resolvidos}
 
-\emconstrucao
-
-\begin{ex}
-  Vejamos os seguintes casos:
-  \begin{enumerate}[a)]
-  \item
-    \begin{align}
-      \frac{\dd}{\dd x}\left[(x^2+x)(1 + x^3)\right] &= \left[\frac{\dd}{\dd x} (x^2+x)\right](1+x^3) \\
-                                                     &+ (x^2+x)\left[\frac{\dd}{\dd x}(1+x^3)\right]\\
-                                                     &= (2x+1)(1+x^3)+(x^2+x)3x^2\\
-                                                     &= 2x+2x^4+1+x^3+3x^4+3x^3\\
-                                                     &= 5x^4+4x^3+2x+1.
-    \end{align}
-    \ifispython
-    Com o \sympy, podemos computar esta derivada com o seguinte comando\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}:
+\begin{exeresol}
+  Calcule a derivada em relação a $x$ da função
+  \begin{equation}
+    f(x) = (x^2+x)(1 + x^3) - 2x^2.
+  \end{equation}
+\end{exeresol}
+\begin{resol}
+  \begin{align}
+    f'(x) &= \overbrace{\left[(x^2+x)(1 + x^3) - 2x^2\right]'}^{(u-v)'} \\
+          &= \overbrace{\left[(x^2+x)(1 + x^3)\right]'}^{(uv)'} - \overbrace{(2x^2)'}^{(ku)'} \\
+          &= (x^2+x)'(1+x^3) + (x^2+x)(1+x^3)' - 2(x^2)'\\
+          &= (2x+1)(1+x^3) + (x^2+x)3x^2 - 4x\\
+          &= 2x+2x^4+1+x^3+3x^4+3x^3-4x\\
+          &= 5x^4+4x^3-2x+1.
+  \end{align}
+  
+  \ifispython
+  Com o \sympy, podemos computar esta derivada com os seguintes comandos\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}:
 \begin{verbatim}
-d = diff((x**2+x)*(1+x**3),x)
+d = diff((x**2+x)*(1+x**3)-2x^2,x)
 simplify(d)
 \end{verbatim}
-    \fi
+  \fi
+\end{resol}
 
-\item
+\begin{exeresol}
+  Calcule
+  \begin{equation}
+    \frac{\dd}{\dd x}\left(\frac{x^2+x}{1-x^3}\right).
+  \end{equation}
+\end{exeresol}
+\begin{resol}
+  Da regra de derivação do quociente, temos
   \begin{align}
-    \frac{\dd}{\dd x}\left(\frac{x^2+x}{1-x^3}\right) &= \frac{\left[\frac{\dd}{\dd x}(x^2+x)\right](1-x^3)-(x^2+x)\left[\frac{\dd}{\dd x}(1-x^3)\right]}{(1-x^3)^2}\\
+    \frac{\dd}{\dd x}\left(\frac{x^2+x}{1-x^3}\right) &= \frac{(x^2+x)'(1-x^3)-(x^2+x)(1-x^3)'}{(1-x^3)^2}\\
                                                       &= \frac{(2x+1)(1-x^3)+(x^2+x)3x^2}{1-2x^3+x^6} \\
                                                       &= \frac{2x-2x^4+1-x^3+3x^4+3x^3}{1-2x^3+x^6} \\
                                                       &= \frac{x^4+2x^3+2x+1}{x^6-2x^3+1}
   \end{align}
+  
   \ifispython
-  Com o \sympy, podemos computar esta derivada com o seguinte comando\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}:
+  Com o \sympy, podemos computar esta derivada com os seguintes comandos\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}:
 \begin{verbatim}
 d = diff((x**2+x)/(1-x**3),x)
 simplify(d)
 \end{verbatim}
   \fi
-  \end{enumerate}
-\end{ex}
+\end{resol}
 
+\begin{exeresol}
+  Encontre a equação da reta tangente ao gráfico de $f(x) = xe^{-x}$ no ponto $x=1$.
+\end{exeresol}
+\begin{resol}
+  A equação da reta tangente ao gráfico de uma função $f$ no ponto $x=x_0$ é
+  \begin{equation}
+    y = f'(x_0)(x-x_0)+f(x_0).
+  \end{equation}
+  No caso, temos $f(x)=xe^{-x}$ e $x_0=1$. Calculamos
+  \begin{align}
+    f'(x) &= [xe^{-x}]' = \left[\frac{x}{e^x}\right] \\
+          &= \frac{(x)'e^x-x(e^x)'}{(e^x)^2} \\
+          &= \frac{e^x-xe^x}{e^{2x}} \\
+          &= \frac{(1-x)e^x}{e^{2x}} \\
+          &= (1-x)e^xe^{-2x} = (1-x)e^{-x}.
+  \end{align}
+  Logo, a equação da reta tangente é
+  \begin{align}
+    y = f'(1)(x-1)+f(1) &\Rightarrow y = 0\cdot (x-1) + e^{-1}\\
+                        &\Rightarrow y = \frac{1}{e}.
+  \end{align}
+  Na Figura \ref{fig:deriv_exeresol_rt_xe-x}, temos os esboços dos gráfico da função $f$ e sua reta tangente no ponto $x=1$.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{./cap_deriv/dados/fig_deriv_exeresol_rt_xe-x/fig_deriv_exeresol_rt_xe-x}
+    \caption{Esboço da reta tangente ao gráfico de $f(x)=xe^{-x}$ no ponto $x=1$.}
+    \label{fig:deriv_exeresol_rt_xe-x}
+  \end{figure}
+
+  \ifispython
+  Com o \sympy, podemos computar a expressão desta reta tangente com os seguintes comandos\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}:
+\begin{verbatim}
+f = x*exp(-x)
+x0 = 1
+fl = diff(f,x)
+# y = 
+fl.subs(x,1)*(x-1)+f.subs(x,1)
+\end{verbatim}
+  \fi
+\end{resol}
 
 \subsection*{Exercícios}
 
-\emconstrucao
-
-\section{Taxa de variação}\label{cap_deriv_sec_apl}
-
-Observamos que a razão
-\begin{equation}
-  \frac{f(x_0+h)-f(x_0)}{h}
-\end{equation}
-pode ser entendida como a {\bf taxa de variação média} de $f$ no intervalo de $x_0$ a $x_0+h$, $h\neq 0$. Tomando o limite de $h\to 0$,
-\begin{equation}
-  \lim_{h\to 0} \frac{f(x_0+h)-f(x_0)}{h} = f'(x_0),
-\end{equation}
-temos a {\bf taxa de variação instantânea} de $f$ em relação a $x$ no ponto $x_0$, i.e. a taxa com que $f$ varia no ponto $x=x_0$.
-
-\begin{ex}\normalfont{(Taxa de variação)}
-  Suponhamos que o número de litros de água em um tanque, $t$ minutos depois de iniciar seu esvaziamento, é dado por $V = 2000(40-t)^2$. Deste modelo, podemos tirar várias conclusões.
+\begin{exer}
+  Calcule a derivada em relação a $x$ das seguintes funções:
   \begin{enumerate}[a)]
-  \item A taxa média do volume de água no tanque nos primeiros $10$ minutos é:
-    \begin{align}
-      \frac{V(t_0+h)-V(t_0)}{h} &= \frac{V(0+10)-V(0)}{10} \\
-                               &= \frac{2000\cdot 30^2-2000\cdot 40^2}{10} \\
-                               &= 200(900-1600) = 100\,000 ~ \text{L}/\text{min}.
-    \end{align}
-  \item Podemos obter a taxa instantânea do volume de água no tanque em $t=10$ minutos. Para tanto, calculamos a derivada
-    \begin{align}
-      V'(t) &= -160\,000 + 4000t. 
-    \end{align}
-    Assim, temos que a taxa de variação instantânea do volume de água no tanque em $t=10$ minutos é:
-    \begin{equation}
-      V'(10) = 160\,000+40\,000 = 120\,000 ~\text{L}/\text{min}.
-    \end{equation}
+  \item $f(x) = 2 - 5x^3$ \\
+  \item $g(x) = (2x-1)(2-4x^2)$
+  \item $h(x) = \frac{2-4x^2}{2x-1}$
   \end{enumerate}
-\end{ex}
-
-\begin{ex}\normalfont{(Movimento de uma partícula)}
-  Consideremos que, no instante $t\geq 0$ segundos ($s$), a posição (em metros, $m$) de uma partícula sobre o eixo $s$ é modelada por $s = t^2-3t$. Vejamos, então, as seguintes conclusões.
-  \begin{enumerate}[a)]
-  \item A {\bf velocidade} é, por definição, a derivada da função posição em relação ao tempo (taxa de variação da posição em relação ao tempo). Desta forma, temos que a velocidade da partícula no instante $t$ é
-    \begin{equation}
-      v(t) := \frac{\dd s}{\dd t} = \frac{\dd}{\dd t}(t^2-3t) = 2t-3 ~ \text{m}/\text{s}.
-    \end{equation}
-  \item A {\bf aceleração} é, por definição, a derivada da função velocidade em relação ao tempo\footnote{A aceleração é a segunda derivada da função velocidade em relação ao tempo.}. Desta forma, temos que a aceleração da partícula no instante $t$ é
-    \begin{equation}
-      a(t) := \frac{\dd v}{\dd t} = \frac{\dd}{\dd t}(2t-3) = 2 ~ \text{m}/\text{s}^2.
-    \end{equation}
-  \end{enumerate}
-\end{ex}
+\end{exer}
+\begin{resp}
+  a)~$f'(x) = -15x^2$; b)~$g'(x)=- 24 x^{2} + 8 x + 4$; c)~$\displaystyle h'(x) = \\frac{4 \\left(2 x^{2} - 2 x \\left(2 x - 1\\right) - 1\\right)}{\\left(2 x - 1\\right)^{2}}$
+\end{resp}
 
 \begin{ex}
-  O volume de um balão esférico é dado em função de seu raio por $\displaystyle V = \frac{4\pi}{3}r^2$. Então, podemos concluir que:
+  Calcule a derivada em relação a $x$ das seguintes funções:
   \begin{enumerate}[a)]
-  \item A taxa de variação do volume do balão em relação ao raio quando $r=1$ é
-    \begin{align}
-      V'(1) &= \left.\frac{\dd V}{\dd r}\right|_{r=1}\\
-            &= \left.\frac{8\pi}{3}r\right|_{r=1} = \frac{8\pi}{3}.
-    \end{align}
-  \item A taxa de variação calculada no item a), significa que, quando $r=1$, o volume do balão está aumentando $16\pi/3$ unidades por unidade do raio. Assim, aproximadamente, se o raio aumentar de $1$ para $1,1$, o volume do balão aumentará $V'(1)(1,1-1) = 0,8\pi/3$. Observamos que, fazendo o cálculo exato, temos que o aumento do volume é de $0,84\pi/3$. 
+  \item $f(x) = xe^x$
+  \item $g(x) = xe^{2x}$
+  \item $g(x) = xe^{-2x}$
   \end{enumerate}
 \end{ex}
+\begin{resp}
+  a)~$f'(x) = (1+x)e^x$; b)~$g'(x) = (1+2x)e^{2x}$; c)~$h'(x) = (1-2x)e^{-2x}$
+\end{resp}
 
-\subsection*{Exercícios}
+\begin{ex}
+  Calcule a derivada em relação a $x$ das seguintes funções:
+  \begin{enumerate}[a)]
+  \item $f(x) = \ln x^2$
+  \item $g(x) = x\ln x^2$
+  \item $g(x) = x\ln x^2e^x$
+  \end{enumerate}
+\end{ex}
+\begin{resp}
+  a)~$f'(x) = 2/x$; b)~$g'(x) = \ln x^2 + 2$; c)~$h'(x) = 2+2x+\ln x^2$
+\end{resp}
 
-\emconstrucao
+\begin{ex}
+  Encontre a equação da reta tangente ao gráfico de $f(x) = \ln x$ no ponto $x=1$.
+\end{ex}
+\begin{resp}
+  $y = x-1$
+\end{resp}
+
+% \section{Taxa de variação}\label{cap_deriv_sec_apl}
+
+% Observamos que a razão
+% \begin{equation}
+%   \frac{f(x_0+h)-f(x_0)}{h}
+% \end{equation}
+% pode ser entendida como a {\bf taxa de variação média} de $f$ no intervalo de $x_0$ a $x_0+h$, $h\neq 0$. Tomando o limite de $h\to 0$,
+% \begin{equation}
+%   \lim_{h\to 0} \frac{f(x_0+h)-f(x_0)}{h} = f'(x_0),
+% \end{equation}
+% temos a {\bf taxa de variação instantânea} de $f$ em relação a $x$ no ponto $x_0$, i.e. a taxa com que $f$ varia no ponto $x=x_0$.
+
+% \begin{ex}\normalfont{(Taxa de variação)}
+%   Suponhamos que o número de litros de água em um tanque, $t$ minutos depois de iniciar seu esvaziamento, é dado por $V = 2000(40-t)^2$. Deste modelo, podemos tirar várias conclusões.
+%   \begin{enumerate}[a)]
+%   \item A taxa média do volume de água no tanque nos primeiros $10$ minutos é:
+%     \begin{align}
+%       \frac{V(t_0+h)-V(t_0)}{h} &= \frac{V(0+10)-V(0)}{10} \\
+%                                &= \frac{2000\cdot 30^2-2000\cdot 40^2}{10} \\
+%                                &= 200(900-1600) = 100\,000 ~ \text{L}/\text{min}.
+%     \end{align}
+%   \item Podemos obter a taxa instantânea do volume de água no tanque em $t=10$ minutos. Para tanto, calculamos a derivada
+%     \begin{align}
+%       V'(t) &= -160\,000 + 4000t. 
+%     \end{align}
+%     Assim, temos que a taxa de variação instantânea do volume de água no tanque em $t=10$ minutos é:
+%     \begin{equation}
+%       V'(10) = 160\,000+40\,000 = 120\,000 ~\text{L}/\text{min}.
+%     \end{equation}
+%   \end{enumerate}
+% \end{ex}
+
+% \begin{ex}\normalfont{(Movimento de uma partícula)}
+%   Consideremos que, no instante $t\geq 0$ segundos ($s$), a posição (em metros, $m$) de uma partícula sobre o eixo $s$ é modelada por $s = t^2-3t$. Vejamos, então, as seguintes conclusões.
+%   \begin{enumerate}[a)]
+%   \item A {\bf velocidade} é, por definição, a derivada da função posição em relação ao tempo (taxa de variação da posição em relação ao tempo). Desta forma, temos que a velocidade da partícula no instante $t$ é
+%     \begin{equation}
+%       v(t) := \frac{\dd s}{\dd t} = \frac{\dd}{\dd t}(t^2-3t) = 2t-3 ~ \text{m}/\text{s}.
+%     \end{equation}
+%   \item A {\bf aceleração} é, por definição, a derivada da função velocidade em relação ao tempo\footnote{A aceleração é a segunda derivada da função velocidade em relação ao tempo.}. Desta forma, temos que a aceleração da partícula no instante $t$ é
+%     \begin{equation}
+%       a(t) := \frac{\dd v}{\dd t} = \frac{\dd}{\dd t}(2t-3) = 2 ~ \text{m}/\text{s}^2.
+%     \end{equation}
+%   \end{enumerate}
+% \end{ex}
+
+% \begin{ex}
+%   O volume de um balão esférico é dado em função de seu raio por $\displaystyle V = \frac{4\pi}{3}r^2$. Então, podemos concluir que:
+%   \begin{enumerate}[a)]
+%   \item A taxa de variação do volume do balão em relação ao raio quando $r=1$ é
+%     \begin{align}
+%       V'(1) &= \left.\frac{\dd V}{\dd r}\right|_{r=1}\\
+%             &= \left.\frac{8\pi}{3}r\right|_{r=1} = \frac{8\pi}{3}.
+%     \end{align}
+%   \item A taxa de variação calculada no item a), significa que, quando $r=1$, o volume do balão está aumentando $16\pi/3$ unidades por unidade do raio. Assim, aproximadamente, se o raio aumentar de $1$ para $1,1$, o volume do balão aumentará $V'(1)(1,1-1) = 0,8\pi/3$. Observamos que, fazendo o cálculo exato, temos que o aumento do volume é de $0,84\pi/3$. 
+%   \end{enumerate}
+% \end{ex}
+
+% \subsection*{Exercícios}
+
+% \emconstrucao
 
 \section{Derivadas de funções trigonométricas}\label{cap_deriv_sec_trigo}
 
