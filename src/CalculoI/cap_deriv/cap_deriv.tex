@@ -974,13 +974,13 @@ simplify(diff(u/v,x))
   \end{align}
 \end{ex}
 
-\subsection{Resumo de regras de derivação}
+\subsection{Tabela de derivação}
 
 \begin{align*}
-  (k)' &= 0 & (x^n)' &= nx^{n-1}\\
-  (a^x)' &= a^x\ln a & (e^x)' &= e^x \\
-  (ku)' &= ku' & (u\pm v)' &= u' \pm v'\\
-  (uv)' &= u'v + uv' & \left(\frac{u}{v}\right)' &= \frac{u'v - uv'}{v^2}
+  &(ku)' = ku' && (u\pm v)' = u' \pm v'\\
+  &(uv)' = u'v + uv' && \left(\frac{u}{v}\right)' = \frac{u'v - uv'}{v^2}
+  &(k)' = 0 && (x^n)' = nx^{n-1}\\
+  &(a^x)' = a^x\ln a && (e^x)' = e^x \\
 \end{align*}
 
 
@@ -1185,6 +1185,119 @@ fl.subs(x,1)*(x-1)+f.subs(x,1)
 % \emconstrucao
 
 \section{Derivadas de funções trigonométricas}\label{cap_deriv_sec_trigo}
+
+Começamos pela derivada da função seno. Pela definição da derivada, temos
+\begin{align}
+  \sen' x &= \lim_{h\to 0} \frac{\sen(x+h) - \sen x}{h} \\
+            &= \lim_{h\to 0} \frac{\sen(x)\cos(h)+\cos(x)\sen(h) - \sen x}{h} \\
+            &= \lim_{h\to 0} \sen(x)\frac{\cos(h) - 1}{h} + \cos(x)\frac{\sen h}{h}\\
+            &= \sen(x) \lim_{h\to 0} \frac{\cos(h)-1}{h} + \cos(x)\lim_{h\to 0} \frac{\sen h}{h}.
+\end{align}
+Usando do Teorema do confronto para limites de funções, podemos mostrar que\footnote{Veja a Seção \ref{sec:lim_senx_x}.}
+\begin{equation}
+  \lim_{h\to 0} \frac{\sen h}{h} = 1\quad\text{e}\quad\lim_{h\to 0} \frac{\cos(h) - 1}{h} = 0.
+\end{equation}
+Logo, temos
+\begin{equation}
+  \pmb{\sen' x = \cos x}.
+\end{equation}
+
+De forma similar, temos
+\begin{align}
+  \cos' x &= \lim_{h\to 0} \frac{\cos(x+h) - \cos x}{h} \\
+            &= \lim_{h\to 0} \frac{\cos(x)\cos(h)-\sen(x)\sen(h) - \cos x}{h} \\
+            &= \lim_{h\to 0} \cos(x)\frac{\cos(h) - 1}{h} - \sen(x)\frac{\sen h}{h}\\
+            &= \cos(x) \lim_{h\to 0} \cancelto{0}{\frac{\cos(h)-1}{h}} - \sen(x)\lim_{h\to 0} \cancelto{0}{\frac{\sen h}{h}}.
+\end{align}
+Ou seja,
+\begin{equation}
+  \pmb{\cos' x = -\sen x}.
+\end{equation}
+
+\begin{ex}
+  A derivada de $f(x) = \sen^2 x + \cos^2 x$ é
+  \begin{align}
+    f'(x) &= (\sen^2x + \cos^2 x)' \\
+          &= (\sen^2 x)' + (\cos^2 x)' \\
+          &= (\sen x\cdot \sen x)' + (\cos x\cdot \cos x)' \\
+          &= \cos x\cdot \sen x + \sen x\cdot\cos x -\sen x\cdot \cos x - \cos x\cdot\sen x\\
+          &= 0,
+  \end{align}
+  conforme esperado.
+
+  \ifispython
+  Com o \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}}, podemos computar esta derivada com o seguinte comando:
+\begin{verbatim}
+diff(sin(x)**2+cos(x)**2,x)
+\end{verbatim}
+  \fi
+\end{ex}
+
+Conhecidas as derivadas da função seno e cosseno, podemos obter as derivadas das demais funções trigonométricas pela regra do quociente. Temos:
+\begin{itemize}
+\item $\pmb{\tg' x = \sec^2 x}$
+
+  Dem.:
+  \begin{align}
+    \tg ' x &= \left(\frac{\sen x}{\cos x}\right)'\\
+            &= \frac{\sen' x\cos x - \sen x\cos' x}{\cos^2 x} \\
+            &= \frac{\cos x\cos x + \sen x\sen x}{\cos^2 x} \\
+            &= \frac{1}{\cos^2 x} = \left(\frac{1}{\cos x}\right)^2 \\
+            &= \sec^2 x.
+  \end{align}
+
+\item $\pmb{\cotg' x = -\cossec x}$
+
+  Dem.:
+  \begin{align}
+    \cotg ' x &= \left(\frac{\cos x}{\sen x}\right)'\\
+            &= \frac{\cos' x\sen x - \cos x\sen' x}{\sen^2 x} \\
+            &= \frac{-\sen x\sen x - \cos x\cos x}{\sen^2 x} \\
+            &= \frac{-1}{\sen^2 x} = -\left(\frac{1}{\sen x}\right)^2 \\
+            &= \cossec^2 x.
+  \end{align}
+
+\item $\pmb{\sec' x = \sec x\tg x}$
+
+  Dem.:
+  \begin{align}
+    \sec ' x &= \left(\frac{1}{\cos x}\right)'\\
+            &= \frac{-\cos' x}{\cos^2 x} \\
+            &= \frac{\sen x}{\cos^2 x} \\
+            &= \frac{\sen x}{\cos x}\cdot \frac{1}{\cos x} \\
+            &= \tg x\sec x.
+  \end{align}
+
+\item $\pmb{\cossec' x = -\cossec x\cotg x}$
+
+  Dem.:
+  \begin{align}
+    \cossec ' x &= \left(\frac{1}{\sen x}\right)'\\
+            &= \frac{-\sen' x}{\sen^2 x} \\
+            &= \frac{-\cos x}{\sen^2 x} \\
+            &= -\frac{\cos x}{\sen x}\cdot \frac{1}{\sen x} \\
+            &= -\cotg x\cossec x.
+  \end{align}
+\end{itemize}
+
+\begin{ex}
+  \emconstrucao
+\end{ex}
+
+
+\subsection{Tabela de derivação}
+
+\begin{align*}
+  & (ku)' = ku' && (u\pm v)' = u' \pm v'\\
+  & (uv)' = u'v + uv' && \left(\frac{u}{v}\right)' = \frac{u'v - uv'}{v^2} \\
+  & (k)' = 0 && (x^n)' = nx^{n-1}\\
+  & (a^x)' = a^x\ln a && (e^x)' = e^x \\
+  & \sen' x = \cos x && \cos' x = - \sen x\\
+  & \tg' x = \sec^2 x && \cotg' x = -\cossec x \\
+  & \sec' x = \sec x \tg x && \cossec' x = -\cossec x\cotg x
+\end{align*}
+
+\subsection*{Exercícios resolvidos}
 
 \emconstrucao
 
