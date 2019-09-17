@@ -1280,10 +1280,30 @@ Conhecidas as derivadas da função seno e cosseno, podemos obter as derivadas d
   \end{align}
 \end{itemize}
 
-\begin{ex}
-  \emconstrucao
-\end{ex}
+\begin{obs}
+  Os cálculos acima, mostram que as funções trigonométricas são deriváveis em todos os pontos de seus domínios.
+\end{obs}
 
+\begin{ex}
+  A derivada em relação a $x$ de
+  \begin{equation}
+    f(x) = \frac{x + \tg x}{\sec x}
+  \end{equation}
+  pode ser calculada como segue
+  \begin{align}
+    f'(x) &= \left(\frac{x+\tg x}{\sec x}\right)' \\
+          &= \frac{(x+\tg x)'\sec x - (x+\tg x)\sec' x}{\sec^2 x} \\
+          &= \frac{(1+\sec^2 x)\sec x - (x+\tg x)\sec x\tg x}{\sec^2 x} \\
+          &= \frac{1+\sec^2 x - (x+\tg x)\tg x}{\sec x}.
+  \end{align}
+
+  \ifispython
+  Com o \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}}, podemos computar esta derivada com o seguinte comando:
+\begin{verbatim}
+diff((x+tan(x))/sec(x),x)
+\end{verbatim}
+  \fi
+\end{ex}
 
 \subsection{Tabela de derivação}
 
@@ -1299,9 +1319,58 @@ Conhecidas as derivadas da função seno e cosseno, podemos obter as derivadas d
 
 \subsection*{Exercícios resolvidos}
 
+\begin{exeresol}
+  Encontre a equação da reta tangente ao gráfico da função $y = \sen x$ no ponto $x=0$. Então, faça os esboços desta função e da reta tangente, em uma mesma figura.
+\end{exeresol}
+\begin{resol}
+  A equação da reta tangente ao gráfico de uma função $y = f(x)$ no ponto $x=x+0$ é
+  \begin{equation}
+    y = f'(x_0)(x-x_0)+f(x_0).
+  \end{equation}
+  No caso deste exercício, temos $f(x)=\sen x$ e $x_0=0$. Assim sendo, calculamos a derivada em relação a $x$ de $f(x)$, i.e.
+  \begin{equation}
+    f'(x) = \sen' x = \cos x.
+  \end{equation}
+  Segue que a equação da reta tangente é
+  \begin{align}
+    y = f'(0)(x-0)+f(0) &\Rightarrow y = \cos(0)(x-0)+\sen(0) \\
+                        &\Rightarrow y = x.
+  \end{align}
+  Na Figura \ref{fig:deriv_exeresol_rt_sen0}, temos os esboços dos gráficos da função seno e da reta tangente encontrada.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{./cap_deriv/dados/fig_deriv_exeresol_rt_sen0/fig_deriv_exeresol_rt_sen0}
+    \caption{Esboços dos gráfico da função seno e de sua reta tangente no ponto $x=0$.}
+    \label{fig:deriv_exeresol_rt_sen0}
+  \end{figure}
+
+  \ifispython
+  Com o \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}}, podemos resolver este exercício com os seguintes comandos:
+\begin{verbatim}
+f = sin(x)
+x0 = 0
+
+# reta tangente
+rt = diff(f,x).subs(x,x0)*(x-x0)+f.subs(x,x0)
+print("Reta tangente: y = %s" % rt)
+
+# graficos
+plot(f,rt,(x,-pi,pi))
+\end{verbatim}
+  \fi  
+\end{resol}
+
 \emconstrucao
 
 \subsection*{Exercícios}
+
+\begin{exer}
+  Encontre a equação da reta tangente ao gráfico da função $y = \cos x$ no ponto $x=0$. Então, faça os esboços desta função e da reta tangente, em uma mesma figura.  
+\end{exer}
+\begin{resp}
+  $y = 1$. Dica: use um pacote de matemática simbólica para verificar os esboços dos gráficos.
+\end{resp}
 
 \emconstrucao
 
