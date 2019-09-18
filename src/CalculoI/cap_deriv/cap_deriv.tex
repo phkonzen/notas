@@ -7,9 +7,7 @@
 \begin{obs}\normalfont{(Códigos \python}\label{obs:cap_deriv_python}
   Nos códigos \python~inseridos ao longo deste capítulo, estaremos assumindo o seguinte preâmbulo:
 \begin{verbatim}
-%matplotlib inline
 from sympy import *
-init_printing()
 var('x',real=True)
 \end{verbatim}
 \end{obs}
@@ -1376,7 +1374,142 @@ plot(f,rt,(x,-pi,pi))
 
 \section{Regra da cadeia}\label{cap_deriv_sec_cadeia}
 
+Regra da cadeia é nome dado a técnica de derivação de uma função composta. Sejam $f$ e $g$, com $g$ derivável em $x$ e $f$ derivável em $g(x)$, então $(f\circ g)$ é derivável em $x$, sendo
+\begin{equation}
+  \pmb{(f\circ g)'(x) = [f(g(x))]' = f'(g(x))\cdot g'(x)},
+\end{equation}
+chamada de regra da cadeia.
+
+\begin{ex}
+  A derivada em relação a $x$ de $h(x) = (x+1)^2$ pode ser calculada das seguintes formas:
+  \begin{enumerate}
+  \item[a)] pela regra da cadeia.
+
+    A função $h$ é a composição da função $f(x)=x^2$ com a função $g(x)=x+1$, i.e. $h(x) = f(g(x))$. Temos $f'(x)=2x$ e $g'(x)=1$. Então, segue pela regra da cadeia
+    \begin{align}
+      h'(x) &= [f(g(x))]' \\
+            &= f'(g(x))\cdot g'(x) \\
+            &= 2(x+1)\cdot 1 \\
+            &= 2x+2.
+    \end{align}
+
+  \item[b)] por cálculo direto.
+
+    Observando que $h(x)=(x+1)^2=x^2+2x+1$, temos
+    \begin{align}
+      h'(x) &= (x^2+2x+1)' \\
+            &= (x^2)' + (2x)' + (1)' \\
+            &= 2x + 2.
+    \end{align}
+  \end{enumerate}
+
+  \ifispython
+  Com o \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}}, temos:
+\begin{verbatim}
+>>> diff((x+1)**2,x)
+2*x + 2
+\end{verbatim}
+  \fi  
+\end{ex}
+
+Usualmente, a regra da cadeia também é apresentada da seguinte forma
+\begin{equation}\label{eq:deriv_regra_da_cadeia}
+  \pmb{\frac{\dd}{\dd x}f(u) = f'(u)\frac{\dd u}{\dd x}},
+\end{equation}
+onde $u$ é uma função derivável em $x$ e $f$ é derivável em $u(x)$.
+
+\begin{ex}
+  Vamos calcular a derivada em relação a $x$ de $g(x) = \sqrt{x^2+1}$. Temos que $g(x) = f(u(x))$, com $f(x) = \sqrt{x}$ e $u(x) = x^2+1$. Observando que
+  \begin{equation}
+    f'(x) = \frac{1}{2\sqrt{x}}\quad\text{e}\quad u'(x)=2x,
+  \end{equation}
+  segue pela regra da cadeia que
+  \begin{align}
+    g'(x) &= \frac{\dd}{\dd x}f(u) \\
+          &= f'(u)\frac{\dd u}{\dd x} \\
+          &= \frac{1}{2\sqrt{u}}\cdot 2x \\
+          &= \frac{x}{\sqrt{x^2+1}}.
+  \end{align}
+
+  \ifispython
+  No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}}, temos:
+\begin{verbatim}
+>>> diff(sqrt(x**2+1),x)
+x/sqrt(x**2 + 1)
+\end{verbatim}
+  \fi  
+\end{ex}
+
+A regra da cadeia pode ser estendida para calcular a derivada de uma composição encadeada de três ou mais funções. Por exemplo,
+\begin{equation}
+  [f(g(h(x)))]' = f'(g(h(x)))\cdot[g(h(x))]' = f'(g(h(x)))\cdot g'(h(x))\cdot h'(x).
+\end{equation}
+Neste caso, a regra é válida para todo ponto tal que $h$ é derivável em $x$ com $g$ derivável em $h(x)$ e $f$ derivável em $f(g(h(x)))$.
+
+\begin{ex}
+  Vamos calcular a derivada em relação a $x$ de $f(x) = \sen(\ln x^2)$. Pela regra da cadeia, temos
+  \begin{align}
+    [\sen(\ln x^2)] &= \cos(\ln x^2)\cdot[\ln x^2]' \\
+                    &= \cos(\ln x^2)\cdot \frac{1}{x^2}\cdot (x^2)' \\
+                    &= \cos(\ln x^2)\cdot\frac{2x}{x^2} \\
+                    &= \frac{2}{x}\cos(\ln x^2).
+  \end{align}
+  A função $y = x^2$ é derivável em toda parte. Sendo a função logarítima derivável para todo $x>0$, temos que $y = \ln x^2$ é derivável para todo $x>0$. Por fim, como a função seno é derivável em toda parte, concluímos que $f$ é derivável para todo $x>0$.
+
+  \ifispython
+  No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}}, temos:
+\begin{verbatim}
+>>> diff(sin(log(x**2)),x)
+2*cos(log(x**2))/x
+\end{verbatim}
+  \fi  
+\end{ex}
+
+\subsection{Tabela de derivação}
+
+\begin{align*}
+  & (ku)' = ku' && (u\pm v)' = u' \pm v'\\
+  & (uv)' = u'v + uv' && \left(\frac{u}{v}\right)' = \frac{u'v - uv'}{v^2} \\
+  & (k)' = 0 && \frac{\dd}{\dd x}u^n = nu^{n-1}\frac{\dd u}{\dd x}\\
+  & \frac{\dd}{\dd x}a^u = a^u\ln a\frac{\dd u}{\dd x} && \frac{\dd}{\dd x}(e^u)' = e^u\frac{\dd u}{\dd x} \\
+  & \frac{\dd}{\dd x}\sen u = \cos(u)\frac{\dd u}{\dd x} && \frac{\dd}{\dd x}\cos u = - \sen(u)\frac{\dd u}{\dd x}\\
+  & \frac{\dd}{\dd x}\tg u = \sec^2(u)\frac{\dd u}{\dd x} && \frac{\dd}{\dd x}\cotg u = -\cossec(u)\frac{\dd u}{\dd x} \\
+  & \frac{\dd}{\dd x}\sec' u = \sec(u)\tg(u)\frac{\dd u}{\dd x} && \frac{\dd}{\dd x}\cossec u = -\cossec(u)\cotg(u)\frac{\dd u}{\dd x}
+\end{align*}
+
+\subsection*{Exercícios resolvidos}
+
 \emconstrucao
+
+\begin{exeresol}
+  Mostre que a \href{https://pt.wikipedia.org/wiki/Fun%C3%A7%C3%A3o_log%C3%ADstica}{função logística}
+  \begin{equation}
+    f(x) = \frac{1}{1+e^{-x}}
+  \end{equation}
+  satisfaz a equação diferencial
+  \begin{equation}
+    \frac{\dd}{\dd x}f(x) = f(x)(1-f(x)).
+  \end{equation}
+\end{exeresol}
+\begin{resol}
+  Vamos calcular a derivada em relação a $x$ da função logística, i.e.
+  \begin{align}
+    \frac{\dd}{\dd x}f(x) &= \frac{\dd}{\dd x}\left(\frac{1}{1+e^{-x}}\right) \\
+          &= \frac{\dd}{\dd x}\left[\left(1+e^{-x}\right)^{-1}\right] \\
+          &= -1\cdot\left(1+e^{-x}\right)^{-2}\cdot\underbrace{\left(1+e^{-x}\right)'}_{=-e^{-x}} \\
+          &= \frac{e^{-x}}{\left(1+e^{-x}\right)^{2}}.
+  \end{align}
+  Por outro lado, temos
+  \begin{align}
+    f(x)(1-f(x)) &= \frac{1}{1+e^{-x}}\cdot\left(1 - \frac{1}{1+e^{-x}}\right) \\
+                 &= \frac{1}{1+e^{-x}}\cdot\left(\frac{1+e^{-x}-1}{1+e^{-x}}\right) \\
+                 &= \frac{e^{-x}}{\left(1+e^{-x}\right)^{2}}.
+  \end{align}
+  Ou seja, de fato temos
+  \begin{equation}
+    \frac{\dd}{\dd x}f(x) = f(x)(1-f(x)).
+  \end{equation}  
+\end{resol}
 
 \subsection*{Exercícios}
 
