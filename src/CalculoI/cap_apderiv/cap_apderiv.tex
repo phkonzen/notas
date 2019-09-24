@@ -15,15 +15,213 @@ var('x',real=True)
 
 \section{Regra de L'Hôpital}\label{cap_apderiv_sec_lhospital}
 
-\emconstrucao
+A regra de L'Hôpital é uma técnica para o cálculo de limites de indeterminações. Sejam $f$ e $g$ funções deriváveis em um intervalo aberto contendo $x=a$, exceto possivelmente em $x=a$, e
+\begin{equation}
+  \lim_{x\to a} f(x) = 0\quad\text{e}\quad\lim_{x\to a} g(x) = 0.
+\end{equation}
+Se, ainda, $\lim_{x\to a} f(x)/g(x)$ existe ou for $\pm\infty$, então
+\begin{equation}
+  \lim_{x\to a} \frac{f(x)}{g(x)} = \lim_{x\to a} \frac{f'(x)}{g'(x)}.
+\end{equation}
+Esta é a versão da regra de L'Hôpital para indeterminações do tipo $0/0$. Sem grandes modificações, é diretamente estendida para os casos $x\to a^-$, $x\to a^+$, $x\to \infty$ e $x\to -\infty$.
+
+\begin{ex}
+  Vamos calcular o limite
+  \begin{equation}
+    \lim_{x\to 1} \frac{x-1}{x^2-1}.
+  \end{equation}
+  \begin{enumerate}[a)]
+  \item Pela regra de L'Hôpital.
+    \begin{align}
+      \lim_{x\to 1} \frac{x-1}{x^2-1} &= \lim_{x\to 1} \frac{(x+1)'}{(x^2-1)'} \\
+                                      &= \lim_{x\to 1} \frac{1}{2x} \\
+                                      &= \frac{1}{2}.
+    \end{align}
+  \item Por eliminação do fator comum.
+    \begin{align}
+      \lim_{x\to 1} \frac{x-1}{x^2-1} &= \lim_{x\to 1} \frac{x-1}{(x-1)(x+1)} \\
+                                      &= \lim_{x\to 1} \frac{1}{x+1} \\
+                                      &= \frac{1}{2}.
+    \end{align}
+  \end{enumerate}
+
+  \ifispython
+  No \sympy\footnote{Veja a Observação \ref{obs:cap_apderiv_python}.}, temos
+\begin{verbatim}
+>>> limit((x-1)/(x**2-1),x,1)
+1/2
+\end{verbatim}
+  \fi
+\end{ex}
+
+\begin{ex}
+  O limite
+  \begin{equation}
+    \lim_{x\to 2} \frac{x^2-4x+4}{x^3-3x^2+4}
+  \end{equation}
+  é uma indeterminação $0/0$. Aplicando a regra de L'Hôpital, obtemos
+  \begin{equation}
+    \lim_{x\to 2} \frac{x^2-4x+4}{x^3-3x^2+4} = \lim_{x\to 2} \frac{\cancelto{0}{2x-4}}{\cancelto{0}{3x^2-6x}},
+  \end{equation}
+  que também é uma indeterminação do tipo $0/0$. Agora, aplicando a regra de L'Hôpital novamente, obtemos
+  \begin{equation}
+    \lim_{x\to 2} \frac{2x-4}{3x^2-6x} = \lim_{x\to 2} \frac{2}{6x-6} = \frac{1}{3}.
+  \end{equation}
+  Portanto, concluímos que
+  \begin{equation}
+    \lim_{x\to 2} \frac{x^2-4x+4}{x^3-3x^2+4} = \frac{1}{3}.
+  \end{equation}  
+
+  \ifispython
+  No \sympy\footnote{Veja a Observação \ref{obs:cap_apderiv_python}.}, temos
+\begin{verbatim}
+>>> limit((x**2-4*x+4)/(x**3-3*x**2+3),x,2)
+1/3
+\end{verbatim}
+  \fi
+\end{ex}
+
+\begin{obs}
+  A regra de L'Hôpital também pode ser usada para indeterminações do tipo $\infty/\infty$.
+\end{obs}
+
+\begin{ex}
+  Vamos calcular
+  \begin{equation}
+    \lim_{x\to \infty} \frac{e^x}{x},
+  \end{equation}
+  que é uma indeterminação do tipo $\infty/\infty$. Então, aplicando a regra de L'Hôpital, temos
+  \begin{equation}
+    \lim_{x\to \infty} \frac{e^x}{x} = \lim_{x\to \infty} \frac{e^x}{1} = \infty.
+  \end{equation}
+\end{ex}
 
 \subsection*{Exercícios resolvidos}
 
-\emconstrucao
+\begin{exeresol}
+  Calcule
+  \begin{equation}
+    \lim_{x\to 0^-} \frac{e^x-1}{x^2}.
+  \end{equation}
+\end{exeresol}
+\begin{resol}
+  Observamos tratar-se de uma indeterminação do tipo $0/0$, i.e.
+  \begin{equation}
+    \lim_{x\to 0^-} \frac{\cancelto{0}{e^x-1}}{\cancelto{0}{x^2}}.
+  \end{equation}
+  Então, aplicando a regra de L'Hôpital, temos
+  \begin{equation}
+    \lim_{x\to 0^-} \frac{e^x-1}{x^2} = \lim_{x\to 0^-} \frac{\cancelto{1}{e^x}}{\cancelto{0^-}{2x}} = -\infty.
+  \end{equation}
+\end{resol}
+
+\begin{exeresol}(Indeterminação do tipo $0\cdot\infty$)
+
+  Calcule
+  \begin{equation}
+    \lim_{x\to \infty} x^{51}e^{-x}.
+  \end{equation}
+\end{exeresol}
+\begin{resol}
+  Observamos que
+  \begin{equation}
+    \lim_{x\to \infty} \cancelto{\infty}{x^{51}}\cancelto{0}{e^{-x}} = \lim_{x\to \infty} \frac{\cancelto{\infty}{x^{51}}}{\cancelto{\infty}{e^{x}}}.
+  \end{equation}
+  Então, aplicando a regra de L'Hôpital sucessivamente, obtemos
+  \begin{align}
+    \lim_{x\to\infty} x^{51}e^{-x} &= \lim_{x\to\infty} \frac{x^{51}}{e^x} \\
+                                   &= \lim_{x\to\infty} \frac{51\cdot x^{50}}{e^x} \\
+                                   &= \lim_{x\to\infty} \frac{51\cdot 50\cdot x^{49}}{e^x} \\
+                                   &\vdots \\
+                                   &= \lim_{x\to\infty} \frac{51!}{\cancelto{\infty}{e^x}} = 0.
+  \end{align}
+\end{resol}
+
+\begin{exeresol}(Indeterminação do tipo $\infty - \infty$)
+
+  Calcule
+  \begin{equation}
+    \lim_{x\to 0^+} \left(\frac{1}{x} - \frac{1}{e^x-1}\right).
+  \end{equation}
+\end{exeresol}
+\begin{resol}
+  Trata-se de uma indeterminação do tipo $\infty - \infty$, pois
+  \begin{equation}
+    \lim_{x\to 0^+} \left(\cancelto{\infty}{\frac{1}{x}} - \cancelto{\infty}{\frac{1}{e^x-1}}\right).
+  \end{equation}
+  Neste caso, calculando a subtração, obtemos
+  \begin{align}
+    \lim_{x\to 0^+} \left(\frac{1}{x} - \frac{1}{e^x-1}\right) &= \lim_{x\to 0^+} \frac{e^x-1+x}{xe^x-x},
+  \end{align}
+  a qual é uma indeterminação do tipo $0/0$. Aplicando a regra de L'Hôpital, obtemos
+  \begin{align}
+    \lim_{x\to 0^+} \frac{e^x-1-x}{xe^x-x} &= \lim_{x\to 0^+} \frac{\cancelto{0}{e^x-1}}{\cancelto{0}{(x+1)e^x-1}} \\
+                                           &= \lim_{x\to 0^+} \frac{e^x}{(x+2)e^x} \\
+    &= \lim_{x\to 0^+} \frac{1}{x+2} = \frac{1}{2}.
+  \end{align}
+\end{resol}
+
+\begin{exeresol}(Indeterminação do tipo $1^\infty$)
+
+  Calcule
+  \begin{equation}
+    \lim_{x\to 0^+} (1+x)^{1/x}.
+  \end{equation}
+\end{exeresol}
+\begin{resol}
+  Trata-se de uma indeterminação do tipo $1^\infty$. Em tais casos, a seguinte estratégia pode ser útil. Nos pontos de continuidade da função logaritmo natural, temos
+  \begin{align}
+    \ln\left(\lim_{x\to 0^+} (1+x)^{1/x}\right) &= \lim_{x\to 0^+} \ln\left((1+x)^{1/x}\right) \\
+                                                &= \lim_{x\to 0^+} \frac{\cancelto{0}{\ln(1+x)}}{\cancelto{0}{x}} \\
+                                                &= \lim_{x\to 0^+} \frac{\frac{1}{x+1}}{1} = 1.
+  \end{align}
+  Ou seja,
+  \begin{equation}
+    \ln\left(\lim_{x\to 0^+} (1+x)^{1/x}\right) = 1 \Rightarrow \lim_{x\to 0^+} (1+x)^{1/x} = e.
+  \end{equation}
+\end{resol}
 
 \subsection*{Exercícios}
 
-\emconstrucao
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \lim_{x\to -1} \frac{x+1}{x^2+3x+2}.
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $1$
+\end{resp}
+
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \lim_{x\to \infty} x^{-51}e^x.
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $\infty$
+\end{resp}
+
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \lim_{x\to 0^+} \left(\frac{1}{x}+\ln x\right).
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $\infty$
+\end{resp}
+
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \lim_{x\to 0^+} \left(e^x + x\right)^{\frac{1}{2x}}.
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $e$
+\end{resp}
 
 \section{Extremos de funções}\label{cap_apderiv_sec_extfun}
 
@@ -167,7 +365,7 @@ Um ponto interior do domínio de uma função $f$ onde $f'=0$ ou não existe, é
 Daí, podemos concluir que $f$ tem o valor mínimo absoluto (e local) de $f(-1)=-1$ no ponto $x=-1$ e tem valor máximo absoluto de $f(1)=3$ no ponto $x=1$.
 
 \begin{ifispython}
-  Podemos usar o \verb+Sympy+ para computar os pontos extremos e plotar a função. Por exemplo, com os seguintes comandos:
+  Podemos usar o \sympy~para computar os pontos extremos e plotar a função. Por exemplo, com os seguintes comandos:
 \begin{verbatim}
 # f(x)
 f = lambda x: (x+1)**2-1
@@ -330,7 +528,7 @@ O teorema do valor médio é uma generalização do teorema de Rolle.
 
 \section{Teste da primeira derivada}\label{cap_apderiv_sec_tder1}
 
-Na Seção \label{cap_apderiv_sec_tder1}, vimos que os extremos de uma função ocorrem nos extremos de seu domínio ou em um ponto crítico. Aliado a isso, o Corolário \ref{corol:mono_deriv} nos fornece condições suficientes para classicar os pontos críticos como extremos locais.
+Na Seção \label{cap_apderiv_sec_tder1}, vimos que os extremos de uma função ocorrem nos extremos de seu domínio ou em um ponto crítico. Aliado a isso, o Corolário \ref{corol:mono_deriv} nos fornece condições suficientes para classificar os pontos críticos como extremos locais.
 
 Mais precisamente, seja $c$ um ponto crítico de uma função contínua $f$ e diferenciável em todos os pontos de um intervalo aberto $(a,b)$ contendo $c$, exceto possivelmente no ponto $c$. Movendo-se no sentido positivo em $x$:
 \begin{itemize}
