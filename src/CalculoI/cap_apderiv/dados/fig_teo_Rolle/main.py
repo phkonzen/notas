@@ -39,7 +39,7 @@ ax.plot([c-0.5,c+0.5],[f.subs(x,c),f.subs(x,c)],color="red")
 ax.plot([b],[f.subs(x,b)],marker="o",markersize=3,color="blue")
 ax.plot([c],[f.subs(x,c)],marker="o",markersize=3,color="red")
 
-fig.savefig('fig_teo_Rolle.png')
+fig.savefig('fig_teo_Rolle.png', bbox_inches="tight")
 
 
 

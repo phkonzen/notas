@@ -474,12 +474,12 @@ O teorema do valor médio é uma aplicação do teorema de Rolle.
 
 \subsection{Teorema de Rolle}
 
-O teorema de Rolle fornece uma condição suficiente para que uma dada função diferenciável tenha derivada nula em pelo menos um ponto.
+O Teorema de Rolle fornece uma condição suficiente para que uma dada função diferenciável tenha derivada nula em pelo menos um ponto.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.7\textwidth]{./cap_apderiv/dados/fig_teo_Rolle/fig_teo_Rolle}
-  \caption{Ilustração do teorema de Rolle.}
+  \caption{Ilustração do Teorema de Rolle.}
   \label{fig:teo_Rolle}
 \end{figure}
 
@@ -488,39 +488,82 @@ O teorema de Rolle fornece uma condição suficiente para que uma dada função 
   \begin{equation}
     f(a)=f(b),
   \end{equation}
-  então existe pelo menos um ponto $c\in (a, b)$ tal que
+  então existe pelo menos um {\bf ponto crítico} $c\in (a, b)$ tal que
   \begin{equation}
     f'(c)=0.
   \end{equation}
 \end{teo}
 
 \begin{ex}
-  Vejamos os seguintes casos:
+  O polinômio $p(x) = x^3 - 4x^2 + 3x + 1$ tem pelo menos um ponto crítico no intervalo $(0,1)$ e no intervalo $(1,3)$. De fato,temos $p(0)=p(1)=1$ e, pelo teorema de Rolle, segue que existe pelo menos um ponto $c\in (0, 1)$ tal que $f'(c)=0$. Analogamente, como também $p(1)=p(3)=1$, segue do teorema que existe pelo menos um ponto crítico no intervalo $(1,3)$. Veja o esboço do gráfico de $p$ na Figura \ref{fig:ex_teo_Rolle}.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{./cap_apderiv/dados/fig_ex_teo_Rolle/fig_ex_teo_Rolle}
+    \caption{Esboço do gráfico de $p(x) = x^3 - 4x^2 + 3x + 1$.}
+    \label{fig:ex_teo_Rolle}
+  \end{figure}
+  
+  De fato, como todo polinômio é derivável em toda parte, podemos calcular os pontos críticos como segue.
+  \begin{align}
+    p'(x) = 0 &\Rightarrow 3x^2 - 8x + 3 = 0 \\
+              &\Rightarrow x = \frac{8 \pm \cancelto{2\sqrt{7}}{\sqrt{64 - 36}}}{6} \\
+              &\Rightarrow x_1 = \frac{4 - \sqrt{7}}{3} \approx 0,45 \quad\text{ou}\quad x_2 = \frac{4 + \sqrt{7}}{3} \approx 2,22.
+  \end{align}
+
+  \ifispython
+  Podemos usar os seguintes comandos\footnote{Veja a Observação \ref{obs:cap_apderiv_python}.} para computar os pontos críticos de $p$ e plotar seu gráfico:
+\begin{verbatim}
+>>> p = x**3 - 4*x**2 + 3*x + 1
+>>> pc = solve(p.diff()); pc
+[-sqrt(7)/3 + 4/3, sqrt(7)/3 + 4/3]
+>>> plot(p,(x,-0.5,3.5))
+\end{verbatim}
+  \fi
+\end{ex}
+
+\begin{ex}\label{ex:nteo_Rolle}
+  Vejamos os seguintes casos em que o Teorema de Rolle não se aplica:
   \begin{enumerate}[a)]
-  \item O polinômio $p(x) = x^3 - 4x^2 + 3x$ tem pelo menos um ponto crítico no intervalo $(0,1)$ e no intervalo $(1,3)$. De fato,
-    \begin{align}
-      p(x) &= x^3 - 4x^2 + 3x\\
-           &= x(x^2 - 4x + 3)\\
-           &= x(x-1)(x-3).
-    \end{align}
-    Logo, temos $p(0)=p(1)=0$ e, pelo teorema de Rolle, segue que existe pelo menos um ponto $c\in (0, 1)$ tal que $f'(c)=0$. Analogamente, como $p(1)=p(3)=0$, segue do teorema que existe pelo menos um ponto crítico no intervalo $(1,3)$.
+  \item A função
+    \begin{equation}
+      f(x) = \left\{
+        \begin{array}{ll}
+          x &, 0\leq x < 1,\\
+          0 &, x=1.
+        \end{array}
+      \right.
+    \end{equation}
+    é tal que $f(0)=f(1)=0$, entretanto sua derivada $f'(x)=1$ no intervalo $(0, 1)$. Ou seja, a condição da $f$ ser contínua no intervalo fechado associado é necessária no teorema de Rolle. Veja a Figura \ref{fig:ex_fcont_h_2} para o esboço do gráfico desta função.
+    
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{./cap_apderiv/dados/fig_ex_fcont/fig_h}
+    \caption{Esboço do gráfico da função referente ao Exemplo \ref{ex:nteo_Rolle} a).}
+    \label{fig:ex_fcont_h_2}
+  \end{figure}
+  
+\item Não existe ponto tal que a derivada da $g(x)=-|x-1|+1$ seja nula. Entretanto, notemos que $g(0)=g(2)=0$ e $g$ contínua no intervalo fechado $[0, 2]$. O teorema de Rolle não se aplica neste caso, pois $g$ não é derivável no intervalo $(0,2)$, mais especificamente, no ponto $x=1$. Veja a Figura \ref{fig:ex_nteo_Rolle_nderiv}.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{./cap_apderiv/dados/fig_ex_nteo_Rolle_nderiv/fig_ex_nteo_Rolle_nderiv}
+    \caption{Esboço do gráfico da função referente ao Exemplo \ref{ex:nteo_Rolle} b).}
+    \label{fig:ex_nteo_Rolle_nderiv}
+  \end{figure}  
   \end{enumerate}
-\item A função
-  \begin{equation}
-    f(x) = \left\{
-      \begin{array}{ll}
-        x &, 0\leq x < 1,\\
-        0 &, x=1.
-      \end{array}
-\right.
-\end{equation}
-é tal que $f(0)=f(1)=0$, entretanto sua derivada $f'(x)=1$ no intervalo $(0, 1)$. Ou seja, a condição da $f$ ser contínua no intervalo fechado associado é necessária no teorema de Rolle.
-\item Não existe ponto tal que a derivada da $g(x)=-|x-1|+1$ seja nulo. Entretanto, notemos que $g(0)=g(2)=0$ e $g$ contínua no intervalo fechado $[0, 2]$. O teorema de Rolle não se aplica neste caso, pois $g$ não é diferenciável no intervalo $(0,2)$, mais especificamente, no ponto $x=1$.
 \end{ex}
 
 \subsection{Teorema do valor médio}
 
 O teorema do valor médio é uma generalização do teorema de Rolle.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{./cap_apderiv/dados/fig_teo_valmed/fig_teo_valmed}
+  \caption{Ilustração do Teorema do valor médio.}
+  \label{fig:teo_valor_medio}
+\end{figure}
 
 \begin{teo}\normalfont{(Teorema do valor médio)}
   Seja $f$ uma função contínua no intervalo fechado $[a,b]$ e diferenciável no intervalo aberto $(a,b)$. Então, existe pelo menos um ponto $c\in (a,b)$ tal que
@@ -528,6 +571,10 @@ O teorema do valor médio é uma generalização do teorema de Rolle.
     \frac{f(b)-f(a)}{b-a}=f'(c).
   \end{equation}
 \end{teo}
+
+\begin{obs}
+  Em um contexto de aplicação, o Teorema do valor médio relaciona a taxa de variação média da função em um intervalo $[a, b]$ com a taxa de variação instantânea da função em um ponto interior deste intervalo.
+\end{obs}
 
 \begin{ex}
   A função $f(x)=x^2$ é contínua no intervalo $[0,2]$ e diferenciável no intervalo $(0,2)$. Logo, segue do teorema do valor médio que existe pelo menos um ponto $c\in (0,2)$ tal que

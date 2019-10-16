@@ -61,7 +61,7 @@ ax.plot([1],[1],marker='o',color='blue',markerfacecolor='white',zorder=10)
 ax.plot([1],[0],marker='o',color='blue')
 ax.plot([1,1],[0,1],ls='--',color='gray')
 ax.plot([0,1],[1,1],ls='--',color='gray')
-fig.savefig('fig_h.png')
+fig.savefig('fig_h.png', bbox_inches="tight")
 
 
 
