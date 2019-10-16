@@ -15,9 +15,9 @@ p.save('fig_exeresol_p_infl.png')
 fig = p._backend.fig
 ax = fig.axes[0]
 ax.grid('on')
-ax.plot([-1],[-1],marker='o',color='blue')
+ax.plot([-1],[-1],marker='o',color='red')
 ax.plot([0],[0],marker='o',color='blue')
-ax.plot([1],[1],marker='o',color='blue')
+ax.plot([1],[1],marker='o',color='red')
 fig.savefig('fig_exeresol_p_infl.png')
 
 

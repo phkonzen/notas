@@ -16,8 +16,8 @@ fig = p._backend.fig
 ax = fig.axes[0]
 ax.grid('on')
 ax.plot([-2],[0],marker='o',color='blue')
-ax.plot([-1],[-1],marker='o',color='blue')
-ax.plot([1],[3],marker='o',color='blue')
+ax.plot([-1],[-1],marker='o',color='red')
+ax.plot([1],[3],marker='o',color='red')
 fig.savefig('fig_exeresol_f_diff.png')
 
 
