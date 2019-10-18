@@ -37,16 +37,18 @@ class MiniCalcPy(Notas):
     def goodies(self,htmldir,titulo_notas,srcref):
         #adiciona goodies.css
         f = open(htmldir+'/goodies.css','w')
-        text = 'body {\n'
+
+        text = '.navbar {\n'
         text += 'font-family: Computer Modern Serif;\n'
-        text += 'font-size: 2.3em;\n'
+        text += 'font-size: 1.5em;\n'
         text += '}\n\n'
-        
+
         text += '.navbar-brand {\n'
         text += 'height: auto;\n'
         text += 'padding: 5px;\n'
+        text += 'font-family: Computer Modern Serif;\n'
         text += '}\n\n'
-        
+       
         f.write(text)
         f.close()
         
@@ -115,9 +117,6 @@ class MiniCalcPy(Notas):
 
         body_end += '</body>'
 
-        #enxerta no __footer__
-        foot = '<div class="ltx_page_logo">\n'
-
         pages = []
         for (dirpath, dirnames, filenames) in os.walk(htmldir):
             pages.extend(filenames)
@@ -139,8 +138,6 @@ class MiniCalcPy(Notas):
                 page = page.replace('<body>',body)
                 #modifica o __body__ (bottom)
                 page = page.replace('</body>',body_end)                    
-                #modifica o __footer__
-                page = page.replace('<div class="ltx_page_logo">',foot)
 
                 #sobrescreve a página com as alterações
                 f = open(htmldir+"/"+p,'w')
