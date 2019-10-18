@@ -17,6 +17,7 @@ from calculoi import *
 from matematicanumerica import *
 from metodoelementosfinitos import *
 from vetoresgeometriaanalitica import *
+from minicalcpy import *
 
 #pastas temporárias
 odir = '.docs'
@@ -49,6 +50,7 @@ ci = CalculoI(srcdir,odir)
 mn = MatematicaNumerica(srcdir,odir)
 mef = MetodoElementosFinitos(srcdir,odir)
 vgm = VetoresGeometriaAnalitica(srcdir,odir)
+mini = MiniCalcPy(srcdir,odir)
 
 def build(id):
     id.build()
@@ -56,7 +58,7 @@ def build(id):
 #pallelized region
 if __name__ == '__main__':
     p = Pool()
-    p.map(build,[ami,ci,mn,mef,vgm])
+    p.map(build,[ami,ci,mn,mef,vgm,mini])
 
 #make sitemap.txt
 sm = SiteMap(odir)

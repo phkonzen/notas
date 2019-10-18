@@ -144,15 +144,23 @@ class Index:
         #notas de aula
         body += '<div class="col-md-6">\n'
 
-        body += '<h3>Sobre mim?</h3>\n'
+        body += '<h3>Minicurso de Cálculo com Python</h3>\n'
         body += '<ul>\n'
-        body += '<li><a href="http://lattes.cnpq.br/2565213716047382" target="_blank">Currículo Lattes</a></li>\n'
-        body += '<li><a href="http://professor.ufrgs.br/pedro/" target="_blank">Página de professor na UFRGS</a></li>\n'
+        body += '<li>Parte 1 - Funções de uma variável: <a href="MiniCalcPy/1-funcoes.html">HTML</a> | <a href="MiniCalcPy/1-funcoes.ipynb" download>IPYNB</a></li>\n'
+        body += '<li>Parte 2 - Limites: <a href="MiniCalcPy/2-limites.html">HTML</a> | <a href="MiniCalcPy/2-limites.ipynb" download>IPYNB</a></li>\n'
+        body += '<li>Parte 3 - Derivadas: <a href="MiniCalcPy/3-derivada.html">HTML</a> | <a href="MiniCalcPy/3-derivada.ipynb" download>IPYNB</a></li>\n'
+        body += '<li>Parte 4 - Integrais: <a href="MiniCalcPy/4-integracao.html">HTML</a> | <a href="MiniCalcPy/4-integracao.ipynb" download>IPYNB</a></li>\n'
         body += '</ul>\n'
 
         body += '</div> <!-- div class="col-md-6" -->\n'
 
         body += '<div class="col-md-6">\n'
+
+        body += '<h3>Sobre mim?</h3>\n'
+        body += '<ul>\n'
+        body += '<li><a href="http://lattes.cnpq.br/2565213716047382" target="_blank">Currículo Lattes</a></li>\n'
+        body += '<li><a href="http://professor.ufrgs.br/pedro/" target="_blank">Página de professor na UFRGS</a></li>\n'
+        body += '</ul>\n'
 
         body += '<h3>Ligações recomendadas</h3>\n'
         body += '<ul>\n'

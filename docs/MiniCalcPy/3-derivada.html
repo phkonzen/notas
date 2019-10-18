@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8" />
-<title>1-funcoes</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>3-derivada</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
 <style type="text/css">
@@ -12582,8 +12582,58 @@ div#notebook {
         }
     });
     </script>
-    <!-- End of mathjax configuration --></head>
+    <!-- End of mathjax configuration --><meta name="author" content="Pedro H A Konzen"/>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="goodies.css" type="text/css">
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-17226092-2"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag("js", new Date());
+
+gtag("config", "UA-17226092-2")
+</script>
+</head>
+
 <body>
+
+<div class="row">
+<div class="col-xs-12 col-xs-offset-0 col-md-8 col-md-offset-1">
+
+
+<!-- begin: navbar -->
+<nav class="navbar navbar-default">
+<div class="container-fluid">
+<div class="navbar-header">
+<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+<span class="sr-only">Toggle navigation</span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+</button>
+<a class="navbar-brand" href="../index.html">Notas de Aula<br/><small>Minicurso de Cálculo com Python<small/></a>
+</div>
+
+<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+<ul class="nav navbar-nav">
+<li><a href="https://github.com/phkonzen/notas">Repositório GitHub</a></li>
+<li><a href="https://mybinder.org/v2/gh/ipython/ipython-in-depth/master?filepath=binder/Index.ipynb" target="_blank">Jupyter NB</a></li>
+<li><a href="../index.html">Outras Notas & Infos</a></li>
+</ul>
+</div><!-- /.navbar-collapse -->
+</div><!-- /.container-fluid -->
+</nav>
+
+
+<!-- end: navbar -->
+
+
+
   <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">
 
@@ -12591,11 +12641,10 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Este trabalho está licenciado sob a Licença Atribuição-CompartilhaIgual 4.0 Internacional Creative Commons. Para visualizar uma cópia desta licença, visite <a href="http://creativecommons.org/licenses/by-sa/4.0/">http://creativecommons.org/licenses/by-sa/4.0/</a> ou mande uma carta para Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.</p>
+<p>Este trabalho está licenciado sob a Licença Atribuição 4.0 Internacional Creative Commons. Para visualizar uma cópia desta licença, visite <a href="http://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</a> ou mande uma carta para Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.</p>
 <p>Autor/Instituição: Pedro H A Konzen / UFRGS</p>
-<p>phkonzen@gmail.com</p>
-<p>Criada: Out/2015
-Última modificação: Out/2019</p>
+<p>pedro.konzen@ufrgs.br</p>
+<p>Data: Out/2015</p>
 
 </div>
 </div>
@@ -12604,12 +12653,25 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="C&#225;lculo-com-Python">C&#225;lculo com Python<a class="anchor-link" href="#C&#225;lculo-com-Python">&#182;</a></h1><h2 id="1---Fun&#231;&#245;es-de-uma-vari&#225;vel">1 - Fun&#231;&#245;es de uma vari&#225;vel<a class="anchor-link" href="#1---Fun&#231;&#245;es-de-uma-vari&#225;vel">&#182;</a></h2><p>Nesta primeira parte do minicurso <strong>Cálculo com Python</strong> você aprenderá a:</p>
+<h1 id="C&#225;lculo-com-Python">C&#225;lculo com Python<a class="anchor-link" href="#C&#225;lculo-com-Python">&#182;</a></h1><p>Nesta terceira parte do curso vamos estudar como usar o python para calcular derivadas de funções de uma variável.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="3---Derivadas">3 - Derivadas<a class="anchor-link" href="#3---Derivadas">&#182;</a></h2><p>Aqui você irá aprender a usar a biblioteca <a href="https://www.python.org/">Python</a> de matemática simbólica <a href="http://www.sympy.org/en/index.html">Sympy</a> para calcular:</p>
 <ul>
-<li>definir funções;</li>
-<li>calcular valores de funções;</li>
-<li>graficar funções;</li>
-<li>calcular os zeros de funções.</li>
+<li><p>derivadas</p>
+</li>
+<li><p>retas tangentes</p>
+</li>
+<li><p>derivadas de ordem mais altas</p>
+</li>
+<li><p>máximos e mínimos</p>
+</li>
 </ul>
 
 </div>
@@ -12619,19 +12681,20 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Inportando-a-biblioteca-Sympy">Inportando a biblioteca <a href="http://www.sympy.org/">Sympy</a><a class="anchor-link" href="#Inportando-a-biblioteca-Sympy">&#182;</a></h3><p>O seguinte comando carrega a biblioteca de matemática simbólica <a href="http://www.sympy.org/">Sympy</a>.</p>
+<p>Começamos carrendo a biblioteca <a href="http://www.sympy.org/en/index.html">Sympy</a>:</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sympy</span> <span class="k">import</span> <span class="o">*</span>
-<span class="c1"># seleciona a melhor saída disponível</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span class="kn">from</span> <span class="nn">sympy</span> <span class="k">import</span> <span class="o">*</span>
 <span class="n">init_printing</span><span class="p">()</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;x y&#39;</span><span class="p">)</span> <span class="c1">#define x e y como variáveis simbólicas.</span>
 </pre></div>
 
 </div>
@@ -12643,78 +12706,153 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Definindo-s&#237;mbolos-para-vari&#225;veis-e-fun&#231;&#245;es">Definindo s&#237;mbolos para vari&#225;veis e fun&#231;&#245;es<a class="anchor-link" href="#Definindo-s&#237;mbolos-para-vari&#225;veis-e-fun&#231;&#245;es">&#182;</a></h4><p>Na sequência, vamos ver como podemos usar o <a href="http://www.sympy.org/">Sympy</a> para lidarmos com funções reais de uma variável real, por exemplo: $y = f(x)$. Neste contexto, os símbolos $x$ e $y$ denotam as variáveis independente e dependente, respectivamente. Definimo o símbolo $x$ com a seguinte linha de comando:</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">var</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Analogamente, definimos o símbolo $y$ com o comando:</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">var</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Definindo-fun&#231;&#245;es">Definindo fun&#231;&#245;es<a class="anchor-link" href="#Definindo-fun&#231;&#245;es">&#182;</a></h3>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Vamos ver como definir uma função $y = f(x)$ para ser utilizada mais tarde. Por exemplo, consideremos a função:</p>
+<p>Para fixar as ideias, vamos continuar trabalhando com a função:</p>
 <p>$f(x) = (x^3 - 3x + 2)e^{-x/4} - 1$.</p>
-<p>No <a href="https://www.python.org/">Python</a> os operadores aritméticos básicos são:</p>
-<pre><code>+</code> adição</pre> 
-<pre><code>-</code> subtração</pre>
-<pre><code>*</code> multiplicão</pre>
-<pre><code>/</code> divisão</pre>
-<pre><code>**</code> potenciação</pre><p>Também, funções elementares já estão definidas por padrão. Veja a lista <a href="http://docs.sympy.org/dev/modules/functions/index.html#contents">aqui</a>!</p>
-<p>Definimos a funcão dada digitando:</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">Lambda</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">3</span> <span class="o">-</span> <span class="mi">3</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">f</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">3</span> <span class="o">-</span> <span class="mi">3</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+<span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[2]:</div>
+
+
+
+
+<div class="output_latex output_subarea output_execute_result">
+$$\left(x^{3} - 3 x + 2\right) e^{- \frac{x}{4}} - 1$$
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Derivadas">Derivadas<a class="anchor-link" href="#Derivadas">&#182;</a></h3><p>Vamos ver como podemos usar o Sympy para calcularmos a derivada da função $f(x)$, i.e. $f'(x)$. Para tanto, usamos a função <a href="http://docs.sympy.org/latest/tutorial/calculus#Derivatives.html">$\verb+diff+$</a>:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[3]:</div>
+
+
+
+
+<div class="output_latex output_subarea output_execute_result">
+$$\left(3 x^{2} - 3\right) e^{- \frac{x}{4}} - \frac{e^{- \frac{x}{4}}}{4} \left(x^{3} - 3 x + 2\right)$$
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Para avaliar a derivada em um ponto, por exemplo, para calcular $f'(1)$, digitamos:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[4]:</div>
+
+
+
+
+<div class="output_latex output_subarea output_execute_result">
+$$0$$
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Exerc&#237;cio:">Exerc&#237;cio:<a class="anchor-link" href="#Exerc&#237;cio:">&#182;</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Sendo $g(x) = x^2 + \frac{1}{2}$ calcule $g'(1)$.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#digite sua solução aqui!</span>
 </pre></div>
 
 </div>
@@ -12726,20 +12864,64 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Se quisermos calcular, por exemplo, f(1) digitamos:</p>
+<h3 id="Retas-Tangente">Retas Tangente<a class="anchor-link" href="#Retas-Tangente">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Aqui, vamos ver como calcular a reta tangente ao gráfico da função $f(x)$ no ponto $x_0 = -\frac{1}{2}$. Lembremos que tal reta terá equação:</p>
+<p>$y = f'(x_0)(x - x_0) + f(x_0)$.</p>
+<p>Desta forma, vamos calcular $f'(x_0)$:</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">x0</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span>
+<span class="n">fl</span> <span class="o">=</span> <span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="o">-</span><span class="mf">0.5</span><span class="p">)</span> <span class="c1">#f&#39;(x_0)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;coef. angular = &quot;</span><span class="p">)</span>
+<span class="n">fl</span>
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>coef. angular = 
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[6]:</div>
+
+
+
+
+<div class="output_latex output_subarea output_execute_result">
+$$-3.50567802667549$$
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -12748,20 +12930,53 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Note que a saída aparece na linha abaixo da entrada $f(1)$. Isto é, $f(1) = -1$. Podemos, inclusive utilizar argumentos simbólicos, como:</p>
+<p>Agora, já podemos definir a reta tangente:</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">:</span> <span class="k">return</span> <span class="n">fl</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">x0</span><span class="p">)</span> <span class="o">+</span> <span class="n">f</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;equação da reta tangente y=&quot;</span><span class="p">)</span>
+<span class="n">r</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>equação da reta tangente y=
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[7]:</div>
+
+
+
+
+<div class="output_latex output_subarea output_execute_result">
+$$- 3.50567802667549 x + 1.07153701576279$$
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -12770,117 +12985,231 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Aqui, a saída significa que $f(x-2) = (-3x + (x-2)^3 + 8)e^{-\frac{x}{4} + \frac{1}{2}} - 1$, o que pode ser imediatamente verificado.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Exemplo:">Exemplo:<a class="anchor-link" href="#Exemplo:">&#182;</a></h4>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Dada $g(x) = 2 - \sqrt{x^2 - 1}$, encontre $g(1)$, $g(0)$ e $g(2t)$.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Solução:</p>
+<p>Vejamos os gráficos de $f(x)$ e da reta tangente calculada.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">Lambda</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
-<span class="n">g</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="n">p1</span> <span class="o">=</span> <span class="n">plot</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),(</span><span class="n">x</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span><span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">line_color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+<span class="n">p2</span> <span class="o">=</span> <span class="n">plot</span><span class="p">(</span><span class="n">r</span><span class="p">(</span><span class="n">x</span><span class="p">),(</span><span class="n">x</span><span class="p">,</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">line_color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">p1</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span>
+<span class="n">p1</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
 </div>
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+"
+>
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">g</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-</pre></div>
 
 </div>
-</div>
-</div>
 
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">g</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Note que o sympy assume o domínio e a imagem da função como sendo um subconjunto dos números complexos. Além disso, antes de calcularmos $g(2t)$ precisamos definir $t$ como uma variável simbólica. Para que $t$ seja tratado como uma variável real, usamos o seguinte comando:</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">var</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="n">real</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Finalmente, computamos $g(2t)$ com:</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">g</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">t</span><span class="p">)</span>
-</pre></div>
-
-</div>
 </div>
 </div>
 
@@ -12906,17 +13235,17 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Dada $h(x) = \left|\sqrt{x} - 1\right| - 2\text{sen}(x)$, encontre $h(\pi)$, e $h(2u)$.</p>
+<p>Encontre a reta tangente ao gráfico de $y = \frac{1}{x}$ em $x=1$. Faça os esboços dos gráficos da função e da reta tangente em um mesmo gráfico.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#digite a resposta aqui!</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#digite a resolução aqui.</span>
 </pre></div>
 
 </div>
@@ -12928,26 +13257,62 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Esbo&#231;o-do-Gr&#225;fico">Esbo&#231;o do Gr&#225;fico<a class="anchor-link" href="#Esbo&#231;o-do-Gr&#225;fico">&#182;</a></h3>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Para fazermos um esboço do gráfico de uma função f(x) podemos usar o comando <code>plot</code>. Por exemplo, para a $f(x)$ definida anteriormente, temos:</p>
+<h3 id="Derivadas-de-ordem-mais-altas">Derivadas de ordem mais altas<a class="anchor-link" href="#Derivadas-de-ordem-mais-altas">&#182;</a></h3><p>Similarmente a derivadas de primeira ordem, as derivadas de ordem mais alta podem ser obtidas usando-se a função <a href="http://docs.sympy.org/latest/tutorial/calculus#Derivatives.html">$\verb+diff+$</a>. Por exemplo, para calcularmos:</p>
+<p>$\frac{d^2}{d x^2}f(x)$</p>
+<p>podemos digitar:</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="n">plot</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="n">x</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[10]:</div>
+
+
+
+
+<div class="output_latex output_subarea output_execute_result">
+$$\frac{e^{- \frac{x}{4}}}{16} \left(x^{3} - 24 x^{2} + 93 x + 26\right)$$
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Exerc&#237;cio">Exerc&#237;cio<a class="anchor-link" href="#Exerc&#237;cio">&#182;</a></h4><p>Calcule:</p>
+<p>$\frac{d^3}{d x^3}\left(\frac{x^2 - 1 + \text{sen}\,x}{x^3 - 3x + 1}\right)$.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#digite sua resposta aqui!</span>
 </pre></div>
 
 </div>
@@ -12959,12 +13324,8 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<ul>
-<li><p><strong>Observação 1</strong>: A "linha mágica" <code>%matplotlib inline</code> faz com que o gráfico apareça na mesma janela do ambiente. Sem esta linha, uma janela gráfica externa será aberta, quando disponível.</p>
-</li>
-<li><p><strong>Observação 2</strong>: O comando <code>plot(f(x))</code> tenta advinhar uma caixa gráfica adequada. Podemos alterar a caixa, informando o intervalo dos pontos de abscissa que gostaríamos de ver. Por exemplo:</p>
-</li>
-</ul>
+<h3 id="M&#225;ximos-e-M&#237;nimos-Locais">M&#225;ximos e M&#237;nimos Locais<a class="anchor-link" href="#M&#225;ximos-e-M&#237;nimos-Locais">&#182;</a></h3><p>Agora, vamos ver como podemos usar o que aprendemos até aqui para resolver problemas de máximos e mínimos. Nosso objetivo será de encontrar e determinar os pontos de máximos e mínimos locais da função $f(x)$. Para tanto, vamos usar o teste da segunda derivada.</p>
+<p>Comecemos lembrando do gráfico de $f(x)$:</p>
 
 </div>
 </div>
@@ -12975,6 +13336,8 @@ div#notebook {
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),(</span><span class="n">x</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),(</span><span class="n">x</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">40</span><span class="p">))</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),(</span><span class="n">x</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">60</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -12986,15 +13349,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Exerc&#237;cio:">Exerc&#237;cio:<a class="anchor-link" href="#Exerc&#237;cio:">&#182;</a></h4>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Faça o esboço do gráfico de $g(x) = 2\text{tg}\left(x+\frac{\pi}{3}\right)$.</p>
+<p>Observando os gráficos, vemos que os pontos críticos de $f(x)$ têm máximos locais próximos ao ponto $x=-1$ e $x=10$ e um mínimo local próximo do ponto $x=1$. Logo, podemos usar estes valores como parâmetro da função <a href="http://docs.sympy.org/latest/modules/solvers/solvers.html?highlight=nsolve#sympy.solvers.solvers.nsolve">$\verb+nsolve+$</a>:</p>
 
 </div>
 </div>
@@ -13004,7 +13359,13 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#digite sua resolução aqui!</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fl</span> <span class="o">=</span> <span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="n">x</span><span class="p">)</span> <span class="c1">#calcula $f&#39;(x)$</span>
+<span class="n">x1</span> <span class="o">=</span> <span class="n">nsolve</span><span class="p">(</span><span class="n">fl</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#calcula ponto crítico próx. de x=-1</span>
+<span class="n">x2</span> <span class="o">=</span> <span class="n">nsolve</span><span class="p">(</span><span class="n">fl</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#calcula ponto crítico próx. de x=1</span>
+<span class="n">x3</span> <span class="o">=</span> <span class="n">nsolve</span><span class="p">(</span><span class="n">fl</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span> <span class="c1">#calcula ponto crítico próx. de x=10</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;x1=&quot;</span><span class="p">,</span><span class="n">x1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;x2=&quot;</span><span class="p">,</span><span class="n">x2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;x3=&quot;</span><span class="p">,</span><span class="n">x3</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -13016,15 +13377,8 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Zeros-de-uma-Fun&#231;&#227;o">Zeros de uma Fun&#231;&#227;o<a class="anchor-link" href="#Zeros-de-uma-Fun&#231;&#227;o">&#182;</a></h3>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>O <a href="http://www.sympy.org/">SymPy</a> conta com a função <code>solve</code> para calcular a solução de $f(x) = 0$. Por exemplo:</p>
+<p>Ok. Acamos de encontrar os pontos críticos de $f(x)$ (podem haver outros pontos críticos?). Por inspesão gráfica, vemos que $x_1 \approx -1,15$ e $x_3 \approx 12,15$ são os pontos de máximos locais de $f(x)$ e $x_3 = 1,0$ é o ponto de mínimo (global?).</p>
+<p>Vamos confirmar isso com o teste da segunda derivada. Observe:</p>
 
 </div>
 </div>
@@ -13034,52 +13388,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">solve</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>resolve $x^2 -1 = 0$. Entretanto a função <code>solve</code> não resolve diretamente a equação $f(x) = 0$ definida anteriormente. Veja o que ocorre:</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">solve</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">x</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>A última linha da mensagem de erro nos diz que a função <code>solve</code> não contém um algoritmo para resolver $f(x) = 0$, no caso da $f(x)$ dada. Alternativamente, podemos usar a função <code>nsolve</code> que usa um algoritmo numérico para encontrar uma solução para o problema.</p>
-<p>Vejamos como usar esta função <code>nsolve</code>:</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">nsolve</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">x</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="n">x</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">x1</span><span class="p">)</span> <span class="c1">#calcula f&#39;&#39;(x1)</span>
 </pre></div>
 
 </div>
@@ -13092,7 +13401,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">nsolve</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="n">x</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">x2</span><span class="p">)</span> <span class="c1">#calcula f&#39;&#39;(x2)</span>
 </pre></div>
 
 </div>
@@ -13105,7 +13414,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">nsolve</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">x</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="n">x</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">x3</span><span class="p">)</span> <span class="c1">#calcula f&#39;&#39;(x3)</span>
 </pre></div>
 
 </div>
@@ -13117,24 +13426,10 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Na verdade, esta função $f(x)$ tem, ainda, um zero $x \approx 45,9162$. Discutiremos isso mais detalhadamente na próxima parte deste minicurso, quando estudarmos a computação de limites com o <a href="https://www.sympy.org">SymPy</a>.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Exerc&#237;cio:">Exerc&#237;cio:<a class="anchor-link" href="#Exerc&#237;cio:">&#182;</a></h4>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Determine os zeros de $g(x) = \text{sen}\left(x-\frac{\pi}{3}\right) + \frac{1}{2}$.</p>
+<h4 id="Exerc&#237;cio">Exerc&#237;cio<a class="anchor-link" href="#Exerc&#237;cio">&#182;</a></h4><p>Referente ao problema de otimização que acabamos de discutir, responda:</p>
+<p>(a) Os pontos $x_1$, $x_2$ e $x_3$ calculados acima são os únicos pontos críticos de $f(x)$? Justifique sua resposta.</p>
+<p>(b) Quais são os pontos de mínimo e máximo globais de $f(x)$?</p>
+<p>(c) Qual é o maior valor que $f(x)$ assume? E qual é o menor?</p>
 
 </div>
 </div>
@@ -13144,7 +13439,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#digite a resolução aqui!</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#digite sua solução aqui!</span>
 </pre></div>
 
 </div>
@@ -13165,8 +13460,6 @@ div#notebook {
 <h2 id="Related-links">Related links<a class="anchor-link" href="#Related-links">&#182;</a></h2><ul>
 <li>[1] Sympy Gamma: <a href="http://www.sympygamma.com/">www.sympygamma.org</a></li>
 <li>[2] Sympy Live: <a href="http://live.sympy.org/">live.sympy.org</a></li>
-<li>[3] Jupyter: <a href="https://jupyter.org/">https://jupyter.org/</a></li>
-<li>[4] Binder: <a href="https://mybinder.org/">https://mybinder.org/</a></li>
 </ul>
 
 </div>
@@ -13176,12 +13469,14 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Next-Topic:-2---Limites">Next Topic: 2 - Limites<a class="anchor-link" href="#Next-Topic:-2---Limites">&#182;</a></h4>
+<h4 id="Pr&#243;xima-parte:-4---Integral">Pr&#243;xima parte: 4 - Integral<a class="anchor-link" href="#Pr&#243;xima-parte:-4---Integral">&#182;</a></h4>
 </div>
 </div>
 </div>
     </div>
   </div>
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><p style="fontsize=6pt">O texto acima está sob Licença <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR">Creative Commons Atribuição-CompartilhaIgual 4.0 Internacional</a>.</p> </div><!-- div class="row" -->
+</div><!-- div class="col-xs-12 col-xs-offset-0 col-md-8 col-md-offset-2 -->
 </body>
 
  
