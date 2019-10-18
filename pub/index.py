@@ -115,6 +115,27 @@ class Index:
 
         body += '</div> <!-- div class="col-md-6" -->\n'
 
+        #Minicurso
+        body += '<div class="col-md-6">\n'
+        
+        body += '<h3>Minicurso de Cálculo com Python</h3>\n'
+        body += '<ul>\n'
+        body += '<li>Parte 1 - Funções de uma variável: <a href="MiniCalcPy/1-funcoes.html">HTML</a> | <a href="MiniCalcPy/1-funcoes.ipynb" download>IPYNB</a></li>\n'
+        body += '<li>Parte 2 - Limites: <a href="MiniCalcPy/2-limites.html">HTML</a> | <a href="MiniCalcPy/2-limites.ipynb" download>IPYNB</a></li>\n'
+        body += '<li>Parte 3 - Derivadas: <a href="MiniCalcPy/3-derivada.html">HTML</a> | <a href="MiniCalcPy/3-derivada.ipynb" download>IPYNB</a></li>\n'
+        body += '<li>Parte 4 - Integrais: <a href="MiniCalcPy/4-integracao.html">HTML</a> | <a href="MiniCalcPy/4-integracao.ipynb" download>IPYNB</a></li>\n'
+        body += '</ul>\n'
+
+        body += '</div> <!-- div class="col-md-6" -->\n'
+
+        
+        body += '</div><!-- div class="row" -->\n'
+        body += '</div><!-- div class="container-fluid" -->\n'
+        
+
+        body += '<div class="container-fluid">\n'
+        body += '<div class="row">\n'
+
         body += '<div class="col-md-6">\n'
 
         body += '<h3>Sobre</h3>\n'
@@ -133,26 +154,6 @@ class Index:
         body += '</p>'
 
         body += '</div><!-- div class="col-md-6" -->\n'
-
-        body += '</div><!-- div class="row" -->\n'
-        body += '</div><!-- div class="container-fluid" -->\n'
-        
-
-        body += '<div class="container-fluid">\n'
-        body += '<div class="row">\n'
-
-        #notas de aula
-        body += '<div class="col-md-6">\n'
-
-        body += '<h3>Minicurso de Cálculo com Python</h3>\n'
-        body += '<ul>\n'
-        body += '<li>Parte 1 - Funções de uma variável: <a href="MiniCalcPy/1-funcoes.html">HTML</a> | <a href="MiniCalcPy/1-funcoes.ipynb" download>IPYNB</a></li>\n'
-        body += '<li>Parte 2 - Limites: <a href="MiniCalcPy/2-limites.html">HTML</a> | <a href="MiniCalcPy/2-limites.ipynb" download>IPYNB</a></li>\n'
-        body += '<li>Parte 3 - Derivadas: <a href="MiniCalcPy/3-derivada.html">HTML</a> | <a href="MiniCalcPy/3-derivada.ipynb" download>IPYNB</a></li>\n'
-        body += '<li>Parte 4 - Integrais: <a href="MiniCalcPy/4-integracao.html">HTML</a> | <a href="MiniCalcPy/4-integracao.ipynb" download>IPYNB</a></li>\n'
-        body += '</ul>\n'
-
-        body += '</div> <!-- div class="col-md-6" -->\n'
 
         body += '<div class="col-md-6">\n'
 
