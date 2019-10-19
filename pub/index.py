@@ -119,6 +119,8 @@ class Index:
         body += '<div class="col-md-6">\n'
         
         body += '<h3>Minicurso de Cálculo com Python</h3>\n'
+        body += '<p><a href="https://mybinder.org/v2/gh/phkonzen/notas/master?filepath=%2Fsrc%2FMiniCalcPy"><img src="https://mybinder.org/badge_logo.svg" alt="Binder" title="" /></a></p>'
+
         body += '<ul>\n'
         body += '<li>Parte 1 - Funções de uma variável: <a href="MiniCalcPy/1-funcoes.html">HTML</a> | <a href="MiniCalcPy/1-funcoes.ipynb" download>IPYNB</a></li>\n'
         body += '<li>Parte 2 - Limites: <a href="MiniCalcPy/2-limites.html">HTML</a> | <a href="MiniCalcPy/2-limites.ipynb" download>IPYNB</a></li>\n'
