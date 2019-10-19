@@ -1,5 +1,7 @@
 # notas/MiniCalcPy
 
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/phkonzen/notas/master?filepath=%2Fsrc%2FMiniCalcPy)
+
 Minicurso de Cálculo com Python.
 
 ## Sobre
@@ -12,7 +14,7 @@ Neste minicurso você vai **aprender** a usar o [Python][py] para:
 - calcular **derivadas**;
 - calcular **integrais** definidas e indefinidas.
 
-Se você é um iniciante em [Python][py] não é necessário instalar nenhum programa em seu computador para seguir este curso. O material do curso está disponível neste [repositório GitHub][repo] em formatos `IPYNB` ([Jupyter notebook][jupy]) e em `HTML`.
+Se você é um iniciante em [Python][py] não é necessário instalar nenhum programa em seu computador para seguir este curso. O material do curso está disponível neste [repositório GitHub][repo] em formatos `IPYNB` ([Binder Jupyter NB](https://mybinder.org/v2/gh/phkonzen/notas/master?filepath=%2Fsrc%2FMiniCalcPy)) e em [HTML](https://phkonzen.github.io/notas).
 
 [py]:https://www.python.org/
 [sympy]:http://www.sympy.org/
