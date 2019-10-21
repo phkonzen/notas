@@ -91,7 +91,7 @@ class CalculoI(Notas):
         body += '<ul class="nav navbar-nav">\n'
         body += '<li><a href="https://github.com/phkonzen/notas">Repositório GitHub</a></li>\n'
         body += '<li><a href="main.pdf">Baixar PDF</a></li>\n'
-        body += '<li><a href="https://mybinder.org/v2/gh/phkonzen/notas/master?filepath=Untitled.ipynb" target="_blank">Jupyter NB</a></li>\n'
+        body += '<li><a href="https://mybinder.org/v2/gh/phkonzen/notas/master?filepath=%2Fsrc%2FCalculoI%2Fcalculoi.ipynb" target="_blank">Jupyter NB</a></li>\n'
         body += '<li><a href="../index.html">Outras Notas & Infos</a></li>\n'
         body += '</ul>\n'
         body += '</div><!-- /.navbar-collapse -->\n'
