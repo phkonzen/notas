@@ -979,12 +979,154 @@ Seja $x=x_0$ um ponto crítico de uma dada função $f$ duas vezes diferenciáve
   Se $f'(x_0) = 0$ e $f''(x_0) = 0$, então $x=x_0$ pode ser ponto extremo local de $f$ ou não. Ou seja, o teste é inconclusivo.
 \end{obs}
 
-\emconstrucao
+\begin{ex}
+  Vejamos os seguintes casos:
+  \begin{enumerate}[a)]
+  \item A função $f(x) = x^3$ tem ponto crítico
+    \begin{align}
+      f'(x) = 0 &\Rightarrow 3x^2 = 0 \\
+                &\Rightarrow x = 0.
+    \end{align}
+    Neste ponto, temos
+    \begin{equation}
+      f''(x) = 6x \Rightarrow f''(0) = 0.
+    \end{equation}
+    Neste caso, $x=0$ não é ponto de extremo local e temos $f'(0) = 0$ e $f''(0) = 0$.
+  \item A função $f(x) = x^4$ tem um ponto crítico
+    \begin{align}
+      f'(x) = 0 &\Rightarrow 4x^3 = 0 \\
+                &\Rightarrow x = 0.
+    \end{align}
+    Neste ponto, temos
+    \begin{equation}
+      f''(x) = 12x^2 \Rightarrow f''(0) = 0.
+    \end{equation}
+    Neste caso, $x=0$ é ponto de mínimo local e temos $f'(0)=0$ e $f''(0) = 0$.
+  \end{enumerate}
+\end{ex}
 
 \subsection*{Exercícios resolvidos}
 
-\emconstrucao
+\begin{exeresol}
+  Encontre o valor máximo global de $f(x) = (x-1)e^{-x}$.
+\end{exeresol}
+\begin{resol}
+  Como $f$ é diferenciável em toda parte, temos que seu valor máximo (se existir) ocorre em ponto crítico tal que
+  \begin{align}
+    f'(x) = 0 &\Rightarrow (2-x)e^{-x} = 0 \\
+              &\Rightarrow 2-x = 0 \\
+              &\Rightarrow x = 2.
+  \end{align}
+  Agora, usando o teste da segunda derivada, temos
+  \begin{align}
+    f''(x) = (x-3)e^{-x} \Rightarrow f''(2) = -e^{-2} < 0.
+  \end{align}
+  Logo, $x=2$ é ponto de máximo local. O favor da função neste ponto é $f(2) = e^{-2}$. Ainda, temos
+  \begin{align}
+    &\lim_{x\to -\infty} (x-1)e^{-x} = -\infty, \\
+    &\lim_{x\to \infty} (x-1)e^{-x} = 0.
+  \end{align}
+  Por tudo isso, concluímos que o valor máximo global de $f$ é $f(2) = e^{-2}$.
+
+  \ifispython
+  Podemos usar os seguintes comandos do \sympy\footnote{Veja a Observação \ref{obs:cap_apderiv_python}.} para resolvermos este exercício:
+\begin{verbatim}
+>>> f = (x-1)*exp(-x)
+>>> fl = diff(f,x)
+>>> f = Lambda(x, (x-1)*exp(-x))
+>>> fl = Lambda(x, diff(f(x),x))
+>>> solve(fl(x))
+[2]
+>>> fll = Lambda(x, diff(f(x),x,2))
+>>> fll(2)
+  -2
+-e  
+>>> f(2), fl(2), fll(2)
+ -2       -2
+e  , 0, -e  
+>>> limit(f(x),x,oo)
+0
+>>> limit(f(x),x,-oo)
+-oo
+\end{verbatim}
+  \fi
+\end{resol}
+
+\begin{exeresol}
+  Determine e classifique os extremos da função
+  \begin{equation}
+    f(x) = x^4 - 4x^3 + 4x^2
+  \end{equation}
+  restrita ao intervalo de $[-1, 3]$.
+\end{exeresol}
+\begin{resol}
+  Como $f$ é diferenciável em $(-1, 3)$, temos que seus extremos locais ocorrem nos seguintes pontos críticos
+  \begin{align}
+    f'(x) = 0 &\Rightarrow 4x^3-12x^2+8x = 0 \\
+              &\Rightarrow 4x(x^2-3x+2)=0 \\
+              &\Rightarrow x_1 = 0, x_2 = 1, x_3 = 2.
+  \end{align}
+  Calculando a segunda derivada de $f$, temos
+  \begin{equation}
+    f''(x) = 12x^2 - 24x + 8.
+  \end{equation}
+  Do teste da segunda derivada, temos
+  \begin{align}
+    & f''(x_1) = f''(0) = 8 > 0 \Rightarrow x_1=0 ~ \text{pto. mín. local} \\
+    & f''(x_2) = f''(1) = -4 < 0 \Rightarrow x_2=1 ~ \text{pto. máx. local} \\
+    & f''(x_3) = f''(2) = 8 > 0 \Rightarrow x_3=2 ~ \text{pto. mín. local} 
+  \end{align}
+  Agora, vejamos os valores de $f$ em cada ponto de interesse.
+  \begin{center}
+    \begin{tabular}{l|ccccc}
+      $x$     & $-1$ & $0$ & $1$ & $2$ & $3$ \\\hline
+      $f(x)$  & $9$    & $0$   & $1$   & $0$ & $9$ \\
+    \end{tabular}\\
+  \end{center}
+  Então, podemos concluir que $x=-1$ e $x=3$ são pontos de máximo global (o valor máximo global é $f(-1)=f(3)=9$), $x=1$ é ponto de máximo local, $x=0$ e $x=2$ são pontos de mínimo global (o valor mínimo global é $f(0)=f(2)=0$).
+  
+  \ifispython
+  Podemos usar os seguintes comandos do \sympy\footnote{Veja a Observação \ref{obs:cap_apderiv_python}.} para resolvermos este exercício:
+\begin{verbatim}
+>>> f = Lambda(x, x**4 - 4*x**3 + 4*x**2)
+>>> fl = Lambda(x, diff(f(x),x))
+>>> solve(fl(x))
+[0, 1, 2]
+>>> fll = Lambda(x, diff(fl(x),x))
+>>> fll(0), fll(1), fll(2)
+(8, -4, 8)
+>>> f(-1), f(0), f(1), f(2), f(3)
+(9, 0, 1, 0, 9)
+\end{verbatim}
+  \fi
+\end{resol}
 
 \subsection*{Exercícios}
 
-\emconstrucao
+\begin{exer}
+  Use o teste da segunda derivada para encontrar e classificar o(s) ponto(s) extremo(s) de $f(x) = x^2 - 2x$.
+\end{exer}
+\begin{resp}
+  $x=1$ ponto de mínimo global
+\end{resp}
+
+\begin{exer}
+  Use o teste da segunda derivada para encontrar e classificar o(s) ponto(s) extremo(s) de $\displaystyle f(x) = \frac{x^3}{3}-x$.
+\end{exer}
+\begin{resp}
+  $x_1=-1$ ponto de máximo local; $x_2=1$ ponto de mínimo local;
+\end{resp}
+
+\begin{exer}
+  Use o teste da segunda derivada para encontrar e classificar o(s) ponto(s) extremo(s) de $\displaystyle f(x) = x^{2/3}(x-1)$.
+\end{exer}
+\begin{resp}
+  $x_1=0$ ponto de máximo local; $x_2=2/5$ ponto de mínimo local;
+\end{resp}
+
+\begin{exer}
+  Seja $f(x) = -x^4$. Mostre que $x=0$ é ponto de máximo local de $f$ e que $f'(0) = f''(0) = 0$.
+\end{exer}
+\begin{resp}
+  $f'(x) = -4x^3$, $f'(0)=0$. Pelo teste da 1. derivada, temos que $x=0$ é ponto de máximo local. $f''(x) = -12x^2$, $f''(0)=0$.
+\end{resp}
