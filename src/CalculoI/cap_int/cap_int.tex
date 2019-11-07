@@ -13,6 +13,206 @@ var('x',real=True)
 \end{obs}
 \fi
 
+\section{Noção de integral}\label{cap_int_sec_nocaoint}
+
+\subsection{Soma de Riemann}
+
+Seja $f$ uma função contínua definida em um intervalo fechado $[a, b]$. Seja, também, $P$ a seguinte \emph{partição} de $[a, b]$
+\begin{equation}
+  P = \{a=x_0<x_1<x_2<\cdots<x_n=b\},
+\end{equation}
+onde $n+1$ é o número de pontos na partição. Definimos
+\begin{equation}
+  \Delta x_i = x_{i} - x_{i-1}
+\end{equation}
+o tamanho de cada subintervalo $I_{i} = [x_{i-1}, x_{i}]$ da particição, com $i = 1, 2, \cdots, n$. A \emph{norma da particição} é definida por
+\begin{equation}
+  \|P\| = \max_{i=1, \dotsc, n} \Delta x_i,
+\end{equation}
+i.e. o tamanho do maior subintervalo da particição. Com isso, chama-se de uma \emph{soma de Riemann} toda a expressão da forma
+\begin{equation}
+  S_n := \sum_{i=1}^n f(x_i^*)\Delta x_i,
+\end{equation}
+onde $x_i^*\in [x_i, x_{i-1}]$ (arbitrariamente escolhido).
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{./cap_int/dados/fig_soma_de_Riemann/fig_soma_de_Riemann}
+  \caption{Ilustração da soma de Riemann.}
+  \label{fig:soma_de_Riemann}
+\end{figure}
+
+\begin{obs}\normalfont{(Aproximação da área sob o gráfico)}
+No caso de uma função não-negativa, uma soma de Riemann é uma aproximação da área sob seu gráfico e o eixo das abscissas\footnote{Veja o Exercício \ref{exer:int_geoRiemann} para uma interpretação geométrica no caso geral de funções contínuas.}. Veja a Figura \ref{fig:soma_de_Riemann}.
+\end{obs}
+
+\subsection{Integral definida}
+
+A integral (definida) de $a$ até $b$ de uma dada função $f$ em relação a $x$ é denotada e definida por
+\begin{equation}
+  \int_a^b f(x)\,dx := \lim_{\|P\|\to 0} \sum_{i=1}^n f(x_i^*)\Delta x_i.
+\end{equation}
+De forma genérica, a integral definida de $a$ até $b$ é o limite das somas de Riemann quando a norma das partições $P$ do intervalo $[a, b]$ tendem a zero. Quando o limite existe, dizemos que $f$ é \emph{integrável} no intervalo $[a, b]$.
+
+\begin{obs}
+  Na notação de integral definida acima, chamamos $a$ de \emph{limite inferior} e $b$ de \emph{limite superior de integração}, $f$ é chamada de \emph{integrando} e $x$ de \emph{variável de integração}.
+\end{obs}
+
+\begin{obs}
+  Funções contínuas são funções integráveis.
+\end{obs}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{./cap_int/dados/fig_geointdef/fig_geointdef}
+  \caption{A integral definida como a área sob o gráfico.}
+  \label{fig:geointdef}
+\end{figure}
+
+\begin{obs}\normalfont{(Área sob o gráfico)}\label{obs:int_area}
+  No caso de uma função não-negativa,
+  \begin{equation}
+    \int_a^b f(x)\,dx
+  \end{equation}
+  é a área sob o gráfico de $f$\footnote{Veja o Exercício \ref{exer:int_geointdef} para uma interpretação geométrica no caso geral de funções contínuas.}. Veja a Figura \ref{fig:geointdef}.  
+\end{obs}
+
+\begin{ex}
+  Vamos calcular
+  \begin{equation}
+    \int_0^1 1\,dx.
+  \end{equation}
+  Aqui, o integrando é a função constante $f(x) \equiv 1$ e o \emph{intervalo de integração} é $[a, b]$. Da Observação \ref{obs:int_area}, temos que esta integral é a área sob o gráfico de $f$ no intervalo $[0, 1]$. Esta área é um retângulo de altura $1$ e comprimento $1$. Logo,
+  \begin{equation}
+    \int_0^1 1\,dx = 1\cdot 1 = 1.
+  \end{equation}
+\end{ex}
+
+\subsection*{Exercícios resolvidos}
+
+\begin{exeresol}
+  Calcule
+  \begin{equation}
+    \int_{-1}^1 \sqrt{1 - x^2}\,dx.
+  \end{equation}
+\end{exeresol}
+\begin{resol}
+  Esta integral corresponde à área sob o gráfico da função $f(x) = \sqrt{1 - x^2}$ restrita ao intervalo $[-1, 1]$. Observando que
+  \begin{align}
+    y = \sqrt{x^2 - 1} &\Rightarrow y^2 = 1 - x^2\\
+                       &\Rightarrow y^2 + x^2 = 1,
+  \end{align}
+  vemos que esta é a área do semicírculo de raio $1$. Logo,
+  \begin{equation}
+    \int_{-1}^1 \sqrt{1 - x^2}\,dx = \frac{\pi \cdot 1^2}{2} = \frac{\pi}{2}.
+  \end{equation}
+\end{resol}
+
+\begin{exeresol}
+  Determine a função $F(x)$ tal que
+  \begin{equation}
+    F(x) = \int_0^x t\,dt,
+  \end{equation}
+  para todo $x\geq 0$. Então, mostre que $F'(x) = x$.
+\end{exeresol}
+\begin{resp}
+  A integral definida
+  \begin{equation}
+    \int_0^x t\,dt
+  \end{equation}
+  é a área sob o gráfico de $f(t) = t$ restrita no intervalo $[0, x]$. Isto é, a área do triângulo retângulo de base $x$ e altura $x$. Logo,
+  \begin{equation}
+    F(x) = \int_0^x t\,dt = \frac{x\cdot x}{2} = \frac{x^2}{2}.
+  \end{equation}
+  Ou seja, temos $F(x) = x^2/2$ e, portanto,
+  \begin{equation}
+    F'(x) = \frac{1}{2}\cdot 2x = x.
+  \end{equation}
+\end{resp}
+
+\subsection*{Exercícios}
+
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \int_{-1}^2 2\,dx.
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $6$
+\end{resp}
+
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \int_{-3}^{-1} 1-x\,dx.
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $6$
+\end{resp}
+
+\begin{exer}
+  Determine $F(x)$ tal que
+  \begin{equation}
+    F(x) = \int_{0}^{x} t+1\,dt.
+  \end{equation}
+  para $x\geq 0$. Então, calcule $F'(x)$.
+\end{exer}
+\begin{resp}
+  $\displaystyle F(x) = \frac{x^2}{2} + x$; $F'(x) = x + 1$.
+\end{resp}
+
+\begin{exer}\label{exer:int_geoRiemann}
+  Faça uma interpretação geométrica da uma soma de Riemann aplicada a uma função contínua e não positiva. Estenda sua interpretação para funções contínuas arbitrárias.
+\end{exer}
+\begin{resp}
+  Dica: a soma de Riemann é uma aproximação da área líquida sob o gráfico da função.
+\end{resp}
+
+\begin{exer}\label{exer:int_geointdef}
+  Faça uma interpretação geométrica de
+  \begin{equation}
+    \int_a^b f(x)\,dx
+  \end{equation}
+  quando $f$ é uma função contínua e não positiva. Estenda sua interpretação para funções contínuas arbitrárias.
+\end{exer}
+\begin{resp}
+  Dica: $\displaystyle \int_a^b f(x)\,dx$é a área líquida sob o gráfico da função.
+\end{resp}
+
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \int_{-1}^2 -1\,dx.
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $-3$
+\end{resp}
+
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \int_{-1}^{1} x\,dx.
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $0$
+\end{resp}
+
+\section{Integral definida}
+
+\emconstrucao
+
+\subsection*{Exercícios resolvidos}
+
+\emconstrucao
+
+\subsection*{Exercícios}
+
+\emconstrucao
+
 \section{Integrais indefinidas}\label{cap_int_sec_intindef}
 
 Seja $f(x)$ uma função. Dizemos que $F(x)$ é uma \emph{primitiva} de $f(x)$ quando
