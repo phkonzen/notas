@@ -680,7 +680,7 @@ Com base na derivada de funções trigonométricas, temos
   \end{align}
 \end{ex}
 
-\subsection{Funções exponencial e logaritmo natural}
+\subsection{Funções exponencial e logaritmo natural}\label{cap_int_subsec_funexpln}
 
 Da derivada da função exponencial natural, temos
 \begin{equation}
@@ -862,7 +862,8 @@ De fato, se
 \end{equation}
 então, da regra da cadeira (Seção \ref{cap_deriv_sec_cadeia}), temos
 \begin{align}
-  \frac{d}{dx}F(u(x)) = F'(u(x))u'(x),
+  \frac{d}{dx}F(u(x)) &= F'(u(x))u'(x) \\
+                      &= f(u(x))u'(x),
 \end{align}
 i.e. $F(u(x))$ é primitiva de $f(u(x))u'(x)$.
 
@@ -870,6 +871,7 @@ i.e. $F(u(x))$ é primitiva de $f(u(x))u'(x)$.
   Vejamos os seguintes casos:
   \begin{enumerate}[a)]
   \item $\displaystyle\int 2(2x+1)^2\,dx$.
+    
     Tomamos $f(u) = u^2$ com $u(x) = 2x+1$, donde $u'(x) = 2$. Logo
     \begin{align}
       \int 2(2x+1)^2\,dx &= \int f(u(x))u'(x)\,dx \\
@@ -879,6 +881,7 @@ i.e. $F(u(x))$ é primitiva de $f(u(x))u'(x)$.
                          &= \frac{(2x+1)^3}{3} + C.
     \end{align}
   \item $\displaystyle\int \pi\sen(\pi x)\,dx$.
+    
     Tomando $f(u)=\sen(u)$, $u=\pi x$, temos $u'(x)=\pi$. Logo
     \begin{align}
       \int \pi\sen(\pi x)\,dx &= \int f(u(x))u'(x)\,dx \\
@@ -913,10 +916,126 @@ i.e. $F(u(x))$ é primitiva de $f(u(x))u'(x)$.
   \end{align}
 \end{ex}
 
+\begin{ex}
+  Vamos calcular
+  \begin{equation}
+    \int \sen^2(x)\,dx.
+  \end{equation}
+  Começamos observando que
+  \begin{equation}
+    \int \sen^2(x)\,dx = \int \frac{1-\cos(2x)}{2}\,dx.
+  \end{equation}
+  Então, fazendo a substituição
+  \begin{equation}
+    u = 2x \Rightarrow du = 2\,dx,
+  \end{equation}
+  obtemos
+  \begin{align}
+    \int \sen^2(x)\,dx &= \frac{1}{4}\int 1 - \cos(u)\,du \\
+                       &= \frac{1}{4}\left(u - \sen(u)\right) + C \\
+                       &= \frac{x}{2} - \frac{\sen(2x)}{4} + C.
+  \end{align}
+\end{ex}
 
-\subsection{Funções exponencial e logaritmo}
 
-\emconstrucao
+\subsection{Funções exponencial}
+
+Na Subseção \ref{cap_int_subsec_funexpln}, vimos que
+\begin{equation}
+  \int e^x\,dx = e^x + C\quad\text{e}\quad\int \frac{1}{x}\,dx = \ln|x| + C.
+\end{equation}
+Agora, com a regra da substituição, temos
+\begin{align}
+  \int a^x\,dx &= \int e^{\ln a^x}\,dx \\
+               &= \int e^{x\ln a}\,dx,
+\end{align}
+com $a>0$ e $a\neq 1$. Tomando
+\begin{equation}
+  u = x\ln a \Rightarrow du = \ln(a)dx.
+\end{equation}
+Segue que
+\begin{align}
+  \int a^x\,dx &= \int e^u\frac{du}{\ln a} \\
+               &= \frac{1}{\ln a}\int e^u\,du \\
+               &= \frac{e^u}{\ln a} + C \\
+               &= \frac{e^{x\ln a}}{\ln a} + C \\
+               &= \frac{e^{\ln a^x}}{\ln a} + C \\
+               &= \frac{a^x}{\ln a} + C.
+\end{align}
+Ou seja, concluímos que
+\begin{equation}
+  \pmb{\int a^x\,dx = \frac{a^x}{\ln a} + C}.
+\end{equation}
+
+\begin{ex}
+  Vamos calcular
+  \begin{equation}
+    \int x\cdot 2^{x^2}\,dx.
+  \end{equation}
+  Por substituição, tomamos
+  \begin{equation}
+    u = x^2 \Rightarrow du = 2xdx,
+  \end{equation}
+  segue
+  \begin{align}
+    \int x\cdot 2^{x^2}\,dx &= \int x\cdot 2^{u}\frac{du}{2x} \\
+                            &= \frac{1}{2}\int \cdot 2^{u}\,du \\
+                            &= \frac{1}{2}\frac{2^u}{\ln 2} + C \\
+                            &= \frac{1}{2}\frac{2^{x^2}}{\ln 2} + C
+  \end{align}
+\end{ex}
+
+\subsection{Integrais definidas}
+
+A regra de substituição para integrais definidas é
+\begin{equation}
+  \pmb{\int_a^b f(u(x))u'(x)\,dx = \int_{u(a)}^{u(b)} f(u)\,du}.
+\end{equation}
+
+\begin{ex}
+  Vamos calcular
+  \begin{equation}
+    \int_0^1 e^{-2x}\,dx.
+  \end{equation}
+  Por substituição, escolhemos
+  \begin{equation}
+    u = -2x \Rightarrow du = -2dx.
+  \end{equation}
+  Logo,
+  \begin{align}
+    \int 0^1 e^{-2x}\,dx &= \int_{u(0)}^{u(1)} e^{u}\frac{du}{-2} \\
+                         &= -\frac{1}{2}\int_{0}^{-2} e^udu \\
+                         &= -\frac{1}{2}\left[e^u\right]_0^{-2} \\
+                         &= -\frac{1}{2}\left(e^{-2} - e^0\right) \\
+                         &= \frac{1}{2} - \frac{e^{-2}}{2}.
+  \end{align}
+
+  Alternativamente, podemos calcular a integral indefinida primeiramente e, então, usar o Teorema Fundamental do Cálculo com a primitiva obtida. Ou seja, temos
+  \begin{align}
+    \int e^{-2x}\,dx &= \int e^u\frac{du}{-2} \\
+                     &= -\frac{1}{2}\int e^u\,du \\
+                     &= -\frac{1}{2}e^u + C \\
+                     &= -\frac{1}{2}e^{-2x} + C.
+  \end{align}
+  Então, do Teorema Fundamental do Cálculo, temos
+  \begin{align}
+    \int_0^1 e^{-2x}\,dx &= \left[-\frac{1}{2}e^{-2x}\right]_0^1 \\
+                         &= -\frac{1}{2}e^{-2} + \frac{1}{2}e^{0} \\
+                         &= \frac{1}{2} - \frac{e^{-2}}{2},
+  \end{align}
+  como esperado.
+
+\ifispython
+No \sympy, temos\footnote{Veja a Observação \ref{obs:cap_int_python}.}:
+\begin{verbatim}
+>>> integrate(exp(-2*x),(x,0,1))
+   -2    
+  e     1
+-____ + __
+   2    2
+\end{verbatim}
+\fi      
+\end{ex}
 
 
 \subsection*{Exercícios resolvidos}
@@ -950,11 +1069,205 @@ i.e. $F(u(x))$ é primitiva de $f(u(x))u'(x)$.
   \end{align}
 \end{resol}
 
-\emconstrucao
+\begin{exeresol}
+  Calcule
+  \begin{equation}
+    \int \frac{e^x}{e^x - 1}\,dx.
+  \end{equation}
+\end{exeresol}
+\begin{resol}
+  Fazendo a substituição
+  \begin{equation}
+    u = e^x \Rightarrow du = e^x\,dx,
+  \end{equation}
+  temos
+  \begin{align}
+    \int \frac{e^x}{e^x - 1}\,dx &= \int \frac{du}{u - 1} \\
+                                 &= \int \frac{1}{u - 1}\,du.
+  \end{align}
+  Agora, fazendo a substituição
+  \begin{equation}
+    v = u - 1 \Rightarrow dv = du,
+  \end{equation}
+  temos
+  \begin{align}
+    \int \frac{e^x}{e^x - 1}\,dx &= \int \frac{1}{v}\,dv \\
+                                 &= \ln|v| + C \\
+                                 &= \ln|u-1| + C \\
+                                 &= \ln|e^x - 1| + C.
+  \end{align}
+
+  \ifispython
+No \sympy, temos\footnote{Veja a Observação \ref{obs:cap_int_python}.}:
+\begin{verbatim}
+>>> integrate(exp(x)/(exp(x)-1),x)
+     x    
+log(e  - 1)
+\end{verbatim}
+\fi      
+\end{resol}
+
+
+\begin{exeresol}
+  Calcule
+  \begin{equation}
+    \int_0^1x\sqrt{1-x^2}\,dx.
+  \end{equation}
+\end{exeresol}
+\begin{resol}
+  Vejamos as seguintes formas de calcular esta integral definida.
+  \begin{itemize}
+  \item Solução 1: aplicando a regra de substituição em integrais definidas.
+    \begin{equation}
+      \int_a^bf(u(x))u'(x)\,dx = \int_{u(a)}^{u(b)} f(u)\,du.
+    \end{equation}
+    Escolhendo, $u = 1-x^2$, temos $du = -2x\,dx$. Daí, segue
+    \begin{align}
+      \int_0^1x\sqrt{1-x^2}\,dx &= \int_{u(0)}^{u(1)}x\sqrt{u}\,\frac{du}{-2x}\\
+                                &= -\frac{1}{2}\int_{1}^0 u^{\frac{1}{2}}\,du\\
+                                &= -\frac{1}{2}\left.\frac{u^{\frac{1}{2}+1}}{\frac{1}{2}+1}\right|_{u=1}^0\\
+                                &= -\frac{1}{3}\left.\sqrt{u^3}\right|_{u=1}^0\\
+                                &= \frac{1}{3}.
+    \end{align}
+  \item Solução 2: calculando uma primitiva em função de $x$.
+    Para obtermos uma primitiva em função de $x$, calculamos a integral indefinida
+    \begin{equation}
+      \int x\sqrt{1-x^2}\,dx.
+    \end{equation}
+    Como anteriormente, usamos a regra de substituição. Escolhendo $u=1-x^2$, temos $du = -2x\,dx$ e, portanto
+    \begin{align}
+      \int x\sqrt{1-x^2}\,dx &= \int x\sqrt{u}\,\frac{du}{-2x}\\
+                             &= -\frac{1}{2}\int u^{\frac{1}{2}}\,du\\
+                             &= -\frac{1}{2}\frac{u^{\frac{1}{2}+1}}{\frac{1}{2}+1}\\
+                             &= -\frac{1}{3}\sqrt{u^3}\\
+                             &= -\frac{1}{3}\sqrt{(1-x^2)^3} + C.
+    \end{align}
+    Então, do teorema fundamental do cálculo, temos
+    \begin{equation}
+      \int_0^1 x\sqrt{1-x^2}\,dx = -\frac{1}{3}\left.\sqrt{(1-x^2)^3}\right|_{0}^1 = \frac{1}{3}.
+    \end{equation}
+  \end{itemize}
+
+  \ifispython
+  Para computarmos esta integral definida, podemos usar o seguinte comando do \verb+Sympy+:
+\begin{verbatim}
+integrate(x*sqrt(1-x**2),(x,0,1))
+\end{verbatim}
+  \fi
+\end{resol}
+
+
+\begin{exeresol}
+  Calcule a área total entre as curvas $y=(1-x)^3$, $y=0$, $x=0$ e $x=1$.
+\end{exeresol}
+\begin{resol}
+  A função $f(x) = (1-x)^3$ é positiva em $(0, 1)$ e negativa em $(1, 2)$. Logo, a área é igual a
+  \begin{equation}
+    A = \int_0^1 (1-x)^3\,dx - \int_1^2 (1-x)^3\,dx.
+  \end{equation}
+  Agora, calculamos
+  \begin{equation}
+    \int (1-x)^3\,dx.
+  \end{equation}
+  Para tanto, fazemos a substituição
+  \begin{equation}
+    u = 1-x \Rightarrow du = -dx.
+  \end{equation}
+  Logo,
+  \begin{align}
+    \int (1-x)^3\,dx &= -\int u^3du \\
+                     &= -\frac{u^4}{4} + C \\
+                     &= -\frac{(1-x)^4}{4} + C.
+  \end{align}
+  Então, do Teorema Fundamental do Cálculo, temos
+  \begin{align}
+    A &= \left[-\frac{(1-x)^4}{4}\right]_0^1 - \left[-\frac{(1-x)^4}{4}\right]_1^2 \\
+      &= \frac{1}{4} + \frac{1}{4} \\
+      &= \frac{1}{2}.
+  \end{align}
+
+  \ifispython
+  No \sympy, temos\footnote{Veja a Observação \ref{obs:cap_int_python}.}:
+\begin{verbatim}
+>>> integrate((1-x)**3,(x,0,1))-integrate((1-x)**3,(x,1,2))
+1/2
+\end{verbatim}
+  \fi      
+\end{resol}
 
 \subsection*{Exercícios}
 
-\emconstrucao
+\begin{exer}
+  Calcule
+  \begin{enumerate}[a)]
+  \item $\displaystyle \int \sen(2x)\,dx$
+  \item $\displaystyle \int \sqrt{x-1}\,dx$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a)~$\displaystyle \frac{-\cos(2x)}{2} + C$; b)~$\displaystyle \frac{2}{3}(x-1)^{3/2} + C$
+\end{resp}
+
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \int \cos^2(x)\,dx.
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $\displaystyle \frac{x}{2} + \frac{\sen(2x)}{4} + C$
+\end{resp}
+
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \int_0^{\frac{\pi}{4}}\cos(2x)\,dx.
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $1/2$
+\end{resp}
+
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \int \frac{\ln(x^3)}{x}\,dx.
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $\displaystyle \frac{3\ln^2(x)}{2} + C$
+\end{resp}
+
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \int \frac{7}{(x-1)^2}\,dx.
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $\frac{7}{2}$
+\end{resp}
+
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \int_0^{\ln 3} e^{2x}\,dx.
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $4$
+\end{resp}
+
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \int_0^{\sqrt{e-1}} \frac{x}{x^2+1}\,dx.
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $\frac{1}{2}$
+\end{resp}
+
 
 \section{Integração por partes}\label{cap_int_sec_partes}
 
@@ -1025,112 +1338,6 @@ integrate(x*log(x),x)
   \fi
 \end{resol}
 
-\emconstrucao
-
-\subsection*{Exercícios}
-
-\emconstrucao
-
-\section{Integral definida}\label{cap_int_intdef}
-
-\emconstrucao
-
-\subsection{Teorema fundamental do cálculo}
-
-O teorema fundamental do cálculo estabelece uma relação entre a integral definida de uma função e suas primitivas.
-
-\begin{teo}\normalfont{(Teorema fundamental do cálculo)}
-  Se $f$ é uma função contínua em um intervalo fechado $[a, b]$ e $F$ é qualquer primitiva de $f$ em $[a, b]$, então
-  \begin{equation}
-    \int_a^b f(x)\,dx = F(b)-F(a).
-  \end{equation}
-\end{teo}
-
-\begin{obs}\label{obs:tfc1}
-  Uma outra forma do teorema fundamental do cálculo é a seguinte: se $f$ é contínua em $[a, b]$, então
-  \begin{equation}
-    F(x) = \int_a^x f(t)\,dt
-  \end{equation}
-  é contínua em $[a, b]$, derivável em $(a, b)$ e sua derivada é
-  \begin{equation}
-    F'(x) = \frac{d}{dx}\int_a^x f(t)\,dt = f(x).
-  \end{equation}
-\end{obs}
-
-\subsection{Substituição em integrais definidas}
-
-Em algumas situações, faz-se necessário a aplicação da técnica de integração por substituição para integrais definidas. Neste contexto, sejam $f$ e $u$ funções dadas e $F$ uma primitiva de $f$. Então,
-\begin{equation}
-  [F(u)]' = F'(u)u' = f(u)u'.
-\end{equation}
-Portanto, pelo teorema fundamental do cálculo, temos
-\begin{align}
-  \int_a^b f(u(x))u'(x)\,dx &= F(u(x))|_{x=a}^{x=b}\\
-                            &= F(u)|_{u=u(a)}^{u=u(b)}\\
-                            &= \int_{u(a)}^{u(b)} f(u)\,du.
-\end{align}
-Resumidamente, temos que a \emph{regra da substituição em integrais definidas}, lê-se
-\begin{equation}
-  \int_a^b f(u(x))u'(x)\,dx = \int_{u(a)}^{u(b)} f(u)\,du.
-\end{equation}
-
-\subsection{Integração por partes para integrais definidas}
-
-Podemos aplicar a fórmula de integração por partes para integrais definidas. Neste caso, temos
-\begin{equation}
-  \int_a^b f(x)g'(x)\,dx = f(x)g(x)|_{a}^b - \int_a^b g(x)f'(x)\,dx.
-\end{equation}
-
-\subsection*{Exercícios resolvidos}
-
-\begin{exeresol}
-  Calcule
-  \begin{equation}
-    \int_0^1x\sqrt{1-x^2}\,dx.
-  \end{equation}
-\end{exeresol}
-\begin{resol}
-  Vejamos as seguintes formas de calcular esta integral definida.
-  \begin{itemize}
-  \item Solução 1: aplicando a regra de substituição em integrais definidas.
-    \begin{equation}
-      \int_a^bf(u(x))u'(x)\,dx = \int_{u(a)}^{u(b)} f(u)\,du.
-    \end{equation}
-    Escolhendo, $u = 1-x^2$, temos $du = -2x\,dx$. Daí, segue
-    \begin{align}
-      \int_0^1x\sqrt{1-x^2}\,dx &= \int_{u(0)}^{u(1)}x\sqrt{u}\,\frac{du}{-2x}\\
-                                &= -\frac{1}{2}\int_{1}^0 u^{\frac{1}{2}}\,du\\
-                                &= -\frac{1}{2}\left.\frac{u^{\frac{1}{2}+1}}{\frac{1}{2}+1}\right|_{u=1}^0\\
-                                &= -\frac{1}{3}\left.\sqrt{u^3}\right|_{u=1}^0\\
-                                &= \frac{1}{3}.
-    \end{align}
-  \item Solução 2: calculando uma primitiva em função de $x$.
-    Para obtermos uma primitiva em função de $x$, calculamos a integral indefinida
-    \begin{equation}
-      \int x\sqrt{1-x^2}\,dx.
-    \end{equation}
-    Como anteriormente, usamos a regra de substituição. Escolhendo $u=1-x^2$, temos $du = -2x\,dx$ e, portanto
-    \begin{align}
-      \int x\sqrt{1-x^2}\,dx &= \int x\sqrt{u}\,\frac{du}{-2x}\\
-                             &= -\frac{1}{2}\int u^{\frac{1}{2}}\,du\\
-                             &= -\frac{1}{2}\frac{u^{\frac{1}{2}+1}}{\frac{1}{2}+1}\\
-                             &= -\frac{1}{3}\sqrt{u^3}\\
-                             &= -\frac{1}{3}\sqrt{(1-x^2)^3} + C.
-    \end{align}
-    Então, do teorema fundamental do cálculo, temos
-    \begin{equation}
-      \int_0^1 x\sqrt{1-x^2}\,dx = -\frac{1}{3}\left.\sqrt{(1-x^2)^3}\right|_{0}^1 = \frac{1}{3}.
-    \end{equation}
-  \end{itemize}
-
-  \ifispython
-  Para computarmos esta integral definida, podemos usar o seguinte comando do \verb+Sympy+:
-\begin{verbatim}
-integrate(x*sqrt(1-x**2),(x,0,1))
-\end{verbatim}
-  \fi
-\end{resol}
-
 \begin{exeresol}
   Calcule
   \begin{equation}
@@ -1163,39 +1370,7 @@ integrate(x*exp(x),(x,-1,1))
   \fi
 \end{resol}
 
-\emconstrucao
-
 \subsection*{Exercícios}
-
-\begin{exer}
-  Calcule
-  \begin{equation}
-    \int \frac{7}{(x-1)^2}\,dx.
-  \end{equation}
-\end{exer}
-\begin{resp}
-  $\frac{7}{2}$
-\end{resp}
-
-\begin{exer}
-  Calcule
-  \begin{equation}
-    \int_0^{\ln 3} e^{2x}\,dx.
-  \end{equation}
-\end{exer}
-\begin{resp}
-  $4$
-\end{resp}
-
-\begin{exer}
-  Calcule
-  \begin{equation}
-    \int_0^{\sqrt{e-1}} \frac{x}{x^2+1}\,dx.
-  \end{equation}
-\end{exer}
-\begin{resp}
-  $\frac{1}{2}$
-\end{resp}
 
 \begin{exer}
   Calcule
@@ -1207,3 +1382,4 @@ integrate(x*exp(x),(x,-1,1))
   $-\frac{5}{e}+e$
 \end{resp}
 
+\emconstrucao
