@@ -1045,7 +1045,7 @@ Ou seja, concluímos que
 \begin{ex}
   Vamos calcular
   \begin{equation}
-    \int x\lg(x^2)\,dx.
+    \int x\tg(x^2)\,dx.
   \end{equation}
   Usando a regra de substituição, escolhemos
   \begin{equation}
@@ -1063,6 +1063,54 @@ Ou seja, concluímos que
 Com raciocínio análogo ao utilizado na integração da função tangente, obtemos\footnote{Veja o Exercício \ref{exer:int_subs_cotg}.}
 \begin{equation}
   \pmb{\int \cotg(x)\,dx = \ln|\sen(x)| + C}.
+\end{equation}
+
+Agora, vamos calcular
+\begin{equation}
+  \int \sec(x)\,dx.
+\end{equation}
+Observamos que
+\begin{align}
+  \int\sec(x)\,dx &= \int \sec(x)\cdot\frac{\sec(x)+\tg(x)}{\sec(x)+\tg(x)}\,dx \\
+                  &= \int \frac{\sec^2(x)+\sec(x)\tg(x)}{\sec(x)+\tg(x)}\,dx.
+\end{align}
+Então, fazendo a substituição
+\begin{equation}
+  u = \sec(x) + \tg(x) \Rightarrow du = \sec(x)\tg(x) + \sec^2(x),
+\end{equation}
+temos
+\begin{align}
+  \int\sec(x)\,dx &= \int\frac{\sec^2(x)+\sec(x)\tg(x)}{\sec(x)+\tg(x)}\,dx \\
+                  &= \int\frac{1}{u}\,du \\
+                  &= \ln|u| + C \\
+                  &= \ln|\sec(x)+\tg(x)| + C.
+\end{align}
+Ou seja, obtemos
+\begin{equation}
+  \pmb{\int\sec(x)\,dx = \ln|\sec(x)+\tg(x)|+C}.
+\end{equation}
+
+\begin{ex}
+  Vamos calcular
+  \begin{equation}
+    \int\sec\left(\frac{u}{2}\right)\,du.
+  \end{equation}
+  Fazendo a substituição
+  \begin{equation}
+    v = \frac{u}{2} \Rightarrow dv = \frac{du}{2},
+  \end{equation}
+  segue
+  \begin{align}
+    \int\sec\left(\frac{u}{2}\right)\,du &= \int\sec(v)\cdot 2\,dv \\
+                                         &= 2\int \sec(v)\,dv \\
+                                         &= 2\ln|\sec(v)+\tg(v)| + C \\
+                                         &= 2\ln\left|\sec\left(\frac{u}{2}\right)+\tg\left(\frac{u}{2}\right)\right| + C.
+  \end{align}
+\end{ex}
+
+Com raciocínio análogo ao utilizado na integração da função secante, obtemos\footnote{Veja o Exercício \ref{exer:int_subs_cosec}.}
+\begin{equation}
+  \pmb{\int \cossec(x)\,dx = -\ln|\cossec(x)+\cotg(x)| + C}.
 \end{equation}
 
 
@@ -1131,7 +1179,9 @@ No \sympy, temos\footnote{Veja a Observação \ref{obs:cap_int_python}.}:
   & \int \sen(x)\,dx = -\cos(x) + C \\
   & \int \cos(x)\,dx = \sen(x) + C \\
   & \int \tg(x)\,dx = \ln|\sec(x)| + C \\
-  & \int \cotg(x)\,dx = \ln|\sen(x)| + C
+  & \int \cotg(x)\,dx = \ln|\sen(x)| + C \\
+  & \int \sec(x)\,dx = \ln|\sec(x)+\tg(x)| + C \\
+  & \int \cossec(x)\,dx = -\ln|\cossec(x)+\cotg(x)| + C
 \end{align}
 \end{small}
 
@@ -1205,7 +1255,7 @@ log(e  - 1)
 \begin{resol}
   Vejamos as seguintes formas de calcular esta integral definida.
   \begin{itemize}
-  \item Solução 1: aplicando a regra de substituição em integrais definidas.
+  \item {\bf Solução 1}: aplicando a regra de substituição em integrais definidas.
     \begin{equation}
       \int_a^bf(u(x))u'(x)\,dx = \int_{u(a)}^{u(b)} f(u)\,du.
     \end{equation}
@@ -1217,7 +1267,7 @@ log(e  - 1)
                                 &= -\frac{1}{3}\left.\sqrt{u^3}\right|_{u=1}^0\\
                                 &= \frac{1}{3}.
     \end{align}
-  \item Solução 2: calculando uma primitiva em função de $x$.
+  \item {\bf Solução 2}: calculando uma primitiva em função de $x$.
     Para obtermos uma primitiva em função de $x$, calculamos a integral indefinida
     \begin{equation}
       \int x\sqrt{1-x^2}\,dx.
@@ -1356,6 +1406,16 @@ integrate(x*sqrt(1-x**2),(x,0,1))
   $\frac{1}{2}$
 \end{resp}
 
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \int_0^{\pi/4} \sec^2(x)e^{\tg(x)}\,dx.
+  \end{equation}
+\end{exer}
+\begin{resol}
+  $e-1$
+\end{resol}
+
 \begin{exer}\label{exer:int_subs_cotg}
   Use a regra da substituição para mostrar que
   \begin{equation}
@@ -1372,6 +1432,13 @@ integrate(x*sqrt(1-x**2),(x,0,1))
 \begin{resp}
   $\displaystyle \frac{x}{2} + \frac{\sen(x)\cos(x)}{2} + C$
 \end{resp}
+
+\begin{exer}\label{exer:int_subs_cosec}
+  Use a regra da substituição para mostrar que
+  \begin{equation}
+    \int \cossec(x)\,dx = -\ln|\cossec(x)+\cotg(x)| + C.
+  \end{equation}
+\end{exer}
 
 
 \section{Integração por partes}\label{cap_int_sec_partes}
