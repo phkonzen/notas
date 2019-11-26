@@ -1088,7 +1088,7 @@ Ou seja, obtemos
   \end{align}
 \end{ex}
 
-Com raciocínio análogo ao utilizado na integração da função secante, obtemos\footnote{Veja o Exercício \ref{exer:int_subs_cosec}.}
+Com raciocínio análogo ao utilizado na integração da função secante, obtemos\footnote{Veja o Exercício \ref{exer:int_subs_cossec}.}
 \begin{equation}
   \pmb{\int \cossec(x)\,dx = -\ln|\cossec(x)+\cotg(x)| + C}.
 \end{equation}
@@ -1267,7 +1267,7 @@ log(e  - 1)
   \end{itemize}
 
   \ifispython
-  Para computarmos esta integral definida, podemos usar o seguinte comando do \verb+Sympy+:
+  Para computarmos esta integral definida, podemos usar o seguinte comando do \sympy\footnote{Veja a Observação \ref{obs:cap_int_python}.}:
 \begin{verbatim}
 integrate(x*sqrt(1-x**2),(x,0,1))
 \end{verbatim}
@@ -1320,10 +1320,11 @@ integrate(x*sqrt(1-x**2),(x,0,1))
   \begin{enumerate}[a)]
   \item $\displaystyle \int \sen(2x)\,dx$
   \item $\displaystyle \int \sqrt{x-1}\,dx$
+  \item $\displaystyle \int \sen(x)\cos(x)\,dx$
   \end{enumerate}
 \end{exer}
 \begin{resp}
-  a)~$\displaystyle \frac{-\cos(2x)}{2} + C$; b)~$\displaystyle \frac{2}{3}(x-1)^{3/2} + C$
+  a)~$\displaystyle \frac{-\cos(2x)}{2} + C$; b)~$\displaystyle \frac{2}{3}(x-1)^{3/2} + C$; c)~$\displaystyle \frac{\sen^2(x)}{2} + C$
 \end{resp}
 
 \begin{exer}
@@ -1413,7 +1414,7 @@ integrate(x*sqrt(1-x**2),(x,0,1))
   $\displaystyle \frac{x}{2} + \frac{\sen(x)\cos(x)}{2} + C$
 \end{resp}
 
-\begin{exer}\label{exer:int_subs_cosec}
+\begin{exer}\label{exer:int_subs_cossec}
   Use a regra da substituição para mostrar que
   \begin{equation}
     \int \cossec(x)\,dx = -\ln|\cossec(x)+\cotg(x)| + C.
@@ -1448,14 +1449,23 @@ Daí, segue a \emph{fórmula de integração por partes}
   Tomando
   \begin{align}
     &u = x \Rightarrow \frac{du}{dx} = 1 \Rightarrow du = dx,\\
-    &dv = e^x\,dx \Rightarrow \int dv = \int e^x\,dx \Rightarrow v = e^x.\footnote{A constante indeterminada deve ser tomada igual a zero.}
+    &dv = e^x\,dx \Rightarrow \int dv = \int e^x\,dx \Rightarrow v = e^x.
   \end{align}
-  Então, da fórmula de integração por partes, temos
+  Observa-se que no cálculo de $v$, desprezamos a constante indeterminada. Então, da fórmula de integração por partes, temos
   \begin{align}
-    \int xe^x\,dx &= \int udv = uv - \int vdu\\
-                  &= xe^x - \int e^xdx\\
+    \int xe^x\,dx &= \int udv = uv - \int vdu \\
+                  &= xe^x - \int e^xdx \\
                   &= xe^x - e^x + C.
   \end{align}
+  
+  \ifispython
+  No \sympy\footnote{Veja a Observação \ref{obs:cap_int_python}.}, temos:
+\begin{verbatim}
+>>> integrate(x*exp(-x),x)
+      x
+(x-1)e
+\end{verbatim}
+  \fi
 \end{ex}
 
 \subsection{A integral do logaritmo natural}
@@ -1475,8 +1485,12 @@ Segue que
                   &= uv - \int v\,du \\
                   &= x\ln(x) - \int x\frac{1}{x}\,dx \\
                   &= x\ln(x) - \int\,dx \\
-                  &= x\ln(x) - x + C.\label{eq:int_lnx}
+                  &= x\ln(x) - x + C.
 \end{align}
+Ou seja, concluímos que
+\begin{equation}\label{eq:int_lnx}
+  \pmb{\int \ln x \,dx = x\ln(x) - x + C}.
+\end{equation}
 
 \begin{ex}
   Vamos calcular
@@ -1498,31 +1512,63 @@ Segue que
                      &= \frac{u\ln(u)}{2} - \frac{u}{2} + C \\
                      &= x\ln(2x) - x + C.
   \end{align}
+
+  \ifispython
+  No \sympy\footnote{Veja a Observação \ref{obs:cap_int_python}.}, temos:
+\begin{verbatim}
+>>> integrate(log(2*x),x)
+x·log(2·x) - x
+\end{verbatim}
+  \fi
 \end{ex}
 
-\subsection{A integral de $\sen(x)\cos(x)$}
+\begin{ex}
+  Vamos calcular
+  \begin{equation}
+    \int \sen(x)e^x\,dx.
+  \end{equation}
+  Para integrar por partes, podemos escolher
+  \begin{align}
+    u = \sen(x) &\Rightarrow du = \cos(x)\,dx \\
+    dv = e^x\,dx &\Rightarrow v = e^x
+  \end{align}
+  Então, segue
+  \begin{equation}\label{eq:int_aux_p1}
+    \int\sen(x)e^x\,dx = \sen(x)e^x - \int\cos(x)e^x\,dx.
+  \end{equation}
+  Agora, aplicamos integração por partes a esta última integral. Tomamos as seguintes novas escolhas
+  \begin{align}
+    u = \cos(x) &\Rightarrow du = -\sen(x)\,dx \\
+    dv = e^x\,dx &\Rightarrow dv = e^x
+  \end{align}
+  Segue que
+  \begin{equation}
+    \int\cos(x)e^x\,dx = \cos(x)e^x + \int\sen(x)e^x\,dx.
+  \end{equation}
+  Substituindo este resultado na equação \eqref{eq:int_aux_p1}, obtemos
+  \begin{equation}
+    \int\sen(x)e^x\,dx = \sen(x)e^x-\cos(x)e^x-\int\sen(x)e^x\,dx.
+  \end{equation}
+  Somando este primeiro termo em ambos os lados desta equação, obtemos
+  \begin{equation}
+    2\int\sen(x)e^x\,dx = (\sen(x)-\cos(x))e^x.
+  \end{equation}
+  Daí, concluímos que
+  \begin{equation}
+    \int\sen(x)e^x\,dx = \frac{\sen(x)-\cos(x)}{2}e^x + C.
+  \end{equation}
 
-Vamos calcular
-\begin{equation}
-  \int \sen(x)\cos(x)\,dx.
-\end{equation}
-Aplicando integração por partes com
-\begin{align}
-  & u = \sen(x) \Rightarrow du = \cos(x)\,dx, \\
-  & dv = \cos(x)\,dx \Rightarrow v = \sen(x)\,dx,
-\end{align}
-temos
-\begin{align}
-  \int \sen(x)\cos(x)\,dx &= \sen^2(x) - \int \sen(x)\cos(x)\,dx.
-\end{align}
-Logo,
-\begin{equation}
-  2\int \sen(x)\cos(x)\,dx = \sen^2(x).
-\end{equation}
-Concluímos que
-\begin{equation}
-  \pmb{\int\sen(x)\cos(x)\,dx = \frac{\sen^2(x)}{2} + C}.
-\end{equation}
+  \ifispython
+  No \sympy\footnote{Veja a Observação \ref{obs:cap_int_python}.}, temos:
+\begin{verbatim}
+>>> integrate(sin(x)*exp(x),x)
+ x            x
+e · sin(x)   e · cos(x)
+---------- - ----------
+     2           2
+\end{verbatim}
+  \fi
+\end{ex}
 
 \subsection{Integral definida}
 
@@ -1552,11 +1598,31 @@ Sejam $u=u(x)$ e $v=v(x)$ funções diferenciáveis em $x$. Segue que $du = u'(x
   No \sympy\footnote{Veja a Observação \ref{obs:cap_int_python}.}, temos:
 \begin{verbatim}
 >>> integrate(x*exp(-x),(x,0,2))
-     -2    
+    -2    
 - 3e   + 1
 \end{verbatim}
   \fi
 \end{ex}
+
+\subsection{Tabela de integrais}
+
+\begin{small}
+\begin{align}
+  & \int k\cdot f(x)\,dx = k\cdot\int f(x)\,dx\\
+  & \int \left[f(x)\pm g(x)\right]\,dx = \int f(x)\,dx \pm \int g(x)\,dx\\
+  & \int x^r\,dx = \frac{x^{r+1}}{r+1} + C,\quad r\neq -1\\
+  & \int \frac{1}{x}\,dx = \ln x + C \\
+  & \int e^x\,dx = e^x + C \\
+  & \int a^x\,dx = \frac{a^x}{\ln a} + C \\
+  & \int \ln x \,dx = x\ln(x) - x + C \\
+  & \int \sen(x)\,dx = -\cos(x) + C \\
+  & \int \cos(x)\,dx = \sen(x) + C \\
+  & \int \tg(x)\,dx = \ln|\sec(x)| + C \\
+  & \int \cotg(x)\,dx = \ln|\sen(x)| + C \\
+  & \int \sec(x)\,dx = \ln|\sec(x)+\tg(x)| + C \\
+  & \int \cossec(x)\,dx = -\ln|\cossec(x)+\cotg(x)| + C
+\end{align}
+\end{small}
 
 \subsection*{Exercícios resolvidos}
 
@@ -1587,9 +1653,13 @@ Sejam $u=u(x)$ e $v=v(x)$ funções diferenciáveis em $x$. Segue que $du = u'(x
   \end{align}
 
   \ifispython
-  Podemos computar esta integral, usando o seguinte comando do \verb+Sympy+\footnote{Veja a Observação \ref{obs:cap_int_python}.}:
+  Podemos computar esta integral, usando o seguinte comando do \sympy\footnote{Veja a Observação \ref{obs:cap_int_python}.}:
 \begin{verbatim}
-integrate(x*log(x),x)
+>>> integrate(x*log(x),x)
+ 2             2
+x · log(x)    x
+---------- - ---
+     2        4
 \end{verbatim}
   \fi
 \end{resol}
@@ -1619,14 +1689,71 @@ integrate(x*log(x),x)
                          &= 2e^{-1}.
   \end{align}
   \ifispython
-  Para computarmos esta integral definida, podemos usar o seguinte comando do \verb+Sympy+:
+  Para computarmos esta integral definida, podemos usar o seguinte comando do \sympy\footnote{Veja a Observação \ref{obs:cap_int_python}.}:
 \begin{verbatim}
-integrate(x*exp(x),(x,-1,1))
+>>> integrate(x*exp(x),(x,-1,1))
+   -1
+2·e
 \end{verbatim}
   \fi
 \end{resol}
 
 \subsection*{Exercícios}
+
+\begin{exer}
+  Calcule
+  \begin{enumerate}[a)]
+  \item $\displaystyle \int x\sen(x)\,dx$
+  \item $\displaystyle \int x\cos(x)\,dx$
+  \item $\displaystyle \int x^2\ln(x)\,dx$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a)~$\displaystyle \sen(x)-x\cos(x)+C$; b)~$\displaystyle \cos(x)+x\sen(x)+C$;  c)~$\displaystyle \frac{x^3\ln(x)}{3} - \frac{x^3}{9} + C$
+\end{resp}
+
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \int\log_2(x)\,dx.
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $\displaystyle \frac{x\ln(x)}{\log_2(x)}-\frac{x}{\log_2(x)} + C$
+\end{resp}
+
+\begin{exer}
+  Calcule
+  \begin{enumerate}[a)]
+  \item $\displaystyle \int x^2e^x\,dx$
+  \item $\displaystyle \int x^2\sen(x)\,dx$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a)~$\displaystyle \left(x^2-2x+2\right)e^x+C$; b)~$\displaystyle -x^2\cos(x)+2x\sen(x)+2\cos(x)+C$
+\end{resp}
+
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \int\cos(x)e^x\,dx.
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $\displaystyle \frac{\sen(x)+\cos(x)}{2}e^x + C$
+\end{resp}
+
+\begin{exer}
+  Calcule
+  \begin{enumerate}[a)]
+  \item $\displaystyle \int_0^{\frac{\pi}{2}} x\sen(x)\,dx$
+  \item $\displaystyle \int_{-\pi}^{0} x\cos(x)\,dx$
+  \item $\displaystyle \int_1^e x^2\ln(x)\,dx$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a)~$1$; b)~$2$;  c)~$\displaystyle \frac{1}{9}+\frac{2e^3}{9}$
+\end{resp}
 
 \begin{exer}
   Calcule
@@ -1638,7 +1765,6 @@ integrate(x*exp(x),(x,-1,1))
   $-\frac{5}{e}+e$
 \end{resp}
 
-\emconstrucao
 
 \section{Integração por frações parciais}\label{cap_int_sec_frapar}
 
