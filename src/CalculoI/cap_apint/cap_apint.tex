@@ -5,31 +5,142 @@
 
 \ifispython
 \begin{obs}\label{obs:cap_apint_python}
-  Nos códigos \verb+Python+ apresentados neste capítulo, assumimos o seguinte preâmbulo:
+  Nos códigos \python~apresentados neste capítulo, assumimos o seguinte preâmbulo:
 \begin{verbatim}
 from sympy import *
-var('x',real=True)
+init_session()
 \end{verbatim}
 \end{obs}
 \fi
 
 \section{Cálculo de áreas}\label{cap_apint_sec_areas}
 
-A integral definida $\int_a^b f(x)\,dx$ está associada a área entre o gráfico da função $f$ e o eixo das abscissas no intervalo $[a,b]$. Ocorre que se $f$ for não negativa, então $\int_a^b f(x)\,dx \geq 0$. Se $f$ for negativa, então $\int_a^b f(x)\,dx < 0$. Por isso, dizemos que $\int_a^b f(x)\,dx$ é a área líquida (ou com sinal) entre o gráfico de $f$ e o eixo das abscissas.
+A integral definida $\int_a^b f(x)\,dx$ está associada a área entre o gráfico da função $f$ e o eixo das abscissas no intervalo $[a,b]$ (Veja Seção \ref{cap_int_sec_nocaoint}). Ocorre que se $f$ for não negativa, então $\int_a^b f(x)\,dx \geq 0$. Se $f$ for negativa, então $\int_a^b f(x)\,dx < 0$. Por isso, dizemos que $\int_a^b f(x)\,dx$ é a \emph{área líquida} (ou com sinal) entre o gráfico de $f$ e o eixo das abscissas.
 
-\emconstrucao
+\begin{ex}
+  Vamos calcular a área total entre o gráfico de $f(x) = (x-1)^3$ e o eixo das abscissas, restrito ao intervalo $[0, 2]$.
+
+  Começamos fazendo o estudo de sinal de $f$ no intervalo. Como $x-1 \leq 0$ para $x\leq1$ e, $x-1\geq 0$ para $x \geq 1$, temos que $f(x)<0$ em $[0, 1]$ e $f(x)>0$ em $[1, 2]$. Logo, a área total é dada por
+  \begin{equation}
+    A = -\int_0^1f(x)\,dx + \int_1^2f(x)\,dx.
+  \end{equation}]
+  
+  Agora, usando a substituição $u=x-1$, temos $du = dx$ e segue que
+  \begin{align}
+    \int f(x)\,dx &= \int (x-1)^3\,dx \\
+                  &= \int u^3\,du \\
+                  &= \frac{u^4}{4} + C \\
+                  &= \frac{(x-1)^4}{4} + C.
+  \end{align}
+
+  Então, do Teorema Fundamental do Cálculo, obtemos
+  \begin{align}
+    A &= -\int_0^1f(x)\,dx + \int_1^2f(x)\,dx \\
+      &= -\left[\frac{(x-1)^4}{4}\right]_0^1 + \left[\frac{(x-1)^4}{4}\right]_1^2 \\
+      &= -\left[\frac{(1-1)^4}{4} - \frac{(0-1)^4}{4}\right] + \left[\frac{(2-1)^4}{4} - \frac{(1-1)^4}{4}\right] \\
+      &= \frac{1}{4} + \frac{1}{4} = \frac{1}{2}.
+  \end{align}
+
+  \ifispython
+  No \sympy~ podemos usar os seguintes comandos\footnote{Veja a Observação \ref{obs:cap_int_python}.}:
+\begin{verbatim}
+>>> -integrate((x-1)**3,(x,0,1))+integrate((x-1)**3,(x,1,2))
+1/2
+\end{verbatim}
+\fi  
+\end{ex}
 
 \subsection{Áreas entre curvas}
 
 Observamos que se $f(x)\geq g(x)$ no intervalo $[a, b]$, então
 \begin{equation}
-  \int_a^b f(x)-g(x)\,dx
+  \int_a^b f(x)-g(x)\,dx = \int_a^bf(x)\,dx - \int_a^bg(x)\,dx
 \end{equation}
-corresponde à área entre as curvas $f(x)$ e $g(x)$ restritas ao intervalo $[a,b]$.
+corresponde à área entre as curvas $y = f(x)$ e $y = g(x)$ restritas ao intervalo $[a,b]$. Ou seja, fazendo $h(x) = f(x)-g(x)$, temos que
+\begin{equation}
+  \int_a^bh(x)\,dx
+\end{equation}
+é a área entre essas curvas restritas ao intervalo $[a, b]$. Ainda, se $f(x)\leq g(x)$, entre a área entre elas é dada por
+\begin{equation}
+  -\int_a^bh(x)\,dx = \int_a^bg(x)\,dx - \int_a^bf(x)\,dx.
+\end{equation}
 
-\emconstrucao
+\begin{ex}
+  Vamos calcular a área entre as curvas $y = (x-1)^3$, $y = x-1$, $x=0$ e $x=2$.
+
+  Começamos definindo $h(x) = (x-1)^3 - (x-1)$. A fim de fazermos o estudo de sinal de $h$, identificamos seus zeros.
+  \begin{align}
+    h(x) &= (x-1)^3-(x-1) \\
+         &= (x-1)\left[(x-1)^2-1\right] \\
+         &= (x-1)(x^2-2x) \\
+         &= (x-1)\cdot x\cdot (x-2).
+  \end{align}
+  Ou seja, $x_1=0$, $x_2=1$ e $x_3=2$ são as raízes de $h$. Daí, segue seu estudo de sinal:
+  \begin{center}
+    \begin{tabular}{l|c|c}
+              & $0<x<1$ & $1<x<2$ \\\hline
+      $(x-1)$ &   -     &    +    \\
+      $x$     &   +     &    +    \\
+      $(x-2)$ &   -     &    -    \\\hline
+      $h(x)$  &   +     &    -    \\\hline
+    \end{tabular}
+  \end{center}
+  Assim, temos que a área desejada pode ser calculada como
+  \begin{equation}
+    A = \int_0^1 h(x)\,dx - \int_1^2 h(x)\,dx.
+  \end{equation}
+
+  Agora, calculamos a integral de $h$, i.e.
+  \begin{align}
+    \int h(x)\,dx &= \int (x-1)^3-(x-1)\,dx \\
+                  &= \int (x-1)^3\,dx - \int x\,dx + \int\,dx \\
+                  &= \frac{(x-1)^4}{4} - \frac{x^2}{2} + x + C.
+  \end{align}
+
+  Por fim, do Teorema Fundamental do Cálculo, obtemos
+  \begin{align}
+    A &= \int_0^1 h(x)\,dx - \int_1^2 h(x)\,dx \\
+      &= \left[\frac{(x-1)^4}{4} - \frac{x^2}{2} + x\right]_0^1 - \left[\frac{(x-1)^4}{4} - \frac{x^2}{2} + x\right]_1^2 \\
+      &= -\frac{1}{2}+1-\frac{1}{4}-\left(\frac{1}{4}-2+2+\frac{1}{2}-1\right) \\
+      &= \frac{1}{2}.
+  \end{align}
+  
+  \ifispython
+  No \sympy~ podemos usar os seguintes comandos\footnote{Veja a Observação \ref{obs:cap_int_python}.}:
+\begin{verbatim}
+>>> f = (x-1)**3-(x-1)
+>>> integrate(f,(x,0,1))-integrate(f,(x,1,2))
+1/2
+\end{verbatim}
+\fi  
+\end{ex}
 
 \subsection*{Exercícios resolvidos}
+
+\begin{exeresol}
+  Cálculo a área entre a reta $y=1$ e o gráfico de $f(x)=x^2$ restritas ao intervalo $[0,1]$.
+\end{exeresol}
+\begin{resol}
+  Observamos que a medida desta área corresponde à área do quadrado $\{0\leq x \leq 1\}\times \{0\leq y \leq 1\}$ descontada a área sob o gráfico de $f(x)=x^2$ restrita ao intervalo $[0,1]$. Isto é,
+  \begin{align}
+    A &= 1 - \int_0^1 x^2\,dx\\
+      &= 1 - \left[\frac{x^3}{3}\right]_0^1\\
+      &= 1 - \frac{2}{3} = \frac{1}{3}.
+  \end{align}
+\end{resol}
+
+\begin{exeresol}
+  Calcule a área entre as curvas $y=x^2$, $y=x$, $x=0$ e $x=1$.
+\end{exeresol}
+\begin{resol}
+  O problema é equivalente a calcular a área entre os gráficos das funções $f(x)=x$ e $g(x)=x^2$ restritas ao intervalo $[0,1]$. Como $f(x)\geq g(x)$ neste intervalo, temos
+  \begin{align}
+    A &= \int_0^1 f(x)-g(x)\,dx\\
+      &= \int_0^1 x-x^2\,dx\\
+      &= \left.\frac{x^2}{2}-\frac{x^3}{3}\right|_0^1\\
+      &= \frac{1}{6}.
+  \end{align}
+\end{resol}
 
 \begin{exeresol}
   Calcule a área entre o gráfico de $f(x) = x^3-x$ e o eixo das abscissas no intervalo $[-1,1]$.
@@ -69,7 +180,7 @@ corresponde à área entre as curvas $f(x)$ e $g(x)$ restritas ao intervalo $[a,
   \end{enumerate}
 
   \ifispython
-  Podemos computar a solução deste exercícios usando os seguintes comandos do \verb+Sympy+\footnote{Veja Observação \ref{obs:cap_apint_python}.}. Para o estudo de sinal, podemos utilizar
+  Podemos computar a solução deste exercícios usando os seguintes comandos do \sympy\footnote{Veja Observação \ref{obs:cap_apint_python}.}. Para o estudo de sinal, podemos utilizar
 \begin{verbatim}
 f = lambda x: x*(x-1)*(x+1)
 reduce_inequalities(f(x)>=0)
@@ -80,33 +191,6 @@ integrate(f(x),(x,-1,0))-integrate(f(x),(x,0,1))
 \end{verbatim}
   \fi
 \end{resol}
-
-\begin{exeresol}
-  Cálculo a área entre a reta $y=1$ e o gráfico de $f(x)=x^2$ restritas ao intervalo $[0,1]$.
-\end{exeresol}
-\begin{resol}
-  Observamos que a medida desta área corresponde à área do quadrado $\{0\leq x \leq 1\}\times \{0\leq y \leq 1\}$ descontada a área sob o gráfico de $f(x)=x^2$ restrita ao intervalo $[0,1]$. Isto é,
-  \begin{align}
-    A &= 1 - \int_0^1 x^2\,dx\\
-      &= 1 - \left[\frac{x^3}{3}\right]_0^1\\
-      &= 1 - \frac{2}{3} = \frac{1}{3}.
-  \end{align}
-\end{resol}
-
-\begin{exeresol}
-  Calcule a área entre as curvas $y=x^2$, $y=x$, $x=0$ e $x=1$.
-\end{exeresol}
-\begin{resol}
-  O problema é equivalente a calcular a área entre os gráficos das funções $f(x)=x$ e $g(x)=x^2$ restritas ao intervalo $[0,1]$. Como $f(x)\geq g(x)$ neste intervalo, temos
-  \begin{align}
-    A &= \int_0^1 f(x)-g(x)\,dx\\
-      &= \int_0^1 x-x^2\,dx\\
-      &= \left.\frac{x^2}{2}-\frac{x^3}{3}\right|_0^1\\
-      &= \frac{1}{6}.
-  \end{align}
-\end{resol}
-
-\emconstrucao
 
 \subsection*{Exercícios}
 
@@ -121,18 +205,22 @@ integrate(f(x),(x,-1,0))-integrate(f(x),(x,0,1))
   Calcule a área entre as curvas $y=x$, $y=x^2$, $x=0$ e $x=2$.
 \end{exer}
 \begin{resp}
-  Observamos o problema é equivalente a calcular a área entre os gráficos das funções $f(x)=x^2$ e $g(x)=x$ restritas no intervalo $[0,2]$. Como $g(x)\geq f(x)$ no intervalo $[0,1]$ e $f(x)\geq g(x)$ no intervalo $[1,2]$, temos
-  \begin{align}
-    A &= \int_0^1 g(x)-f(x)\,dx + \int_1^2 f(x)-g(x)\,dx\\
-      &= \int_0^1 x-x^2\,dx + \int_1^2 x^2-x\,dx\\
-      &= \left[\frac{x^2}{2}-\frac{x^3}{3}\right]_0^1 + \left[\frac{x^3}{3}-\frac{x^2}{2}\right]_1^2\\
-      &= 1
-  \end{align}
+  $1$
 \end{resp}
+
+\section{Volumes por fatiamento e rotação}\label{cap_apint_sec_volfat}
 
 \emconstrucao
 
-\section{Volumes por fatiamento e rotação}\label{cap_apint_sec_volfat}
+\subsection*{Exercícios resolvidos}
+
+\emconstrucao
+
+\subsection*{Exercícios}
+
+\emconstrucao
+
+\section{Problema de valor inicial}\label{cap_apint_sec_pvi}
 
 \emconstrucao
 
