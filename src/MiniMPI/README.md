@@ -8,6 +8,12 @@ Minicurso de introdução à computação científica paralela com MPI.
 
 1. HelloWorld
 
+Estrutura, funcionamento e comandos MPI básicos.
+
+2. Simpson
+
+Uma aplicação de integração numérica com a regra de Simpson.
+
 ## Contato
 
 phkonzen@gmail.com
