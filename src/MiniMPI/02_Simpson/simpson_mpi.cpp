@@ -30,9 +30,8 @@ int main() {
   double a = 0;
   double b = 9999999;
 
-  // num. de subintervalos na quadratura
+  // subintervalos na quadratura
   int n = 999999998;
-
   double h = (b-a)/n;
 
   // computa s0
@@ -55,7 +54,7 @@ int main() {
       s1 += fun(a+(2*j-1)*h);
 
     // recebe s0 do pid=1
-    MPI_Recv(&s1, 1, MPI_DOUBLE, 0,
+    MPI_Recv(&s0, 1, MPI_DOUBLE, 0,
 	     0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
     // imprime a solução

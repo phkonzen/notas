@@ -11,25 +11,29 @@ double fun(double x) {
 // código principal
 int main() {
 
+  // limites de integração
   double a = 0;
   double b = 9999999;
-  int n = 999999998;
 
+  // sub-intervalos da quadratura
+  int n = 999999998;
   double h = (b-a)/n;
 
-  double s1 = 0;
+  // computa s0
+  double s0 = 0;
   for (int j=1; j<n/2; j++)
-    s1 += fun(a+2*j*h);
+    s0 += fun(a+2*j*h);
 
-  double s2 = 0;
+  // computa s1
+  double s1 = 0;
   for (int j=1; j<=n/2; j++)
-    s2 += fun(a+(2*j-1)*h);
+    s1 += fun(a+(2*j-1)*h);
 
-  std::cout << std::setprecision(10)
-	    << h/3*(fun(a)+2*s1+4*s2+fun(b))
-	    << std::endl
-	    << b*sin(b)+cos(b)-(a*sin(a)+cos(a))
-	    << std::endl;
+  // imprime a solução
+  std::cout << "Simpson = "
+	    << h/3*(fun(a)+2*s0+4*s1+fun(b)) << std::endl
+	    << "Analítica = "
+	    << b*sin(b)+cos(b)-(a*sin(a)+cos(a)) << std::endl;
 
   return 0;
 }
