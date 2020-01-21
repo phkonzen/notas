@@ -48,19 +48,16 @@ int main() {
 	    << " npid: " << npid << std::endl;
     
 
-  std::vector<double> u0(npid);
+  std::vector<double> u0(n);
   std::vector<double> u(npid);
-  double uaux = 0;
 
   // num. passos no tempo
   int m = int(tf/dt);
 
   // cond. inicial
-  for (int li=0; li<npid; li++) {
-    int gi = gii + li;
-    u0[li] = sin(M_PI*gi*h);
+  for (int i=0; i<n; i++) {
+    u0[i] = sin(M_PI*i*h);
   }
-  uaux = sin(M_PI*(gfi+1)*h);
 
   // c.c.
   if (pid == 0) 
@@ -72,48 +69,40 @@ int main() {
   for (int k=0; k<m; k++) {
 
     for (int i=1; i<npid-1; i++) {
-      u[i] = u0[i] + dt/(h*h)*a2*(u0[i-1]-2*u0[i]+u0[i+1]);
+      int gi = gii + i;
+      u[i] = u0[gi] + dt/(h*h)*a2*(u0[gi-1]-2*u0[gi]+u0[gi+1]);
     }
 
     if (pid != nproc-1) {
-      u[npid-1] = u0[npid-1] + dt/(h*h)*a2*(u0[npid-2]-2*u0[npid-1]+uaux);
+      u[npid-1] = u0[gfi] + dt/(h*h)*a2*(u0[gfi-1]-2*u0[gfi]+u0[gfi+1]);
     }
 
-    if (pid != 0) {
-      MPI_Send(&u[1], 1 , MPI_DOUBLE, pid-1,
-	       0, MPI_COMM_WORLD);
 
-      MPI_Recv(&u[0], 1 , MPI_DOUBLE, pid-1,
-	       0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-    }
-    if (pid != nproc-1) {
-      MPI_Recv(&uaux, 1, MPI_DOUBLE, pid+1,
-	       0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+    MPI_Gather(&u[1],npid-1,MPI_DOUBLE,
+    	       &u0[gii+1],npid-1,MPI_DOUBLE,
+    	       0, MPI_COMM_WORLD);
 
-      MPI_Send(&u[npid-1], 1 , MPI_DOUBLE, pid+1,
-	       0, MPI_COMM_WORLD);
-    }
+    MPI_Bcast(&u0[0],n,MPI_DOUBLE,0,MPI_COMM_WORLD);
 
-    u0 = u;
+    // // npid igual para todos!
+    // MPI_Allgather(&u[1],npid-1,MPI_DOUBLE,
+    // 		  &u0[1],npid-1,MPI_DOUBLE,
+    // 		  MPI_COMM_WORLD);
 
-    if (((k % 10000) == 0) | (k == m-1)) {
+    
+    if ((pid == 0) & (((k % 10000) == 0) | (k == m-1))) {
       
       // calor médio
-      double aux = 0;
-      for (int j=0; j<npid-1; j++)
-	aux += h/2*(u[j]+u[j+1]);
+      double qn = 0;
+      for (int j=0; j<n-1; j++)
+	qn += h/2*(u0[j]+u0[j+1]);
 
-      double qn=0;
-      MPI_Reduce(&aux, &qn, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
-
-      if (pid == 0) {
 	double qa = 2/M_PI*exp(-a2*M_PI*M_PI*(k+1)*dt);
 
 	std::cout << std::endl
 		  << "t = " << (k+1)*dt << std::endl
 		  << " Analítica: " << qa << std::endl
 		  << " Numérica : " << qn << std::endl;
-      }
     }
     
   }
