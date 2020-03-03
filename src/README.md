@@ -4,7 +4,19 @@ Códigos-fonte das notas de aula.
 
 ## Conteúdos
 
-* ./AnaliseMatematica - notas de aula sobre análise matemática
+* ./CalculoI - notas de aula sobre Cálculo I
+
+* ./EDO - notas de aula sobre EDO
+
+* ./MatematicaNumerica - notas de aula sobre Matemática Numérica
+
+* ./MetodoElementosFinitos - notas de aula sobre MEF
+
+* ./VetoresGeometriaAnalitica - notas de aula sobre Vetores e Geometria Analítica
+
+* ./MiniCalcPy - minicurso de Cálculo com Python
+
+* ./MiniMPI - minicurso de C++/MPI
 
 ## Licença
 

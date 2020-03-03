@@ -14,6 +14,7 @@ from index import *
 from sitemap import *
 from analisematematicai import *
 from calculoi import *
+from edo import *
 from matematicanumerica import *
 from metodoelementosfinitos import *
 from vetoresgeometriaanalitica import *
@@ -45,8 +46,10 @@ os.system('rm -rvf ../docs/*')
 os.system('cp docs_readme.md ../docs/README.md')
 
 #objs da cada nota
-ami = AnaliseMatematicaI(srcdir,odir)
+
+#ami = AnaliseMatematicaI(srcdir,odir)
 ci = CalculoI(srcdir,odir)
+edo = EDO(srcdir,odir)
 mn = MatematicaNumerica(srcdir,odir)
 mef = MetodoElementosFinitos(srcdir,odir)
 vgm = VetoresGeometriaAnalitica(srcdir,odir)
@@ -58,7 +61,7 @@ def build(id):
 #pallelized region
 if __name__ == '__main__':
     p = Pool()
-    p.map(build,[ami,ci,mn,mef,vgm,mini])
+    p.map(build,[ci,edo,mn,mef,vgm,mini])
 
 #make sitemap.txt
 sm = SiteMap(odir)
