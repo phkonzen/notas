@@ -68,6 +68,10 @@ class Index:
         body += '<div class="col-md-6">\n'
 
         body += '<h3>Notas de aula</h3>\n'
+
+        #notas de aula - col. esquerda
+        body += '<div class="col-md-6">\n'
+
         body += '<ul>\n'        
 
         # #AnaliseMatematicaI
@@ -79,49 +83,71 @@ class Index:
         # body += '<a href="./AnaliseMatematicaI/main.pdf">PDF</a></li>'
         # body += '</ul>\n'
         #CalculoI
-        body += '<li>Cálculo I</li>\n'
+        body += '<li><strong>Cálculo I</strong></li>\n'
         body += '<ul class="list-unstyled">\n'
         body += '<li>Versão corrente: '
         body += '<a href="./CalculoI/main.html">HTML</a>'
         body += ' | '
         body += '<a href="./CalculoI/main.pdf">PDF</a></li>'
-        body += '</ul>\n'
+        body += '</ul></br>\n'
         #EDO
-        body += '<li>Equações Diferenciais Ordinárias</li>\n'
+        body += '<li><strong>Equações Diferenciais Ordinárias</strong></li>\n'
         body += '<ul class="list-unstyled">\n'
         body += '<li>Versão corrente: '
         body += '<a href="./EDO/main.html">HTML</a>'
         body += ' | '
         body += '<a href="./EDO/main.pdf">PDF</a></li>'
-        body += '</ul>\n'
+        body += '</ul></br>\n'
         #MatematicaNumerica
-        body += '<li>Matemática Numérica</li>\n'
+        body += '<li><strong>Matemática Numérica</strong></li>\n'
         body += '<ul class="list-unstyled">\n'
         body += '<li>Versão corrente: '
         body += '<a href="./MatematicaNumerica/main.html">HTML</a>'
         body += ' | '
         body += '<a href="./MatematicaNumerica/main.pdf">PDF</a></li>'
+        body += '</ul></br>\n'
+        
         body += '</ul>\n'
+
+        body += '</div> <!-- div class="col-md-6" -->\n'
+
+        #notas de aula - col. direita
+        body += '<div class="col-md-6">\n'
+
+        body += '<ul>\n'        
+
         #MetodoElementosFinitos
-        body += '<li>Método de Elementos Finitos</li>\n'
+        body += '<li><strong>Método de Elementos Finitos</strong></li>\n'
         body += '<ul class="list-unstyled">\n'
         body += '<li>Versão corrente: '
         body += '<a href="./MetodoElementosFinitos/main.html">HTML</a>'
         body += ' | '
         body += '<a href="./MetodoElementosFinitos/main.pdf">PDF</a></li>'
-        body += '</ul>\n'
-        #VetoresGeometriaAnalitica
-        body += '<li>Vetores e Geometria Analítica</li>\n'
+        body += '</ul></br>\n'
+        #Vetores
+        body += '<li><strong>Vetores</strong></li>\n'
         body += '<ul class="list-unstyled">\n'
         body += '<li>Versão corrente: '
-        body += '<a href="./VetoresGeometriaAnalitica/main.html">HTML</a>'
+        body += '<a href="./Vetores/main.html">HTML</a>'
         body += ' | '
-        body += '<a href="./VetoresGeometriaAnalitica/main.pdf">PDF</a></li>'
-        body += '</ul>\n'
+        body += '<a href="./Vetores/main.pdf">PDF</a></li>'
+        body += '</ul></br>\n'
+        #GeometriaAnalitica
+        body += '<li><strong>Geometria Analítica</strong></li>\n'
+        body += '<ul class="list-unstyled">\n'
+        body += '<li>Versão corrente: '
+        body += '<a href="./GeometriaAnalitica/main.html">HTML</a>'
+        body += ' | '
+        body += '<a href="./GeometriaAnalitica/main.pdf">PDF</a></li>'
+        body += '</ul></br>\n'
         
         body += '</ul>\n'
 
         body += '</div> <!-- div class="col-md-6" -->\n'
+
+
+        body += '</div> <!-- div class="col-md-6" -->\n'
+
 
         #Minicurso
         body += '<div class="col-md-6">\n'

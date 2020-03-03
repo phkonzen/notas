@@ -3,6 +3,7 @@
 Constroi o __site__ das notas de aula.
 
 Autor: Pedro H A Konzen - 05/2018
+Modificado: 03/2020
 '''
 
 #pacotes do Python
@@ -17,7 +18,8 @@ from calculoi import *
 from edo import *
 from matematicanumerica import *
 from metodoelementosfinitos import *
-from vetoresgeometriaanalitica import *
+from vetores import *
+from geometriaanalitica import *
 from minicalcpy import *
 
 #pastas temporárias
@@ -52,7 +54,8 @@ ci = CalculoI(srcdir,odir)
 edo = EDO(srcdir,odir)
 mn = MatematicaNumerica(srcdir,odir)
 mef = MetodoElementosFinitos(srcdir,odir)
-vgm = VetoresGeometriaAnalitica(srcdir,odir)
+v = Vetores(srcdir,odir)
+ga = GeometriaAnalitica(srcdir,odir)
 mini = MiniCalcPy(srcdir,odir)
 
 def build(id):
@@ -61,7 +64,7 @@ def build(id):
 #pallelized region
 if __name__ == '__main__':
     p = Pool()
-    p.map(build,[ci,edo,mn,mef,vgm,mini])
+    p.map(build,[ci,edo,mn,mef,v,ga,mini])
 
 #make sitemap.txt
 sm = SiteMap(odir)
