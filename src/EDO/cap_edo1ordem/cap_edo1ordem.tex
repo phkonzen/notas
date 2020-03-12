@@ -15,14 +15,285 @@ onde $P(t) \neq 0$, $Q(t)$ e $G(t)$ são funções de $t$. Esta pode ser reescri
 \end{equation}
 escolhendo $p(t) = Q(t)/P(t)$ e $g(t) = G(t)/P(t)$.
 
+Primeiramente, vamos considerar o caso em que $p(t) \equiv a \neq 0$ (constante) e $g(t) \equiv 0$, i.e.
+\begin{equation}\label{eq:edo1linear_pc_g0}
+  \frac{dy}{dt} + ay = 0.
+\end{equation}
+Podemos reescrever esta equação da seguinte forma
+\begin{align}
+  \frac{dy}{dt} = ay &\Rightarrow \frac{1}{y}\frac{dy}{dt} = a \\
+                     &\Rightarrow \frac{1}{y}\,dy = a\,dt.
+\end{align}
+Agora, integrando, obtemos
+\begin{align}
+  \int \frac{1}{y}\,dy = \int a\,dt &\Rightarrow \ln|y| = at + c \\
+                                    &\Rightarrow e^{\ln|y|} = e^{at + c} \\
+                                    &\Rightarrow e^{\ln|y|} = e^{at}e^c \\
+                                    &\Rightarrow y = ce^{at},
+\end{align}
+onde $c$ é uma constante indeterminada.
 
+Com isso, temos que
+\begin{equation}
+  y(t) = ce^{at}
+\end{equation}
+é solução geral da equação \eqref{eq:edo1linear_pc_g0}.
 
-\emconstrucao
+\begin{ex}
+  Vamos resolver o seguinte Problema de Valor Inicial (PVI)
+  \begin{align}
+    y' - y = 0, \quad t>0,
+    y(0) = 1.
+  \end{align}
+  
+  Começamos calculando a solução geral da EDO:
+  \begin{align}
+    y' = y &\Rightarrow \frac{1}{y}\frac{dy}{dt} = 1 \\
+            &\Rightarrow \int \frac{1}{y}\,\frac{dy} = \int 1\,dt \\
+            &\Rightarrow \ln|y| = t + c \\
+            &\Rightarrow e^{\ln|y|} = e^{t+c}\\
+            &\Rightarrow y(t) = ce^{t}.\\
+  \end{align}
+  Por fim, aplicando a condição inicial, obtemos
+  \begin{align}
+    y(0) = 1 &\Rightarrow ce^{0} = 1 \\
+             &\Rightarrow c = 1.
+  \end{align}
+  Concluímos que a solução do PVI é
+  \begin{equation}
+    y(t) = e^{t}.
+  \end{equation}
+\end{ex}
+
+\subsection{Método dos fatores integrantes}
+
+Vejamos, agora, o caso de uma EDO da forma
+\begin{equation}\label{eq:edo1linear_pa_g}
+  \frac{dy}{dt} + ay = g(t).
+\end{equation}
+
+O \emph{método dos fatores integrantes} consiste em multiplicarmos a equação por uma função $\mu = \mu(t)$ (fator integrante) de forma que
+\begin{equation}
+  \mu\frac{dy}{dt} + \mu ay = \frac{d}{dt}\left(\mu y\right).
+\end{equation}
+Pela regra do produto para derivada, temos que
+\begin{equation}
+  \mu\frac{dy}{dt} + \mu ay = \mu\frac{dy}{dt} + \mu'y.
+\end{equation}
+Ou seja, tal função $\mu$ deve satisfazer a seguinte EDO
+\begin{equation}
+  \mu' = a\mu.
+\end{equation}
+Usando o mesmo procedimento utilizado para \eqref{eq:edo1linear_pc_g0}, obtemos que
+\begin{equation}
+  \mu(t) = ce^{at}.
+\end{equation}
+Observamos que qualquer escolha de $c\neq 0$ é apropriada e, por simplicidade, escolhemos $c=1$.
+
+Agora, retornamos a equação \eqref{eq:edo1linear_pa_g}. Multiplicando-a pelo fator integrante $\mu(t) = e^{at}$, obtemos
+\begin{align}
+  \mu\frac{dy}{dt} + \mu a y = \mu g(t) &\Rightarrow \frac{d}{dt}\left(\mu y\right) = \mu g(t) \\
+                                        &\Rightarrow \int \,d(\mu y) = \int \mu g(t)\,dt \\
+                                        &\Rightarrow \mu y = \int \mu g(t)\,dt \\
+                                        &\Rightarrow y = \frac{1}{\mu}\int \mu g(t)\,dt \\
+                                        &\Rightarrow y(t) = \frac{1}{e^{at}}\int g(t)e^{at}\,dt,
+\end{align}
+a qual é a solução geral de \eqref{eq:edo1linear_pa_g}.
+
+\begin{ex}
+  Vamos calcular a solução geral da seguinte EDO
+  \begin{equation}\label{eq:exer_edo1linear_1}
+    y' - y = 1. 
+  \end{equation}
+  Aplicando o método dos fatores integrantes, temos
+  \begin{align}
+    \mu y' - \mu y &= (\mu y)' \\
+                   &= \mu' y + \mu y'.
+  \end{align}
+  Ou seja, devemos escolher $\mu$ tal que
+  \begin{align}
+    \mu' = -\mu &\Rightarrow \frac{1}{\mu}\frac{d\mu}{dt} = -1 \\
+                &\Rightarrow \int \frac{1}{\mu}\,d\mu = -\int 1\,d\mu \\
+                &\Rightarrow \ln|\mu| = -t + c \\
+                &\Rightarrow \mu = ce^{-t}.
+  \end{align}
+  Por simplicidade, escolhemos $\mu = e^{-t}$.
+
+  Com isso, a EDO \eqref{eq:exer_edo1linear_1} pode ser reescrita como
+  \begin{equation}
+    \frac{d}{dt}\left(\mu y\right) = \mu\cdot 1 \Rightarrow \frac{d}{dt}\left(e^{-t}y\right) = e^{-t}.
+  \end{equation}
+  Integrando, obtemos
+  \begin{align}
+    e^{-t}y = \int e^{-t}\,dt &\Rightarrow e^{-t}y(t) = -e^{-t} + c \\
+                              &\Rightarrow y(t) = e^te^{-t} + ce^{t} \\
+                              &\Rightarrow y(t) =  1 + ce^{t},
+  \end{align}
+  a qual é a solução geral.
+\end{ex}
+
+\subsection{Caso geral}
+
+O caso geral de uma EDO linear de primeira ordem
+\begin{equation}\label{eq:edo1linear_pg}
+  y' + p(t)y = g(t)
+\end{equation}
+também pode ser resolvido pelo método dos fatores integrantes. Neste caso, o fator integrante $\mu = \mu(t)$ deve ser escolhido de forma que
+\begin{align}
+  \mu y' + \mu p(t) y &= (\mu y)' \\
+                      &= \mu' y + \mu y',
+\end{align}
+ou seja
+\begin{equation}
+  \mu' = \mu p(t).
+\end{equation}
+Integrando, obtemos o fator integrante
+\begin{equation}
+  \mu(t) = e^{\int p(t)\,dt}.
+\end{equation}
+
+Usando este fator integrante, a equação \eqref{eq:edo1linear_pg} pode ser reescrita da seguinte maneira
+\begin{equation}
+  \frac{d}{dt}\left(\mu y\right) = \mu g(t).
+\end{equation}
+Integrando, obtemos a solução geral
+\begin{equation}
+  y(t) = \frac{1}{\mu(t)}\left[\int \mu(t) g(t)\,dt + c\right].
+\end{equation}
+
+\begin{ex}
+  Vamos calcular a solução geral da seguinte EDO
+  \begin{equation}\label{ex:edo1linear_geral}
+    y' - \frac{1}{t}y = t.
+  \end{equation}
+
+  Primeiramente, calculamos o fator integrante $\mu = \mu(t)$ tal que
+  \begin{equation}
+    \mu y' - \mu \frac{1}{t} y = (\mu y)' = \mu'y + \mu y'.
+  \end{equation}
+  Ou seja, precisamos que
+  \begin{equation}
+    \mu' = \mu \frac{1}{t}.
+  \end{equation}
+  Integrando, obtemos
+  \begin{align}
+    \mu(t) &= e^{\int \frac{1}{t}\,dt} \\
+           &= e^{\ln|t|} \\
+           &= t.
+  \end{align}
+
+  Aplicando o fator integrante a EDO \eqref{ex:edo1linear_geral}, obtemos
+  \begin{align}
+    \frac{d}{dt}\left(t y\right) = t^2 &\Rightarrow ty = \int t^2\,dt \\
+                                       &\Rightarrow y = \frac{1}{t}\left[\frac{t^3}{3} + c\right] \\
+                                       &\Rightarrow y = \frac{t^2}{3} + \frac{c}{t}.
+  \end{align}
+\end{ex}
 
 \subsection*{Exercícios resolvidos}
 
-\emconstrucao
+\begin{exeresol}
+  Resolva o seguinte PVI
+  \begin{align}
+    &y' + y = 1, \quad t>0,\\
+    &y(0) = 2.
+  \end{align}
+\end{exeresol}
+\begin{resol}
+  Primeiramente, obtemos a solução geral da EDO pelo método dos fatores integrante. Para tanto, buscamos pelo fator integrante $\mu$ tal que
+  \begin{equation}
+    \mu y' + \mu y = (\mu y)',
+  \end{equation}
+  ou seja,
+  \begin{equation}
+    \mu' = \mu \Rightarrow \mu(t) = e^{t}.
+  \end{equation}
+  Obtido o fator integrante, reescrevemos a EDO como segue
+  \begin{equation}
+    \frac{d}{dt}\left(\mu y\right) = \mu\cdot 1 \Rightarrow \frac{d}{dt}\left(e^ty\right) = e^t.
+  \end{equation}
+  Integrando, obtemos a solução geral
+  \begin{equation}
+    y = 1 + ce^{-t}.
+  \end{equation}
+
+  Aplicando a condição inicial, obtemos
+  \begin{align}
+    y(0) = 2 &\Rightarrow 1 + ce^{-0} = 2 \\
+             &\Rightarrow c = 1.
+  \end{align}
+
+  Concluímos que a solução do PVI é $y(t) = 1 + e^{-t}$.
+\end{resol}
+
+\begin{exeresol}
+  Calcule a solução geral da EDO
+  \begin{align}
+    y' + \frac{1}{t}y = \sen(t),\quad t>0.
+  \end{align}
+\end{exeresol}
+\begin{resol}
+  Buscamos pelo fator integrante $\mu$ tal que
+  \begin{equation}
+    \mu y' + \mu \frac{1}{t}y = (\mu y)',
+  \end{equation}
+  ou seja,
+  \begin{equation}
+    \mu' = \frac{\mu}{t} \Rightarrow \mu(t) = e^{\int \frac{1}{t}\,dt} = e^{\ln|t|} = t.
+  \end{equation}
+  Obtido o fator integrante, reescrevemos a EDO como segue
+  \begin{equation}
+    \frac{d}{dt}\left(\mu y\right) = \mu\cdot \sen(t) \Rightarrow \frac{d}{dt}\left(t y\right) = t\sen(t).
+  \end{equation}
+  Integrando, obtemos a solução geral
+  \begin{equation}
+    y(t) = \frac{c}{t}  + \frac{\sen(t)}{t} - \cos(t).
+  \end{equation}
+\end{resol}
 
 \subsection*{Exercícios}
 
-\emconstrucao
+\begin{exer}
+  Calcule a solução do seguinte PVI
+  \begin{align}
+    y' + y = 0, \quad t>0,
+    y(0) = 1.    
+  \end{align}
+\end{exer}
+\begin{resp}
+  $y(t) = e^{-t}$
+\end{resp}
+
+\begin{exer}
+  Calcule a solução do seguinte PVI
+  \begin{align}
+    y' - y = 2, \quad t>0,
+    y(0) = 1.    
+  \end{align}
+\end{exer}
+\begin{resp}
+  $y(t) = 2 - e^{-t}$
+\end{resp}
+
+\begin{exer}
+  Calcule a solução geral do seguinte PVI
+  \begin{align}
+    &y' + \frac{1}{t}y = 2t,\quad t>1,\\
+    &y(1) = 0.
+  \end{align}
+\end{exer}
+\begin{resp}
+  $y(t) = -\frac{2}{3}\left(\frac{1}{t} + t^2\right)$
+\end{resp}
+
+\begin{exer}
+  Calcule a solução geral do seguinte PVI
+  \begin{align}
+    &ty' + 2y = 1,\quad t>1,\\
+    &y(1) = 1.
+  \end{align}
+\end{exer}
+\begin{resp}
+  $y(t) = -\frac{1}{2}\left(\frac{1}{t^2} + 1\right)$
+\end{resp}
+
