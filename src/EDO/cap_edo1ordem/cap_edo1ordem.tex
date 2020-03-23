@@ -172,16 +172,16 @@ Integrando, obtemos a \emph{solução geral}
 \begin{ex}
   Vamos calcular a solução geral da seguinte EDO
   \begin{equation}\label{ex:edo1linear_geral}
-    y' - \frac{1}{t}y = t.
+    y' + \frac{1}{t}y = t.
   \end{equation}
 
   Primeiramente, calculamos o fator integrante $\mu = \mu(t)$ tal que
   \begin{equation}
-    \mu y' - \mu \frac{1}{t} y = (\mu y)' = \mu'y + \mu y'.
+    \mu y' + \mu \frac{1}{t} y = (\mu y)' = \mu'y + \mu y'.
   \end{equation}
   Ou seja, precisamos que
   \begin{equation}
-    \mu' = \mu \frac{1}{t}.
+    \mu' = \frac{1}{t}\mu.
   \end{equation}
   Integrando, obtemos
   \begin{align}
@@ -196,6 +196,27 @@ Integrando, obtemos a \emph{solução geral}
                                        &\Rightarrow y = \frac{1}{t}\left[\frac{t^3}{3} + c\right] \\
                                        &\Rightarrow y = \frac{t^2}{3} + \frac{c}{t}.
   \end{align}
+\end{ex}
+
+\subsection{Aplicação em modelagem}
+
+\begin{ex}\normalfont{(Mistura em tanque)}
+  No instante inicial $t=0$~s (segundo), um tanque contem $q_0$~kg (quilograma) de sal dissolvido em $l$~L (litro) de água. Uma solução de $s$~kg/L de sal e água entra no tanque a uma taxa de $r$~L/s. Esta solução mistura-se com o líquido presente no tanque e a mistura final sae do tanque a mesma taxa de $r$~L/s.
+
+  Vamos modelar a quantidade de sal $q$~kg presente no tanque a cada instante $t$~s. Temos que $q$ é função do tempo $t$~s, i.e. $q = q(t)$. A condição inicial é
+  \begin{equation}
+    q(0) = q_0.
+  \end{equation}
+  A taxa de variação de $q$ no tempo é $dq/dt$ e é modelada por
+  \begin{equation}
+    \frac{dq}{dt} = \underbrace{sr}_{\text{taxa de entrada}} - \underbrace{\frac{q}{l}r}_{\text{taxa de saída}}.
+  \end{equation}
+  Ou seja, o problema é modelado como o seguinte PVI
+  \begin{align}
+    &\frac{dq}{dt} = sr - \frac{q}{l}r,\quad t>0,\\
+    &q(0) = q_0,
+  \end{align}
+  onde $s$, $r$, $l$ e $q_0$ são parâmetros do problema. A EDO relacionada é linear de primeira ordem e, portanto, pode ser resolvida pelo método dos fatores integrantes. Veja o Exercício Resolvido \ref{exeresol:mistura_em_tanque}.
 \end{ex}
 
 \subsection*{Exercícios resolvidos}
@@ -256,6 +277,51 @@ Integrando, obtemos a \emph{solução geral}
   Integrando, obtemos a solução geral
   \begin{equation}
     y(t) = \frac{c}{t}  + \frac{\sen(t)}{t} - \cos(t).
+  \end{equation}
+\end{resol}
+
+\begin{exeresol}(Mistura em tanque)
+  No instante inicial $t=0$~s (segundo), um tanque contem $100$~kg de sal dissolvidos em $1000$~L d'água. Uma solução de $0,2$~kg/L de sal e água entra no tanque a uma taxa de $10$~L/s. Esta solução mistura-se com o líquido presente no tanque e a mistura final sae do tanque a mesma taxa de $10$~L/s. Calcule a quantidade de sal misturado no tanque após $1$ hora de operação, i.e. quando $t=3600$~s.
+\end{exeresol}
+\begin{resol}
+  Denotando por $q = q(t)$~kg a quantidade de sal misturado no tanque no instante $t$, temos que a taxa de variação de $q$ no tempo é dada por
+  \begin{align}
+    \frac{dq}{dt} &= 0,2\cdot 10 - \frac{q}{1000}\cdot 10 \\
+                  &= 2 - \frac{q}{100}.
+  \end{align}
+  Ou seja, o modelo constitui-se no seguinte PVI
+  \begin{align}
+    \frac{dq}{dt} = 2 - \frac{q}{100},\quad t>0,\label{eq:exeresol_mistura_edo}\\
+    q(0) = 100.
+  \end{align}
+
+  Para resolver o problema, vamos usar o método dos fatores integrantes. O fator integrante é escolhido como sendo
+  \begin{align}
+    \mu(t) &= e^{\int \frac{1}{100}\,dt} \\
+           &= e^{t/100}.
+  \end{align}
+  Segue que a EDO \eqref{eq:exeresol_mistura_edo} pode ser reescrita como
+  \begin{equation}
+    \frac{d}{dt}\left(qe^{t/100}\right) = 2e^{t/100}.
+  \end{equation}
+  Integrando, obtemos
+  \begin{align}
+    q(t) &= e^{-t/100}\int 2e^{t/100}\,dt \\
+         &= e^{-t/100}\left(200e^{t/100} + c\right) \\
+         &= 200 + ce^{-t/100}.
+  \end{align}
+  Da condição inicial, obtemos
+  \begin{align}
+    q(0) = 100 &\Rightarrow 200 + c = 100 \\
+               &\Rightarrow c = -100.
+  \end{align}
+  Logo, a solução do PVI é
+  \begin{equation}
+    q(t) = 200 - 100e^{-t/100}.
+  \end{equation}
+  No tempo $t=3600$~s, temos
+  \begin{equation}
+    q(3600) = 200 - 100e^{-3600/100} \approx 200~\text{kg}.
   \end{equation}
 \end{resol}
 
