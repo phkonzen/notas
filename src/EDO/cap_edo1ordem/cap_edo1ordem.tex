@@ -509,6 +509,83 @@ a qual é uma equação algébrica para $y$ que, com sorte, pode ser usada para 
   Como vimos no exemplo anterior (Exemplo \ref{ex:edo_sep_metsol}), a solução geral de uma EDO separável nem sempre pode ser explicitada. Em muitos casos o procedimento de separar as variáveis nos leva a obter a solução da EDO na forma de uma equação algébrica implícita.
 \end{obs}
 
+\subsection{Equação de Verhulst}
+
+A \emph{equação de Verhulst}\footnote{Pierre François Verhulst, 1804-1849, matemático belga.} (ou \emph{equação logística}) é um clássico modelo de crescimento populacional. Trata-se da seguinte equação autônoma
+\begin{equation}\label{eq:Verhulst}
+  {\color{blue}\frac{dy}{dt} = r\left(1 - \frac{y}{K}\right)y},
+\end{equation}
+onde $y$ é a medida de tamanho da população e os parâmetros são: $r>0$ a taxa de crescimento intrínseca e $K>0$ o nível de saturação.
+
+Antes de resolvermos esta equação, vamos fazer algumas observações que podem ser obtidas diretamente da EDO. Do cálculo, temos que se $dy/dt = 0$ para todos os valores de $t$, então $y$ é constante, i.e. a população se mantém constante. A derivada é nula quando o lado direito de \eqref{eq:Verhulst} for nulo, i.e.
+\begin{equation}
+  r\left(1 - \frac{y}{K}\right)y = 0.
+\end{equation}
+Isso ocorre quando $y = 0$ ou quando $y=K$. Ou seja, se a população é nula não há crescimento populacional, bem como, não há crescimento se a população estiver em seu nível de saturação.
+
+Agora, o que ocorre se a população for $0 < y < K$? Neste caso, temos
+\begin{equation}
+  \frac{dy}{dt} = r\underbrace{\left(1 - \frac{y}{K}\right)}_{>0}y > 0,
+\end{equation}
+ou seja, a população cresce. Por outro lado, se $y > K$ (a população está acima de seu nível de saturação), então
+\begin{equation}
+  \frac{dy}{dt} = r\underbrace{\left(1 - \frac{y}{K}\right)}_{<0}y < 0,
+\end{equation}
+a população decresce. Estas conclusões também nos levam a inferir que
+\begin{equation}
+  \lim_{t\to\infty} y(t) = K,
+\end{equation}
+para qualquer população inicial não nula.
+
+\subsubsection{Solução da equação logística}
+
+Consideramos o seguinte PVI
+\begin{align}
+  &\frac{dy}{dt} = r\left(1 - \frac{y}{K}\right)y,\quad t>0,\\
+  &y(0) = y_0.
+\end{align}
+
+A equação de Verhulst é uma EDO separável, daí segue que
+\begin{align}
+  \frac{dy}{dt} = r\left(1 - \frac{y}{K}\right)y &\Rightarrow \frac{1}{\left(1 - \frac{y}{K}\right)y}\,dy = r\,dt.
+\end{align}
+Vamos integrar o lado direito desta última equação:
+\begin{align}
+  \int \frac{1}{\left(1 - \frac{y}{K}\right)y}\,dy &= \int \left(\frac{1}{y} + \frac{1/K}{1-y/K}\right)\,dy \\
+                                                   &= \ln|y| - \ln\left|1 - \frac{y}{K}\right|.
+\end{align}
+Logo, a solução da equação logística satisfaz a seguinte equação algébrica
+\begin{equation}
+  \ln|y| - \ln\left|1 - \frac{y}{K}\right| = rt + c,
+\end{equation}
+onde $c$ é uma constante a determinar. Antes, observamos que esta equação é equivalente a
+\begin{equation}
+  \ln\left|\frac{y}{1 - \frac{y}{K}}\right| = rt + c.
+\end{equation}
+Aplicando a função exponencial, obtemos
+\begin{equation}\label{eq:Verhulst_aux}
+  \frac{y}{1 - y/K} = ce^{rt}.
+\end{equation}
+Da condição inicial $y(0) = y_0$, encontramos
+\begin{equation}\label{eq:Verhulst_c}
+  c = \frac{y_0}{1 - y_0/K}.
+\end{equation}
+Agora, isolando $y$ em \eqref{eq:Verhulst_aux}, vemos que
+\begin{align}
+  y &= \frac{ce^{rt}}{1 + \frac{c}{K}e^{rt}} \\
+    &= \frac{K}{\frac{K}{c}e^{-rt} + 1}
+\end{align}
+Por fim, de \eqref{eq:Verhulst_c}, obtemos a solução
+\begin{equation}
+  y(t) = \frac{y_0K}{y_0 + (K-y_0)e^{-rt}}.
+\end{equation}
+
+Da solução, corroboramos que a população permanece constante quando $y_0 = 0$ ou $y_0 = K$. Ainda, se $0<y_0<K$ ou $y_0 > K$, temos que
+\begin{align}
+  \lim_{t\to\infty} y(t) &= \lim_{t\to\infty} \frac{y_0K}{y_0 + (K-y_0)\cancelto{0}{e^{-rt}}} \\
+                         &= K.
+\end{align}
+
 \subsection*{Exercícios resolvidos}
 
 \begin{exeresol}
@@ -561,6 +638,30 @@ a qual é uma equação algébrica para $y$ que, com sorte, pode ser usada para 
   \end{equation}
 \end{resol}
 
+\begin{exeresol}(Crescimento populacional com limiar)
+  Considere o seguinte modelo de crescimento populacional
+  \begin{align*}
+    &\frac{dy}{dt} = -r\left(1 - \frac{y}{L}\right)y,\quad t>0,\\
+    &y(0) = y_0,
+  \end{align*}
+  onde $y = y(t)$ é o tamanho da população, $y_0 \geq 0$ é a população inicial e são parâmetros $r, L > 0$. Forneça os valores de $y_0$ para os quais a população é crescente.
+\end{exeresol}
+\begin{resol}
+  A população $y$ é crescente quando
+  \begin{equation}
+    \frac{dy}{dt} > 0.
+  \end{equation}
+  Logo, precisamos ter
+  \begin{equation}
+    -r\left(1 - \frac{y}{L}\right)y > 0.
+  \end{equation}
+  Isto ocorre quando
+  \begin{equation}
+    1 - \frac{y}{L} < 0 \Rightarrow y > L.
+  \end{equation}
+  Logo, concluímos que uma população inicial $y_0 > L$ é necessária para produzir uma taxa de crescimento populacional positiva.
+\end{resol}
+
 \subsection*{Exercícios}
 
 \begin{exer}
@@ -593,4 +694,54 @@ a qual é uma equação algébrica para $y$ que, com sorte, pode ser usada para 
 \end{exer}
 \begin{resp}
   $y(x) = \ln\left(c - e^{-x}\right)$
+\end{resp}
+
+\begin{exer}
+  Considere o seguinte modelo de crescimento populacional
+  \begin{align*}
+    &\frac{dy}{dt} = -r\left(1 - \frac{y}{L}\right)y,\quad t>0,\\
+    &y(0) = y_0,
+  \end{align*}
+  onde $y = y(t)$ é o tamanho da população, $y_0 \geq 0$ é a população inicial e são parâmetros $r, L > 0$. Qual é a tendência da população $y = y(t)$ quando $t\to\infty$ e
+  \begin{enumerate}[a)]
+  \item $y_0 = 0$;
+  \item $0 < y_0 < L$;
+  \item $y_0 = L$;
+  \item $y_0 > L$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a)~$y(t) \equiv 0$; b)~$y(t)\to 0$; c)~$y(t)\equiv L$; d)~$y(t)\to\infty$.
+\end{resp}
+
+\begin{exer}
+  Resolva o seguinte modelo de crescimento populacional
+  \begin{align*}
+    &\frac{dy}{dt} = -r\left(1 - \frac{y}{L}\right)y,\quad t>0,\\
+    &y(0) = y_0,
+  \end{align*}
+  onde $y = y(t)$ é o tamanho da população, $y_0 \geq 0$ é a população inicial e são parâmetros $r, L > 0$.
+\end{exer}
+\begin{resp}
+  $\displaystyle y(t) = \frac{y_0L}{y_0 + (L-y_0)e^{rt}}$.
+\end{resp}
+
+\begin{exer}
+  Considere o seguinte modelo de crescimento populacional
+  \begin{align*}
+    &\frac{dy}{dt} = -r\left(1 - \frac{y}{L}\right)\left(1 - \frac{y}{K}\right)y,\quad t>0,\\
+    &y(0) = y_0,
+  \end{align*}
+  onde $y = y(t)$ é o tamanho da população, $y_0 \geq 0$ é a população inicial e são parâmetros $r > 0$, $K>L>0$. Qual é a tendência da população $y = y(t)$ quando $t\to\infty$ e
+  \begin{enumerate}[a)]
+  \item $y_0 = 0$;
+  \item $0 < y_0 < L$;
+  \item $y_0 = L$
+  \item $L < y_0 < K$;
+  \item $y_0 = K$
+  \item $y_0 > K$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a)~$y(t) \equiv 0$; b)~$y(t)\to 0$; c)~$y(t)\equiv L$; d)~$y(t)\to K$; e)~$y(t)\equiv K$; f)~$y(t)\to K$.
 \end{resp}
