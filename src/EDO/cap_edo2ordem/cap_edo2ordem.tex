@@ -654,3 +654,323 @@ Concluímos que a \emph{solução geral} de \eqref{eq:ed2o_hcc_rr} é
 \begin{resp}
   $W(y_1,y_2;t) = e^{2rt} \neq 0$
 \end{resp}
+
+\section{EDO não homogênea}
+
+Pode-se mostrar que a solução geral de
+\begin{equation}\label{eq:ed2o_nh}
+  {\color{blue}y'' + ay' + by = g(t)},
+\end{equation}
+tem a forma
+\begin{equation}
+  {\color{blue}y(t) = c_1y_1(t) + c_2y_2(t) + y_p(t)},
+\end{equation}
+onde $y_1$ e $y_2$ formam um conjunto fundamental de soluções\footnote{São soluções da equação homogênea associada e $W(y_1,y_2;t)\neq 0$.} da equação homogênea associada
+\begin{equation}
+  y'' + ay' + by = 0
+\end{equation}
+e $y_p$ é uma solução particular qualquer de \eqref{eq:ed2o_nh}.
+
+\subsection{Método da variação dos parâmetros}
+
+O \emph{método da variação dos parâmetros} consiste em calcular uma solução particular de \eqref{eq:ed2o_nh} da forma
+\begin{equation}
+  {\color{blue}y_p(t) = u_1(t)y_1(t) + u_2(t)y_2(t)},
+\end{equation}
+onde $y_1$ e $y_2$ é um conjunto fundamental de soluções da equação homogênea associada, enquanto $u_1$ e $u_2$ são funções a serem determinadas.
+
+Observamos que a única condição que temos para determinar $u_1$ e $u_2$ é a equação \eqref{eq:ed2o_nh}. Ou seja, temos uma equação e duas incógnitas. Para fechar o problema, impomos a seguinte condição extra
+\begin{equation}\label{eq:ed2o_nh_mv_1}
+  {\color{blue}u_1'y_1 + u_2'y_2 = 0}.
+\end{equation}
+
+Com isso, temos
+\begin{align}
+  y_p'(t) &=  u_1'y_1 + u_1y_1' + u_2'y_2 + u_2y_2' \\
+          &= u_1y_1' + u_2y_2'
+\end{align}
+e
+\begin{align}
+  y_p''(t) &= u_1'y_1' + u_1y_1'' \\
+           &= u_2'y_2' + u_2y_2''.
+\end{align}
+
+Substituindo $y_p$ em \eqref{eq:ed2o_nh}, temos
+\begin{align}
+  g(t) &= y_p'' + ay_p' + by_p \\
+       &= \left(u_1'y_1' + {\color{blue}u_1y_1''} + u_2'y_2' + {\color{red}u_2y_2''} \right) \\
+       &+ a({\color{blue}u_1y_1'} + {\color{red}u_2y_2'}) \\
+       &+ b({\color{blue}u_1y_1} + {\color{red}u_2y_2}) \\
+       &= u_1'y_1' + u_2'y_2' \\
+       &+ \underbrace{{\color{blue}u_1(y_1'' + ay_1' + by_1)}}_{=0} \\
+       &+ \underbrace{{\color{red}u_2(y_2'' + ay_2' + by_2)}}_{=0} \\
+       &= u_1'y_1' + u_2'y_2'. \label{eq:ed2o_nh_mv_2}
+\end{align}
+
+Ou seja, \eqref{eq:ed2o_nh_mv_1} e \eqref{eq:ed2o_nh_mv_2} formam o seguinte sistema de equações
+\begin{align}
+  u_1'y_1 + u_2'y_2 &= 0\\
+  u_1'y_1' + u_2'y_2' &= g(t)
+\end{align}
+que têm $u_1'$ e $u_2'$ como incógnitas. Aplicando o método de Cramer\footnote{Gabriel Cramer, 1704 - 1752, matemático suíço. Fonte: \href{https://en.wikipedia.org/wiki/Gabriel_Cramer}{Wikipedia}.}, obtemos
+\begin{equation}
+  u_1' = -\frac{y_2(t)g(t)}{W(y_1,y_2;t)}
+\end{equation}
+e
+\begin{equation}
+  u_2' = \frac{y_1(t)g(t)}{W(y_1,y_2;t)}.
+\end{equation}
+Ou, ainda, por integração temos
+\begin{equation}\label{eq:ed2o_nh_vp_u1}
+  {\color{blue}u_1(t) = -\int \frac{y_2(t)g(t)}{W(y_1,y_2;t)}\,dt}
+\end{equation}
+e
+\begin{equation}\label{eq:ed2o_nh_vp_u2}
+  {\color{blue}u_2(t) = \int \frac{y_1(t)g(t)}{W(y_1,y_2;t)}\,dt}.
+\end{equation}
+
+Por tudo isso, concluímos que uma solução particular de \eqref{eq:ed2o_nh} é dada por
+\begin{align}
+  y_p(t) &= -y_1(t)\int \frac{y_2(t)g(t)}{W(y_1,y_2;t)}\,dt \\
+         &+ y_2(t)\int \frac{y_1(t)g(t)}{W(y_1,y_2;t)}\,dt.
+\end{align}
+
+\begin{ex}\label{ex:ed2o_nh_vp}
+  Vamos calcular a solução geral de
+  \begin{equation}\label{eq:ex_ed2o_nh_vp}
+    y'' - y = e^{2t}.
+  \end{equation}
+
+  Começamos determinando um conjunto fundamental de soluções $y_1 = y_1(t)$ e $y_2 = y_2(t)$ da equação homogênea associada
+  \begin{equation}
+    y'' - y = 0.
+  \end{equation}
+  A equação característica associada é
+  \begin{equation}
+    r^2 - 1 = 0,
+  \end{equation}
+  cujas raízes são $r_1=-1$ e $r_2=1$. Segue que
+  \begin{equation}
+    y_1(t) = e^{-t}\quad\text{e}\quad y_2(t) = e^t.
+  \end{equation}
+
+  Agora, buscamos por uma solução particular de \eqref{eq:ex_ed2o_nh_vp} da forma
+  \begin{equation}
+    y_p(t) = u_1(t)y_1(t) + u_2(t)y_2(t),
+  \end{equation}
+  onde $u_1$ é dada em \eqref{eq:ed2o_nh_vp_u1} e $u_2$ por \eqref{eq:ed2o_nh_vp_u2}. Ambas expressões requer o cálculo do wronskiano
+  \begin{align}
+    W(y_1,y_2;t) &= \left|
+                   \begin{matrix}
+                     y_1 & y_2 \\
+                     y_1' & y_2'
+                   \end{matrix}
+                            \right| \\
+                 &= y_1y_2' - y_2y_1' \\
+                 &= e^{-t}e^t + e^te^{-t} \\
+                 &= 2.
+  \end{align}
+  Com isso, temos
+  \begin{align}
+    u_1(t) &= -\int \frac{y_2(t)g(t)}{W(y_1,y_2;t)}\,dt \\
+           &= -\int \frac{e^te^{2t}}{2}\,dt \\
+           &= -\frac{1}{2}\int e^{3t}\,dt \\
+           &= -\frac{1}{6}e^{3t}
+  \end{align}
+  e
+  \begin{align}
+    u_2(t) &= \int \frac{y_1(t)g(t)}{W(y_1,y_2;t)}\,dt \\
+           &= \int \frac{e^{-t}e^{2t}}{2}\,dt \\
+           &= \frac{1}{2}\int e^{t}\,dt \\
+           &= \frac{1}{2}e^{t}
+  \end{align}
+  Desta forma, obtemos a solução particular
+  \begin{align}
+    y_p(t) &= u_1(t)y_1(t) + u_2(t)y_2(t) \\
+           &= -\frac{1}{6}e^{3t}e^{-t} + \frac{1}{2}e^{t}e^{t} \\
+           &= -\frac{1}{6}e^{2t} + \frac{1}{2}e^{2t} \\
+           &= \frac{1}{3}e^{2t}.
+  \end{align}
+  Observamos que a solução particular é um múltiplo do termo não homogêneo da EDO \eqref{eq:ex_ed2o_nh_vp}. Isso não é apenas um acaso e vamos explorar isso mais adiante no texto.
+
+  Por fim, concluímos que a solução geral de \eqref{eq:ex_ed2o_nh_vp} é
+  \begin{align}
+    y(t) &= c_1y_1(t) + c_2(t)y_2(t) + y_p(t) \\
+         &= c_1e^{-t} + c_2e^t + \frac{1}{3}e^{2t}.
+  \end{align}
+\end{ex}
+
+\subsection{Método dos coeficientes a determinar}
+
+O métodos dos coeficientes a determinar consiste em buscar por uma solução particular na forma de uma combinação linear de funções elementares apropriadas. Tais funções são inferidas a partir do termo não homogêneo da equação.
+
+\subsubsection{$\pmb{g(t) = ce^{st}}$}
+
+Uma equação da forma
+\begin{equation}
+  y'' + ay' + by = ce^{st}
+\end{equation}
+com $s\neq r_1,r_2$, onde $r_1$ e $r_2$ são raízes da equação característica, admite solução particular
+\begin{equation}
+  y_p(t) = Ae^{st},
+\end{equation}
+onde $A$ é uma constante a determinar.
+
+\begin{ex}
+  Vamos calcular uma solução particular para
+  \begin{equation}
+    y'' - y = e^{2t}.
+  \end{equation}
+
+  Pelo método dos coeficientes a determinar, buscamos por uma solução particular da forma
+  \begin{equation}
+    y_p(t) = Ae^{2t},
+  \end{equation}
+  observando que $r_1=-1$ e $r_2=1$ são raízes da equação característica associada.
+
+  Substituindo $y_p$ na EDO, obtemos
+  \begin{align}
+    e^{2t} &= y'' - y \\
+           &= \left(Ae^{2t}\right)'' - Ae^{2t} \\
+           &= (4A - A)e^{2t} \\
+           &= 3Ae^{2t}.
+  \end{align}
+  Segue que
+  \begin{equation}
+    3A = 1 \Rightarrow A = \frac{1}{3}.
+  \end{equation}
+  Daí, concluímos que
+  \begin{equation}
+    y_p(t) = \frac{1}{3}e^{2t}
+  \end{equation}
+  é solução particular da EDO.
+\end{ex}
+
+\begin{obs}
+  \begin{enumerate}[a)]
+  \item $s = r_1$.
+    Uma equação da forma
+    \begin{equation}
+      y'' + ay' + by = ce^{r_1t},
+    \end{equation}
+    onde $r_1$ é raiz da equação característica associada, admite solução particular
+    \begin{equation}
+      y_p(t) = Ate^{r_1t}.
+    \end{equation}
+  \item $s = r$.
+    Uma equação da forma
+    \begin{equation}
+      y'' + ay' + by = ce^{rt},
+    \end{equation}
+    onde $r$ é raiz dupla da equação característica associada, admite solução particular
+    \begin{equation}
+      y_p(t) = At^2e^{rt}.
+    \end{equation}
+  \end{enumerate}
+\end{obs}
+
+\subsubsection{$\pmb{g(t) = c_nt^n + c_{n-1}t^{n-1} + \cdots + c_0}$}
+
+Uma equação da forma
+\begin{equation}
+  y'' + ay' + by = c_nt^n + c_{n-1}t^{n-1} + \cdots + c_0
+\end{equation}
+admite solução particular
+\begin{equation}
+  y_p(t) = A_nt^n + A_{n-1}t^{n-1} + \cdots + A_0,
+\end{equation}
+onde $A_n$, $A_{n-1}$, $\dotsc$, $A_0$ são constantes a determinar.
+
+\begin{ex}
+  Vamos calcular uma solução particular para
+  \begin{equation}
+    y'' - 4y = t.
+  \end{equation}
+
+  Pelo método dos coeficientes a determinar, buscamos por uma solução particular da forma
+  \begin{equation}
+    y_p(t) = A_1t + A_0.
+  \end{equation}
+
+  Substituindo $y_p$ na EDO, obtemos
+  \begin{align}
+    t &= y'' - 4y \\
+      &= \left(A_1t + A_0\right)'' - 4(A_1t + A_0) \\
+           &= -4A_1t - 4A_0.
+  \end{align}
+  Segue que
+  \begin{align}
+    -4A_1 = 1 &\Rightarrow A_1 = -\frac{1}{4},\\
+    -4A_0 = 0 &\Rightarrow A_0 = 0.
+  \end{align}
+  Daí, concluímos que
+  \begin{equation}
+    y_p(t) = -\frac{1}{4}t
+  \end{equation}
+  é solução particular da EDO.
+\end{ex}
+
+\subsubsection{$\pmb{g(t) = c_1\sen(\beta t) + c_2\cos(\beta t)}$}
+
+Uma equação da forma
+\begin{equation}
+  y'' + ay' + by = c_1\sen(\beta t) + c_2\cos(\beta t)
+\end{equation}
+admite solução particular
+\begin{equation}
+  y_p(t) = t^s[A_1\sen(\beta t) + A_2\cos(\beta t)],
+\end{equation}
+onde $s$ é o menor inteiro tal que $y_p$ não seja solução da equação homogênea associada e $A_1$ e $A_2$ são constantes a determinar.
+
+\begin{ex}
+  Vamos calcular uma solução particular para
+  \begin{equation}
+    y'' + 4y = \cos(2t).
+  \end{equation}
+
+  Pelo método dos coeficientes a determinar, buscamos por uma solução particular da forma
+  \begin{equation}
+    y_p(t) = t[A_1\sen(2t) + A_2\cos(2t)],
+  \end{equation}
+  observando que $y_1(t) = \cos(2t)$ e $y_2(t) = \sen(2t)$ formam um conjunto fundamental de solução para a equação homogênea associada.
+  
+  Substituindo $y_p$ na EDO, obtemos
+  \begin{align}
+    \cos(2t) &= y'' + 4y \\
+             &= [A_1t\sen(2t) + A_2t\cos(2t)]'' \\
+             &+ 4[A_1t\sen(2t) + A_2t\cos(2t)] \\
+             &= 4A_1\cos(2t) - 4A_2\sen(2t)
+  \end{align}
+  Segue que
+  \begin{align}
+    4A_1 = 1 &\Rightarrow A_1 = \frac{1}{4},\\
+    -4A_2 = 0 &\Rightarrow A_2 = 0.
+  \end{align}
+  Daí, concluímos que
+  \begin{equation}
+    y_p(t) = \frac{1}{4}t\sen(2t).
+  \end{equation}
+  é solução particular da EDO.
+\end{ex}
+
+\begin{obs}(Resumo)
+  \begin{center}
+  \begin{tabular}{ll}
+    $g(t)$ & $y_p(t)$ \\\hline
+    $e^{\alpha t}(c_nt^n + c_{n-1}t^{n-1} + \cdots + c_0)$ & $t^se^{\alpha t}(Ac_{n-1}t^{n-1} + \cdots + A_0)$ \\
+    $e^{\alpha t}[c_1\sen(\beta t) + c_2\cos(\beta t)]$ & $t^se^{\alpha t}[A_1\sen(\beta t) + A_2\cos(\beta t)]$ \\\hline
+  \end{tabular}
+\end{center}
+  $s = 0, 1, 2$, sendo o menor valor que garanta que $y_p$ não seja solução da equação homogênea associada.
+\end{obs}
+
+\subsection*{Exercícios resolvidos}
+
+
+\emconstrucao
+
+\subsection*{Exercício}
+
+\emconstrucao
+
+
