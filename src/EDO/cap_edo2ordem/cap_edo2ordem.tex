@@ -440,6 +440,33 @@ Desta forma, concluímos que $u(t) = e^{\lambda t}\cos(\mu t)$ e $v(t) = e^{\lam
   \end{equation}
 \end{ex}
 
+\subsubsection{Modelagem: sistema massa-mola não amortecido}
+
+Consideremos um sistema massa-mola não amortecido e sem ação de força externa. Denotamos por $m>0$ a massa, $k>0$ a constante da mola. Desta forma, a lei de Newton do movimento nos fornece o seguinte modelo matemático
+\begin{equation}
+  ms''(t) = -ks(t),
+\end{equation}
+onde $s = s(t)$ é a posição da massa ($s=0$ é a posição de repouso, $s>0$ a mola está esticada e $s<0$ a mola está contraída). Ou seja, trata-se de uma EDO de segunda ordem homogênea e com coeficientes constantes.
+
+Supondo que, no tempo inicial $t=0$, a massa está na posição inicial $s_0$ e velocidade $v_0$, temos que a situação física é modelada pelo seguinte PVI
+\begin{align}
+  & s'' + \frac{k}{m}s = 0,\quad t>0,\\
+  & s(0) = s_0,\quad s'(0) = v_0.
+\end{align}
+
+Como $k/m>0$, temos que a equação característica associada têm raízes imaginárias
+\begin{equation}
+  r = \pm \sqrt{\frac{k}{m}}i.
+\end{equation}
+Logo, a solução geral é
+\begin{equation}
+  s(t) = c_1\cos\left(\sqrt{\frac{k}{m}}t\right) + c_2\sen\left(\sqrt{\frac{k}{m}}t\right).
+\end{equation}
+Agora, aplicando as condições iniciais, obtemos
+\begin{equation}
+  s(t) = s_0\cos\left(\sqrt{\frac{k}{m}}t\right) + v_0\sqrt{\frac{m}{k}}\sen\left(\sqrt{\frac{k}{m}}t\right).
+\end{equation}
+
 \subsection{Raízes repetidas}
 
 Seja a equação
@@ -595,6 +622,49 @@ Concluímos que a \emph{solução geral} de \eqref{eq:ed2o_hcc_rr} é
   \begin{equation}
     y(t) = te^{-2t}.
   \end{equation}
+\end{resol}
+
+\begin{exeresol}(Sistema massa-mola amortecido)
+  Um sistema massa-mola amortecido sem força externa pode ser modelado pelo seguinte PVI
+  \begin{align}
+    & ms'' + \gamma s' + ks = 0,\quad t>0,\\
+    & s(0) = s_0,\quad s'(0) = v_0,
+  \end{align}
+  onde $s = s(t)$ é a posição da massa ($s=0$ posição de repouso, $s>0$ mola estendida, $m<0$ mola contraída), $m>0$ massa, $\gamma>0$ coeficiente de resistência do meio, $k>0$ constante da mola, $s_0$ posição inicial e $v_0$ velocidade inicial da massa.
+
+  Mostre que $s(t)\to 0$ quando $t\to\infty$, i.e. a massa tende ao repouso ao passar do tempo.
+\end{exeresol}
+\begin{resol}
+  A equação característica associada é
+  \begin{equation}
+    mr^2 + \gamma r + k = 0,
+  \end{equation}
+  cujas raízes são
+  \begin{equation}
+    r_1, r_2 = \frac{-\gamma \pm\sqrt{\gamma^2 - 4mk}}{2m}.
+  \end{equation}
+  Vejamos as seguintes possibilidades:
+  \begin{enumerate}[a)]
+  \item $\gamma^2 - 4mk\geq 0$.
+
+    Como $m,k>0$, temos que $\gamma^2-4mk < \gamma^2$ e, portanto, $\sqrt{\gamma^2 - 4mk} < \gamma$. Segue que $r_1, r_2 < 0$. Se $r_1 \neq r_2$, a solução geral é
+    \begin{equation}
+      s(t) = c_1e^{r_1t} + c_2e^{r_2t}.
+    \end{equation}
+    Se $r_1=r_2$, a solução geral é
+    \begin{equation}
+      s(t) = (c_1 + c_2t)e^{-\frac{\gamma}{2m}t}.
+    \end{equation}
+    Em ambos os casos, $s(t)\to 0$ quando $t\to 0$, devido aos expoentes negativos.
+
+  \item $\gamma^2 -4mk < 0$.
+
+    Neste caso, a solução geral é
+    \begin{equation}
+      s(t) = e^{-\frac{\gamma}{2m}t}\left[c_1\cos\left(\frac{\gamma^2-4mk}{2m}t\right) + c_2\sen\left(\frac{\gamma^2-4mk}{2m}t\right)\right].
+    \end{equation}
+    Novamente, como seno e cosseno são funções limitadas, temos que o termo exponencial domina para $t\to 0$. Ou seja, $s(t)\to 0$ quando $t\to 0$.
+  \end{enumerate}
 \end{resol}
 
 \subsection*{Exercícios}
@@ -1157,6 +1227,23 @@ onde $s$ é o menor inteiro tal que $y_p$ não seja solução da equação homog
 \end{exer}
 \begin{resp}
   $y(t) = -\frac{1}{4}e^{-2t} + e^{-t} + \frac{t}{2} - \frac{3}{4}$
+\end{resp}
+
+\begin{exer}
+  Considere um sistema massa-mola modelado por
+  \begin{align}
+    & ms'' + \gamma s' + ks = \cos(t),\quad t>0,\\
+    & s(0) = s_0,\quad s'(0) = v_0,
+  \end{align}
+  onde $m>0$ é a massa, $\gamma>0$ é o coeficiente de resistência do meio, $k>0$ é a constante da mola, $s=s(t)$ é posição da massa ($s=0$ posição de repouso, $s>0$ mola esticada, $s<0$ mola contraída), $s_0$ é a posição inicial e $v_0$ é a velocidade inicial da massa.
+
+  Supondo que $\gamma^2-4mk = 0$, calcule
+  \begin{equation}
+    \lim_{t\to 0} s(t).
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $\displaystyle \frac{1}{\gamma^2 + (k-m)^2}\left(\frac{k-m}{\gamma}\cos(t) + \sen(t)\right)$
 \end{resp}
 
 
