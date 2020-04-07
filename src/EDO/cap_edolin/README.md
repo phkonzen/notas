@@ -1,6 +1,6 @@
-# Diretório: EDO/cap_edo2ordem
+# Diretório: EDO/cap_edolin
 
-Este diretório contém o código fonte do capítulo "EDO linear de segunda ordem".
+Este diretório contém o código fonte do capítulo "EDO linear de ordem 2 ou mais alta".
 
 ## Licença
 
