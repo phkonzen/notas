@@ -3,6 +3,18 @@
 \chapter{Introdução}\label{cap_intro}
 \thispagestyle{fancy}
 
+Neste capítulo, introduzimos conceitos e definições elementares sobre Equações Diferenciais (ED). Por exemplo, definimos tais equações, apresentamos alguns exemplos de modelagem matemática e problemas relacionados.
+
+\ifispython
+\begin{obs}\label{obs:cap_intro_python}
+Ao longo do capítulo, contaremos com o suporte de alguns códigos \python~ com o seguinte preâmbulo:
+\begin{verbatim}
+from sympy import *
+\end{verbatim}
+\end{obs}
+\fi
+
+
 \section{Equações diferenciais}\label{cap_intro_sec_ed}
 
 \emph{Equação Diferencial (ED)} é o nome dado a qualquer equação que tenha pelo menos um termo envolvendo a diferenciação (derivação) de uma incógnita.
@@ -75,6 +87,21 @@ Uma \emph{solução} de uma EDO \eqref{eq:edo_geral} é uma função $y = y(t)$ 
   \begin{equation}
     y'' - y = e^{-t} - e^{-t} = 0, \quad\forall t.
   \end{equation}
+
+  \ifispython
+  No \python\footnote{Veja a Observação \ref{obs:cap_intro_python}}, podemos usar:
+\begin{verbatim}
+In : t = symbols('t')
+In : y = symbols('y', cls=Function)
+In : de = Eq(Derivative(y(t),t,t)-y(t) ,0)
+In : y1 = exp(t)
+In : checkodesol(de,y1)
+Out: (True, 0)
+In : y2 = exp(-t)
+In : checkodesol(de,y2)
+Out: (True, 0)
+\end{verbatim}
+  \fi
 \end{ex}
 
 \subsection*{Exercícios resolvidos}
@@ -93,7 +120,7 @@ Uma \emph{solução} de uma EDO \eqref{eq:edo_geral} é uma função $y = y(t)$ 
 
   \item EDO é não linear.
 
-    A equação tem um termo $\displaystyle y^2\frac{d^2y}{dt}$, o qual não é linear em $y$.
+    A equação tem um termo $\displaystyle y^2\frac{d^2y}{dt^2}$, o qual não é linear em $y$.
 
   \item EDO não é autônoma.
 
@@ -116,6 +143,15 @@ Uma \emph{solução} de uma EDO \eqref{eq:edo_geral} é uma função $y = y(t)$ 
                 &\Rightarrow r^2 - 1 = 0 \\
                 &\Rightarrow r = \pm 1.
   \end{align}
+  \ifispython
+  No \python, podemos computar a solução deste problema com os seguintes comandos:
+\begin{verbatim}
+In : r = symbols('r')
+In : eq = diff(exp(r*t),t,2)-exp(r*t)
+In : solve(eq,r)
+Out: [-1, 1]
+\end{verbatim}
+  \fi
 \end{exeresol}
 
 \subsection*{Exercícios}
@@ -178,7 +214,7 @@ Uma \emph{solução} de uma EDO \eqref{eq:edo_geral} é uma função $y = y(t)$ 
   \end{equation}
 \end{exer}
 \begin{resp}
-  $\{-\sqrt{2}, \sqrt{2}\}$.
+  $\{-1, 2\}$.
 \end{resp}
 
 
