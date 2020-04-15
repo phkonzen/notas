@@ -44,8 +44,8 @@ Com isso, temos que
 \begin{ex}
   Vamos resolver o seguinte Problema de Valor Inicial (PVI)
   \begin{align}
-    y' - y = 0, \quad t>0,
-    y(0) = 1.
+    &y' - y = 0, \quad t>0,\\
+    &y(0) = 1.
   \end{align}
   
   Começamos calculando a solução geral da EDO:
@@ -65,6 +65,28 @@ Com isso, temos que
   \begin{equation}
     y(t) = e^{t}.
   \end{equation}
+
+  \ifispython
+  No \python, podemos computar a solução solução geral da EDO com os seguintes comandos:
+\begin{verbatim}
+In : t = symbols('t')
+In : y = symbols('y', cls=Function)
+In : edo = Eq(y(t).diff(t)-y(t),0)
+In : sol = dsolve(edo,y(t))
+In : sol
+Out: Eq(y(t), C1*exp(t))
+\end{verbatim}
+Então, para aplicarmos a condição inicial e obtermos a solução do PVI, usamos:
+\begin{verbatim}
+In : C1 = symbols('C1')
+In : cs = solve(Eq(sol.rhs.subs(t,0),1),dict=True)
+In : cs
+Out: [{C1: 1}]
+
+In : sol.subs(cs[0])
+Out: Eq(y(t), exp(t))
+\end{verbatim}
+  \fi
 \end{ex}
 
 \subsection{Método dos fatores integrantes}
@@ -1156,5 +1178,3 @@ Ou seja, se
 \begin{resp}
   $xy^{-3}+\frac{y^{-4}}{4} = \frac{5}{4}$
 \end{resp}
-
-
