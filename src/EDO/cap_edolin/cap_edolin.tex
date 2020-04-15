@@ -1754,9 +1754,105 @@ Out: 6*exp(-2*t)
   \fi
 \end{ex}
 
+\begin{ex}
+  Vamos encontrar a solução geral de
+  \begin{equation}
+    y^{(4)} - 7y'' + 11y' - 5y = 0.
+  \end{equation}
+  As raízes da equação característica associada
+  \begin{equation}
+    r^3 - 7r^2 + 11r - 5 = 0
+  \end{equation}
+  são $r_1, r_2 = 1$ ou $r_3, r_4 = -1 \pm 2i$. Logo, temos as seguintes soluções particulares
+  \begin{align}
+    y_1(t) = e^t,\quad y_2(t) = te^t, \\
+    y_3(t) = e^{-t}\cos(2t),\quad y_4(t) = e^{-t}\sen(t).
+  \end{align}
+  Calculando o wronskiano, temos
+  \begin{align}
+    W(y_1,y_2,y_3,y_4;t) &=
+                           \begin{vmatrix}
+                             y_1 & y_2 & y_3 & y_4 \\
+                             y_1' & y_2' & y_3' & y_4' \\
+                             y_1'' & y_2'' & y_3'' & y_4'' \\
+                             y_1''' & y_2''' & y_3''' & y_4''' \\
+                           \end{vmatrix}
+                         &= 128 \neq 0.
+  \end{align}
+  Logo, concluímos que a solução geral é
+  \begin{equation}
+    y(t) = (c_1 + c_2t)e^t + e^{-t}[c_3\cos(2t) + c_4\sen(2t)].
+  \end{equation}
+\end{ex}
+
+\subsection{Equação não homogênea}
+
+Ambos os métodos da variação dos parâmetros e dos coeficientes a determinar podem ser generalizados para EDOs lineares de ordem mais altas, com coeficientes constantes e não homogêneas. Tais equações têm a forma
+\begin{equation}
+  y^{(n)} + a_{n-1}y^{(n-1)} + \cdots + a_0y = g(t),
+\end{equation}
+com $n\geq 1$ e $g(t)\not\equiv 0$. A \emph{solução geral} pode ser escrita na forma
+\begin{equation}
+  y(t) = c_1y_1(t) + c_2y_2(t) + \cdots + c_ny_n(t) + y_p(t),
+\end{equation}
+onde $y_1$, $y_2$, $dotsc$, $y_n$ formam um conjunto fundamental de soluções para a equação homogênea associada e $y_p$ é uma solução particular qualquer da equação não homogênea.
+
+\subsubsection{Método da variação dos parâmetros}
+
+\emconstrucao
+
+\subsubsection{Método dos coeficientes a determinar}
+
 \emconstrucao
 
 \subsection*{Exercícios resolvidos}
+
+\begin{exeresol}
+  Resolva
+  \begin{align}
+    y''' + 3y'' + 3y' + y = 0,\quad t>0,\\
+    y(0)=1,\quad y'(0)=0,\quad y''(0)=0.
+  \end{align}
+\end{exeresol}
+\begin{resol}
+  A equação característica associada
+  \begin{equation}
+    r^3 + 3r^2 + 3r + 1 = 0
+  \end{equation}
+  tem raiz tripla $r=-1$. Logo, a solução geral é
+  \begin{equation}
+    y(t) = (c_1 + c_2t + c_3t^2)e^{-t}.
+  \end{equation}
+  Aplicando as condições iniciais, obtemos
+  \begin{align}
+    y(0) = 1 &\Rightarrow c_1 = 1,\\
+    y'(0) = 0 &\Rightarrow c_2 = 1,\\
+    y''(0) = 0 &\Rightarrow c_3 = \frac{1}{2}.
+  \end{align}
+  Logo, a solução do PVI é
+  \begin{equation}
+    y(t) = \left(1 + t + \frac{1}{2}t^2\right)e^{-t}.
+  \end{equation}
+
+  \ifispython
+  No \python, podemos computar a solução deste problema com os seguintes comandos:
+\begin{verbatim}
+In : t = symbols('t')
+In : y = symbols('y', cls=Function)
+In : eq = y(t).diff(t,3)+3*y(t).diff(t,2)+3*y(t).diff(t)+y(t)
+In : sol = dsolve(eq,y(t))
+In : sol
+Out: Eq(y(t), (C1 + C2*t + C3*t**2)*exp(-t))
+
+In : C1,C2,C3 = symbols('C1,C2,C3')
+In : cs = solve([Eq(sol.rhs.subs(t,0),1),Eq(sol.rhs.diff(t).subs(t,0),0),Eq(sol.rhs.diff(t,2).subs(t,0),0)])
+In : cs
+Out: {C1: 1, C2: 1, C3: 1/2}
+
+In : sol.subs(cs)
+Out: Eq(y(t), (t**2/2 + t + 1)*exp(-t))\end{verbatim}
+  \fi
+\end{resol}
 
 \emconstrucao
 
