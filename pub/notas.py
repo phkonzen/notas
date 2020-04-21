@@ -118,7 +118,7 @@ class Notas:
                 #modifica o __body__ (bottom)
                 page = page.replace('</body>',body_end)
 
-                #cria botões de link para o repo/src
+                #cria botões de link para contato
                 if (fn != 'main'):
                     src_fname = fn
                     if (fn[0:4] == 'cap_'):
@@ -126,18 +126,7 @@ class Notas:
                         if (pos != -1):
                             src_fname = fn[0:pos]
 
-                    link_to_src = '<small><a href="https://github.com/phkonzen/notas/blob/master/src/'
-                    link_to_src += srcref
-                
-                    if (src_fname[0:4] == 'cap_'):
-                        link_to_src += '/'+src_fname+'/'+src_fname+'.tex'
-                    elif (src_fname == 'bib'):
-                        link_to_src += '/main.bib'
-                    else:
-                        link_to_src += '/'+src_fname+'.tex'
-
-                    link_to_src += '" target=_blank> <span class="glyphicon glyphicon-pencil"></span> </a>'
-                    link_to_src += '<a href="../contato.html" target="_blank">'
+                    link_to_src = '<small><a href="../contato.html" target="_blank">'
                     link_to_src += ' <span class="glyphicon glyphicon-envelope"></span> </a></small>'
 
                     page = page.replace('</h1>',link_to_src+'</h1>')
@@ -175,6 +164,8 @@ class Notas:
                 #modifica o __footer__
                 page = page.replace('<div class="ltx_page_logo">',foot)
 
+                
+                
                 #sobrescreve a página com as alterações
                 f = open(htmldir+"/"+p,'w')
                 f.write(page)
