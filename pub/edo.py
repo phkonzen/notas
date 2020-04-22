@@ -141,15 +141,11 @@ class EDO(Notas):
                         if (pos != -1):
                             src_fname = fn[0:pos]
 
-                    link_to_src = '<a href="../contato.html" target="_blank">'
-                    link_to_src += ' <span class="glyphicon glyphicon-envelope"></span></a>'
+                    link_to_src = ' <small><a href="../contato.html" target="_blank">'
+                    link_to_src += '<span class="glyphicon glyphicon-envelope"></span></a></small>'
 
                     page = page.replace('</h1>',link_to_src+'</h1>')
                     page = page.replace('</h2>',link_to_src+'</h2>')
-
-                # botão de vídeo
-                page = page.replace('title="" class="ltx_ref"><span class="ltx_ERROR undefined">\\faFilm</span>',
-                                    'target="_blank"><span class="glyphicon glyphicon-film"></span>')
 
 
                 #colapsa as respostas dos exercícios
