@@ -76,6 +76,7 @@ class Notas:
         body += '<ul class="nav navbar-nav">\n'
         body += '<li><a href="https://github.com/phkonzen/notas">Repositório GitHub</a></li>\n'
         body += '<li><a href="main.pdf">Baixar PDF</a></li>\n'
+        body += '<li><a href="https://mybinder.org/v2/gh/phkonzen/notas/master?filepath=%2Fsrc%2FEDO%2Fedo.ipynb" target="_blank">Jupyter NB</a></li>\n'
         # body += '<li><a href="https://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR">CC-BY-SA 4.0</a></li>\n'
         body += '<li><a href="../index.html">Outras Notas & Infos</a></li>\n'
         body += '</ul>\n'
