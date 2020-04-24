@@ -1,10 +1,6 @@
-# notas/MetodoElementosFinitos
+# notas/src/MetodoElementosFinitos
 
 Notas de aula sobre o método de elementos finitos.
-
-## Contato
-
-phkonzen@gmail.com
 
 ## Licença
 

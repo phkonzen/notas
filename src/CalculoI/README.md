@@ -1,12 +1,6 @@
-# notas/CalculoI
-
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/phkonzen/notas/master?filepath=%2Fsrc%2FCalculoI%2Fcalculoi.ipynb)
+# notas/src/CalculoI
 
 Notas de aula de Cálculo I.
-
-## Contato
-
-phkonzen@gmail.com
 
 ## Licença
 

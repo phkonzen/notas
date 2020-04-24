@@ -1,10 +1,6 @@
-# notas/Vetores
+# notas/src/Vetores
 
 Notas de aula sobre Vetores.
-
-## Contato
-
-phkonzen@gmail.com
 
 ## Licença
 

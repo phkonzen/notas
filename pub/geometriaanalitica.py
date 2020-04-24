@@ -4,8 +4,7 @@ Publica as notas de Geometrica Analítica.
 
 notas/src/GeometriaAnalitica
 
-Autor: Pedro H A Konzen - 03/2019
-Modificado: 03/2020
+Autor: Pedro H A Konzen - 03/2020
 '''
 
 import os

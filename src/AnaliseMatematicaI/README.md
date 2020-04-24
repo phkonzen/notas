@@ -1,4 +1,4 @@
-# notas/AnaliseMatematicaI
+# notas/src/AnaliseMatematicaI
 
 Notas de aula de Análise Matemática I.
 

@@ -1,10 +1,6 @@
-# notas/GeometriaAnalitica
+# notas/src/GeometriaAnalitica
 
 Notas de aula sobre geometria anaítica.
-
-## Contato
-
-phkonzen@gmail.com
 
 ## Licença
 

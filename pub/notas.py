@@ -5,6 +5,7 @@
 Classe mãe das notas de aula.
 
 Autor: Pedro H A Konzen - 05/2018
+Modificado: 04/2020
 '''
 
 import os

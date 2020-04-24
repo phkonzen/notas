@@ -12,7 +12,9 @@ Códigos-fonte das notas de aula.
 
 * ./MetodoElementosFinitos - notas de aula sobre MEF
 
-* ./VetoresGeometriaAnalitica - notas de aula sobre Vetores e Geometria Analítica
+* ./Vetores - notas de aula sobre Vetores
+
+* ./GeometriaAnalitica - notas de aula sobre Geometria Analítica
 
 * ./MiniCalcPy - minicurso de Cálculo com Python
 

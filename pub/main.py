@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 '''
-Constroi o __site__ das notas de aula.
+Constroi/atualiza o __site__ 
+das notas de aula.
 
 Autor: Pedro H A Konzen - 05/2018
 Modificado: 03/2020
@@ -61,12 +62,12 @@ mini = MiniCalcPy(srcdir,odir)
 def build(id):
     id.build()
 
-#pallelized region
+#região paralelizada
 if __name__ == '__main__':
     p = Pool()
     p.map(build,[ci,edo,mn,mef,v,ga,mini])
 
-#make sitemap.txt
+#sitemap.txt
 sm = SiteMap(odir)
 sm.build()
 

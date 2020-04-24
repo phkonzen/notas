@@ -10,6 +10,11 @@ Este é o repositório de minhas notas de aula. Pela educação livre, o materia
 
 * ./src: códigos-fonte das notas de aula
 
+## Contato
+
+Pedro H A Konzen
+phkonzen@gmail.com
+
 ## Licença
 
 Este material está licenciado sob a Licença Atribuição-CompartilhaIgual 4.0 Internacional Creative Commons. Para visualizar uma cópia desta licença, visite https://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR ou mande uma carta para Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
