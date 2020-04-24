@@ -65,12 +65,9 @@ class Index:
         body += '<div class="row">\n'
 
         #notas de aula
-        body += '<div class="col-md-6">\n'
+        body += '<div class="col-md-4">\n'
 
         body += '<h3>Notas de aula</h3>\n'
-
-        #notas de aula - col. esquerda
-        body += '<div class="col-md-6">\n'
 
         body += '<ul>\n'        
 
@@ -109,10 +106,11 @@ class Index:
         
         body += '</ul>\n'
 
-        body += '</div> <!-- div class="col-md-6" -->\n'
+        body += '</div> <!-- div class="col-md-4" -->\n'
 
-        #notas de aula - col. direita
-        body += '<div class="col-md-6">\n'
+        body += '<div class="col-md-4">\n'
+
+        body += '<h3>&nbsp;</h3>\n'
 
         body += '<ul>\n'        
 
@@ -143,14 +141,11 @@ class Index:
         
         body += '</ul>\n'
 
-        body += '</div> <!-- div class="col-md-6" -->\n'
-
-
-        body += '</div> <!-- div class="col-md-6" -->\n'
+        body += '</div> <!-- div class="col-md-3" -->\n'
 
 
         #Minicurso
-        body += '<div class="col-md-6">\n'
+        body += '<div class="col-md-4">\n'
         
         body += '<h3>Minicurso de Cálculo com Python</h3>\n'
         body += '<p><a href="https://mybinder.org/v2/gh/phkonzen/notas/master?filepath=%2Fsrc%2FMiniCalcPy"><img src="https://mybinder.org/badge_logo.svg" alt="Binder" title="" /></a></p>'
@@ -162,7 +157,7 @@ class Index:
         body += '<li>Parte 4 - Integrais: <a href="MiniCalcPy/4-integracao.html">HTML</a> | <a href="MiniCalcPy/4-integracao.ipynb" download>IPYNB</a></li>\n'
         body += '</ul>\n'
 
-        body += '</div> <!-- div class="col-md-6" -->\n'
+        body += '</div> <!-- div class="col-md-4" -->\n'
 
         
         body += '</div><!-- div class="row" -->\n'
@@ -175,7 +170,7 @@ class Index:
         body += '<div class="col-md-6">\n'
 
         body += '<h3>Sobre</h3>\n'
-        body += '<p>Neste <i>site</i> disponibilizo minhas notas de aula \n'
+        body += '<p>Neste <i>site</i> publico minhas notas de aula \n'
         body += 'em formato HTML e PDF. As notas estão predominante escritas \n'
         body += 'em linguagem de marcação \n'
         body += '<a href="https://www.latex-project.org/" target=_blank>LaTeX</a>.</p>\n'
@@ -201,10 +196,9 @@ class Index:
 
         body += '<h3>Ligações recomendadas</h3>\n'
         body += '<ul>\n'
-        body += '<li><a href="https://www.ufrgs.br/reamat" target="_blank">REAMAT</a>: projeto de recursos educacionais abertos de matemática</li>\n'
-        body += '<li><a href="https://www.sympy.org/" target="_blank">SymPy</a>: pacote Python de matemática simbólica</li>\n'
-        body += '<li><a href="https://www.gnu.org/software/octave/" target="_blank">GNU Octave</a>: linguagem de computação científica livre e compatível com MATLAB</li>\n'
+        body += '<li><a href="https://archive.org/" target="_blank">Internet Archive</a>: biblioteca de milhões de livros, filmes, <i>softwares</i>, música, <i>websites</i> e mais</li>\n'
         body += '<li><a href="https://www.geogebra.org/" target="_blank">Geogebra</a>: aplicativos abertos de matemática</li>\n'
+        body += '<li><a href="https://www.ufrgs.br/reamat" target="_blank">REAMAT</a>: projeto de recursos educacionais abertos de matemática</li>\n'
         body += '</ul>\n'
 
         body += '</div><!-- div class="col-md-6" -->\n'
