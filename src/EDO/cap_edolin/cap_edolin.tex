@@ -1699,7 +1699,7 @@ Cada raiz nos fornece uma solução particular $y_p=y_p(t)$:
   \end{align}
 \end{enumerate}
 
-\begin{ex}
+\begin{ex}\label{ex:edolin_on_h}
   Vamos calcular a solução geral de
   \begin{equation}
     y''' + 2y'' - y' - 2y = 0.
@@ -1736,7 +1736,8 @@ Cada raiz nos fornece uma solução particular $y_p=y_p(t)$:
 In : t,r = symbols('t,r')
 In : y = symbols('y', cls=Function)
 
-In : edo = y(t).diff(t,3) + 2*y(t).diff(t,2) - y(t).diff(t) - 2*y(t)  
+In : edo = y(t).diff(t,3) + 2*y(t).diff(t,2) \
+...:     - y(t).diff(t) - 2*y(t)  
 In : dsolve(edo,y(t))
 Out: Eq(y(t), C1*exp(-2*t) + C2*exp(-t) + C3*exp(t))
 \end{verbatim}
@@ -1799,7 +1800,207 @@ onde $y_1$, $y_2$, $dotsc$, $y_n$ formam um conjunto fundamental de soluções p
 
 \subsubsection{Método da variação dos parâmetros}
 
-\emconstrucao
+Seja a equação diferencial ordinária
+\begin{equation}\label{eq:edolin_on_varpar}
+  y^{(n)} + a_{n-1}y^{(n-1)} + \cdots + a_0y = g(t),
+\end{equation}
+com $n\geq 1$ e $g(t)\not\equiv 0$. Seja, também, $y_1$, $y_2$, $\dotsc$, $y_n$ um conjunto fundamental de soluções da equação homogênea associada. O \emph{método da variação dos parâmetros} consiste em buscar uma solução particular para \eqref{eq:edolin_on_varpar} com o seguinte formato
+\begin{equation}
+  y_p(t) = u_1(t)y_1(t)+u_2(t)y_2(t)+\cdots +u_n(t)y_n(t),
+\end{equation}
+onde $u_1$, $u_2$, $\dotsc$, $u_n$ são funções parâmetros a determinar.
+
+Os parâmetros $u_1$, $u_2$, $\dotsc$, $u_n$ devem ser escolhidos de forma que $y_p$ satistafaça \eqref{eq:edolin_on_varpar}. Quando $n>1$, temos um problema subdeterminado (mais variáveis que equações). Para fechar o problema, exigimos que os parâmetros sejam tais que
+\begin{align}
+  u_1'y_1+u_2'y_2+\cdots +u_n'y_n &= 0 \label{eq:edolin_on_varpar_eq0}\\
+  u_1'y_1'+u_2'y_2'+\cdots +u_n'y_n' &= 0 \\
+  &\vdots \\
+  u_1'y_1^{(n-2)}+u_2'y_2^{(n-2)}+\cdots +u_n'y_n^{(n-2)} &= 0.\label{eq:edolin_on_varpar_eqn-1}
+\end{align}
+Com isso, ao subtituirmos $y_p$ em \eqref{eq:edolin_on_varpar}, obtemos
+\begin{align}
+  g(t) &= a_0y_p+a_1y_p'+a_2y_p''+\cdots +y_p^{(n)}\\
+       &= a_0(u_1y_1+u_2y_2+\cdots +u_ny_n) \\
+       &+ a_1(u_1y_1'+u_2y_2'+\cdots +u_ny_n') \\
+       &+ a_2(u_1y_1''+u_2y_2''+\cdots +u_ny_n'') \\
+       &+ \cdots + \\
+       &+ (u_1y_1^{(n)}+u_2y_2^{(n)}+\cdots +u_ny_n^{(n)}) \\
+       &+ (u_1'y_1^{(n-1)}+u_2'y_2^{(n-1)}+\cdots +u_n'y_n^{(n-1)}).
+\end{align}
+Lembrando que $y_1$, $y_2$, $\dotsc$, $y_n$ são soluções da equação homogênea associada, esta última equação é equivalente a
+\begin{equation}\label{eq:edolin_on_varpar_eqn}
+  u_1'y_1^{(n-1)}+u_2'y_2^{(n-1)}+\cdots +u_n'y_n^{(n-1)} = g(t).
+\end{equation}
+
+Desta forma, concluímos que os parâmetros podem ser escolhidos de forma a satisfazerem o sistema de equações \eqref{eq:edolin_on_varpar_eq0}-\eqref{eq:edolin_on_varpar_eqn-1} e \eqref{eq:edolin_on_varpar_eqn}, i.e.
+\begin{align}
+  u_1'y_1+u_2'y_2+\cdots +u_n'y_n &= 0 \\
+  u_1'y_1'+u_2'y_2'+\cdots +u_n'y_n' &= 0 \\
+  &\vdots \\
+  u_1'y_1^{(n-2)}+u_2'y_2^{(n-2)}+\cdots +u_n'y_n^{(n-2)} &= 0 \\
+  u_1'y_1^{(n-1)}+u_2'y_2^{(n-1)}+\cdots +u_n'y_n^{(n-1)} &= g.
+\end{align}
+Usando o método de Cramer\footnote{Gabriel Cramer, 1704 - 1752, matemático suíço. Fonte: \href{https://en.wikipedia.org/wiki/Gabriel_Cramer}{Wikipedia}.} temos
+\begin{equation}\label{eq:edolin_on_varpar_ul}
+  u_m'(t) = \frac{g(t)W_m(t)}{W(t)},
+\end{equation}
+onde $m=1,2,\dotsc,n$, $W(t)$ denota o wronskiano
+\begin{equation}
+  W(y_1,y_2,\cdots,y_n;t) =
+  \begin{vmatrix}
+    y_1 & y_2 & \cdots & y_n \\
+    y_1' & y_2' & \cdots & y_n' \\
+    \vdots & \vdots & \cdots & \vdots \\
+    y_1^{(n-1)} & y_2^{(n-1)} & \cdots & y_n^{(n-1)}
+  \end{vmatrix}
+\end{equation}
+e $W_m(t)$ é o determinante obtido de $W$ substituindo a $m$-ésima coluna por vetor $(0, 0, \dotsc, 1)$.
+
+Por fim, integrando \eqref{eq:edolin_on_varpar_ul}, obtemos os parâmetros
+\begin{equation}
+  u_m(t) = \int \frac{g(t)W_m(t)}{W(t)}\,dt,
+\end{equation}
+com $m=1,2,\dotsc,n$.
+
+\begin{ex}
+  Vamos calcular a solução geral de
+  \begin{equation}\label{eq:ex_edolin_on_nh_vv}
+    y''' + 2y'' - y' - 2y = e^{2t}.
+  \end{equation}
+
+  No Exemplo \ref{ex:edolin_on_h}, vimos que
+  \begin{equation}
+    y_1(t) = e^{-2t},\quad y_2(t)=e^{-t},\quad y_3(t)=e^t
+  \end{equation}
+  formam um conjunto fundamental de soluções para a equação homogênea associada. Com isso, nos resta calcular uma solução particular $y_p=y_p(t)$ para a equação não homogênea.
+
+  Pelo método da variação dos parâmetros, podemos calcular como
+  \begin{equation}
+    y_p(t) = u_1(t)y_1(t) + u_2(t)y_2(t) + u_3(t)y_3(t),
+  \end{equation}
+  onde
+  \begin{equation}
+    u_m(t) = \int \frac{g(t)W_m(t)}{W(t)}\,dt,
+  \end{equation}
+  sendo $g(t) = e^{2t}$ e $m=1,2,3$. Ainda, temos
+  \begin{align}
+    W(t) &=
+           \begin{vmatrix}
+             y_1 & y_2 & y_3 \\
+             y_1' & y_2' & y_3' \\
+             y_1'' & y_2'' & y_3''
+           \end{vmatrix} \\
+         &=
+           \begin{vmatrix}
+             e^{-2t} & e^{-t} & e^t \\
+             -2e^{-2t} & -e^{-t} & e^t \\
+             4e^{-2t} & e^{-t} & e^t
+           \end{vmatrix} \\
+         &= 6e^{-2t}
+  \end{align}
+  \begin{align}
+    W_1(t) &=
+           \begin{vmatrix}
+             0 & y_2 & y_3 \\
+             0 & y_2' & y_3' \\
+             1 & y_2'' & y_3''
+           \end{vmatrix} \\
+           &= (-1)^{3+1}
+             \begin{vmatrix}
+               y_2 & y_3 \\
+               y_2' & y_3'
+             \end{vmatrix} \\
+           &=
+             \begin{vmatrix}
+               e^{-t} & e^t \\
+               -e^{-t} & e^t
+             \end{vmatrix} \\
+           &= 2
+   \end{align}
+  \begin{align}
+    W_2(t) &=
+           \begin{vmatrix}
+             y_1 & 0 & y_3 \\
+             y_1' & 0 & y_3' \\
+             y_1'' & 1 & y_3''
+           \end{vmatrix} \\
+           &= (-1)^{3+2}
+             \begin{vmatrix}
+               y_1 & y_3 \\
+               y_1' & y_3'
+             \end{vmatrix} \\
+           &= -
+             \begin{vmatrix}
+               e^{-2t} & e^t \\
+               -2e^{-2t} & e^t
+             \end{vmatrix} \\
+           &= -3e^{-t}
+   \end{align}
+  \begin{align}
+    W_3(t) &=
+           \begin{vmatrix}
+             y_1 & y_2 & 0 \\
+             y_1' & y_2' & 0 \\
+             y_1'' & y_2'' & 1
+           \end{vmatrix} \\
+           &= (-1)^{3+3}
+             \begin{vmatrix}
+               y_1 & y_2 \\
+               y_1' & y_2'
+             \end{vmatrix} \\
+           &=
+             \begin{vmatrix}
+               e^{-2t} & e^{-t} \\
+               -2e^{-2t} & -e^{-t}
+             \end{vmatrix} \\
+           &= e^{-3t}
+  \end{align}
+  Logo,
+  \begin{align}
+    u_1(t) &= \int \frac{g(t)W_1(t)}{W(t)}\,dt \\
+           &= \int \frac{2e^{2t}}{6e^{-2t}}\,dt \\
+           &= \frac{1}{3}\int e^{4t}\,dt \\
+           &= \frac{1}{12}e^{4t}
+  \end{align}
+  \begin{align}
+    u_2(t) &= \int \frac{g(t)W_2(t)}{W(t)}\,dt \\
+           &= \int \frac{e^{2t}\cdot (-3)\cdot e^{-t}}{6e^{-2t}}\,dt \\
+           &= -\frac{1}{2}\int e^{3t}\,dt \\
+           &= -\frac{1}{6}e^{3t}
+  \end{align}
+  \begin{align}
+    u_3(t) &= \int \frac{g(t)W_3(t)}{W(t)}\,dt \\
+           &= \int \frac{e^{2t}e^{-3t}}{6e^{-2t}}\,dt \\
+           &= \frac{1}{6}\int e^{t}\,dt \\
+           &= \frac{1}{6}e^{t}
+  \end{align}
+  Com isso,
+  \begin{align}
+    y_p &= u_1y_1 + u_2y_2 + u_3y_3 \\
+        &= \frac{1}{12}e^{4t}e^{-2t} - \frac{1}{6}e^{3t}e^{-t}+\frac{1}{6}e^te^t \\
+        &= \frac{1}{12}e^{-2t}.
+  \end{align}
+
+  Concluímos que a solução geral de \eqref{eq:ex_edolin_on_nh_vv} é
+  \begin{equation}
+    y(t) = c_1e^{-2t}+c_2e^{-t}+c_3e^t+\frac{1}{12}e^{-2t}.
+  \end{equation}
+
+  \ifispython
+  No \python, podemos computar a solução geral com os seguintes comandos:
+\begin{verbatim}
+In : t = symbols('t')
+In : y = symbols('y', cls=Function)
+
+In : eq = Eq(diff(y(t),t,3) + 2*diff(y(t),t,2) \
+...:    - diff(y(t),t)-2*y(t), exp(2*t))
+In : dsolve(eq,y(t))
+Out: Eq(y(t), C1*exp(-2*t) + C2*exp(-t) + C3*exp(t) \
+              + exp(2*t)/12)
+\end{verbatim}
+  \fi
+\end{ex}
+
 
 \subsubsection{Método dos coeficientes a determinar}
 
@@ -1833,26 +2034,6 @@ onde $y_1$, $y_2$, $dotsc$, $y_n$ formam um conjunto fundamental de soluções p
   \begin{equation}
     y(t) = \left(1 + t + \frac{1}{2}t^2\right)e^{-t}.
   \end{equation}
-
-  \ifispython
-  No \python, podemos computar a solução deste problema com os seguintes comandos:
-\begin{verbatim}
-In : t = symbols('t')
-In : y = symbols('y', cls=Function)
-In : eq = y(t).diff(t,3)+3*y(t).diff(t,2)+3*y(t).diff(t)+y(t)
-In : sol = dsolve(eq,y(t))
-In : sol
-Out: Eq(y(t), (C1 + C2*t + C3*t**2)*exp(-t))
-
-In : C1,C2,C3 = symbols('C1,C2,C3')
-In : cs = solve([Eq(sol.rhs.subs(t,0),1),Eq(sol.rhs.diff(t).subs(t,0),0),Eq(sol.rhs.diff(t,2).subs(t,0),0)])
-In : cs
-Out: {C1: 1, C2: 1, C3: 1/2}
-
-In : sol.subs(cs)
-Out: Eq(y(t), (t**2/2 + t + 1)*exp(-t))
-\end{verbatim}
-  \fi
 \end{resol}
 
 \emconstrucao
