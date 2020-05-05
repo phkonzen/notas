@@ -1,0 +1,845 @@
+%Este trabalho está licenciado sob a Licença Atribuição-CompartilhaIgual 4.0 Internacional Creative Commons. Para visualizar uma cópia desta licença, visite http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR ou mande uma carta para Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+
+\chapter{Sistema de EDOs lineares de ordem 1}\label{cap_edosis1}
+
+Neste capítulo, fazemos uma rápida introdução a sistemas de EDOs de primeira ordem, lineares e com coeficientes constantes. Ou seja, sistemas da forma
+\begin{align}
+  y_1'(t) &= a_{11}y_1(t) + a_{12}y_2(t) + \cdots + a_{1n}y_n(t) + g_1(t), \\
+  y_2'(t) &= a_{21}y_1(t) + a_{22}y_2(t) + \cdots + a_{2n}y_n(t) + g_2(t), \\
+  &\vdots \\
+  y_n'(t) &= a_{n1}y_1(t) + a_{n2}y_2(t) + \cdots + a_{nn}y_n(t) + g_n(t),
+\end{align}
+onde $n>1$ é o número de equações, $\pmb{y}(t) = \left(y_1(t), y_2(t),\dotsc, y_n(t)\right)$ é o vetor das incógnitas, $A = [a_{ij}]_{i,j=1}^{n,n}$ é a matriz dos coeficientes e $\pmb{g}(t) = (g_1(t), g_2(t), \dotsc, g_n(t))$ é o vetor das fontes.
+
+\section{Sistema de equações homogêneas}\label{cap_edosis1_sec_eqh}
+
+Nesta seção, discutimos sobre um método de solução para sistemas de EDOs de primeira ordem, lineares, com coeficientes constantes e homogêneas. Ou seja, sistema da forma
+\begin{equation}\label{eq:edosis1_eqh}
+  {\color{blue}\pmb{y}'(t) = A\pmb{y}(t)},
+\end{equation}
+onde $\pmb{y}(t) = \left(y_1(t), y_2(t),\dotsc, y_n(t)\right)$, $n>1$, é o vetor das incógnitas e $A = [a_{ij}]_{i,j=1}^{n,n}$ é a matriz dos coeficientes.
+
+O método consiste em buscar soluções da forma
+\begin{equation}
+  {\color{blue}\pmb{y} = \pmb{v}e^{rt}},
+\end{equation}
+onde $r$ e o vetor constante $\pmb{v} = (v_1, v_2, \cdots, v_n)$ devem ser determinados.
+
+Substituindo em \eqref{eq:edosis1_eqh}, obtemos
+\begin{align}
+  r\pmb{v}e^{rt} &= A\pmb{v}e^{rt} \\
+  A\pmb{v}e^{rt} - r\pmb{v}e^{rt} &= \pmb{0} \\
+  (A - rI)\pmb{v}\underbrace{e^{rt}}_{>0} &= \pmb{0},
+\end{align}
+ou seja, temos que $r$ e $\pmb{v}$ devem tais que
+\begin{equation}\label{eq:edosis1_eqc}
+  {\color{blue}(A - rI)\pmb{v} = \pmb{0}}.
+\end{equation}
+Em outras palavras, $r$ é \emph{autovalor} e $\pmb{v}$ é \emph{autovetor} da matriz $A$.
+
+Com isso, concluímos que se $r_1$ autovalor e $\pmb{v}_1$ autovetor de $A$, então
+\begin{equation}
+  \pmb{y}_1(t) = \pmb{v}_1e^{r_1t}
+\end{equation}
+é \emph{solução particular} de \eqref{eq:edosis1_eqh}. A \emph{solução geral} tem a forma
+\begin{equation}
+  {\color{blue}\pmb{y}(t) = c_1\pmb{y_1}(t) + c_2\pmb{y_2}(t) + \cdots + c_n\pmb{y_n}(t)},
+\end{equation}
+onde $\pmb{y_1}$, $\pmb{y_2}$, $\dotsc$, $\pmb{y}_n$ formam um conjunto fundamental de soluções de \eqref{eq:edosis1_eqh}, i.e. são soluções linearmente independentes.
+
+\subsection{Autovalores reais distintos}
+
+No caso da matriz dos coeficientes $A$ ter apenas todos os autovalores reais e dois a dois distintos, então a solução geral de \eqref{eq:edosis1_eqh} é
+\begin{equation}
+  {\color{blue}\pmb{y}(t) = c_1\pmb{v}_1e^{r_1t}+c_2\pmb{v}_2e^{r_2t}+\cdots + c_n\pmb{v}_ne^{r_nt}},
+\end{equation}
+onde $r_i$ e $\pmb{v}_i$ é autovalor e autovetor de $A$ respectivamente e $i=1, 2, \cdots, n$. A independência linear das soluções é guarantida pelo wronskiano
+\begin{equation}
+  W(e^{r_1t}, \dotsc, e^{r_nt};t)\neq 0.
+\end{equation}
+
+\begin{ex}
+  Vamos resolver o seguinte sistema
+  \begin{align}\label{eq:ex_edosis1_eqh_avd}
+    y_1'(t) &= -2y_1(t) + 2y_2(t) \\
+    y_2'(t) &= -2y_1(t) + 3y_2(t).
+  \end{align}
+
+  Primeiramente, reescrevemos o sistema na sua forma matricial
+  \begin{equation}
+    \pmb{y}' =
+    \underbrace{\begin{bmatrix}
+      -2 & 2 \\
+      -2 & 3
+    \end{bmatrix}}_{A}
+    \pmb{y},
+  \end{equation}
+  onde $\pmb{y}: t\mapsto \pmb{y}(t) = (y_1(t), y_2(t))$. Então, calculamos os autovalores da matriz dos coeficientes $A$. Para tanto, resolvemos sua equação característica
+  \begin{gather}
+    |A-rI| = 0 \\
+    \left|
+      \begin{bmatrix}
+        -2 & 2 \\
+        -2 & 3
+      \end{bmatrix}
+      -r
+      \begin{bmatrix}
+        1 & 0 \\
+        0 & 1
+      \end{bmatrix}
+    \right| = 0 \\
+    \begin{vmatrix}
+      -2 - r & 2 \\
+      -2 & 3 - r
+    \end{vmatrix} = 0 \\
+    (-2-r)(3-r) + 4 = 0 \\
+    r^2 - r - 2 =  0,\\
+    r = \frac{1 \pm \sqrt{9}}{2} \\
+    r_1=-1,\quad r_2=2.
+  \end{gather}
+  Obtidos os autovalores, calculamos os autovetores $\pmb{v}_1$ e $\pmb{v}_2$. Começamos calculando o autovetor associado a $r_1$.
+  \begin{gather}
+    (A-r_1I)\pmb{v}_1 = \pmb{0} \\
+    \begin{bmatrix}
+      -2-r_1 & 2 \\
+      -2 & 3-r_1
+    \end{bmatrix}
+    \begin{bmatrix}
+      v_{11} \\
+      v_{21}
+    \end{bmatrix} =
+    \begin{bmatrix}
+      0 \\
+      0
+    \end{bmatrix} \\
+        \begin{bmatrix}
+      -1 & 2 \\
+      -2 & 4
+    \end{bmatrix}
+    \begin{bmatrix}
+      v_{11} \\
+      v_{21}
+    \end{bmatrix} =
+    \begin{bmatrix}
+      0 \\
+      0
+    \end{bmatrix} \\
+    \begin{bmatrix}
+      -1 & 2 & | & 0 \\
+      -2 & 4 & | & 0
+    \end{bmatrix}
+    \begin{matrix}
+      \times 2 \\
+      \leftarrow -
+    \end{matrix} \\
+    \begin{bmatrix}
+      -1 & 2 & | & 0 \\
+      0 & 0 & | & 0
+    \end{bmatrix}    
+  \end{gather}
+Assim, temos
+\begin{gather}
+  -v_{11} + 2v_{21} = 0 \\
+  v_{11} = 2v_{21},
+\end{gather}
+donde escolhemos
+\begin{equation}
+\pmb{v}_1 =
+\begin{bmatrix}
+  2 \\
+  1
+\end{bmatrix}.
+\end{equation}
+Com isso, temos obtido a solução particular
+\begin{align}
+  \pmb{y}_1(t) &= \pmb{v}_1e^{r_1t} \\
+               &=
+                 \begin{bmatrix}
+                   2\\
+                   1
+                 \end{bmatrix}e^{-t}
+\end{align}
+
+
+Agora, de forma análoga, calculamos $\pmb{v}_2$, um autovetor associado a $r_2$.
+\begin{gather}
+  (A-r_2I)\pmb{v}_2 = \pmb{0} \\
+  \begin{bmatrix}
+    -2-r_2 & 2 & | & 0 \\
+    -2 & 3-r_2 & | & 0
+  \end{bmatrix} \\
+  \begin{bmatrix}
+    -4 & 2 & | & 0 \\
+    -2 & 1 & | & 0
+  \end{bmatrix}
+  \begin{matrix}
+    \leftarrow - \\
+    \times 2
+  \end{matrix}\\
+  \begin{bmatrix}
+    0 & 0 & | & 0 \\
+    -2 & 1 & | & 0
+  \end{bmatrix}\\
+    -2v_{12} + v_{22} = 0 \\
+  \pmb{v}_2 =
+  \begin{bmatrix}
+    1 \\
+    2
+  \end{bmatrix}
+\end{gather}
+Com isso, temos a solução particular
+\begin{align}
+  \pmb{y}_2(t) &= \pmb{v}_2e^{r_2t} \\
+               &=
+                 \begin{bmatrix}
+                   1\\
+                   2
+                 \end{bmatrix}e^{2t}
+\end{align}
+
+De tudo isso, concluímos que a solução geral de \eqref{eq:ex_edosis1_eqh_avd} é
+\begin{align}
+  \pmb{y}(t) &= c_1\pmb{y}_1(t) + c_2\pmb{y}_2 \\
+             &= c_1
+               \begin{bmatrix}
+                 2\\
+                 1
+               \end{bmatrix}e^{-t} + c_2
+  \begin{bmatrix}
+    1\\
+    2
+  \end{bmatrix}e^{2t}
+\end{align}
+ou, ainda,
+\begin{align}
+  y_1(t) &= 2c_1e^{-t} + c_2e^{2t} \\
+  y_2(t) &= c_1e^{-t} + 2c_2e^{2t}
+\end{align}
+
+\ifispython
+No \python, podemos computar os autovalores e autovetores da matriz $A$ com os seguintes comandos\footnote{Veja mais informações em \href{https://docs.sympy.org/latest/tutorial/matrices.html}{SymPy: Matrices}.}:
+\begin{verbatim}
+In : A = Matrix([[-2,2],[-2,3]])
+In : A.eigenvects()
+Out: 
+[(-1, 1, [Matrix([
+   [2],
+   [1]])]), (2, 1, [Matrix([
+   [1/2],
+   [  1]])])]
+\end{verbatim}
+
+A solução do sistema \eqref{eq:ex_edosis1_eqh_avd} pode ser computada com os comandos:
+\begin{verbatim}
+In : t,C1,C2 = symbols('t,C1,C2')
+In : y1,y2 = symbols('y1,y2', cls=Function)
+In : se = (Eq(diff(y1(t),t),-2*y1(t)+2*y2(t)), \
+...:        Eq(diff(y2(t),t),-2*y1(t)+3*y2(t)))
+...: 
+In : dsolve(se,[y1(t),y2(t)])
+Out: 
+[Eq(y1(t), 2*C1*exp(-t) + 2*C2*exp(2*t)),
+ Eq(y2(t), C1*exp(-t) + 4*C2*exp(2*t))]
+\end{verbatim}
+\fi
+\end{ex}
+
+\subsection{Autovalores reais repetidos}
+
+Um autovalor real duplo $r$ da matriz de coeficientes $A$ nos fornece duas soluções particulares para \eqref{eq:edosis1_eqh}, a saber
+\begin{align}
+  {\color{blue}\pmb{y}_1(t)} &{\color{blue}= \pmb{v}_1e^{rt}},\\
+  {\color{blue}\pmb{y}_2(t)} &{\color{blue}= \pmb{v}_1te^{rt} + \pmb{v}_2e^{rt}},
+\end{align}
+onde $\pmb{v}_1$ é autovetor associado a $r$. Para encontrar $\pmb{v}_2$, substituimos $\pmb{y}_2$ em \eqref{eq:edosis1_eqh}, donde
+\begin{gather}
+  \pmb{y}_2' = A\pmb{y}_2 \\
+  \pmb{v}_1e^{rt} + r\pmb{v}_1te^{rt} + r\pmb{v}_2e^{rt} = A\pmb{v}_1te^{rt} + A\pmb{v}_2e^{rt} \\
+  (A-rI)\pmb{v}_1t + (A-rI)\pmb{v}_2 = \pmb{v}_1
+\end{gather}
+Segue que
+\begin{align}
+  {\color{blue}(A-rI)\pmb{v}_1} &{\color{blue}= \pmb{0}} \\
+  {\color{blue}(A-rI)\pmb{v}_2} &{\color{blue}= \pmb{v}_1}
+\end{align}
+
+\begin{ex}
+  Vamos calcular a solução geral de
+  \begin{equation}\label{eq:ex_edosis1_eqh_avr}
+    \pmb{y}' =
+    \begin{bmatrix}
+      -1 & 1 & 0 \\
+      0 & -1 & -1 \\
+      0 & 0 & 1
+    \end{bmatrix}
+    \pmb{y}.
+  \end{equation}
+
+  Neste caso, temos que $r_{1,2} = -1$ é autovalor duplo e $r_3=1$ é autovalor simples da matriz de coeficientes do sistema \eqref{eq:ex_edosis1_eqh_avr}.
+  
+  Associadas a $r_{1,2}$ buscamos por soluções particulares da forma
+  \begin{align}
+    \pmb{y}_1 = \pmb{v}_1e^{r_{1,2}t}, \\
+    \pmb{y}_2 = \pmb{v}_1te^{r_{1,2}t} + \pmb{v}_2e^{r_{1,2}t}.
+  \end{align}
+  Calculamos $\pmb{v}_1$ resolvendo
+  \begin{gather}
+    (A - r_{1,2}I)\pmb{v}_1 = \pmb{0} \\
+    \begin{bmatrix}
+      -1-r_{1,2} & 1 & 0 & | & 0 \\
+      0 & -1-r_{1,2} & -1 & | & 0 \\
+      0 & 0 & 1-r_{1,2} & | & 0
+    \end{bmatrix}\\
+    \begin{bmatrix}
+      0 & 1 & 0 & | & 0 \\
+      0 & 0 & -1 & | & 0 \\
+      0 & 0 &  2 & | & 0
+    \end{bmatrix}
+  \end{gather}
+  Com isso, podemos escolher
+  \begin{equation}
+    \pmb{v}_1 =
+    \begin{bmatrix}
+      1 \\
+      0 \\
+      0
+    \end{bmatrix}.
+  \end{equation}
+  Determinado $\pmb{v}_1$, calculamos $\pmb{v}_2$ com
+  \begin{gather}
+    (A-r_{1,2}I)\pmb{v}_2 = \pmb{v}_1 \\
+    \begin{bmatrix}
+      0 & 1 & 0 & | & 1 \\
+      0 & 0 & -1 & | & 0 \\
+      0 & 0 & 2 & | & 0
+    \end{bmatrix}
+  \end{gather}
+  donde escolhemos
+  \begin{equation}
+    \pmb{v}_2 =
+    \begin{bmatrix}
+      1 \\
+      1 \\
+      0
+    \end{bmatrix}.
+  \end{equation}
+
+  Agora, associada a $r_3$ temos uma solução particular da forma
+  \begin{equation}
+    \pmb{y}_3 = \pmb{v}_3e^{r_3t},
+  \end{equation}
+  onde
+  \begin{gather}
+    (A-r_3I)\pmb{v}_3 = \pmb{0} \\
+    \begin{bmatrix}
+      -1-r_3 & 1 & 0 & | & 0 \\
+      0 & -1-r_3 & -1 & | & 0 \\
+      0 & 0 & 1-r_3 & | & 0 
+    \end{bmatrix}\\
+    \begin{bmatrix}
+      -2 & 1 & 0 & | & 0 \\
+      0 & -2 & -1 & | & 0 \\
+      0 & 0 & 0 & | & 0 
+    \end{bmatrix}
+  \end{gather}  
+  Com isso, temos $-2v_{13}+v_{23}=0$, $-2v_{23}-v_{33}=0$. Ou seja, podemos escolher
+  \begin{equation}
+    \pmb{v_3} =
+    \begin{bmatrix}
+      -1 \\
+      -2 \\
+      4
+    \end{bmatrix}.
+  \end{equation}
+
+  Com tudo isso, podemos concluir que a solução geral de \eqref{eq:ex_edosis1_eqh_avr} é
+  \begin{align}
+    \pmb{y}(t) &= c_1\pmb{v}_1e^{r_{1,2}t}+c_2\left(\pmb{v}_1t+\pmb{v}_2\right)e^{r_{1,2}t} + c_3\pmb{v}_3e^{r_3t} \\
+    \pmb{y}(t) &= c_1
+                 \begin{bmatrix}
+                   1\\
+                   0\\
+                   0
+                 \end{bmatrix}e^{-t} + c_2\left(
+    \begin{bmatrix}
+      1\\
+      0\\
+      0
+    \end{bmatrix}t +
+    \begin{bmatrix}
+      1\\
+      1\\
+      0
+    \end{bmatrix}\right)e^{-t} + c_3
+    \begin{bmatrix}
+      -1\\
+      -2\\
+      4
+    \end{bmatrix}e^t.
+  \end{align}
+\end{ex}
+
+\subsection{Autovalores complexos}
+
+Vejamos o caso de ${\color{blue}r=\lambda  \pm \mu i}$ serem autovalores complexos da matriz de coeficientes do sistema \eqref{eq:edosis1_eqh}. Associados, temos autovetores da forma
+\begin{align}
+  {\color{blue}\pmb{v}} &{\color{blue}= \pmb{v}_1 + \pmb{v}_2i},\\
+  {\color{blue}\overline{\pmb{v}}} &{\color{blue}= \pmb{v}_1 - \pmb{v}_2i}.
+\end{align}
+Por substituição direta, podemos verificar que
+\begin{align}
+  \pmb{u}_1(t) &= \pmb{v}e^{(\lambda + \mu i)t},\\
+  \pmb{u}_2(t) &= \overline{\pmb{v}}e^{(\lambda - \mu i)t},
+\end{align}
+são soluções de \eqref{eq:edosis1_eqh}. Também, verifica-se que as partes real e imaginária de $\pmb{u}_1$ e ${u}_2$ são soluções reais de \eqref{eq:edosis1_eqh}. A fim determiná-las, usamos a fórmula de Euler\footnote{Leonhard Euler, 1707-1783, matemático suíço. Fonte: \href{https://en.wikipedia.org/wiki/Leonhard_Euler}{Wikipedia}.}, calculamos
+\begin{align}
+  \pmb{u}_1 &= (\pmb{v}_1 + \pmb{v}_2i)e^{(\lambda + \mu i)t} \\
+  \pmb{u}_1 &= (\pmb{v}_1 + \pmb{v}_2i)e^{\lambda t}[\cos(\mu t) + i\sen(\mu t)] \\
+  \pmb{u}_1 &= e^{\lambda t}[\pmb{v_1}\cos(\mu t)-\pmb{v}_2\sen(\mu t)] \\
+            &= ie^{\lambda t}[\pmb{v_1}\sen(\mu t) + \pmb{v}_2\cos(\mu t)].
+\end{align}
+De forma análoga, verifica-se que $\pmb{u}_1 = \overline{\pmb{u}_2}$. Ou seja, as partes reais e imaginárias de $\pmb{u}_1$ e $\pmb{u}_2$ são
+\begin{align}
+  {\color{blue}\pmb{y}_1(t)} &{\color{blue}= e^{\lambda t}[\pmb{v_1}\cos(\mu t)-\pmb{v}_2\sen(\mu t)]}, \\
+  {\color{blue}\pmb{y}_2(t)} &{\color{blue}= e^{\lambda t}[\pmb{v_1}\sen(\mu t)+\pmb{v}_2\cos(\mu t)]},
+\end{align}
+as quais são soluções linearemente independentes, particulares de \eqref{eq:edosis1_eqh}.
+
+\begin{ex}
+  Vamos calcular a solução geral de
+  \begin{equation}\label{eq:ex_edosis1_eqh_avc}
+    \pmb{y}' =
+    \begin{bmatrix}
+      1 & 1 \\
+      -1 & 1
+    \end{bmatrix}\pmb{y}.
+  \end{equation}
+
+  Começamos calculando os autovalores associados a matriz de coeficientes do sistema \eqref{eq:ex_edosis1_eqh_avc}. Podemos fazer isso como segue
+  \begin{gather}
+    |A-rI| = 0 \\
+    \begin{vmatrix}
+      1-r & 1 \\
+      -1 & 1-r
+    \end{vmatrix} = 0 \\
+    (1-r)^2 + 1 = 0 \\
+    r^2 - 2r + 2 = 0 \\
+    r = 1\pm i
+  \end{gather}
+
+  Um autovetor associado a $r = 1 + i$ pode ser obtidos resolvendo-se
+  \begin{gather}
+    (A-rI)\pmb{v} = \pmb{0}
+    \begin{bmatrix}
+      1-r & 1 & | & 0 \\
+      -1 & 1-r & | & 0
+    \end{bmatrix} \\
+    \begin{bmatrix}
+      -i &  1 & | & 0 \\
+      -1 & -i & | & 0
+    \end{bmatrix}
+    \begin{matrix}
+      \times i \\
+      \leftarrow +
+    \end{matrix}\\
+    \begin{bmatrix}
+      -i & 1 & | & 0 \\
+      0 & 0 & | & 0
+    \end{bmatrix} \\
+    -iw_1 + w_2 = 0.
+  \end{gather}
+  Com isso, podemos escolher o autovetor
+  \begin{align}
+    \pmb{v} &=
+              \begin{bmatrix}
+                1 \\
+                i
+              \end{bmatrix} \\
+            &=
+              \underbrace{\begin{bmatrix}
+                1\\
+                0
+              \end{bmatrix}}_{\pmb{v}_1} + i
+    \underbrace{\begin{bmatrix}
+      0\\
+      1
+    \end{bmatrix}}_{\pmb{v}_2}
+  \end{align}
+  
+  Desta forma, identificamos as soluções particulares
+  \begin{align}
+    \pmb{y}_1(t) &= e^t\left\{
+    \begin{bmatrix}
+      1\\
+      0
+    \end{bmatrix}\cos(t) -
+    \begin{bmatrix}
+      0\\
+      1
+    \end{bmatrix}\sen(t)\right\}\\
+        \pmb{y}_2(t) &= e^t\left\{
+    \begin{bmatrix}
+      1\\
+      0
+    \end{bmatrix}\sen(t) +
+    \begin{bmatrix}
+      0\\
+      1
+    \end{bmatrix}\cos(t)\right\}
+  \end{align}
+
+  Concluímos que a solução geral de \eqref{eq:ex_edosis1_eqh_avc} é
+  \begin{align}
+    \pmb{y}(t) &= c_1\pmb{y}_1(t) + c_2\pmb{y}_2(t) \\
+               &= c_1e^t\left\{
+    \begin{bmatrix}
+      1\\
+      0
+    \end{bmatrix}\cos(t) -
+    \begin{bmatrix}
+      0\\
+      1
+    \end{bmatrix}\sen(t)\right\} \\
+    &+ c_2e^t\left\{
+    \begin{bmatrix}
+      1\\
+      0
+    \end{bmatrix}\sen(t) +
+    \begin{bmatrix}
+      0\\
+      1
+    \end{bmatrix}\cos(t)\right\}
+  \end{align}
+\end{ex}
+
+\subsection*{Exercícios resolvidos}
+
+\begin{exeresol}
+  Resolva o seguinte PVI
+  \begin{align}
+    \pmb{y}' &=
+    \begin{bmatrix}
+      -3 & 1 \\
+      1 & -3
+    \end{bmatrix}\pmb{y},\\
+    \pmb{y}(0) &=
+                 \begin{bmatrix}
+                   -1\\
+                   1
+                 \end{bmatrix}
+  \end{align}
+\end{exeresol}
+\begin{resol}
+  O primeiro passo é encontrar a solução geral de
+  \begin{equation}
+        \pmb{y}' = \begin{bmatrix}
+      -3 & 1 \\
+      1 & -3
+    \end{bmatrix}\pmb{y}.
+  \end{equation}
+
+  Para tanto, calculamos os autovalores da matriz dos coeficientes.
+  \begin{gather}
+    |A-rI|=0\\
+    \begin{vmatrix}
+      -3-r & 1 \\
+      1 & -3-r
+    \end{vmatrix} = 0 \\
+    (-3-r)^2-1=0 \\
+    r^2+6r+8=0 \\
+    r_1 = -4,\quad r_2=-2.
+  \end{gather}
+
+  Então, buscamos por autovetores associados.
+  \begin{gather}
+    (A-r_1I)\pmb{v}_1 = \pmb{0} \\
+    \begin{bmatrix}
+      1 & 1 & | & 0\\
+      1 & 1 & | & 0
+    \end{bmatrix}\\
+    v_{11}+v_{21}=0\\
+    \pmb{v}_1 =
+    \begin{bmatrix}
+      1\\
+      -1
+    \end{bmatrix}
+  \end{gather}
+
+    \begin{gather}
+    (A-r_2I)\pmb{v}_2 = \pmb{0} \\
+    \begin{bmatrix}
+      -1 & 1 & | & 0\\
+      1 & -1 & | & 0
+    \end{bmatrix}
+    \begin{matrix}
+      \times 1 \\
+      \leftarrow +
+    \end{matrix}\\
+    \begin{bmatrix}
+      -1 & 1 & | & 0\\
+      0 & 0 & | & 0
+    \end{bmatrix}
+    -v_{12}+v_{22}=0\\
+    \pmb{v}_2 =
+    \begin{bmatrix}
+      1\\
+      1
+    \end{bmatrix}
+  \end{gather}
+
+  Com isso, temos a solução geral da EDO dada por
+  \begin{align}
+    \pmb{y}(t) &= c_1\pmb{v}_1e^{r_1t} + c_2\pmb{v}_2e^{r_2t} \\
+               &= c_1
+                 \begin{bmatrix}
+                   1 \\
+                   -1
+                 \end{bmatrix}e^{-4t} + c_2
+    \begin{bmatrix}
+      1 \\
+      1
+    \end{bmatrix}e^{-2t}.
+  \end{align}
+
+  Agora, aplicamos a condição inicial.
+  \begin{gather}
+    \pmb{y}(0) =
+    \begin{bmatrix}
+      -1 \\
+      1
+    \end{bmatrix}\\
+    c_1 \begin{bmatrix}
+      1 \\
+      -1
+    \end{bmatrix} + c_2 \begin{bmatrix}
+      1 \\
+      1
+    \end{bmatrix} =     \begin{bmatrix}
+      -1 \\
+      1
+    \end{bmatrix} \\
+    \begin{bmatrix}
+      1 & 1 & | & -1 \\
+      -1 & 1 & | & 1
+    \end{bmatrix}
+    \begin{matrix}
+      \times 1 \\
+      \leftarrow +
+    \end{matrix}\\
+    \begin{bmatrix}
+      1 & 1 & | & -1 \\
+      0 & 2 & | & 0
+    \end{bmatrix}
+  \end{gather}
+  Segue que
+  \begin{align}
+    c_1 + c_2 &= -1\\
+    2c_2 &= 0
+  \end{align}
+  donde, $c_1=-1$ e $c_2 = 0$.
+
+  Concluímos que a solução do PVI é
+  \begin{equation}
+    \pmb{y}(t) =
+    \begin{bmatrix}
+      -1 \\
+      1
+    \end{bmatrix}e^{-4t}.
+  \end{equation}
+
+  \ifispython
+  No \python, podemos computar a solução deste exercício com os seguintes comandos:
+\begin{verbatim}
+In : t,C1,C2 = symbols('t,C1,C2')
+In : y1,y2 = symbols('y1,y2', cls=Function)
+In : ed = (Eq(diff(y1(t),t),-3*y1(t)+y2(t)),\
+...:       Eq(diff(y2(t),t),y1(t)-3*y2(t)))
+...: 
+In : ds = dsolve(ed,[y1(t),y2(t)])
+In : cs = solve((Eq(ds[0].rhs.subs(t,0),-1), \
+...:             Eq(ds[1].rhs.subs(t,0),1)),[C1,C2])
+...: 
+In : ds[0].subs(cs)
+Out: Eq(y1(t), -exp(-4*t))
+
+In : ds[1].subs(cs)
+Out: Eq(y2(t), exp(-4*t))
+\end{verbatim}
+  \fi
+\end{resol}
+
+\begin{exeresol}
+  Calcule a solução geral do seguinte sistema
+  \begin{align}
+    y_1' &= -y_1 + 2y_2 \label{eq:exeresol_edosis1_1}\\
+    y_2' &= -2y_1 - y_2 + y_3 \label{eq:exeresol_edosis1_2}\\
+    y_3' &= -y_3 + y_4 \label{eq:exeresol_edosis1_3}\\
+    y_4' &= -y_4 \label{eq:exeresol_edosis1_4}
+  \end{align}
+\end{exeresol}
+\begin{resol}
+  Vamos reescrever o sistema na sua forma matricial.
+  \begin{equation}
+    \pmb{y}' =
+    \begin{bmatrix}
+      -1 & 2 & 0 & 0 \\
+      -2 & -1 & 1 & 0 \\
+      0 & 0 & -1 & 1 \\
+      0 & 0 & 0 & -1
+    \end{bmatrix}\pmb{y}
+  \end{equation}
+
+  Calculamos os autovalores da matriz dos coeficientes.
+  \begin{gather}
+    |A-rI| = 0 \\
+    \begin{vmatrix}
+      -1-r & 2 & 0 & 0 \\
+      -2 & -1-r & 1 & 0 \\
+      0 & 0 & -1-r & 1 \\
+      0 & 0 & 0 & -1-r 
+    \end{vmatrix} = 0 \\
+    r^4 + 4r^3 + 10r^2 + 12r + 5 = 0
+  \end{gather}
+  Resolvendo esta equação característica, obtemos os autovalores $r_{1,2} = -1$ e $r_3,r_4 = -1 \pm 2i$.
+
+  \begin{enumerate}[a)]
+  \item $r_1,r_2=-1$:
+
+    Soluções particulares associadas.
+    \begin{align}
+      \pmb{y}_1 = \pmb{v}_1e^{r_{1,2}t},\\
+      \pmb{y}_2 = \pmb{v}_1te^{r_{1,2}t} + \pmb{v}_2e^{r_{1,2}t}
+    \end{align}
+
+   O vetor $\pmb{v}_1$ é autovetor associado a $r_{1,2}$.
+    \begin{gather}
+      (A-r_1I)\pmb{v}_1 = \pmb{0} \\
+      \begin{bmatrix}
+        0 & 2 & 0 & 0 & | & 0 \\
+        -2 & 0 & 1 & 0 & | & 0 \\
+        0 & 0 & 0 & 1 & | & 0 \\
+        0 & 0 & 0 & 0 & | & 0
+      \end{bmatrix}\\
+      \pmb{v}_1 =
+      \begin{bmatrix}
+        1 \\
+        0 \\
+        2 \\
+        0
+      \end{bmatrix}
+    \end{gather}
+
+    O vetor $\pmb{v}_2$ é calculado como segue.
+    \begin{gather}
+      (A-r_{1,2}I)\pmb{v}_2 = \pmb{v}_1 \\
+      \begin{bmatrix}
+        0 & 2 & 0 & 0 & | & 1 \\
+        -2 & 0 & 1 & 0 & | & 0 \\
+        0 & 0 & 0 & 1 & | & 2 \\
+        0 & 0 & 0 & 0 & | & 0
+      \end{bmatrix}\\
+      \pmb{v}_2 =
+      \begin{bmatrix}
+        1 \\
+        \frac{1}{2} \\
+        2 \\
+        2
+      \end{bmatrix}
+    \end{gather}
+
+  \item $r_3,r_4 = -1 + 2i$:
+
+    Soluções particulares associadas.
+    \begin{align}
+      \pmb{y}_3 &= e^{-t}[\pmb{v_3}\cos(2t) - \pmb{v}_4\sen(2t)] \\
+      \pmb{y}_4 &= e^{-t}[\pmb{v_3}\sen(2t) + \pmb{v}_4\sen(2t)]
+    \end{align}
+
+    Os vetores $\pmb{v}_3$ e $\pmb{v}_4$ são, respectivamentem, as partes real e imaginária de autovetor associado a $r_3$ ou $r_4$. Usando $r_3$ e denotando o autovetor por $\pmb{v}$, calculamos como segue.
+    \begin{gather}
+      (A-r_3I)\pmb{v} = \pmb{0} \\
+      \begin{bmatrix}
+        -2i & 2 & 0 & 0 & | & 0 \\
+        -2 & -2i & 1 & 0 & | & 0 \\
+        0 & 0 & -2i & 1 & | & 0 \\
+        0 & 0 & 0 & -2i & | & 0
+      \end{bmatrix}\\
+      \pmb{v} =
+      \begin{bmatrix}
+        1 \\
+        i \\
+        0 \\
+        0
+      \end{bmatrix} =
+      \underbrace{\begin{bmatrix}
+        1 \\
+        0 \\
+        0 \\
+        0
+      \end{bmatrix}}_{\pmb{v_1}} + i
+    \underbrace{\begin{bmatrix}
+        0 \\
+        1 \\
+        0 \\
+        0
+      \end{bmatrix}}_{\pmb{v}_2}
+    \end{gather}
+  \end{enumerate}
+
+  De tudo isso, temos a solução geral
+  \begin{align}
+    \pmb{y}(t) &= c_1\pmb{y}_1(t) + c_2\pmb{y}_2 + c_3\pmb{y}_3(t) + c_4\pmb{y}_4 \\
+    &= c_1
+      \begin{bmatrix}
+        1 \\
+        0 \\
+        2 \\
+        0
+      \end{bmatrix}e^{-t} \\
+    &+ c_2\left\{
+      \begin{bmatrix}
+        1 \\
+        0 \\
+        2 \\
+        0
+      \end{bmatrix}t +
+    \begin{bmatrix}
+      1 \\
+      \frac{1}{2} \\
+      2 \\
+      2
+    \end{bmatrix}\right\}e^{-t} \\
+    &+ c_3\left\{
+      \begin{bmatrix}
+        1 \\
+        0 \\
+        0 \\
+        0
+      \end{bmatrix}\cos(2t) -
+    \begin{bmatrix}
+      0 \\ 1 \\ 0 \\ 0
+    \end{bmatrix}\sen(2t)\right\} \\
+    &+ c_4\left\{
+      \begin{bmatrix}
+        1 \\
+        0 \\
+        0 \\
+        0
+      \end{bmatrix}\sen(2t) +
+    \begin{bmatrix}
+      0 \\ 1 \\ 0 \\ 0
+    \end{bmatrix}\cos(2t)\right\}
+  \end{align}
+  ou, equivalentemente,
+  \begin{align}
+    y_1(t) &= c_1e^{-t} + c_2(t + 1)e^{-t} \\
+           &+ c_3\cos(2t) + c_4\sen(2t) \\
+    y_2(t) &= \frac{c_2}{2}e^{-t} - c_3\sen(2t) + c_4\cos(2t) \\
+    y_3(t) &= 2c_1e^{-t} + c_2(2t + 2)e^{-t} \\
+    y_4(t) &= 2c_2e^{-t}
+  \end{align}
+\end{resol}
+
+\subsection*{Exercícios}
+
+\emconstrucao
