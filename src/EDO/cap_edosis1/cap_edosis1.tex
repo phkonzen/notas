@@ -58,7 +58,7 @@ onde $r_i$ e $\pmb{v}_i$ é autovalor e autovetor de $A$ respectivamente e $i=1,
   W(e^{r_1t}, \dotsc, e^{r_nt};t)\neq 0.
 \end{equation}
 
-\begin{ex}
+\begin{ex}\label{ex:edosis1_eqh_avd}
   Vamos resolver o seguinte sistema
   \begin{align}\label{eq:ex_edosis1_eqh_avd}
     y_1'(t) &= -2y_1(t) + 2y_2(t) \\
@@ -927,13 +927,157 @@ Out: Eq(y2(t), exp(-4*t))
 
 \section{Sistema de equações não homogêneas}\label{cap_edosis1_sec_eqnh}
 
-\emconstrucao
+Nesta seção, discutimos sobre a aplicação do {\bf método dos coeficientes a determinar} na resolução de sistemas de EDOs de primeira ordem lineares. Mais especificamente, vamos consisderar sistema da forma
+\begin{equation}
+  \pmb{y}'(t) = A\pmb{y}(t) + \pmb{g}(t),
+\end{equation}
+onde $\pmb{y} = (y_1, \dotsc, y_n)$, $y_j:t\mapsto y_j(t)$, $A = [a_{ij}]_{i,j=1}^{n,n}$ e $\pmb{g} = (g_1, \dotsc, g_n)$, $g_j:t\mapsto g_j(t)$, $j=1, \dotsc, n>1$.
 
-\subsection{Método dos coeficientes a determinar}
+A solução geral de um tal sistema tem a forma
+\begin{equation}
+  \pmb{y}(t) = c_1\pmb{y}_1(t) + \cdots + c_n\pmb{y}_n(t) + \pmb{w}(t),
+\end{equation}
+onde $\pmb{y}_1, \dotsc, \pmb{y}_n$ é um conjunto fundamental de soluções do sistema de equações homogêneo associado e $\pmb{w}$ é uma solução particular para a sistema de equações não homogêneo.
 
-\emconstrucao
+O método dos coeficientes a determinar consiste em buscar por $\pmb{w}$ como sendo uma combinação linear de funções adequadas. Tais funções podem ser escolhidas conforme indicado na Observação \ref{obs:edolin_o2_mcd}.
+
+\begin{ex}
+  Vamos calcular uma solução particular para o sistema
+  \begin{equation}\label{eq:ex_edosis1_eqnh}
+    \pmb{y}' =
+    \begin{bmatrix}
+      -2 & 2 \\
+      -2 & 3
+    \end{bmatrix}\pmb{y} +
+    \begin{bmatrix}
+      -t \\
+      2e^{t}
+    \end{bmatrix}
+  \end{equation}
+
+  O primeiro passo consiste em calcularmos o conjunto fundamental de soluções para o sistema de equações homogêneas associado. Isto foi feito no Exemplo \ref{ex:edosis1_eqh_avd}, do qual temos as soluções
+\begin{align}
+  \pmb{y}_1(t) &=
+                 \begin{bmatrix}
+                   2\\
+                   1
+                 \end{bmatrix}e^{-t},\\
+  \pmb{y}_2(t) &=
+                 \begin{bmatrix}
+                   1\\
+                   2
+                 \end{bmatrix}e^{2t}
+\end{align}
+
+Agora, com base no termo fonte $\pmb{g}$ e nas soluções fundamentais\footnote{Veja a Observação \ref{obs:edolin_o2_mcd}.}, buscamos por uma solução particular do sistema \eqref{eq:ex_edosis1_eqnh} da forma
+\begin{align}
+  \pmb{y}_p(t) &= \pmb{w}_1 + \pmb{w}_2t + \pmb{w}_3e^{t} \\
+               &=
+                 \begin{bmatrix}
+                   w_{11} \\
+                   w_{21}
+                 \end{bmatrix} +
+  \begin{bmatrix}
+    w_{12} \\
+    w_{22}
+  \end{bmatrix}t +
+  \begin{bmatrix}
+    w_{13} \\
+    w_{23}
+  \end{bmatrix}e^{t}
+\end{align}
+Substituindo $\pmb{y}_p$ no sistema \eqref{eq:ex_edosis1_eqnh}, obtemos
+\begin{align}
+  \pmb{y}_p' &=
+               \underbrace{\begin{bmatrix}
+                 -2 & 2 \\
+                 -2 & 3
+               \end{bmatrix}}_{A}\pmb{y}_p +
+                      \begin{bmatrix}
+                        -1\\
+                        0
+                      \end{bmatrix}t +
+  \begin{bmatrix}
+    0 \\
+    2
+  \end{bmatrix}e^{t} \\
+  \pmb{w}_2 + \pmb{w}_3e^t &= A\pmb{w}_1 + A\pmb{w}_2t + A\pmb{w}_3e^t \\
+             &+ \begin{bmatrix}
+               -1\\
+               0
+             \end{bmatrix}t +
+  \begin{bmatrix}
+    0 \\
+    2
+  \end{bmatrix}e^{t}
+\end{align}
+Logo, por associação, temos
+\begin{gather}
+  A\pmb{w}_2 =
+  \begin{bmatrix}
+    1 \\
+    0
+  \end{bmatrix} \\
+  \pmb{w}_2 =
+  \begin{bmatrix}
+    -\frac{3}{2} \\
+    -1
+  \end{bmatrix}
+\end{gather}
+\begin{gather}
+  A\pmb{w}_1 = \pmb{w}_2 \\
+  \pmb{w}_1 =
+  \begin{bmatrix}
+    \frac{5}{4} \\
+    \frac{1}{2}
+  \end{bmatrix}
+\end{gather}
+\begin{gather}
+  (A-I)\pmb{w}_3 =
+  \begin{bmatrix}
+    0 \\
+    -2
+  \end{bmatrix} \\
+  \pmb{w}_3 =
+  \begin{bmatrix}
+    -2 \\
+    -3
+  \end{bmatrix}
+\end{gather}
+Do calculado, temos a solução particular
+\begin{equation}
+  \pmb{y}_p(t) =   \begin{bmatrix}
+    \frac{5}{4} \\
+    \frac{1}{2}
+  \end{bmatrix} +   \begin{bmatrix}
+    -\frac{3}{2} \\
+    -1
+  \end{bmatrix}t +   \begin{bmatrix}
+    -2 \\
+    -3
+  \end{bmatrix}e^t.
+\end{equation}
+\end{ex}
 
 \subsection*{Exercícios resolvidos}
+
+\begin{exeresol}
+  Calcule uma solução particular de
+  \begin{equation}
+    \pmb{y}' =
+    \begin{bmatrix}
+      -1 & 1 \\
+      0 & -1
+    \end{bmatrix}\pmb{y} +
+    \begin{bmatrix}
+      e^{-t} \\
+      -e^{-t}
+    \end{bmatrix}
+  \end{equation}
+\end{exeresol}
+\begin{resol}
+  \emconstrucao
+\end{resol}
 
 \emconstrucao
 
