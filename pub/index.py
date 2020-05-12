@@ -3,7 +3,7 @@
 index.html
 
 Autor: Pedro H A Konzen - 05/2018
-Modificado: 04/2020
+Modificado: 05/2020
 '''
 
 import os
@@ -15,21 +15,30 @@ class Index:
         self.page = ''
         
     def empty_page(self):
-        self.page += '<!DOCTYPE html>\n'
+        self.page += '<!doctype html>\n'
         self.page += '<html lang="pt">\n'
         self.page += '</html>'
 
     def add_head(self):
         head = '<head>\n'
         
-        head += '<title>Notas de aula</title>\n'
         head += '<meta charset="utf-8">\n'
-        head += '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
+        head += '<title>Notas de aula</title>\n'
+        head += '<meta name="author" content="Pedro H A Konzen"/>\n'
+        head += '<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">\n'
         head += '<link rel="stylesheet" href="index.css" type="text/css">\n'
-        head += '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">\n'
-        head += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>\n'
-        head += '<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>\n'
 
+        # # BootstrapCDN v3.3
+        # head += '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">\n'
+        # head += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>\n'
+        # head += '<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>\n'
+
+        #BootstrapCDN v.4.5
+        head += '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"x crossorigin="anonymous">\n'
+
+        # FontAwesome
+        head += '<script src="https://kit.fontawesome.com/dfbff2c7ed.js" crossorigin="anonymous"></script>'
+        
         #google tracking
         head += '\n<!-- Global site tag (gtag.js) - Google Analytics -->\n'
         head += '<script async src="https://www.googletagmanager.com/gtag/js?id=UA-17226092-2"></script>\n'
@@ -48,21 +57,24 @@ class Index:
 
     def add_body(self):
         body = '<body>\n'
-        #body += '<div class="container">\n'
-        body += '<div class="row">\n'
-        body += '<div class="col-xs-12 col-xs-offset-0 col-md-8 col-md-offset-2">\n'
         
+        body += '<div class=container-fluid>\n'
+        body += '<div class=row>\n'
+        body += '<div class=col-lg-1>\n'
+        body += '</div>'
+        body += '<div class=col-lg-10>\n\n'
+
         #jumbotron
         body += '<div class="extjumbotron">\n'
         body += '<div class="jumbotron text-center">\n'
         body += '<h1>Notas de Aula</h1>\n'
         body += '<p>Pedro H A Konzen</p>\n'
-        body += '</div>\n'
+        body += '</div> <!-- div class="jumbotron text-center" -->\n'
         body += '<p>Imagem: <a href="https://www.flickr.com/photos/elisfanclub/2189154850/" target="_blank">Eli Duke</a>.</p>\n'
-        body += '</div>\n'
+        body += '</div> <!-- div class=extjumbotron -->\n\n'
 
         #miolo
-        body += '<div class="container-fluid">\n'
+        # body += '<div class="container-xl">\n'        
         body += '<div class="row">\n'
 
         #notas de aula
@@ -142,7 +154,7 @@ class Index:
         
         body += '</ul>\n'
 
-        body += '</div> <!-- div class="col-md-3" -->\n'
+        body += '</div> <!-- div class="col-md-4" -->\n'
 
 
         #Minicurso
@@ -162,10 +174,12 @@ class Index:
 
         
         body += '</div><!-- div class="row" -->\n'
-        body += '</div><!-- div class="container-fluid" -->\n'
+        
+        # body += '</div><!-- div class="container-fluid" -->\n'
         
 
-        body += '<div class="container-fluid">\n'
+        # body += '<div class="container-xl">\n'
+        
         body += '<div class="row">\n'
 
         body += '<div class="col-md-6">\n'
@@ -206,24 +220,41 @@ class Index:
 
         body += '</div><!-- div class="row" -->\n'
 
-        body += '</div>\n'
+        # body += '</div>\n'
 
-        #panel footer
-        #body += '<div class="container-fluid">\n'
-        body += '<div class="panel panel-default">\n'
-        body += '<div class="panel-body" style="text-align: right">\n'
+        # #panel footer
+        # #body += '<div class="container-fluid">\n'
+        # body += '<div class="panel panel-default">\n'
+        # body += '<div class="panel-body" style="text-align: right">\n'
+        # body += 'Repositório GitHub: '
+        # body += '<a href="https://github.com/phkonzen/notas" target="_blank">https://github.com/phkonzen/notas</a>. Contato: '
+        # body += '<a href="contato.html" target="_blank"><span class="glyphicon glyphicon-envelope"></span></a>\n'
+        # body += '</div>\n'
+        # body += '</div>\n'
+        # #body += '</div>\n'
+
+        body += '<div class="card-footer text-right">\n'
         body += 'Repositório GitHub: '
         body += '<a href="https://github.com/phkonzen/notas" target="_blank">https://github.com/phkonzen/notas</a>. Contato '
-        body += '<a href="contato.html" target="_blank"><span class="glyphicon glyphicon-envelope"></span></a>\n'
+        body += '<a href="contato.html" target="_blank"><i class="fas fa-envelope"></i></a>\n'
+        body += '</div> <!-- div class="card-footer text-right" -->\n'
+
+        # body += '</div> <!-- div class="container-fluid" -->\n'
+
+        body += '</div> <!-- div class=col-lg-10 -->\n'
+        body += '<div class=col-lg-1>\n'
         body += '</div>\n'
-        body += '</div>\n'
-        #body += '</div>\n'
+        body += '</div> <!-- div class=container-fluid -->\n\n'
 
 
-        body += '</div>\n'
-        body += '</div>\n'
-        #body += '</div>\n'
+        body += '\n\n'
+        body += '<!-- JavaScript -->\n'
+        body += '<!-- jQuery first, then Popper.js, then Bootstrap JS -->\n'
+        body += '<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>\n'
+        body += '<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>\n'
+        body += '<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>\n'
 
+        
         body += '</body>\n'
 
         #add at bottom
