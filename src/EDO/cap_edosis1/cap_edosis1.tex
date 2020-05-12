@@ -244,7 +244,7 @@ Out:
 \fi
 \end{ex}
 
-\subsection{Autovalores reais repetidos}
+\subsection{Autovalores reais repetidos}\label{subsec:edosis1_eqh_avr}
 
 Um autovalor real duplo $r$ da matriz de coeficientes $A$ nos fornece duas soluções particulares para \eqref{eq:edosis1_eqh}, a saber
 \begin{align}
@@ -927,7 +927,7 @@ Out: Eq(y2(t), exp(-4*t))
 
 \section{Sistema de equações não homogêneas}\label{cap_edosis1_sec_eqnh}
 
-Nesta seção, discutimos sobre a aplicação do {\bf método dos coeficientes a determinar} na resolução de sistemas de EDOs de primeira ordem lineares. Mais especificamente, vamos consisderar sistema da forma
+Nesta seção, discutimos sobre a aplicação do {\bf método dos coeficientes a determinar} na resolução de sistemas de EDOs de primeira ordem lineares. Mais especificamente, vamos considerar sistema da forma
 \begin{equation}
   \pmb{y}'(t) = A\pmb{y}(t) + \pmb{g}(t),
 \end{equation}
@@ -1061,7 +1061,7 @@ Do calculado, temos a solução particular
 
 \subsection*{Exercícios resolvidos}
 
-\begin{exeresol}
+\begin{exeresol}\label{exeresol:edosis1_eqnh_sp}
   Calcule uma solução particular de
   \begin{equation}
     \pmb{y}' =
@@ -1076,11 +1076,281 @@ Do calculado, temos a solução particular
   \end{equation}
 \end{exeresol}
 \begin{resol}
-  \emconstrucao
+  Primeiramente, calculamos a forma das soluções fundamentais do sistema de equações homogêneas associado. A matriz\footnote{Os autovalores de uma matriz triangular são iguais aos elementos de sua diagonal.} dos coeficientes do sistema tem $r_{1,2} = -1$ como autovalor duplo. Do que vimos na Subseção \ref{subsec:edosis1_eqh_avr}, temos que
+  \begin{align}
+    \pmb{y}_1(t) &= \pmb{v}_1e^{-t} \\
+    \pmb{y}_2(t) &= \pmb{v}_1te^{-t} + \pmb{v}_2e^{-t}
+  \end{align}
+  formam um sistema fundamental de soluções, onde $\pmb{v}_1$ e $\pmb{v}_2$ são vetores adequados.
+
+  Do método dos coeficientes a determinar, do formato das soluções fundamentais e do termo não homogêneo\footnote{Veja a Observação \ref{obs:edolin_o2_mcd}.}, buscamos por uma solução particular da forma
+  \begin{equation}
+    \pmb{y}_p(t) = (\pmb{w}_1t + \pmb{w}_2t^2)e^{-t}.
+  \end{equation}
+  Denotando a matriz de coeficientes do sistema por $A$, o termo não homogêneo por $\pmb{g}$ e substituindo $\pmb{y}_p$ no sistema, temos
+  \begin{gather}
+    \pmb{y}_p' = A\pmb{y}_p + \pmb{g}(t) \\
+    \left[\pmb{w}_1 + (2\pmb{w}_2 - \pmb{w}_1)t - \pmb{w}_2t^2\right]e^{-t} = (A\pmb{w}_1t + A\pmb{w}_2t^2)e^{-t} +
+    \begin{bmatrix}
+      1 \\
+      -1
+    \end{bmatrix}e^{-t}
+  \end{gather}
+  Daí, segue que
+  \begin{equation}
+    \pmb{w}_1 =
+    \begin{bmatrix}
+      1 \\
+      -1
+    \end{bmatrix}.
+  \end{equation}
+  Do termo $t^2e^{-t}$, temos
+  \begin{equation}
+    A\pmb{w}_2 = -\pmb{w}_2.
+  \end{equation}
+  Disso e do termo $te^{-t}$, obtemos
+  \begin{gather}
+    A\pmb{w}_1 = (2w_2 - w_1) \\
+    \begin{bmatrix}
+      -2 \\
+      1
+    \end{bmatrix} =
+    \begin{bmatrix}
+      2w_{12}-1 \\
+      2w_{22}+1
+    \end{bmatrix} \\
+    \pmb{w}_2 =
+    \begin{bmatrix}
+      -\frac{1}{2} \\
+      0
+    \end{bmatrix}
+  \end{gather}
+
+  Concluímos que
+  \begin{equation}
+    \pmb{y}_p(t) = \left(
+      \begin{bmatrix}
+        1 \\
+        -1
+      \end{bmatrix}t +
+      \begin{bmatrix}
+        -\frac{1}{2} \\
+        0
+      \end{bmatrix}t^2\right)e^{-t}
+  \end{equation}
+  é solução particular do sistema.
 \end{resol}
 
-\emconstrucao
+\begin{exeresol}
+  Calcule a solução do PVI
+  \begin{align}
+    \pmb{y}' &=
+    \begin{bmatrix}
+      -1 & 1 \\
+      0 & -1
+    \end{bmatrix}\pmb{y} +
+    \begin{bmatrix}
+      e^{-t} \\
+      -e^{-t}
+    \end{bmatrix} \\
+    \pmb{y}(0) &=
+                 \begin{bmatrix}
+                   1 \\
+                   -1
+                 \end{bmatrix}
+  \end{align}
+\end{exeresol}
+\begin{resol}
+  Primeiramente, calculamos a solução geral da forma
+  \begin{equation}
+    \pmb{y}(t) = c_1\pmb{y}_1(t) + c_2\pmb{y}_2(t) + \pmb{y}_p(t),
+  \end{equation}
+  onde $\{\pmb{y}_1$, $\pmb{y}_2\}$ é um conjunto fundamental de soluções do sistema de equações homogêneas associado e $\pmb{y}_p$ é uma solução do sistema de equações não homogêneas.
+
+  Notamos que $r_{1,2} = -1$ é autovalor duplo da matriz de coeficientes do sistema. Com isso, temos as soluções fundamentais da forma
+  \begin{align}
+    \pmb{y}_1(t) &= \pmb{v}_1e^{-t}, \\
+    \pmb{y}_2(t) &= \pmb{v}_1te^{-t} + \pmb{v}_2e^{-t}.
+  \end{align}
+  O vetor $\pmb{v}_1$ é autovalor associado a $r_{1,2}=-1$, i.e.
+  \begin{gather}
+    (A-r_{1,2}I)\pmb{v}_1 = \pmb{0} \\
+    \begin{bmatrix}
+      0 & 1 & | & 0 \\
+      0 & 0 & | & 0
+    \end{bmatrix}\\
+    \pmb{v}_1 =
+    \begin{bmatrix}
+      1\\
+      0
+    \end{bmatrix}
+  \end{gather}
+  Por outro lado, $\pmb{v}_2$ é tal que
+  \begin{gather}
+    (A-r_{1,2}I)\pmb{v}_2 = \pmb{v}_1 \\
+    \begin{bmatrix}
+      0 & 1 & | & 1 \\
+      0 & 0 & | & 0
+    \end{bmatrix}\\
+    \pmb{v}_2 =
+    \begin{bmatrix}
+      1\\
+      1
+    \end{bmatrix}
+  \end{gather}
+  Com isso, temos obtidas
+    \begin{align}
+    \pmb{y}_1(t) &=
+                   \begin{bmatrix}
+                     1 \\ 0
+                   \end{bmatrix}e^{-t}, \\
+    \pmb{y}_2(t) &=
+                   \begin{bmatrix}
+                     1 \\
+                     0
+                   \end{bmatrix}te^{-t} +
+      \begin{bmatrix}
+        1 \\ 1
+      \end{bmatrix}e^{-t}.
+    \end{align}
+
+    No Exercício Resolvido \ref{exeresol:edosis1_eqnh_sp}, calculamos a solução particular
+    \begin{equation}
+      \pmb{y}_p(t) = \left(
+      \begin{bmatrix}
+        1 \\
+        -1
+      \end{bmatrix}t +
+      \begin{bmatrix}
+        -\frac{1}{2} \\
+        0
+      \end{bmatrix}t^2\right)e^{-t}.
+  \end{equation}
+
+  Até aqui, temos calculado a solução geral
+  \begin{align}
+    \pmb{y}(t) &= c_1\begin{bmatrix}
+                     1 \\ 0
+                   \end{bmatrix}e^{-t} \\
+               &+ c_2\begin{bmatrix}
+                     1 \\
+                     0
+                   \end{bmatrix}te^{-t} +
+      c_2\begin{bmatrix}
+        1 \\ 1
+      \end{bmatrix}e^{-t} \\
+               &+ \left(
+      \begin{bmatrix}
+        1 \\
+        -1
+      \end{bmatrix}t +
+      \begin{bmatrix}
+        -\frac{1}{2} \\
+        0
+      \end{bmatrix}t^2\right)e^{-t}.
+  \end{align}
+
+  Por fim, aplicamos a condição inicial
+  \begin{gather}
+    \pmb{y}(0) =
+    \begin{bmatrix}
+      1 \\ -1
+    \end{bmatrix} \\
+    c_1
+    \begin{bmatrix}
+      1\\ 0
+    \end{bmatrix} + c_2
+    \begin{bmatrix}
+      1\\1
+    \end{bmatrix} =     \begin{bmatrix}
+      1 \\ -1
+    \end{bmatrix}
+  \end{gather}
+  Ou seja, $c_2=-1$ e $c_1=2$.
+
+  Concluímos que a solução do PVI é
+  \begin{align}
+    \pmb{y}(t) &= 2\begin{bmatrix}
+                     1 \\ 0
+                   \end{bmatrix}e^{-t} \\
+               &- \begin{bmatrix}
+                     1 \\
+                     0
+                   \end{bmatrix}te^{-t} -
+    \begin{bmatrix}
+        1 \\ 1
+      \end{bmatrix}e^{-t} \\
+               &+ \left(
+      \begin{bmatrix}
+        1 \\
+        -1
+      \end{bmatrix}t +
+      \begin{bmatrix}
+        -\frac{1}{2} \\
+        0
+      \end{bmatrix}t^2\right)e^{-t}.
+  \end{align}  
+\end{resol}
 
 \subsection*{Exercícios}
 
-\emconstrucao
+\begin{exer}
+  Calcule uma solução particular de
+  \begin{equation}
+    \pmb{y}' =
+    \begin{bmatrix}
+      -2 & 2 \\
+      -2 & 3
+    \end{bmatrix}\pmb{y} +
+    \begin{bmatrix}
+      e^{t} \\ -e^{t}
+    \end{bmatrix}.
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $y_{p1}(t) = 2 e^t$, $y_{p2}(t) = \frac{5}{2} e^t$
+\end{resp}
+
+\begin{exer}
+  Calcule uma solução particular de
+  \begin{align}
+    y_1'(t) &= -y_1(t) + 2y_2(t) - e^{3t}\\
+    y_2'(t) &= 4y_1(t) + y_2(t) + e^{-t}
+  \end{align}
+\end{exer}
+\begin{resp}
+  $y_{p1}(t) = \frac{1}{36} e^{-t} (-4 e^{4t} (3 t + 1) - 9)$, $y_{p2}(t) = \frac{1}{9} e^{3t} (1 - 6 t)$
+\end{resp}
+
+\begin{exer}
+  Encontre a solução geral de
+  \begin{align}
+    y_1' &= 2y_1 - y_2 + \sen(t)\\
+    y_2' &= 5y_1 - 2y_2 - 1
+  \end{align}
+\end{exer}
+\begin{resp}
+  $y_{1}(t) = -c_2 \sen(t) + c_1 (2 \sen(t) + cos(t)) + \frac{1}{2}(t \sen(t) - (2 t + 1) \cos(t) + 2)$, $y_2(t) = 5 c_1 \sen(t) + c_2 (\cos(t) - 2 \sen(t)) - \frac{5}{2} t \cos(t) + 2$
+\end{resp}
+
+\begin{exer}
+  Calcule a solução de
+  \begin{align}
+    \pmb{y}' &=
+    \begin{bmatrix}
+      -2 & 2 \\
+      -2 & 3
+    \end{bmatrix}\pmb{y} +
+    \begin{bmatrix}
+      e^{t} \\ -e^{t}
+    \end{bmatrix}, \\
+    \pmb{y}(0) &=
+                 \begin{bmatrix}
+                   1\\
+                   0
+                 \end{bmatrix}
+  \end{align}
+\end{exer}
+\begin{resp}
+  $y_{1}(t) = \frac{1}{3}e^{-t} - \frac{4}{3}e^{2t} + 2 e^t$, $y_{2}(t) = \frac{1}{6}e^{-t} - \frac{8}{3}e^{2t} + \frac{5}{2} e^t$
+\end{resp}
