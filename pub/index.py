@@ -80,7 +80,7 @@ class Index:
         body += '<hr class="my-4">'
         body += '<p class="lead">Pedro H A Konzen</p>\n'
         body += '</div> <!-- div class="jumbotron text-center" -->\n'
-        body += '<p style="text-align:right">Imagem: <a href="https://www.flickr.com/photos/elisfanclub/2189154850/" target="_blank">Eli Duke</a>.</p>\n'
+        body += '<p style="text-align:right">Imagem: <a href="https://flic.kr/p/4krYcm" target="_blank">Eli Duke</a>.</p>\n'
         body += '</div> <!-- class="myjumbotron" -->\n'
 
         
