@@ -4,6 +4,12 @@ all: main.py
 CalculoI: mainCalculoI.py
 	python3 mainCalculoI.py
 
+MatematicaNumerica: mainMatematicaNumerica.py
+	python3 mainMatematicaNumerica.py
+
+MetodoElementosFinitos: mainMetodoElementosFinitos.py
+	python3 mainMetodoElementosFinitos.py
+
 EDO: mainEDO.py
 	python3 mainEDO.py
 
