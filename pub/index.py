@@ -64,15 +64,26 @@ class Index:
         body += '</div>'
         body += '<div class=col-lg-10>\n\n'
 
-        #jumbotron
-        body += '<div class="extjumbotron">\n'
-        body += '<div class="jumbotron text-center">\n'
-        body += '<h1>Notas de Aula</h1>\n'
-        body += '<p>Pedro H A Konzen</p>\n'
-        body += '</div> <!-- div class="jumbotron text-center" -->\n'
-        body += '<p>Imagem: <a href="https://www.flickr.com/photos/elisfanclub/2189154850/" target="_blank">Eli Duke</a>.</p>\n'
-        body += '</div> <!-- div class=extjumbotron -->\n\n'
+        # #jumbotron
+        # body += '<div class="extjumbotron">\n'
+        # body += '<div class="jumbotron text-center">\n'
+        # body += '<h1>Notas de Aula</h1>\n'
+        # body += '<p>Pedro H A Konzen</p>\n'
+        # body += '</div> <!-- div class="jumbotron text-center" -->\n'
+        # body += '<p>Imagem: <a href="https://www.flickr.com/photos/elisfanclub/2189154850/" target="_blank">Eli Duke</a>.</p>\n'
+        # body += '</div> <!-- div class=extjumbotron -->\n\n'
 
+        #jumbotron
+        body += '<div class="myjumbotron">\n'
+        body += '<div class="jumbotron text-center">\n'
+        body += '<h1 class="display-4">Notas de Aula</h1>\n'
+        body += '<hr class="my-4">'
+        body += '<p class="lead">Pedro H A Konzen</p>\n'
+        body += '</div> <!-- div class="jumbotron text-center" -->\n'
+        body += '<p style="text-align:right">Imagem: <a href="https://www.flickr.com/photos/elisfanclub/2189154850/" target="_blank">Eli Duke</a>.</p>\n'
+        body += '</div> <!-- class="myjumbotron" -->\n'
+
+        
         
         #miolo
 
@@ -81,7 +92,7 @@ class Index:
 
         body += '<div class=row>\n'
         # card: notas de aula de Cálculo I
-        body += '<div class="col-md-4 col-sm-6">'
+        body += '<div class="col-lg-3 col-md-4 col-sm-6">'
         body += '<!-- card: notas de aula de Cálculo I -->\n'
         body += '<div class="card border-primary mb-3" style="max-width: 20rem;">\n'
         body += '<div class="card-header">Notas de aula</div>\n'
@@ -95,7 +106,7 @@ class Index:
         body += '</div>\n\n'
 
         # card: notas de aula de EDO
-        body += '<div class="col-md-4 col-sm-6">'
+        body += '<div class="col-lg-3 col-md-4 col-sm-6">'
         body += '<!-- card: notas de aula de EDO -->\n'
         body += '<div class="card border-primary mb-3" style="max-width: 20rem;">\n'
         body += '<div class="card-header">Notas de aula</div>\n'
@@ -108,13 +119,13 @@ class Index:
         body += '</div>\n'
         body += '</div>\n\n'
 
-        # card: Geometria Analítica
-        body += '<div class="col-md-4 col-sm-6">'
-        body += '<!-- card: Geometria Analítica -->\n'
+        # card: Geometria analítica
+        body += '<div class="col-lg-3 col-md-4 col-sm-6">'
+        body += '<!-- card: Geometria analítica -->\n'
         body += '<div class="card border-primary mb-3" style="max-width: 20rem;">\n'
         body += '<div class="card-header">Notas de aula</div>\n'
         body += '<div class="card-body">\n'
-        body += '<h5 class="card-title">Geometria Analítica</h5>\n'
+        body += '<h5 class="card-title">Geometria analítica</h5>\n'
         body += '<p class="card-text" style="color: gray">Introdução à geometria analítica</p>\n'
         body += '<a href="./GeometriaAnalitica/main.html" class="btn btn-primary stretched-link">\n'
         body += 'Abrir</a>\n'
@@ -122,13 +133,13 @@ class Index:
         body += '</div>\n'
         body += '</div>\n\n'
 
-        # card: notas de aula de Matemática Numérica
-        body += '<div class="col-md-4 col-sm-6">'
-        body += '<!-- card: notas de aula de Matemática Numérica -->\n'
+        # card: notas de aula de Matemática numérica
+        body += '<div class="col-lg-3 col-md-4 col-sm-6">'
+        body += '<!-- card: notas de aula de Matemática numérica -->\n'
         body += '<div class="card border-primary mb-3" style="max-width: 20rem;">\n'
         body += '<div class="card-header">Notas de aula</div>\n'
         body += '<div class="card-body">\n'
-        body += '<h5 class="card-title">Matemática Numérica</h5>\n'
+        body += '<h5 class="card-title">Matemática numérica</h5>\n'
         body += '<p class="card-text" style="color: gray">Métodos e técnicas de cálculo numérico</p>\n'
         body += '<a href="./MatematicaNumerica/main.html" class="btn btn-primary stretched-link">\n'
         body += 'Abrir</a>\n'
@@ -137,7 +148,7 @@ class Index:
         body += '</div>\n\n'
 
         # card: Método de elementos finitos
-        body += '<div class="col-md-4 col-sm-6">'
+        body += '<div class="col-lg-3 col-md-4 col-sm-6">'
         body += '<!-- card: Método de elementos finitos -->\n'
         body += '<div class="card border-primary mb-3" style="max-width: 20rem;">\n'
         body += '<div class="card-header">Notas de aula</div>\n'
@@ -151,7 +162,7 @@ class Index:
         body += '</div>\n\n'
 
         # card: Vetores
-        body += '<div class="col-md-4 col-sm-6">'
+        body += '<div class="col-lg-3 col-md-4 col-sm-6">'
         body += '<!-- card: Vetores -->\n'
         body += '<div class="card border-primary mb-3" style="max-width: 20rem;">\n'
         body += '<div class="card-header">Notas de aula</div>\n'
@@ -277,4 +288,5 @@ class Index:
 
         #put jumbotron image and index.css
         os.system('cp jumbotron.jpg '+self.odir+'/')
+        os.system('cp jumbotron2.jpg '+self.odir+'/')
         os.system('cp index.css '+self.odir+'/')
