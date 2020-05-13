@@ -73,130 +73,136 @@ class Index:
         body += '<p>Imagem: <a href="https://www.flickr.com/photos/elisfanclub/2189154850/" target="_blank">Eli Duke</a>.</p>\n'
         body += '</div> <!-- div class=extjumbotron -->\n\n'
 
+        
         #miolo
-        # body += '<div class="container-xl">\n'        
-        body += '<div class="row">\n'
 
-        #notas de aula
-        body += '<div class="col-md-4">\n'
+        body += '<h3>Notas de aula</h3>\n\n'
 
-        body += '<h3>Notas de aula</h3>\n'
 
-        body += '<ul>\n'        
+        body += '<div class=row>\n'
+        # card: notas de aula de Cálculo I
+        body += '<div class="col-md-4 col-sm-6">'
+        body += '<!-- card: notas de aula de Cálculo I -->\n'
+        body += '<div class="card border-primary mb-3" style="max-width: 20rem;">\n'
+        body += '<div class="card-header">Notas de aula</div>\n'
+        body += '<div class="card-body">\n'
+        body += '<h5 class="card-title">Cálculo I</h5>\n'
+        body += '<p class="card-text" style="color: gray">Cálculo diferencial e integral de funções de uma variável real</p>\n'
+        body += '<a href="./CalculoI/main.html" class="btn btn-primary stretched-link">\n'
+        body += 'Abrir</a>\n'
+        body += '</div>\n'
+        body += '</div>\n'
+        body += '</div>\n\n'
 
-        # #AnaliseMatematicaI
-        # body += '<li>Análise Matemática I</li>\n'
-        # body += '<ul class="list-unstyled">\n'
-        # body += '<li>Versão corrente: '
-        # body += '<a href="./AnaliseMatematicaI/main.html">HTML</a>'
-        # body += ' | '
-        # body += '<a href="./AnaliseMatematicaI/main.pdf">PDF</a></li>'
-        # body += '</ul>\n'
-        #CalculoI
-        body += '<li><strong>Cálculo I</strong></li>\n'
-        body += '<ul class="list-unstyled">\n'
-        body += '<li>Versão corrente: '
-        body += '<a href="./CalculoI/main.html">HTML</a>'
-        body += ' | '
-        body += '<a href="./CalculoI/main.pdf">PDF</a></li>'
-        body += '</ul></br>\n'
-        #EDO
-        body += '<li><strong>Equações Diferenciais Ordinárias</strong></li>\n'
-        body += '<ul class="list-unstyled">\n'
-        body += '<li>Versão corrente: '
-        body += '<a href="./EDO/main.html">HTML</a>'
-        body += ' | '
-        body += '<a href="./EDO/main.pdf">PDF</a></li>'
-        body += '</ul></br>\n'
-        #MatematicaNumerica
-        body += '<li><strong>Matemática Numérica</strong></li>\n'
-        body += '<ul class="list-unstyled">\n'
-        body += '<li>Versão corrente: '
-        body += '<a href="./MatematicaNumerica/main.html">HTML</a>'
-        body += ' | '
-        body += '<a href="./MatematicaNumerica/main.pdf">PDF</a></li>'
-        body += '</ul></br>\n'
+        # card: notas de aula de EDO
+        body += '<div class="col-md-4 col-sm-6">'
+        body += '<!-- card: notas de aula de EDO -->\n'
+        body += '<div class="card border-primary mb-3" style="max-width: 20rem;">\n'
+        body += '<div class="card-header">Notas de aula</div>\n'
+        body += '<div class="card-body">\n'
+        body += '<h5 class="card-title">Equações diferencias ordinárias</h5>\n'
+        body += '<p class="card-text" style="color: gray">Introdução a equações diferenciais ordinárias</p>\n'
+        body += '<a href="./CalculoI/main.html" class="btn btn-primary stretched-link">\n'
+        body += 'Abrir</a>\n'
+        body += '</div>\n'
+        body += '</div>\n'
+        body += '</div>\n\n'
+
+        # card: notas de aula de Matemática Numérica
+        body += '<div class="col-md-4 col-sm-6">'
+        body += '<!-- card: notas de aula de Matemática Numérica -->\n'
+        body += '<div class="card border-primary mb-3" style="max-width: 20rem;">\n'
+        body += '<div class="card-header">Notas de aula</div>\n'
+        body += '<div class="card-body">\n'
+        body += '<h5 class="card-title">Matemática Numérica</h5>\n'
+        body += '<p class="card-text" style="color: gray">Métodos e técnicas de cálculo numérico</p>\n'
+        body += '<a href="./MatematicaNumerica/main.html" class="btn btn-primary stretched-link">\n'
+        body += 'Abrir</a>\n'
+        body += '</div>\n'
+        body += '</div>\n'
+        body += '</div>\n\n'
+
+        # card: Método de elementos finitos
+        body += '<div class="col-md-4 col-sm-6">'
+        body += '<!-- card: Método de elementos finitos -->\n'
+        body += '<div class="card border-primary mb-3" style="max-width: 20rem;">\n'
+        body += '<div class="card-header">Notas de aula</div>\n'
+        body += '<div class="card-body">\n'
+        body += '<h5 class="card-title">Método de elementos finitos</h5>\n'
+        body += '<p class="card-text" style="color: gray">Introdução ao método de elementos finitos</p>\n'
+        body += '<a href="./MetodoElementosFinitos/main.html" class="btn btn-primary stretched-link">\n'
+        body += 'Abrir</a>\n'
+        body += '</div>\n'
+        body += '</div>\n'
+        body += '</div>\n\n'
+
+        # card: Vetores
+        body += '<div class="col-md-4 col-sm-6">'
+        body += '<!-- card: Vetores -->\n'
+        body += '<div class="card border-primary mb-3" style="max-width: 20rem;">\n'
+        body += '<div class="card-header">Notas de aula</div>\n'
+        body += '<div class="card-body">\n'
+        body += '<h5 class="card-title">Vetores</h5>\n'
+        body += '<p class="card-text" style="color: gray">Vetores no espaço euclidiano tridimensional</p>\n'
+        body += '<a href="./Vetores/main.html" class="btn btn-primary stretched-link">\n'
+        body += 'Abrir</a>\n'
+        body += '</div>\n'
+        body += '</div>\n'
+        body += '</div>\n\n'
+
+        # card: Geometria Analítica
+        body += '<div class="col-md-4 col-sm-6">'
+        body += '<!-- card: Geometria Analítica -->\n'
+        body += '<div class="card border-primary mb-3" style="max-width: 20rem;">\n'
+        body += '<div class="card-header">Notas de aula</div>\n'
+        body += '<div class="card-body">\n'
+        body += '<h5 class="card-title">Geometria Analítica</h5>\n'
+        body += '<p class="card-text" style="color: gray">Introdução à geometria analítica</p>\n'
+        body += '<a href="./GeometriaAnalitica/main.html" class="btn btn-primary stretched-link">\n'
+        body += 'Abrir</a>\n'
+        body += '</div>\n'
+        body += '</div>\n'
+        body += '</div>\n\n'
+
+        body += '</div> <!-- div class=row-->\n\n'
+
+        body += '<h3>Minicurso</h3>\n\n'
+
         
-        body += '</ul>\n'
-
-        body += '</div> <!-- div class="col-md-4" -->\n'
-
-        body += '<div class="col-md-4">\n'
-
-        body += '<h3>&nbsp;</h3>\n'
-
-        body += '<ul>\n'        
-
-        #MetodoElementosFinitos
-        body += '<li><strong>Método de Elementos Finitos</strong></li>\n'
-        body += '<ul class="list-unstyled">\n'
-        body += '<li>Versão corrente: '
-        body += '<a href="./MetodoElementosFinitos/main.html">HTML</a>'
-        body += ' | '
-        body += '<a href="./MetodoElementosFinitos/main.pdf">PDF</a></li>'
-        body += '</ul></br>\n'
-        #Vetores
-        body += '<li><strong>Vetores</strong></li>\n'
-        body += '<ul class="list-unstyled">\n'
-        body += '<li>Versão corrente: '
-        body += '<a href="./Vetores/main.html">HTML</a>'
-        body += ' | '
-        body += '<a href="./Vetores/main.pdf">PDF</a></li>'
-        body += '</ul></br>\n'
-        #GeometriaAnalitica
-        body += '<li><strong>Geometria Analítica</strong></li>\n'
-        body += '<ul class="list-unstyled">\n'
-        body += '<li>Versão corrente: '
-        body += '<a href="./GeometriaAnalitica/main.html">HTML</a>'
-        body += ' | '
-        body += '<a href="./GeometriaAnalitica/main.pdf">PDF</a></li>'
-        body += '</ul></br>\n'
-        
-        body += '</ul>\n'
-
-        body += '</div> <!-- div class="col-md-4" -->\n'
-
-
-        #Minicurso
-        body += '<div class="col-md-4">\n'
-        
-        body += '<h3>Minicurso de Cálculo com Python</h3>\n'
+        # card: Mini Cálculo com python
+        body += '<!-- card: Mini Cálculo com python -->\n'
+        body += '<div class="card border-primary mb-3" style="max-width: 25rem;">\n'
+        body += '<div class="card-header">Minicurso</div>\n'
+        body += '<div class="card-body">\n'
+        body += '<h5 class="card-title">Cálculo com python</h5>\n'
         body += '<p><a href="https://mybinder.org/v2/gh/phkonzen/notas/master?filepath=%2Fsrc%2FMiniCalcPy"><img src="https://mybinder.org/badge_logo.svg" alt="Binder" title="" /></a></p>'
 
         body += '<ul>\n'
-        body += '<li>Parte 1 - Funções de uma variável: <a href="MiniCalcPy/1-funcoes.html">HTML</a> | <a href="MiniCalcPy/1-funcoes.ipynb" download>IPYNB</a></li>\n'
-        body += '<li>Parte 2 - Limites: <a href="MiniCalcPy/2-limites.html">HTML</a> | <a href="MiniCalcPy/2-limites.ipynb" download>IPYNB</a></li>\n'
-        body += '<li>Parte 3 - Derivadas: <a href="MiniCalcPy/3-derivada.html">HTML</a> | <a href="MiniCalcPy/3-derivada.ipynb" download>IPYNB</a></li>\n'
-        body += '<li>Parte 4 - Integrais: <a href="MiniCalcPy/4-integracao.html">HTML</a> | <a href="MiniCalcPy/4-integracao.ipynb" download>IPYNB</a></li>\n'
+        body += '<li><a href="MiniCalcPy/1-funcoes.html">Parte 1 - Funções de uma variável</a></li>\n'
+        body += '<li><a href="MiniCalcPy/2-limites.html">Parte 2 - Limites</a></li>\n'
+        body += '<li><a href="MiniCalcPy/3-derivada.html">Parte 3 - Derivadas</a></li>\n'
+        body += '<li><a href="MiniCalcPy/4-integracao.html">Parte 4 - Integrais</a></li>\n'
         body += '</ul>\n'
+        body += '</div>\n'
+        body += '</div>\n\n'
 
-        body += '</div> <!-- div class="col-md-4" -->\n'
-
-        
-        body += '</div><!-- div class="row" -->\n'
-        
-        # body += '</div><!-- div class="container-fluid" -->\n'
-        
-
-        # body += '<div class="container-xl">\n'
-        
+     
         body += '<div class="row">\n'
 
         body += '<div class="col-md-6">\n'
 
         body += '<h3>Sobre</h3>\n'
-        body += '<p>Neste <i>site</i> publico minhas notas de aula \n'
-        body += 'em formato HTML e PDF. As notas estão predominante escritas \n'
-        body += 'em linguagem de marcação \n'
-        body += '<a href="https://www.latex-project.org/" target=_blank>LaTeX</a>.</p>\n'
-        body += '<p>As notas estão disponíveis \n'
-        body += 'sob licença \n'
-        body += '<a href="http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR" target=_blank>CC-BY-SA 4.0</a>. \n'
-        body += 'Além disso, você pode acessar os códigos-fonte do material no \n'
-        body += 'seguinte repositório GitHub \n'
+        body += '<p>Neste <i>site</i> publico minhas notas de aula. \n'
+        body += 'O matrial está escrito predominante em linguagem de marcação \n'
+        body += '<a href="https://www.latex-project.org/" target=_blank>LaTeX</a>. \n'
+        body += 'Disponíveis sob licença \n'
+        body += '<a href="http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR" target=_blank>CC-BY-SA 4.0</a>, \n'
+        body += 'os códigos-fonte podem ser obtidos no \n'
+        body += 'repositório GitHub \n'
         body += '<a href="https://github.com/phkonzen/notas">https://github.com/phkonzen/notas</a>.</p>\n'
-        body += '<p>Aproveito para agradecer aos(às) estudantes e colegas que \n'
-        body += 'de modo assíduo ou esporádico contribuem com sugestões, críticas e correções! :)\n'
+        body += '<p>Aproveito para agradecer a todos e todas que de forma assídua ou esporádica \n'
+        body += 'contribuem com correções, sugestões e críticas! \n'
+        body += '<i class="far fa-smile"></i>'
         body += '</p>'
 
         body += '</div><!-- div class="col-md-6" -->\n'
