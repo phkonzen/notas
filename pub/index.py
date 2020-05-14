@@ -87,6 +87,34 @@ class Index:
         
         #miolo
 
+        # Área de anúncios
+        body += '<div id="demo" class="carousel slide" data-ride="carousel">'
+        body += '<!-- Indicators -->'
+        body += '<ul class="carousel-indicators">'
+        body += '<li data-target="#demo" data-slide-to="0" class="active"></li>'
+        body += '<li data-target="#demo" data-slide-to="1"></li>'
+        body += '<li data-target="#demo" data-slide-to="2"></li>'
+        body += '</ul>'
+        
+        body += '<!-- The slideshow -->'
+        body += '<div class="carousel-inner">'
+        body += '<div class="carousel-item active">'
+        body += '<div class="spinner-grow spinner-grow-sm text-danger" role="status"> </div>\n'
+        body += '<a href="http://www.ufrgs.br/ppgmap/selecao/editais-de-selecao-mestrado" target=_blank>PPGMAp - UFRGS - MESTRADO - PROCESSO SELETIVO 2020/2</a>\n'
+        body += '</div>'
+        body += '<div class="carousel-item">'
+        body += '<div class="spinner-grow spinner-grow-sm text-danger" role="status"> </div>\n'
+        body += '<a href="http://www.ufrgs.br/ppgmap/selecao/editais-de-selecao-mestrado" target=_blank>PPGMAp - UFRGS - MESTRADO - PROCESSO SELETIVO 2020/2</a>\n'
+        body += '</div>'
+        body += '<div class="carousel-item">'
+        body += '<div class="spinner-grow spinner-grow-sm text-danger" role="status"> </div>\n'
+        body += '<a href="http://www.ufrgs.br/ppgmap/selecao/editais-de-selecao-mestrado" target=_blank>PPGMAp - UFRGS - MESTRADO - PROCESSO SELETIVO 2020/2</a>\n'
+        body += '</div>'
+        body += '</div>'
+  
+        body += '</div>'
+        
+
         body += '<h3>Notas de aula</h3>\n\n'
 
 

@@ -1,6 +1,9 @@
 all: main.py
 	python3 main.py
 
+Index: mainIndex.py
+	python3 mainIndex.py
+
 CalculoI: mainCalculoI.py
 	python3 mainCalculoI.py
 
