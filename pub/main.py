@@ -16,6 +16,7 @@ from index import *
 from sitemap import *
 from analisematematicai import *
 from calculoi import *
+from ead import *
 from edo import *
 from matematicanumerica import *
 from metodoelementosfinitos import *
@@ -52,6 +53,7 @@ os.system('cp docs_readme.md ../docs/README.md')
 
 #ami = AnaliseMatematicaI(srcdir,odir)
 ci = CalculoI(srcdir,odir)
+ead = EaD(srcdir,odir)
 edo = EDO(srcdir,odir)
 mn = MatematicaNumerica(srcdir,odir)
 mef = MetodoElementosFinitos(srcdir,odir)
@@ -65,7 +67,7 @@ def build(id):
 #região paralelizada
 if __name__ == '__main__':
     p = Pool()
-    p.map(build,[ci,edo,mn,mef,v,ga,mini])
+    p.map(build,[ci,ead,edo,mn,mef,v,ga,mini])
 
 #sitemap.txt
 sm = SiteMap(odir)

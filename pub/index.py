@@ -105,6 +105,20 @@ class Index:
         body += '</div>\n'
         body += '</div>\n\n'
 
+        # card: notas de aula de EaD
+        body += '<div class="col-lg-3 col-md-4 col-sm-6">'
+        body += '<!-- card: notas de aula de EaD -->\n'
+        body += '<div class="card border-primary mb-3" style="max-width: 20rem;">\n'
+        body += '<div class="card-header">Notas de aula</div>\n'
+        body += '<div class="card-body">\n'
+        body += '<h5 class="card-title">Equações a diferenças</h5>\n'
+        body += '<p class="card-text" style="color: gray">Introdução a equações a diferenças</p>\n'
+        body += '<a href="./EaD/main.html" class="btn btn-primary stretched-link">\n'
+        body += 'Abrir</a>\n'
+        body += '</div>\n'
+        body += '</div>\n'
+        body += '</div>\n\n'
+
         # card: notas de aula de EDO
         body += '<div class="col-lg-3 col-md-4 col-sm-6">'
         body += '<!-- card: notas de aula de EDO -->\n'

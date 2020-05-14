@@ -13,6 +13,9 @@ MetodoElementosFinitos: mainMetodoElementosFinitos.py
 EDO: mainEDO.py
 	python3 mainEDO.py
 
+EaD: mainEaD.py
+	python3 mainEaD.py
+
 Vetores: mainVetores.py
 	python3 mainVetores.py
 
