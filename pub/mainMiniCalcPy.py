@@ -36,4 +36,4 @@ sm = SiteMap(odir)
 sm.build()
 
 # publica a atualização
-os.system('rsync -av '+odir+'/* ../docs/')
+os.system('rsync -av '+odir+'/MiniCalcPy/* ../docs/MiniCalcPy/')
