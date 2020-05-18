@@ -100,7 +100,7 @@ class Index:
         body += '<div class="carousel-inner">'
         body += '<div class="carousel-item active">'
         body += '<div class="spinner-grow spinner-grow-sm text-danger" role="status"> </div>\n'
-        body += '<a href="http://www.ufrgs.br/ppgmap/selecao/editais-de-selecao-mestrado" target=_blank>PPGMAp - UFRGS - MESTRADO - PROCESSO SELETIVO 2020/2</a>\n'
+        body += '<a href="https://professor.ufrgs.br/pedro/announcements/minicurso-online-de-c%C3%A1lculo-com-python">Inscrições abertas: Minicurso Online de Cálculo com Python</a>\n'
         body += '</div>'
         body += '<div class="carousel-item">'
         body += '<div class="spinner-grow spinner-grow-sm text-danger" role="status"> </div>\n'
