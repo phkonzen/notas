@@ -18,40 +18,40 @@ from sympy import *
 
 Equações a diferenças são aquelas que podem ser escritas na seguinte forma
 \begin{equation}\label{eq:intro_ead}
-  f(y_{n+k},y_{n+k-1},\dotsc,y_n;n) = 0,
+  f\left(y(n+k),y(n+k-1),\dotsc,y(n);n\right) = 0,
 \end{equation}
-onde $n=0, 1, 2, \ldots$ e $k\geq 0$ número natural.
+onde $n=0, 1, 2, \ldots$, $k\geq 0$ número natural e $y:n\mapsto y(n)$ é função discreta (incógnita).
 
 \begin{ex}\label{ex:intro_modelos}
   Vejamos os seguintes exemplos.
   \begin{enumerate}[a)]
   \item \emph{Modelo de juros compostos}
     \begin{equation}
-      y_{n+1} = (1+r)y_n
+      y(n+1) = (1+r)y(n)
     \end{equation}
-    Esta equação a diferenças modela uma aplicação corrigida a juros compostos com taxa $r$ por período de tempo $n$ (dia, mês, ano, etc.). Mais especificamente, seja $y_0$ o valor da aplicação inicial, então
+    Esta equação a diferenças modela uma aplicação corrigida a juros compostos com taxa $r$ por período de tempo $n$ (dia, mês, ano, etc.). Mais especificamente, seja $y(0)$ o valor da aplicação inicial, então
     \begin{equation}
-      y_1 = (1+r)y_0
+      y(1) = (1+r)y(0)
     \end{equation}
     é o valor corrigido a taxa $r$ no primeiro período (dia, mês, ano). No segundo período, o valor corrigido é
     \begin{equation}
-      y_2 = (1+r)y_1
+      y(2) = (1+r)y(1)
     \end{equation}
     e assim por diante.
   \item \emph{Equação logística}
     \begin{equation}
-      y_{n+1} = r y_n\left(1 - \frac{y_n}{K}\right),
+      y(n+1) = r y(n)\left(1 - \frac{y(n)}{K}\right),
     \end{equation}
-    onde $y_n$ representa o tamanho da população no período $n$, $r$ é a taxa de crescimento e $K$ um limiar de saturação.
+    onde $y(n)$ representa o tamanho da população no período $n$, $r$ é a taxa de crescimento e $K$ um limiar de saturação.
   \item \emph{Sequência de Fibonacci}\footnote{Fibonacci, c. 1170 - c. 1240, matemático italiano. Fonte: \href{https://en.wikipedia.org/wiki/Fibonacci}{Wikipedia}.}
     \begin{equation}
-      y_{n+2} = y_{n+1} + y_n,
+      y(n+2) = y(n+1) + y(n),
     \end{equation}
-    onde $y_0=0$ e $y_1=1$.
+    onde $y(0)=1$ e $y(1)=1$.
   \end{enumerate}
 \end{ex}
 
-Uma equação a diferenças \eqref{eq:intro_ead} é dita ser de {\bf ordem $k$} (ou de $k$-ésima ordem). É dita ser {\bf linear} quando $f$ é função linear nas variáveis dependentes $y_{n+k}, y_{n+k-1}, \dotsc, y_n$, noutro caso é dita ser {\bf não linear}.
+Uma equação a diferenças \eqref{eq:intro_ead} é dita ser de {\bf ordem $k$} (ou de $k$-ésima ordem). É dita ser {\bf linear} quando $f$ é função linear nas variáveis dependentes $y(n+k), y(n+k-1), \dotsc, y(n)$, noutro caso é dita ser {\bf não linear}.
 
 \begin{ex}
   No Exemplo \ref{ex:intro_modelos}, temos
@@ -62,96 +62,96 @@ Uma equação a diferenças \eqref{eq:intro_ead} é dita ser de {\bf ordem $k$} 
   \end{enumerate}
 \end{ex}
 
-A solução de uma equação a diferenças \eqref{eq:intro_ead} é uma sequência de números $(y_n)_{n=0}^\infty = (y_0, y_1, \dotsc, y_n, \ldots)$ que satisfazem a equação. Em alguns casos é possível escrever a solução como uma forma fechada
+A solução de uma equação a diferenças \eqref{eq:intro_ead} é uma sequência de números $\left(y(n)\right)_{n=0}^\infty = \left(y(0), y(1), \dotsc, y(n), \ldots\right)$ que satisfazem a equação. Em alguns casos é possível escrever a solução como uma forma fechada
 \begin{equation}
-  y_n = g(n),
+  y(n) = g(n),
 \end{equation}
-onde $n = 0, 1, \ldots$.
+onde $n = 0, 1, \ldots$ e $g:n\mapsto g(n)$ é a função discreta que representa a solução.
 
 \begin{ex}
   Vamos encontrar a solução para o modelo de juros compostos
   \begin{equation}
-    y_{n+1} = (1+r)y_n,\quad n\geq 0.
+    y(n+1) = (1+r)y(n),\quad n\geq 0.
   \end{equation}
 
-  A partir do valor inicial $y_0$, temos
+  A partir do valor inicial $y(0)$, temos
   \begin{align}
-    y_1 &= (1+r)y_0\\
-    y_2 &= (1+r)y_1\\
-        &= (1+r)(1+r)y_0\\
-        &= (1+r)^2y_0 \\
-    y_3 &= (1+r)y_2\\
-        &= (1+r)(1+r)^2y_0\\
-        &= (1+r)^3y_0\\
+    y(1) &= (1+r)y(0)\\
+    y(2) &= (1+r)y(1)\\
+        &= (1+r)(1+r)y(0)\\
+        &= (1+r)^2y(0) \\
+    y(3) &= (1+r)y(2)\\
+        &= (1+r)(1+r)^2y(0)\\
+        &= (1+r)^3y(0)\\
         &\vdots
   \end{align}
   Com isso, podemos inferir que a solução é dada por
   \begin{equation}
-    y_n = (1+r)^ny_0,
+    y(n) = (1+r)^ny(0),
   \end{equation}
-  onde o valor inicial $y_0$ é arbitrário.
+  onde o valor inicial $y(0)$ é arbitrário.
 \end{ex}
 
 \subsection*{Exercícios resolvidos}
 
 \begin{exeresol}
-  Calcule $y_{10}$, sendo que
+  Calcule $y(10)$, sendo que
   \begin{align}
-    y_{n+1} = 1,05y_n,\quad n\geq0,
-    y_0 = 1000.
+    y(n+1) = 1,05y(n),\quad n\geq0,
+    y(0) = 1000.
   \end{align}
 \end{exeresol}
 \begin{resol}
   Observamos que
   \begin{align}
-    y_1 &= 1,05y_0\\
-    y_2 &= 1,05y_1\\
-        &= 1,05\cdot 1,05y_0 \\
-        &= 1,05^2y_0\\
-    y_3 &= 1,05y_2\\
-        &=1,05\cdot 1,05^2y_0\\
-        &= 1,05^3y_0\\
+    y(1) &= 1,05y(0)\\
+    y(2) &= 1,05y(1)\\
+        &= 1,05\cdot 1,05y(0) \\
+        &= 1,05^2y(0)\\
+    y(3) &= 1,05y(2)\\
+        &=1,05\cdot 1,05^2y(0)\\
+        &= 1,05^3y(0)\\
         &\vdots
   \end{align}
   Com isso, temos que a solução da equação a diferenças é
   \begin{equation}
-    y_n = 1,05^ny_0.
+    y(n) = 1,05^ny(0).
   \end{equation}
   Portanto,
   \begin{align}
-    y_{10} &= 1,05^{10}y_0 \\
+    y(10) &= 1,05^{10}y(0) \\
            &= 1,05^{10}\cdot 1000 \\
            &\approx 1628,89.
   \end{align}
 \end{resol}
 
 \begin{exeresol}
-  Uma semente plantada produz uma flor com uma semente no final do primeiro ano e uma flor com duas sementes no final de cada ano consecutivo. Supondo que cada semente é plantada tão logo é produzida, escreva a equação de diferenças que modela o número de flores $y_n$ no final do $n$-ésimo ano.
+  Uma semente plantada produz uma flor com uma semente no final do primeiro ano e uma flor com duas sementes no final de cada ano consecutivo. Supondo que cada semente é plantada tão logo é produzida, escreva a equação de diferenças que modela o número de flores $y(n)$ no final do $n$-ésimo ano.
 \end{exeresol}
 \begin{resol}
   No final do ano $n+2\geq 0$, o número de flores é igual a
   \begin{equation}
-    y_{n+2} = 2u_{n+2} + 3d_{n+2},
+    y(n+2) = 2u(n+2) + 3d(n+2),
   \end{equation}
-  onde $u_{n+2}$ é o número de flores plantadas a um ano e $d_{n+2}$ é o número de flores plantas a pelo menos dois anos. Ainda, temos
+  onde $u(n+2)$ é o número de flores plantadas a um ano e $d(n+2)$ é o número de flores plantas a pelo menos dois anos. Ainda, temos
   \begin{equation}
-    u_{n+2} = u_{n+1} + 2d_{n+1}
+    u(n+2) = u(n+1) + 2d(n+1)
   \end{equation}
   e
   \begin{equation}
-    d_{n+2} = u_{n+1} + d_{n+1}.
+    d(n+2) = u(n+1) + d(n+1).
   \end{equation}
   Com isso, temos
   \begin{align}
-    y_{n+2} &= 2(u_{n+1}+2d_{n-1}) + 3(u_{n+1}+d_{n-1}) \\
-          &= 2y_{n+1} + u_{n+1} + d_{n+1} \\
-          &= 2y_{n+1} + \underbrace{u_{n} + 2d_{n}}_{u_{n+1}} + \underbrace{u_{n} + d_{n}}_{d_{n+1}} \\
-          &= 2y_{n+1} + 2u_{n} + 3d_{n} \\
-          &= 2y_{n} + y_{n}.
+    y(n+2) &= 2\left[u(n+1)+2d(n-1)\right] + 3\left[u(n+1)+d(n-1)\right] \\
+          &= 2y(n+1) + u(n+1) + d(n+1) \\
+          &= 2y(n+1) + \underbrace{u(n) + 2d(n)}_{u(n+1)} + \underbrace{u(n) + d(n)}_{d(n+1)} \\
+          &= 2y(n+1) + 2u(n) + 3d(n) \\
+          &= 2y(n) + y(n).
   \end{align}
   Desta forma, concluímos que o número de plantas é modelado pela seguinte equação a diferenças de segunda ordem e linear
   \begin{equation}
-    y_{n+2} = 2y_{n+1} + y_{n+2}.
+    y(n+2) = 2y(n+1) + y(n+2).
   \end{equation}
 \end{resol}
 
@@ -160,11 +160,11 @@ onde $n = 0, 1, \ldots$.
 \begin{exer}
   Classifique as seguintes equações a diferenças quanto a ordem e linearidade.
   \begin{enumerate}
-  \item $\displaystyle y_{n+1}-\sqrt{2}y_{n} = 1$
-  \item $\displaystyle ny_{n+1} = y_{n}\ln(n+1)$
-  \item $\displaystyle y_{n} = y_{n+1} + 2y_{n+2} - 1$
-  \item $\displaystyle y_{n+1} - (1-y_n)(1+y_n) = 0$
-  \item $\displaystyle y_{n+2} = n\sqrt{y_n}$
+  \item $\displaystyle y(n+1)-\sqrt{2}y(n) = 1$
+  \item $\displaystyle ny(n+1) = y(n)\ln(n+1)$
+  \item $\displaystyle y(n) = y(n+1) + 2y(n+2) - 1$
+  \item $\displaystyle y(n+1) - \left[1-y(n)\right]\left[1+y(n)\right] = 0$
+  \item $\displaystyle y(n+2) = n\sqrt{y(n)}$
   \end{enumerate}
 \end{exer}
 \begin{resp}
@@ -172,10 +172,10 @@ onde $n = 0, 1, \ldots$.
 \end{resp}
 
 \begin{exer}
-  Encontre a equação a diferenças que modela o saldo devedor anual de uma cliente de cartão de crédito com taxa de juros de 200\% a.a. (ao ano), considerando uma dívida inicial no valor de $y_0$ reais e que o cartão não está mais em uso.
+  Encontre a equação a diferenças que modela o saldo devedor anual de uma cliente de cartão de crédito com taxa de juros de 200\% a.a. (ao ano), considerando uma dívida inicial no valor de $y(0)$ reais e que o cartão não está mais em uso.
 \end{exer}
 \begin{resp}
-  $y_{n+1} = 3y_n$.
+  $y(n+1) = 3y(n)$.
 \end{resp}
 
 \begin{exer}

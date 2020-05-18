@@ -4,59 +4,85 @@
 
 Neste capítulo, discutimos de forma introdutória sobre {\bf equações a diferenças de primeira ordem}. Tais equações podem ser escritas na forma
 \begin{equation}
-  f(y_{n+1},y_n;n)=0,
+  f\left(y(n+1),y(n);n\right)=0,
 \end{equation}
-onde $n=0, 1, \ldots$.
+onde $n=0, 1, \ldots$ e $y:n\mapsto y(n)$ é função discreta (incógnita).
 
 \section{Equações lineares}\label{cap_ead1_sec_eqlin}
 
 Nesta seção, discutimos sobre equações a diferenças de ordem 1 e lineares. Tais equações podem ser escritas na seguinte forma
 \begin{equation}
-  y_{n+1} = a(n)y_n + g(n),
+  y(n+1) = a(n)y(n) + g(n),
 \end{equation}
-onde $n=n_0, n_0+1, \ldots$, $n_0$ número inteiro, $a:n\mapsto a(n)$ e $g:\mapsto g(n)$ é o termo fonte. A equação é dita ser {\bf homogênea} quando $g\equiv 0$ e, caso contrário, é dita ser {\bf não homogênea}.
+onde $n=n_0, n_0+1, \ldots$, $n_0$ número inteiro, $a:n\mapsto a(n)$ e $g:n\mapsto g(n)$ é o termo fonte. A equação é dita ser {\bf homogênea} quando $g\equiv 0$ e, caso contrário, é dita ser {\bf não homogênea}.
 
 \subsection{Equação homogênea}
 
 A solução de uma equação a diferenças de ordem 1, linear e homogênea
 \begin{equation}\label{eq:ead1_linear_eqh}
-  y_{n+1} = a(n)y_n,\quad n\geq n_0,
+  y(n+1) = a(n)y(n),\quad n\geq n_0,
 \end{equation}
-pode ser obtida pela iterações diretas. Para $n\geq n_0$, temos
+pode ser obtida por iterações diretas. Para $n\geq n_0$, temos
 \begin{align}
-  y_{n+1} &= a(n)y_n \\
-          &= a(n)a(n-1)y_{n-1}\\
-          &= a(n)a(n-1)a(n-2)y_{n-2} \\
+  y(n+1) &= a(n)y(n) \\
+          &= a(n)a(n-1)y(n-1)\\
+          &= a(n)a(n-1)a(n-2)y(n-2) \\
           &\vdots\\
-          &= a(n)a(n-1)\cdots a(n_0)y_{n_0}.
+          &= a(n)a(n-1)\cdots a(n_0)y(n_0).
 \end{align}
-Ou seja, dada o valor inicial $y_{n_0}$, temos a solução
+Ou seja, dado o valor inicial $y(n_0)$, temos a solução
 \begin{equation}\label{eq:ead1_linear_eqh_sol}
-  y_{n+1} = \left[\prod_{i=n_0}^{n}a(i)\right]y_{n_0}.
+  y(n+1) = \left[\prod_{i=n_0}^{n}a(i)\right]y(n_0).
 \end{equation}
 
 \begin{ex}
   Vamos calcular a solução de
-  \begin{equation}
-    y_{n+1} = 2y_n,\quad n\geq 0.
+  \begin{equation}\label{eq:ex_ead1_lin_eh}
+    y(n+1) = 2y(n),\quad n\geq 0.
   \end{equation}
 
   Comparando com \eqref{eq:ead1_linear_eqh}, temos $a(n) = 2$ para todo $n$. Calculando a solução por iterações diretas, temos
   \begin{align}
-    y_{n+1} &= 2y_n \\
-            &= 2\cdot 2y_{n-1} \\
-            &= 2^2y_{n-1} \\
-            &= 2^2\cdot 2y_{n-2} \\
-            &= 2^3y_{n-2} \\
+    y(n+1) &= 2y(n) \\
+            &= 2\cdot 2y(n-1) \\
+            &= 2^2y(n-1) \\
+            &= 2^2\cdot 2y(n-2) \\
+            &= 2^3y(n-2) \\
             &\cdots \\
-            &= 2^{n+1}y_0
+            &= 2^{n+1}y(0)
   \end{align}
   Equivalentemente, por \eqref{eq:ead1_linear_eqh_sol}, temos
   \begin{align}
-    y_{n+1} &= \left[\prod_{i=0}^{n}2\right]y_{0} \\
-            &= 2^{n+1}y_0.
+    y(n+1) &= \left[\prod_{i=0}^{n}2\right]y(0) \\
+            &= 2^{n+1}y(0).
   \end{align}
+  A solução vale para qualquer valor inicial $y(0)$.
+
+  \ifispython
+  No \python, podemos computar a solução da equação a diferenças \eqref{eq:ex_ead1_lin_eh} com os seguintes comandos:
+\begin{verbatim}
+In : n = symbols('n', integer=true)
+In : y = symbols('y', cls=Function)
+In : ead = Eq(y(n+1),2*y(n))
+In : rsolve(ead, y(n))
+Out: 2**n*C0
+\end{verbatim}
+  \fi
 \end{ex}
+
+\subsection{Equação não homogênea}
+
+A solução de uma equação a diferenças de ordem 1, linear e não homogênea
+\begin{equation}\label{eq:ead1_linear_eqh}
+  y_{n+1} = a(n)y_n + g(n),\quad n\geq n_0,
+\end{equation}
+pode ser obtida por iterações diretas.
+
+Vejamos, para $n\geq n_0$ temos
+\begin{align*}
+  y(n+1) &= a(n)y_n + g(n) \\
+         &= a(n)\left[a(n-1)y_{}\right] + g(n)
+\end{align*}
 
 \emconstrucao
 
