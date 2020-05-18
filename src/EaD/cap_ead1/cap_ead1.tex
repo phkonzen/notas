@@ -30,7 +30,7 @@ pode ser obtida por iterações diretas. Para $n\geq n_0$, temos
           &\vdots\\
           &= a(n)a(n-1)\cdots a(n_0)y(n_0).
 \end{align}
-Ou seja, dado o valor inicial $y(n_0)$, temos a solução
+Ou seja, dado o valor inicial $y(n_0)$, temos a solução\footnote{A demonstração por ser feita por indução matemática.}
 \begin{equation}\label{eq:ead1_linear_eqh_sol}
   y(n+1) = \left[\prod_{i=n_0}^{n}a(i)\right]y(n_0).
 \end{equation}
@@ -74,15 +74,28 @@ Out: 2**n*C0
 
 A solução de uma equação a diferenças de ordem 1, linear e não homogênea
 \begin{equation}\label{eq:ead1_linear_eqh}
-  y_{n+1} = a(n)y_n + g(n),\quad n\geq n_0,
+  y(n+1) = a(n)y(n) + g(n),\quad n\geq n_0,
 \end{equation}
 pode ser obtida por iterações diretas.
 
 Vejamos, para $n\geq n_0$ temos
 \begin{align*}
   y(n+1) &= a(n)y_n + g(n) \\
-         &= a(n)\left[a(n-1)y_{}\right] + g(n)
+         &= a(n)\left[a(n-1)y(n-1)+g(n-1)\right] + g(n) \\
+         &= a(n)a(n-1)y(n-1)+a(n)g(n-1) + g(n) \\
+         &= a(n)a(n-1)\left[a(n-2)y(n-2)+g(n-2)\right] \\
+         &+ a(n)g(n-1) + g(n) \\
+         &= a(n)a(n-1)a(n-2)y(n-2) \\
+         &+ a(n)a(n-1)g(n-2) + a(n)g(n-1) + g(n) \\
+         &\vdots
 \end{align*}
+Com isso, podemos inferir\footnote{A demonstração por ser feita por indução matemática.} que
+\begin{align}
+  y(n+1) &= \left[\prod_{i=n_0}^n a(i)\right]y(n_0) \\
+         &+ \sum_{i=n_0}^n\left[\prod_{j=i+1}^{n} a(i)\right]g(i).
+\end{align}
+No último termo, consideramos a notação $\prod_{j=i+1}^i a(i) = 1$.
+
 
 \emconstrucao
 
