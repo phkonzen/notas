@@ -32,8 +32,9 @@ pode ser obtida por iterações diretas. Para $n\geq n_0$, temos
 \end{align}
 Ou seja, dado o valor inicial $y(n_0)$, temos a solução\footnote{A demonstração por ser feita por indução matemática.}
 \begin{equation}\label{eq:ead1_linear_eqh_sol}
-  y(n+1) = \left[\prod_{i=n_0}^{n}a(i)\right]y(n_0).
+  y(n) = \left[\prod_{i=n_0}^{n-1}a(i)\right]y(n_0),
 \end{equation}
+assumindo a notação de que $\prod_{i=n+1}^na(i)=1$.
 
 \begin{ex}
   Vamos calcular a solução de
@@ -53,8 +54,8 @@ Ou seja, dado o valor inicial $y(n_0)$, temos a solução\footnote{A demonstraç
   \end{align}
   Equivalentemente, por \eqref{eq:ead1_linear_eqh_sol}, temos
   \begin{align}
-    y(n+1) &= \left[\prod_{i=0}^{n}2\right]y(0) \\
-            &= 2^{n+1}y(0).
+    y(n) &= \left[\prod_{i=0}^{n-1}2\right]y(0) \\
+         &= 2^{n}y(0).
   \end{align}
   A solução vale para qualquer valor inicial $y(0)$.
 
@@ -73,7 +74,7 @@ Out: 2**n*C0
 \subsection{Equação não homogênea}
 
 A solução de uma equação a diferenças de ordem 1, linear e não homogênea
-\begin{equation}\label{eq:ead1_linear_eqh}
+\begin{equation}\label{eq:ead1_linear_eqnh}
   y(n+1) = a(n)y(n) + g(n),\quad n\geq n_0,
 \end{equation}
 pode ser obtida por iterações diretas.
@@ -91,13 +92,71 @@ Vejamos, para $n\geq n_0$ temos
 \end{align*}
 Com isso, podemos inferir\footnote{A demonstração por ser feita por indução matemática.} que
 \begin{align}
-  y(n+1) &= \left[\prod_{i=n_0}^n a(i)\right]y(n_0) \\
+  y(n+1) &= \left[\prod_{i=n_0}^{n} a(i)\right]y(n_0) \\
          &+ \sum_{i=n_0}^n\left[\prod_{j=i+1}^{n} a(i)\right]g(i).
 \end{align}
-No último termo, consideramos a notação $\prod_{j=i+1}^i a(i) = 1$.
+No último termo, consideramos a notação $\sum_{j=i+1}^i a(i) = 0$. Ou equivalentemente,
+\begin{align}
+  {\color{blue}y(n)} &{\color{blue}= \left[\prod_{i=n_0}^{n-1} a(i)\right]y(n_0)} \nonumber\\
+       &{\color{blue}+ \sum_{i=n_0}^{n-1}\left[\prod_{j=i+1}^{n-1} a(i)\right]g(i)}. \label{eq:ead1_linear_eqnh_sol}
+\end{align}
 
 
-\emconstrucao
+\begin{ex}
+  Vamos calcular a solução de
+  \begin{equation}\label{eq:ex_ead1_lin_enh}
+    y(n+1) = 2y(n) - 1,\quad n\geq 0.
+  \end{equation}
+
+  Comparando com \eqref{eq:ead1_linear_eqnh}, temos $a(n) = 2$ e $g(n)=-1$ para todo $n$. Calculando a solução por iterações diretas, temos
+  \begin{align}
+    y(n+1) &= 2y(n)-1 \\
+            &= 2\cdot \left[2y(n-1)-1\right]-1 \\
+            &= 2^2y(n-1)-2-1 \\
+            &= 2^2\cdot \left[2y(n-2)-1\right]-2-1 \\
+            &= 2^3y(n-2)-2^2-2-1 \\
+            &\cdots \\
+            &= 2^{n+1}y(0)-\sum_{i=0}^{n}2^i
+  \end{align}
+  Este último termo, é a soma dos termos da {\bf progressão geométrica} de razão $q=2$, i.e.
+  \begin{equation}
+    \sum_{i=0}^n q^i = \frac{1-q^{n+1}}{1-q}.
+  \end{equation}
+  Logo, temos que a solução de \eqref{eq:ead1_linear_eqnh} é
+  \begin{align}
+    y(n+1) &= 2^{n+1}y(0) - \frac{1-2^{n+1}}{1-2} \\
+           &= 2^{n+1}y(0) -2^{n+1}+1.
+  \end{align}
+  
+  Equivalentemente, por \eqref{eq:ead1_linear_eqnh_sol}, temos
+  \begin{align}
+    y(n) &= \left[\prod_{i=n_0}^{n-1} a(i)\right]y(n_0) \\
+         &+ \sum_{i=n_0}^{n-1}\left[\prod_{j=i+1}^{n-1} a(i)\right]g(i) \\
+         &= \left[\prod_{i=0}^{n-1} 2\right]y(0) \\
+         &+ \sum_{i=0}^{n-1}\left[\prod_{j=i+1}^{n-1} 2\right](-1) \\
+         &= 2^ny(0) - \sum_{i=0}^{n-1}2^{n-i-1}\\
+         &= 2^ny(0) - 2^{n-1}\sum_{i=0}^{n-1}2^{-i}\\
+         &= 2^ny(0) - 2^{n} + 1. \label{eq:ex_ead1_linear_eqnh_sol}
+  \end{align}
+  A solução vale para qualquer valor inicial $y(0)$.
+
+  \ifispython
+  No \python, podemos computar a solução da equação a diferenças \eqref{eq:ex_ead1_lin_eh} com os seguintes comandos:
+\begin{verbatim}
+In : n = symbols('n', integer=true)
+In : y = symbols('y', cls=Function)
+In : ead = Eq(y(n+1),2*y(n)-1)
+In : rsolve(ead, y(n))
+Out: 2**n*C0 + 1
+\end{verbatim}
+  Observamos que esta solução é equivalente à \eqref{eq:ex_ead1_linear_eqnh_sol}, pois
+  \begin{align}
+    y(n) &= 2^ny(0) - 2^{n} + 1 \\
+         &= 2^n\left[y(0)-1\right]+1,
+  \end{align}
+  onde $y(0)$ é um valor inicial arbitrário.
+  \fi
+\end{ex}
 
 \subsection*{Exercícios resolvidos}
 
