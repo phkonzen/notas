@@ -118,7 +118,7 @@ No último termo, consideramos a notação $\sum_{j=i+1}^i a(i) = 0$. Ou equival
             &\cdots \\
             &= 2^{n+1}y(0)-\sum_{i=0}^{n}2^i
   \end{align}
-  Este último termo, é a soma dos termos da {\bf progressão geométrica} de razão $q=2$, i.e.
+  Este último termo, é a soma dos termos da {\bf progressão geométrica} de razão $q=2$ (veja Subseção \ref{cap_ead1_sec_eqlin_subsec_sd}), i.e.
   \begin{equation}
     \sum_{i=0}^n q^i = \frac{1-q^{n+1}}{1-q}.
   \end{equation}
@@ -158,10 +158,126 @@ Out: 2**n*C0 + 1
   \fi
 \end{ex}
 
+\subsection{Somas definidas}\label{cap_ead1_sec_eqlin_subsec_sd}
+
+Seguem algumas somas definidas que podem ser úteis na resolução de equações a diferenças.
+
+\begin{align}
+  \sum_{k=1}^{n} k &= \frac{n(n+1)}{2}\\
+  \sum_{k=1}^{n} k^2 &= \frac{n(n+1)(2n+1)}{6}\\
+  \sum_{k=1}^n k^3 &= \left[\frac{n(n+1)}{2}\right]^2\\
+  \sum_{k=1}^n k^4 &= \frac{n(6n^4+15n^3+10n^2-1)}{30}\\
+  \sum_{k=0}^{n-1}q^k &= \frac{(1-q^n)}{1-q},\quad q\neq 1\\
+  \sum_{k=1}^n kq^k &= \frac{(q-1)(n+1)q^{n+1}-q^{n+2}+q}{(q-1)^2}
+\end{align}
+
 \subsection*{Exercícios resolvidos}
 
-\emconstrucao
+\begin{exeresol}
+  Calcule a solução da equação à diferenças
+  \begin{align}
+    y(n+1) &= \frac{1}{2}y(n),\quad n\geq 0,\\
+    y(0) &= 1.
+  \end{align}
+\end{exeresol}
+\begin{resol}
+  De \eqref{eq:ead1_linear_eqh_sol}, temos
+  \begin{align}
+    y(n) &= \left[\prod_{i=0}^{n-1} \frac{1}{2}\right]y(0)\\
+         &= \left(\frac{1}{2}\right)^{n}\cdot 1 \\
+         &= 2^{-n}.
+  \end{align}
+
+  \ifispython
+  No \python, podemos computar a solução deste exercício com os seguintes comandos:
+\begin{verbatim}
+In : n = symbols('n', integer=true)
+In : y = symbols('y', cls=Function)
+In : ead = Eq(y(n+1),1/2*y(n))
+In : rsolve(ead, y(n), {y(0):1})
+Out: 0.5**n
+\end{verbatim}
+  \fi
+\end{resol}
+
+\begin{exeresol}
+  Calcule a solução de
+  \begin{align}
+    y(n+1) &= 2y(n) + \frac{1}{2}^n,\quad n\geq 0, \\
+    y(0) &= 0.
+  \end{align}
+\end{exeresol}
+\begin{resol}
+  De \eqref{eq:ead1_linear_eqnh_sol}, temos
+\begin{align}
+  y(n) &= \left[\prod_{i=0}^{n-1} 2\right]y(0) \nonumber\\
+       &+ \sum_{i=0}^{n-1}\left[\prod_{j=i+1}^{n-1} 2\right]\cdot\left(\frac{1}{2}\right)^i \\
+       &= \sum_{i=0}^{n-1} 2^{n-1-i}\cdot 2^{-i} \\
+       &= \sum_{i=0}^{n-1} 2^{n-1}\cdot 2^{-2i} \\
+       &= 2^{n-1}\sum_{i=0}^{n-1}\left(\frac{1}{4}\right)^{i} \\
+       &= 2^{n-1}\cdot \frac{\left[1-\left(\frac{1}{4}\right)^n\right]}{1-\frac{1}{4}} \\
+       &=2^{n-1}\cdot\frac{4}{3}\cdot\left(1-\frac{1}{4^n}\right)\\
+       &= \frac{4}{3}\left(2^{n-1} - \frac{2^{n-1}}{4^n}\right)\\
+       &= \frac{4}{3}\left(2^{n-1} - 2^{n-1}2^{-2n}\right)\\
+       &= \frac{4}{3}\left(2^{n-1}-2^{-n-1}\right)\\
+       &= \frac{2}{3}\left(2^n-2^{-n}\right).
+\end{align}
+
+  \ifispython
+  No \python, podemos computar a solução deste exercício com os seguintes comandos:
+\begin{verbatim}
+In : n = symbols('n', integer=true)
+In : y = symbols('y', cls=Function)
+In : ead = Eq(y(n+1),2*y(n)+(1/2)**n)
+In : rsolve(ead, y(n), {y(0):0})
+Out: -0.666666666666667*0.5**n + 0.666666666666667*2**n
+\end{verbatim}
+  \fi  
+\end{resol}
 
 \subsection*{Exercícios}
+
+\begin{exer}
+  Calcule a solução de
+  \begin{equation}
+    y(n+1) = 3y(n),\quad n\geq 0.
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $y(n) = 3^ny(0)$
+\end{resp}
+
+\begin{exer}
+  Calcule a solução de
+  \begin{align}
+    y(n+1) &= \frac{1}{3}y(n),\quad n\geq 0,\\
+    y(0) &= -1.
+  \end{align}
+\end{exer}
+\begin{resp}
+  $y(n) = -\frac{1}{3^n}$
+\end{resp}
+
+\begin{exer}
+  Calcule a solução de
+  \begin{align}
+    y(n+1) &= 3y(n) -3,\quad n\geq 0,\\
+    y(0) &= 2.
+  \end{align}
+\end{exer}
+\begin{resp}
+  $y(n) = \frac{1}{2}(3^n+3)$
+\end{resp}
+
+\begin{exer}
+  Calcule a solução de
+  \begin{align}
+    y(n+1) &= ny(n)+n!,\quad n\geq 0,\\
+    y(0) &= 1.
+  \end{align}
+\end{exer}
+\begin{resp}
+  $y(n)=n!$
+\end{resp}
 
 \emconstrucao
