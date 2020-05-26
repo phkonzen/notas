@@ -316,10 +316,6 @@ Out: -0.666666666666667*0.5**n + 0.666666666666667*2**n
   $\displaystyle y(n) = \left(y(0)-\frac{b}{1-a}\right)a^n + \frac{b}{1-a}$
 \end{resp}
 
-\begin{ex}(Cancelamento catastrófico em máquina)
-  \emconstrucao
-\end{ex}
-
 \section{Estudo assintótico de equações lineares}\label{cap_ead1_sec_eael}
 
 Nesta seção, vamos introduzir aspectos básicos sobre o comportamento assintótico de soluções de equações a diferenças de primeira ordem e lineares.
@@ -377,7 +373,7 @@ Um ponto de equilíbrio é um {\bf atrator global} quando
 \begin{equation}
   \lim_{n\to\infty} y(n) = y^*,
 \end{equation}
-para qualquer valor inicial $y(n_0)$. Neste caso, também dizemos que $y^*$ é um ponto de equilíbio {\bf assintoticamente globalmente estável}.
+para qualquer valor inicial $y(n_0)$. Neste caso, também dizemos que $y^*$ é um ponto de equilíbrio {\bf assintoticamente globalmente estável}.
 
 Uma equação a diferenças da forma
   \begin{equation}
@@ -399,7 +395,7 @@ Uma equação a diferenças da forma
   \begin{equation}
     y(n+1) = \frac{1}{2}y(n),\quad n\geq 0,
   \end{equation}
-  temos que $y^*$ é um ponto de equilíbrio assintóticamente globalmente estável.
+  temos que $y^*$ é um ponto de equilíbrio assintoticamente globalmente estável.
 \end{ex}
 
 Um equação a diferenças da forma
@@ -427,20 +423,142 @@ Observamos que esta última equação, confirma que
 \begin{equation}
   y^* = \frac{b}{1-a}
 \end{equation}
-é ponto de equilíbrio de \eqref{eq:ead1_ape_eqlin_cc2} e é assintóticamente globalmente estável, pois
+é ponto de equilíbrio de \eqref{eq:ead1_ape_eqlin_cc2} e é assintoticamente globalmente estável, pois
 \begin{align}
   \lim_{n\to\infty} y(n) &= \lim_{n\to\infty} \left[\left(y(n_0) - \frac{b}{1-a}\right)\cancelto{0}{a^{n-n_0}} + \frac{b}{1-a}\right] \\
                          &=  \frac{b}{1-a}.
 \end{align}
 
+\begin{ex}
+  A equação a diferenças
+  \begin{equation}
+    y(n+1) = 4y(n) - 1,\quad n\geq 0,
+  \end{equation}
+  tem $y^* = 1/3$ como ponto de equilíbrio, o qual não é um atrator global. De fato, para qualquer escolha de $y(0)\neq y^*$, temos
+  \begin{equation}
+    y(n) = \underbrace{\left(y(0) - \frac{1}{3}\right)}_{\neq 0}4^n + \frac{1}{3}.
+  \end{equation}
+  Logo, vemos que $y(n)\to\infty$ quando $n\to\pm\infty$, onde o sinal é igual ao do termo $y(0)-1/3$.
 
+  \ifispython
+  Observamos as seguintes computações no \python:
+\begin{verbatim}
+In : y=1/3
+...: for i in range(1,31):
+...:     y=4*y-1
+...: 
+...: y
+Out: -21.0
+\end{verbatim}
+  Ou seja, $y(30)=-21.0$ computando por iterações recorrentes, enquanto que o valor esperado é $y(30)=1/3$, sendo este um ponto de equilíbrio da equação a diferenças.
 
-\emconstrucao
+  O que está ocorrendo nestas computações é um fenômeno conhecido como cancelamento catastrófico em máquina. No computador, o valor inicial $y(0)=1/3$ é computado com um pequeno erro de arredondamento. Do que vimos acima, se $y(0)\neq 1/3$, então $y(n)\to\pm\infty$ quando $n\to\infty$.
+
+  No \python, podemos fazer as computações exatas na aritmética dos números racionais. Para tanto, podemos usar o seguinte código:
+\begin{verbatim}
+In : from sympy import Rational
+...: y=Rational(1,3)
+...: for i in range(1,31):
+...:     y=4*y-1
+...: 
+...: y
+Out: 1/3
+\end{verbatim}
+\begin{verbatim}
+
+\end{verbatim}
+  \fi
+\end{ex}
 
 \subsection*{Exercícios resolvidos}
 
-\emconstrucao
+\begin{exeresol}
+  Calcule os pontos de equilíbrio de
+  \begin{equation}
+    y(n+1) = ny(n),\quad n\geq 0.
+  \end{equation}
+\end{exeresol}
+\begin{resol}
+  Temos que $y^*$ é ponto de equilíbrio da equações a diferenças, quando
+  \begin{gather}
+    y^* = ny^*\\
+    (1-n)y^* = 0
+  \end{gather}
+  para todo $n\geq 0$. Logo, $y^*=0$ é ponto de equilíbrio da equação a diferenças.
+\end{resol}
+
+\begin{exeresol}
+  Verifique se $y^*=0$ é ponto de equilíbrio assintoticamente globalmente estável de
+  \begin{equation}
+    y(n+1) = \frac{1}{n+1}y(n),\quad n\geq 0.
+  \end{equation}
+\end{exeresol}
+\begin{resol}
+  Primeiramente, confirmamos que $y^* = 0$ é ponto de equilíbrio, pois
+  \begin{equation}
+    \frac{1}{n+1}y^* = 0 = y^*,\quad n\geq 0.
+  \end{equation}
+
+  Por fim, a solução da equação a diferenças é
+  \begin{align}
+    y(n) &= \left[\prod_{i=0}^{n-1}\frac{1}{i+1}\right]y(0)\\
+         &= \frac{1}{n!}y(0).
+  \end{align}
+  Daí, vemos que
+  \begin{equation}
+    \lim_{n\to\infty} \frac{1}{n!}y(0) = 0 = y^*.
+  \end{equation}
+  Logo, concluímos que $y^*=0$ é ponto de equilíbrio assintoticamente globalmente estável da equação a diferenças dada. 
+\end{resol}
 
 \subsection*{Exercícios}
 
-\emconstrucao
+\begin{exer}\label{exer:ead1_pe_0}
+  Calcule o ponto de equilíbrio de
+  \begin{equation}
+    y(n+1) = -y(n) + 1 
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $1/2$
+\end{resp}
+
+\begin{exer}
+  O ponto de equilíbrio da equação a diferenças do Exercício \ref{exer:ead1_pe_0} é um atrator global? Justifique sua resposta.
+\end{exer}
+\begin{resp}
+  não
+\end{resp}
+
+\begin{exer}
+  Encontre o ponto de equilíbrio de
+  \begin{equation}
+    y(n+1) = \frac{1}{2}y(n) + \frac{1}{2},\quad n\geq 2,
+  \end{equation}
+  e diga se ele é um atrator global. Justifique sua resposta.
+\end{exer}
+\begin{resp}
+  $y^*=1$; atrator global
+\end{resp}
+
+\begin{exer}
+  Encontre o ponto de equilíbrio de
+  \begin{equation}
+    y(n+1) = 2y(n) + 1,\quad n\geq 2,
+  \end{equation}
+  e diga se ele é assintoticamente globalmente estável. Justifique sua resposta.
+\end{exer}
+\begin{resp}
+  $y^*=-1$; não é assintoticamente globalmente estável
+\end{resp}
+
+\begin{exer}
+  Considere um financiamento de valor $\$ 100$ com taxa de juros $1\%$ a.m. e amortizações fixas mensais de valor $\$ a$. O valor devido $y(n+1)$ no $n+1$-ésimo mês pode ser modelado pela seguinte equações a diferenças
+  \begin{equation}
+    y(n+1) = 1,01y(n)-a,\quad n\geq 0,
+  \end{equation}
+  com valor inicial $y(0)=100$. Calcule o valor $a$ mínimo a ser amortizado mensalmente de forma que o valor devido permaneça sempre constante.
+\end{exer}
+\begin{resp}
+  $a=1$
+\end{resp}
