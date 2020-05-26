@@ -305,5 +305,142 @@ Out: -0.666666666666667*0.5**n + 0.666666666666667*2**n
   $y(n+1)=1,01\cdot y(n)-1,~y(0)=100$; $y(n)=100$;
 \end{resp}
 
+\begin{exer}
+  Calcule a solução de
+  \begin{equation}
+    y(n+1) = ay(n) + b,\quad n\geq 0,
+  \end{equation}
+  onde $a$ e $b$ são constantes com $a\neq 1$.
+\end{exer}
+\begin{resp}
+  $\displaystyle y(n) = \left(y(0)-\frac{b}{1-a}\right)a^n + \frac{b}{1-a}$
+\end{resp}
+
+\begin{ex}(Cancelamento catastrófico em máquina)
+  \emconstrucao
+\end{ex}
+
+\section{Estudo assintótico de equações lineares}\label{cap_ead1_sec_eael}
+
+Nesta seção, vamos introduzir aspectos básicos sobre o comportamento assintótico de soluções de equações a diferenças de primeira ordem e lineares.
+
+Seja
+\begin{equation}\label{eq:ead1_eael_pt}
+  y(n+1) = f(y(n),n),\quad n\geq n_0,
+\end{equation}
+uma equação a diferenças com valor inicial $y(n_0)$. Dizemos que $y^*$ é {\bf ponto de equilíbrio} da equação, quando $y^*$ é tal que
+\begin{equation}\label{eq:ead1_eael_eq}
+  f(y^*,n) = y^*,
+\end{equation}
+para todo $n\geq n_0$.  Neste caso, ao escolhermos $y(n_0)=y^*$, então a solução de equação a diferenças \eqref{eq:ead1_eael_pt} é
+\begin{equation}
+  y(n) = y^*.
+\end{equation}
+
+\begin{ex}\label{ex:ead1_eqlin_pe}
+  Vamos calcular o(s) ponto(s) de equilíbrio de
+  \begin{equation}\label{eq:ex_ead1_eael_calc}
+    y(n+1) = \frac{4}{3}y(n)-1,\quad n\geq 0.
+  \end{equation}
+
+  Neste caso, por comparação com \eqref{eq:ead1_eael_pt}, temos $\displaystyle f(y(n),n) = \frac{4}{3}y(n)-1$. Para calcularmos o(s) ponto(s) de equilíbrio, resolvemos
+  \begin{gather}
+    f(y^*,n) = y^* \\
+    \frac{4}{3}y^*-1 = y^* \\
+    \left(\frac{4}{3}-1\right)y^* = 1 \\
+    \frac{1}{3}y^* = 1 \\
+    y^* = 3.
+  \end{gather}
+  Com isso, concluímos que $y^*=3$ é o único ponto de equilíbrio de \eqref{eq:ex_ead1_eael_calc}.
+
+  Notamos que, de fato, ao escolhermos $y(0)=3$, temos
+  \begin{align}
+    y(1) &= \frac{4}{3}y(0) - 1 = 3 \\
+    y(2) &= \frac{4}{3}y(1) - 1 = 3 \\
+    y(3) &= \frac{4}{3}y(1) - 1 = 3 \\
+         &\vdots \\
+    y(n) &= 3.
+  \end{align}
+\end{ex}
+
+Seja a equação a diferenças de primeira ordem, linear e com coeficientes constantes
+\begin{equation}\label{eq:ead1_eael_cc}
+  y(n+1) = ay(n) + b,\quad n\geq n_0,
+\end{equation}
+Se $a=0$, então todo número real $y^*$ é ponto de equilíbrio de \eqref{eq:ead1_eael_cc}. Se $a=1$ e $b=0$, também. Agora, se $a=1$ e $b\neq 0$, então \eqref{eq:ead1_eael_cc} não tem ponto de equilíbrio. Por fim, se $a\neq 0$ e $a\neq 1$, então
+\begin{equation}
+  y^* = \frac{b}{1-a}
+\end{equation}
+é o único ponto de equilíbrio de \eqref{eq:ead1_eael_cc}. Este é o caso do Exemplo \ref{ex:ead1_eqlin_pe}.
+
+Um ponto de equilíbrio é um {\bf atrator global} quando
+\begin{equation}
+  \lim_{n\to\infty} y(n) = y^*,
+\end{equation}
+para qualquer valor inicial $y(n_0)$. Neste caso, também dizemos que $y^*$ é um ponto de equilíbio {\bf assintoticamente globalmente estável}.
+
+Uma equação a diferenças da forma
+  \begin{equation}
+    y(n+1) = ay(n),\quad n\geq n_0,
+  \end{equation}
+  com $-1<a<1$, tem $y^*=0$ como atrator global. De fato, a solução desta equação a diferenças é
+  \begin{align}
+    y(n) &= \left[\prod_{i=n_0}^{n-1}a\right]y(n_0) \\
+         &= a^{n-n_0}y(n_0).
+  \end{align}
+  Logo, temos
+  \begin{align}
+    \lim_{n\to\infty} y(n) &= \lim_{n\to\infty} \cancelto{0}{a^{n-n_0}}y(n_0)\\
+                           &= 0.
+  \end{align}
+
+\begin{ex}
+  Para a equação a diferenças
+  \begin{equation}
+    y(n+1) = \frac{1}{2}y(n),\quad n\geq 0,
+  \end{equation}
+  temos que $y^*$ é um ponto de equilíbrio assintóticamente globalmente estável.
+\end{ex}
+
+Um equação a diferenças da forma
+\begin{equation}\label{eq:ead1_ape_eqlin_cc2}
+  y(n+1) = ay(n) + b,\quad n\geq n_0,
+\end{equation}
+com $-1<a<1$, tem
+\begin{equation}
+  y^* = \frac{b}{1-a}
+\end{equation}
+como ponto de equilíbrio assintoticamente globalmente estável. De fato, a solução desta equação é
+\begin{align}
+  y(n) &= \left[\prod_{i=n_0}^{n-1} a\right]y(n_0) \nonumber\\
+       &+ \sum_{i=n_0}^{n-1}\left[\prod_{j=i+1}^{n-1} a\right]b \\
+       &= a^{n-n_0}y(n_0) + \sum_{i=n_0}^{n-1}a^{n-1-i}b\\
+       &= a^{n-n_0}y(n_0) + a^{n-1}b\sum_{i=n_0}^{n-1}a^{-i} \\
+       &= a^{n-n_0}y(n_0) + a^{n-1}b\sum_{j=0}^{n-n_0-1}a^{-j-n_0}\\
+       &= a^{n-n_0}y(n_0) + a^{n-n_0-1}b\sum_{j=0}^{n-n_0-1}a^{-j}\\
+       &= a^{n-n_0}y(n_0) + a^{n-n_0-1}b\frac{(1-a^{-(n-n_0)})}{1-a^{-1}}\\
+       &= a^{n-n_0}y(n_0) + a^{n-n_0-1}b\frac{\frac{a^{n-n_0}-1}{a^{n-n_0}}}{\frac{a-1}{a}}\\
+       &= a^{n-n_0}y(n_0) + b\frac{1-a^{n-n_0}}{1-a} \\
+       &= \left(y(n_0) - \frac{b}{1-a}\right)a^{n-n_0} + \frac{b}{1-a}.
+\end{align}
+Observamos que esta última equação, confirma que
+\begin{equation}
+  y^* = \frac{b}{1-a}
+\end{equation}
+é ponto de equilíbrio de \eqref{eq:ead1_ape_eqlin_cc2} e é assintóticamente globalmente estável, pois
+\begin{align}
+  \lim_{n\to\infty} y(n) &= \lim_{n\to\infty} \left[\left(y(n_0) - \frac{b}{1-a}\right)\cancelto{0}{a^{n-n_0}} + \frac{b}{1-a}\right] \\
+                         &=  \frac{b}{1-a}.
+\end{align}
+
+
+
+\emconstrucao
+
+\subsection*{Exercícios resolvidos}
+
+\emconstrucao
+
+\subsection*{Exercícios}
 
 \emconstrucao
