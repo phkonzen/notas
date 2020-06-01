@@ -91,9 +91,9 @@ class Index:
         body += '<div id="demo" class="carousel slide" data-ride="carousel">'
         body += '<!-- Indicators -->'
         body += '<ul class="carousel-indicators">'
-        body += '<li data-target="#demo" data-slide-to="0" class="active"></li>'
-        body += '<li data-target="#demo" data-slide-to="1"></li>'
-        body += '<li data-target="#demo" data-slide-to="2"></li>'
+        body += '<li data-target="#demo" data-slide-to="0"></li>'
+        # body += '<li data-target="#demo" data-slide-to="1"></li>'
+        # body += '<li data-target="#demo" data-slide-to="2"></li>'
         body += '</ul>'
         
         body += '<!-- The slideshow -->'
@@ -101,21 +101,23 @@ class Index:
         body += '<div class="carousel-item active">'
         body += '<div class="spinner-grow spinner-grow-sm text-danger" role="status"> </div>\n'
         
-        body += '<a href="http://www.ufrgs.br/ppgmap/selecao/editais-de-selecao-mestrado" target=_blank>Mestrado - Processo Seletivo - PPGMAp/UFRGS</a>\n'
+        body += '<a href="http://professor.ufrgs.br/pedro/announcements/minicurso-online-de-c%C3%A1lculo-com-python-2%C2%AA-edi%C3%A7%C3%A3o" target=_blank>Em breve! Minicurso Online de Cálculo com Python - 2ª Edição</a>\n'
         
         body += '</div>'
-        body += '<div class="carousel-item">'
-        body += '<div class="spinner-grow spinner-grow-sm text-danger" role="status"> </div>\n'
         
-        body += '<a href="http://www.ufrgs.br/ppgmap/selecao/editais-de-selecao-mestrado" target=_blank>Mestrado - Processo Seletivo - PPGMAp/UFRGS</a>\n'
+        # body += '<div class="carousel-item">'
+        # body += '<div class="spinner-grow spinner-grow-sm text-danger" role="status"> </div>\n'
         
-        body += '</div>'
-        body += '<div class="carousel-item">'
-        body += '<div class="spinner-grow spinner-grow-sm text-danger" role="status"> </div>\n'
+        # body += '<a href="http://www.ufrgs.br/ppgmap/selecao/editais-de-selecao-mestrado" target=_blank>Mestrado - Processo Seletivo - PPGMAp/UFRGS</a>\n'
         
-        body += '<a href="http://www.ufrgs.br/ppgmap/selecao/editais-de-selecao-mestrado" target=_blank>Mestrado - Processo Seletivo - PPGMAp/UFRGS</a>\n'
+        # body += '</div>'
+        # body += '<div class="carousel-item">'
+        # body += '<div class="spinner-grow spinner-grow-sm text-danger" role="status"> </div>\n'
         
-        body += '</div>'
+        # body += '<a href="http://www.ufrgs.br/ppgmap/selecao/editais-de-selecao-mestrado" target=_blank>Mestrado - Processo Seletivo - PPGMAp/UFRGS</a>\n'
+        
+        # body += '</div>'
+
         body += '</div>'
   
         body += '</div>'
