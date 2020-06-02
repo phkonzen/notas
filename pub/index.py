@@ -101,7 +101,7 @@ class Index:
         body += '<div class="carousel-item active">'
         body += '<div class="spinner-grow spinner-grow-sm text-danger" role="status"> </div>\n'
         
-        body += '<a href="http://professor.ufrgs.br/pedro/announcements/minicurso-online-de-c%C3%A1lculo-com-python-2%C2%AA-edi%C3%A7%C3%A3o" target=_blank>Em breve! Minicurso Online de Cálculo com Python - 2ª Edição</a>\n'
+        body += '<a href="http://professor.ufrgs.br/pedro/announcements/minicurso-online-de-c%C3%A1lculo-com-python-2%C2%AA-edi%C3%A7%C3%A3o" target=_blank>Inscrições abertas: Minicurso Online de Cálculo com Python</a>\n'
         
         body += '</div>'
         
