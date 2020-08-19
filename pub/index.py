@@ -151,7 +151,7 @@ class Index:
         # card: notas de aula de EDO
         body += '<div class="col-lg-3 col-md-4 col-sm-6">'
         body += '<!-- card: notas de aula de EDO -->\n'
-        body += '<div class="card border-primary mb-3" style="max-width: 20rem;">\n'
+        body += '<div class="card border-success mb-3" style="max-width: 20rem;">\n'
         body += '<div class="card-header">Notas de aula</div>\n'
         body += '<div class="card-body">\n'
         body += '<h5 class="card-title">Equações diferencias ordinárias</h5>\n'
@@ -207,7 +207,7 @@ class Index:
         # card: Vetores
         body += '<div class="col-lg-3 col-md-4 col-sm-6">'
         body += '<!-- card: Vetores -->\n'
-        body += '<div class="card border-primary mb-3" style="max-width: 20rem;">\n'
+        body += '<div class="card border-danger mb-3" style="max-width: 20rem;">\n'
         body += '<div class="card-header">Notas de aula</div>\n'
         body += '<div class="card-body">\n'
         body += '<h5 class="card-title">Vetores</h5>\n'

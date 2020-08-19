@@ -14,14 +14,11 @@ from index import *
 #pastas temporárias
 odir = '.docs'
 os.system('mkdir -p '+odir)
-os.system('rm -rvf '+odir+'/*')
+os.system('rm -rvf '+odir+'/index.html')
 
 #index.html
 index = Index(odir)
 index.build()
 
-# #contato.html
-# os.system('cp contato.html '+odir+'/')
-
-#publica o novo site
-os.system('cp -rvf '+odir+'/* ../docs/')
+# publica a atualização
+os.system('rsync -av '+odir+'/* ../docs/')
