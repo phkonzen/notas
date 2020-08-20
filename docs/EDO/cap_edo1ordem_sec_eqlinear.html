@@ -1,8 +1,8 @@
 <!DOCTYPE html><html lang="pt-BR">
 <head>
 <title>2.1 Equação linear‣ Capítulo 2 EDO de primeira ordem ‣ Equações Diferenciais Ordinárias</title>
-<!--Generated on Wed Aug 19 19:11:57 2020 by LaTeXML (version 0.8.2) http://dlmf.nist.gov/LaTeXML/.-->
-<!--Document created on 19 de agosto de 2020.-->
+<!--Generated on Thu Aug 20 15:45:50 2020 by LaTeXML (version 0.8.2) http://dlmf.nist.gov/LaTeXML/.-->
+<!--Document created on 20 de agosto de 2020.-->
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="LaTeXML.css" type="text/css">
@@ -335,6 +335,9 @@ gtag("config", "UA-17226092-2")
 </tr>
 </table>
 </div>
+<figure id="Ch2.F1" class="ltx_figure"><img src="cap_edo1ordem/dados/fig_ex_edo1o_pvi/fig_ex_edo1o_pvi.png" id="Ch2.F1.g1" class="ltx_graphics ltx_centering" width="379" height="236" alt="">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figura 2.1: </span>Solução do problema de valor inicial tratado no Exemplo <a href="#Thmex1" title="Exemplo 2.1.1. ‣ 2.1.1 EDO autônoma e homogênea ‣ 2.1 Equação linear ‣ Capítulo 2 EDO de primeira ordem ‣ Equações Diferenciais Ordinárias" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.1.1</span></a>.</figcaption>
+</figure>
 <div id="Thmex1.p3" class="ltx_para">
 <p class="ltx_p">No <a href="https://www.python.org" title="" class="ltx_ref">Python</a><span class="ltx_note ltx_role_footnote"><sup class="ltx_note_mark">7</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">7</sup>Veja a Observação <a href="cap_intro.html#S0.Thmobs1" title="Observação 1.0.1. ‣ Capítulo 1 Introdução ‣ Equações Diferenciais Ordinárias" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.0.1</span></a>.</span></span></span>, podemos computar a solução solução geral da EDO com os seguintes comandos:</p>
 <pre class="ltx_verbatim ltx_font_typewriter">
@@ -352,8 +355,13 @@ In : cs = solve(Eq(sol.rhs.subs(t,0),1),dict=True)
 In : cs
 Out: [{C1: 1}]
 
-In : sol.subs(cs[0])
+In : sol = sol.subs(cs[0])
+In : sol
 Out: Eq(y(t), exp(t))
+</pre>
+<p class="ltx_p">O esboço do gráfico da solução pode ser produzido com:</p>
+<pre class="ltx_verbatim ltx_font_typewriter">
+In: plot(sol.rhs, (t,0, 2), ylabel="$y(t)$")
 </pre>
 </div>
 </div>
@@ -589,7 +597,35 @@ Out: Eq(y(t), exp(t))
 <td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.54)</span></td>
 </tr>
 </table>
-<p class="ltx_p">a qual é a solução geral.</p>
+<p class="ltx_p">a qual é a solução geral. A figura abaixo contém esboços dos gráficos da solução geral para diferentes valores de <math id="Thmex2.p2.m1" class="ltx_Math" alttext="c" display="inline"><mi>c</mi></math>.</p>
+</div>
+<figure id="Ch2.F2" class="ltx_figure"><img src="cap_edo1ordem/dados/fig_ex_edo1o_fi/fig_ex_edo1o_fi.png" id="Ch2.F2.g1" class="ltx_graphics ltx_centering" width="379" height="250" alt="">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figura 2.2: </span>Esboço do gráfico da solução geral para: (verde) <math id="Ch2.F2.m2" class="ltx_Math" alttext="c=1" display="inline"><mrow><mi>c</mi><mo>=</mo><mn>1</mn></mrow></math>, (vermelho) <math id="Ch2.F2.m3" class="ltx_Math" alttext="c=0" display="inline"><mrow><mi>c</mi><mo>=</mo><mn>0</mn></mrow></math> e (azul) <math id="Ch2.F2.m4" class="ltx_Math" alttext="c=-1" display="inline"><mrow><mi>c</mi><mo>=</mo><mrow><mo>-</mo><mn>1</mn></mrow></mrow></math>.</figcaption>
+</figure>
+<div id="Thmex2.p3" class="ltx_para">
+<p class="ltx_p">No <a href="https://www.python.org" title="" class="ltx_ref">Python</a><span class="ltx_note ltx_role_footnote"><sup class="ltx_note_mark">8</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">8</sup>Veja a Observação <a href="cap_intro.html#S0.Thmobs1" title="Observação 1.0.1. ‣ Capítulo 1 Introdução ‣ Equações Diferenciais Ordinárias" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1.0.1</span></a>.</span></span></span>, podemos computar a solução solução geral da EDO e fazer o gráfico acima com os seguintes comandos:</p>
+<pre class="ltx_verbatim ltx_font_typewriter">
+In : from sympy import *
+In : y = symbols(’y’, cls=Function)
+In : t,C1 = symbols(’t,C1’)
+In : edo = Eq(diff(y(t),t)-y(t),1)
+In : sg = dsolve(edo)
+In : sg
+Out: Eq(y(t), C1*exp(t) - 1)
+
+In : p = plot(sg.rhs.subs(C1,-1), (t,-2,2), \
+...:          ylabel="y(t)", line_color="blue", show=False)
+...:
+In : q = plot(sg.rhs.subs(C1,0), (t,-2,2), \
+...:          ylabel="y(t)", line_color="red", show=False)
+...:
+In : p.extend(q)
+In : q = plot(sg.rhs.subs(C1,1), (t,-2,2), \
+...:          ylabel="y(t)", line_color="green", show=False)
+...:
+In : p.extend(q)
+In : p.show()
+</pre>
 </div>
 </div>
 </section>
@@ -775,7 +811,8 @@ Out: Eq(y(t), exp(t))
 <span class="ltx_tag ltx_tag_theorem">Exemplo 2.1.4</span>.</h6>
 <div id="Thmex4.p1" class="ltx_para">
 <p class="ltx_p">(Mistura em tanque)
-No instante inicial <math id="Thmex4.p1.m1" class="ltx_Math" alttext="t=0" display="inline"><mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow></math> s (segundo), um tanque contem <math id="Thmex4.p1.m2" class="ltx_Math" alttext="q_{0}" display="inline"><msub><mi>q</mi><mn>0</mn></msub></math> kg (quilograma) de sal dissolvido em <math id="Thmex4.p1.m3" class="ltx_Math" alttext="l" display="inline"><mi>l</mi></math> L (litro) de água. Uma solução de <math id="Thmex4.p1.m4" class="ltx_Math" alttext="s" display="inline"><mi>s</mi></math> kg/L de sal e água entra no tanque a uma taxa de <math id="Thmex4.p1.m5" class="ltx_Math" alttext="r" display="inline"><mi>r</mi></math> L/s. Esta solução mistura-se com o líquido presente no tanque e a mistura final sai do tanque a mesma taxa de <math id="Thmex4.p1.m6" class="ltx_Math" alttext="r" display="inline"><mi>r</mi></math> L/s.</p>
+No instante inicial <math id="Thmex4.p1.m1" class="ltx_Math" alttext="t=0" display="inline"><mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow></math> s (segundo), um tanque contem <math id="Thmex4.p1.m2" class="ltx_Math" alttext="q_{0}" display="inline"><msub><mi>q</mi><mn>0</mn></msub></math> kg (quilograma) de sal dissolvido em <math id="Thmex4.p1.m3" class="ltx_Math" alttext="l" display="inline"><mi>l</mi></math> L (litro) de água. Uma solução de <math id="Thmex4.p1.m4" class="ltx_Math" alttext="s" display="inline"><mi>s</mi></math> kg/L de sal e água entra no tanque a uma taxa de <math id="Thmex4.p1.m5" class="ltx_Math" alttext="r" display="inline"><mi>r</mi></math> L/s. Esta solução mistura-se com o líquido presente no tanque e a mistura final sai do tanque a mesma taxa de <math id="Thmex4.p1.m6" class="ltx_Math" alttext="r" display="inline"><mi>r</mi></math> L/s.
+</p>
 </div>
 <div id="Thmex4.p2" class="ltx_para">
 <p class="ltx_p">Vamos modelar a quantidade de sal <math id="Thmex4.p2.m1" class="ltx_Math" alttext="q" display="inline"><mi>q</mi></math> kg presente no tanque a cada instante <math id="Thmex4.p2.m2" class="ltx_Math" alttext="t" display="inline"><mi>t</mi></math> s. Temos que <math id="Thmex4.p2.m3" class="ltx_Math" alttext="q" display="inline"><mi>q</mi></math> é função do tempo <math id="Thmex4.p2.m4" class="ltx_Math" alttext="t" display="inline"><mi>t</mi></math> s, i.e. <math id="Thmex4.p2.m5" class="ltx_Math" alttext="q=q(t)" display="inline"><mrow><mi>q</mi><mo>=</mo><mrow><mi>q</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></math>. A condição inicial é</p>
@@ -894,8 +931,7 @@ ncia}]}," display="block"><mrow><mrow><munder><munder accentunder="true"><mrow><
 <td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.81)</span></td>
 </tr>
 </table>
-<p class="ltx_p">ou seja,
-</p>
+<p class="ltx_p">ou seja,</p>
 <table id="Ch4.S2.EGx32" class="ltx_equationgroup ltx_eqn_gather ltx_eqn_table">
 
 <tr id="Ch2.E82" class="ltx_equation ltx_eqn_row ltx_align_baseline">
@@ -911,7 +947,8 @@ ncia}]}," display="block"><mrow><mrow><munder><munder accentunder="true"><mrow><
 <td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.83)</span></td>
 </tr>
 </table>
-<p class="ltx_p">Obtido o fator integrante, reescrevemos a EDO como segue</p>
+<p class="ltx_p">Obtido o fator integrante, reescrevemos a EDO como segue
+</p>
 <table id="Ch4.S2.EGx33" class="ltx_equationgroup ltx_eqn_gather ltx_eqn_table">
 
 <tr id="Ch2.E84" class="ltx_equation ltx_eqn_row ltx_align_baseline">
@@ -1342,7 +1379,8 @@ No instante inicial <math id="Thmexeresol3.p1.m1" class="ltx_Math" alttext="t=0"
 <h6 class="ltx_title ltx_runin ltx_font_bold ltx_title_theorem">
 <span class="ltx_tag ltx_tag_theorem">E 2.1.6</span>.</h6>
 <div id="Thmexer6.p1" class="ltx_para">
-<p class="ltx_p">Seja um objeto de massa <math id="Thmexer6.p1.m1" class="ltx_Math" alttext="m=1" display="inline"><mrow><mi>m</mi><mo>=</mo><mn>1</mn></mrow></math> kg em queda livre sujeito a aceleração da gravidade de <math id="Thmexer6.p1.m2" class="ltx_Math" alttext="9,8" display="inline"><mrow><mn>9</mn><mo>,</mo><mn>8</mn></mrow></math> m/s<math id="Thmexer6.p1.m3" class="ltx_Math" alttext="{}^{2}" display="inline"><msup><mi></mi><mn>2</mn></msup></math> e resistência do meio de <math id="Thmexer6.p1.m4" class="ltx_Math" alttext="\gamma=0,2" display="inline"><mrow><mi>γ</mi><mo>=</mo><mrow><mn>0</mn><mo>,</mo><mn>2</mn></mrow></mrow></math> kg/s. Assuma, ainda, que o objeto está em repouso no tempo inicial e a uma altura de <math id="Thmexer6.p1.m5" class="ltx_Math" alttext="10" display="inline"><mn>10</mn></math> m (metros) do solo. Quanto tempo leva para o objeto atingir o solo.</p>
+<p class="ltx_p">Seja um objeto de massa <math id="Thmexer6.p1.m1" class="ltx_Math" alttext="m=1" display="inline"><mrow><mi>m</mi><mo>=</mo><mn>1</mn></mrow></math> kg em queda livre sujeito a aceleração da gravidade de <math id="Thmexer6.p1.m2" class="ltx_Math" alttext="9,8" display="inline"><mrow><mn>9</mn><mo>,</mo><mn>8</mn></mrow></math> m/s<math id="Thmexer6.p1.m3" class="ltx_Math" alttext="{}^{2}" display="inline"><msup><mi></mi><mn>2</mn></msup></math> e resistência do meio de <math id="Thmexer6.p1.m4" class="ltx_Math" alttext="\gamma=0,2" display="inline"><mrow><mi>γ</mi><mo>=</mo><mrow><mn>0</mn><mo>,</mo><mn>2</mn></mrow></mrow></math> kg/s. Assuma, ainda, que o objeto está em repouso no tempo inicial e a uma altura de <math id="Thmexer6.p1.m5" class="ltx_Math" alttext="10" display="inline"><mn>10</mn></math> m (metros) do solo. Quanto tempo leva para o objeto atingir o solo.
+</p>
 </div>
 </div>
 <small><button data-toggle="collapse" data-target="#Thmrespx16">Resp.</button></small>
@@ -1362,7 +1400,7 @@ No instante inicial <math id="Thmexeresol3.p1.m1" class="ltx_Math" alttext="t=0"
 <a href="cap_edo1ordem.html" title="Capítulo 2 EDO de primeira ordem ‣ Equações Diferenciais Ordinárias" class="ltx_ref" rel="prev"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">2 </span>EDO de primeira ordem</span></a><a href="bib.html" title="Referências ‣ Equações Diferenciais Ordinárias" class="ltx_ref" rel="bibliography"><span class="ltx_text ltx_ref_title">Referências</span></a><a href="cap_edo1ordem_sec_eqsep.html" title="2.2 Equação separável ‣ Capítulo 2 EDO de primeira ordem ‣ Equações Diferenciais Ordinárias" class="ltx_ref" rel="next"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">2.2 </span>Equação separável</span></a>
 </div>
 <div class="ltx_page_logo">
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />O texto acima está sob Licença <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR">Creative Commons Atribuição-CompartilhaIgual 4.0 Internacional</a>. Generated  on Wed Aug 19 19:11:57 2020 by <a href="http://dlmf.nist.gov/LaTeXML/">LaTeXML <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg==" alt="[LOGO]"></a>
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />O texto acima está sob Licença <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR">Creative Commons Atribuição-CompartilhaIgual 4.0 Internacional</a>. Generated  on Thu Aug 20 15:45:50 2020 by <a href="http://dlmf.nist.gov/LaTeXML/">LaTeXML <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg==" alt="[LOGO]"></a>
 </div></footer>
 </div>
 <div class="toast fade show" style="position: fixed; bottom: 0"><div class="toast-header"><strong class="mr-auto"><a href="../contato.html" target="_blank"><i class="fas fa-envelope"></i> Erros? Sugestões? </a></strong><button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button></div><div class="toast-body"><a href="../contato.html" target="_blank">Clique aqui para informar erros ou deixar sujestões!</a></div></div></div> <!-- div class=col-lg-1 -->
