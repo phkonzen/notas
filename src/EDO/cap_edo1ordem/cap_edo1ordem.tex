@@ -194,7 +194,40 @@ Portanto, concluímos que
     y(t) = -e^te^{-t} + ce^{t} \\
     y(t) =  -1 + ce^{t},
   \end{gather}
-  a qual é a solução geral.
+  a qual é a solução geral. A figura abaixo contém esboços dos gráficos da solução geral para diferentes valores de $c$.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{cap_edo1ordem/dados/fig_ex_edo1o_fi/fig_ex_edo1o_fi}
+    \caption[Esboço do gráfico da solução geral para diferentes valores de $c$.]{Esboço do gráfico da solução geral para: (verde) $c=1$, (vermelho) $c=0$ e (azul) $c=-1$.}
+    \label{fig:ex_edo1o_fi}
+  \end{figure}
+
+  \ifispython
+  No \python, podemos computar a solução solução geral da EDO e fazer o gráfico acima com os seguintes comandos:
+\begin{verbatim}
+In : from sympy import *
+In : y = symbols('y', cls=Function)
+In : t,C1 = symbols('t,C1')
+In : edo = Eq(diff(y(t),t)-y(t),1)
+In : sg = dsolve(edo)
+In : sg
+Out: Eq(y(t), C1*exp(t) - 1)
+
+In : p = plot(sg.rhs.subs(C1,-1), (t,-2,2), \
+...:          ylabel="y(t)", line_color="blue", show=False)
+...: 
+In : q = plot(sg.rhs.subs(C1,0), (t,-2,2), \
+...:          ylabel="y(t)", line_color="red", show=False)
+...: 
+In : p.extend(q)
+In : q = plot(sg.rhs.subs(C1,1), (t,-2,2), \
+...:          ylabel="y(t)", line_color="green", show=False)
+...: 
+In : p.extend(q)
+In : p.show()
+\end{verbatim}
+  \fi
 \end{ex}
 
 \subsection{Caso geral}
