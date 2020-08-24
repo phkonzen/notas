@@ -549,7 +549,7 @@ Sejam, também, $F=F(x)$ e $G=G(y)$ primitivas de $M$ e $N$, respectivamente. I.
 \end{align}
 Lembrando que $y = y(x)$, temos da \emph{regra da cadeia} que
 \begin{align}
-  \frac{d}{dx}G(y) &= \frac{d}{dy}G(y)\frac{dy}{dx} \\
+  \frac{d}{dx}G(y) &= \frac{d G(y)}{dy}\frac{dy}{dx} \\
                    &= N(y)\frac{dy}{dx}.
 \end{align}
 Ou seja, a EDO \eqref{eq:edo_sep_aux} pode ser reescrita na forma
@@ -594,7 +594,8 @@ a qual é uma equação algébrica para $y$ que, com sorte, pode ser usada para 
     F(x) + G(y) = c \\
     -\frac{x^3}{3} + \frac{y^2}{2} = c \label{eq:ex_edo_sep_met1}
   \end{gather}
-  a qual é uma equação implícita da solução geral $y = y(x)$.
+  a qual é uma equação implícita da solução geral $y = y(x)$. 
+  
 \item \emph{Método 2}.
   A EDO separável
   \begin{equation}
@@ -609,7 +610,47 @@ a qual é uma equação algébrica para $y$ que, com sorte, pode ser usada para 
     \frac{y^2}{2} = \frac{x^3}{3} + c,
   \end{equation}
   a qual é equivalente a solução obtida em \eqref{eq:ex_edo_sep_met1}.
-  \end{enumerate}
+\end{enumerate}
+
+Na figura abaixo, temos esboços dos gráficos da solução para diferentes valores de $c$.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{cap_edo1ordem/dados/fig_ex_edo_sep_metsol/fig_ex_edo_sep_metsol}
+  \caption{Esboços dos gráficos da solução da EDO do Exemplo \ref{ex:edo_sep_metsol} para: (azul) $c=-1$, (vermelho) $c=0$, (verde) $c=1$ e (preto) $c=2$.}
+  \label{fig:ex_edo_sep_metsol}
+\end{figure}
+
+\ifispython
+No \python, podemos computar a solução com os seguintes comandos:
+\begin{verbatim}
+In : from sympy import *
+...: y = symbols('y', cls=Function)
+...: x,C1 = symbols('x,C1')
+...: edo = Eq(diff(y(x),x),x**2/y(x))
+...: sg = dsolve(edo, y(x), simplify=False)
+...: sg
+Out: Eq(y(x)**2/2, C1 + x**3/3)
+\end{verbatim}
+Os esboços dos gráficos podem ser feitos com:
+\begin{verbatim}
+In : var('y')
+...: sg = sg.subs(y(x),y)
+...: p = plot_implicit(sg.subs(C1,-1), (x,-4,4), \
+...:          (y,-4,4), line_color="blue", show=False)
+...: q = plot_implicit(sg.subs(C1,0), (x,-4,4), \
+...:          (y,-4,4), line_color="red", show=False)
+...: p.extend(q)
+...: q = plot_implicit(sg.subs(C1,1), (x,-4,4), \
+...:          (y,-4,4), line_color="green", show=False)
+...: p.extend(q)
+...: q = plot_implicit(sg.subs(C1,2), (x,-4,4), \
+...:          (y,-4,4), line_color="black", show=False)
+...: p.extend(q)
+...: p.show()
+\end{verbatim}
+\fi
+
 \end{ex}
 
 \begin{obs}
@@ -657,7 +698,7 @@ A equação de Verhulst é uma EDO separável, daí segue que
   \frac{dy}{dt} = r\left(1 - \frac{y}{K}\right)y \\
   \frac{1}{\left(1 - \frac{y}{K}\right)y}\,dy = r\,dt.
 \end{gather}
-Vamos integrar o lado direito desta última equação:
+Vamos integrar o lado esquerdo desta última equação\footnote{Vamos usar de decomposição em frações parciais.}
 \begin{align}
   \int \frac{1}{\left(1 - \frac{y}{K}\right)y}\,dy &= \int \left(\frac{1}{y} + \frac{1/K}{1-y/K}\right)\,dy \\
                                                    &= \ln|y| - \ln\left|1 - \frac{y}{K}\right|.
@@ -684,7 +725,7 @@ Agora, isolando $y$ em \eqref{eq:Verhulst_aux}, vemos que
     &= \frac{K}{\frac{K}{c}e^{-rt} + 1}
 \end{align}
 Por fim, de \eqref{eq:Verhulst_c}, obtemos a solução
-\begin{equation}
+\begin{equation}\label{eq:sol_verhulst}
   y(t) = \frac{y_0K}{y_0 + (K-y_0)e^{-rt}}.
 \end{equation}
 
@@ -693,6 +734,28 @@ Da solução, corroboramos que a população permanece constante quando $y_0 = 0
   \lim_{t\to\infty} y(t) &= \lim_{t\to\infty} \frac{y_0K}{y_0 + (K-y_0)\cancelto{0}{e^{-rt}}} \\
                          &= K.
 \end{align}
+
+\begin{ex}\label{ex:Verhulst}
+Vamos usar a equação de Verhulst para modelar a dinâmica de uma população com taxa de crescimento intrínseca $r=0,1$ e nível de saturação $K=1$ (bilhão). Pelo que vimos nesta subsecção, temos o modelo
+\begin{align}
+  &\frac{dy}{dt} = 0,1\left(1 - y\right)y,\quad t>0,\\
+  &y(0) = y_0,
+\end{align}
+onde $y:\mapsto y(t)$ é a solução no tempo $t$ e $y_0$ é a população inicial.
+
+De \ref{eq:sol_verhulst}, temos a solução
+\begin{equation}
+  y(t) = \frac{y_0}{y_0 + (1-y_0)e^{-0,1t}}.
+\end{equation}
+A figura abaixo, mostra a dinâmica da população para $y_0=0,5<K$, $y_0=1=K$ e $y_0=1,5>K$.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{cap_edo1ordem/dados/fig_ex_Verhulst/fig_ex_Verhulst}
+  \caption{Exemplo \ref{ex:Verhulst}. Dinâmicas populacionais para: (azul) $y_0=0,5<K$, (preto) $y=1=K$ e (vermelho) $y=1,5>K$.}
+  \label{fig:ex_Verhulst}
+\end{figure}
+\end{ex}
 
 \subsection*{Exercícios resolvidos}
 
