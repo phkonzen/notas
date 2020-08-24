@@ -941,9 +941,9 @@ Neste caso, pode-se calcular uma função $\Psi = \Psi(x,y)$ tal que
 \begin{equation}
   {\color{blue}\frac{\p\Psi}{\p x} = M(x,y),\quad\frac{\p\Psi}{\p y} = N(x,y)}.
 \end{equation}
-Com isso, a EDO \eqref{eq:edo1ordem_exata} é equivalente a
+Com isso, e lembrando que $y:\mapsto y(x)$, a EDO \eqref{eq:edo1ordem_exata} é equivalente a\footnote{$\displaystyle \frac{\p}{\p x}f(y(x)) = \frac{\p f}{\p y}\frac{d y}{dx}$}
 \begin{align}
-  \frac{d}{dx}\Psi(x,y) &= \frac{\p}{\p x}\Psi + \frac{\p}{\p y}\Psi\frac{dy}{dx} \\
+  \frac{d}{dx}\Psi(x,y) &= \frac{\p\Psi}{\p x} + \frac{\p\Psi}{\p y}\frac{dy}{dx} \\
                         &= M(x,y) + N(x,y)\frac{dy}{dx} \\
                         &= 0.
 \end{align}
@@ -952,7 +952,7 @@ Logo, temos a \emph{solução geral}
   {\color{blue}\Psi(x,y) = c}.
 \end{equation}
 
-\begin{ex}
+\begin{ex}\label{ex:edo1ordem_exata}
   Vamos resolver a seguinte EDO
   \begin{equation}\label{eq:ex_edo1ordem_exata}
     (3x^2 - 2xy + 2) + (6y^2 - x^2 + 3)\frac{dy}{dx} = 0.
@@ -1042,6 +1042,42 @@ Logo, temos a \emph{solução geral}
       2y^3 - x^2y + 3y + x^3 + 2x = c.
     \end{equation}
   \end{enumerate}
+
+  Na figura abaixo, temos esboços da solução geral para diferentes valores de $c$.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{./cap_edo1ordem/dados/fig_ex_edo1ordem_exata/fig_ex_edo1ordem_exata}
+    \caption{Exemplo \ref{ex:edo1ordem_exata}. Esboços da solução geral para: (azul) $c=-10$, (preto) $c=-5$, (verde) $c=5$.}
+    \label{fig:ex_edo1ordem_exata}
+  \end{figure}
+  
+  \ifispython
+  No \python, podemos computar a solução geral da EDO com os seguintes códigos:
+\begin{verbatim}
+In : from sympy import *
+...: y = Function('y')
+...: x,C1 = symbols('x,C1')
+...: edo = 3*x**2-2*x*y(x)+2 + (6*y(x)**2-x**2+3)*diff(y(x),x)
+...: sg = dsolve(edo, y(x), simplify=False)
+...: sg
+Out: Eq(x**3 - x**2*y(x) + 2*x + 2*y(x)**3 + 3*y(x), C1)
+\end{verbatim}
+  Os esboços dos gráficos podem ser obtidos com:
+\begin{verbatim}
+In : var('y')
+...: sg = sg.subs(y(x),y)
+...: p = plot_implicit(sg.subs(C1,-10), (x,-3,3), (y,-3,3),
+...:          line_color="blue", show=False)
+...: q = plot_implicit(sg.subs(C1,-5), (x,-3,3), (y,-3,3),
+...:          line_color="black", show=False)
+...: p.extend(q)
+...: q = plot_implicit(sg.subs(C1,5), (x,-3,3), (y,-3,3),
+...:          line_color="green", show=False)
+...: p.extend(q)
+...: p.show()
+\end{verbatim}
+  \fi
 \end{ex}
 
 \subsection{Método dos fatores integrantes}
@@ -1084,7 +1120,7 @@ Ou seja, se
 \end{equation}
 é função apenas de $x$, então podemos calcular um fator integrante $\mu = \mu(x)$ resolvendo a EDO linear \eqref{eq:eqnexata_fatorintx}.
 
-\begin{ex}
+\begin{ex}\label{ex:edo1ordem_exata_fix}
   Vamos resolver a EDO
   \begin{equation}\label{eq:nexata_fatintx}
     (x+2)\sen(y) + x\cos(y)\frac{dy}{dx} = 0.
@@ -1142,10 +1178,39 @@ Ou seja, se
   \end{gather}
 
   Logo, podemos concluir que a solução geral de \eqref{eq:nexata_fatintx}  é dada por
-  \begin{equation}
+  \begin{equation}\label{eq:ex_edo1ordem_exata_fix_sol}
     x^2e^x\sen(y) = c.  
   \end{equation}
+
+  \ifispython
+  No \python, podemos computar a solução geral com:
+\begin{verbatim}
+In : from sympy import *
+...: y = Function('y')
+...: x,C1 = symbols('x,C1')
+...: edo = (x+2)*sin(y(x))+x*cos(y(x))*diff(y(x),x)
+...: sg = dsolve(edo, y(x), simplify=False)
+...: sg
+Out: Eq(log(cos(y(x))**2 - 1)/2, C1 - x - 2*log(x))
+\end{verbatim}
+  Esta solução é equivalente a \eqref{eq:ex_edo1ordem_exata_fix_sol}?
+  \fi
 \end{ex}
+
+\ifispython
+\begin{obs}
+  A função \verb+checkodesol+ do \sympy permite verificar se uma expressão/equação é solução de uma dada EDO. No caso de exemplo anterior (Exemplo \ref{ex:edo1ordem_exata_fix}), podemos verificar a solução \eqref{eq:ex_edo1ordem_exata_fix_sol} com o seguinte código:
+\begin{verbatim}
+In : from sympy import *
+...: y = Function('y')
+...: x,C1 = symbols('x,C1')
+...: edo = (x+2)*sin(y(x))+x*cos(y(x))*diff(y(x),x)
+...: sol = Eq(x**2*exp(x)*sin(y(x)),C1)
+...: checkodesol(edo,sol)
+Out: [(True, 0), (True, 0)]
+\end{verbatim}
+\end{obs}
+\fi
 
 \subsubsection{$\pmb{\mu = \mu(y)}$}
 
@@ -1216,6 +1281,19 @@ Ou seja, se
   \begin{equation}
     xy^2 - (y^2-2y+2)e^y = c.
   \end{equation}
+
+  \ifispython
+  Vamos verificar esta solução no \python:
+\begin{verbatim}
+from sympy import *
+y = Function('y')
+x,C1 = symbols('x,C1')
+edo = y(x)+(2*x-y(x)*exp(y(x)))*diff(y(x),x)
+sol = Eq(x*y(x)**2-(y(x)**2-2*y(x)+2)*exp(y(x)),C1)
+checkodesol(edo,sol,func=y(x),solve_for_func=False)
+\end{verbatim}
+  Tendo em vista que o \sympy\;não resolve esta EDO diretamente, a opção \verb+solve_for_func=False+ foi utilizada para impedir que o \sympy\;tente resolver a EDO.
+  \fi
 \end{ex}
 
 \subsection*{Exercícios resolvidos}
