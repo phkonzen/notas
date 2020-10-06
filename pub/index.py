@@ -80,43 +80,43 @@ class Index:
         
         #miolo
 
-        # # Área de anúncios
+        # Área de anúncios
         body += '<p></p>'
-        # body += '<div id="demo" class="carousel slide" data-ride="carousel">'
-        # body += '<!-- Indicators -->'
-        # body += '<ul class="carousel-indicators">'
-        # body += '<li data-target="#demo" data-slide-to="0"></li>'
-        # # body += '<li data-target="#demo" data-slide-to="1"></li>'
-        # # body += '<li data-target="#demo" data-slide-to="2"></li>'
-        # body += '</ul>'
+        body += '<div id="demo" class="carousel slide" data-ride="carousel">'
+        body += '<!-- Indicators -->'
+        body += '<ul class="carousel-indicators">'
+        body += '<li data-target="#demo" data-slide-to="0"></li>'
+        # body += '<li data-target="#demo" data-slide-to="1"></li>'
+        # body += '<li data-target="#demo" data-slide-to="2"></li>'
+        body += '</ul>'
         
-        # body += '<!-- The slideshow -->'
-        # body += '<div class="carousel-inner">'
-        # body += '<div class="carousel-item active">'
+        body += '<!-- The slideshow -->'
+        body += '<div class="carousel-inner">'
+        body += '<div class="carousel-item active">'
+        body += '<div class="spinner-grow spinner-grow-sm text-danger mb-1 mt-0" role="status"> </div>\n'
+        
+        body += '<a href="https://www.ufrgs.br/ermacrs2020/">X ERMAC-RS 2020: últimos dias para submissão de trabalhos</a>\n'
+        
+        body += '</div>'
+        
+        # body += '<div class="carousel-item">'
         # body += '<div class="spinner-grow spinner-grow-sm text-danger" role="status"> </div>\n'
         
-        # body += '<a href="http://professor.ufrgs.br/pedro/announcements/minicurso-online-de-c%C3%A1lculo-com-python-2%C2%AA-edi%C3%A7%C3%A3o" target=_blank>Inscrições abertas: Minicurso Online de Cálculo com Python</a>\n'
+        # body += '<a href="http://www.ufrgs.br/ppgmap/selecao/editais-de-selecao-mestrado" target=_blank>Mestrado - Processo Seletivo - PPGMAp/UFRGS</a>\n'
         
         # body += '</div>'
+        # body += '<div class="carousel-item">'
+        # body += '<div class="spinner-grow spinner-grow-sm text-danger" role="status"> </div>\n'
         
-        # # body += '<div class="carousel-item">'
-        # # body += '<div class="spinner-grow spinner-grow-sm text-danger" role="status"> </div>\n'
+        # body += '<a href="http://www.ufrgs.br/ppgmap/selecao/editais-de-selecao-mestrado" target=_blank>Mestrado - Processo Seletivo - PPGMAp/UFRGS</a>\n'
         
-        # # body += '<a href="http://www.ufrgs.br/ppgmap/selecao/editais-de-selecao-mestrado" target=_blank>Mestrado - Processo Seletivo - PPGMAp/UFRGS</a>\n'
-        
-        # # body += '</div>'
-        # # body += '<div class="carousel-item">'
-        # # body += '<div class="spinner-grow spinner-grow-sm text-danger" role="status"> </div>\n'
-        
-        # # body += '<a href="http://www.ufrgs.br/ppgmap/selecao/editais-de-selecao-mestrado" target=_blank>Mestrado - Processo Seletivo - PPGMAp/UFRGS</a>\n'
-        
-        # # body += '</div>'
+        # body += '</div>'
 
-        # body += '</div>'
+        body += '</div>'
   
-        # body += '</div>'
+        body += '</div>'
 
-        body += '<h3>Notas de aula</h3>\n\n'
+        body += '<h3 class="mt-1">Notas de aula</h3>\n\n'
 
 
         body += '<div class=row>\n'
@@ -137,12 +137,12 @@ class Index:
         # card: notas de aula de EaD
         body += '<div class="col-lg-3 col-md-4 col-sm-6">'
         body += '<!-- card: notas de aula de EaD -->\n'
-        body += '<div class="card border-secundary mb-3" style="max-width: 20rem;">\n'
+        body += '<div class="card border-success mb-3" style="max-width: 20rem;">\n'
         body += '<div class="card-header">Notas de aula</div>\n'
         body += '<div class="card-body">\n'
         body += '<h5 class="card-title">Equações a diferenças</h5>\n'
         body += '<p class="card-text" style="color: gray">Introdução a equações a diferenças</p>\n'
-        body += '<a href="./EaD/main.html" class="btn btn-dark stretched-link">\n'
+        body += '<a href="./EaD/main.html" class="btn btn-success stretched-link">\n'
         body += 'Abrir</a>\n'
         body += '</div>\n'
         body += '</div>\n'
@@ -151,7 +151,7 @@ class Index:
         # card: notas de aula de EDO
         body += '<div class="col-lg-3 col-md-4 col-sm-6">'
         body += '<!-- card: notas de aula de EDO -->\n'
-        body += '<div class="card border-success mb-3" style="max-width: 20rem;">\n'
+        body += '<div class="card border-primary mb-3" style="max-width: 20rem;">\n'
         body += '<div class="card-header">Notas de aula</div>\n'
         body += '<div class="card-body">\n'
         body += '<h5 class="card-title">Equações diferencias ordinárias</h5>\n'
@@ -165,12 +165,12 @@ class Index:
         # card: Geometria analítica
         body += '<div class="col-lg-3 col-md-4 col-sm-6">'
         body += '<!-- card: Geometria analítica -->\n'
-        body += '<div class="card border-secundary mb-3" style="max-width: 20rem;">\n'
+        body += '<div class="card border-warning mb-3" style="max-width: 20rem;">\n'
         body += '<div class="card-header">Notas de aula</div>\n'
         body += '<div class="card-body">\n'
         body += '<h5 class="card-title">Geometria analítica</h5>\n'
         body += '<p class="card-text" style="color: gray">Introdução à geometria analítica</p>\n'
-        body += '<a href="./GeometriaAnalitica/main.html" class="btn btn-dark stretched-link">\n'
+        body += '<a href="./GeometriaAnalitica/main.html" class="btn btn-warning stretched-link">\n'
         body += 'Abrir</a>\n'
         body += '</div>\n'
         body += '</div>\n'
@@ -207,7 +207,7 @@ class Index:
         # card: Vetores
         body += '<div class="col-lg-3 col-md-4 col-sm-6">'
         body += '<!-- card: Vetores -->\n'
-        body += '<div class="card border-danger mb-3" style="max-width: 20rem;">\n'
+        body += '<div class="card border-primary mb-3" style="max-width: 20rem;">\n'
         body += '<div class="card-header">Notas de aula</div>\n'
         body += '<div class="card-body">\n'
         body += '<h5 class="card-title">Vetores</h5>\n'
