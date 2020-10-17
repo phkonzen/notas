@@ -93,9 +93,9 @@ class Index:
         body += '<!-- The slideshow -->'
         body += '<div class="carousel-inner">'
         body += '<div class="carousel-item active">'
-        body += '<div class="spinner-grow spinner-grow-sm text-danger mb-1" role="status"> </div>\n'
+        body += '<p><div class="spinner-grow spinner-grow-sm text-danger mb-1" role="status"></div>\n'
         
-        body += '<a href="https://www.ufrgs.br/ermacrs2020/">X ERMAC-RS 2020: últimos dias para submissão de trabalhos</a>\n'
+        body += '<a href="https://www.ufrgs.br/ermacrs2020/">X ERMAC-RS 2020: inscrições ouvinte.</a></p>\n'
         
         body += '</div>'
         
