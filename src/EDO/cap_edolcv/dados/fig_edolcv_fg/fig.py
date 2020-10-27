@@ -4,6 +4,10 @@ import numpy as np
 from sympy import *
 var('x')
 
+gamma(S(3)/2)
+
+beta(S(3)/2,S(1)/2)
+pi/2
 p = plot(gamma(x),(x,-3+0.001,-2-0.001),ylim=[-24,24],show=False)
 q = plot(gamma(x),(x,-2+0.001,-1-0.001),ylim=[-24,24],show=False)
 p.extend(q)
