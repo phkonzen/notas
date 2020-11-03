@@ -682,9 +682,171 @@ De fato, \eqref{eq:edolcv_fgcb} decorre de \eqref{eq:edolcv_bg}, pois
   Dica: use \eqref{eq:edolcv_bg}.
 \end{resp}
 
-\section{Funções de Bessel}\label{cap_edolcv_sec_fbessel}
+\section{Equação de Bessel}\label{cap_edolcv_sec_fbessel}
 
-\emconstrucao
+As funções de Bessel estão relacionadas as soluções das chamadas equações de Bessel
+\begin{equation}\label{eq:bessel}
+  x^2y'' + xy' + (x^2-\nu^2)y = 0,
+\end{equation}
+onde $y:x\mapsto y(x)$. Esta equação adimite uma solução da forma
+\begin{equation}\label{eq:bessel-s1}
+  y(x) = \sum_{n=0}^\infty c_nx^{n+r},
+\end{equation}
+com $r$, $c_0\neq 0$ e $c_n$, $n=1,2,\ldots$ devem ser determinados. Para tanto, vamos substituir \eqref{eq:bessel-s1} em \eqref{eq:bessel}. Antes, observamos que
+\begin{equation}
+  y'(x) = \sum_{n=0}^\infty c_n(n+r)x^{n+r-1}
+\end{equation}
+e
+\begin{equation}
+  y''(x) = \sum_{n=0}^\infty c_n(n+r)(n+r-1)x^{n+r-2}
+\end{equation}
+Substituindo em \eqref{eq:bessel}, obtemos
+\begin{gather}
+  0 = x^2y'' + xy' + (x^2-\nu^2)y \\
+  = \sum_{n=0}^\infty c_n(n+r)(x+r-1)x^{n+r} + \sum_{n=0}^\infty c_n(n+r)x^{n+r} \\
+  + \sum_{n=0}^\infty c_nx^{n+r+2}- \nu^2\sum_{n=0}^\infty c_nx^{n+r}\\
+  = c_0(r^2-r+r-\nu^2)x^r \\                              + x^r\sum_{n=1}^\infty c_n\left[(n+r)(n+r-1)+(n+r)-\nu^2\right]x^n+ x^r\sum_{n=0}^\infty c_nx^{n+2}\\
+  = c_0(r^2-\nu^2)x^r + x^r\sum_{n=1}^\infty c_n\left[(n+r)^2-\nu^2\right]x^n \\
+  + x^r\sum_{n=0}^\infty c_nx^{n+2}\label{eq:bessel-s2}
+\end{gather}
+Do primeiro termo, obtemos a chamada \emph{equação indicial}
+\begin{equation}
+  r^2 - \nu^2 = 0
+\end{equation}
+donde
+\begin{equation}
+  r_1 = \nu,\qquad r_2=-\nu.
+\end{equation}
+Ou seja, somente podemos esperar encontrar soluções para \eqref{eq:bessel} da forma \eqref{eq:bessel-s1} para estes valores de $r$.
+
+Substituindo $r=r_1=\nu$ em \eqref{eq:bessel-s2}, obtemos
+\begin{gather}
+  0 = x^\nu\sum_{n=1}^\infty c_n\left[(n+\nu)^2-\nu^2\right]x^n + x^\nu\sum_{n=0}^\infty c_nx^{n+2}\\
+  =  x^\nu\sum_{n=1}^\infty c_nn(n+2\nu)x^n + x^\nu\sum_{n=0}^\infty c_nx^{n+2}\\
+  = x^\nu\left[c_1(1+2\nu)x + \underbrace{\sum_{n=2}^\infty c_nn(n+2\nu)x^n}_{m=n-2} + \underbrace{x^\nu\sum_{n=0}^\infty c_nx^{n+2}}_{m=n}\right]\\
+  = x^\nu\left[c_1(1+2\nu)x \right.\\
+  \left. + \sum_{m=0}^\infty c_{m+2}(m+2)(m+2+2\nu)x^{m+2} + x^\nu\sum_{m=0}^\infty c_mx^{m+2}\right]\\
+  = x^\nu\left\{c_1(1+2\nu)x + \sum_{m=0}^\infty \left[c_{m+2}(m+2)(m+2+2\nu) + c_m\right]x^{m+2}\right\}
+\end{gather}
+Logo,
+\begin{equation}
+  c_1(1+2\nu) = 0
+\end{equation}
+e, para $m=0,1,2,\infty$,
+\begin{equation}
+  (m+2)(m+2+2\nu)c_{m+2}+c_m = 0
+\end{equation}
+ou, equivalentemente,
+\begin{equation}
+  c_{m+2} = \frac{-c_m}{(m+2)(m+2+2\nu)}
+\end{equation}
+
+Escolhendo $c_1=0$, temos
+\begin{equation}
+  c_3=c_5=c_7=\cdots=0.
+\end{equation}
+Agora, para $m+2=2n$, $n=1,2,3,\ldots$, temos
+\begin{equation}
+  c_{2n} = -\frac{c_{2n-2}}{2^2n(n+\nu)}.
+\end{equation}
+Daí, segue que
+\begin{align}
+  c_2 &= -\frac{c_0}{2^2\cdot 1\cdot (1+\nu)}\\
+  c_4 &= -\frac{c_2}{2^2\cdot 2\cdot (2+\nu)}\\
+      &= \frac{c_0}{2^4\cdot 2!\cdot (1+\nu)(2+\nu)}\\
+  c_6 &= -\frac{c_4}{2^2\cdot 3\cdot (3+\nu)}\\
+      &= -\frac{c_0}{2^6\cdot 3!\cdot (1+\nu)(2+\nu)(3+\nu)}\\
+      &\vdots\\
+  c_{2n} &= \frac{(-1)^nc_0}{2^{2n}n!(1+\nu)(2+\nu)\cdot(n+\nu)}
+\end{align}
+Da propriedade da função gama
+\begin{equation}
+  \Gamma(x+1) = x\Gamma(x)
+\end{equation}
+temos que
+\begin{align}
+  \Gamma(1+\nu+1) &= (1+\nu)\Gamma(1+\nu)\\
+  \Gamma(1+\nu+2) &= (2+\nu)\Gamma(2+\nu)=(1+\nu)(2+\nu)\Gamma(1+\nu)\\
+                &\vdots\\
+  \Gamma(1+\nu+n) &= (1+\nu)(2+\nu)\cdot(n+\nu)\Gamma(1+\nu). 
+\end{align}
+Com isso, escolhendo
+\begin{equation}
+  c_0 = \frac{1}{2^\nu\Gamma(1+\nu)}
+\end{equation}
+concluímos que
+\begin{equation}
+  c_{2n} = \frac{(-1)^n}{2^{2n+\nu}n!\Gamma(1+\nu+n)}
+\end{equation}
+e
+\begin{equation}
+  c_{2n-1}=0
+\end{equation}
+para $n=1,2,3,\ldots$.
+
+Com tudo isso, obtivemos a seguinte solução para a equação de Bessel
+\begin{equation}
+  y(x) = \sum_{n=0}^\infty \frac{(-1)^n}{2^{2n+\nu}n!\Gamma(1+\nu+n)}x^{2n+\nu}
+\end{equation}
+ou, equivalentemente,
+\begin{equation}
+  y(x) = \sum_{n=0}^\infty \frac{(-1)^n}{n!\Gamma(1+\nu+n)}\left(\frac{x}{2}\right)^{2n+\nu}.
+\end{equation}
+Esta é conhecida como \emph{função de Bessel de primeira espécie} de ordem $\nu$ e é usualmente denotada por
+\begin{equation}
+  {\color{blue}J_\nu(x) = \sum_{n=0}^\infty \frac{(-1)^n}{n!\Gamma(1+\nu+n)}\left(\frac{x}{2}\right)^{2n+\nu}}. 
+\end{equation}
+Pode-se mostrar que se $\nu\geq 0$, a série converge para $x\in [0, \infty)$.
+
+Outra solução da equação de Bessel é obtida tomando $r=r_2=-\nu$. Procedendo de forma análoga, obtemos a solução
+\begin{align}
+  y(x) &= J_{-\nu}(x)\\
+       &= \sum_{n=0}^\infty \frac{(-1)^n}{n!\Gamma(1-\nu+n)}\left(\frac{x}{2}\right)^{2n-\nu},
+\end{align}
+a qual é chamada de função de Bessel de primeira espécie de ordem $-\nu$.
+
+Agora, vamos discutir sobre a \emph{solução geral} da equação de Bessel. Pode-se mostrar se $\nu$ não é um número inteiro, então $J_\nu(x)$ e $J_{-\nu}(x)$ são soluções linearmente independentes. Logo, temos a solução geral
+\begin{equation}
+  y(x) = c_1J_\nu(x) + c_2J_{-\nu}(x),\quad \nu\not\in\mathbb{Z}.
+\end{equation}
+
+\begin{ex}
+  A solução geral da equação de Bessel de ordem $\nu=1/3$
+  \begin{equation}
+    x^2y'' + xy' + \left(x^2 - \frac{1}{9}\right)y = 0
+  \end{equation}
+  é
+  \begin{equation}
+    y(x) = c_1J_{\frac{1}{3}}(x) + c_2J_{-\frac{1}{3}}(x).
+  \end{equation}
+\end{ex}
+
+\subsection{Função de Bessel de segunda espécie}
+
+A \emph{função de Bessel de segunda espécie} de ordem $\nu$ é dada por
+\begin{equation}
+  Y_\nu(x) = \frac{J_\nu(x)\cos(\nu\pi)-J_{-\nu}(x)}{\sen(\nu\pi)}
+\end{equation}
+Para $\nu$ não inteiro, $Y_\nu(x)$ e $J_\nu(x)$ são soluções linearmente independentes da equação de Bessel. Agora, pode-se mostrar que quando $\nu\to m$ número inteiro, o seguinte limite está bem definido
+\begin{equation}
+  Y_m(x) = \lim_{\nu\to m} Y_\nu(x).
+\end{equation}
+Além disso, para $m$ número inteiro, $Y_m(x)$ e $J_m(x)$ são linearmente independentes. Logo, a \emph{solução geral} da equação de Bessel de ordem $m$ é
+\begin{equation}
+  {\color{blue}y(x) = c_1J_m(x) + c_2Y_m(x)},
+\end{equation}
+onde $Y_\nu(x)$ é chamada de \emph{função de Bessel de segunda espécie} de ordem $\nu$.
+
+\begin{ex}
+  A solução geral da equação de Bessel de ordem $\nu=3$
+  \begin{equation}
+    x^2y'' + xy' + \left(x^2 - 9\right)y = 0
+  \end{equation}
+  é
+  \begin{equation}
+    y(x) = c_1J_{3}(x) + c_2Y_3(x).
+  \end{equation}  
+\end{ex}
 
 \subsection*{Exercícios resolvidos}
 
