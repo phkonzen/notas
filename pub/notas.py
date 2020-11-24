@@ -117,7 +117,7 @@ class Notas:
         body_end = ''
 
         # botão flutuante fixo 
-        body_end += '<div class="toast fade show" style="position: fixed; bottom: 0">'
+        body_end += '<div class="toast fade show" aria-live="polite" style="position: fixed; bottom: 0">'
         body_end += '<div class="toast-header">'
         body_end += '<strong class="mr-auto"><a href="../contato.html" target="_blank"><i class="fas fa-envelope"></i> Erros? Sugestões? </a></strong>'
         body_end += '<button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>'
