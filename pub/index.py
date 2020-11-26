@@ -100,7 +100,7 @@ class Index:
         body += '<div class="carousel-item active">'
         body += '<p><div class="spinner-grow spinner-grow-sm text-danger mb-1" role="status"></div>\n'
         
-        body += '<a href="https://www.ufrgs.br/ermacrs2020/">X ERMAC-RS 2020: inscrições ouvinte.</a></p>\n'
+        body += '<a href="https://www.ufrgs.br/ermacrs2020/">X ERMAC-RS 2020: 1-3/Dez/20</a></p>\n'
         
         body += '</div>'
         
