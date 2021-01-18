@@ -98,24 +98,29 @@ class Index:
         body += '<!-- The slideshow -->'
         body += '<div class="carousel-inner">'
         body += '<div class="carousel-item active">'
-        body += '<p><div class="spinner-grow spinner-grow-sm text-danger mb-1" role="status"></div>\n'
-        
-        body += '<a href="https://www.ufrgs.br/ermacrs2020/">X ERMAC-RS 2020: 1-3/Dez/20</a></p>\n'
+
+        body += '<div>\n'
+        body += '<div class="spinner-grow spinner-grow-sm text-danger mb-1" role="status"></div>\n'
+        body += '<a href="https://www.ufrgs.br/ime/monitoria-pag-2021-inscricoes-abertas/">Monitoria PAG 2021 – Inscrições abertas</a></div>\n'
         
         body += '</div>'
+
+        body += '<div class="carousel-item">'
+
+        body += '<div>\n'
+        body += '<div class="spinner-grow spinner-grow-sm text-primary mb-1" role="status"></div>\n'
+        body += '<a href="http://www.ufrgs.br/ppgmap">Programa de Pós Graduação em Matemática Aplicada</a></div>\n'
         
-        # body += '<div class="carousel-item">'
-        # body += '<div class="spinner-grow spinner-grow-sm text-danger" role="status"> </div>\n'
+        body += '</div>'
+
+        body += '<div class="carousel-item">'
+
+        body += '<div>\n'
+        body += '<div class="spinner-grow spinner-grow-sm text-primary mb-1" role="status"></div>\n'
+        body += '<a href="http://www.ufrgs.br/ime">Instituto de Matemática e Estatística</a></div>\n'
         
-        # body += '<a href="http://www.ufrgs.br/ppgmap/selecao/editais-de-selecao-mestrado" target=_blank>Mestrado - Processo Seletivo - PPGMAp/UFRGS</a>\n'
-        
-        # body += '</div>'
-        # body += '<div class="carousel-item">'
-        # body += '<div class="spinner-grow spinner-grow-sm text-danger" role="status"> </div>\n'
-        
-        # body += '<a href="http://www.ufrgs.br/ppgmap/selecao/editais-de-selecao-mestrado" target=_blank>Mestrado - Processo Seletivo - PPGMAp/UFRGS</a>\n'
-        
-        # body += '</div>'
+        body += '</div>'
+
 
         body += '</div>'
   
