@@ -109,7 +109,7 @@ class Index:
 
         body += '<div>\n'
         body += '<div class="spinner-grow spinner-grow-sm text-primary mb-1" role="status"></div>\n'
-        body += '<a href="http://www.ufrgs.br/ppgmap">Programa de Pós Graduação em Matemática Aplicada</a></div>\n'
+        body += '<a href="http://www.ufrgs.br/ppgmap">Programa de Pós-Graduação em Matemática Aplicada</a></div>\n'
         
         body += '</div>'
 
