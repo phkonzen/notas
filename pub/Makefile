@@ -10,6 +10,9 @@ CalculoI: mainCalculoI.py
 MatematicaNumerica: mainMatematicaNumerica.py
 	python3 mainMatematicaNumerica.py
 
+MatematicaNumericaParalela: mainMatematicaNumericaParalela.py
+	python3 mainMatematicaNumericaParalela.py
+
 MetodoElementosFinitos: mainMetodoElementosFinitos.py
 	python3 mainMetodoElementosFinitos.py
 

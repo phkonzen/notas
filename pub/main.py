@@ -4,7 +4,7 @@ Constroi/atualiza o __site__
 das notas de aula.
 
 Autor: Pedro H A Konzen - 05/2018
-Modificado: 03/2020
+Modificado: 01/2021
 '''
 
 #pacotes do Python
@@ -19,6 +19,7 @@ from calculoi import *
 from ead import *
 from edo import *
 from matematicanumerica import *
+from matematicanumericaparalela import *
 from metodoelementosfinitos import *
 from vetores import *
 from geometriaanalitica import *
@@ -56,6 +57,7 @@ ci = CalculoI(srcdir,odir)
 ead = EaD(srcdir,odir)
 edo = EDO(srcdir,odir)
 mn = MatematicaNumerica(srcdir,odir)
+mnp = MatematicaNumericaParalela(srcdir,odir)
 mef = MetodoElementosFinitos(srcdir,odir)
 v = Vetores(srcdir,odir)
 ga = GeometriaAnalitica(srcdir,odir)
@@ -67,7 +69,7 @@ def build(id):
 #região paralelizada
 if __name__ == '__main__':
     p = Pool()
-    p.map(build,[ci,ead,edo,mn,mef,v,ga,mini])
+    p.map(build,[ci,ead,edo,mn,mnp,mef,v,ga,mini])
 
 #sitemap.txt
 sm = SiteMap(odir)
