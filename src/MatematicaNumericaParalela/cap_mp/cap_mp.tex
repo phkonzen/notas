@@ -147,6 +147,70 @@ Faça a alteração e verifique!
   \end{itemize}
 \end{obs}
 
+\subsection{Laço e Redução}
+
+Vamos considerar o problema de computar
+\begin{equation}
+  s = \sum_{i=0}^{99999999} 1
+\end{equation}
+em paralelo com $np$ {\it threads}. Começamos analizando o seguinte código
+
+\lstinputlisting[title={Código: soma0.cc}]{cap_mp/dados/cc_soma/soma0.cc}
+
+Ao executarmos este código com $nt > 1$, vamos ter saídas erradas. Verifique! Qual o valor esperado?
+
+O erro do código está na \emph{condição de corrida} ({\it race condition}) na linha 20. Esta é uma operação, ao ser iniciada por um {\it thread}, precisa ser terminada pelo {\it thread} antes que outro possa iniciá-la. Podemos fazer adicionando o construtor
+\begin{verbatim}
+#pragma omp critical
+\end{verbatim}
+imediatamente antes da linha de código \verb-s += i;-. O código fica como segue, verifique!
+
+\lstinputlisting[title={Código: soma1.cc}]{cap_mp/dados/cc_soma/soma1.cc}
+
+Esta abordagem evita a condição de corrida e fornece a resposta esperada. No entanto, ela acaba serializando o código, o qual é será muito mais lento que o código serial. Verifique!
+
+\begin{obs}
+  A utilização do construtor
+\begin{verbatim}
+#pragma omp critical
+\end{verbatim}
+  reduz a performance do código e só deve ser usada quando realmente necessária.
+\end{obs}
+
+Uma alternativa é alocar as somas parciais de cada {\it thread} em uma variável privada e, ao final, somar as partes computadas. Isto pode ser feito com o seguinte código. Verifique!
+
+\lstinputlisting[title={Código: soma2.cc}]{cap_mp/dados/cc_soma/soma2.cc}
+
+Este último código pode ser simplificado usando o construtor
+\begin{verbatim}
+#pragma omp for
+\end{verbatim}
+Com este construtor, o laço do somatório pode ser automáticamente distribuindo entre os {\it threads}. Verifique o seguinte código!
+
+\lstinputlisting[title={Código: somafor.cc}]{cap_mp/dados/cc_soma/somafor.cc}
+
+Mais simples e otimizado, é automatizar a operação de redução (no caso, a soma das somas parciais) adicionado
+\begin{verbatim}
+reduction(+: s)
+\end{verbatim}
+ao construtor que inicializa a região paralela. Verifique o seguinte código!
+
+\lstinputlisting[title={Código: soma.cc}]{cap_mp/dados/cc_soma/soma.cc}
+
+\begin{obs}
+  A instrução de redução pode ser usada com qualquer operação binária aritmética (\verb=+=, \verb=-=, \verb=/=, \verb=*=), lógica (\verb=&=, \verb=|=) ou procedimentos intrínsecos (\verb=max=, \verb=min=).
+\end{obs}
+
+
+
+
+
+
+
+
+
+
+
 \emconstrucao
 
 \subsection*{Exercícios Resolvidos}
@@ -155,7 +219,8 @@ Faça a alteração e verifique!
   Considere o seguinte código
   \begin{lstlisting}
     int tid = 10;
-    #pragma omp parallel private(tid) {
+    #pragma omp parallel private(tid)
+    {
       tid = omp_get_thread_num();
     }
     printf("%d\n", tid);
