@@ -102,3 +102,72 @@ omp_get_num_threads();
 \begin{exer}\label{exer:cc_exer_AB}
   Escreva um código MP para computar o produto de uma matriz $n\times m$ com uma matriz de $m\times n$ elementos, com $n \geq m$. Inicialize todos os elementos com números randômicos em ponto flutuante. Ainda, o código deve ser escrito para um número arbitrário $m>1$ de instâncias de processamento. Por fim, compare o desempenho do código MP com uma versão serial do código.
 \end{exer}
+
+\section{Comandos básicos}\label{cap_mp_sec_cb}
+
+\subsection{Variáveis privadas e variáveis compartilhadas}
+
+Vamos analisar o seguinte código.
+
+\lstinputlisting[title={Código: vpc.cc}]{cap_mp/dados/cc_vpc/vpc.cc}
+
+Qual seria a saída esperada? Ao rodarmos este código, veremos uma saída da forma
+\begin{verbatim}
+Processo 0/4
+Processo 2/4
+Processo 3/4
+Processo 3/4
+\end{verbatim}
+Isto ocorre por uma situação de \emph{condição de corrida} (\emph{race condition}) entre os {\it threads}. As variáveis \verb+tid+ e \verb+nt+ foram declaradas antes da região paralela e, desta forma, são \emph{variáveis compartilhadas} (\emph{shared variables}) entre todos os {\it threads} na região paralela. Os locais na memória em que estas as variáveis estão alocadas é o mesmo para todos os {\it threads}.
+
+A condição de corrida ocorre na linha 11. No caso da saída acima, as instâncias de processamento 1 e 3 entraram em uma condição de corrida no registro da variável \verb+tid+.
+
+\begin{obs}
+  Devemos estar sempre atentos a uma possível condição de corrida. Este é um erro comum no desenvolvimento de códigos em paralelo.
+\end{obs}
+
+Para evitarmos a condição de corrida, precisamos tornar a variável \verb+tid+ privada na região paralela. I.e., cada {\it thread} precisa ter uma variável \verb+tid+ privada. Podemos fazer isso alterando a linha 9 do código para
+\begin{verbatim}
+#pragma omp parallel private(tid)
+\end{verbatim}
+Com essa alteração, a saída terá o formato esperado, como por exemplo
+\begin{verbatim}
+Processo 0/4
+Processo 3/4
+Processo 2/4
+Processo 1/4
+\end{verbatim}
+Faça a alteração e verifique!
+
+\begin{obs}
+  A diretiva \verb+#pragma omp parallel+ também aceita as instruções:
+  \begin{itemize}
+  \item \verb+default(private|shared|none)+: o padrão é \verb+shared+;
+  \item \verb+shared(var1, var2, ..., varn)+: para especificar explicitamente as variáveis que devem ser compartilhadas. 
+  \end{itemize}
+\end{obs}
+
+\emconstrucao
+
+\subsection*{Exercícios Resolvidos}
+
+\begin{exeresol}
+  Considere o seguinte código
+  \begin{lstlisting}
+    int tid = 10;
+    #pragma omp parallel private(tid) {
+      tid = omp_get_thread_num();
+    }
+    printf("%d\n", tid);
+  \end{lstlisting}
+  Qual o valor impresso?
+\end{exeresol}
+\begin{resol}
+  Embora podería-se esperar que o valor impresso seria o $0$ (o \verb+id+ do {\it master thread}), isso não necessariamente ocorre. O valor impresso será $10$, aquele que foi alocado na variável \verb+tid+ antes da região paralela ser inicializada.
+\end{resol}
+
+\emconstrucao
+
+\subsection*{Exercícios}
+
+\emconstrucao
