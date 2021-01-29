@@ -103,7 +103,7 @@ omp_get_num_threads();
   Escreva um código MP para computar o produto de uma matriz $n\times m$ com uma matriz de $m\times n$ elementos, com $n \geq m$. Inicialize todos os elementos com números randômicos em ponto flutuante. Ainda, o código deve ser escrito para um número arbitrário $m>1$ de instâncias de processamento. Por fim, compare o desempenho do código MP com uma versão serial do código.
 \end{exer}
 
-\section{Comandos básicos}\label{cap_mp_sec_cb}
+\section{Construtores básicos}\label{cap_mp_sec_cb}
 
 \subsection{Variáveis privadas e variáveis compartilhadas}
 
@@ -201,21 +201,62 @@ ao construtor que inicializa a região paralela. Verifique o seguinte código!
   A instrução de redução pode ser usada com qualquer operação binária aritmética (\verb=+=, \verb=-=, \verb=/=, \verb=*=), lógica (\verb=&=, \verb=|=) ou procedimentos intrínsecos (\verb=max=, \verb=min=).
 \end{obs}
 
+\subsection{Sincronização}
 
+A sincronização dos {\it threads} deve ser evitada sempre que possível, devido a perda de performance em códigos paralelos. Atenção, ela ocorre implicitamente no término da região paralela!
 
+\subsubsection{Barreira}
 
+No seguinte código, o {\it thread} 1 é atrasado em 1 segundo, de forma que ele é o último a imprimir. Verifique!
 
+\lstinputlisting[title={Código: sinc0.cc}]{cap_mp/dados/cc_sinc/sinc0.cc}
 
+Agora, podemos forçar a sincronização dos {\it threads} usando o construtor
+\begin{verbatim}
+#pragma omp barrier
+\end{verbatim}
+em uma determinada linha do código. Por exemplo, podemos fazer todos os {\it threads} esperarem pelo {\it thread} 1 no código acima. Veja a seguir o código modificado. Teste!
 
+\lstinputlisting[title={Código: sinc1.cc}]{cap_mp/dados/cc_sinc/sinc1.cc}
 
+\subsubsection{Seção}
 
+O construtor \verb+sections+ pode ser usado para determinar seções do código que deve ser executada de forma serial apenas uma vez por um único {\it thread}. Verifique o seguinte código.
 
+\lstinputlisting[title={Código: secao.cc}]{cap_mp/dados/cc_secao/secao0.cc}
 
-\emconstrucao
+No código acima, o primeiro {\it thread} que alcançar a linha 19 é o único a executar a seção 1 e, o primeiro que alcançar a linha 25 é o único a executar a seção 2.
+
+Observe que ocorre a sincronização implícita de todos os {\it threads} ao final do escopo \verb+sections+. Isso pode ser evitado usando a cláusula \verb+nowait+, i.e. alterando a linha 16 para
+\begin{verbatim}
+# pragma omp sections nowait
+\end{verbatim}
+Teste!
+
+\begin{obs}
+  A clásula \verb+nowait+ também pode ser usado com o construtor \verb+for+, i.e.
+\begin{verbatim}
+#pragma omp for nowait
+\end{verbatim}
+\end{obs}
+
+Para uma região contendo apenas uma seção, pode-se usar o construtor
+\begin{verbatim}
+#pragma omp single
+\end{verbatim}
+Isto é equivalente a escrever
+\begin{verbatim}
+#pragma omp sections
+  #pragma omp section
+\end{verbatim}
 
 \subsection*{Exercícios Resolvidos}
 
-\begin{exeresol}
+\emconstrucao
+
+\subsection*{Exercícios}
+
+\begin{exer}
   Considere o seguinte código
   \begin{lstlisting}
     int tid = 10;
@@ -226,13 +267,6 @@ ao construtor que inicializa a região paralela. Verifique o seguinte código!
     printf("%d\n", tid);
   \end{lstlisting}
   Qual o valor impresso?
-\end{exeresol}
-\begin{resol}
-  Embora podería-se esperar que o valor impresso seria o $0$ (o \verb+id+ do {\it master thread}), isso não necessariamente ocorre. O valor impresso será $10$, aquele que foi alocado na variável \verb+tid+ antes da região paralela ser inicializada.
-\end{resol}
-
-\emconstrucao
-
-\subsection*{Exercícios}
+\end{exer}
 
 \emconstrucao
