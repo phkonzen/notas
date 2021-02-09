@@ -317,3 +317,32 @@ $ g++ -fopenmp prodesc.cc -lgsl -lgslcblas
 \begin{exer}
   Escreva um código MP para computar o produto de duas matrizes $n\times n$ de pontos flutuantes randômicos. Faça o código de forma a suportar uma arquitetura com $n_p \geq 1$ {\it threads}.
 \end{exer}
+
+\section{Métodos Diretos para Sistemas Lineares com Estruturas Especiais}
+
+Nesta seção, vamos discutir sobre alguns algoritmos paralelos de métodos numéricos para a resolução de sistemas lineares com matriz triangular ou com matriz tridiagonal.
+
+\subsection{Substituição Direta para Matrizes Triangulares}
+
+Nesta seção vamos estudar um algoritmo paralelo do \emph{Método de Substituição Direta para a resolução de sistemas lineares com matriz triangular}. Seja $A$ uma matriz triangular inferior quadrada de dimensões $n\times n$, i.e. $A=[a_{i,j}]_{i,j=0}^{n-1}$ com $a_{i,j}=0$ para $i<j$. Ainda, vamos considerar que $A$ é invertível.
+
+Neste caso, um sistema linear $Ax = b$ pode ser escrito na seguinte forma algébrica
+\begin{gather}
+  a_{1,1}x_1 = b_1\\
+             \vdots \\
+  a_{i,1}x_1 + a_{i,2}x_2 + \cdots + a_{i,i-1}x_{i-1} + a_{i,i}x_{i} = b_i \\
+             \vdots\\
+  a_{n,1}x_1 + a_{n,2}x_2 + \cdots + a_{i,i}x_i + \cdots + a_{n,n}x_{n} = b_n               
+\end{gather}
+O algoritmo serial do método da substituição direta resolve o sistema começando pelo cálculo de $x_1$ na primeira equação, então o cálculo de $x_2$ pela segunda equação e assim por diante até o cálculo de $x_n$ pela última equação. Verifique!
+
+Aqui, vamos considerar uma arquitetura MP com $n_p \geq 1$ instâncias de processamento. Para cada instância de processamento $1 \leq p_{id} < n_p-1$ vamos alocar as seguintes equações do sistema
+\begin{gather}
+  i_{ini} = p_{id}\left\lfloor\frac{n}{n_p}\right\rfloor\\
+  i_{fim} = (p_{id}+1)\left\lfloor\frac{n}{n_p}\right\rfloor-1 
+\end{gather}
+e, para $p_{id}=n_{p}-1$ vamos alocar as últimas equações, i.e.
+\begin{gather}
+  i_{ini} = p_{id}\left\lfloor\frac{n}{n_p}\right\rfloor\\
+  i_{fim} = n-1
+\end{gather}
