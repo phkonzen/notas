@@ -65,11 +65,7 @@ int main(int argc, char *argv[]) {
 
   t = time(NULL)-t;
 
-  double s = 0;
-  for (int i=0; i<n; i++)
-    s += gsl_vector_get(x,i);
-  
-  printf("feito: %ld s %f\n", t, s);
+  printf("feito. %ld s\n", t);
 
 
   gsl_spmatrix_free(a);

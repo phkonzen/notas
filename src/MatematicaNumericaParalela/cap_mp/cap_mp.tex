@@ -318,13 +318,9 @@ $ g++ -fopenmp prodesc.cc -lgsl -lgslcblas
   Escreva um código MP para computar o produto de duas matrizes $n\times n$ de pontos flutuantes randômicos. Faça o código de forma a suportar uma arquitetura com $n_p \geq 1$ {\it threads}.
 \end{exer}
 
-\section{Métodos Diretos para Sistemas Lineares com Estruturas Especiais}
+\section{Sistema Linear Triangular}
 
-Nesta seção, vamos discutir sobre alguns algoritmos paralelos de métodos numéricos para a resolução de sistemas lineares com matriz triangular ou com matriz tridiagonal.
-
-\subsection{Substituição Direta para Matrizes Triangulares}
-
-Nesta seção vamos estudar um algoritmo paralelo do \emph{Método de Substituição Direta para a resolução de sistemas lineares com matriz triangular}. Seja $A$ uma matriz triangular inferior quadrada de dimensões $n\times n$, i.e. $A=[a_{i,j}]_{i,j=0}^{n-1}$ com $a_{i,j}=0$ para $i<j$. Ainda, vamos considerar que $A$ é invertível.
+Nesta seção, vamos discutir sobre a uma implementação em paralelo do método da substituição para a resolução de sistemas triangulares. Primeiramente, vamos considerar $A$ uma matriz triangular inferior quadrada de dimensões $n\times n$, i.e. $A=[a_{i,j}]_{i,j=0}^{n-1}$ com $a_{i,j}=0$ para $i<j$. Ainda, vamos considerar que $A$ é invertível.
 
 Neste caso, um sistema linear $Ax = b$ pode ser escrito na seguinte forma algébrica
 \begin{gather}
@@ -334,15 +330,139 @@ Neste caso, um sistema linear $Ax = b$ pode ser escrito na seguinte forma algéb
              \vdots\\
   a_{n,1}x_1 + a_{n,2}x_2 + \cdots + a_{i,i}x_i + \cdots + a_{n,n}x_{n} = b_n               
 \end{gather}
-O algoritmo serial do método da substituição direta resolve o sistema começando pelo cálculo de $x_1$ na primeira equação, então o cálculo de $x_2$ pela segunda equação e assim por diante até o cálculo de $x_n$ pela última equação. Verifique!
 
-Aqui, vamos considerar uma arquitetura MP com $n_p \geq 1$ instâncias de processamento. Para cada instância de processamento $1 \leq p_{id} < n_p-1$ vamos alocar as seguintes equações do sistema
+O algoritmo serial do método da substituição (para frente) resolve o sistema começando pelo cálculo de $x_1$ na primeira equação, então o cálculo de $x_2$ pela segunda equação e assim por diante até o cálculo de $x_n$ pela última equação. Segue o pseudocódigo serial.
+\begin{enumerate}
+\item Para $i = 0, \dotsc, n-1$:
+  \begin{enumerate}
+  \item Para $j = 0, \dotsc, i-1$:
+    \begin{enumerate}
+    \item $b_i = b_i - A_{i,j}x_j$
+    \end{enumerate}
+  \item $\displaystyle x_i = \frac{b_i}{A_{i,i}}$
+  \end{enumerate}
+\end{enumerate}
+Implemente!
+
+Para o algoritmo paralelo, vamos considerar uma arquitetura MP com $n_p \geq 1$ instâncias de processamento. Para cada instância de processamento $1 \leq p_{id} < n_p-1$ vamos alocar as seguintes colunas da matriz $A$
 \begin{gather}
-  i_{ini} = p_{id}\left\lfloor\frac{n}{n_p}\right\rfloor\\
-  i_{fim} = (p_{id}+1)\left\lfloor\frac{n}{n_p}\right\rfloor-1 
+  t_{ini} = p_{id}\left\lfloor\frac{n}{n_p}\right\rfloor\\
+  t_{fim} = (p_{id}+1)\left\lfloor\frac{n}{n_p}\right\rfloor-1 
 \end{gather}
-e, para $p_{id}=n_{p}-1$ vamos alocar as últimas equações, i.e.
+e, para $p_{id}=n_{p}-1$ vamos alocar as últimas colunas, i.e.
 \begin{gather}
-  i_{ini} = p_{id}\left\lfloor\frac{n}{n_p}\right\rfloor\\
-  i_{fim} = n-1
+  t_{ini} = p_{id}\left\lfloor\frac{n}{n_p}\right\rfloor\\
+  t_{fim} = n-1
 \end{gather}
+Segue o pseudocódigo em paralelo.
+\begin{enumerate}
+\item Para $i = 0,\dotsc,n-1$
+  \begin{enumerate}
+  \item $s = 0$
+  \item Região paralela
+    \begin{enumerate}
+    \item Para $j\in\{t_{ini},\dotsc,t_{fim}\}\land\{0,\dotsc,i-1\}$
+      \begin{enumerate}
+      \item $s = s + a_{i,j}x_{j}$
+      \end{enumerate}
+    \end{enumerate}
+  \item $\displaystyle x_i = \frac{b_i - s}{a_{i,i}}$
+  \end{enumerate}
+\end{enumerate}
+
+O código MP C/C++ que apresentaremos a seguir, faz uso do construtor \verb+threadprivate+
+\begin{verbatim}
+#pragma omp threadprivate(list)
+\end{verbatim}
+Este construtor permite que a lista de variáveis (estáticas) \verb+list+ seja privada para cada {\it thread} e seja compartilhada entre as regiões paralelas. Por exemplo:
+\begin{verbatim}
+x = 0
+#pragma omp parallel private(x)
+  x = 1
+#pragma omp parallel private(x)
+  x vale 0
+\end{verbatim}
+Agora, com o construtor \verb+threadprivate+:
+\begin{verbatim}
+static x = 0
+#pragma omp threadprivate(x)
+#pragma omp parallel
+  x = 1
+#pragma omp parallel private(x)
+  x vale 1
+\end{verbatim}
+
+Ainda, apenas para efeito de exemplo, vamos considerar que $a_{i,j} = (-1)^{i+j}(i+j)/(ij+1)$ para $i<j$, $a_{i,i} = 2[(i-n/2)^2+1]/n$ e $b_i = (-1)^i/(i+1)$ para $i=0,\dotsc,n-1$.
+
+Segue o código paralelo para a resolução direta do sistema triangular inferior. Verifique!
+
+\lstinputlisting[title={Código: sistria1dcol.cc}]{cap_mp/dados/cc_sistria/sistria1dcol.cc}
+
+\subsection*{Exercícios resolvidos}
+
+\begin{exeresol}\label{exeresol:mp_sistria_1drow}
+  Seja $Ax = b$ um sistema triangular inferior de dimensões $n\times n$. O seguinte pseudocódigo paralelo é uma alternativa ao apresentado acima. Por que este pseudocódigo é mais lento que o anterior?
+  \begin{enumerate}
+  \item Região paralela
+    \begin{enumerate}
+    \item Para $j = 0,\dotsc,n-1$
+      \begin{enumerate}
+      \item Se $j\in\{t_{ini},\dotsc,t_{fim}\}$
+        \begin{enumerate}
+        \item $\displaystyle x_j = \frac{b_j}{a_{j,j}}$
+        \end{enumerate}
+      \item Para $i\in\{t_{ini},\dotsc,t_{fim}\}\land\{j+1,\dotsc,n-1\}$
+        \begin{enumerate}
+        \item $b_i = b_i - a_{i,j}x_j$
+        \end{enumerate}
+      \end{enumerate}
+    \end{enumerate}
+  \end{enumerate}
+\end{exeresol}
+\begin{resol}
+  Este código tem um número de operações semelhante ao anterior, seu desempenho é afetado pelo chamado compartilhamento falso ({\it false sharing}). Este é um fenômeno relacionado ao uso ineficiente da memória {\it cache} de cada {\it thread}. O último laço deste pseudocódigo faz sucessivas atualizações do vetor $b$, o que causa sucessivos recarregamentos de partes do vetor $b$ da memória RAM para a memória {\it cache} de cada um dos {\it threads}. Verifique!
+\end{resol}
+
+\begin{exeresol}
+  Seja $A$ uma matriz triangular inferior e invertível de dimensões $n\times n$. Escreva um pseudocódigo MP para calcular a matriz inversa $A^{-1}$ usando o método de substituição direta.
+\end{exeresol}
+\begin{resol}
+  Vamos denotar $A=[a_{i,j}]_{i,j=1}^{n-1}$ e $A^{-1} = [x_{i,j}]_{i,j=1}^{n-1}$. Note que $x's$ são as incógnitas. Por definição, $AA^{-1}=I$, logo
+  \begin{gather}
+    a_{1,1}x_{1,k} = \delta_{1,k}\\
+    \cdots\\
+    a_{i,1}x_{1,k}+\cdots+a_{i,i-1}x_{i-1,k}+a_{i,i}x_{i,k}=\delta_{i,k}\\
+    \cdots\\
+    a_{n-1,1}x_{1,k}+\cdots+a_{n-1,n-1}x_{n-1,k}=\delta_{n-1,k}
+  \end{gather}
+  onde, $k=0,\dotsc,n-1$ e $\delta_{i,j}$ denota o Delta de Kronecker. Ou seja, o cálculo de $A^{-1}$ pode ser feito pela resolução de $n$ sistemas triangulares inferiores tendo $A$ como matriz de seus coeficientes.
+
+  Para construirmos um pseudocódigo MP, podemos distribuir os sistemas lineares a entre os {\it threads} disponíveis. Então, cada {\it thread} resolve em serial seus sistemas. Segue o pseudocódigo, sendo $x_k=(x_{1,k},\dotsc,x_{n-1,k})$ e $b_k = (\delta_{1,k},\dotsc,\delta_{n-1,k})$.
+  \begin{enumerate}
+  \item Região paralela
+    \begin{enumerate}
+    \item Para $k\in\{t_{ini},\dotsc,t_{fim}\}$
+      \begin{enumerate}
+      \item resolve $Ax_k=b_k$
+      \end{enumerate}
+    \end{enumerate}
+  \end{enumerate}
+\end{resol}
+
+\subsection*{Exercícios}
+
+\begin{exer}
+  Implemente um código MP do pseudocódigo discutido no ER \ref{exeresol:mp_sistria_1drow}. Compare o tempo computacional com o do código \verb+sistria1dcol.cc+.
+\end{exer}
+
+\begin{exer}
+  Implemente um código MP para computar a inversa de uma matriz triangular inferior de dimensões $n\times n$.
+\end{exer}
+
+\begin{exer}
+  Implemente um código MP para computar a solução de um sistema linear triangular superior de dimensões $n\times n$.
+\end{exer}
+
+\begin{exer}
+  Implemente um código MP para computar a inversa de uma matriz triangular superior de dimensões $n\times n$.
+\end{exer}
