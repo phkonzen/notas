@@ -466,3 +466,102 @@ Segue o código paralelo para a resolução direta do sistema triangular inferio
 \begin{exer}
   Implemente um código MP para computar a inversa de uma matriz triangular superior de dimensões $n\times n$.
 \end{exer}
+
+\section{Decomposição LU}
+
+Nesta seção, vamos discutir sobre a paralelização da decomposição LU para matrizes. A decomposição $LU$ de uma matriz $A$ com dimensões $n\times n$ é
+\begin{equation}
+  A = LU
+\end{equation}
+onde $L$ é uma matriz triangular inferior e $U$ é uma matriz triangular superior, ambas com dimensões $n\times n$.
+
+Para fixar as ideais, vamos denotar $A = [a_{i,j}]_{i,j=0}^{n-1}$, $L = [l_{i,j}]_{i,j=0}^{n-1}$ sendo $l_{i,i}=1$ e $l_{i,j}=0$ para $i>j$, e $U = [u_{i,j}]_{i,j=0}^n$ sendo $u_{i,j}=0$ para $i<j$. O pseudoalgoritmo serial para computar a decomposição $LU$ é
+\begin{enumerate}
+\item U = A, L = I
+\item Para $k = 0,\dotsc, n-2$
+  \begin{enumerate}
+  \item Para $i = k+1,\dotsc,n-1$
+    \begin{enumerate}
+    \item $l_{i,k} = u_{i,k}/u_{k,k}$
+    \item Para $j = k,\dotsc, n-1$
+      \begin{enumerate}
+      \item $u_{i,j} = u_{i,j} - l_{i,k}u_{k,j}$
+      \end{enumerate}
+    \end{enumerate}
+  \end{enumerate}
+\end{enumerate}
+
+A forma mais fácil de paralelizar este algoritmo em uma arquitetura MP é paralelizando um de seus laços (itens 2., 2.(a) ou 2.(a)ii.). O laço do item 2. não é paralelizável, pois a iteração seguinte depende do resultado da iteração imediatamente anterior. Agora, os dois laços seguintes são paralelizáveis. Desta forma, o mais eficiente é paralelizarmos o segundo laço 2.(a).
+
+O seguinte código é uma versão paralela da decomposição LU. A matriz $A$ é inicializada como uma matriz simétrica de elementos randômicos (linhas 19-41), sendo que a decomposição é computada nas linhas 43-61.
+
+\lstinputlisting[title={Código: parallelLU.cc}]{cap_mp/dados/cc_lu/parallelLU.cc}
+
+\subsection*{Exercícios Resolvidos}
+
+\begin{exeresol}\label{exeresol:AxbLU}
+  Faça um código MP para computar a solução de um sistema linear $Ax=b$ usando a decomposição LU. Assuma $A$ uma matriz simétrica $n\times n$ de elementos randômicos, assim como os elementos do vetor $b$.
+\end{exeresol}
+\begin{resol}
+  A decomposição LU da matriz $A$ nos fornece as matrizes $L$ (matriz triangular inferior) e $U$ (matriz triangular superior), com
+  \begin{equation}
+    A = LU
+  \end{equation}
+  Logo, temos
+  \begin{gather}
+    Ax = b\\
+    \Rightarrow (LU)x = b\\
+    \Rightarrow L(Ux)=b
+  \end{gather}
+  Denotando $Ux = y$, temos que $y$ é solução do sistema triangular inferior
+  \begin{equation}
+    Ly = b
+  \end{equation}
+  e, por conseguinte, $x$ é solução do sistema triangular superior
+  \begin{equation}
+    Ux = y.
+  \end{equation}
+
+  Em síntese, o sistema $Ax=b$ pode ser resolvido com o seguinte pseudocódigo:
+  \begin{enumerate}
+  \item Computar a decomposição LU, A=LU.
+  \item Resolver $Ly = b$.
+  \item Resolver $Ux = b$.
+  \end{enumerate}
+  Cada passo acima pode ser paralelizado. O código MP fica de exercício, veja E \ref{exer:AxbLU}.  
+\end{resol}
+
+\begin{exeresol}\label{exeresol:parallelLU2}
+  Considere a decomposição LU de uma matriz $A$ $n\times n$. Em muitas aplicações, não há necessidade de guardar a matriz $A$ em memória após a decomposição. Além disso, fixando-se que a diagonal da matriz $L$ tem todos os elementos iguais a 1, podemos alocar seus elementos não nulos na parte triangular inferior (abaixo da diagonal) da própria matriz $A$. E, a matriz $U$ pode ser alocada na parte triangular superior da matriz $A$. Faça um código MP para computar a decomposição LU de uma matriz $A$, alocando o resultado na própria matriz $A$.
+\end{exeresol}
+\begin{resol}
+  O seguinte código faz a implementação pedida. Neste código, é necessário alocar apenas a matriz $A$, sem necessidade de locar as matrizes $L$ e $U$. Da linha 17 à 39, apenas é gerada a matriz randômica $A$. A decomposição é computada da linha 41 a 54.
+  
+  \lstinputlisting[title={Código: parallelLU2.cc}]{cap_mp/dados/cc_lu/parallelLU2.cc}
+
+  Este algoritmo demanda substancialmente menos memória computacional que o código \verb+parallelLU.cc+ visto acima. Por outro lado, ele é substancialmente mais lento, podendo demandar até o dobro de tempo. Verifique!
+
+  O aumento no tempo computacional se deve ao mau uso da memória {\it cache} dos processadores. A leitura de um elemento da matriz, aloca no {\it cache} uma sequência de elementos próximos na mesma linha. Ao escrever em um destes elementos, a alocação do {\it cache} é desperdiçada, forçando o {\it cache} a ser atualizado. Note que o código \verb+parallelLU.cc+ requer menos atualizações do {\it cache} que o código \verb+parallelLU2.cc+.
+\end{resol}
+
+\subsection*{Exercícios}
+
+\begin{exer}\label{exer:AxbLU}
+  Implemente o código MP discutido no ER \ref{exeresol:AxbLU}.
+\end{exer}
+
+\begin{exer}
+  Implemente um código MP para computar a inversa de uma matriz simétrica de elementos randômicos usando decomposição LU.
+\end{exer}
+
+\begin{exer}
+  Considere o pseudoalgoritmo serial da composição LU apresentado acima. Por que é melhor paralelizar o laço 2.(a) do que o laço o 2.(a)ii.?
+\end{exer}
+
+\begin{exer}
+  Use o código MP discutido no ER \ref{exeresol:parallelLU2} para resolver um sistema $Ax=b$ de $n$ equações e $n$ incógnitas. Assuma que a matriz $A$ seja simétrica.
+\end{exer}
+
+\begin{exer}
+  Um algoritmo paralelo mais eficiente para computar a decomposição LU pode ser obtido usando-se a decomposição LU por blocos. Veja o vídeo \href{https://youtu.be/E8aBJsC0bY8}{https://youtu.be/E8aBJsC0bY8} e implemente um código MP para computar a decomposição LU por blocos.
+\end{exer}
