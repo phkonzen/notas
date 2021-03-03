@@ -565,3 +565,202 @@ O seguinte código é uma versão paralela da decomposição LU. A matriz $A$ é
 \begin{exer}
   Um algoritmo paralelo mais eficiente para computar a decomposição LU pode ser obtido usando-se a decomposição LU por blocos. Veja o vídeo \href{https://youtu.be/E8aBJsC0bY8}{https://youtu.be/E8aBJsC0bY8} e implemente um código MP para computar a decomposição LU por blocos.
 \end{exer}
+
+\section{Métodos iterativos para Sistemas Lineares}\label{cap_mp_sec_mitsislin}
+
+Nesta seção, vamos discutir sobre a paralelização MP de alguns métodos iterativos para sistemas lineares
+\begin{equation}
+  Ixê = b
+\end{equation}
+com $A = [a_{i,j}]_{i,j=0}^{n-1}$, $x = (x_i)_{i=0}^{n-1}$ e $b=(b_i)_{i=0}^{n-1}$.
+
+\subsection{Método de Jacobi}\label{subsec:mp_mitsislin_Jacobi}
+
+Nós podemos escrever a $i$-ésima equação do sistema $Ax = b$ como
+\begin{equation}
+  \sum_{j=1}^n a_{i,j}x_j = b_i.
+\end{equation}
+Isolando $x_{i}$, obtemos
+\begin{equation}\label{eq:mp_iterJacobi}
+  x_i = -\frac{1}{a_{i,i}}\left[\sum_{j\neq i}a_{i,j}x_j - b_i\right].
+\end{equation}
+
+Nesta última equação, temos que $x_i$ pode ser diretamente calculado se todos os elementos $x_j$, $j\neq i$, forem conhecidos. Isso motiva o chamado método de Jacobi que é dado pela seguinte iteração
+\begin{gather}
+  x_i(0) = \text{aprox. inicial},\\
+  x_i(t+1) = -\frac{1}{a_{i,i}}\left[\sum_{j\neq i}a_{i,j}x_j(t) - b_i\right],\label{eq:mp_jacobi_xi}
+\end{gather}
+para cada $i=0,1,\dotsc,n-1$ e $t=0,1,2,\ldots$. O número máximo de iterações $t_{\text{max}}$ e o critério de parada podem ser escolhidos de forma adequada.
+
+O pseudocódigo serial para o método de Jacobi pode ser escrito como segue
+\begin{enumerate}
+\item Alocar a aproximação inicial $x^0$.
+\item Para $t=0,1,2,\cdots,t_{\text{max}}$:
+  \begin{enumerate}
+  \item Para $i=0,1,2,\cdots,n$:
+    \begin{enumerate}
+    \item $\displaystyle x_i = -\frac{1}{a_{i,i}}\left[\sum_{j\neq i}a_{i,j}x^0_j - b_i\right]$.
+    \end{enumerate}
+  \item Verificar o critério de parada.
+  \item $x0 = x$.
+  \end{enumerate}
+\end{enumerate}
+
+A paralelização MP no método de Jacobi pode ser feita de forma direta e eficaz pela distribuição do laço 2.(a) do pseudocódigo acima. O seguinte código é uma implementação MP do método de Jacobi. Os vetores $b$ e $x0$ são inicializados com elementos randômicos $(0, 1)$. A matriz $A$ é inicializada como uma matriz estritamente diagonal dominante\footnote{O método de Jacobi é convergente para matriz estritamente diagonal dominante.} com elementos randômicos $(-1, 1)$. O critério de parada é
+\begin{equation}
+  \|x-x^0\|_2 < \text{tol},
+\end{equation}
+onde $\text{tol}$ é a tolerância.
+
+\lstinputlisting[title={Código: pJacobi.cc}]{cap_mp/dados/cc_Jacobi/pJacobi.cc}
+
+\subsection{Método {\it tipo} Gauss-Seidel}\label{subsec:mp_mitsislin_GS}
+
+No algoritmo serial, observamos que ao calcularmos $x_i$ pela iteração de Jacobi\eqref{eq:mp_iterJacobi}, as incógnitas $x_j$, $j<i$, já foram atualizadas. Isto motivo o método de Gauss-Seidel, cujo algoritmo é descrito no seguinte pseudocódigo:
+\begin{enumerate}
+\item Alocar a aproximação inicial $x^0$.
+\item Para $t=0,1,2,\cdots,t_{\text{max}}$:
+  \begin{enumerate}
+  \item Para $i=0,1,2,\cdots,n$:
+    \begin{enumerate}
+    \item $\displaystyle x_i = -\frac{1}{a_{i,i}}\left[\sum_{j<i}a_{i,j}x_j + \sum_{j>i}a_{i,j}x^0_j - b_i\right]$.
+    \end{enumerate}
+  \item Verificar o critério de parada.
+  \item $x0 = x$.
+  \end{enumerate}
+\end{enumerate}
+
+Embora este método seja normalmente muito mais rápido que o método de Jacobi, ele não é paralelizável. Isto se deve ao fato de que o cálculo da incógnita $x_i$ depende dos cálculos precedentes das incógnitas $x_j$, $j<i$.
+
+No entanto, a paralelização do método de Gauss-Seidel pode ser viável no caso de matrizes esparsas. Isto ocorre quando o acoplamento entre as equações não é total, podendo-se reagrupar as equações em blocos com base nos seus acoplamentos. Com isso, os blocos podem ser distribuídos entre as instâncias de processamento e, em cada uma, o método de Gauss-Seidel é aplicado de forma serial.
+
+Uma alternativa baseada no Método de Gauss-Seidel, é utilizar o dado atualizado $x_j$ loco que possível, independentemente da ordem a cada iteração. A iteração do tipo Gauss-Seidel pode-se ser escrita da seguinte forma
+\begin{equation}
+  x_i = -\frac{1}{a_{i,i}}\left[\sum_{\hat{j}\neq i}a_{i,\hat{j}}x_{\hat{j}} + \sum_{j\neq i}a_{i,j}x^0_j - b_i\right],
+\end{equation}
+onde arbitrariamente $\hat{j}$ correspondem aos índices para os quais $x_{\hat{j}}$ já tenham sido atualizados na iteração corrente e $j$ corresponde aos índices ainda não atualizados. O pseudocódigo MP deste método pode ser descrito como segue:
+\begin{enumerate}
+\item Alocar a aproximação inicial $x$.
+\item Para $t=0,1,2,\cdots,t_{\text{max}}$:
+  \begin{enumerate}
+  \item $x^0 = x$.
+  \item {\it distribuição de laço em paralelo}:
+    \begin{enumerate}
+    \item Para $i=0,1,2,\cdots,n$ :
+    \begin{enumerate}
+    \item $\displaystyle x_i = -\frac{1}{a_{i,i}}\left[\sum_{j\neq i}a_{i,j}x_j - b_i\right]$.
+    \end{enumerate}
+  \end{enumerate}
+  \item Verificar o critério de parada.
+  \end{enumerate}
+\end{enumerate}
+Este método tipo Gauss-Seidel converge mais rápido que o método de Jacobi em muitos casos. Veja \cite[p.~151--153]{Bertsekas2015a}, para alguns resultados sobre convergência.
+
+
+A implementação MP do pseudocódigo acima é apresentada no código abaixo. Os elementos dos vetores $b$, $x^0$ e da matriz $A$ são inicializados da mesma forma que no código \verb+pJacobi.cc+ acima.
+
+\lstinputlisting[title={Código: pGSL.cc}]{cap_mp/dados/cc_GS/pGSL.cc}
+
+\subsection{Método do Gradiente Conjugado}
+
+O Método do Gradiente Conjugado pode ser utilizado na resolução de sistemas lineares $Ax = b$, onde $A$ é uma matriz simétrica e positiva definida. No caso de sistemas em gerais, o método pode ser utilizado para resolver o sistema equivalente $A'Ax = A'b$, onde $A$ é uma matriz inversível, com $A'$ denotando a transposta de $A$.
+
+O pseudocódigo deste método é apresentado como segue:
+\begin{enumerate}
+\item Alocar a aproximação inicial $x$.
+\item Calcular o resíduo $r = Ax - b$.
+\item Alocar a direção $d = r$.
+\item Para $t=0,1,\cdots,t_{\text{max}}$:
+  \begin{enumerate}
+  \item $\displaystyle \alpha = -\frac{r\cdot d}{d\cdot Ad}$.
+  \item $x = x + \alpha d$.
+  \item $r = Ax - b$.
+  \item $\displaystyle \beta = \frac{r\cdot Ad}{d\cdot Ad}$.
+  \item $d = -r + \beta d$
+  \end{enumerate}
+\end{enumerate}
+
+Uma versão MP deste método pode ser implementada pela distribuição em paralelo de cada uma das operações de produto escalar, multiplicação matriz-vetor e soma vetor-vetor. O seguinte código é uma implementação MP do Método do Gradiente Conjugado. Os elementos do vetor $b$ e da matriz $A$ são inicializados de forma randômica e é garantida que matriz é simétrica positiva definida.
+
+\lstinputlisting[title={Código: pGC.cc}]{cap_mp/dados/cc_GC/pGC.cc}
+
+\subsection*{Exercícios Resolvidos}
+
+\begin{exeresol}\label{exeresol:mp_mitsislin_inv}
+  Faça uma implementação MP para computar a inversa de uma matriz $A$ usando o Método de Gauss-Seidel. Assuma que $A$ seja uma matriz estritamente diagonal dominante de dimensões $n\times n$ ($n$ grande).
+\end{exeresol}
+\begin{resol}
+  A inversa da matriz $A$ é a matriz $B$ de dimensões $n\times n$ tal que
+  \begin{equation}
+    AB = I
+  \end{equation}
+  Denotando por $b_k$, $k=0,1,\dotsc,n$, as colunas da matriz $B$, temos que o problema de calcular $B$ é equivalente a resolver os seguintes $n$ sistemas lineares
+  \begin{equation}
+    Ab_k = i_k,\quad,k=0,1,\dotsc,n,
+  \end{equation}
+  onde $i_k$ é a j-ésima coluna da matriz identidade $I$. Podemos usar o método de Gauss-Seidel para computar a solução de cada um destes sistemas lineares. Embora o método não seja paralelizável, os sistemas são independentes um dos outros e podem ser computados em paralelo. O pseudocódigo pode ser escrito como segue:
+  \begin{enumerate}
+  \item Alocar a matriz A.
+  \item {\it (início da região paralela)}
+    \begin{enumerate}
+    \item Para $k=0,1,\dotsc,n$ {\it (laço em paralelo)}:
+      \begin{enumerate}
+      \item Alocar $i_k$.
+      \item Inicializar $b_k$.
+      \item Resolver pelo Método de Gauss-Seidel
+        \begin{equation}
+          Ab_k = i_k
+        \end{equation}
+      \end{enumerate}
+    \end{enumerate}
+  \end{enumerate}
+  A implementação fica como Exercício E \ref{exer:mp_mitsislin_inv}.
+\end{resol}
+
+\begin{exeresol}\label{exeresol:mp_mitsislin_JOR}
+  Faça uma implementação MP do método de sobre-relaxação de Jacobi (método JOR) para computar a solução de um sistema linear $Ax = b$, com $A$ matriz estritamente diagonal dominante de dimensões $n\times n$ ($n$ grande).
+\end{exeresol}
+\begin{resol}
+  O método JOR é uma variante do método de Jacobi. A iteração JOR é
+  \begin{gather}
+    x_i(0) = \text{aprox. inicial},\\
+    x_i(t+1) = (1-\gamma)x_i(t) -\frac{\gamma}{a_{i,i}}\left[\sum_{j\neq i}a_{i,j}x_j(t) - b_i\right],
+  \end{gather}
+  para cada $i=0,1,\dotsc,n-1$ e $t=0,1,2,\ldots$, com $0<\gamma<1$. Note que se $\gamma=1$, então temos o Método de Jacobi.
+
+  A implementação MP do Método JOR pode ser feita de forma análoga a do Método de Jacobi (veja o código \verb+pJacobi.cc+ na Subseção \ref{subsec:mp_mitsislin_Jacobi}). A implementação fica como exercício E \ref{exer:mp_mitsislin_JOR}.
+\end{resol}
+
+\subsection*{Exercícios}
+
+\begin{exer}\label{exer:mp_mitsislin_JOR}
+  Complete o ER \ref{exeresol:mp_mitsislin_JOR}.
+\end{exer}
+
+\begin{exer}\label{exer:mp_mitsislin_inv}
+  Complete o ER \ref{exeresol:mp_mitsislin_inv}.
+\end{exer}
+
+\begin{exer}
+  O Método de Richardson para o cálculo da solução de um sistema linear $Ax = b$ de dimensões $n\times n$ tem a seguinte iteração
+  \begin{gather}
+    x(0) = \text{aprox. inicial},\\
+    x(t+1) = x(t) - \gamma\left[Ax(t) - b\right],
+  \end{gather}
+  onde $\gamma$ é uma parâmetro escalar de relaxação e $t=0,1,2,\ldots$. Faça uma implementação MP deste método.
+\end{exer}
+
+\begin{exer}
+  O Método das Sucessivas Sobre-relaxações (SOR) é uma variante do Método de Gauss-Seidel. A iteração SOR é
+  \begin{gather}
+    x_i(0) = \text{aprox. inicial},\\
+    x_i(t+1) = (1-\gamma)x_i(t) - \frac{\gamma}{a_{i,i}}\left[\sum_{j<i}a_{i,j}x_j(t+1) + \sum_{j>i}a_{i,j}x_j(t) - b_i\right],
+  \end{gather}
+  onde $0<\gamma<1$, $i=0,1,\dotsc,n-1$ e $t=0,1,2,\ldots$.
+
+  Este método não é paralelizável, mas ele pode ser adaptado pela distribuição paralela do cálculo das incógnitas a cada iteração conforme o Método tipo Gauss-Seidel apresentado na Subseção \ref{subsec:mp_mitsislin_GS}. Faça a adaptação do Método SOR e implemente em MP.
+\end{exer}
+
+\begin{exer}
+  Faça a implementação do método do Gradiente Conjugado para computar a inversa de uma matriz $A$ simétrica positiva definida de dimensões $n\times n$ ($n$ grande).
+\end{exer}
