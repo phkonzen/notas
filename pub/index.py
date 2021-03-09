@@ -271,7 +271,7 @@ class Index:
 
         body += '<h3>Sobre</h3>\n'
         body += '<p>Neste <i>site</i> publico minhas notas de aula. \n'
-        body += 'O matrial está escrito predominante em linguagem de marcação \n'
+        body += 'O material está escrito predominante em linguagem de marcação \n'
         body += '<a href="https://www.latex-project.org/" target=_blank>LaTeX</a>. \n'
         body += 'Disponíveis sob licença \n'
         body += '<a href="http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR" target=_blank>CC-BY-SA 4.0</a>, \n'
