@@ -1,0 +1,451 @@
+<!DOCTYPE html><html lang="pt-BR">
+<head>
+<title>2.6 Métodos iterativos para problemas não lineares‣ Capítulo 2 Multiprocessamento (MP) ‣ Matemática Numérica Paralela</title>
+<!--Generated on Sun Mar 14 10:42:02 2021 by LaTeXML (version 0.8.4) http://dlmf.nist.gov/LaTeXML/.-->
+<!--Document created on 14 de março de 2021.-->
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="LaTeXML.css" type="text/css">
+<link rel="stylesheet" href="ltx-book.css" type="text/css">
+<link rel="stylesheet" href="ltx-listings.css" type="text/css">
+<link rel="stylesheet" href="ltx-ulem.css" type="text/css">
+<link rel="stylesheet" href="main.css" type="text/css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=MML_SVG" type="text/javascript"></script>
+<script src="mymathcfg.js" type="text/javascript"></script>
+<link rel="up" href="cap_mp.html" title="Capítulo 2 Multiprocessamento (MP) ‣ Matemática Numérica Paralela">
+<link rel="up up" href="main.html" title="Matemática Numérica Paralela">
+<link rel="start" href="main.html" title="Matemática Numérica Paralela">
+<link rel="prev" href="cap_mp_sec_mitsislin.html" title="2.5 Métodos iterativos para Sistemas Lineares ‣ Capítulo 2 Multiprocessamento (MP) ‣ Matemática Numérica Paralela">
+<link rel="next" href="bib.html" title="Referências ‣ Matemática Numérica Paralela">
+<link rel="section" href="sec_ola_cap_mp.html" title="2.1 Olá, Mundo! ‣ Capítulo 2 Multiprocessamento (MP) ‣ Matemática Numérica Paralela">
+<link rel="section" href="cap_mp_sec_cb.html" title="2.2 Construtores básicos ‣ Capítulo 2 Multiprocessamento (MP) ‣ Matemática Numérica Paralela">
+<link rel="section" href="cap_mp_sec_sistria.html" title="2.3 Resolução de Sistema Linear Triangular ‣ Capítulo 2 Multiprocessamento (MP) ‣ Matemática Numérica Paralela">
+<link rel="section" href="cap_mp_sec_lu.html" title="2.4 Decomposição LU ‣ Capítulo 2 Multiprocessamento (MP) ‣ Matemática Numérica Paralela">
+<link rel="section" href="cap_mp_sec_mitsislin.html" title="2.5 Métodos iterativos para Sistemas Lineares ‣ Capítulo 2 Multiprocessamento (MP) ‣ Matemática Numérica Paralela">
+<link rel="chapter" href="licenca.html" title="Licença ‣ Matemática Numérica Paralela">
+<link rel="chapter" href="prefacio.html" title="Prefácio ‣ Matemática Numérica Paralela">
+<link rel="chapter" href="cap_intro.html" title="Capítulo 1 Introdução ‣ Matemática Numérica Paralela">
+<link rel="chapter" href="cap_mp.html" title="Capítulo 2 Multiprocessamento (MP) ‣ Matemática Numérica Paralela">
+<link rel="bibliography" href="bib.html" title="Referências ‣ Matemática Numérica Paralela">
+<meta name="author" content="Pedro H A Konzen"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://kit.fontawesome.com/dfbff2c7ed.js" crossorigin="anonymous"></script><link rel="stylesheet" href="goodies.css" type="text/css">
+<script>$(document).ready(function(){$(".toast").toast();});</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-17226092-2"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag("js", new Date());
+
+gtag("config", "UA-17226092-2")
+</script>
+</head>
+
+<body>
+
+<div class=container-fluid>
+<div class=row>
+<div class=col-lg-1>
+</div><div class=col-lg-10>
+
+
+
+<!-- begin: navbar -->
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+<a class="navbar-brand" href="main.html">Notas de Aula<br/><small>Matemática Numérica Paralela</small></a>
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+<span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarNav">
+<ul class="navbar-nav">
+<li class="nav-item"><a class="nav-link" href="https://github.com/phkonzen/notas">Repositório GitHub</a></li>
+<li class="nav-item"><a class="nav-link" href="main.pdf">Baixar PDF</a></li>
+<li class="nav=item"><a class="nav-link" href="https://mybinder.org/v2/gh/phkonzen/notas/master?filepath=notas.ipynb" target="_blank">Jupyter NB</a></li>
+<li class="nav-item"><a class="nav-link" href="../index.html">Outras Notas & Infos</a></li>
+</ul>
+</div><!-- /.navbar-collapse -->
+</nav>
+
+
+<!-- end: navbar -->
+
+
+
+<div class="ltx_page_main">
+<header class="ltx_page_header">
+<div>
+<a href="cap_mp.html" title="Capítulo 2 Multiprocessamento (MP) ‣ Matemática Numérica Paralela" class="ltx_ref" rel="up"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">2 </span>Multiprocessamento (MP)</span></a><a href="cap_mp_sec_mitsislin.html" title="2.5 Métodos iterativos para Sistemas Lineares ‣ Capítulo 2 Multiprocessamento (MP) ‣ Matemática Numérica Paralela" class="ltx_ref" rel="prev"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">2.5 </span>Métodos iterativos para Sistemas Lineares</span></a><a href="bib.html" title="Referências ‣ Matemática Numérica Paralela" class="ltx_ref" rel="next"><span class="ltx_text ltx_ref_title">Referências</span></a>
+</div></header>
+<div class="ltx_page_content">
+<section class="ltx_section ltx_authors_1line" lang="pt-BR">
+<h1 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">2.6 </span>Métodos iterativos para problemas não lineares <small><a href="../contato.html" target="_blank"><i class="fas fa-envelope"></i></a></small></h1>
+<div class="ltx_date ltx_role_creation"></div>
+
+<div id="p1" class="ltx_para ltx_noindent">
+<p class="ltx_p">Vamos considerar um sistema de equações não lineares</p>
+<table id="eq:mp_sisnl" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E41.m1" class="ltx_Math" alttext="F(x)=0," display="block"><mrow><mrow><mrow><mi>F</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>0</mn></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.41)</span></td>
+</tr>
+</table>
+<p class="ltx_p">onde <math id="p1.m1" class="ltx_Math" alttext="x=(x_{1},x_{2},\dotsc,x_{n})\in\mathbb{R}^{n}" display="inline"><mrow><mi>x</mi><mo>=</mo><mrow><mo stretchy="false">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>x</mi><mn>2</mn></msub><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><msub><mi>x</mi><mi>n</mi></msub><mo stretchy="false">)</mo></mrow><mo>∈</mo><msup><mi>ℝ</mi><mi>n</mi></msup></mrow></math> e <math id="p1.m2" class="ltx_Math" alttext="F:\mathbb{R}^{n}\mapsto\mathbb{R}^{n}" display="inline"><mrow><mi>F</mi><mo>:</mo><mrow><msup><mi>ℝ</mi><mi>n</mi></msup><mo>↦</mo><msup><mi>ℝ</mi><mi>n</mi></msup></mrow></mrow></math>, <math id="p1.m3" class="ltx_Math" alttext="n\geq 1" display="inline"><mrow><mi>n</mi><mo>≥</mo><mn>1</mn></mrow></math>.
+</p>
+</div>
+<section id="SS1" class="ltx_subsection">
+<h2 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">2.6.1 </span>Método de Newton <small><a href="../contato.html" target="_blank"><i class="fas fa-envelope"></i></a></small></h2>
+
+<div id="SS1.p1" class="ltx_para ltx_noindent">
+<p class="ltx_p">Supondo que <math id="SS1.p1.m1" class="ltx_Math" alttext="F" display="inline"><mi>F</mi></math> é duas vezes diferenciável, a solução de (<a href="#eq:mp_sisnl" title="(2.41) ‣ 2.6 Métodos iterativos para problemas não lineares ‣ Capítulo 2 Multiprocessamento (MP) ‣ Matemática Numérica Paralela" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.41</span></a>) pode ser computada pela iteração de Newton:</p>
+<table id="EGx11" class="ltx_equationgroup ltx_eqn_gather ltx_eqn_table">
+
+<tbody id="Ch2.E42"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E42.m1" class="ltx_Math" alttext="\displaystyle x(0)=\text{aprox. inicial}," display="block"><mrow><mrow><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mtext>aprox. inicial</mtext></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.42)</span></td>
+</tr></tbody>
+<tbody id="eq:mp_newton_iter0"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E43.m1" class="ltx_Math" alttext="\displaystyle x(t+1)=x(t)-\gamma J_{F}^{-1}\left(x(t)\right)F\left(x(t)\right)," display="block"><mrow><mrow><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow><mo>-</mo><mrow><mi>γ</mi><mo>⁢</mo><msubsup><mi>J</mi><mi>F</mi><mrow><mo>-</mo><mn>1</mn></mrow></msubsup><mo>⁢</mo><mrow><mo>(</mo><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow><mo>)</mo></mrow><mo>⁢</mo><mi>F</mi><mo>⁢</mo><mrow><mo>(</mo><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow><mo>)</mo></mrow></mrow></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.43)</span></td>
+</tr></tbody>
+</table>
+<p class="ltx_p">onde <math id="SS1.p1.m2" class="ltx_Math" alttext="\gamma&gt;0" display="inline"><mrow><mi>γ</mi><mo>&gt;</mo><mn>0</mn></mrow></math> é o tamanho do passo escolhido,</p>
+<table id="Ch2.E44" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E44.m1" class="ltx_Math" alttext="J_{F}\left(\cdot\right)=\left[\frac{\partial F_{i}}{\partial x_{j}}\left(\cdot%
+\right)\right]_{i,j=1}^{n,n}" display="block"><mrow><mrow><msub><mi>J</mi><mi>F</mi></msub><mo>⁢</mo><mrow><mo>(</mo><mo>⋅</mo><mo>)</mo></mrow></mrow><mo>=</mo><msubsup><mrow><mo>[</mo><mrow><mfrac><mrow><mo>∂</mo><mo>⁡</mo><msub><mi>F</mi><mi>i</mi></msub></mrow><mrow><mo>∂</mo><mo>⁡</mo><msub><mi>x</mi><mi>j</mi></msub></mrow></mfrac><mo>⁢</mo><mrow><mo>(</mo><mo>⋅</mo><mo>)</mo></mrow></mrow><mo>]</mo></mrow><mrow><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow><mo>=</mo><mn>1</mn></mrow><mrow><mi>n</mi><mo>,</mo><mi>n</mi></mrow></msubsup></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.44)</span></td>
+</tr>
+</table>
+<p class="ltx_p">denota a jacobiana de <math id="SS1.p1.m3" class="ltx_Math" alttext="F" display="inline"><mi>F</mi></math>, e <math id="SS1.p1.m4" class="ltx_Math" alttext="t=1,2,3,\ldots" display="inline"><mrow><mi>t</mi><mo>=</mo><mrow><mn>1,2,3</mn><mo>,</mo><mi mathvariant="normal">…</mi></mrow></mrow></math>.</p>
+</div>
+<div id="SS1.p2" class="ltx_para ltx_noindent">
+<p class="ltx_p">Observamos que, em geral, a iterada de Newton (<a href="#eq:mp_newton_iter0" title="(2.43) ‣ 2.6.1 Método de Newton ‣ 2.6 Métodos iterativos para problemas não lineares ‣ Capítulo 2 Multiprocessamento (MP) ‣ Matemática Numérica Paralela" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.43</span></a>) não é trivialmente paralelizável, devido a acoplamentos entre as <math id="SS1.p2.m1" class="ltx_Math" alttext="n" display="inline"><mi>n</mi></math> equações. Por outro lado, podemos reescrever (<a href="#eq:mp_newton_iter0" title="(2.43) ‣ 2.6.1 Método de Newton ‣ 2.6 Métodos iterativos para problemas não lineares ‣ Capítulo 2 Multiprocessamento (MP) ‣ Matemática Numérica Paralela" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.43</span></a>) como segue:</p>
+<table id="eq:mp_newton_up" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E45.m1" class="ltx_Math" alttext="x(t+1)=x(t)+\gamma s(t)," display="block"><mrow><mrow><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><mi>γ</mi><mo>⁢</mo><mi>s</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.45)</span></td>
+</tr>
+</table>
+<p class="ltx_p">onde <math id="SS1.p2.m2" class="ltx_Math" alttext="s(t)" display="inline"><mrow><mi>s</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow></math> é o passo de Newton, dado como a solução do seguinte sistema linear</p>
+<table id="eq:mp_passoNewton" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E46.m1" class="ltx_Math" alttext="J_{F}\left(x(t)\right)s(t)=-F\left(x(t)\right)." display="block"><mrow><mrow><mrow><msub><mi>J</mi><mi>F</mi></msub><mo>⁢</mo><mrow><mo>(</mo><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow><mo>)</mo></mrow><mo>⁢</mo><mi>s</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mo>-</mo><mrow><mi>F</mi><mo>⁢</mo><mrow><mo>(</mo><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow><mo>)</mo></mrow></mrow></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.46)</span></td>
+</tr>
+</table>
+</div>
+<div id="SS1.p3" class="ltx_para ltx_noindent">
+<p class="ltx_p">Desta forma, a cada iteração de Newton <math id="SS1.p3.m1" class="ltx_Math" alttext="t" display="inline"><mi>t</mi></math>, devemos computar a solução do sistema linear (<a href="#eq:mp_passoNewton" title="(2.46) ‣ 2.6.1 Método de Newton ‣ 2.6 Métodos iterativos para problemas não lineares ‣ Capítulo 2 Multiprocessamento (MP) ‣ Matemática Numérica Paralela" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.46</span></a>). A aplicação da paralelização no método de Newton dá-se pela utilização de métodos paralelizáveis para a resolução de sistemas lineares. Na Seção <a href="cap_mp_sec_lu.html" title="2.4 Decomposição LU ‣ Capítulo 2 Multiprocessamento (MP) ‣ Matemática Numérica Paralela" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.4</span></a> e, principalmente, na Seção <a href="cap_mp_sec_mitsislin.html" title="2.5 Métodos iterativos para Sistemas Lineares ‣ Capítulo 2 Multiprocessamento (MP) ‣ Matemática Numérica Paralela" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.5</span></a>, discutimos sobre a paralelização de métodos para sistemas lineares.</p>
+</div>
+<div id="SS1.p4" class="ltx_para ltx_noindent">
+<p class="ltx_p">No caso de um sistema de grande porte e uma vez computada <math id="SS1.p4.m1" class="ltx_Math" alttext="s(t)" display="inline"><mrow><mi>s</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow></math>, a atualização (<a href="#eq:mp_newton_up" title="(2.45) ‣ 2.6.1 Método de Newton ‣ 2.6 Métodos iterativos para problemas não lineares ‣ Capítulo 2 Multiprocessamento (MP) ‣ Matemática Numérica Paralela" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.45</span></a>) também pode ser trivialmente paralelizada. Ainda, as computações da função objetivo <math id="SS1.p4.m2" class="ltx_Math" alttext="F" display="inline"><mi>F</mi></math> e de sua jacobiana <math id="SS1.p4.m3" class="ltx_Math" alttext="J_{F}" display="inline"><msub><mi>J</mi><mi>F</mi></msub></math> também são paralelizáveis.</p>
+</div>
+</section>
+<section id="SS2" class="ltx_subsection">
+<h2 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">2.6.2 </span>Método do acorde <small><a href="../contato.html" target="_blank"><i class="fas fa-envelope"></i></a></small></h2>
+
+<div id="SS2.p1" class="ltx_para ltx_noindent">
+<p class="ltx_p">Em problemas de grande porte, o cálculo da jacobina <math id="SS2.p1.m1" class="ltx_Math" alttext="J_{F}" display="inline"><msub><mi>J</mi><mi>F</mi></msub></math> é, em muitos casos, o passo computacionalmente mais custoso na aplicação do método de Newton. Uma alternativa é o chamado método do acorde, no qual a jacobiana é computada apenas na iteração inicial. Segue a iteração deste método</p>
+<table id="EGx12" class="ltx_equationgroup ltx_eqn_gather ltx_eqn_table">
+
+<tbody id="Ch2.E47"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E47.m1" class="ltx_Math" alttext="\displaystyle x(0)=\text{aprox. inicial}," display="block"><mrow><mrow><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mtext>aprox. inicial</mtext></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.47)</span></td>
+</tr></tbody>
+<tbody id="eq:mp_acorde_jac"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E48.m1" class="ltx_Math" alttext="\displaystyle J_{F,0}=F_{F}\left(x(0)\right)," display="block"><mrow><mrow><msub><mi>J</mi><mrow><mi>F</mi><mo>⁢</mo><mn>,0</mn></mrow></msub><mo>=</mo><mrow><msub><mi>F</mi><mi>F</mi></msub><mo>⁢</mo><mrow><mo>(</mo><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo></mrow></mrow><mo>)</mo></mrow></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.48)</span></td>
+</tr></tbody>
+<tbody id="eq:mp_acorde_up"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E49.m1" class="ltx_Math" alttext="\displaystyle x(t+1)=x(t)+\gamma s(t)," display="block"><mrow><mrow><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><mi>γ</mi><mo>⁢</mo><mi>s</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.49)</span></td>
+</tr></tbody>
+<tbody id="eq:mp_acorde_dir"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E50.m1" class="ltx_Math" alttext="\displaystyle J_{F,0}s(t)=-F(x(t))," display="block"><mrow><mrow><mrow><msub><mi>J</mi><mrow><mi>F</mi><mo>⁢</mo><mn>,0</mn></mrow></msub><mo>⁢</mo><mi>s</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mo>-</mo><mrow><mi>F</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.50)</span></td>
+</tr></tbody>
+</table>
+<p class="ltx_p">onde <math id="SS2.p1.m2" class="ltx_Math" alttext="t=0,1,2,\ldots" display="inline"><mrow><mi>t</mi><mo>=</mo><mrow><mn>0,1,2</mn><mo>,</mo><mi mathvariant="normal">…</mi></mrow></mrow></math>.</p>
+</div>
+<div id="SS2.p2" class="ltx_para ltx_noindent">
+<p class="ltx_p">Enquanto a taxa de convergência do método de Newton é quadrática, o método do acorde tem convergência linear. Portanto, este só é vantajoso quando o custo de computar a jacobiana é maior que o custo de se computar várias iterações a mais.</p>
+</div>
+<div id="SS2.p3" class="ltx_para ltx_noindent">
+<p class="ltx_p">Além das paralelizações triviais na computação de (<a href="#eq:mp_acorde_jac" title="(2.48) ‣ 2.6.2 Método do acorde ‣ 2.6 Métodos iterativos para problemas não lineares ‣ Capítulo 2 Multiprocessamento (MP) ‣ Matemática Numérica Paralela" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.48</span></a>) e (<a href="#eq:mp_acorde_up" title="(2.54) ‣ 2.6.2 Método do acorde ‣ 2.6 Métodos iterativos para problemas não lineares ‣ Capítulo 2 Multiprocessamento (MP) ‣ Matemática Numérica Paralela" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.54</span></a>), vamos observar a computação da direção <math id="SS2.p3.m1" class="ltx_Math" alttext="s(t)" display="inline"><mrow><mi>s</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow></math> (<a href="#eq:mp_acorde_dir" title="(2.55) ‣ 2.6.2 Método do acorde ‣ 2.6 Métodos iterativos para problemas não lineares ‣ Capítulo 2 Multiprocessamento (MP) ‣ Matemática Numérica Paralela" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.55</span></a>). Como a jacobiana <math id="SS2.p3.m2" class="ltx_Math" alttext="J_{F,0}" display="inline"><msub><mi>J</mi><mrow><mi>F</mi><mo>⁢</mo><mn>,0</mn></mrow></msub></math> é fixada constante, a utilização de métodos iterativos para computar <math id="SS2.p3.m3" class="ltx_Math" alttext="s(t)" display="inline"><mrow><mi>s</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow></math> pode não ser o mais adequado. Aqui, a utilização de método direto, como a decomposição LU torna-se uma opção a ser considerada. Neste caso, a iteração ficaria como segue</p>
+<table id="EGx13" class="ltx_equationgroup ltx_eqn_gather ltx_eqn_table">
+
+<tbody id="Ch2.E51"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E51.m1" class="ltx_Math" alttext="\displaystyle x(0)=\text{aprox. inicial}," display="block"><mrow><mrow><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mtext>aprox. inicial</mtext></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.51)</span></td>
+</tr></tbody>
+<tbody id="Ch2.E52"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E52.m1" class="ltx_Math" alttext="\displaystyle J_{F,0}=J_{F}\left(x(0)\right)," display="block"><mrow><mrow><msub><mi>J</mi><mrow><mi>F</mi><mo>⁢</mo><mn>,0</mn></mrow></msub><mo>=</mo><mrow><msub><mi>J</mi><mi>F</mi></msub><mo>⁢</mo><mrow><mo>(</mo><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo></mrow></mrow><mo>)</mo></mrow></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.52)</span></td>
+</tr></tbody>
+<tbody id="Ch2.E53"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E53.m1" class="ltx_Math" alttext="\displaystyle LU=J_{F,0}," display="block"><mrow><mrow><mrow><mi>L</mi><mo>⁢</mo><mi>U</mi></mrow><mo>=</mo><msub><mi>J</mi><mrow><mi>F</mi><mo>⁢</mo><mn>,0</mn></mrow></msub></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.53)</span></td>
+</tr></tbody>
+<tbody id="eq:mp_acorde_up"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E54.m1" class="ltx_Math" alttext="\displaystyle x(t+1)=x(t)+\gamma s(t)," display="block"><mrow><mrow><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><mi>γ</mi><mo>⁢</mo><mi>s</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.54)</span></td>
+</tr></tbody>
+<tbody id="eq:mp_acorde_dir"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E55.m1" class="ltx_Math" alttext="\displaystyle LUs(t)=-F(x(t))," display="block"><mrow><mrow><mrow><mi>L</mi><mo>⁢</mo><mi>U</mi><mo>⁢</mo><mi>s</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mo>-</mo><mrow><mi>F</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.55)</span></td>
+</tr></tbody>
+</table>
+<p class="ltx_p">onde <math id="SS2.p3.m4" class="ltx_Math" alttext="t=0,1,2,\ldots" display="inline"><mrow><mi>t</mi><mo>=</mo><mrow><mn>0,1,2</mn><mo>,</mo><mi mathvariant="normal">…</mi></mrow></mrow></math>.</p>
+</div>
+</section>
+<section id="SS3" class="ltx_subsection">
+<h2 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">2.6.3 </span>Métodos <span class="ltx_text ltx_font_italic">quasi</span>-Newton <small><a href="../contato.html" target="_blank"><i class="fas fa-envelope"></i></a></small></h2>
+
+<div id="SS3.p1" class="ltx_para ltx_noindent">
+<p class="ltx_p">Baseados em aproximações na computação do passo de Newton</p>
+<table id="Ch2.E56" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E56.m1" class="ltx_Math" alttext="J_{F}\left(x(t)\right)s(t)=-F\left(x(t)\right)," display="block"><mrow><mrow><mrow><msub><mi>J</mi><mi>F</mi></msub><mo>⁢</mo><mrow><mo>(</mo><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow><mo>)</mo></mrow><mo>⁢</mo><mi>s</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mo>-</mo><mrow><mi>F</mi><mo>⁢</mo><mrow><mo>(</mo><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow><mo>)</mo></mrow></mrow></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.56)</span></td>
+</tr>
+</table>
+<p class="ltx_p">uma série de métodos <span class="ltx_text ltx_font_italic">quasi</span>-Newton são derivados. A aplicação de cada uma dessas tais variantes precisa ser avaliada caso a caso. Em todas elas, busca-se abrir mão da convergência quadrática em troca de um grande ganho no tempo computacional em se computar <math id="SS3.p1.m1" class="ltx_Math" alttext="s(t)" display="inline"><mrow><mi>s</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow></math>.</p>
+</div>
+<div id="SS3.p2" class="ltx_para ltx_noindent">
+<p class="ltx_p">Uma das alternativas é uma variante do método do acorde. A ideia é estimar a taxa de convergência <math id="SS3.p2.m1" class="ltx_Math" alttext="p" display="inline"><mi>p</mi></math> entre as iterações e atualizar a jacobiana quando a taxa estimada é menor que um certo limiar <math id="SS3.p2.m2" class="ltx_Math" alttext="p_{l}" display="inline"><msub><mi>p</mi><mi>l</mi></msub></math> considerado adequado (este limiar pode ser escolhido com base nos custos computacionais de se recomputar a jacobiana <span class="ltx_text ltx_font_italic">versus</span> o de se computar várias iterações a mais). A convergência é da ordem <math id="SS3.p2.m3" class="ltx_Math" alttext="p" display="inline"><mi>p</mi></math> quando</p>
+<table id="Ch2.E57" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E57.m1" class="ltx_Math" alttext="\|F\left(x(t+1)\right)\|\approx K\|F\left(F(x(t))\right)\|^{p}," display="block"><mrow><mrow><mrow><mo>∥</mo><mrow><mi>F</mi><mo>⁢</mo><mrow><mo>(</mo><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>)</mo></mrow></mrow><mo>∥</mo></mrow><mo>≈</mo><mrow><mi>K</mi><mo>⁢</mo><msup><mrow><mo>∥</mo><mrow><mi>F</mi><mo>⁢</mo><mrow><mo>(</mo><mrow><mi>F</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>)</mo></mrow></mrow><mo>∥</mo></mrow><mi>p</mi></msup></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.57)</span></td>
+</tr>
+</table>
+<p class="ltx_p">com <math id="SS3.p2.m4" class="ltx_Math" alttext="K&gt;0" display="inline"><mrow><mi>K</mi><mo>&gt;</mo><mn>0</mn></mrow></math>, <math id="SS3.p2.m5" class="ltx_Math" alttext="\|F\left(x(t)\right)\|\to 0" display="inline"><mrow><mrow><mo>∥</mo><mrow><mi>F</mi><mo>⁢</mo><mrow><mo>(</mo><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow><mo>)</mo></mrow></mrow><mo>∥</mo></mrow><mo>→</mo><mn>0</mn></mrow></math> quando <math id="SS3.p2.m6" class="ltx_Math" alttext="t\to\infty" display="inline"><mrow><mi>t</mi><mo>→</mo><mi mathvariant="normal">∞</mi></mrow></math>. Assim sendo, é razoável esperar que</p>
+<table id="Ch2.E58" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E58.m1" class="ltx_Math" alttext="p\approx\frac{\log\left(\|F\left(x(t+1)\right)\|\right)}{\log\left(\|F\left(x(%
+t)\right)\|\right)}" display="block"><mrow><mi>p</mi><mo>≈</mo><mfrac><mrow><mi>log</mi><mo>⁡</mo><mrow><mo>(</mo><mrow><mo>∥</mo><mrow><mi>F</mi><mo>⁢</mo><mrow><mo>(</mo><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>)</mo></mrow></mrow><mo>∥</mo></mrow><mo>)</mo></mrow></mrow><mrow><mi>log</mi><mo>⁡</mo><mrow><mo>(</mo><mrow><mo>∥</mo><mrow><mi>F</mi><mo>⁢</mo><mrow><mo>(</mo><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow><mo>)</mo></mrow></mrow><mo>∥</mo></mrow><mo>)</mo></mrow></mrow></mfrac></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.58)</span></td>
+</tr>
+</table>
+<p class="ltx_p">.
+Com isso, o pseudocódigo segue</p>
+<ol id="I1" class="ltx_enumerate">
+<li id="I1.i1" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">1.</span> 
+<div id="I1.i1.p1" class="ltx_para ltx_noindent">
+<p class="ltx_p">Aproximação inicial: <math id="I1.i1.p1.m1" class="ltx_Math" alttext="x(0)" display="inline"><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo></mrow></mrow></math>, <math id="I1.i1.p1.m2" class="ltx_Math" alttext="t=0" display="inline"><mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow></math>.</p>
+</div>
+</li>
+<li id="I1.i2" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">2.</span> 
+<div id="I1.i2.p1" class="ltx_para ltx_noindent">
+<p class="ltx_p">Jacobiana: <math id="I1.i2.p1.m1" class="ltx_Math" alttext="J_{F}=J_{F}\left(x(t)\right)" display="inline"><mrow><msub><mi>J</mi><mi>F</mi></msub><mo>=</mo><mrow><msub><mi>J</mi><mi>F</mi></msub><mo>⁢</mo><mrow><mo>(</mo><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow><mo>)</mo></mrow></mrow></mrow></math>.</p>
+</div>
+</li>
+<li id="I1.i3" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">3.</span> 
+<div id="I1.i3.p1" class="ltx_para ltx_noindent">
+<p class="ltx_p">Enquanto <math id="I1.i3.p1.m1" class="ltx_Math" alttext="\|F\left(x(t)\right)\|&gt;tol" display="inline"><mrow><mrow><mo>∥</mo><mrow><mi>F</mi><mo>⁢</mo><mrow><mo>(</mo><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow><mo>)</mo></mrow></mrow><mo>∥</mo></mrow><mo>&gt;</mo><mrow><mi>t</mi><mo>⁢</mo><mi>o</mi><mo>⁢</mo><mi>l</mi></mrow></mrow></math>:</p>
+<ol id="I1.I1" class="ltx_enumerate">
+<li id="I1.i3.i1" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(a)</span> 
+<div id="I1.i3.i1.p1" class="ltx_para ltx_noindent">
+<p class="ltx_p"><math id="I1.i3.i1.p1.m1" class="ltx_Math" alttext="J_{F}s(t)=-F\left(x(t)\right)" display="inline"><mrow><mrow><msub><mi>J</mi><mi>F</mi></msub><mo>⁢</mo><mi>s</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mo>-</mo><mrow><mi>F</mi><mo>⁢</mo><mrow><mo>(</mo><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow><mo>)</mo></mrow></mrow></mrow></mrow></math>.
+</p>
+</div>
+</li>
+<li id="I1.i3.i2" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(b)</span> 
+<div id="I1.i3.i2.p1" class="ltx_para ltx_noindent">
+<p class="ltx_p"><math id="I1.i3.i2.p1.m1" class="ltx_Math" alttext="x(t+1)=x(t)+\gamma s(t)" display="inline"><mrow><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><mi>γ</mi><mo>⁢</mo><mi>s</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow></math>.</p>
+</div>
+</li>
+<li id="I1.i3.i3" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(c)</span> 
+<div id="I1.i3.i3.p1" class="ltx_para ltx_noindent">
+<p class="ltx_p"><math id="I1.i3.i3.p1.m1" class="ltx_Math" alttext="p=\log\left(\|F\left(x(t+1)\right)\|\right)/\log\left(\|F\left(x(t)\right)\|\right)" display="inline"><mrow><mi>p</mi><mo>=</mo><mrow><mrow><mi>log</mi><mo>⁡</mo><mrow><mo>(</mo><mrow><mo>∥</mo><mrow><mi>F</mi><mo>⁢</mo><mrow><mo>(</mo><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>)</mo></mrow></mrow><mo>∥</mo></mrow><mo>)</mo></mrow></mrow><mo>/</mo><mrow><mi>log</mi><mo>⁡</mo><mrow><mo>(</mo><mrow><mo>∥</mo><mrow><mi>F</mi><mo>⁢</mo><mrow><mo>(</mo><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow><mo>)</mo></mrow></mrow><mo>∥</mo></mrow><mo>)</mo></mrow></mrow></mrow></mrow></math></p>
+</div>
+</li>
+<li id="I1.i3.i4" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(d)</span> 
+<div id="I1.i3.i4.p1" class="ltx_para ltx_noindent">
+<p class="ltx_p">Se <math id="I1.i3.i4.p1.m1" class="ltx_Math" alttext="p&lt;p_{l}" display="inline"><mrow><mi>p</mi><mo>&lt;</mo><msub><mi>p</mi><mi>l</mi></msub></mrow></math>, então:</p>
+<ol id="I1.I1.I1" class="ltx_enumerate">
+<li id="I1.i3.i4.i1" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">i.</span> 
+<div id="I1.i3.i4.i1.p1" class="ltx_para ltx_noindent">
+<p class="ltx_p"><math id="I1.i3.i4.i1.p1.m1" class="ltx_Math" alttext="J_{F}=J_{F}\left(x(t+1)\right)" display="inline"><mrow><msub><mi>J</mi><mi>F</mi></msub><mo>=</mo><mrow><msub><mi>J</mi><mi>F</mi></msub><mo>⁢</mo><mrow><mo>(</mo><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>)</mo></mrow></mrow></mrow></math>.</p>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li id="I1.i3.i5" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">(e)</span> 
+<div id="I1.i3.i5.p1" class="ltx_para ltx_noindent">
+<p class="ltx_p"><math id="I1.i3.i5.p1.m1" class="ltx_Math" alttext="t=t+1" display="inline"><mrow><mi>t</mi><mo>=</mo><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></mrow></math>.</p>
+</div>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+<div id="SS3.p3" class="ltx_para ltx_noindent">
+<p class="ltx_p">Outra alternativa que pode ser considerada em determinados casos, é a de se computar <math id="SS3.p3.m1" class="ltx_Math" alttext="s(t)" display="inline"><mrow><mi>s</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow></math> por</p>
+<table id="Ch2.E59" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E59.m1" class="ltx_Math" alttext="J_{F}\left(x(t)\right)s(t)=-F\left(x(t)\right)" display="block"><mrow><mrow><msub><mi>J</mi><mi>F</mi></msub><mo>⁢</mo><mrow><mo>(</mo><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow><mo>)</mo></mrow><mo>⁢</mo><mi>s</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mo>-</mo><mrow><mi>F</mi><mo>⁢</mo><mrow><mo>(</mo><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow><mo>)</mo></mrow></mrow></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.59)</span></td>
+</tr>
+</table>
+<p class="ltx_p">de forma aproximada. No contexto de métodos iterativos para sistemas lineares, pode-se truncar a resolução do sistema acima fixando um número pequeno de iterações. Desta forma, <math id="SS3.p3.m2" class="ltx_Math" alttext="s(t)" display="inline"><mrow><mi>s</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow></math> não seria computada de forma precisa, mas a aproximação computada pode ser suficientemente adequada.</p>
+</div>
+<div id="SS3.p4" class="ltx_para ltx_noindent">
+<p class="ltx_p">Do ponto de vista de paralelização em MP, estas variantes do método de Newton apresentam potenciais e requerem cuidados similares ao método original.</p>
+</div>
+</section>
+<section id="SSx1" class="ltx_subsection">
+<h2 class="ltx_title ltx_title_subsection">Exercícios <small><a href="../contato.html" target="_blank"><i class="fas fa-envelope"></i></a></small></h2>
+
+<div id="Thmexer1" class="ltx_theorem ltx_theorem_exer">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">E 2.6.1</span></span>.</h6>
+<div id="Thmexer1.p1" class="ltx_para">
+<p class="ltx_p">Implemente um código MP para computar a solução de</p>
+<table id="EGx14" class="ltx_equationgroup ltx_eqn_gather ltx_eqn_table">
+
+<tbody id="Ch2.E60"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E60.m1" class="ltx_Math" alttext="\displaystyle\operatorname{sen}(x_{1}x_{2})-2x_{2}-x_{1}=-4.2" display="block"><mrow><mrow><mrow><mi>sen</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>⁢</mo><msub><mi>x</mi><mn>2</mn></msub></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>-</mo><mrow><mn>2</mn><mo>⁢</mo><msub><mi>x</mi><mn>2</mn></msub></mrow><mo>-</mo><msub><mi>x</mi><mn>1</mn></msub></mrow><mo>=</mo><mrow><mo>-</mo><mn>4.2</mn></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.60)</span></td>
+</tr></tbody>
+<tbody id="Ch2.E61"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E61.m1" class="ltx_Math" alttext="\displaystyle 3e^{2x_{1}}-6ex_{2}^{2}-2x_{1}=-1" display="block"><mrow><mrow><mrow><mn>3</mn><mo>⁢</mo><msup><mi>e</mi><mrow><mn>2</mn><mo>⁢</mo><msub><mi>x</mi><mn>1</mn></msub></mrow></msup></mrow><mo>-</mo><mrow><mn>6</mn><mo>⁢</mo><mi>e</mi><mo>⁢</mo><msubsup><mi>x</mi><mn>2</mn><mn>2</mn></msubsup></mrow><mo>-</mo><mrow><mn>2</mn><mo>⁢</mo><msub><mi>x</mi><mn>1</mn></msub></mrow></mrow><mo>=</mo><mrow><mo>-</mo><mn>1</mn></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.61)</span></td>
+</tr></tbody>
+</table>
+<p class="ltx_p">usando o método de Newton. Use a inversa da jacobiana exata e aproximação inicial <math id="Thmexer1.p1.m1" class="ltx_Math" alttext="x(0)=(2,2)" display="inline"><mrow><mrow><mi>x</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mo stretchy="false">(</mo><mn>2,2</mn><mo stretchy="false">)</mo></mrow></mrow></math>.</p>
+</div>
+</div>
+<div id="exer:mp_nlpoisson" class="ltx_theorem ltx_theorem_exer">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">E 2.6.2</span></span>.</h6>
+<div id="Thmexer2.p1" class="ltx_para">
+<p class="ltx_p">Considere o seguinte problema de Poisson não-linear</p>
+<table id="EGx15" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="Ch2.E62"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch2.E62.m1" class="ltx_Math" alttext="\displaystyle-\frac{\partial}{\partial x}\left[\left(1+u^{2}\right)\frac{%
+\partial u}{\partial x}\right]" display="inline"><mrow><mo>-</mo><mrow><mstyle displaystyle="true"><mfrac><mo>∂</mo><mrow><mo>∂</mo><mo>⁡</mo><mi>x</mi></mrow></mfrac></mstyle><mo>⁢</mo><mrow><mo>[</mo><mrow><mrow><mo>(</mo><mrow><mn>1</mn><mo>+</mo><msup><mi>u</mi><mn>2</mn></msup></mrow><mo>)</mo></mrow><mo>⁢</mo><mstyle displaystyle="true"><mfrac><mrow><mo>∂</mo><mo>⁡</mo><mi>u</mi></mrow><mrow><mo>∂</mo><mo>⁡</mo><mi>x</mi></mrow></mfrac></mstyle></mrow><mo>]</mo></mrow></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch2.E62.m2" class="ltx_Math" alttext="\displaystyle=\cos(\pi x),\quad x\in(-1,1)," display="inline"><mrow><mrow><mrow><mi></mi><mo>=</mo><mrow><mi>cos</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mrow><mi>π</mi><mo>⁢</mo><mi>x</mi></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow><mo rspace="12.5pt">,</mo><mrow><mi>x</mi><mo>∈</mo><mrow><mo stretchy="false">(</mo><mrow><mo>-</mo><mn>1,1</mn></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.62)</span></td>
+</tr></tbody>
+<tbody id="Ch2.E63"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch2.E63.m1" class="ltx_Math" alttext="\displaystyle u(0)=1,\quad\left.\frac{\partial u}{\partial x}\right|_{x=1}" display="inline"><mrow><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mn>1</mn><mo rspace="12.5pt">,</mo><msub><mrow><mstyle displaystyle="true"><mfrac><mrow><mo>∂</mo><mo>⁡</mo><mi>u</mi></mrow><mrow><mo>∂</mo><mo>⁡</mo><mi>x</mi></mrow></mfrac></mstyle><mo fence="true">|</mo></mrow><mrow><mi>x</mi><mo>=</mo><mn>1</mn></mrow></msub></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch2.E63.m2" class="ltx_Math" alttext="\displaystyle=0." display="inline"><mrow><mrow><mi></mi><mo>=</mo><mn>0</mn></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.63)</span></td>
+</tr></tbody>
+</table>
+<p class="ltx_p">Use o método de diferenças finitas para discretizar este problema de forma a aproximá-lo como um sistema algébrico de equações não lineares. Implemente um código MP para computar a solução do sistema resultante aplicando o método de Newton.</p>
+</div>
+</div>
+<div id="Thmexer3" class="ltx_theorem ltx_theorem_exer">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">E 2.6.3</span></span>.</h6>
+<div id="Thmexer3.p1" class="ltx_para">
+<p class="ltx_p">No Exercício <a href="#exer:mp_nlpoisson" title="E 2.6.2. ‣ Exercícios ‣ 2.6 Métodos iterativos para problemas não lineares ‣ Capítulo 2 Multiprocessamento (MP) ‣ Matemática Numérica Paralela" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.6.2</span></a>, faça uma implementação MP do método do acorde e compare com o método de Newton clássico.</p>
+</div>
+</div>
+<div id="Thmexer4" class="ltx_theorem ltx_theorem_exer">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">E 2.6.4</span></span>.</h6>
+<div id="Thmexer4.p1" class="ltx_para">
+<p class="ltx_p">No Exercício <a href="#exer:mp_nlpoisson" title="E 2.6.2. ‣ Exercícios ‣ 2.6 Métodos iterativos para problemas não lineares ‣ Capítulo 2 Multiprocessamento (MP) ‣ Matemática Numérica Paralela" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.6.2</span></a>, faça uma implementação MP da variante do método do acorde com atualização da jacobiana com base na estimativa da taxa de convergência.</p>
+</div>
+</div>
+<div id="SSx1.p1" class="ltx_para">
+<p class="ltx_p"></p>
+</div>
+</section>
+</section>
+</div>
+<footer class="ltx_page_footer">
+<div>
+<a href="cap_mp_sec_mitsislin.html" title="2.5 Métodos iterativos para Sistemas Lineares ‣ Capítulo 2 Multiprocessamento (MP) ‣ Matemática Numérica Paralela" class="ltx_ref" rel="prev"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">2.5 </span>Métodos iterativos para Sistemas Lineares</span></a><a href="bib.html" title="Referências ‣ Matemática Numérica Paralela" class="ltx_ref" rel="bibliography"><span class="ltx_text ltx_ref_title">Referências</span></a><a href="bib.html" title="Referências ‣ Matemática Numérica Paralela" class="ltx_ref" rel="next"><span class="ltx_text ltx_ref_title">Referências</span></a>
+</div>
+<div class="ltx_page_logo">
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />O texto acima está sob Licença <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR">Creative Commons Atribuição-CompartilhaIgual 4.0 Internacional</a>. Generated  on Sun Mar 14 10:42:02 2021 by <a href="http://dlmf.nist.gov/LaTeXML/">LaTeXML <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg==" alt="[LOGO]"></a>
+</div></footer>
+</div>
+<div class="toast fade show" aria-live="polite" style="position: fixed; bottom: 0"><div class="toast-header"><strong class="mr-auto"><a href="../contato.html" target="_blank"><i class="fas fa-envelope"></i> Erros? Sugestões? </a></strong><button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button></div><div class="toast-body"><a href="../contato.html" target="_blank">Clique aqui para informar erros ou deixar sujestões!</a></div></div></div> <!-- div class=col-lg-1 -->
+<div class=col-lg-1>
+</div>
+</div> <!-- div class=row -->
+</div> <!-- div class=container-fluid -->
+
+</body>
+
+</html>
