@@ -764,3 +764,132 @@ Uma versão MP deste método pode ser implementada pela distribuição em parale
 \begin{exer}
   Faça a implementação do método do Gradiente Conjugado para computar a inversa de uma matriz $A$ simétrica positiva definida de dimensões $n\times n$ ($n$ grande).
 \end{exer}
+
+\section{Métodos iterativos para problemas não lineares}\label{cap_mp_sec_itnl}
+
+Vamos considerar um sistema de equações não lineares
+\begin{equation}\label{eq:mp_sisnl}
+  F(x) = 0,
+\end{equation}
+onde $x=(x_1,x_2,\dotsc,x_n)\in\mathbb{R}^n$ e $F:\mathbb{R}^n\mapsto \mathbb{R}^n$, $n\geq 1$.
+
+\subsection{Método de Newton}
+
+Supondo que $F$ é duas vezes diferenciável, a solução de \eqref{eq:mp_sisnl} pode ser computada pela iteração de Newton:
+\begin{gather}
+  x(0) = \text{aprox. inicial},\\
+  x(t+1) = x(t) - \gamma J_F^{-1}\left(x(t)\right)F\left(x(t)\right),\label{eq:mp_newton_iter0}
+\end{gather}
+onde $\gamma>0$ é o tamanho do passo escolhido, 
+\begin{equation}
+  J_F\left(\cdot\right) = \left[\frac{\p F_i}{\p x_j}\left(\cdot\right)\right]_{i,j=1}^{n,n}
+\end{equation}
+denota a jacobiana de $F$, e $t=1,2,3,\ldots$.
+
+Observamos que, em geral, a iterada de Newton \eqref{eq:mp_newton_iter0} não é trivialmente paralelizável, devido a acoplamentos entre as $n$ equações. Por outro lado, podemos reescrever \eqref{eq:mp_newton_iter0} como segue:
+\begin{equation}\label{eq:mp_newton_up}
+  x(t+1) = x(t) + \gamma s(t),
+\end{equation}
+onde $s(t)$ é o passo de Newton, dado como a solução do seguinte sistema linear
+\begin{equation}\label{eq:mp_passoNewton}
+  J_F\left(x(t)\right)s(t) = -F\left(x(t)\right).
+\end{equation}
+
+Desta forma, a cada iteração de Newton $t$, devemos computar a solução do sistema linear \eqref{eq:mp_passoNewton}. A aplicação da paralelização no método de Newton dá-se pela utilização de métodos paralelizáveis para a resolução de sistemas lineares. Na Seção \ref{cap_mp_sec_lu} e, principalmente, na Seção \ref{cap_mp_sec_mitsislin}, discutimos sobre a paralelização de métodos para sistemas lineares.
+
+No caso de um sistema de grande porte e uma vez computada $s(t)$, a atualização \eqref{eq:mp_newton_up} também pode ser trivialmente paralelizada. Ainda, as computações da função objetivo $F$ e de sua jacobiana $J_F$ também são paralelizáveis.
+
+\subsection{Método do acorde}
+
+Em problemas de grande porte, o cálculo da jacobina $J_F$ é, em muitos casos, o passo computacionalmente mais custoso na aplicação do método de Newton. Uma alternativa é o chamado método do acorde, no qual a jacobiana é computada apenas na iteração inicial. Segue a iteração deste método
+\begin{gather}
+  x(0) = \text{aprox. inicial},\\
+  J_{F,0} = F_F\left(x(0)\right),\label{eq:mp_acorde_jac}\\
+  ~\nonumber\\
+  x(t+1) = x(t) + \gamma s(t),\label{eq:mp_acorde_up}\\
+  J_{F,0}s(t) = -F(x(t)),\label{eq:mp_acorde_dir}
+\end{gather}
+onde $t=0, 1, 2, \ldots$.
+
+Enquanto a taxa de convergência do método de Newton é quadrática, o método do acorde tem convergência linear. Portanto, este só é vantajoso quando o custo de computar a jacobiana é maior que o custo de se computar várias iterações a mais.
+
+Além das paralelizações triviais na computação de \eqref{eq:mp_acorde_jac} e \eqref{eq:mp_acorde_up}, vamos observar a computação da direção $s(t)$ \eqref{eq:mp_acorde_dir}. Como a jacobiana $J_{F,0}$ é fixada constante, a utilização de métodos iterativos para computar $s(t)$ pode não ser o mais adequado. Aqui, a utilização de método direto, como a decomposição LU torna-se uma opção a ser considerada. Neste caso, a iteração ficaria como segue
+\begin{gather}
+  x(0) = \text{aprox. inicial},\\
+  J_{F,0} = J_F\left(x(0)\right),\\
+  LU = J_{F,0},\\
+  ~\nonumber\\
+  x(t+1) = x(t) + \gamma s(t),\label{eq:mp_acorde_up}\\
+  LUs(t) = -F(x(t)),\label{eq:mp_acorde_dir}
+\end{gather}
+onde $t=0, 1, 2, \ldots$.
+
+\subsection{Métodos {\it quasi}-Newton}
+
+Baseados em aproximações na computação do passo de Newton
+\begin{equation}
+  J_F\left(x(t)\right)s(t) = -F\left(x(t)\right),
+\end{equation}
+uma série de métodos {\it quasi}-Newton são derivados. A aplicação de cada uma dessas tais variantes precisa ser avaliada caso a caso. Em todas elas, busca-se abrir mão da convergência quadrática em troca de um grande ganho no tempo computacional em se computar $s(t)$.
+
+Uma das alternativas é uma variante do método do acorde. A ideia é estimar a taxa de convergência $p$ entre as iterações e atualizar a jacobiana quando a taxa estimada é menor que um certo limiar $p_l$ considerado adequado (este limiar pode ser escolhido com base nos custos computacionais de se recomputar a jacobiana {\it versus} o de se computar várias iterações a mais). A convergência é da ordem $p$ quando
+\begin{equation}
+  \|F\left(x(t+1)\right)\| \approx K\|F\left(F(x(t))\right)\|^p,
+\end{equation}
+com $K>0$, $\|F\left(x(t)\right)\|\to 0$ quando $t\to \infty$. Assim sendo, é razoável esperar que
+\begin{equation}
+  p \approx \frac{\log\left(\|F\left(x(t+1)\right)\|\right)}{\log\left(\|F\left(x(t)\right)\|\right)}
+\end{equation}.
+Com isso, o pseudocódigo segue
+\begin{enumerate}
+\item Aproximação inicial: $x(0)$, $t=0$.
+\item Jacobiana: $J_{F} = J_F\left(x(t)\right)$.
+\item Enquanto $\|F\left(x(t)\right)\|>tol$:
+  \begin{enumerate}
+  \item $J_Fs(t) = -F\left(x(t)\right)$.
+  \item $x(t+1) = x(t) + \gamma s(t)$.
+  \item $p = \log\left(\|F\left(x(t+1)\right)\|\right)/\log\left(\|F\left(x(t)\right)\|\right)$
+  \item Se $p < p_l$, então:
+    \begin{enumerate}
+    \item $J_{F} = J_F\left(x(t+1)\right)$.
+    \end{enumerate}
+  \item $t = t + 1$.
+  \end{enumerate}
+\end{enumerate}
+
+Outra alternativa que pode ser considerada em determinados casos, é a de se computar $s(t)$ por
+\begin{equation}
+  J_F\left(x(t)\right)s(t) = -F\left(x(t)\right)
+\end{equation}
+de forma aproximada. No contexto de métodos iterativos para sistemas lineares, pode-se truncar a resolução do sistema acima fixando um número pequeno de iterações. Desta forma, $s(t)$ não seria computada de forma precisa, mas a aproximação computada pode ser suficientemente adequada.
+
+Do ponto de vista de paralelização em MP, estas variantes do método de Newton apresentam potenciais e requerem  cuidados similares ao método original.
+
+\subsection*{Exercícios}
+
+\begin{exer}
+  Implemente um código MP para computar a solução de
+  \begin{gather}
+    \sen(x_1x_2) - 2x_2 - x_1 = -4.2\\
+    3e^{2x_1} - 6ex_2^2 - 2x_1 = -1
+  \end{gather}
+  usando o método de Newton. Use a inversa da jacobiana exata e aproximação inicial $x(0)=(2,2)$.
+\end{exer}
+
+\begin{exer}\label{exer:mp_nlpoisson}
+  Considere o seguinte problema de Poisson não-linear
+  \begin{align}
+    -\frac{\p}{\p x}\left[\left(1+u^2\right)\frac{\p u}{\p x}\right] &= \cos(\pi x),\quad x\in (-1, 1),\\
+    u(0) = 1,\quad \left.\frac{\p u}{\p x}\right|_{x=1} &= 0.
+  \end{align}
+  Use o método de diferenças finitas para discretizar este problema de forma a aproximá-lo como um sistema algébrico de equações não lineares. Implemente um código MP para computar a solução do sistema resultante aplicando o método de Newton.
+\end{exer}
+
+\begin{exer}
+  No Exercício \ref{exer:mp_nlpoisson}, faça uma implementação MP do método do acorde e compare com o método de Newton clássico. 
+\end{exer}
+
+\begin{exer}
+  No Exercício \ref{exer:mp_nlpoisson}, faça uma implementação MP da variante do método do acorde com atualização da jacobiana com base na estimativa da taxa de convergência.
+\end{exer}
+
