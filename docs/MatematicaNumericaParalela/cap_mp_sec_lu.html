@@ -1,8 +1,8 @@
 <!DOCTYPE html><html lang="pt-BR">
 <head>
 <title>2.4 Decomposição LU‣ Capítulo 2 Multiprocessamento (MP) ‣ Matemática Numérica Paralela</title>
-<!--Generated on Wed Mar 24 09:40:53 2021 by LaTeXML (version 0.8.4) http://dlmf.nist.gov/LaTeXML/.-->
-<!--Document created on 24 de março de 2021.-->
+<!--Generated on Tue Mar 30 15:38:17 2021 by LaTeXML (version 0.8.4) http://dlmf.nist.gov/LaTeXML/.-->
+<!--Document created on 30 de março de 2021.-->
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="LaTeXML.css" type="text/css">
@@ -88,7 +88,7 @@ gtag("config", "UA-17226092-2")
 <span class="ltx_tag ltx_tag_section">2.4 </span>Decomposição LU <small><a href="../contato.html" target="_blank"><i class="fas fa-envelope"></i></a></small></h1>
 <div class="ltx_date ltx_role_creation"></div>
 
-<div id="p1" class="ltx_para ltx_noindent">
+<div id="p1" class="ltx_para">
 <p class="ltx_p">Nesta seção, vamos discutir sobre a paralelização da decomposição LU para matrizes. A decomposição <math id="p1.m1" class="ltx_Math" alttext="LU" display="inline"><mrow><mi>L</mi><mo>⁢</mo><mi>U</mi></mrow></math> de uma matriz <math id="p1.m2" class="ltx_Math" alttext="A" display="inline"><mi>A</mi></math> com dimensões <math id="p1.m3" class="ltx_Math" alttext="n\times n" display="inline"><mrow><mi>n</mi><mo>×</mo><mi>n</mi></mrow></math> é</p>
 <table id="Ch2.E18" class="ltx_equation ltx_eqn_table">
 
@@ -101,39 +101,39 @@ gtag("config", "UA-17226092-2")
 </table>
 <p class="ltx_p">onde <math id="p1.m4" class="ltx_Math" alttext="L" display="inline"><mi>L</mi></math> é uma matriz triangular inferior e <math id="p1.m5" class="ltx_Math" alttext="U" display="inline"><mi>U</mi></math> é uma matriz triangular superior, ambas com dimensões <math id="p1.m6" class="ltx_Math" alttext="n\times n" display="inline"><mrow><mi>n</mi><mo>×</mo><mi>n</mi></mrow></math>.</p>
 </div>
-<div id="p2" class="ltx_para ltx_noindent">
+<div id="p2" class="ltx_para">
 <p class="ltx_p">Para fixar as ideais, vamos denotar <math id="p2.m1" class="ltx_Math" alttext="A=[a_{i,j}]_{i,j=0}^{n-1}" display="inline"><mrow><mi>A</mi><mo>=</mo><msubsup><mrow><mo stretchy="false">[</mo><msub><mi>a</mi><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow></msub><mo stretchy="false">]</mo></mrow><mrow><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow><mo>=</mo><mn>0</mn></mrow><mrow><mi>n</mi><mo>-</mo><mn>1</mn></mrow></msubsup></mrow></math>, <math id="p2.m2" class="ltx_Math" alttext="L=[l_{i,j}]_{i,j=0}^{n-1}" display="inline"><mrow><mi>L</mi><mo>=</mo><msubsup><mrow><mo stretchy="false">[</mo><msub><mi>l</mi><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow></msub><mo stretchy="false">]</mo></mrow><mrow><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow><mo>=</mo><mn>0</mn></mrow><mrow><mi>n</mi><mo>-</mo><mn>1</mn></mrow></msubsup></mrow></math> sendo <math id="p2.m3" class="ltx_Math" alttext="l_{i,i}=1" display="inline"><mrow><msub><mi>l</mi><mrow><mi>i</mi><mo>,</mo><mi>i</mi></mrow></msub><mo>=</mo><mn>1</mn></mrow></math> e <math id="p2.m4" class="ltx_Math" alttext="l_{i,j}=0" display="inline"><mrow><msub><mi>l</mi><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow></msub><mo>=</mo><mn>0</mn></mrow></math> para <math id="p2.m5" class="ltx_Math" alttext="i&gt;j" display="inline"><mrow><mi>i</mi><mo>&gt;</mo><mi>j</mi></mrow></math>, e <math id="p2.m6" class="ltx_Math" alttext="U=[u_{i,j}]_{i,j=0}^{n}" display="inline"><mrow><mi>U</mi><mo>=</mo><msubsup><mrow><mo stretchy="false">[</mo><msub><mi>u</mi><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow></msub><mo stretchy="false">]</mo></mrow><mrow><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow><mo>=</mo><mn>0</mn></mrow><mi>n</mi></msubsup></mrow></math> sendo <math id="p2.m7" class="ltx_Math" alttext="u_{i,j}=0" display="inline"><mrow><msub><mi>u</mi><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow></msub><mo>=</mo><mn>0</mn></mrow></math> para <math id="p2.m8" class="ltx_Math" alttext="i&lt;j" display="inline"><mrow><mi>i</mi><mo>&lt;</mo><mi>j</mi></mrow></math>. O pseudoalgoritmo serial para computar a decomposição <math id="p2.m9" class="ltx_Math" alttext="LU" display="inline"><mrow><mi>L</mi><mo>⁢</mo><mi>U</mi></mrow></math> é</p>
 <ol id="I1" class="ltx_enumerate">
 <li id="I1.i1" class="ltx_item" style="list-style-type:none;">
 <span class="ltx_tag ltx_tag_item">1.</span> 
-<div id="I1.i1.p1" class="ltx_para ltx_noindent">
+<div id="I1.i1.p1" class="ltx_para">
 <p class="ltx_p">U = A, L = I</p>
 </div>
 </li>
 <li id="I1.i2" class="ltx_item" style="list-style-type:none;">
 <span class="ltx_tag ltx_tag_item">2.</span> 
-<div id="I1.i2.p1" class="ltx_para ltx_noindent">
+<div id="I1.i2.p1" class="ltx_para">
 <p class="ltx_p">Para <math id="I1.i2.p1.m1" class="ltx_Math" alttext="k=0,\dotsc,n-2" display="inline"><mrow><mi>k</mi><mo>=</mo><mrow><mn>0</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mrow><mi>n</mi><mo>-</mo><mn>2</mn></mrow></mrow></mrow></math></p>
 <ol id="I1.I1" class="ltx_enumerate">
 <li id="I1.i2.i1" class="ltx_item" style="list-style-type:none;">
 <span class="ltx_tag ltx_tag_item">(a)</span> 
-<div id="I1.i2.i1.p1" class="ltx_para ltx_noindent">
+<div id="I1.i2.i1.p1" class="ltx_para">
 <p class="ltx_p">Para <math id="I1.i2.i1.p1.m1" class="ltx_Math" alttext="i=k+1,\dotsc,n-1" display="inline"><mrow><mi>i</mi><mo>=</mo><mrow><mrow><mi>k</mi><mo>+</mo><mn>1</mn></mrow><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mrow><mi>n</mi><mo>-</mo><mn>1</mn></mrow></mrow></mrow></math></p>
 <ol id="I1.I1.I1" class="ltx_enumerate">
 <li id="I1.i2.i1.i1" class="ltx_item" style="list-style-type:none;">
 <span class="ltx_tag ltx_tag_item">i.</span> 
-<div id="I1.i2.i1.i1.p1" class="ltx_para ltx_noindent">
+<div id="I1.i2.i1.i1.p1" class="ltx_para">
 <p class="ltx_p"><math id="I1.i2.i1.i1.p1.m1" class="ltx_Math" alttext="l_{i,k}=u_{i,k}/u_{k,k}" display="inline"><mrow><msub><mi>l</mi><mrow><mi>i</mi><mo>,</mo><mi>k</mi></mrow></msub><mo>=</mo><mrow><msub><mi>u</mi><mrow><mi>i</mi><mo>,</mo><mi>k</mi></mrow></msub><mo>/</mo><msub><mi>u</mi><mrow><mi>k</mi><mo>,</mo><mi>k</mi></mrow></msub></mrow></mrow></math></p>
 </div>
 </li>
 <li id="I1.i2.i1.i2" class="ltx_item" style="list-style-type:none;">
 <span class="ltx_tag ltx_tag_item">ii.</span> 
-<div id="I1.i2.i1.i2.p1" class="ltx_para ltx_noindent">
+<div id="I1.i2.i1.i2.p1" class="ltx_para">
 <p class="ltx_p">Para <math id="I1.i2.i1.i2.p1.m1" class="ltx_Math" alttext="j=k,\dotsc,n-1" display="inline"><mrow><mi>j</mi><mo>=</mo><mrow><mi>k</mi><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mrow><mi>n</mi><mo>-</mo><mn>1</mn></mrow></mrow></mrow></math></p>
 <ol id="I1.I1.I1.I1" class="ltx_enumerate">
 <li id="I1.i2.i1.i2.i1" class="ltx_item" style="list-style-type:none;">
 <span class="ltx_tag ltx_tag_item">A.</span> 
-<div id="I1.i2.i1.i2.i1.p1" class="ltx_para ltx_noindent">
+<div id="I1.i2.i1.i2.i1.p1" class="ltx_para">
 <p class="ltx_p"><math id="I1.i2.i1.i2.i1.p1.m1" class="ltx_Math" alttext="u_{i,j}=u_{i,j}-l_{i,k}u_{k,j}" display="inline"><mrow><msub><mi>u</mi><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow></msub><mo>=</mo><mrow><msub><mi>u</mi><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow></msub><mo>-</mo><mrow><msub><mi>l</mi><mrow><mi>i</mi><mo>,</mo><mi>k</mi></mrow></msub><mo>⁢</mo><msub><mi>u</mi><mrow><mi>k</mi><mo>,</mo><mi>j</mi></mrow></msub></mrow></mrow></mrow></math></p>
 </div>
 </li>
@@ -148,10 +148,10 @@ gtag("config", "UA-17226092-2")
 </li>
 </ol>
 </div>
-<div id="p3" class="ltx_para ltx_noindent">
+<div id="p3" class="ltx_para">
 <p class="ltx_p">A forma mais fácil de paralelizar este algoritmo em uma arquitetura MP é paralelizando um de seus laços (itens 2., 2.(a) ou 2.(a)ii.). O laço do item 2. não é paralelizável, pois a iteração seguinte depende do resultado da iteração imediatamente anterior. Agora, os dois laços seguintes são paralelizáveis. Desta forma, o mais eficiente é paralelizarmos o segundo laço 2.(a).</p>
 </div>
-<div id="p4" class="ltx_para ltx_noindent">
+<div id="p4" class="ltx_para">
 <p class="ltx_p">O seguinte código é uma versão paralela da decomposição LU. A matriz <math id="p4.m1" class="ltx_Math" alttext="A" display="inline"><mi>A</mi></math> é inicializada como uma matriz simétrica de elementos randômicos (linhas 19-41), sendo que a decomposição é computada nas linhas 43-61.</p>
 </div>
 <figure id="LSTx15" class="ltx_float ltx_lstlisting">
@@ -449,7 +449,7 @@ gtag("config", "UA-17226092-2")
 <div id="Thmresolx7" class="ltx_theorem ltx_theorem_resol">
 <h6 class="ltx_title ltx_runin ltx_title_theorem">
 <span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Solução</span></span>.</h6>
-<div id="Thmresolx7.p1" class="ltx_para ltx_noindent">
+<div id="Thmresolx7.p1" class="ltx_para">
 <p class="ltx_p">A decomposição LU da matriz <math id="Thmresolx7.p1.m1" class="ltx_Math" alttext="A" display="inline"><mi>A</mi></math> nos fornece as matrizes <math id="Thmresolx7.p1.m2" class="ltx_Math" alttext="L" display="inline"><mi>L</mi></math> (matriz triangular inferior) e <math id="Thmresolx7.p1.m3" class="ltx_Math" alttext="U" display="inline"><mi>U</mi></math> (matriz triangular superior), com</p>
 <table id="Ch2.E19" class="ltx_equation ltx_eqn_table">
 
@@ -461,7 +461,7 @@ gtag("config", "UA-17226092-2")
 </tr>
 </table>
 <p class="ltx_p">Logo, temos</p>
-<table id="Ch3.S1.EGx6" class="ltx_equationgroup ltx_eqn_gather ltx_eqn_table">
+<table id="Ch3.S3.EGx6" class="ltx_equationgroup ltx_eqn_gather ltx_eqn_table">
 
 <tbody id="Ch2.E20"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
 <td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
@@ -508,19 +508,19 @@ gtag("config", "UA-17226092-2")
 <ol id="I2" class="ltx_enumerate">
 <li id="I2.i1" class="ltx_item" style="list-style-type:none;">
 <span class="ltx_tag ltx_tag_item">1.</span> 
-<div id="I2.i1.p1" class="ltx_para ltx_noindent">
+<div id="I2.i1.p1" class="ltx_para">
 <p class="ltx_p">Computar a decomposição LU, A=LU.</p>
 </div>
 </li>
 <li id="I2.i2" class="ltx_item" style="list-style-type:none;">
 <span class="ltx_tag ltx_tag_item">2.</span> 
-<div id="I2.i2.p1" class="ltx_para ltx_noindent">
+<div id="I2.i2.p1" class="ltx_para">
 <p class="ltx_p">Resolver <math id="I2.i2.p1.m1" class="ltx_Math" alttext="Ly=b" display="inline"><mrow><mrow><mi>L</mi><mo>⁢</mo><mi>y</mi></mrow><mo>=</mo><mi>b</mi></mrow></math>.</p>
 </div>
 </li>
 <li id="I2.i3" class="ltx_item" style="list-style-type:none;">
 <span class="ltx_tag ltx_tag_item">3.</span> 
-<div id="I2.i3.p1" class="ltx_para ltx_noindent">
+<div id="I2.i3.p1" class="ltx_para">
 <p class="ltx_p">Resolver <math id="I2.i3.p1.m1" class="ltx_Math" alttext="Ux=b" display="inline"><mrow><mrow><mi>U</mi><mo>⁢</mo><mi>x</mi></mrow><mo>=</mo><mi>b</mi></mrow></math>.</p>
 </div>
 </li>
@@ -538,7 +538,7 @@ gtag("config", "UA-17226092-2")
 <div id="Thmresolx8" class="ltx_theorem ltx_theorem_resol">
 <h6 class="ltx_title ltx_runin ltx_title_theorem">
 <span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Solução</span></span>.</h6>
-<div id="Thmresolx8.p1" class="ltx_para ltx_noindent">
+<div id="Thmresolx8.p1" class="ltx_para">
 <p class="ltx_p">O seguinte código faz a implementação pedida. Neste código, é necessário alocar apenas a matriz <math id="Thmresolx8.p1.m1" class="ltx_Math" alttext="A" display="inline"><mi>A</mi></math>, sem necessidade de locar as matrizes <math id="Thmresolx8.p1.m2" class="ltx_Math" alttext="L" display="inline"><mi>L</mi></math> e <math id="Thmresolx8.p1.m3" class="ltx_Math" alttext="U" display="inline"><mi>U</mi></math>. Da linha 17 à 39, apenas é gerada a matriz randômica <math id="Thmresolx8.p1.m4" class="ltx_Math" alttext="A" display="inline"><mi>A</mi></math>. A decomposição é computada da linha 41 a 54.</p>
 </div>
 <figure id="LSTx16" class="ltx_float ltx_lstlisting">
@@ -783,7 +783,7 @@ gtag("config", "UA-17226092-2")
 </div>
 </div>
 </figure>
-<div id="Thmresolx8.p2" class="ltx_para ltx_noindent">
+<div id="Thmresolx8.p2" class="ltx_para">
 <p class="ltx_p">Este algoritmo demanda substancialmente menos memória computacional que o código <code class="ltx_verbatim ltx_font_typewriter">parallelLU.cc</code> visto acima. Por outro lado, ele é substancialmente mais lento, podendo demandar até o dobro de tempo. Verifique!</p>
 </div>
 <div id="Thmresolx8.p3" class="ltx_para">
@@ -837,7 +837,7 @@ gtag("config", "UA-17226092-2")
 <a href="cap_mp_sec_sistria.html" title="2.3 Resolução de Sistema Linear Triangular ‣ Capítulo 2 Multiprocessamento (MP) ‣ Matemática Numérica Paralela" class="ltx_ref" rel="prev"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">2.3 </span>Resolução de Sistema Linear Triangular</span></a><a href="bib.html" title="Referências ‣ Matemática Numérica Paralela" class="ltx_ref" rel="bibliography"><span class="ltx_text ltx_ref_title">Referências</span></a><a href="cap_mp_sec_mitsislin.html" title="2.5 Métodos iterativos para Sistemas Lineares ‣ Capítulo 2 Multiprocessamento (MP) ‣ Matemática Numérica Paralela" class="ltx_ref" rel="next"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">2.5 </span>Métodos iterativos para Sistemas Lineares</span></a>
 </div>
 <div class="ltx_page_logo">
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />O texto acima está sob Licença <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR">Creative Commons Atribuição-CompartilhaIgual 4.0 Internacional</a>. Generated  on Wed Mar 24 09:40:53 2021 by <a href="http://dlmf.nist.gov/LaTeXML/">LaTeXML <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg==" alt="[LOGO]"></a>
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />O texto acima está sob Licença <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR">Creative Commons Atribuição-CompartilhaIgual 4.0 Internacional</a>. Generated  on Tue Mar 30 15:38:17 2021 by <a href="http://dlmf.nist.gov/LaTeXML/">LaTeXML <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg==" alt="[LOGO]"></a>
 </div></footer>
 </div>
 <div class="toast fade show" aria-live="polite" style="position: fixed; bottom: 0"><div class="toast-header"><strong class="mr-auto"><a href="../contato.html" target="_blank"><i class="fas fa-envelope"></i> Erros? Sugestões? </a></strong><button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button></div><div class="toast-body"><a href="../contato.html" target="_blank">Clique aqui para informar erros ou deixar sujestões!</a></div></div></div> <!-- div class=col-lg-1 -->
