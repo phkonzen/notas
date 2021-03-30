@@ -22,7 +22,10 @@ $ mpic++ ola.cc
 \end{verbatim}
 Esta instrução de compilação é análoga a
 \begin{verbatim}
-g++ ola.cc -I/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi -I/usr/lib/x86_64-linux-gnu/openmpi/include -pthread -L/usr/lib/x86_64-linux-gnu/openmpi/lib -lmpi_cxx -lmpi
+g++ ola.cc -I/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi
+   -I/usr/lib/x86_64-linux-gnu/openmpi/include 
+   -pthread -L/usr/lib/x86_64-linux-gnu/openmpi/lib 
+   -lmpi_cxx -lmpi
 \end{verbatim}
 ou semelhante dependendo da instalação. Para ver a sua configuração, digite
 \begin{verbatim}
@@ -158,11 +161,114 @@ O código acima pode rodado com pelo menos duas instâncias de processamento (ve
 
 {\bf Importante!} As rotinas \verb+MPI_Send+ e \verb+MPI_Recv+ provocam a sincronização entre os processos envolvidos. Por exemplo, no código acima, no que o processo 0 atinge a rotina \verb+MPI_Send+ ele ficará aguardando o processo 1 receber todos os dados enviados e só, então, irá seguir adiante no código. Analogamento, no que o processo 1 atingir a rotina \verb+MPI_Recv+, ele ficará aguardando o processo 0 enviar todos os dados e só, então, irá seguir adiante no código.
 
+\subsubsection {Envio e recebimento de {\it array}}
+
+As rotinas \verb+MPI_Send+ e \verb+MPI_Recv+ podem ser utilizadas para o envio e recebimento de {\it arrays}. A sintaxe é a mesma vista acima, sendo que o primeiro argumento \verb+*buf+ deve apontar para o início do {\it array} e o segundo argumento \verb+count+ corresponde ao tamanho da {\it array}.
+
+Vamos estudar o seguinte código. Nele, o processo 0 aloca $v = (0,1,2,3,4)$ e o processo 1 aloca $w = (4,3,2,1,0)$. O processo 0 envia os valores $v_1, v_2, v_3$ para o processo 1. Então, o processo 1 recebe estes valores e os aloca em $w_0, w_1, w_2$. Desta forma, a saída impressa no terminal é
+\begin{equation}
+  w = (1, 2, 3, 1, 0).
+\end{equation}
+Verifique!
+
+\lstinputlisting[title={Código: sendRecvArray.cc}]{cap_mpi/dados/cc_sendRecvArray/sendRecvArray.cc}
+
+
 \subsection {Envio e recebimento assíncrono}
 
-\emconstrucao
+O \verb+MPI+ também suporta rotinas \href{https://www.open-mpi.org/doc/current/man3/MPI_Isend.3.php}{MPI\_Isend} de envio e \href{https://www.open-mpi.org/doc/current/man3/MPI_Irecv.3.php}{MPI\_Irecv} de recebimento assíncronos. Neste caso, o processo emissor envia o dado para outro processo e segue imediatamente a computação. O processo receptor deve conter uma rotina \href{https://www.open-mpi.org/doc/current/man3/MPI_Irecv.3.php}{MPI\_Irecv}, mas também não aguarda sua conclusão para seguir a computação.
 
-\subsection* {Exercícios resolvidos}
+As sintaxes destas rotinas são semelhantes as das rotinas \verb+MPI_Send+ e \verb+MPI_Recv+.
+
+\begin{verbatim}
+int MPI_Isend(
+  const void *buf, 
+  int count, 
+  MPI_Datatype datatype, 
+  int dest,
+  int tag, MPI_Comm comm, 
+  MPI_Request *request)
+\end{verbatim}
+
+\begin{verbatim}
+int MPI_Irecv(
+  void *buf, 
+  int count, 
+  MPI_Datatype datatype,
+  int source, 
+  int tag, 
+  MPI_Comm comm, 
+  MPI_Request *request)
+\end{verbatim}
+O último argumento permite verificar os envios e recebimentos.
+
+Vamos estudar o seguinte código.
+
+\lstinputlisting[title={Código: isendRecv.cc}]{cap_mpi/dados/cc_IsendRecv/isendRecv.cc}
+
+Neste código, \verb+MPI_Status+ e \verb+MPI_Request+ são alocados nas linhas 26 e 27, respectivamente. O Processo 0 faz uma requisição de envio do número $3.1416$ para o processo 1, não aguarda o recebimento e segue adiante. O processo 1 tem uma rotina de requisição de recebimento não assíncrona na linha 35. Neste momento, ele não necessariamente recebe o dado enviado pelo processador (isto pode ocorrer a qualquer momento mais adiante). Na linha 37, o valor de \verb+y+ deve ainda ser $0.0$, veja a saída do código.
+
+\begin{verbatim}
+$ mpic++ isendRecv.cc
+$ $ mpirun -np 2 ./a.out
+x = 1.000000
+x = 4.141600
+\end{verbatim}
+
+Pode-se verificar se uma requisição de envio (ou recebimento) foi completata usando-se a rotina \href{https://www.open-mpi.org/doc/current/man3/MPI\_Test.3.php}{MPI\_Test}. A sua sintaxe é
+\begin{verbatim}
+int MPI_Test(
+  MPI_Request *request, 
+  int *flag, 
+  MPI_Status *status)
+\end{verbatim}
+O \verb+flag == 0+ caso a requisição ainda não foi completada e \verb+flag == 1+ caso a requisição foi executada.
+
+No Código \verb+isendRecv.cc+ acima, as linhas de código 39-41 são utilizadas para fazê-lo aguardar até que a requisição de recebimento seja completada. Desta forma, na linha 42 o valor de \verb+y+ é $3.1416$ (o valor enviado pelo processo 0. Verifique!
+
+\begin{obs}
+  No Código \verb+isendRecv.cc+ acima, as linhas 39-41 podem ser substituídas pela rotina \href{https://www.open-mpi.org/doc/current/man3/MPI\_Wait.3.php}{MPI\_Wait}, a qual tem sintaxe
+\begin{verbatim}
+int MPI_Wait(
+  MPI_Request *request, 
+  MPI_Status *status)
+\end{verbatim}
+  Verifique!
+\end{obs}
+
+\subsection* {Exercícios}
+
+\begin{exer}
+  Faça um código MPI para ser executado com 2 processadores. Um processo aloca $x = 0$ e o outro processo aloca $y=1$. Logo, os processos trocam os valores, de forma que ao final o processo zero tem $x = 1$ e o processo 1 tem $y=0$.
+\end{exer}
+
+\begin{exer}
+  Faça um código MPI para ser executado com 2 processadores. O processo 0 aloca um vetor de $n\geq 1$ elementos randômicos em ponto flutuante, envia o vetor para o processo 1. O processo 0, imprime no terminal a soma dos termos do vetor e o processo 1 imprime o produto dos termos do vetor.
+\end{exer}
+
+
+\begin{exer}
+  Faça um código MPI para computar a média
+  \begin{equation}
+    \frac{1}{n}\sum_{i=0}^{n-1} x_i
+  \end{equation}
+  onde $x_i$ é um número em ponto flutuante e $n\geq 1$. Para a comunicação entre os processos, utilize apenas as rotinas \verb+MPI_Send+ e \verb+MPI_Recv+.
+\end{exer}
+
+\begin{exer}\label{exer:mpi_prodin}
+  Faça um código MPI para computação do produto interno entre dois vetores
+  \begin{gather}
+    x = (x_0, x_1, \dotsc, x_n),\\
+    y = (y_0, y_1, \dotsc, y_n).
+  \end{gather}
+  Para a comunicação entre os processos, utilize apenas as rotinas \verb+MPI_Send+ e \verb+MPI_Recv+. O processo 0 deve receber os resultados parciais dos demais processos e escrever na tela o valor computado do produto interno.
+\end{exer}
+
+\begin{exer}
+  Modifique o código do exercício anterior (Exercício \ref{exer:mpi_prodin}) de forma a fazer a comunicação entre os processos com as rotinas \verb+MPI_Isend+ e \verb+MPI_Irecv+. Há vantagem em utilizar estas rotinas? Se sim, quais?
+\end{exer}
+
+\section {Comunicações coletivas}
 
 \emconstrucao
 
