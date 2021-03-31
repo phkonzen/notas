@@ -23,16 +23,24 @@ A solução de uma equação a diferenças de ordem 1, linear e homogênea
   y(n+1) = a(n)y(n),\quad n\geq n_0,
 \end{equation}
 pode ser obtida por iterações diretas. Para $n\geq n_0$, temos
-\begin{align}
-  y(n+1) &= a(n)y(n) \\
-          &= a(n)a(n-1)y(n-1)\\
-          &= a(n)a(n-1)a(n-2)y(n-2) \\
-          &\vdots\\
-          &= a(n)a(n-1)\cdots a(n_0)y(n_0).
-\end{align}
+\begin{gather}
+  y(n+1) = a(n)y(n) \\
+  = a(n)a(n-1)y(n-1)\\
+  = a(n)a(n-1)a(n-2)y(n-2) \\
+  \vdots\\
+  = a(n)a(n-1)\cdots a(n_0)y(n_0).
+\end{gather}
 Ou seja, dado o valor inicial $y(n_0)$, temos a solução\footnote{A demonstração por ser feita por indução matemática.}
+\begin{equation}
+  y(n) = a(n_0)a(n_0+1)\cdots a(n-1)y(n_0).
+\end{equation}
+A fim de termos uma notação mais prática, vamos usar a notação de produtório\footnote {Veja mais em \href{https://pt.wikipedia.org/wiki/Produt\%C3\%B3rio}{Wiki: Produtório}.}
+\begin{equation}
+  \prod_{i=n_0}^{n-1} a(n) = a(n_0)a(n_0+1)\cdots a(n-1).
+\end{equation}
+Com esta notação, a solução de \eqref {eq:ead1_linear_eqh} pode ser escrita como segue
 \begin{equation}\label{eq:ead1_linear_eqh_sol}
-  y(n) = \left[\prod_{i=n_0}^{n-1}a(i)\right]y(n_0),
+  {\color{blue} y(n) = \left[\prod_{i=n_0}^{n-1}a(i)\right]y(n_0)},
 \end{equation}
 assumindo a notação de que $\prod_{i=n+1}^na(i)=1$.
 
@@ -42,21 +50,31 @@ assumindo a notação de que $\prod_{i=n+1}^na(i)=1$.
     y(n+1) = 2y(n),\quad n\geq 0.
   \end{equation}
 
-  Comparando com \eqref{eq:ead1_linear_eqh}, temos $a(n) = 2$ para todo $n$. Calculando a solução por iterações diretas, temos
-  \begin{align}
-    y(n+1) &= 2y(n) \\
-            &= 2\cdot 2y(n-1) \\
-            &= 2^2y(n-1) \\
-            &= 2^2\cdot 2y(n-2) \\
-            &= 2^3y(n-2) \\
-            &\cdots \\
-            &= 2^{n+1}y(0)
-  \end{align}
-  Equivalentemente, por \eqref{eq:ead1_linear_eqh_sol}, temos
-  \begin{align}
-    y(n) &= \left[\prod_{i=0}^{n-1}2\right]y(0) \\
-         &= 2^{n}y(0).
-  \end{align}
+  \begin{enumerate}[a)]
+  \item Por iterações diretas.
+
+    Comparando com \eqref{eq:ead1_linear_eqh}, temos $a(n) = 2$ para todo $n$. Calculando a solução por iterações diretas, temos
+  \begin{gather}
+    y(n+1) = 2y(n) \\
+           = 2\cdot 2y(n-1) \\
+           = 2^2y(n-1) \\
+           = 2^2\cdot 2y(n-2) \\
+           = 2^3y(n-2) \\
+           \vdots \nonumber\\
+           = 2^{n+1}y(0)
+  \end{gather}
+  ou, equivalentemente, temos a solução
+  \begin{equation}
+    y(n) = 2^ny(0).
+  \end{equation}
+
+\item Por \ref {eq:ead1_linear_eqh_sol}.
+  \begin{gather}
+    y(n) = \left[\prod_{i=0}^{n-1}2\right]y(0) \\
+    = (\underbrace{2\cdot 2\cdot \cdots \cdot 2}_{\text{n vezes}}) y(0)\\
+    = 2^{n}y(0).
+  \end{gather}
+\end{enumerate}
   A solução vale para qualquer valor inicial $y(0)$.
 
   \ifispython
@@ -80,27 +98,37 @@ A solução de uma equação a diferenças de ordem 1, linear e não homogênea
 pode ser obtida por iterações diretas.
 
 Vejamos, para $n\geq n_0$ temos
-\begin{align*}
-  y(n+1) &= a(n)y_n + g(n) \\
-         &= a(n)\left[a(n-1)y(n-1)+g(n-1)\right] + g(n) \\
-         &= a(n)a(n-1)y(n-1)+a(n)g(n-1) + g(n) \\
-         &= a(n)a(n-1)\left[a(n-2)y(n-2)+g(n-2)\right] \\
-         &+ a(n)g(n-1) + g(n) \\
-         &= a(n)a(n-1)a(n-2)y(n-2) \\
-         &+ a(n)a(n-1)g(n-2) + a(n)g(n-1) + g(n) \\
-         &\vdots
-\end{align*}
-Com isso, podemos inferir\footnote{A demonstração por ser feita por indução matemática.} que
-\begin{align}
-  y(n+1) &= \left[\prod_{i=n_0}^{n} a(i)\right]y(n_0) \\
-         &+ \sum_{i=n_0}^n\left[\prod_{j=i+1}^{n} a(j)\right]g(i).
-\end{align}
-No último termo, consideramos a notação $\sum_{j=i+1}^i a(i) = 0$. Ou equivalentemente,
-\begin{align}
-  {\color{blue}y(n)} &{\color{blue}= \left[\prod_{i=n_0}^{n-1} a(i)\right]y(n_0)} \nonumber\\
-       &{\color{blue}+ \sum_{i=n_0}^{n-1}\left[\prod_{j=i+1}^{n-1} a(j)\right]g(i)}. \label{eq:ead1_linear_eqnh_sol}
-\end{align}
-
+\begin{gather}
+  y(n+1) = a(n){\color{blue}y(n)} + g(n) \\
+  = a(n)\left[{\color{blue}a(n-1)y(n-1)+g(n-1)}\right] + g(n) \\
+  = a(n)a(n-1){\color{blue}y(n-1)}+a(n)g(n-1) + g(n) \\
+  = a(n)a(n-1)\left[{\color{blue}a(n-2)y(n-2)+g(n-2)}\right] \nonumber\\
+  + a(n)g(n-1) + g(n) \\
+  = a(n)a(n-1)a(n-2)y(n-2) \nonumber\\
+  + a(n)a(n-1)g(n-2) + a(n)g(n-1) + g(n) \\
+  \vdots\nonumber\\
+  = {\color{blue}a(n)a(n-1)\cdots a(n_0)}y(n_0) \nonumber\\
+  + {\color{red}a(n_0+1)a(n_0+2)\cdots a(n)}g(n_0) \nonumber\\
+  + {\color{red}a(n_0+2)a(n_0+3)\cdots a(n)}g(n_0+1) \nonumber\\
+  + \cdots + {\color{red}a(n)}g(n-1) + g(n)
+\end{gather}
+Logo, podemos inferir que a solução é dada por\footnote{A demonstração por ser feita por indução matemática.}
+\begin{gather}
+  y(n) = {\color{blue}a(n_0)a(n_0+1)\cdots a(n-1)}y(n_0) \nonumber\\
+  + {\color{red}a(n_0+1)a(n_0+2)\cdots a(n-1)}g(n_0) \nonumber\\
+  + {\color{red}a(n_0+2)a(n_0+3)\cdots a(n-1)}g(n_0+1) \nonumber\\
+  + \cdots + {\color{red}a(n-1)}g(n-2) + g(n-1)
+\end{gather}
+Aqui, por maior praticidade, vamos empregar a notação de somatório\footnote{Veja mais em \href{https://pt.wikipedia.org/wiki/Somat\%C3\%B3rio}{Wiki: Somatório}}
+\begin{equation}
+  \sum_{i=n_0}^{n} a(i) = a(n_0) + a(n_0+1) + \cdots + a(n).
+\end{equation}
+Com isso, a solução de \eqref{eq:ead1_linear_eqnh} pode ser escrita como segue
+\begin{gather}
+  {\color{blue}y(n) = \left[\prod_{i=n_0}^{n-1} a(i)\right]y(n_0)} \nonumber\\
+  {\color{blue}+ \sum_{i=n_0}^{n-1}\left[\prod_{j=i+1}^{n-1} a(j)\right]g(i)}. \label{eq:ead1_linear_eqnh_sol}
+\end{gather}
+No último termo, consideramos a notação $\sum_{j=i+1}^i a(i) = 0$.
 
 \begin{ex}
   Vamos calcular a solução de
@@ -108,38 +136,57 @@ No último termo, consideramos a notação $\sum_{j=i+1}^i a(i) = 0$. Ou equival
     y(n+1) = 2y(n) - 1,\quad n\geq 0.
   \end{equation}
 
-  Comparando com \eqref{eq:ead1_linear_eqnh}, temos $a(n) = 2$ e $g(n)=-1$ para todo $n$. Calculando a solução por iterações diretas, temos
-  \begin{align}
-    y(n+1) &= 2y(n)-1 \\
-            &= 2\cdot \left[2y(n-1)-1\right]-1 \\
-            &= 2^2y(n-1)-2-1 \\
-            &= 2^2\cdot \left[2y(n-2)-1\right]-2-1 \\
-            &= 2^3y(n-2)-2^2-2-1 \\
-            &\cdots \\
-            &= 2^{n+1}y(0)-\sum_{i=0}^{n}2^i
-  \end{align}
-  Este último termo, é a soma dos termos da {\bf progressão geométrica} de razão $q=2$ (veja Subseção \ref{cap_ead1_sec_eqlin_subsec_sd}), i.e.
-  \begin{equation}
-    \sum_{i=0}^n q^i = \frac{1-q^{n+1}}{1-q}.
-  \end{equation}
-  Logo, temos que a solução de \eqref{eq:ead1_linear_eqnh} é
-  \begin{align}
-    y(n+1) &= 2^{n+1}y(0) - \frac{1-2^{n+1}}{1-2} \\
-           &= 2^{n+1}y(0) -2^{n+1}+1.
-  \end{align}
-  
-  Equivalentemente, por \eqref{eq:ead1_linear_eqnh_sol}, temos
-  \begin{align}
-    y(n) &= \left[\prod_{i=n_0}^{n-1} a(i)\right]y(n_0) \\
-         &+ \sum_{i=n_0}^{n-1}\left[\prod_{j=i+1}^{n-1} a(j)\right]g(i) \\
-         &= \left[\prod_{i=0}^{n-1} 2\right]y(0) \\
-         &+ \sum_{i=0}^{n-1}\left[\prod_{j=i+1}^{n-1} 2\right](-1) \\
-         &= 2^ny(0) - \sum_{i=0}^{n-1}2^{n-i-1}\\
-         &= 2^ny(0) - 2^{n-1}\sum_{i=0}^{n-1}2^{-i}\\
-         &= 2^ny(0) - 2^{n} + 1. \label{eq:ex_ead1_linear_eqnh_sol}
-  \end{align}
-  A solução vale para qualquer valor inicial $y(0)$.
+  Comparando com \eqref{eq:ead1_linear_eqnh}, temos $a(n) = 2$ e $g(n)=-1$ para todo $n$.
 
+  \begin{enumerate}
+  \item Cálculo por iterações diretas.
+
+    Calculando a solução por iterações diretas, temos
+    \begin{gather}
+      y(n+1) = 2y(n)-1 \\
+      = 2\cdot \left[2y(n-1)-1\right]-1 \\
+      = 2^2y(n-1)-2-1 \\
+      = 2^2\cdot \left[2y(n-2)-1\right]-2-1 \\
+      = 2^3y(n-2)-2^2-2-1 \\
+      \cdots \nonumber\\
+      = 2^{n+1}y(0)-\sum_{i=0}^{n}2^i
+    \end{gather}
+    Logo, temos
+    \begin{equation}
+      y(n) = 2^ny(0) - {\color{blue}\sum_{i=0}^{n-1} 2^i}.
+    \end{equation}
+    Este último termo, é a soma dos termos da {\bf progressão geométrica}\footnote{Veja mais em \href{https://pt.wikipedia.org/wiki/Progress\%C3\%A3o\_geom\%C3\%A9trica}{Wiki:Progressão geométrica.}} de razão $q=2$ e termo inicial $1$ (veja Subseção \ref{cap_ead1_sec_eqlin_subsec_sd}), i.e.
+  \begin{equation}
+    \sum_{i=0}^{n-1} q^i = \frac{1-q^n}{1-q}.
+  \end{equation}
+  Portanto, a solução \eqref{eq:ead1_linear_eqnh} é
+  \begin{gather}
+    y(n) = 2^ny(0) - {\color{blue}\frac{1-2^{n}}{1-2}} \\
+    = 2^{n}y(0) -2^{n}+1.
+  \end{gather}
+
+\item Cálculo por \eqref{eq:ead1_linear_eqnh_sol}.
+  
+  \begin{gather}
+    y(n) = {\color{blue}\left[\prod_{i=n_0}^{n-1} a(i)\right]}y(n_0) \\
+    + {\color{red}\sum_{i=n_0}^{n-1}\left[\prod_{j=i+1}^{n-1} a(j)\right]}g(i) \\
+    = {\color{blue}\left[\prod_{i=0}^{n-1} 2\right]}y(0) \\
+    + {\color{red}\sum_{i=0}^{n-1}\left[\prod_{j=i+1}^{n-1} 2\right]}(-1) \\
+    = {\color{blue}2^n}y(0) -{\color{red} \sum_{i=0}^{n-1}2^{n-1-i}}\\
+    = {\color{blue}2^n}y(0) - {\color{red}2^{n-1}\sum_{i=0}^{n-1}2^{-i}}\label{eq:ead1_lineqnh_ae}
+  \end{gather}
+  Este último somatório é a soma dos termos da progressão geométrica de razão $q=1/2$ e termo inicial $1$ ((veja Subseção \ref{cap_ead1_sec_eqlin_subsec_sd}), equação \eqref{eq:ead1_eqlin_spg}). Logo,
+  \begin{gather}
+    \sum_{i=0}^{n-1}2^{-i} = \frac{1-\left(\frac{1}{2}\right)^n}{1-\frac{1}{2}}\\
+    = 2\left(1-2^{-n}\right).
+  \end{gather}
+  Retornando a \eqref{eq:ead1_lineqnh_ae}, temos
+  \begin{gather}
+   y(n) = {\color{blue}2^n}y(0) - {\color{red}2^{n-1}\cdot 2\cdot \left(1 - 2^{-n}\right)}\\
+    = 2^ny(0) - 2^{n} + 1. \label{eq:ex_ead1_linear_eqnh_sol}
+  \end{gather}
+  A solução vale para qualquer valor inicial $y(0)$.
+\end{enumerate}
   \ifispython
   No \python, podemos computar a solução da equação a diferenças \eqref{eq:ex_ead1_lin_eh} com os seguintes comandos:
 \begin{verbatim}
@@ -167,7 +214,7 @@ Seguem algumas somas definidas que podem ser úteis na resolução de equações
   \sum_{k=1}^{n} k^2 &= \frac{n(n+1)(2n+1)}{6}\\
   \sum_{k=1}^n k^3 &= \left[\frac{n(n+1)}{2}\right]^2\\
   \sum_{k=1}^n k^4 &= \frac{n(6n^4+15n^3+10n^2-1)}{30}\\
-  \sum_{k=0}^{n-1}q^k &= \frac{(1-q^n)}{1-q},\quad q\neq 1\\
+  \sum_{k=0}^{n-1}q^k &= \frac{(1-q^n)}{1-q},\quad q\neq 1\label{eq:ead1_eqlin_spg}\\
   \sum_{k=1}^n kq^k &= \frac{(q-1)(n+1)q^{n+1}-q^{n+2}+q}{(q-1)^2}
 \end{align}
 
@@ -193,7 +240,7 @@ Seguem algumas somas definidas que podem ser úteis na resolução de equações
 \begin{verbatim}
 In : n = symbols('n', integer=true)
 In : y = symbols('y', cls=Function)
-In : ead = Eq(y(n+1),1/2*y(n))
+In : ead = Eq(y(n+1),S(1)/2*y(n))
 In : rsolve(ead, y(n), {y(0):1})
 Out: 0.5**n
 \end{verbatim}
@@ -230,7 +277,7 @@ In : n = symbols('n', integer=true)
 In : y = symbols('y', cls=Function)
 In : ead = Eq(y(n+1),2*y(n)+(1/2)**n)
 In : rsolve(ead, y(n), {y(0):0})
-Out: -0.666666666666667*0.5**n + 0.666666666666667*2**n
+Out: 2*2**n/3 - 2*2**(-n)/3
 \end{verbatim}
   \fi  
 \end{resol}
