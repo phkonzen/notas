@@ -101,7 +101,15 @@ class Index:
 
         body += '<div>\n'
         body += '<div class="spinner-grow spinner-grow-sm text-danger mb-1" role="status"></div>\n'
-        body += '<a href="http://www.cnmac.org.br/novo/index.php/CNMAC">CNMAC 2021: Submissão de trabalhos - 15/03/2021.</a></div>\n'
+        body += '<a href="http://www.cnmac.org.br/novo/index.php/CNMAC">CNMAC 2021: Submissão de trabalhos - 15/03/2021</a></div>\n'
+        
+        body += '</div>'
+
+        body += '<div class="carousel-item">'
+
+        body += '<div>\n'
+        body += '<div class="spinner-grow spinner-grow-sm text-danger mb-1" role="status"></div>\n'
+        body += '<a href="http://www.ufrgs.br/ppgmap/selecao/editais-de-selecao-mestrado">PPGMAp-UFRGS: Processo Seletivo - Mestrado 2021/1</a></div>\n'
         
         body += '</div>'
 
@@ -109,15 +117,7 @@ class Index:
 
         body += '<div>\n'
         body += '<div class="spinner-grow spinner-grow-sm text-primary mb-1" role="status"></div>\n'
-        body += '<a href="http://www.ufrgs.br/ppgmap">Programa de Pós-Graduação em Matemática Aplicada</a></div>\n'
-        
-        body += '</div>'
-
-        body += '<div class="carousel-item">'
-
-        body += '<div>\n'
-        body += '<div class="spinner-grow spinner-grow-sm text-primary mb-1" role="status"></div>\n'
-        body += '<a href="http://www.ufrgs.br/ime">Instituto de Matemática e Estatística</a></div>\n'
+        body += '<a href="http://www.ufrgs.br/ppgmap/selecao/editais-de-selecao-doutorado">PPGMAp-UFRGS: Processo Seletivo Doutorado 2021</a></div>\n'
         
         body += '</div>'
 
