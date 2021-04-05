@@ -270,6 +270,199 @@ int MPI_Wait(
 
 \section {Comunicações coletivas}\label{cap_mpi_sec_colcom}
 
+Nesta seção, vamos discutir sobre rotinas de comunicações MPI coletivas. Basicamente, rotinas de sincronização, envio e recebimento de dados envolvendo múltiplas instâncias de processamento ao mesmo tempo.
+
+\subsection {Barreira de sincronização}
+
+Podemos forçar a sincronização de todos os processos em um determinado ponto do código utilizando a rotina de sincronização \href{https://www.open-mpi.org/doc/current/man3/MPI\_Barrier.3.php}{MPI\_Barrier}
+\begin{verbatim}
+int MPI_Barrier (MPI_Comm comm)
+\end{verbatim}
+Quando um processo encontra esta rotina ele aguarda todos os demais processos. No momento em que todos os processo tiverem alcançados esta rotina, todos são liberados para seguirem com suas computações.
+
+\begin{ex}
+  No Código \verb+barrier.cc+, abaixo, cada instância de processamento aguarda randomicamente até 3 segundos para alcançar a rotina de sincronização \href{https://www.open-mpi.org/doc/current/man3/MPI\_Barrier.3.php}{MPI\_Barrier} na linha 36. Em seguida, elas são liberadas juntas. Estude o código.
+
+\lstinputlisting[title={Código: barrier.cc}]{cap_mpi/dados/cc_Barrier/barrier.cc}
+
+Vamos observar o seguinte teste de rodagem
+\begin{verbatim}
+$ mpic++ barrier.cc
+$ mpirun -np 2 a.out                                                          
+1 chegou na barreira: 1 s.
+0 chegou na barreira: 3 s.
+0 saiu da  barreira: 3 s.
+1 saiu da  barreira: 3 s.
+\end{verbatim}
+Neste caso, o processo 1 foi o primeiro a alcançar a barreira de sincronização e permaneceu esperando aproximadamente 2 segundos até que o processo 0 alcançasse a barreira. Imediatamente após o processo 1 chegar a barreira, ambos seguiram suas computações. Rode várias vezes este código e analise as saídas!
+\end{ex}
+
+\begin{obs}
+  No Código \verb+barrier.cc+ acima, o gerador de números randômicos é inicializado com a semente
+\begin{verbatim}
+srand (init + world_rank);
+\end{verbatim}
+  onde, \verb+init+ é o tempo colhido pela rotina \verb+time+ no início do processamento (veja as linhas 22-25). Observamos que somar o identificado \verb+rank+ garante que cada processo inicie o gerador randômico com uma semente diferente.
+\end{obs}
+
+\subsection {Transmissão coletiva}
+
+A rotina de transmissão de dados \href{https://www.open-mpi.org/doc/current/man3/MPI\_Bcast.3.php}{MPI\_Bcast} permite o envio de dados de um processo para todos os demais. Sua sintaxe é a seguinte
+\begin{verbatim}
+int MPI_Bcast(
+  void *buffer, 
+  int count, 
+  MPI_Datatype datatype,
+  int root, 
+  MPI_Comm comm)
+\end{verbatim}
+O primeiro argumento \verb+buffer+ aponta para o endereço da memória do dado a ser transmitido. O argumento \verb+count+ é a quantidade de dados sucessivos que serão transmitidos (tamanho do \verb+buffer+). O tipo de dado é informado no argumento \verb+datatype+. Por fim, \verb+root+ é o identificador \verb+rank+ do processo que está transmitindo e \verb+comm+ é o comunicador.
+
+\begin{ex}
+  No seguinte Código \verb+bcast.cc+, o processo 0 inicializa a variável de ponto flutuante $x = \pi$ (linhas 22-23) e, então, transmite ela para todos os demais processos (linhas 25-26). Por fim, cada processo imprime no terminal o valor alocado na sua variável $x$ (linhas 28-29).
+
+\lstinputlisting[title={Código: bcast.cc}]{cap_mpi/dados/cc_bcast/bcast.cc}
+
+Vejamos o seguinte teste de rodagem
+\begin{verbatim}
+$ mpic++ bcast.cc
+$ mpirun -np 3 ./a.out                                                           
+Processo 0 x = 3.141593
+Processo 1 x = 3.141593
+Processo 2 x = 3.141593
+\end{verbatim}
+\end{ex}
+
+\subsection {Distribuição coletiva de dados}
+
+A rotina \href{https://www.open-mpi.org/doc/current/man3/MPI\_Scatter.3.php}{MPI\_Scatter} permite que um processo faça a distribuição uniforme de pedaços sequenciais de um {\it array} de dados para todos os demais processos. Sua sintaxe é a seguinte
+\begin{verbatim}
+int MPI_Scatter(
+  const void *sendbuf, 
+  int sendcount, 
+  MPI_Datatype sendtype,
+  void *recvbuf, 
+  int recvcount, 
+  MPI_Datatype recvtype, 
+  int root,
+  MPI_Comm comm)
+\end{verbatim}
+O primeiro argumento \verb+sendbuf+ aponta para o endereço de memória do {\it array} de dados a ser distribuído. O argumento \verb+sendcount+ é o tamanho do pedaço e \verb+sendtype+ é o tipo de dado a ser transmitido. Os argumentos \verb+recvbuf+, \verb+recvcount+ e \verb+recvtype+ se referem ao ponteiro para o local de memória onde o dado recebido será alocado, o tamanho do pedaço a ser recebido e o tipo de dado, respectivamente. Por fim, o argumento \verb+root+ identifica o processo de origem da distribuição dos dados e \verb+comm+ é o comunicador.
+
+\begin{ex}
+  No Código \verb+scatter.cc+ abaixo, o processo 0 aloca o vetor
+  \begin{equation}
+    v = (1, 2, \dotsc, 10),
+  \end{equation}
+  distribui pedaços sequenciais do vetor para cada processo no comunicador \verb+MPI_COMM_WORLD+ e, então, cada processo computa a soma dos elementos recebidos.
+
+\lstinputlisting[title={Código: scatter.cc}]{cap_mpi/dados/cc_scatter/scatter.cc}
+
+  Vejamos o seguinte teste de rodagem
+\begin{verbatim}
+$ mpic++ scatter.cc -lgsl -lgslcblas
+$ mpirun -np 2 ./a.out                                           
+Processo 0 soma = 15.000000
+Processo 1 soma = 40.000000
+\end{verbatim}
+  Neste caso, o processo 0 recebe
+  \begin{equation}
+    \verb+my_v+ = (1, 2, 3, 4, 5),
+  \end{equation}
+  enquanto o processo 1 recebe
+  \begin{equation}
+    \verb+my_v+ = (6, 7, 8, 9, 10).
+  \end{equation}
+\end{ex}
+
+\begin{obs}
+  Note que o \href{https://www.open-mpi.org/doc/current/man3/MPI\_Scatter.3.php}{MPI\_Scatter} distribuí apenas pedaços de {\it arrays} de mesmo tamanho. Para a distribuição de pedaços de tamanhos diferentes entre os processos, pode-se usar a rotina \href{https://www.open-mpi.org/doc/current/man3/MPI\_Scatterv.3.php}{MPI\_Scatterv}. Veja os exercícios resolvidos abaixo.
+\end{obs}
+
+\subsection {Recebimento coletivo de dados distribuídos}
+
+A rotina \href{https://www.open-mpi.org/doc/current/man3/MPI\_Gather.3.php}{MPI\_Gather}, permite que um processo receba simultaneamente dados que estão distribuídos entre os demais processos. Sua sintaxe é a seguinte
+\begin{verbatim}
+int MPI_Gather(
+  const void *sendbuf, 
+  int sendcount, 
+  MPI_Datatype sendtype,
+  void *recvbuf, 
+  int recvcount, 
+  MPI_Datatype recvtype, 
+  int root,
+  MPI_Comm comm)
+\end{verbatim}
+Sua sintaxe é parecida com a da rotina \href{https://www.open-mpi.org/doc/current/man3/MPI\_Scatter.3.php}{MPI\_Scatter}. Veja lá! Aqui, \verb+root+ é o identificador {\it rank} do processo receptor.
+
+\begin{ex}
+  No Código \verb+gather.cc+, cada processo $i$ aloca um vetor
+  \begin{equation}
+    \verb+my_v+ = (5i+1, 5i+2, \dotsc, 5i+5),
+  \end{equation}
+  então, o processo 0 recebe estes vetores alocando-os em um único vetor
+  \begin{equation}
+    \verb+v+ = (1, 2, \dotsc, 5n_p),
+  \end{equation}
+  onde $n_p$ é o número de processos inicializados.
+
+  \lstinputlisting[title={Código: gather.cc}]{cap_mpi/dados/cc_gather/gather.cc}
+  
+  Vejamos o seguinte teste de rodagem
+\begin{verbatim}
+$ mpic++ gather.cc -lgsl -lgslcblas
+$ mpirun -np 2 ./a.out                                             
+v = 1.000000 2.000000 3.000000 4.000000 5.000000 
+6.000000 7.000000 8.000000 9.000000 10.000000
+\end{verbatim}
+  Neste caso, o processo  0 aloca
+  \begin{equation}
+    \verb+my_v+ = (1, 2, 3, 4, 5)
+  \end{equation}
+  e o processo 1 aloca
+  \begin{equation}
+    \verb+my_v+ = (6, 7, 8, 9, 10).
+  \end{equation}
+  Então, o processo 0, recebe os dois pedaços de cada um, formando o vetor
+  \begin{equation}
+    \verb+v+ = (1, 2, \dotsc, 10).
+  \end{equation}
+  Verifique!
+\end{ex}
+
+\begin{obs}
+  Para recebimento de pedaços distribuídos e de tamanhos diferentes, pode-se usar a rotina \href{https://www.open-mpi.org/doc/current/man3/MPI\_Gatherv.3.php}{MPI\_Gatherv}. Veja os exercícios resolvidos abaixo.
+\end{obs}
+
+\begin{obs}
+  Observamos que com a rotina \href{https://www.open-mpi.org/doc/current/man3/MPI\_Gather.3.php}{MPI\_Gather} podemos juntar pedaços de dados distribuídos em um único processo. Analogamente, a rotina \href{https://www.open-mpi.org/doc/current/man3/MPI\_Allgather.3.php}{MPI\_Allgather} nos permite juntar os pedaços de dados distribuídos e ter uma cópia do todo em cada um dos processos. Sua sintaxe é a seguinte
+\begin{verbatim}
+int MPI_Allgather(
+  const void *sendbuf, 
+  int  sendcount,
+  MPI_Datatype sendtype, 
+  void *recvbuf, 
+  int recvcount,
+  MPI_Datatype recvtype, 
+  MPI_Comm comm)
+\end{verbatim}
+  Note que esta rotina não contém o argumento \verb+root+, pois neste caso todos os processos receberam os dados juntados na variável \verb+recvbuf+!
+\end{obs}
+
+\subsection* {Exercícios resolvidos}
+
+\emconstrucao
+
+\subsection* {Exercícios}
+
+\emconstrucao
+
+\section {Reduções} \label {cap_mpi_sec_redu}
+
+\emconstrucao
+
+\subsection* {Exercícios resolvidos}
+
 \emconstrucao
 
 \subsection* {Exercícios}
