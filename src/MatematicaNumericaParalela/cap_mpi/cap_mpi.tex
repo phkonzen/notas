@@ -478,12 +478,105 @@ int MPI_Allgather(
 
 \section {Reduções} \label {cap_mpi_sec_redu}
 
-\emconstrucao
+Reduções são rotinas que reduzem um conjunto de dados em um conjunto menor de dados. Um exemplo de redução é a rotina de calcular o traço de uma matriz quadrada. Aqui, vamos apresentar algumas soluções MPI de rotinas de redução.
 
-\subsection* {Exercícios resolvidos}
+A rotina \href{https://www.open-mpi.org/doc/current/man3/MPI_Reduce.3.php}{MPI\_Reduce}, permite a redução de dados distribuídos em um processo. Sua sintaxe é a seguinte
+\begin{verbatim}
+int MPI_Reduce(
+  const void *sendbuf, 
+  void *recvbuf, 
+  int count,
+  MPI_Datatype datatype, 
+  MPI_Op op, 
+  int root,
+  MPI_Comm comm)
+\end{verbatim}
+O argumento \verb+sendbuf+ aponta para o endereço de memória do dado a ser enviado por cada processo, enquando que o argumento \verb+recvbuf+ aponta para o endereço de memória onde o resultado da redução será alocada no processo \verb+root+. O argumento \verb+count+ é o número de dados enviados por cada processo e \verb+datatype+ é o tipo de dado a ser enviado (o qual deve ser igual ao tipo do resultado da redução). O argumento \verb+comm+ é o comunicador entre os processos envolvidos na redução. A operação de redução é definida pelo argumento \verb+op+ e pode ser um dos seguintes
+\begin{verbatim}
+    MPI_MAX             maximum
+    MPI_MIN             minimum
+    MPI_SUM             sum
+    MPI_PROD            product
+    MPI_LAND            logical and
+    MPI_BAND            bit-wise and
+    MPI_LOR             logical or
+    MPI_BOR             bit-wise or
+    MPI_LXOR            logical xor
+    MPI_BXOR            bit-wise xor
+    MPI_MAXLOC          max value and location
+    MPI_MINLOC          min value and location
+\end{verbatim}
 
-\emconstrucao
+\begin{ex}
+  No seguinte código \verb+reduce.cc+, cada processo aloca um número randômico na variável \verb+x+. Em seguida, o processo $0$ recebe o máximo entre os números alocados em todos os processos (inclusive no processo 0).
+  
+  \lstinputlisting[title={Código: reduce.cc}]{cap_mpi/dados/cc_Reduce/reduce.cc}
+
+  Segue um teste de rodagem:
+\begin{verbatim}
+$ mpic++ reduce.cc
+$ mpirun -np 3 a.out                                                           
+0: 0.417425
+1: 0.776647
+2: 0.633021
+Máx. entre os números = 0.776647
+\end{verbatim}
+  Verifique!
+\end{ex}
+
+No caso de uma {\it array} de dados, a operação de redução será feita para cada componente. Veja o próximo exemplo.
+
+\begin{ex}
+  No \verb+reduce2.cc+, cada processo aloca um vetor com dois números randômicos. Em seguida, o processo $0$ recebe o vetor resultante da soma dos vetores alocados em cada processo (inclusive no processo 0).
+
+  \lstinputlisting[title={Código: reduce2.cc}]{cap_mpi/dados/cc_Reduce/reduce2.cc}
+
+  Segue um teste de rodagem:
+\begin{verbatim}
+$ mpic++ reduce2.cc
+$ mpirun -np 3 a.out 
+0: 0.193702 0.035334
+Vetor soma = 0.656458 0.843728
+1: 0.051281 0.447279
+2: 0.411475 0.361114
+\end{verbatim}
+  Verifique!
+\end{ex}
+
+\begin{obs}
+  A rotina \href{https://www.open-mpi.org/doc/current/man3/MPI\_Allreduce.3.php}{MPI\_Allreduce} executa uma redução de dados e o resultado é alocada em todos os processos. Sua sintaxe é similar a rotina \href{https://www.open-mpi.org/doc/current/man3/MPI_Reduce.3.php}{MPI\_Reduce}, com exceção do argumento \verb+root+, o qual não é necessário nessa rotina. Verifique!
+\end{obs}
+
+\begin{obs}
+  As rotinas \href{https://www.open-mpi.org/doc/current/man3/MPI\_Ireduce.3.php}{MPI\_Ireduce} e \href{https://www.open-mpi.org/doc/current/man3/MPI\_Iallreduce.3.php}{MPI\_Iallreduce} são versões assíncronas das rotinas \href{https://www.open-mpi.org/doc/current/man3/MPI_Reduce.3.php}{MPI\_Reduce} e \href{https://www.open-mpi.org/doc/current/man3/MPI\_Allreduce.3.php}{MPI\_Allreduce}, respectivamente.
+\end{obs}
 
 \subsection* {Exercícios}
 
-\emconstrucao
+\begin{exer}
+  Faça um código MPI em cada processo aloca um número randômico na variável \verb+x+. Então, o processo 0 recebe o mínimo entre os números alocados em cada processo, inclusive nele mesmo.
+\end{exer}
+
+\begin{exer}
+  Faça um código MPI em cada processo aloca um número randômico na variável \verb+x+. Então, o processo 0 recebe o produtório entre os números alocados em cada processo, inclusive nele mesmo.
+\end{exer}
+
+\begin{exer}
+  Faça um código MPI para computar a soma dos termos de um vetor de $n$ números randômicos, com $n\gg n_p$, sendo $n_p$ o número de processos. Use a rotina \href{https://www.open-mpi.org/doc/current/man3/MPI_Reduce.3.php}{MPI\_Reduce} e certifique-se de que cada processo aloque somente os dados necessários, otimizando o uso de memória computacional.
+\end{exer}
+
+\begin{exer}
+  Faça um código MPI para computar a norma do máximo de um vetor de $n$ números randômicos, com $n\gg n_p$, sendo $n_p$ o número de processos. Use a rotina \href{https://www.open-mpi.org/doc/current/man3/MPI_Reduce.3.php}{MPI\_Reduce} e certifique-se de que cada processo aloque somente os dados necessários, otimizando o uso de memória computacional.
+\end{exer}
+
+\begin{exer}
+  Faça um código MPI para computar a norma $L^2$ de um vetor de $n$ números randômicos, com $n\gg n_p$, sendo $n_p$ o número de processos. Use a rotina \href{https://www.open-mpi.org/doc/current/man3/MPI_Allreduce.3.php}{MPI\_Allreduce} de forma que cada processo contenha a norma computada ao final do código.
+\end{exer}
+
+\begin{exer}
+  Faça um código MPI para computar
+  \begin{equation}
+    erf(x) = \frac{2}{\sqrt{\pi}}\int_0^x e^{-t^2}\,dt
+  \end{equation}
+  usando a \href{https://phkonzen.github.io/notas/MatematicaNumerica/cap_integr_sec_int_comp.html}{regra composta do ponto médio}. Use a rotina \href{https://www.open-mpi.org/doc/current/man3/MPI_Reduce.3.php}{MPI\_Reduce}.
+\end{exer}
