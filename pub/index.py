@@ -101,7 +101,7 @@ class Index:
 
         body += '<div>\n'
         body += '<div class="spinner-grow spinner-grow-sm text-danger mb-1" role="status"></div>\n'
-        body += '<a href="http://www.cnmac.org.br/novo/index.php/CNMAC">CNMAC 2021: Submissão de trabalhos - 15/03/2021</a></div>\n'
+        body += '<a href="http://www.cnmac.org.br/novo/index.php/CNMAC">CNMAC 2021: Submissão de trabalhos - 30/04/2021</a></div>\n'
         
         body += '</div>'
 
