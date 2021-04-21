@@ -21,7 +21,7 @@ int main (int argc, char** argv) {
   size_t I = 10;
 
   // tamanho dos passos discretos
-  double ht = 5e-4;
+  double ht = 1e-3;
   double hx = 1.0/I;
   double cfl = ht/(hx*hx);
   
@@ -61,20 +61,24 @@ int main (int argc, char** argv) {
       MPI_Send (&u0[my_I], 1, MPI_DOUBLE,
 		1, 0, MPI_COMM_WORLD);
       MPI_Recv (&u0I, 1, MPI_DOUBLE,
-		1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+		1, 0, MPI_COMM_WORLD,
+		MPI_STATUS_IGNORE);
     } else if (world_rank < world_size-1) {
       MPI_Recv (&u00, 1, MPI_DOUBLE,
-		world_rank-1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+		world_rank-1, 0, MPI_COMM_WORLD,
+		MPI_STATUS_IGNORE);
       MPI_Send (&u0[my_I], 1, MPI_DOUBLE,
 		world_rank+1, 0, MPI_COMM_WORLD);
       
       MPI_Recv (&u0I, 1, MPI_DOUBLE,
-		world_rank+1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+		world_rank+1, 0, MPI_COMM_WORLD,
+		MPI_STATUS_IGNORE);
       MPI_Send (&u0[1], 1, MPI_DOUBLE,
 		world_rank-1, 0, MPI_COMM_WORLD);
     } else {
       MPI_Recv (&u00, 1, MPI_DOUBLE,
-		world_size-2, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);    
+		world_size-2, 0, MPI_COMM_WORLD,
+		MPI_STATUS_IGNORE);    
       MPI_Send (&u0[1], 1, MPI_DOUBLE,
 		world_size-2, 0, MPI_COMM_WORLD);
     }
@@ -94,9 +98,6 @@ int main (int argc, char** argv) {
 	+ cfl * u0[my_I-1]
 	- 2*cfl * u0[my_I]
 	+ cfl * u0I;
-
-    if (world_rank == 1)
-      printf ("%f %f %e\n", (m+1)*ht, x[2], u[2]);
 
     // prepara nova iteração
     for (size_t j=0; j<=my_I; j++)

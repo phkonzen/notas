@@ -605,7 +605,7 @@ onde $u(t_0, x) = u(0, x)$, dada pela condição inicial \eqref{eq:mpi_calor_ci}
 
 Agora, vamos denotar $x_i=ih_x$, $i=0,1,2,\dotsc,I$, onde $h_x=1/I$ é o tamanho da malha (passo espacial). Então, usando a aproximação por diferenças finitas centrais de ordem 2, obtemos
 \begin{equation}
-  u(t_{m+1}, x_i) \approx u(t_m, x_i) + h_t \left[\frac{u(t_m,x_{i-1}) - 2u(t_m, x_i) + u(t_m, x_{i+1}}{h_x^2}\right],
+  u(t_{m+1}, x_i) \approx u(t_m, x_i) + h_t \left[\frac{u(t_m,x_{i-1}) - 2u(t_m, x_i) + u(t_m, x_{i+1})}{h_x^2}\right],
 \end{equation}
 para $i=1,2,\dotsc,I-1$, observando que, das condições de contorno \eqref{eq:mpi_calor_cc}, temos
 \begin{equation}
@@ -618,7 +618,7 @@ Em síntese, denotando $u^m_i \approx u(t_m, x_i)$, temos que uma aproximação 
 \end{equation}
 com $u^0_i = \sen(\pi x_i)$ e $u^m_0=u^m_I = 0$.
 
-Para construirmos um código MPI, vamos fazer a distribuição do processamento pela malha espacial entre os $n_p$ processos disponíveis. Mais precisamente, cada processo $r = 0, 1, 2, \dotsc, n_p-1$, computará a solução $u^m_i$ nos ponto de malha $i=i_p, i_p+1, \dotsc, f_p$, onde
+Para construirmos um código MPI, vamos fazer a distribuição do processamento pela malha espacial entre os $n_p$ processos disponíveis. Mais precisamente, cada processo $p = 0, 1, 2, \dotsc, n_p-1$, computará a solução $u^m_i$ nos ponto de malha $i=i_p, i_p+1, \dotsc, f_p$, onde
 \begin{gather}
   i_p = p\left\lfloor\frac{I}{n_p}\right\rfloor, \quad p=0,1,\dotsc,n_p-1,\\
   f_p = (p+1)\left\lfloor\frac{I}{n_p}\right\rfloor,\quad p=0,1,\dotsc,n_p-2,
@@ -629,10 +629,10 @@ Neste caso, a cada iteração $m=0,1,2,\ldots, M$, o processo $p=0$, irá comput
 \begin{equation}
   u_j = u^0_j + \frac{h_t}{h_x^2}u^0_{j-1} - 2\frac{h_t}{h_x^2}u^0_{j} + \frac{h_t}{h_x^2}u^0_{j+1},
 \end{equation}
-para $j=1,\dotsc,f_0-1$, com as condições de contorno
+para $j=1,\dotsc,f_0$, com as condições de contorno
 \begin{gather}
-  u^0_o = 0\\
-  u^0_{f_0} = u^0_{i_1}.
+  u^0_0 = 0\\
+  u^0_{f_0+1} = u^0_{i_1+1}.
 \end{gather}
 Ou seja, este passo requer a comunicação entre o processo 0 e o processo 1.
 
@@ -640,10 +640,10 @@ Os processos $p=1,2,\dotsc,n_p-2$ irão computar
 \begin{equation}
   u_j = u^0_j + \frac{h_t}{h_x^2}u^0_{j-1} - 2\frac{h_t}{h_x^2}u^0_{j} + \frac{h_t}{h_x^2}u^0_{j+1},
 \end{equation}
-para $j=i_p+1,\dotsc, f_p-1$, com as condições de contorno
+para $j=i_p+1,\dotsc, f_p$, com as condições de contorno
 \begin{gather}
   u^0_{i_p} = u^0_{f_{p-1}}\\
-  u^0_{f_p} = u^0_{i_{p+1}}.
+  u^0_{f_p+1} = u^0_{i_{p+1}+1}.
 \end{gather}
 Logo, este passo requer a comunicação entre os processos $p-1$, $p$ e $p+1$.
 
@@ -657,5 +657,56 @@ para $j=i_{n_p-1}+1,\dotsc, f_{n_p-1}-1$, com as condições de contorno
   u^0_{f_{n_p-1}} = 0.
 \end{gather}
 O que requer a comunicação entre os processos $n_p-2$ e o $n_p-1$.
+
+O código abaixo \verb+calor.cc+ é uma implementação MPI deste algoritmo. Cada processo aloca e computa a solução em apenas um pedaço da malha, conforme descrito acima. As comunicações entre os processos ocorrem apenas nas linhas 60-80. Verifique!
+
+\lstinputlisting[title={Código: calor.cc}]{cap_mpi/dados/cc_calor/calor.cc}
+
+No código acima, as comunicações entre os processos foram implementadas de forma cíclica. A primeira a ocorrer é o envio de $u^0_{f_p}$ do processo zero (linhas 61-62) e o recebimento de $u^0_{i_p}$ pelo processo 1 (linhas 67-69). Enquanto essa comunicação não for completada, todos os processos estarão aguardando, sincronizados nas linhas 67-69 e 79-81. Ocorrida a comunicação entre os processos 0 e 1, ocorrerá a comunicação entre o 1 e o 2, entre o 2 e o 3 e assim por diante, de forma cíclica (linhas 67-71 e 79-81).
+
+As últimas comunicações também ocorrem de forma cíclica, começando pelo envio de $u^0_{i_p+1}$ pelo processo $n_p-1$ (linhas 81-83) e o recebimento de $u^0_{f_p+1}$ pelo processo $n_p-2$ (linhas 73-75). Em sequência, ocorrem as comunicações entre o processo $n_p-2$ e o processo $n_p-3$, entre o $n_p-3$ e o $n_p-4$, até o término das comunicações entre o processo 1 (linhas 76-77) e o processo 0 (linhas 63-65).
+
+\subsection* {Exercícios}
+
+\begin{exer}\label{exer:mpi_calor_sa}
+  O problema \eqref{eq:mpi_calor_eq}-\eqref{eq:mpi_calor_ci} tem solução analítica
+  \begin{equation}
+    u(t,x) = e^{-\pi^2 t}\sen(\pi x). 
+  \end{equation}
+  Modifique o código \verb+calor.cc+ acima, de forma que a acada iteração $m$ no tempo, seja impresso na tela o valor de $u^m(0.5)$ computado e o valor da solução analítica $u(t_m, 0.5)$. Faça refinamentos nas malhas temporal e espacial, até conseguir uma aproximação com três dígitos significativos corretos.
+\end{exer}
+
+\begin{exer}
+  Modifique o código \verb+calor.cc+ acima, de forma que a cada iteração $m$ no tempo, seja impresso na tela o valor do funcional
+  \begin{equation}
+    q(t) = \int_0^1 u(t,x)\,dx.
+  \end{equation}
+  Valide os resultados por comparação com a solução analítica (veja o Exercício \eqref{exer:mpi_calor_sa}).
+\end{exer}
+
+\begin{exer}
+  Modifique o código \verb+calor.cc+ acima, de forma que as comunicações iniciem-se entre os processos $n_p-1$ e $n_p-2$. Ou seja, que a primeira comunicação seja o envio de $u^0_{i_p+1}$ pelo processo $n_p-1$ e o recebimento de $u^0_{f_p+1}$ pelo processo $n_p-2$. E que, de forma cíclica, as demais comunicações ocorram. Poderia haver alguma vantagem em fazer esta modificação?
+\end{exer}
+
+\begin{exer}
+  Modifique o código \verb+calor.cc+ acima, de forma que as comunicações sejam feitas de forma assíncrona, i.e. usando as rotinas \href{https://www.open-mpi.org/doc/v1.8/man3/MPI\_Isend.3.php}{MPI\_Isend} e \href{https://www.open-mpi.org/doc/v1.8/man3/MPI\_Irecv.3.php}{MPI\_Irecv}. Há vantagens em se fazer esta modificação?
+\end{exer}
+
+\begin{exer}
+  Faça um código MPI para computar uma aproximação da solução de
+  \begin{equation}
+    u_t - u_{xx} = 0,\quad 0<x<1, t>0,
+  \end{equation}
+  com condições de contorno periódicas
+  \begin{equation}
+    u(0,t) = u(1,t), t>0,
+  \end{equation}
+  e condições iniciais
+  \begin{equation}
+    u(x,0) = \sen(\pi x), 0\leq x\leq 1,
+  \end{equation}
+  onde, $u = u(t, x)$.  
+\end{exer}
+
 
 
