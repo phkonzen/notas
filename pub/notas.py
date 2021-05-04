@@ -127,6 +127,12 @@ class Notas:
         body_end += '</div>'
         body_end += '</div>'
 
+        # general alert
+        f = open('general_alert.html','r')
+        ga = f.read()
+        f.close()
+        body_end += ga.replace('./politica.html','../politica.html')
+
         
         body_end += '</div> <!-- div class=col-lg-1 -->\n'
         body_end += '<div class=col-lg-1>\n'

@@ -325,11 +325,18 @@ class Index:
         body += '</div> <!-- div class="card" -->\n'
         body += '</div> <!-- div class="card-footer text-right" -->\n'
 
+        # general alert
+        f = open('general_alert.html','r')
+        body += f.read()
+        f.close()
+
+
         # body += '</div> <!-- div class="container-fluid" -->\n'
 
         body += '</div> <!-- div class=col-lg-10 -->\n'
         body += '<div class=col-lg-1>\n'
         body += '</div>\n'
+        body += '</div><!-- div row -->\n'
         body += '</div> <!-- div class=container-fluid -->\n\n'
 
 

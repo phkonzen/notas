@@ -38,6 +38,10 @@ os.system('rm -rvf '+srcdir+'/*')
 index = Index(odir)
 index.build()
 
+#politica.html
+politica = Politica(odir)
+politica.build()
+
 #contato.html
 os.system('cp contato.html '+odir+'/')
 
