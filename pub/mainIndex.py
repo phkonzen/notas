@@ -20,6 +20,9 @@ os.system('rm -rvf '+odir+'/index.html')
 index = Index(odir)
 index.build()
 
+#fonts
+os.system('cp -rvf fonts '+odir+'/')
+
 #contato.html
 os.system('cp contato.html '+odir+'/')
 

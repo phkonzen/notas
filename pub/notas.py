@@ -2,10 +2,10 @@
 
 
 '''
-Classe mãe das notas de aula.
+Classe das notas de aula.
 
 Autor: Pedro H A Konzen - 05/2018
-Modificado: 05/2020
+Modificado: 05/2021
 '''
 
 import os
@@ -19,9 +19,9 @@ class Notas:
 
         # adiciona goodies.css
         f = open(htmldir+'/goodies.css','w')
-        text = 'body {\n'
-        text += 'font-family: Computer Modern Serif;\n'
-        text += 'font-size: 1.2em;\n'
+        text = '* {\n'
+        text += 'font-family: "Computer Modern Serif", serif;\n'
+        text += 'font-size: 103%;\n'
         text += '}\n\n'
         
         text += '.navbar {\n'
@@ -54,6 +54,8 @@ class Notas:
         head += '<script src="https://kit.fontawesome.com/dfbff2c7ed.js" crossorigin="anonymous"></script>'
 
         # Goodies CSS
+        head += '<!-- Computer Modern Serif-->'
+        head += '<link rel="stylesheet" href="fonts/cmun-serif.css"></link>'
         head += '<link rel="stylesheet" href="goodies.css" type="text/css">\n'
 
         # head += '\n\n'
@@ -137,17 +139,24 @@ class Notas:
         body_end += '</div> <!-- div class="card-footer text-right" -->\n'
 
 
-        # alerta de colaboração
-        body_end += '<div class="alert alert-warning alert-dismissible" role="alert" style="position: fixed; bottom: 0; font-size:0.85em;">\n'
-        body_end += '<span type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></span>\n'
-        body_end += '<a href="../contato.html">Clique <strong>aqui</strong> para <strong>informar</strong> <span style="color:red"><strong>erros</strong></span> ou dar <span style="color:red"><strong>sugestões</strong></span>!</a>'
-        body_end += '</div>\n\n'
+        # # alerta de colaboração
+        # body_end += '<div class="alert alert-warning alert-dismissible" role="alert" style="position: fixed; bottom: 0; font-size:0.85em;">\n'
+        # body_end += '<span type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></span>\n'
+        # body_end += '<a href="../contato.html">Clique <strong>aqui</strong> para <strong>informar</strong> <span style="color:red"><strong>erros</strong></span> ou dar <span style="color:red"><strong>sugestões</strong></span>!</a>'
+        # body_end += '</div>\n\n'
+
+        # colab alert
+        f = open('colab_alert.html','r')
+        ga = f.read()
+        f.close()
+        # ga = ga.replace('font-size:0.9em','font-size:0.85em')
+        body_end += ga.replace('./contato.html','../contato.html')
 
         # general alert
         f = open('general_alert.html','r')
         ga = f.read()
         f.close()
-        ga = ga.replace('font-size:0.9em','font-size:0.85em')
+        # ga = ga.replace('font-size:0.9em','font-size:0.85em')
         body_end += ga.replace('./politica.html','../politica.html')
 
         

@@ -26,16 +26,6 @@ class Index:
         head += '<title>Notas de aula</title>\n'
         head += '<meta name="author" content="Pedro H A Konzen"/>\n'
         head += '<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">\n'
-        head += '<link rel="stylesheet" href="index.css" type="text/css">\n'
-
-        # # BootstrapCDN v3.3
-        # head += '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">\n'
-        # head += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>\n'
-        # head += '<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>\n'
-
-        #BootstrapCDN v.4.5
-        # head += '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"x crossorigin="anonymous">\n'
-
         head += '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">\n'
         head += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>\n'
         head += '<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>\n'
@@ -53,6 +43,11 @@ class Index:
         head += 'gtag("js", new Date());\n'
         head += '\ngtag("config", "UA-17226092-2")\n';
         head += '</script>\n'
+
+        head += '<!-- Computer Modern Serif-->'
+        head += '<link rel="stylesheet" href="fonts/cmun-serif.css"></link>'
+        head += '<link rel="stylesheet" href="index.css" type="text/css">\n'
+
         
         head += '</head>\n'
 
@@ -98,7 +93,7 @@ class Index:
         # body += '<p class="lead"></br></p>\n'
         body += '<p class="lead">Pedro H A Konzen</p>\n'
         body += '</div> <!-- div class="jumbotron text-center" -->\n'
-        body += '<p style="text-align:right"><small>Imagem: <a href="https://flic.kr/p/4krYcm" target="_blank">Eli Duke</a>.</small></p>\n'
+        body += '<p class="mb-0" style="text-align:right"><small>Imagem: <a href="https://flic.kr/p/4krYcm" target="_blank">Eli Duke</a>.</small></p>\n'
         body += '</div> <!-- class="myjumbotron" -->\n'
 
         
@@ -106,7 +101,7 @@ class Index:
         #miolo
 
         # Área de anúncios
-        body += '<p></p>'
+        #body += '<p></p>'
         body += '<div id="demo" class="carousel slide" data-ride="carousel">'
         body += '<!-- Indicators -->'
         body += '<ul class="carousel-indicators">'
@@ -369,6 +364,11 @@ class Index:
         body += '<a href="contato.html" target="_blank"><i class="fas fa-envelope"></i></a>\n'
         body += '</div> <!-- div class="card" -->\n'
         body += '</div> <!-- div class="card-footer text-right" -->\n'
+
+        # colab alert
+        f = open('colab_alert.html','r')
+        body += f.read()
+        f.close()
 
 
         # general alert

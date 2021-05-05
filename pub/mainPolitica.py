@@ -20,5 +20,8 @@ os.system('rm -rvf '+odir+'/politica.html')
 politica = Politica(odir)
 politica.build()
 
+#fonts
+os.system('cp -rvf fonts '+odir+'/')
+
 # publica a atualização
 os.system('rsync -av '+odir+'/* ../docs/')

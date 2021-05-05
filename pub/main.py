@@ -53,7 +53,10 @@ os.system('cp -rvf ../src/* '+srcdir+'/')
 os.system('rm -rvf ../docs/*')
 
 #cria o README.md do ../docs
-os.system('cp docs_readme.md ../docs/README.md')
+os.system('cp docs_readme.md '+odir+'/README.md')
+
+#fonts
+os.system('cp -rvf fonts '+odir+'/')
 
 #objs da cada nota
 
