@@ -13,6 +13,7 @@ from multiprocessing import Pool
 
 #classes
 from index import *
+from politica import *
 from sitemap import *
 from analisematematicai import *
 from calculoi import *
