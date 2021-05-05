@@ -157,7 +157,7 @@ class Index:
         body += '<div class="card-body">\n'
         body += '<h5 class="card-title">Cálculo I</h5>\n'
         body += '<p class="card-text" style="color: gray">Cálculo diferencial e integral de funções de uma variável real</p>\n'
-        body += '<a href="./CalculoI/main.html" class="btn btn-primary stretched-link">\n'
+        body += '<a href="./CalculoI/main.html" class="btn btn-primary float-right">\n'
         body += 'Abrir</a>\n'
         body += '</div>\n'
         body += '</div>\n'
@@ -171,7 +171,7 @@ class Index:
         body += '<div class="card-body">\n'
         body += '<h5 class="card-title">Equações a diferenças</h5>\n'
         body += '<p class="card-text" style="color: gray">Introdução a equações a diferenças</p>\n'
-        body += '<a href="./EaD/main.html" class="btn btn-success stretched-link">\n'
+        body += '<a href="./EaD/main.html" class="btn btn-success float-right">\n'
         body += 'Abrir</a>\n'
         body += '</div>\n'
         body += '</div>\n'
@@ -185,7 +185,7 @@ class Index:
         body += '<div class="card-body">\n'
         body += '<h5 class="card-title">Equações diferencias ordinárias</h5>\n'
         body += '<p class="card-text" style="color: gray">Introdução a equações diferenciais ordinárias</p>\n'
-        body += '<a href="./EDO/main.html" class="btn btn-success stretched-link">\n'
+        body += '<a href="./EDO/main.html" class="btn btn-success float-right">\n'
         body += 'Abrir</a>\n'
         body += '</div>\n'
         body += '</div>\n'
@@ -199,7 +199,7 @@ class Index:
         body += '<div class="card-body">\n'
         body += '<h5 class="card-title">Geometria analítica</h5>\n'
         body += '<p class="card-text" style="color: gray">Introdução à geometria analítica</p>\n'
-        body += '<a href="./GeometriaAnalitica/main.html" class="btn btn-primary stretched-link">\n'
+        body += '<a href="./GeometriaAnalitica/main.html" class="btn btn-primary float-right">\n'
         body += 'Abrir</a>\n'
         body += '</div>\n'
         body += '</div>\n'
@@ -213,7 +213,7 @@ class Index:
         body += '<div class="card-body">\n'
         body += '<h5 class="card-title">Matemática numérica</h5>\n'
         body += '<p class="card-text" style="color: gray">Métodos e técnicas de cálculo numérico</p>\n'
-        body += '<a href="./MatematicaNumerica/main.html" class="btn btn-primary stretched-link">\n'
+        body += '<a href="./MatematicaNumerica/main.html" class="btn btn-primary float-right">\n'
         body += 'Abrir</a>\n'
         body += '</div>\n'
         body += '</div>\n'
@@ -221,13 +221,13 @@ class Index:
 
         # card: notas de aula de Matemática Numérica Paralela
         body += '<div class="col-lg-3 col-md-4 col-sm-6">'
-        body += '<!-- card: notas de aula de Matemática Numérica Paralela -->\n'
+        body += '<!-- card: notas de aula de Matemática numérica paralela -->\n'
         body += '<div class="card border-warning mb-3" style="max-width: 20rem;">\n'
         body += '<div class="card-header">Notas de aula</div>\n'
         body += '<div class="card-body">\n'
-        body += '<h5 class="card-title">Matemática Numérica Paralela</h5>\n'
+        body += '<h5 class="card-title">Matemática numérica paralela</h5>\n'
         body += '<p class="card-text" style="color: gray">Introdução à computação paralela aplicada a métodos numéricos</p>\n'
-        body += '<a href="./MatematicaNumericaParalela/main.html" class="btn btn-warning stretched-link">\n'
+        body += '<a href="./MatematicaNumericaParalela/main.html" class="btn btn-warning float-right">\n'
         body += 'Abrir</a>\n'
         body += '</div>\n'
         body += '</div>\n'
@@ -241,7 +241,7 @@ class Index:
         body += '<div class="card-body">\n'
         body += '<h5 class="card-title">Método de elementos finitos</h5>\n'
         body += '<p class="card-text" style="color: gray">Introdução ao método de elementos finitos</p>\n'
-        body += '<a href="./MetodoElementosFinitos/main.html" class="btn btn-primary stretched-link">\n'
+        body += '<a href="./MetodoElementosFinitos/main.html" class="btn btn-primary float-right">\n'
         body += 'Abrir</a>\n'
         body += '</div>\n'
         body += '</div>\n'
@@ -255,7 +255,7 @@ class Index:
         body += '<div class="card-body">\n'
         body += '<h5 class="card-title">Vetores</h5>\n'
         body += '<p class="card-text" style="color: gray">Vetores no espaço euclidiano tridimensional</p>\n'
-        body += '<a href="./Vetores/main.html" class="btn btn-primary stretched-link">\n'
+        body += '<a href="./Vetores/main.html" class="btn btn-primary float-right">\n'
         body += 'Abrir</a>\n'
         body += '</div>\n'
         body += '</div>\n'
@@ -263,12 +263,16 @@ class Index:
 
         body += '</div> <!-- div class=row-->\n\n'
 
+        
+        body += '<div class="row">\n'
+        body += '<div class="col-md-6">\n'
+
         body += '<h3>Minicurso</h3>\n\n'
 
         
         # card: Mini Cálculo com python
         body += '<!-- card: Mini Cálculo com python -->\n'
-        body += '<div class="card border-primary mb-3" style="max-width: 25rem;">\n'
+        body += '<div class="card border-primary mb-3" style="max-width: 24rem;">\n'
         body += '<div class="card-header">Minicurso</div>\n'
         body += '<div class="card-body">\n'
         body += '<h5 class="card-title">Cálculo com python</h5>\n'
@@ -283,7 +287,29 @@ class Index:
         body += '</div>\n'
         body += '</div>\n\n'
 
-     
+        body += '</div><!-- div class="col-md-6" -->\n'
+
+        body += '<div class="col-md-6">\n'
+
+        body += '<h3>Vídeos & áudios</h3>'
+
+        # card: Internet Archive
+        body += '<!-- card: Internet Archive -->\n'
+        body += '<div class="card border-primary mb-3" style="max-width: 20rem;">\n'
+        body += '<div class="card-header">Vídeos & áudios</div>\n'
+        body += '<div class="card-body">\n'
+        body += '<h5 class="card-title">Internet Archive</h5>\n'
+        body += '<p class="card-text" style="color: gray">Coleção de vídeos e áudios no archive.org.</p>\n'
+        body += '<a href="https://archive.org/details/notas-de-aula" class="btn btn-primary float-right">\n'
+        body += 'Abrir</a>\n'
+        body += '</div>\n'
+        body += '</div>\n\n'
+        
+        
+        body += '</div><!-- div class="col-md-6" -->\n'
+        
+        body += '</div><!-- div class="row" -->\n'
+    
         body += '<div class="row">\n'
 
         body += '<div class="col-md-6">\n'
@@ -344,11 +370,11 @@ class Index:
         body += '</div> <!-- div class="card" -->\n'
         body += '</div> <!-- div class="card-footer text-right" -->\n'
 
+
         # general alert
         f = open('general_alert.html','r')
         body += f.read()
         f.close()
-
 
         # body += '</div> <!-- div class="container-fluid" -->\n'
 
