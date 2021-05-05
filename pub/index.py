@@ -116,29 +116,28 @@ class Index:
         body += '</ul>'
         
         body += '<!-- The slideshow -->'
-        body += '<div class="carousel-inner">'
-        body += '<div class="carousel-item active">'
-
+        body += '<div class="carousel-inner">\n'
+        
+        body += '<div class="carousel-item active">\n'
         body += '<div>\n'
         body += '<div class="spinner-grow spinner-grow-sm text-danger mb-1" role="status"></div>\n'
-        body += '<a href="http://www.cnmac.org.br/novo/index.php/CNMAC">CNMAC 2021: Submissão de trabalhos - 30/04/2021</a></div>\n'
-        
-        body += '</div>'
+        body += '<a href="http://www.ufrgs.br/ppgmap/selecao/editais-de-selecao-mestrado">PPGMAp-UFRGS: Processo Seletivo - Mestrado 2021/1</a>\n'
+        body += '</div>\n'
+        body += '</div>\n\n'
 
-        body += '<div class="carousel-item">'
 
-        body += '<div>\n'
-        body += '<div class="spinner-grow spinner-grow-sm text-danger mb-1" role="status"></div>\n'
-        body += '<a href="http://www.ufrgs.br/ppgmap/selecao/editais-de-selecao-mestrado">PPGMAp-UFRGS: Processo Seletivo - Mestrado 2021/1</a></div>\n'
-        
-        body += '</div>'
-
-        body += '<div class="carousel-item">'
-
+        body += '<div class="carousel-item">\n'
         body += '<div>\n'
         body += '<div class="spinner-grow spinner-grow-sm text-primary mb-1" role="status"></div>\n'
-        body += '<a href="http://www.ufrgs.br/ppgmap/selecao/editais-de-selecao-doutorado">PPGMAp-UFRGS: Processo Seletivo Doutorado 2021</a></div>\n'
-        
+        body += '<a href="http://www.ufrgs.br/ppgmap/selecao/editais-de-selecao-doutorado">PPGMAp-UFRGS: Processo Seletivo Doutorado 2021</a>\n'
+        body += '</div>\n'        
+        body += '</div>\n\n'
+
+        body += '<div class="carousel-item">\n'
+        body += '<div>\n'
+        body += '<div class="spinner-grow spinner-grow-sm text-primary mb-1" role="status"></div>\n'
+        body += '<a href="https://semanacademicamat.wixsite.com/home">XV SEMANACA - UFRGS: 07-11/06/2021</a>\n'
+        body += '</div>\n'
         body += '</div>'
 
 
