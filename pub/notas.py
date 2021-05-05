@@ -21,7 +21,7 @@ class Notas:
         f = open(htmldir+'/goodies.css','w')
         text = '* {\n'
         text += 'font-family: "Computer Modern Serif", serif;\n'
-        text += 'font-size: 103%;\n'
+        text += 'font-size: 101%;\n'
         text += '}\n\n'
         
         text += '.navbar {\n'
