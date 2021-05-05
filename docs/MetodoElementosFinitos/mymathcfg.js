@@ -1,6 +1,7 @@
 MathJax.Hub.Config({
   SVG: {
-      scale: 93,
-      font: "Latin-Modern"
+      scale: 87,
+      // font: "Computer Modern Serif"
+      // font: "Latin-Modern"
   }
 });
