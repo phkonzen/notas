@@ -74,7 +74,7 @@ class Politica:
         # Navbar
         body += '\n\n<!-- begin: navbar -->\n'
         body += '<nav class="navbar navbar-expand-md navbar-light bg-light mb-1">\n'
-        body += '<a class="navbar-brand" href="index.html">Notas de Aula<br/><small>Política de dados</small></a>\n'
+        body += '<a class="navbar-brand" href="politica.html">Notas de Aula<br/><small>Política de dados</small></a>\n'
         body += '<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">\n'
         body += '<span class="navbar-toggler-icon"></span>\n'
         body += '</button>\n'
