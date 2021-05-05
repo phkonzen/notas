@@ -1,27 +1,24 @@
 #!/usr/bin/python3
 '''
-Atualiza apenas o index.html
+Atualiza apenas a politica.html
 
-Autor: Pedro H A Konzen - 05/2020
+Autor: Pedro H A Konzen - 05/2021
 '''
 
 #pacotes do Python
 import os
 
 #classes
-from index import *
+from politica import *
 
 #pastas temporárias
 odir = '.docs'
 os.system('mkdir -p '+odir)
-os.system('rm -rvf '+odir+'/index.html')
+os.system('rm -rvf '+odir+'/politica.html')
 
 #index.html
-index = Index(odir)
-index.build()
-
-#contato.html
-os.system('cp contato.html '+odir+'/')
+politica = Politica(odir)
+politica.build()
 
 # publica a atualização
 os.system('rsync -av '+odir+'/* ../docs/')

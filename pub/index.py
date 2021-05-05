@@ -69,6 +69,26 @@ class Index:
         body += '</div>'
         body += '<div class=col-lg-10>\n\n'
 
+        # Navbar
+        body += '\n\n<!-- begin: navbar -->\n'
+        body += '<nav class="navbar navbar-expand-md navbar-light bg-light mb-1">\n'
+        body += '<a class="navbar-brand" href="main.html">Notas de Aula<br/><small>Início</small></a>\n'
+        body += '<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">\n'
+        body += '<span class="navbar-toggler-icon"></span>\n'
+        body += '</button>\n'
+        body += '<div class="collapse navbar-collapse" id="navbarNav">\n'
+        body += '<ul class="navbar-nav">\n'
+        body += '<li class="nav-item active"><a class="nav-link" href="index.html">Início</a></li>\n'
+        body += '<li class="nav-item"><a class="nav-link" href="https://github.com/phkonzen/notas"><i class="fa fa-github" aria-hidden="true"></i> Repo</a></li>\n'
+        body += '<li class="nav=item"><a class="nav-link" href="https://mybinder.org/v2/gh/phkonzen/notas/master?filepath=notas.ipynb" target="_blank">Jupyter NB</a></li>\n'
+        body += '<li class="nav-item"><a class="nav-link" href="./contato.html">Contato</a></li>\n'
+        body += '<li class="nav-item"><a class="nav-link" href="./politica.html">Política de dados</a></li>\n'
+        body += '</ul>\n'
+        body += '</div><!-- /.navbar-collapse -->\n'
+        body += '</nav>\n'
+        body += '\n\n<!-- end: navbar -->\n\n\n'
+
+
         # jumbotron
         body += '<div class="myjumbotron">\n'
         body += '<div class="jumbotron text-center" style="text-color:black">\n'
@@ -318,8 +338,8 @@ class Index:
         # #body += '</div>\n'
 
         body += '<div class="card">\n'
-        body += '<div class="card-footer text-right">\n'
-        body += 'Repositório GitHub: '
+        body += '<div class="card-footer text-left">\n'
+        body += '<i class="fa fa-github" aria-hidden="true"></i> GitHub Repo: '
         body += '<a href="https://github.com/phkonzen/notas" target="_blank">https://github.com/phkonzen/notas</a>. Contato '
         body += '<a href="contato.html" target="_blank"><i class="fas fa-envelope"></i></a>\n'
         body += '</div> <!-- div class="card" -->\n'
