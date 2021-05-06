@@ -91,7 +91,7 @@ class Notas:
         head += '<script>\n'
         head += '$(document).ready(function () {\n'
         head += '$("#colabAlert").hide();\n'
-        # head += '$("#generalAlert").hide();\n'
+        head += '$("#generalAlert").hide();\n'
         head += 'if (document.referrer.lastIndexOf("://phkonzen.github.io/notas") != 0) {\n'
         head += '$("#generalAlert").fadeIn(0);\n'
         head += '}\n'
