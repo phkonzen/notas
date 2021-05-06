@@ -1,3 +1,3 @@
-# _Site_ das Notas de Aula
+# __Site__ das Notas de Aula
 
 https://phkonzen.github.io/notas

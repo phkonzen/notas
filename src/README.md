@@ -8,7 +8,11 @@ Códigos-fonte das notas de aula.
 
 * ./EDO - notas de aula sobre EDO
 
+* ./EaD - notas de aula sobre EaD
+
 * ./MatematicaNumerica - notas de aula sobre Matemática Numérica
+
+* ./MatematicaNumericaParalela - notas de aula sobre Matemática Numérica Paralela
 
 * ./MetodoElementosFinitos - notas de aula sobre MEF
 
@@ -18,7 +22,7 @@ Códigos-fonte das notas de aula.
 
 * ./MiniCalcPy - minicurso de Cálculo com Python
 
-* ./MiniMPI - minicurso de C++/MPI
+* ./MiniMPI - minicurso de C++/MPI (descontinuado!)
 
 ## Licença
 
