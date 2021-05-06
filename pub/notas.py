@@ -92,13 +92,12 @@ class Notas:
         head += '$(document).ready(function () {\n'
         head += '$("#colabAlert").hide();\n'
         head += '$("#generalAlert").hide();\n'
-        head += 'if (document.referrer.lastIndexOf("://phkonzen.github.io/notas") != 0) {\n'
+        head += 'if (document.referrer.lastIndexOf("://phkonzen.github.io/notas/") == -1) {\n'
         head += '$("#generalAlert").fadeIn(0);\n'
         head += '}\n'
-        head += '$("#colabAlert").delay(2000).fadeIn(100);\n'
+        head += '$("#colabAlert").delay(3000).fadeIn(100);\n'
         head += '});\n'    
         head += '</script>\n\n'
-
 
         head += '</head>\n'
 

@@ -55,7 +55,7 @@ class Index:
         head += 'if (document.referrer.lastIndexOf("://phkonzen.github.io/notas/") == -1) {\n'
         head += '$("#generalAlert").fadeIn(0);\n'
         head += '}\n'
-        head += '$("#colabAlert").delay(2000).fadeIn(100);\n'
+        head += '$("#colabAlert").delay(3000).fadeIn(100);\n'
         head += '});\n'    
         head += '</script>\n\n'
         
