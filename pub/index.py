@@ -48,6 +48,16 @@ class Index:
         head += '<link rel="stylesheet" href="fonts/cmun-serif.css"></link>'
         head += '<link rel="stylesheet" href="index.css" type="text/css">\n'
 
+        head += '<script>\n'
+        head += '$(document).ready(function () {\n'
+        head += '$("#colabAlert").hide();\n'
+        # head += '$("#generalAlert").hide();\n'
+        head += 'if (document.referrer.lastIndexOf("://phkonzen.github.io/notas") != 0) {\n'
+        head += '$("#generalAlert").fadeIn(0);\n'
+        head += '}\n'
+        head += '$("#colabAlert").delay(2000).fadeIn(100);\n'
+        head += '});\n'    
+        head += '</script>\n\n'
         
         head += '</head>\n'
 
@@ -365,11 +375,10 @@ class Index:
         body += '</div> <!-- div class="card" -->\n'
         body += '</div> <!-- div class="card-footer text-right" -->\n'
 
-        # colab alert
+        # colab alert (id=colabAlert)
         f = open('colab_alert.html','r')
         body += f.read()
         f.close()
-
 
         # general alert
         f = open('general_alert.html','r')
@@ -386,6 +395,8 @@ class Index:
 
 
         body += '\n\n'
+
+
         # body += '<!-- JavaScript -->\n'
         # body += '<!-- jQuery first, then Popper.js, then Bootstrap JS -->\n'
         # body += '<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>\n'
@@ -394,6 +405,7 @@ class Index:
 
         
         body += '</body>\n'
+
 
         #add at bottom
         self.page = self.page.replace('</html>',body)
