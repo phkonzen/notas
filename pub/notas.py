@@ -257,8 +257,7 @@ class Notas:
                 #modifica o __footer__
                 page = page.replace('<div class="ltx_page_logo">',foot)
 
-                
-                
+                               
                 #sobrescreve a página com as alterações
                 f = open(htmldir+"/"+p,'w')
                 f.write(page)

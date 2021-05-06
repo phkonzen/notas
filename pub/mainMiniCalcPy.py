@@ -25,11 +25,14 @@ os.system('rm -rvf '+srcdir+'/*')
 os.system('cp -rvf ../src/* '+srcdir+'/')
 
 # del as notas antigas
-os.system('rm -rvf ../docs/MiniCalcPy')
+os.system('rm -rvf '+odir+'/MiniCalcPy')
 
 # constroi as notas
 mini = MiniCalcPy(srcdir,odir)
 mini.build()
+
+#fonts
+os.system('cp -rvf fonts '+odir+'/MiniCalcPy/')
 
 # make sitemap.txt
 sm = SiteMap(odir)
