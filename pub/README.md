@@ -10,6 +10,8 @@ Os códigos estão testados apenas em Linux. Requerem, no mínimo, os seguintes 
 
 * [LaTeXML](https://dlmf.nist.gov/LaTeXML/)
 
+* [jupyter](https://jupyter.org/)
+
 ## Compilação
 
 * `$ make`: constroi/atualiza o __site__
