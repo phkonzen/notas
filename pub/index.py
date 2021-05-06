@@ -54,8 +54,8 @@ class Index:
         head += '$("#generalAlert").hide();\n'
         head += 'if (document.referrer.lastIndexOf("://phkonzen.github.io/notas/") == -1) {\n'
         head += '$("#generalAlert").fadeIn(0);\n'
-        head += '}\n'
         head += '$("#colabAlert").delay(3000).fadeIn(100);\n'
+        head += '}\n'
         head += '});\n'    
         head += '</script>\n\n'
         
@@ -96,11 +96,9 @@ class Index:
 
         # jumbotron
         body += '<div class="myjumbotron">\n'
-        body += '<div class="jumbotron text-center" style="text-color:black">\n'
-        # body += '<h1 class="display-4"></br></h1>\n'
+        body += '<div class="jumbotron text-center">\n'
         body += '<h1 class="display-4">Notas de Aula</h1>\n'
-        body += '<hr class="my-4">'
-        # body += '<p class="lead"></br></p>\n'
+        # body += '<hr class="my-4">'
         body += '<p class="lead">Pedro H A Konzen</p>\n'
         body += '</div> <!-- div class="jumbotron text-center" -->\n'
         body += '<p class="mb-0" style="text-align:right"><small>Imagem: <a href="https://flic.kr/p/4krYcm" target="_blank">Eli Duke</a>.</small></p>\n'
