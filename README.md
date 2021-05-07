@@ -13,7 +13,10 @@ Este é o repositório de minhas notas de aula. Pela educação livre, o materia
 ## Contato
 
 Pedro H A Konzen
-phkonzen@gmail.com
+
+e-mail: phkonzen@gmail.com
+
+instagram: @notas.pedrok
 
 ## Licença
 
