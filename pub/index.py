@@ -53,7 +53,7 @@ class Index:
         head += '$("#colabAlert").hide();\n'
         head += '$("#generalAlert").hide();\n'
         head += 'if (document.referrer.lastIndexOf("://phkonzen.github.io/notas/") == -1) {\n'
-        head += '$("#generalAlert").fadeIn(0);\n'
+        head += '$("#generalAlert").fadeIn(100);\n'
         head += '$("#colabAlert").delay(3000).fadeIn(100);\n'
         head += '}\n'
         head += '});\n'    

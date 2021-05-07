@@ -120,9 +120,9 @@ class MiniCalcPy(Notas):
         head += '$("#colabAlert").hide();\n'
         head += '$("#generalAlert").hide();\n'
         head += 'if (document.referrer.lastIndexOf("://phkonzen.github.io/notas/") == -1) {\n'
-        head += '$("#generalAlert").fadeIn(0);\n'
-        head += '$("#colabAlert").delay(3000).fadeIn(100);\n'
+        head += '$("#generalAlert").fadeIn(100);\n'
         head += '}\n'
+        head += '$("#colabAlert").delay(3000).fadeIn(100);\n'
         head += '});\n'    
         head += '</script>\n\n'
         
@@ -147,7 +147,7 @@ class MiniCalcPy(Notas):
         body += '<span class="navbar-toggler-icon"></span>\n'
         body += '</button>\n'
         body += '<div class="collapse navbar-collapse" id="navbarNav">\n'
-        body += '<ul class="navbar-nav" style="font-size:1.5em;">\n'
+        body += '<ul class="navbar-nav" style="font-size:1.75em;">\n'
         body += '<li class="nav-item"><a class="nav-link" href="../index.html">Início</a></li>\n'
         body += '<li class="nav-item"><a class="nav-link" href="https://github.com/phkonzen/notas"><i class="fa fa-github" aria-hidden="true"></i> Repo</a></li>\n'
         body += '<li class="nav=item"><a class="nav-link" href="https://mybinder.org/v2/gh/phkonzen/notas/master?filepath=notas.ipynb" target="_blank">Jupyter NB</a></li>\n'
@@ -161,7 +161,7 @@ class MiniCalcPy(Notas):
         #enxerta no __body__ (bottom)
         body_end = ''
 
-        body_end += '<div class="card-footer text-right">\n'
+        body_end += '<div class="card-footer text-right" style="font-size:1.75em;">\n'
         body_end += '<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />O texto acima está sob Licença <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR">Creative Commons Atribuição-CompartilhaIgual 4.0 Internacional</a>.  Contato '
         body_end += '<a href="contato.html" target="_blank"><i class="fas fa-envelope"></i></a>\n'
         body_end += '</div> <!-- div class="card-footer text-right" -->\n'
@@ -171,7 +171,7 @@ class MiniCalcPy(Notas):
         f = open('colab_alert.html','r')
         ga = f.read()
         f.close()
-        ga = ga.replace('style="','style="font-size:1.3em; opacity:200%; ')
+        ga = ga.replace('style="','style="font-size:1.75em;')
         body_end += ga.replace('./contato.html','../contato.html')
 
 
@@ -179,7 +179,7 @@ class MiniCalcPy(Notas):
         f = open('general_alert.html','r')
         ga = f.read()
         f.close()
-        ga = ga.replace('style="','style="font-size:1.5em;')
+        ga = ga.replace('style="','style="font-size:1.75em;')
         body_end += ga.replace('./politica.html','../politica.html')
 
         
