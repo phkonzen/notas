@@ -52,12 +52,6 @@ os.system('cp -rvf ../src/* '+srcdir+'/')
 #del o site antigo
 os.system('rm -rvf ../docs/*')
 
-#cria o README.md do ../docs
-os.system('cp docs_readme.md '+odir+'/README.md')
-
-#fonts
-os.system('cp -rvf fonts '+odir+'/')
-
 #objs da cada nota
 
 #ami = AnaliseMatematicaI(srcdir,odir)
@@ -79,6 +73,13 @@ if __name__ == '__main__':
     p = Pool()
     p.map(build,[ci,ead,edo,mn,mnp,mef,v,ga,mini])
 
+#cria o README.md do ../docs
+os.system('cp docs_readme.md '+odir+'/README.md')
+
+#fonts
+os.system('cp -rvf fonts '+odir+'/')
+os.system('cp -rvf fonts '+odir+'/MiniCalcPy/')
+    
 #sitemap.txt
 sm = SiteMap(odir)
 sm.build()
