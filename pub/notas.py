@@ -114,11 +114,20 @@ class Notas:
         body += '</button>\n'
         body += '<div class="collapse navbar-collapse" id="navbarNav">\n'
         body += '<ul class="navbar-nav">\n'
+        body += '<li class="nav-item"><a class="nav-link" href="../index.html"><i class="fas fa-home"></i> Início</a></li>\n'
         body += '<li class="nav-item active"><a class="nav-link" href="main.html">Sumário</a></li>\n'
-        body += '<li class="nav-item"><a class="nav-link" href="../index.html">Outras Notas & Infos</a></li>\n'
-        body += '<li class="nav-item"><a class="nav-link" href="https://github.com/phkonzen/notas"><i class="fa fa-github" aria-hidden="true"></i> Repo</a></li>\n'
         body += '<li class="nav-item"><a class="nav-link" href="main.pdf"><i class="fa fa-download" aria-hidden="true"></i> PDF</a></li>\n'
-        body += '<li class="nav=item"><a class="nav-link" href="https://mybinder.org/v2/gh/phkonzen/notas/master?filepath=notas.ipynb" target="_blank">Jupyter NB</a></li>\n'
+        body += '<li class="nav=item"><a class="nav-link" href="https://mybinder.org/v2/gh/phkonzen/notas/master?filepath=notas.ipynb">Jupyter NB</a></li>\n'
+        body += '<li class="nav-item dropdown">\n'
+        body += '<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\n'
+        body += 'Contato\n'
+        body += '</a>\n'
+        body += '<div class="dropdown-menu" aria-labelledby="navbarDropdown">\n'
+        body += '<a class="dropdown-item" href="../contato.html"><i class="fas fa-envelope"></i> Mensagem</a>\n'
+        body += '<a class="dropdown-item" href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i> notas.pedrok</a>\n'
+        body += '</div><!-- div class="dropdown-menu" aria-labelledby="navbarDropdown" -->\n'
+        body += '</li> <!-- li class="nav-item dropdown" -->\n'
+        body += '<li class="nav-item"><a class="nav-link" href="https://github.com/phkonzen/notas"><i class="fa fa-github" aria-hidden="true"></i> Repo</a></li>\n'
         body += '<li class="nav-item"><a class="nav-link" href="../politica.html">Política de dados</a></li>\n'
         body += '</ul>\n'
         body += '</div><!-- /.navbar-collapse -->\n'
@@ -129,31 +138,11 @@ class Notas:
         #enxerta no __body__ (bottom)
         body_end = ''
 
-        # # botão flutuante fixo 
-        # body_end += '<div class="toast fade show" aria-live="polite" style="position: fixed; bottom: 0">'
-        # body_end += '<div class="toast-header">'
-        # body_end += '<strong class="mr-auto"><a href="../contato.html" target="_blank"><i class="fas fa-envelope"></i> Erros? Sugestões? </a></strong>'
-        # body_end += '<button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>'
-        # body_end += '</div>'
-        # body_end += '<div class="toast-body">'
-        # body_end += '<a href="../contato.html" target="_blank">Clique aqui para informar erros ou deixar sujestões!</a>'
-        # body_end += '</div>'
-        # body_end += '</div>'
-
-        body_end += '<div class="card" style="font-size:0.9em">\n'
-        body_end += '<div class="card-footer text-left">\n'
-        body_end += '<i class="fa fa-github" aria-hidden="true"></i> GitHub Repo: '
-        body_end += '<a href="https://github.com/phkonzen/notas" target="_blank">https://github.com/phkonzen/notas</a>. Contato '
-        body_end += '<a href="contato.html" target="_blank"><i class="fas fa-envelope"></i></a>\n'
-        body_end += '</div> <!-- div class="card" -->\n'
-        body_end += '</div> <!-- div class="card-footer text-right" -->\n'
-
-
-        # # alerta de colaboração
-        # body_end += '<div class="alert alert-warning alert-dismissible" role="alert" style="position: fixed; bottom: 0; font-size:0.85em;">\n'
-        # body_end += '<span type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></span>\n'
-        # body_end += '<a href="../contato.html">Clique <strong>aqui</strong> para <strong>informar</strong> <span style="color:red"><strong>erros</strong></span> ou dar <span style="color:red"><strong>sugestões</strong></span>!</a>'
-        # body_end += '</div>\n\n'
+        # rodapé (id=rodape)
+        f = open('rodape.html','r')
+        rp = f.read()
+        f.close()
+        body_end += rp.replace('./contato.html','../contato.html')
 
         # colab alert
         f = open('colab_alert.html','r')
@@ -214,7 +203,7 @@ class Notas:
 
                     
 
-                    link_to_src = ' <small><a href="../contato.html" target="_blank">'
+                    link_to_src = ' <small><a href="../contato.html">'
                     link_to_src += '<i class="fas fa-envelope"></i></a></small>'
 
                     page = page.replace('</h1>',link_to_src+'</h1>')

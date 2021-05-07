@@ -141,16 +141,25 @@ class MiniCalcPy(Notas):
       
         # Navbar
         body += '\n\n<!-- begin: navbar -->\n'
-        body += '<nav class="navbar navbar-expand-md navbar-light bg-light"">\n'
+        body += '<nav class="navbar navbar-expand-md navbar-light bg-light">\n'
         body += '<a class="navbar-brand" href="main.html">Notas de Aula<br/><small>'+titulo_notas+'</small></a>\n'
         body += '<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">\n'
         body += '<span class="navbar-toggler-icon"></span>\n'
         body += '</button>\n'
-        body += '<div class="collapse navbar-collapse" id="navbarNav">\n'
-        body += '<ul class="navbar-nav" style="font-size:1.75em;">\n'
-        body += '<li class="nav-item"><a class="nav-link" href="../index.html">Início</a></li>\n'
+        body += '<div class="collapse navbar-collapse" id="navbarNav" style="font-size:1.75em;">\n'
+        body += '<ul class="navbar-nav">\n'
+        body += '<li class="nav-item"><a class="nav-link" href="../index.html"><i class="fas fa-home"></i> Início</a></li>\n'
+        body += '<li class="nav=item"><a class="nav-link" href="https://mybinder.org/v2/gh/phkonzen/notas/master?filepath=notas.ipynb">Jupyter NB</a></li>\n'
+        body += '<li class="nav-item dropdown">\n'
+        body += '<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\n'
+        body += 'Contato\n'
+        body += '</a>\n'
+        body += '<div class="dropdown-menu" aria-labelledby="navbarDropdown"  style="font-size:1em;">\n'
+        body += '<a class="dropdown-item" href="../contato.html"><i class="fas fa-envelope"></i> Mensagem</a>\n'
+        body += '<a class="dropdown-item" href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i> notas.pedrok</a>\n'
+        body += '</div><!-- div class="dropdown-menu" aria-labelledby="navbarDropdown" -->\n'
+        body += '</li> <!-- li class="nav-item dropdown" -->\n'
         body += '<li class="nav-item"><a class="nav-link" href="https://github.com/phkonzen/notas"><i class="fa fa-github" aria-hidden="true"></i> Repo</a></li>\n'
-        body += '<li class="nav=item"><a class="nav-link" href="https://mybinder.org/v2/gh/phkonzen/notas/master?filepath=notas.ipynb" target="_blank">Jupyter NB</a></li>\n'
         body += '<li class="nav-item"><a class="nav-link" href="../politica.html">Política de dados</a></li>\n'
         body += '</ul>\n'
         body += '</div><!-- /.navbar-collapse -->\n'
@@ -161,17 +170,21 @@ class MiniCalcPy(Notas):
         #enxerta no __body__ (bottom)
         body_end = ''
 
-        body_end += '<div class="card-footer text-right" style="font-size:1.75em;">\n'
-        body_end += '<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />O texto acima está sob Licença <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR">Creative Commons Atribuição-CompartilhaIgual 4.0 Internacional</a>.  Contato '
-        body_end += '<a href="contato.html" target="_blank"><i class="fas fa-envelope"></i></a>\n'
-        body_end += '</div> <!-- div class="card-footer text-right" -->\n'
+        body_end += '<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" style="font-size:1.5em;"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />O texto acima está sob Licença <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR">Creative Commons Atribuição-CompartilhaIgual 4.0 Internacional</a>.'
+
+        # rodapé (id=rodape)
+        f = open('rodape.html','r')
+        rp = f.read()
+        f.close()
+        rp = rp.replace('style=""','style="font-size:1.75em;"')
+        body_end += rp.replace('./contato.html','../contato.html')
 
 
         # colab alert
         f = open('colab_alert.html','r')
         ga = f.read()
         f.close()
-        ga = ga.replace('style="','style="font-size:1.75em;')
+        ga = ga.replace('style=""','style="font-size:1.75em;"')
         body_end += ga.replace('./contato.html','../contato.html')
 
 

@@ -83,10 +83,18 @@ class Index:
         body += '</button>\n'
         body += '<div class="collapse navbar-collapse" id="navbarNav">\n'
         body += '<ul class="navbar-nav">\n'
-        body += '<li class="nav-item active"><a class="nav-link" href="index.html">Início</a></li>\n'
+        body += '<li class="nav-item active"><a class="nav-link" href="index.html"><i class="fas fa-home"></i> Início</a></li>\n'
+        body += '<li class="nav=item"><a class="nav-link" href="https://mybinder.org/v2/gh/phkonzen/notas/master?filepath=notas.ipynb">Jupyter NB</a></li>\n'
+        body += '<li class="nav-item dropdown">\n'
+        body += '<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\n'
+        body += 'Contato\n'
+        body += '</a>\n'
+        body += '<div class="dropdown-menu" aria-labelledby="navbarDropdown">\n'
+        body += '<a class="dropdown-item" href="./contato.html"><i class="fas fa-envelope"></i> Mensagem</a>\n'
+        body += '<a class="dropdown-item" href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i> notas.pedrok</a>\n'
+        body += '</div><!-- div class="dropdown-menu" aria-labelledby="navbarDropdown" -->\n'
+        body += '</li> <!-- li class="nav-item dropdown" -->\n'
         body += '<li class="nav-item"><a class="nav-link" href="https://github.com/phkonzen/notas"><i class="fa fa-github" aria-hidden="true"></i> Repo</a></li>\n'
-        body += '<li class="nav=item"><a class="nav-link" href="https://mybinder.org/v2/gh/phkonzen/notas/master?filepath=notas.ipynb" target="_blank">Jupyter NB</a></li>\n'
-        body += '<li class="nav-item"><a class="nav-link" href="./contato.html">Contato</a></li>\n'
         body += '<li class="nav-item"><a class="nav-link" href="./politica.html">Política de dados</a></li>\n'
         body += '</ul>\n'
         body += '</div><!-- /.navbar-collapse -->\n'
@@ -101,7 +109,7 @@ class Index:
         # body += '<hr class="my-4">'
         body += '<p class="lead">Pedro H A Konzen</p>\n'
         body += '</div> <!-- div class="jumbotron text-center" -->\n'
-        body += '<p class="mb-0" style="text-align:right"><small>Imagem: <a href="https://flic.kr/p/4krYcm" target="_blank">Eli Duke</a>.</small></p>\n'
+        body += '<p class="mb-0" style="text-align:right"><small>Imagem: <a href="https://flic.kr/p/4krYcm">Eli Duke</a>.</small></p>\n'
         body += '</div> <!-- class="myjumbotron" -->\n'
 
         
@@ -320,9 +328,9 @@ class Index:
         body += '<h3>Sobre</h3>\n'
         body += '<p>Neste <i>site</i> publico minhas notas de aula. \n'
         body += 'O material está escrito predominante em linguagem de marcação \n'
-        body += '<a href="https://www.latex-project.org/" target=_blank>LaTeX</a>. \n'
+        body += '<a href="https://www.latex-project.org/">LaTeX</a>. \n'
         body += 'Disponíveis sob licença \n'
-        body += '<a href="http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR" target=_blank>CC-BY-SA 4.0</a>, \n'
+        body += '<a href="http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR">CC-BY-SA 4.0</a>, \n'
         body += 'os códigos-fonte podem ser obtidos no \n'
         body += 'repositório GitHub \n'
         body += '<a href="https://github.com/phkonzen/notas">https://github.com/phkonzen/notas</a>.</p>\n'
@@ -337,41 +345,25 @@ class Index:
 
         body += '<h3>Sobre mim?</h3>\n'
         body += '<ul>\n'
-        body += '<li><a href="http://lattes.cnpq.br/2565213716047382" target="_blank">Currículo Lattes</a></li>\n'
-        body += '<li><a href="http://professor.ufrgs.br/pedro/" target="_blank">Página de professor na UFRGS</a></li>\n'
+        body += '<li><a href="http://lattes.cnpq.br/2565213716047382">Currículo Lattes</a></li>\n'
+        body += '<li><a href="http://professor.ufrgs.br/pedro/">Página de professor na UFRGS</a></li>\n'
         body += '</ul>\n'
 
         body += '<h3>Ligações recomendadas</h3>\n'
         body += '<ul>\n'
-        body += '<li><a href="https://archive.org/" target="_blank">Internet Archive</a>: biblioteca de milhões de livros, filmes, <i>softwares</i>, música, <i>websites</i> e mais</li>\n'
-        body += '<li><a href="https://www.geogebra.org/" target="_blank">Geogebra</a>: aplicativos abertos de matemática</li>\n'
-        body += '<li><a href="https://www.ufrgs.br/reamat" target="_blank">REAMAT</a>: projeto de recursos educacionais abertos de matemática</li>\n'
+        body += '<li><a href="https://archive.org/">Internet Archive</a>: biblioteca de milhões de livros, filmes, <i>softwares</i>, música, <i>websites</i> e mais</li>\n'
+        body += '<li><a href="https://www.geogebra.org/">Geogebra</a>: aplicativos abertos de matemática</li>\n'
+        body += '<li><a href="https://www.ufrgs.br/reamat">REAMAT</a>: projeto de recursos educacionais abertos de matemática</li>\n'
         body += '</ul>\n'
 
         body += '</div><!-- div class="col-md-6" -->\n'
 
         body += '</div><!-- div class="row" -->\n'
 
-        # body += '</div>\n'
-
-        # #panel footer
-        # #body += '<div class="container-fluid">\n'
-        # body += '<div class="panel panel-default">\n'
-        # body += '<div class="panel-body" style="text-align: right">\n'
-        # body += 'Repositório GitHub: '
-        # body += '<a href="https://github.com/phkonzen/notas" target="_blank">https://github.com/phkonzen/notas</a>. Contato: '
-        # body += '<a href="contato.html" target="_blank"><span class="glyphicon glyphicon-envelope"></span></a>\n'
-        # body += '</div>\n'
-        # body += '</div>\n'
-        # #body += '</div>\n'
-
-        body += '<div class="card">\n'
-        body += '<div class="card-footer text-left">\n'
-        body += '<i class="fa fa-github" aria-hidden="true"></i> GitHub Repo: '
-        body += '<a href="https://github.com/phkonzen/notas" target="_blank">https://github.com/phkonzen/notas</a>. Contato '
-        body += '<a href="contato.html" target="_blank"><i class="fas fa-envelope"></i></a>\n'
-        body += '</div> <!-- div class="card" -->\n'
-        body += '</div> <!-- div class="card-footer text-right" -->\n'
+        # rodapé (id=rodape)
+        f = open('rodape.html','r')
+        body += f.read()
+        f.close()
 
         # colab alert (id=colabAlert)
         f = open('colab_alert.html','r')
@@ -395,13 +387,6 @@ class Index:
         body += '\n\n'
 
 
-        # body += '<!-- JavaScript -->\n'
-        # body += '<!-- jQuery first, then Popper.js, then Bootstrap JS -->\n'
-        # body += '<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>\n'
-        # body += '<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>\n'
-        # body += '<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>\n'
-
-        
         body += '</body>\n'
 
 
