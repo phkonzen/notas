@@ -1,6 +1,8 @@
 # Notas de aula
 
-Este é o repositório de minhas notas de aula. Pela educação livre, o material das notas está disponibilizado sob licença [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR).
+Este é o repositório de minhas notas de aula. Pela educação livre, o material das notas é disponível de forma gratuita e sob licença [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR).
+
+**Colabore!** Ajude informando **erros** ou dando **sugestões**.
 
 ## Pastas
 
@@ -16,7 +18,7 @@ Pedro H A Konzen
 
 e-mail: phkonzen@gmail.com
 
-instagram: @notas.pedrok
+instagram: [@notas.pedrok](https://www.instagram.com/notas.pedrok/)
 
 ## Licença
 
