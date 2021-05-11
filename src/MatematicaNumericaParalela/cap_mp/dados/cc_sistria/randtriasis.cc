@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
   gsl_rng_set(rng, time(NULL));
 
   // inicialização
-  printf("Inicializando ... \n");
+  printf('Inicializando ... \n');
 
   int sig;
   for (int i=0; i<n; i++) {
@@ -40,19 +40,19 @@ int main(int argc, char *argv[]) {
     gsl_vector_set(b, i,
 		   sig*gsl_rng_uniform(rng));
   }
-  printf("feito.\n");
+  printf('feito.\n');
 
-  printf("Salvando o sistema ...\n");
+  printf('Salvando o sistema ...\n');
   FILE *fpa;
-  fpa = fopen("a.bck","w");
+  fpa = fopen('a.bck','w');
   gsl_spmatrix_fwrite(fpa, a);
   fclose(fpa);
 
   FILE *fpb;
-  fpb = fopen("b.bck","w");
+  fpb = fopen('b.bck','w');
   gsl_vector_fwrite(fpb, b);
   fclose(fpb);
-  printf("feito.\n");
+  printf('feito.\n');
 
 
   gsl_spmatrix_free(a);

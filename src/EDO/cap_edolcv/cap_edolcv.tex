@@ -55,16 +55,16 @@ Suas raízes são
 No caso de $(a-1)^2-4b\neq 0$, temos que as raízes $r_1$ e $r_2$ da equação característica são reais e distintas ($r_1\neq r_2$). Assim, $y_1(x) = x^{r_1} $ e $y_2(x) = x^{r_2}$ são soluções da equação de Euler e o wronskiano
 \begin{align}
   W(y_1,y_2;t) &=
-                 \begin{vmatrix}
-                   y_1 & y_2 \\
-                   y_1' & y_2'
-                 \end{vmatrix} \\
-               &=
-                 \begin{vmatrix}
-                   x^{r_1} & x^{r_2} \\
-                   r_1x^{r_1-1} & r_2x^{r_2-1}
-                 \end{vmatrix} \\
-               &= (r_2-r_1)x^{r_1+r_2-1} \neq 0.\\
+  \begin{vmatrix}
+    y_1 & y_2 \\
+    y_1' & y_2'
+  \end{vmatrix} \\
+  &=
+  \begin{vmatrix}
+    x^{r_1} & x^{r_2} \\
+    r_1x^{r_1-1} & r_2x^{r_2-1}
+  \end{vmatrix} \\
+  &= (r_2-r_1)x^{r_1+r_2-1} \neq 0.\\
 \end{align}
 Ou seja, $\{y_1,y_2\}$ formam um conjunto fundamental de soluções para a equação de Euler, logo sua \emph{solução geral} é
 \begin{equation}
@@ -88,10 +88,11 @@ Ou seja, $\{y_1,y_2\}$ formam um conjunto fundamental de soluções para a equa�
 
   \ifispython
   No \python\footnote{Veja Observação \ref{obs:cap_edolin_python}}, temos
-\begin{verbatim}
->>> dsolve(x**2*diff(y(x),x,2)+x*diff(y(x),x)-4*y(x))
-Eq(y(x), C1/x**2 + C2*x**2)
-\end{verbatim}
+  \begin{lstlisting}
+    In : from sympy import *
+    In : dsolve(x**2*diff(y(x),x,2)+x*diff(y(x),x)-4*y(x))
+    Out: Eq(y(x), C1/x**2 + C2*x**2)
+  \end{lstlisting}
   \fi
 \end{ex}
 
@@ -113,21 +114,21 @@ Para obtermos uma outra solução, usamos o \emph{método da redução de ordem}
 Substituindo $y_2$ na equação de Euler, obtemos
 \begin{align}
   0 &= x^2y_2'' + axy_2' + by_2 \\
-    &= x^2\left(y_1''u + 2y_1'u' + y_1u''\right) \\
-    &+ ax\left(y_1'u + y_1u'\right) \\
-    &+ by_1u \\
-    &= \underbrace{\left(x^2y_1'' + axy_1' + By_1\right)u}_{=0} \\
-    &+ x^2y_1u'' + (2x^2y_1' + axy_1)u' \\
-    &= x^{r+2}u'' + (2x^2rx^{r-1} + axx^r)u' \\
-    &= x^{r+2}u'' + (2r+a)x^{r+1}u' \\
-    &= x^{r+2}u'' + x^{r+1}u' 
+  &= x^2\left(y_1''u + 2y_1'u' + y_1u''\right) \\
+  &+ ax\left(y_1'u + y_1u'\right) \\
+  &+ by_1u \\
+  &= \underbrace{\left(x^2y_1'' + axy_1' + By_1\right)u}_{=0} \\
+  &+ x^2y_1u'' + (2x^2y_1' + axy_1)u' \\
+  &= x^{r+2}u'' + (2x^2rx^{r-1} + axx^r)u' \\
+  &= x^{r+2}u'' + (2r+a)x^{r+1}u' \\
+  &= x^{r+2}u'' + x^{r+1}u' 
 \end{align}
 Desta equação, obtemos
 \begin{align}
   x^{r+2}u'' = -x^{r+1}u' &\Rightarrow \frac{1}{u'}u'' = -x^{-1} \\
-                                &\Rightarrow \ln|u'| = -\ln|x| + c \\
-                          &\Rightarrow u' = \frac{c}{x} \\
-                          &\Rightarrow u = c\ln|x| + d.
+  &\Rightarrow \ln|u'| = -\ln|x| + c \\
+  &\Rightarrow u' = \frac{c}{x} \\
+  &\Rightarrow u = c\ln|x| + d.
 \end{align}
 Ou seja, podemos escolher $y_2(x) = x^r\ln|x|$. Conferindo o wronskiano, temos
 \begin{align}
@@ -136,7 +137,7 @@ Ou seja, podemos escolher $y_2(x) = x^r\ln|x|$. Conferindo o wronskiano, temos
     x^r & x^r\ln|x| \\
     rx^{r-1} & (r\ln|x| + 1)x^{r-1}
   \end{vmatrix} \\
-        &= x^{2r-1} \neq 0,\quad x\neq 0.
+  &= x^{2r-1} \neq 0,\quad x\neq 0.
 \end{align}
 Concluímos que, no caso de raiz dupla $r=(1-a)/2$, a solução geral da equação de Euler é
 \begin{equation}
@@ -160,10 +161,11 @@ Concluímos que, no caso de raiz dupla $r=(1-a)/2$, a solução geral da equaç�
 
   \ifispython
   No \python\footnote{Veja Observação \ref{obs:cap_edolin_python}}, temos
-\begin{verbatim}
->>> dsolve(x**2*diff(y(x),x,2)-x*diff(y(x),x)+y(x))
-Eq(y(x), x*(C1 + C2*log(x)))
-\end{verbatim}
+  \begin{lstlisting}
+    In : from sympy import *
+    In : dsolve(x**2*diff(y(x),x,2)-x*diff(y(x),x)+y(x))
+    Out: Eq(y(x), x*(C1 + C2*log(x)))
+  \end{lstlisting}
   \fi  
 \end{ex}
 
@@ -180,19 +182,19 @@ onde
 Da \emph{fórmula de Euler}, temos
 \begin{align}
   x^{\lambda\pm i\mu} &= e^{\ln x^{\lambda \pm i\mu}} \\
-                      &= e^{(\lambda \pm i\mu)\ln(x)} \\
-                      &= e^{\lambda\ln|x|}[\cos(\mu\ln x) \pm i\sen(\mu\ln x)] \\
-                      &= x^\lambda[\cos(\mu\ln x) \pm i\sen(\mu\ln x)].
+  &= e^{(\lambda \pm i\mu)\ln(x)} \\
+  &= e^{\lambda\ln|x|}[\cos(\mu\ln x) \pm i\sen(\mu\ln x)] \\
+  &= x^\lambda[\cos(\mu\ln x) \pm i\sen(\mu\ln x)].
 \end{align}
 Agora, da linearidade da equação de Euler, vemos que $y_1(x) = x^\lambda\cos(\mu\ln|x|)$ e $y_2(x) = x^\lambda\sen(\mu\ln|x|)$ são soluções particulares. Mais ainda, o wronskiano
 \begin{align}
   W(y_1,y_2;t) &=
-                 \begin{vmatrix}
-                   y_1 & y_2 \\
-                   y_1' & y_2'
-                 \end{vmatrix} \\
-               &= \mu x^{2\lambda-1} \\
-               &= \frac{\sqrt{4b-(a-1)^2}}{2}x^a \neq 0.
+  \begin{vmatrix}
+    y_1 & y_2 \\
+    y_1' & y_2'
+  \end{vmatrix} \\
+  &= \mu x^{2\lambda-1} \\
+  &= \frac{\sqrt{4b-(a-1)^2}}{2}x^a \neq 0.
 \end{align}
 Concluímos que, no caso de raiz dupla, a solução geral é
 \begin{equation}
@@ -216,10 +218,11 @@ Concluímos que, no caso de raiz dupla, a solução geral é
 
   \ifispython
   No \python\footnote{Veja Observação \ref{obs:cap_edolin_python}}, temos
-\begin{verbatim}
->>> dsolve(x**2*diff(y(x),x,2)+x*diff(y(x),x)+y(x))
-Eq(y(x), C1*sin(log(x)) + C2*cos(log(x)))
-\end{verbatim}
+  \begin{lstlisting}
+    In : from sympy import *
+    In : dsolve(x**2*diff(y(x),x,2)+x*diff(y(x),x)+y(x))
+    Out: Eq(y(x), C1*sin(log(x)) + C2*cos(log(x)))
+  \end{lstlisting}
   \fi    
 \end{ex}
 
@@ -245,20 +248,20 @@ O ponto $x_0$ é arbitrário e deve pertencer ao domínio de interesse. A ideia 
   Segue que
   \begin{align}
     y'(t) &= \sum_{n=1}^\infty a_{n}nx^{n-1} \\
-          &= \sum_{n=0}^\infty a_{n+1}(n+1)x^n
+    &= \sum_{n=0}^\infty a_{n+1}(n+1)x^n
   \end{align}
   e
   \begin{align}
     y''(t) &= \sum_{n=1}^\infty a_{n+1}(n+1)nx^{n-1} \\
-           &= \sum_{n=0}^\infty a_{n+2}(n+2)(n+1)x^n.
+    &= \sum_{n=0}^\infty a_{n+2}(n+2)(n+1)x^n.
   \end{align}
   Substituindo na equação de Airy, obtemos
   \begin{align}
     0 &= y'' - xy \\
-      &= \sum_{n=0}^\infty a_{n+2}(n+2)(n+1)x^n - x\sum_{n=0}^\infty a_{n}x^n \\
-      &= \sum_{n=0}^\infty a_{n+2}(n+2)(n+1)x^n - \sum_{n=0}^\infty a_{n}x^{n+1} \\
-      &= 2a_2 + \sum_{n=1}^\infty a_{n+2}(n+2)(n+1)x^n - \sum_{n=1}^\infty a_{n-1}x^{n} \\
-      &= 2a_2 + \sum_{n=1}^\infty (a_{n+2}(n+2)(n+1) - a_{n-1})x^n.
+    &= \sum_{n=0}^\infty a_{n+2}(n+2)(n+1)x^n - x\sum_{n=0}^\infty a_{n}x^n \\
+    &= \sum_{n=0}^\infty a_{n+2}(n+2)(n+1)x^n - \sum_{n=0}^\infty a_{n}x^{n+1} \\
+    &= 2a_2 + \sum_{n=1}^\infty a_{n+2}(n+2)(n+1)x^n - \sum_{n=1}^\infty a_{n-1}x^{n} \\
+    &= 2a_2 + \sum_{n=1}^\infty (a_{n+2}(n+2)(n+1) - a_{n-1})x^n.
   \end{align}
   Como esta última equação deve valer para todo $x$, segue que
   \begin{align}
@@ -272,7 +275,7 @@ O ponto $x_0$ é arbitrário e deve pertencer ao domínio de interesse. A ideia 
       a_5 &= \frac{a_2}{4\cdot 5} = 0 \\
       a_8 &= \frac{a_5}{7\cdot 9} = 0 \\
       a_{11} &= \frac{a_{8}}{10\cdot 11} = 0 \\
-          &\vdots \\
+      &\vdots \\
       a_{3k+2} &= 0,\quad k\geq 1.
     \end{align}
   \item $n = 1, 4, 7, \ldots$:
@@ -280,7 +283,7 @@ O ponto $x_0$ é arbitrário e deve pertencer ao domínio de interesse. A ideia 
       a_3 &= \frac{a_0}{2\cdot 3}, \\
       a_6 &= \frac{a_3}{5\cdot 6} = \frac{a_0}{2\cdot 3\cdot 5\cdot 6}, \\
       a_9 &= \frac{a_{6}}{8\cdot 9} = \frac{a_0}{2\cdot 3\cdot 5\cdot 6 \cdot 8 \cdot 9} \\
-          &\vdots \\
+      &\vdots \\
       a_{3k} &= \frac{a_0}{2\cdot 3 \cdot\cdots\cdot (3k-1)\cdot (3k)},\quad k\geq 1.
     \end{align}
   \item $n = 2, 5, 8, \ldots$:
@@ -288,14 +291,14 @@ O ponto $x_0$ é arbitrário e deve pertencer ao domínio de interesse. A ideia 
       a_4 &= \frac{a_1}{3\cdot 4}, \\
       a_7 &= \frac{a_4}{6\cdot 7} = \frac{a_1}{3\cdot 4 \cdot 6 \cdot 7},\\
       a_{10} &= \frac{a_{7}}{9\cdot 10} = \frac{a_1}{3\cdot 4 \cdot 6 \cdot 7\cdot 9 \cdot 10},\\
-          &\vdots \\
+      &\vdots \\
       a_{3k+1} &= \frac{a_1}{3\cdot 4 \cdot\cdots\cdot (3k)\cdot (3k+1)},\quad k\geq 1.
     \end{align}
   \end{enumerate}
   Do que calculamos, podemos concluir que
   \begin{align}
     y(t) &= a_0\left[1 + \sum_{k=1}^\infty \frac{x^{3k}}{2\cdot 3 \cdot\cdots\cdot (3k-1)\cdot (3k)}\right] \\
-         &+ a_1\left[x + \sum_{k=1}^\infty \frac{x^{3k+1}}{3\cdot 4 \cdot\cdots\cdot (3k)\cdot (3k+1)}\right].
+    &+ a_1\left[x + \sum_{k=1}^\infty \frac{x^{3k+1}}{3\cdot 4 \cdot\cdots\cdot (3k)\cdot (3k+1)}\right].
   \end{align}
 \end{ex}
 
@@ -356,11 +359,11 @@ Há uma série de questões importantes que fogem dos objetivos destas notas de 
   \begin{align}
     \cos(x) &= y'' + xy' \\
     \sum_{n=0}^\infty \frac{(-1)^nx^{2n}}{(2n)!} &= \sum_{n=0}^\infty a_{n+2}(n+2)(n+1)x^n \\
-            &+ x\sum_{n=0}^\infty a_{n+1}(n+1)x^n \\
-            &= \sum_{n=0}^\infty a_{n+2}(n+2)(n+1)x^n \\
-            &+ \sum_{n=0}^\infty a_{n+1}(n+1)x^{n+1} \\
+    &+ x\sum_{n=0}^\infty a_{n+1}(n+1)x^n \\
+    &= \sum_{n=0}^\infty a_{n+2}(n+2)(n+1)x^n \\
+    &+ \sum_{n=0}^\infty a_{n+1}(n+1)x^{n+1} \\
     1 + \sum_{n=1}^\infty \frac{(-1)^nx^{2n}}{(2n)!} &= 2a_2 + \sum_{n=1}^\infty a_{n+2}(n+2)(n+1)x^n \\
-            &+ \sum_{n=1}^\infty a_nnx^n \\
+    &+ \sum_{n=1}^\infty a_nnx^n \\
   \end{align}
   Daí, considerando como constantes indeterminadas $a_0=c_1$ e $a_1=c_2$, temos
   \begin{equation}
@@ -405,17 +408,17 @@ para qualquer $x$ número real positivo.
 Ela pode ser interpretada como a generalização para números reais da função fatorial de números naturais. Isto se deve ao fato de que
 \begin{align}
   {\color{blue}\Gamma(n+1)} &= {\color{blue}n!}\\
-                            &= n\cdot (n-1)\cdot (n-2)\cdot\, \cdots\, \cdot 1
+  &= n\cdot (n-1)\cdot (n-2)\cdot\, \cdots\, \cdot 1
 \end{align}
 para qualquer $n$ número natural\footnote{Por definição, $0!=1$.}.
 
 De fato, temos ${\color{blue}\Gamma(1) = 1}$, pois da definição \eqref{eq:edolcv_fg} temos
 \begin{align}
   \Gamma(1) &= \int_0^\infty z^{1-1}e^{-z}\,dz\\
-            &= \int_0^\infty e^{-z}\,dz\\
-            &= \left.-e^{-z}\right|_{0}^{\infty}\\
-            &= \lim_{z\to\infty} \cancelto{0}{\left(-e^{-z}\right)} - \lim_{z\to 0} \cancelto{-1}{\left(-e^{-z}\right)}\\
-            &= 1.
+  &= \int_0^\infty e^{-z}\,dz\\
+  &= \left.-e^{-z}\right|_{0}^{\infty}\\
+  &= \lim_{z\to\infty} \cancelto{0}{\left(-e^{-z}\right)} - \lim_{z\to 0} \cancelto{-1}{\left(-e^{-z}\right)}\\
+  &= 1.
 \end{align}
 
 Além disso, vale a propriedade
@@ -425,28 +428,28 @@ Além disso, vale a propriedade
 De fato, da definição \eqref{eq:edolcv_fg} e por integração por partes, temos
 \begin{align}
   \Gamma(x+1) &= \int_0^\infty z^{x+1-1}e^{-z}\,dz\\
-              &= \int_0^\infty \underbrace{z^x}_{u}\cdot \underbrace{e^{-z}\,dz}_{dv}\\
-              &= \cancelto{0}{\left.\underbrace{z^x}_{u}\cdot\underbrace{\left(-e^{-z}\right)}_{v}\right|_{z=0}^\infty} - \int_{0}^\infty \underbrace{-e^{-z}}_{v}\cdot \underbrace{xz^{x-1}\,dz}_{du}\\
-              &= x\int_0^\infty z^{x-1}e^{-z}\,dz\\
-              &= x\Gamma(x).
+  &= \int_0^\infty \underbrace{z^x}_{u}\cdot \underbrace{e^{-z}\,dz}_{dv}\\
+  &= \cancelto{0}{\left.\underbrace{z^x}_{u}\cdot\underbrace{\left(-e^{-z}\right)}_{v}\right|_{z=0}^\infty} - \int_{0}^\infty \underbrace{-e^{-z}}_{v}\cdot \underbrace{xz^{x-1}\,dz}_{du}\\
+  &= x\int_0^\infty z^{x-1}e^{-z}\,dz\\
+  &= x\Gamma(x).
 \end{align}
 
 Logo, para $n$ número natural, temos
 \begin{align}
   \Gamma(n+1) &= n\Gamma(n)\\
-              &=n\cdot (n-1)\Gamma(n-1)\\
-              &=n\cdot (n-1)\cdot (n-2)\Gamma(n-2)\\
-              &\vdots\\
-              &= n\cdot (n-1)\cdot (n-2)\cdot\, \cdots\, \cdot 1\Gamma(1)\\
-              &= n\cdot (n-1)\cdot (n-2)\cdot\, \cdots\, \cdot 1 \\
-              &= n!
+  &=n\cdot (n-1)\Gamma(n-1)\\
+  &=n\cdot (n-1)\cdot (n-2)\Gamma(n-2)\\
+  &\vdots\\
+  &= n\cdot (n-1)\cdot (n-2)\cdot\, \cdots\, \cdot 1\Gamma(1)\\
+  &= n\cdot (n-1)\cdot (n-2)\cdot\, \cdots\, \cdot 1 \\
+  &= n!
 \end{align}
 
 \begin{ex}
   \begin{align}
     \Gamma(5) &= 4! \\
-              &= 4\cdot 3\cdot 2\cdot 1 \\
-              &= 24.
+    &= 4\cdot 3\cdot 2\cdot 1 \\
+    &= 24.
   \end{align}
 \end{ex}
 
@@ -480,13 +483,13 @@ Logo, para $n$ número natural, temos
   Para números não naturais $x$, o valor de $\Gamma(x)$ só pode ser computado via técnicas de cálculo numérico. Uma das exceções, $\Gamma(\frac{1}{2})$, de fato
   \begin{align}
     \Gamma\left(\frac{1}{2}\right) &= \int_0^\infty z^{\frac{1}{2}-1}e^{-z}\,dz\\
-                                   &= \int_0^\infty \frac{e^{-z}}{\sqrt{z}}\,dz
+    &= \int_0^\infty \frac{e^{-z}}{\sqrt{z}}\,dz
   \end{align}
   Fazendo a substituição $u=\sqrt{z}$, temos $\displaystyle du = \frac{dz}{2\sqrt{z}} = \frac{dz}{2u}$, obtemos
   \begin{align}
     \Gamma\left(\frac{1}{2}\right) &= \int_0^\infty \frac{e^{-u^2}}{u}\cdot 2u\,du \\
-                                   &= 2\int_0^\infty e^{-u^2}\,du \\
-                                   &= \int_{-\infty}^\infty e^{-u^2}\,du
+    &= 2\int_0^\infty e^{-u^2}\,du \\
+    &= \int_{-\infty}^\infty e^{-u^2}\,du
   \end{align}
   Esta última é a conhecida integral de Gauss, a qual tem valor
   \begin{equation}
@@ -517,26 +520,26 @@ Sua relação com a função gama é dada por
 De fato, temos
 \begin{align}
   \Gamma(x)\Gamma(y) &= \int_0^\infty u^{x-1}e^{-u}\,du\cdot\int_0^\infty v^{y-1}e^{-v}\,dv \\
-                     &= \int_{v=0}^\infty\int_{u=0}^\infty u^{x-1}v^{y-1}e^{-(u+v)}\,du\,dv
+  &= \int_{v=0}^\infty\int_{u=0}^\infty u^{x-1}v^{y-1}e^{-(u+v)}\,du\,dv
 \end{align}
 Fazendo a mudança de variáveis $u=zt$ e $v=z(1-t)$, temos a jacobiana
 \begin{align}
   J(u,v) &=
-           \begin{vmatrix}
-             \frac{\p u}{\p z} & \frac{\p u}{\p t}\\
-             \frac{\p v}{\p z} & \frac{\p v}{\p t}
-           \end{vmatrix}\\
-         &= \begin{vmatrix}
-           t & z\\
-           (1-t) & -z
-         \end{vmatrix}\\
-         &= -z.
+  \begin{vmatrix}
+    \frac{\p u}{\p z} & \frac{\p u}{\p t}\\
+    \frac{\p v}{\p z} & \frac{\p v}{\p t}
+  \end{vmatrix}\\
+  &= \begin{vmatrix}
+    t & z\\
+    (1-t) & -z
+  \end{vmatrix}\\
+  &= -z.
 \end{align}
 Logo,
 \begin{align}
   \Gamma(x)\Gamma(y) &= \int_{z=0}^\infty\int_{t=0}^1 (zt)^{x-1}[z(1-t)]^{y-1}e^{-[zt+z(1-t)]}\,|J(u,v)|\,dt\,dz\\
-                     &= \int_{z=0}^\infty z^{x+y-1}e^{-z}\,dz\cdot \int_{t=0}^1 t^{x-1}(1-t)^{y-1}\,dt\\
-                     &= \Gamma(x+y) B(x,y),
+  &= \int_{z=0}^\infty z^{x+y-1}e^{-z}\,dz\cdot \int_{t=0}^1 t^{x-1}(1-t)^{y-1}\,dt\\
+  &= \Gamma(x+y) B(x,y),
 \end{align}
 o que nos fornece \eqref{eq:edolcv_bg}.
 
@@ -547,8 +550,8 @@ o que nos fornece \eqref{eq:edolcv_bg}.
   De fato, de \eqref{eq:edolcv_bg}, temos
   \begin{align}
     B\left(\frac{1}{2}, \frac{1}{2}\right) &= \frac{\Gamma\left(\frac{1}{2}\right)\Gamma\left(\frac{1}{2}\right)}{\Gamma\left(\frac{1}{2}+\frac{1}{2}\right)}\\
-                                           &= \frac{\sqrt{\pi}\sqrt{\pi}}{\Gamma(1)}\\
-                                           &= \pi.
+    &= \frac{\sqrt{\pi}\sqrt{\pi}}{\Gamma(1)}\\
+    &= \pi.
   \end{align}
 \end{ex}
 
@@ -563,10 +566,10 @@ onde no denominador do último termo temos o coeficiente binomial
 De fato, \eqref{eq:edolcv_fgcb} decorre de \eqref{eq:edolcv_bg}, pois
 \begin{align}
   B(n,m) &= \frac{\Gamma(n)\Gamma(m)}{\Gamma(n+m)} \\
-         &= \frac{(n-1)!(m-1)!}{(n+m-1)!}\\
-         &= \frac{n!m!}{(n+m)!}\frac{n+m}{nm}\\
-         &= \frac{n+m}{nm}\cdot\frac{1}{\frac{(n+m)!}{n!m!}}\\
-         &= \frac{n+m}{nm}\cdot \frac{1}{\binom{n+m}{n}}.
+  &= \frac{(n-1)!(m-1)!}{(n+m-1)!}\\
+  &= \frac{n!m!}{(n+m)!}\frac{n+m}{nm}\\
+  &= \frac{n+m}{nm}\cdot\frac{1}{\frac{(n+m)!}{n!m!}}\\
+  &= \frac{n+m}{nm}\cdot \frac{1}{\binom{n+m}{n}}.
 \end{align}
 
 \subsection*{Exercícios resolvidos}
@@ -578,8 +581,8 @@ De fato, \eqref{eq:edolcv_fgcb} decorre de \eqref{eq:edolcv_bg}, pois
   Da propriedade \eqref{eq:edolcv_fgp1} e de \eqref{eq:edolcv_g12} , temos
   \begin{align}
     \Gamma\left(\frac{3}{2}\right) &= \Gamma\left(\frac{1}{2}+1\right)\\
-                                   &= \frac{1}{2}\Gamma\left(\frac{1}{2}\right)\\
-                                   &= \frac{1}{2}\sqrt{\pi}.
+    &= \frac{1}{2}\Gamma\left(\frac{1}{2}\right)\\
+    &= \frac{1}{2}\sqrt{\pi}.
   \end{align}
 \end{resol}
 
@@ -598,9 +601,9 @@ De fato, \eqref{eq:edolcv_fgcb} decorre de \eqref{eq:edolcv_bg}, pois
   Logo, temos
   \begin{align}
     \int_0^1 (-\ln s)^n\,ds &= -\int_\infty^0 t^ne^{-t}\,dt\\
-                            &= \int_0^\infty t^ne^{-t}\,dt\\
-                            &= \Gamma(n+1) \\
-                            &= n!
+    &= \int_0^\infty t^ne^{-t}\,dt\\
+    &= \Gamma(n+1) \\
+    &= n!
   \end{align}
 \end{resol}
 
@@ -611,9 +614,9 @@ De fato, \eqref{eq:edolcv_fgcb} decorre de \eqref{eq:edolcv_bg}, pois
   Da propriedade \eqref{eq:edolcv_bg}, temos
   \begin{align}
     B(2,3) &= \frac{\Gamma(2)\Gamma(3)}{\Gamma(2+3)}\\
-           &= \frac{1!\cdot 2!}{4!} \\
-           &= \frac{2}{24} \\
-           &= \frac{1}{12}.
+    &= \frac{1!\cdot 2!}{4!} \\
+    &= \frac{2}{24} \\
+    &= \frac{1}{12}.
   \end{align}
 \end{resol}
 
@@ -737,7 +740,7 @@ Substituindo $r=r_1=\nu$ em \eqref{eq:bessel-s2}, obtemos
   =  x^\nu\sum_{n=1}^\infty c_nn(n+2\nu)x^n + x^\nu\sum_{n=0}^\infty c_nx^{n+2}\\
   = x^\nu\left[c_1(1+2\nu)x + \underbrace{\sum_{n=2}^\infty c_nn(n+2\nu)x^n}_{m=n-2} + \underbrace{x^\nu\sum_{n=0}^\infty c_nx^{n+2}}_{m=n}\right]\\
   = x^\nu\left[c_1(1+2\nu)x \right.\\
-  \left. + \sum_{m=0}^\infty c_{m+2}(m+2)(m+2+2\nu)x^{m+2} + x^\nu\sum_{m=0}^\infty c_mx^{m+2}\right]\\
+    \left. + \sum_{m=0}^\infty c_{m+2}(m+2)(m+2+2\nu)x^{m+2} + x^\nu\sum_{m=0}^\infty c_mx^{m+2}\right]\\
   = x^\nu\left\{c_1(1+2\nu)x + \sum_{m=0}^\infty \left[c_{m+2}(m+2)(m+2+2\nu) + c_m\right]x^{m+2}\right\}
 \end{gather}
 Logo,
@@ -765,10 +768,10 @@ Daí, segue que
 \begin{align}
   c_2 &= -\frac{c_0}{2^2\cdot 1\cdot (1+\nu)}\\
   c_4 &= -\frac{c_2}{2^2\cdot 2\cdot (2+\nu)}\\
-      &= \frac{c_0}{2^4\cdot 2!\cdot (1+\nu)(2+\nu)}\\
+  &= \frac{c_0}{2^4\cdot 2!\cdot (1+\nu)(2+\nu)}\\
   c_6 &= -\frac{c_4}{2^2\cdot 3\cdot (3+\nu)}\\
-      &= -\frac{c_0}{2^6\cdot 3!\cdot (1+\nu)(2+\nu)(3+\nu)}\\
-      &\vdots\\
+  &= -\frac{c_0}{2^6\cdot 3!\cdot (1+\nu)(2+\nu)(3+\nu)}\\
+  &\vdots\\
   c_{2n} &= \frac{(-1)^nc_0}{2^{2n}n!(1+\nu)(2+\nu)\cdots(n+\nu)}
 \end{align}
 Da propriedade da função gama
@@ -779,7 +782,7 @@ temos que
 \begin{align}
   \Gamma(1+\nu+1) &= (1+\nu)\Gamma(1+\nu)\\
   \Gamma(1+\nu+2) &= (2+\nu)\Gamma(2+\nu)=(1+\nu)(2+\nu)\Gamma(1+\nu)\\
-                &\vdots\\
+  &\vdots\\
   \Gamma(1+\nu+n) &= (1+\nu)(2+\nu)\cdots(n+\nu)\Gamma(1+\nu). 
 \end{align}
 Com isso, escolhendo
@@ -810,169 +813,169 @@ Esta é conhecida como \emph{função de Bessel de primeira espécie} de ordem $
 \end{equation}
 Pode-se mostrar que se $\nu\geq 0$, a série converge para $x\in [0, \infty)$.
 
-Outra solução da equação de Bessel é obtida tomando $r=r_2=-\nu$. Procedendo de forma análoga, obtemos a solução
-\begin{align}
-  y(x) &= J_{-\nu}(x)\\
-       &= \sum_{n=0}^\infty \frac{(-1)^n}{n!\Gamma(1-\nu+n)}\left(\frac{x}{2}\right)^{2n-\nu},
-\end{align}
-a qual é chamada de função de Bessel de primeira espécie de ordem $-\nu$.
-
-Agora, vamos discutir sobre a \emph{solução geral} da equação de Bessel. Pode-se mostrar \emph{se $\nu$ não é um número inteiro, então $J_\nu(x)$ e $J_{-\nu}(x)$ são soluções linearmente independentes}. Logo, temos a solução geral
-\begin{equation}
-  y(x) = c_1J_\nu(x) + c_2J_{-\nu}(x),\quad \nu\not\in\mathbb{Z}.
-\end{equation}
-
-\begin{ex}
-  A solução geral da equação de Bessel de ordem $\nu=1/3$
-  \begin{equation}
-    x^2y'' + xy' + \left(x^2 - \frac{1}{9}\right)y = 0
-  \end{equation}
-  é
-  \begin{equation}
-    y(x) = c_1J_{\frac{1}{3}}(x) + c_2J_{-\frac{1}{3}}(x).
-  \end{equation}
-\end{ex}
-
-\subsection{Função de Bessel de segunda espécie}
-
-A \emph{função de Bessel de segunda espécie} de ordem $\nu$ é dada por
-\begin{equation}
-  Y_\nu(x) = \frac{J_\nu(x)\cos(\nu\pi)-J_{-\nu}(x)}{\sen(\nu\pi)}
-\end{equation}
-Para $\nu$ não inteiro, $Y_\nu(x)$ e $J_\nu(x)$ são soluções linearmente independentes da equação de Bessel. Agora, pode-se mostrar que quando $\nu\to m$ número inteiro, o seguinte limite está bem definido
-\begin{equation}
-  Y_m(x) = \lim_{\nu\to m} Y_\nu(x).
-\end{equation}
-Além disso, para $m$ número inteiro, $Y_m(x)$ e $J_m(x)$ são linearmente independentes. Logo, a \emph{solução geral} da equação de Bessel de ordem $m$ é
-\begin{equation}
-  {\color{blue}y(x) = c_1J_m(x) + c_2Y_m(x)},
-\end{equation}
-onde $Y_\nu(x)$ é chamada de \emph{função de Bessel de segunda espécie} de ordem $\nu$.
-
-\begin{ex}
-  A solução geral da equação de Bessel de ordem $\nu=3$
-  \begin{equation}
-    x^2y'' + xy' + \left(x^2 - 9\right)y = 0
-  \end{equation}
-  é
-  \begin{equation}
-    y(x) = c_1J_{3}(x) + c_2Y_3(x).
-  \end{equation}  
-\end{ex}
-
-\subsection*{Exercícios resolvidos}
-
-\begin{exeresol}
-  Forneça a solução geral da equação
-  \begin{equation}
-    x^2y'' + xy' + x^2y = 0
-  \end{equation}
-\end{exeresol}
-\begin{resol}
-  Esta é a equação de Bessel de ordem $\nu = 0$. A solução geral é combinação linear da função de Bessel de primeira espécie $J_0(x)$ com a função de Bessel de segunda espécie $Y_0(x)$, i.e.
-  \begin{equation}
-    y(x) = c_1J_0(x) + c_2Y_0(x).
-  \end{equation}
-\end{resol}
-
-
-\begin{exeresol}
-  Verifique se
-  \begin{equation}
-    J_{\frac{1}{2}}(x) = \left(\frac{2}{\pi x}\right)^{\frac{1}{2}}\sen x,\quad x>0.
-  \end{equation}
-  Dica:
-  \begin{equation}\label{eq:bessel-dica-1}
-    \Gamma\left(\frac{1}{2}+n\right) = \frac{(2n)!}{4^nn!}\sqrt{\pi}.
-  \end{equation}
-\end{exeresol}
-\begin{resol}
-  Da definição da função de Bessel de primeira espécie de ordem $\nu$ \eqref{eq:bessel-1esp-nu}, temos
-  \begin{equation}
-    J_{\frac{1}{2}}(x) = \sum_{n=0}^\infty \frac{(-1)^n}{n!\Gamma\left(1+\frac{1}{2}+n\right)}\left(\frac{x}{2}\right)^{2n+\frac{1}{2}}.
-  \end{equation}
-  Usando \eqref{eq:bessel-dica-1}, temos
+  Outra solução da equação de Bessel é obtida tomando $r=r_2=-\nu$. Procedendo de forma análoga, obtemos a solução
   \begin{align}
-    \Gamma\left(1+\frac{1}{2}+n\right) &= \frac{[2(n+1)]!}{4^{n+1}(n+1)!}\sqrt{\pi}\\
-   &= \frac{[2(n+1)]!}{2^{2n+2}(n+1)!}\sqrt{\pi}. 
+    y(x) &= J_{-\nu}(x)\\
+    &= \sum_{n=0}^\infty \frac{(-1)^n}{n!\Gamma(1-\nu+n)}\left(\frac{x}{2}\right)^{2n-\nu},
   \end{align}
-  Substituindo na função de Bessel, obtemos
-  \begin{align}
-    J_{\frac{1}{2}}(x) &= \sum_{n=0}^\infty \frac{(-1)^n}{n!\frac{[2(n+1)]!}{2^{2n+2}(n+1)!}\sqrt{\pi}}\left(\frac{x}{2}\right)^{2n+\frac{1}{2}}\\
-                       &= \left(\frac{x}{2}\right)^{\frac{1}{2}}\frac{1}{\sqrt{\pi}}\sum_{n=0}^\infty \frac{(-1)^n2^{2n+2}(n+1)!}{n![2(n+1)]!2^{2n}}x^{2n}\\
-                       &= \left(\frac{x}{2\pi}\right)^{\frac{1}{2}}\sum_{n=0}^\infty \frac{(-1)^n2^2(n+1)}{[2(n+1)]!}x^{2n}\\
-                       &= \left(\frac{x}{2\pi}\right)^{\frac{1}{2}}2\sum_{n=0}^\infty \frac{(-1)^n(2n+2)}{(2n+2)(2n+1)!}x^{2n}\\
-                       &= \frac{2\sqrt{x}}{x\sqrt{2}\sqrt{\pi}}\sum_{n=0}^\infty \frac{(-1)^n}{(2n+1)!}x^{2n+1}\\
-                       &= \sqrt{\frac{2}{\pi x}}\sen x,
-  \end{align}
-  lembrando que a expansão em série de MacLaurin
+  a qual é chamada de função de Bessel de primeira espécie de ordem $-\nu$.
+
+  Agora, vamos discutir sobre a \emph{solução geral} da equação de Bessel. Pode-se mostrar \emph{se $\nu$ não é um número inteiro, então $J_\nu(x)$ e $J_{-\nu}(x)$ são soluções linearmente independentes}. Logo, temos a solução geral
   \begin{equation}
-    \sen x = \sum_{n=0}^\infty \frac{(-1)^n}{(2n+1)!}x^{2n+1}.
+    y(x) = c_1J_\nu(x) + c_2J_{-\nu}(x),\quad \nu\not\in\mathbb{Z}.
   \end{equation}
-\end{resol}
 
-\subsection*{Exercícios}
+  \begin{ex}
+    A solução geral da equação de Bessel de ordem $\nu=1/3$
+    \begin{equation}
+      x^2y'' + xy' + \left(x^2 - \frac{1}{9}\right)y = 0
+    \end{equation}
+    é
+    \begin{equation}
+      y(x) = c_1J_{\frac{1}{3}}(x) + c_2J_{-\frac{1}{3}}(x).
+    \end{equation}
+  \end{ex}
 
-\begin{exer}
-  Forneça a solução da equação de Bessel
+  \subsection{Função de Bessel de segunda espécie}
+
+  A \emph{função de Bessel de segunda espécie} de ordem $\nu$ é dada por
   \begin{equation}
-    x^2y'' + xy' + (x^2-\frac{1}{16})y = 0.
+    Y_\nu(x) = \frac{J_\nu(x)\cos(\nu\pi)-J_{-\nu}(x)}{\sen(\nu\pi)}
   \end{equation}
-\end{exer}
-\begin{resp}
-  $y(x) = c_1J_{\frac{1}{4}}(x) + c_2J_{-\frac{1}{4}}(x)$
-\end{resp}
-
-
-\begin{exer}
-  Forneça a solução da equação de Bessel de ordem um
+  Para $\nu$ não inteiro, $Y_\nu(x)$ e $J_\nu(x)$ são soluções linearmente independentes da equação de Bessel. Agora, pode-se mostrar que quando $\nu\to m$ número inteiro, o seguinte limite está bem definido
   \begin{equation}
-    x^2y'' + xy' + (x^2-1)y = 0.
+    Y_m(x) = \lim_{\nu\to m} Y_\nu(x).
   \end{equation}
-\end{exer}
-\begin{resp}
-  $y(x) = c_1J_1(x) + c_2Y_1(x)$
-\end{resp}
-
-\begin{exer}
-  Forneça a solução da equação
+  Além disso, para $m$ número inteiro, $Y_m(x)$ e $J_m(x)$ são linearmente independentes. Logo, a \emph{solução geral} da equação de Bessel de ordem $m$ é
   \begin{equation}
-    4x^2(y''+y) + 4xy' -9y = 0.
+    {\color{blue}y(x) = c_1J_m(x) + c_2Y_m(x)},
   \end{equation}
-\end{exer}
-\begin{resp}
-  $y(x) = c_1J_{\frac{3}{2}}(x) + c_2J_{-\frac{3}{2}}(x)$
-\end{resp}
+  onde $Y_\nu(x)$ é chamada de \emph{função de Bessel de segunda espécie} de ordem $\nu$.
 
-\begin{exer}
-  Calcule $J_0'(x)$ para $x>0$\footnote{Pode-se mostrar que $J_0$ é uma função analítica em $x=0$. Veja, por exemplo, \cite[Capítulo 5., Seção 5.7.]{Boyce2020}}.
-\end{exer}
-\begin{resp}
-  $J_0'(x)=-J_1(x)$
-\end{resp}
+  \begin{ex}
+    A solução geral da equação de Bessel de ordem $\nu=3$
+    \begin{equation}
+      x^2y'' + xy' + \left(x^2 - 9\right)y = 0
+    \end{equation}
+    é
+    \begin{equation}
+      y(x) = c_1J_{3}(x) + c_2Y_3(x).
+    \end{equation}  
+  \end{ex}
 
-\begin{exer}
-  Verifique se
-  \begin{equation}
-    J_{-\frac{1}{2}}(x) = \left(\frac{2}{\pi x}\right)^{\frac{1}{2}}\cos x,\quad x>0.
-  \end{equation}
-\end{exer}
-\begin{resp}
-  Dicas:
-  \begin{equation}
-    \Gamma\left(\frac{1}{2}+n\right) = \frac{(2n)!}{4^nn!}\sqrt{\pi}.
-  \end{equation}
-  \begin{equation}
-    \cos x = \sum_{n=0}^\infty \frac{(-1)^n}{(2n)!}x^{2n}.
-  \end{equation}  
-\end{resp}
+  \subsection*{Exercícios resolvidos}
 
-\begin{exer}
-  Calcule a solução geral da equação de Bessel de ordem um meio
-  \begin{equation}
-    x^2y'' + xy' + \left(x^2-\frac{1}{4}\right)y = 0.
-  \end{equation}
-\end{exer}
-\begin{resp}
-  $y(x) = c_1\frac{\sen x}{x^{1/2}} + c_2\frac{\cos x}{x^{1/2}}$
-\end{resp}
+  \begin{exeresol}
+    Forneça a solução geral da equação
+    \begin{equation}
+      x^2y'' + xy' + x^2y = 0
+    \end{equation}
+  \end{exeresol}
+  \begin{resol}
+    Esta é a equação de Bessel de ordem $\nu = 0$. A solução geral é combinação linear da função de Bessel de primeira espécie $J_0(x)$ com a função de Bessel de segunda espécie $Y_0(x)$, i.e.
+    \begin{equation}
+      y(x) = c_1J_0(x) + c_2Y_0(x).
+    \end{equation}
+  \end{resol}
+
+
+  \begin{exeresol}
+    Verifique se
+    \begin{equation}
+      J_{\frac{1}{2}}(x) = \left(\frac{2}{\pi x}\right)^{\frac{1}{2}}\sen x,\quad x>0.
+    \end{equation}
+    Dica:
+    \begin{equation}\label{eq:bessel-dica-1}
+      \Gamma\left(\frac{1}{2}+n\right) = \frac{(2n)!}{4^nn!}\sqrt{\pi}.
+    \end{equation}
+  \end{exeresol}
+  \begin{resol}
+    Da definição da função de Bessel de primeira espécie de ordem $\nu$ \eqref{eq:bessel-1esp-nu}, temos
+    \begin{equation}
+      J_{\frac{1}{2}}(x) = \sum_{n=0}^\infty \frac{(-1)^n}{n!\Gamma\left(1+\frac{1}{2}+n\right)}\left(\frac{x}{2}\right)^{2n+\frac{1}{2}}.
+    \end{equation}
+    Usando \eqref{eq:bessel-dica-1}, temos
+    \begin{align}
+      \Gamma\left(1+\frac{1}{2}+n\right) &= \frac{[2(n+1)]!}{4^{n+1}(n+1)!}\sqrt{\pi}\\
+      &= \frac{[2(n+1)]!}{2^{2n+2}(n+1)!}\sqrt{\pi}. 
+    \end{align}
+    Substituindo na função de Bessel, obtemos
+    \begin{align}
+      J_{\frac{1}{2}}(x) &= \sum_{n=0}^\infty \frac{(-1)^n}{n!\frac{[2(n+1)]!}{2^{2n+2}(n+1)!}\sqrt{\pi}}\left(\frac{x}{2}\right)^{2n+\frac{1}{2}}\\
+      &= \left(\frac{x}{2}\right)^{\frac{1}{2}}\frac{1}{\sqrt{\pi}}\sum_{n=0}^\infty \frac{(-1)^n2^{2n+2}(n+1)!}{n![2(n+1)]!2^{2n}}x^{2n}\\
+      &= \left(\frac{x}{2\pi}\right)^{\frac{1}{2}}\sum_{n=0}^\infty \frac{(-1)^n2^2(n+1)}{[2(n+1)]!}x^{2n}\\
+      &= \left(\frac{x}{2\pi}\right)^{\frac{1}{2}}2\sum_{n=0}^\infty \frac{(-1)^n(2n+2)}{(2n+2)(2n+1)!}x^{2n}\\
+      &= \frac{2\sqrt{x}}{x\sqrt{2}\sqrt{\pi}}\sum_{n=0}^\infty \frac{(-1)^n}{(2n+1)!}x^{2n+1}\\
+      &= \sqrt{\frac{2}{\pi x}}\sen x,
+    \end{align}
+    lembrando que a expansão em série de MacLaurin
+    \begin{equation}
+      \sen x = \sum_{n=0}^\infty \frac{(-1)^n}{(2n+1)!}x^{2n+1}.
+    \end{equation}
+  \end{resol}
+
+  \subsection*{Exercícios}
+
+  \begin{exer}
+    Forneça a solução da equação de Bessel
+    \begin{equation}
+      x^2y'' + xy' + (x^2-\frac{1}{16})y = 0.
+    \end{equation}
+  \end{exer}
+  \begin{resp}
+    $y(x) = c_1J_{\frac{1}{4}}(x) + c_2J_{-\frac{1}{4}}(x)$
+  \end{resp}
+
+
+  \begin{exer}
+    Forneça a solução da equação de Bessel de ordem um
+    \begin{equation}
+      x^2y'' + xy' + (x^2-1)y = 0.
+    \end{equation}
+  \end{exer}
+  \begin{resp}
+    $y(x) = c_1J_1(x) + c_2Y_1(x)$
+  \end{resp}
+
+  \begin{exer}
+    Forneça a solução da equação
+    \begin{equation}
+      4x^2(y''+y) + 4xy' -9y = 0.
+    \end{equation}
+  \end{exer}
+  \begin{resp}
+    $y(x) = c_1J_{\frac{3}{2}}(x) + c_2J_{-\frac{3}{2}}(x)$
+  \end{resp}
+
+  \begin{exer}
+    Calcule $J_0'(x)$ para $x>0$\footnote{Pode-se mostrar que $J_0$ é uma função analítica em $x=0$. Veja, por exemplo, \cite[Capítulo 5., Seção 5.7.]{Boyce2020}}.
+  \end{exer}
+  \begin{resp}
+    $J_0'(x)=-J_1(x)$
+  \end{resp}
+
+  \begin{exer}
+    Verifique se
+    \begin{equation}
+      J_{-\frac{1}{2}}(x) = \left(\frac{2}{\pi x}\right)^{\frac{1}{2}}\cos x,\quad x>0.
+    \end{equation}
+  \end{exer}
+  \begin{resp}
+    Dicas:
+    \begin{equation}
+      \Gamma\left(\frac{1}{2}+n\right) = \frac{(2n)!}{4^nn!}\sqrt{\pi}.
+    \end{equation}
+    \begin{equation}
+      \cos x = \sum_{n=0}^\infty \frac{(-1)^n}{(2n)!}x^{2n}.
+    \end{equation}  
+  \end{resp}
+
+  \begin{exer}
+    Calcule a solução geral da equação de Bessel de ordem um meio
+    \begin{equation}
+      x^2y'' + xy' + \left(x^2-\frac{1}{4}\right)y = 0.
+    \end{equation}
+  \end{exer}
+  \begin{resp}
+    $y(x) = c_1\frac{\sen x}{x^{1/2}} + c_2\frac{\cos x}{x^{1/2}}$
+  \end{resp}

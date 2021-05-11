@@ -16,19 +16,17 @@ int main(int argc, char *argv[]) {
   gsl_vector *x = gsl_vector_alloc(n);
   gsl_vector *y = gsl_vector_alloc(n);
 
-  // gerador randômico
+  // gerador randomico
   gsl_rng *rng = gsl_rng_alloc(gsl_rng_default);
   gsl_rng_set(rng, time(NULL));
 
-  // inicialização
+  // inicializacao
   for (int i=0; i<n; i++) {
     for (int j=0; j<n; j++) {
       gsl_matrix_set(a, i, j, gsl_rng_uniform(rng));
     }
     gsl_vector_set(x, i, gsl_rng_uniform(rng));
   }
-
-  //gsl_blas_dgemv(CblasNoTrans, 1.0, a, x, 0.0, y);
 
   // y = A*x
   #pragma omp parallel sections
@@ -59,9 +57,6 @@ int main(int argc, char *argv[]) {
 		     0.0, &ys2.vector);
     }
   }
-
-  //for (int i=0; i<n; i++)
-  //printf("%f\n", gsl_vector_get(y,i));
 
   gsl_matrix_free(a);
   gsl_vector_free(x);

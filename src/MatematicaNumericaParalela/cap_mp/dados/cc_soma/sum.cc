@@ -16,6 +16,6 @@ int main(int argc, char *argv[]) {
     for (int i=tid*np; i<(tid+1)*np & i<n; i++)
       s += i;
   }
-  printf("%d\n",s);
+  printf('%d\n',s);
   return 0;
 }

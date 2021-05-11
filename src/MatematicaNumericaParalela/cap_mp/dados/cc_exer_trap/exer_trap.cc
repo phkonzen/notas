@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
   s += f(a) + f(b);
   s *= h/2;
 
-  printf("%f\n",s);
+  printf('%f\n',s);
   
   return 0;
 }

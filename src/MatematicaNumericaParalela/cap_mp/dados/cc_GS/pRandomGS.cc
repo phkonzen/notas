@@ -28,7 +28,7 @@ int main(int argc, char *argv[]) {
 
   // Inicializacao
   // Matriz estritamente diagonal dominante
-  printf("Inicializacao ... \n");
+  printf('Inicializacao ... \n');
   double sig;
   for (int i=0; i<n; i++) {
     double s = 0;
@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
 		   randsig(rng) *
 		   gsl_rng_uniform(rng));
   }
-  printf("feito.\n");
+  printf('feito.\n');
 
   // Random Gauss-Seidel
   for (int t=0; t<tmax; t++) {
@@ -69,7 +69,7 @@ int main(int argc, char *argv[]) {
     // ||x-x0||_2 < tol
     gsl_blas_daxpy(-1.0, x, x0);
     double e = gsl_blas_dnrm2(x0);
-    printf("Iter. %d: %1.0e\n", t, e);
+    printf('Iter. %d: %1.0e\n', t, e);
     if (e < tol)
       break;
   }

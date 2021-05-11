@@ -10,7 +10,7 @@ int main(int argc, char** argv) {
   // Inicializa o MPI
   MPI_Init(NULL, NULL);
 
-  // número total de processos
+  // numero total de processos
   int world_size;
   MPI_Comm_size(MPI_COMM_WORLD, &world_size);
 
@@ -21,7 +21,7 @@ int main(int argc, char** argv) {
   // cronometro
   time_t init = time (NULL);
 
-  // semente do gerador randômico
+  // semente do gerador randomico
   srand (init + world_rank);
   
   // max. of 3 segundos
@@ -29,12 +29,12 @@ int main(int argc, char** argv) {
 
   usleep (espera);
   
-  printf ("%d chegou na barreira: %ld s.\n",
+  printf ('%d chegou na barreira: %ld s.\n',
 	  world_rank, (time (NULL) - init));
   
   MPI_Barrier (MPI_COMM_WORLD);
   
-  printf ("%d saiu da  barreira: %ld s.\n",
+  printf ('%d saiu da  barreira: %ld s.\n',
 	  world_rank, (time (NULL) - init));
   
 

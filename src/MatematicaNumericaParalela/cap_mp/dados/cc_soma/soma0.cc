@@ -19,6 +19,6 @@ int main(int argc, char *argv[]) {
     for (int i=ini; i<fin; i++)
       s += 1;
   }
-  printf("%d\n",s);
+  printf('%d\n',s);
   return 0;
 }

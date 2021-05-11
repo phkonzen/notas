@@ -72,7 +72,7 @@ int main(int argc, char *argv[]) {
   }
 
   //for (int i=0; i<n; i++)
-  //printf("%f\n", gsl_vector_get(y,i));
+  //printf('%f\n', gsl_vector_get(y,i));
 
   gsl_matrix_free(a);
   gsl_vector_free(x);

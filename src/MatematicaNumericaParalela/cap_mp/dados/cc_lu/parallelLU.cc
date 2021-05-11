@@ -16,12 +16,12 @@ int main(int argc, char *argv[]) {
   gsl_matrix *u = gsl_matrix_alloc(n,n);
   gsl_matrix *l = gsl_matrix_alloc(n,n);
 
-  // gerador randômico
+  // gerador randomico
   gsl_rng *rng = gsl_rng_alloc(gsl_rng_default);
   gsl_rng_set(rng, time(NULL));
 
-  // inicialização
-  printf("Inicializando ... \n"); 
+  // inicializacao
+  printf('Inicializando ... \n'); 
   for (int i=0; i<n; i++) {
     for (int j=0; j<i; j++) {
       int sig = 1;
@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
     gsl_matrix_set(a, i, i,
   		     sig*gsl_rng_uniform_pos(rng));
   }
-  printf("feito.\n");
+  printf('feito.\n');
 
   // U = A
   gsl_matrix_memcpy(u,a);

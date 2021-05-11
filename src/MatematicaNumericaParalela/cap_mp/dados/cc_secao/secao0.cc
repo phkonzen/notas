@@ -8,6 +8,7 @@ int main(int argc, char *argv[]) {
   int tid = 0;
   int nt;
 
+  // regiao paralela
   #pragma omp parallel private(tid)
   {
     tid = omp_get_thread_num();
@@ -15,26 +16,26 @@ int main(int argc, char *argv[]) {
 
     #pragma omp sections
     {
-      // seção 1
+      // secao 1
       #pragma omp section
       {
-	printf("%d/%d exec seção 1\n", \
+	printf('%d/%d exec secao 1\n', \
 	       tid, nt);
       }
       
-      // seção 2
+      // secao 2
       #pragma omp section
       {
 	// delay 1s
 	time_t t0 = time(NULL);
 	while (time(NULL) - t0 < 1) {
 	}
-	printf("%d/%d exec a seção 2\n", \
+	printf('%d/%d exec a secao 2\n', \
 	       tid, nt);
       }
     }
 
-    printf("%d/%d terminou\n", tid, nt);
+    printf('%d/%d terminou\n', tid, nt);
   }
 
   return 0;

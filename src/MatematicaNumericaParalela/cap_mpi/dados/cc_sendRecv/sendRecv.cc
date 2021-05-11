@@ -7,7 +7,7 @@ int main (int argc, char** argv) {
   // Inicializa o MPI
   MPI_Init(NULL, NULL);
 
-  // número total de processos
+  // numero total de processos
   int world_size;
   MPI_Comm_size(MPI_COMM_WORLD, &world_size);
 
@@ -23,8 +23,8 @@ int main (int argc, char** argv) {
     double y;
     MPI_Recv (&y, 1, MPI_DOUBLE, 0,
 	      0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-    printf ("Processo 1 recebeu o "\
-	    "número %f do processo 0.\n", y);
+    printf ('Processo 1 recebeu o '\
+	    'numero %f do processo 0.\n', y);
   }
     
 

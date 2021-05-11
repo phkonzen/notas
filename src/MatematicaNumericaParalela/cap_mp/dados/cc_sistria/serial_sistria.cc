@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
   // gsl_rng_set(rng, time(NULL));
 
   // inicialização
-  printf("Inicializando ... \n");
+  printf('Inicializando ... \n');
 
   for (int i=0; i<n; i++) {
     for (int j=0; j<i; j++) {
@@ -36,19 +36,19 @@ int main(int argc, char *argv[]) {
   // gsl_spmatrix_realloc(n*n/2+n, a);
   
   // FILE *fpa;
-  // fpa = fopen("a.gsl","r");
+  // fpa = fopen('a.gsl','r');
   // gsl_spmatrix_fread(fpa, a);
   // fclose(fpa);
 
   // FILE *fpb;
-  // fpb = fopen("b.gsl","r");
+  // fpb = fopen('b.gsl','r');
   // gsl_vector_fread(fpb, b);
   // fclose(fpb);
-  // printf("feito.\n");
+  // printf('feito.\n');
 
-  printf("feito.\n");
+  printf('feito.\n');
 
-  printf("Executando em serial ... \n");
+  printf('Executando em serial ... \n');
   time_t t = time(NULL);
 
   for (int i=0; i<n; i++) {
@@ -82,7 +82,7 @@ int main(int argc, char *argv[]) {
   double s = 0;
   for (int i=0; i<n; i++)
     s += gsl_vector_get(x,i);
-  printf("feito: %ld s %f\n", t, s);
+  printf('feito: %ld s %f\n', t, s);
 
 
   gsl_spmatrix_free(a);

@@ -7,13 +7,13 @@ int main (int argc, char** argv) {
   // Inicializa o MPI
   MPI_Init(NULL, NULL);
 
-  // número total de processos
+  // numero total de processos
   int world_size;
   MPI_Comm_size(MPI_COMM_WORLD, &world_size);
 
   if (world_size < 2) {
-    printf ("Num. de processos deve"\
-	    "maior que 2.\n");
+    printf ('Num. de processos deve'\
+	    'maior que 2.\n');
     int errorcode = -1;
     MPI_Abort (MPI_COMM_WORLD, errorcode);
   }
@@ -35,12 +35,12 @@ int main (int argc, char** argv) {
     MPI_Irecv (&y, 1, MPI_DOUBLE, 0,
 	      0, MPI_COMM_WORLD, &request);
     double x = y + 1.0;
-    printf ("x = %f\n", x);
+    printf ('x = %f\n', x);
     int recvd = 0;
     while (!recvd)
       MPI_Test (&request, &recvd, &status);
     x = y + 1;
-    printf ("x = %f\n", x);
+    printf ('x = %f\n', x);
   }
     
   // Finaliza o MPI

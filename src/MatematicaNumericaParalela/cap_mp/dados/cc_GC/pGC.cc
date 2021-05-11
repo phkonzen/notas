@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
   // inicializacao
   init(a, b);
 
-  // Método do Gradiente Conjugado
+  // Metodo do Gradiente Conjugado
   pGC(a, b, x);
   
   gsl_matrix_free(a);
@@ -58,8 +58,8 @@ Inicializacao
 void init(gsl_matrix *a,
 	  gsl_vector *b)
 {
-  printf("Inicializacao ... \n");
-  // gerador randômico
+  printf('Inicializacao ... \n');
+  // gerador randomico
   gsl_rng *rng = gsl_rng_alloc(gsl_rng_default);
   gsl_rng_set(rng, time(NULL));
 
@@ -82,7 +82,7 @@ void init(gsl_matrix *a,
 		   randsig(rng) *
 		   gsl_rng_uniform(rng));
   }
-  // A = C'C: Simétrica positiva definida
+  // A = C'C: Simetrica positiva definida
   #pragma omp parallel for
   for (int i=0; i<n; i++)
     for (int j=0; j<n; j++) {
@@ -98,7 +98,7 @@ void init(gsl_matrix *a,
   gsl_rng_free(rng);
   gsl_matrix_free(c);
 
-  printf("feito.\n");
+  printf('feito.\n');
 }
 /*****************************************/
 
@@ -210,7 +210,7 @@ void pGC(const gsl_matrix *a,
       crt += gsl_vector_get(r, i) *
 	gsl_vector_get(r, i);
     crt = sqrt(crt);
-    printf("Iter. %d: %1.1e\n", t, crt);
+    printf('Iter. %d: %1.1e\n', t, crt);
     if (crt < tol)
       break;
   }

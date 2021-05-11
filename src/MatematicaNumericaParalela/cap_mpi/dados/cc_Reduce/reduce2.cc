@@ -9,7 +9,7 @@ int main(int argc, char** argv) {
   // Inicializa o MPI
   MPI_Init(NULL, NULL);
 
-  // número total de processos
+  // numero total de processos
   int world_size;
   MPI_Comm_size(MPI_COMM_WORLD, &world_size);
 
@@ -20,13 +20,13 @@ int main(int argc, char** argv) {
   // cronometro
   time_t init = time (NULL);
 
-  // semente do gerador randômico
+  // semente do gerador randomico
   srand (init + world_rank);
 
   double x[2] = {double (rand ()) / RAND_MAX,
 		 double (rand ()) / RAND_MAX};
 
-  printf ("%d: %f %f\n",
+  printf ('%d: %f %f\n',
 	  world_rank, x[0], x[1]);
 
   double y[2];
@@ -34,7 +34,7 @@ int main(int argc, char** argv) {
 	      MPI_SUM, 0, MPI_COMM_WORLD);
 
   if (world_rank == 0)
-    printf ("Vetor soma = %f %f\n",
+    printf ('Vetor soma = %f %f\n',
 	    y[0], y[1]);
   // Finaliza o MPI
   MPI_Finalize();

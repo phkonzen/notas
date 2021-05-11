@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
   #pragma omp parallel
   x = 1;
   #pragma omp parallel
-  printf("%d\n",x);
+  printf('%d\n',x);
   
   return 0;
 }

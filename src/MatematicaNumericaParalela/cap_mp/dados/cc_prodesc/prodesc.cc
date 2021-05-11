@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <ctime>
 
-// GSL vector suport
+// GSL vector
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_rng.h>
 
@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
   gsl_vector *a = gsl_vector_alloc(n);
   gsl_vector *b = gsl_vector_alloc(n);
 
-  // gerador randômico
+  // gerador randomico
   gsl_rng *rng = gsl_rng_alloc(gsl_rng_default);
   gsl_rng_set(rng, time(NULL));
 
@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
     dot += gsl_vector_get(a, i) * \
       gsl_vector_get(b, i);
 
-  printf("%f\n",dot);
+  printf('%f\n',dot);
 
   gsl_vector_free(a);
   gsl_vector_free(b);

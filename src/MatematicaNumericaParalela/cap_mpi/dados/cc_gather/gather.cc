@@ -12,7 +12,7 @@ int main(int argc, char** argv) {
   // Inicializa o MPI
   MPI_Init(NULL, NULL);
 
-  // número total de processos
+  // numero total de processos
   int world_size;
   MPI_Comm_size(MPI_COMM_WORLD, &world_size);
 
@@ -36,10 +36,10 @@ int main(int argc, char** argv) {
 	      0, MPI_COMM_WORLD);
 
   if (world_rank == 0) {
-    printf ("v = ");
+    printf ('v = ');
     for (size_t i=0; i<n; i++)
-      printf ("%f ", gsl_vector_get (v, i));
-    printf("\n");
+      printf ('%f ', gsl_vector_get (v, i));
+    printf('\n');
   }
 
   // Finaliza o MPI

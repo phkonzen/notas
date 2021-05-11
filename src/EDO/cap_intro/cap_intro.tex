@@ -5,16 +5,6 @@
 
 Neste capítulo, introduzimos conceitos e definições elementares sobre Equações Diferenciais (ED). Por exemplo, definimos tais equações, apresentamos alguns exemplos de modelagem matemática e problemas relacionados.
 
-\ifispython
-\begin{obs}\label{obs:python}
-Ao longo das notas de aula, contaremos com o suporte de alguns códigos \python~ com o seguinte preâmbulo:
-\begin{verbatim}
-from sympy import *
-\end{verbatim}
-\end{obs}
-\fi
-
-
 \section{Equações diferenciais}\label{cap_intro_sec_ed}
 
 \begin{flushright}
@@ -96,17 +86,18 @@ Uma \emph{solução} de uma EDO \eqref{eq:edo_geral} é uma função $y = y(t)$ 
 
   \ifispython
   No \python, podemos usar:
-\begin{verbatim}
-In : t = symbols('t')
-In : y = symbols('y', cls=Function)
-In : de = Eq(Derivative(y(t),t,t)-y(t) ,0)
-In : y1 = exp(t)
-In : checkodesol(de,y1)
-Out: (True, 0)
-In : y2 = exp(-t)
-In : checkodesol(de,y2)
-Out: (True, 0)
-\end{verbatim}
+  \begin{lstlisting}
+    In : from sympy import *
+    In : t = symbols('t')
+    In : y = symbols('y', cls=Function)
+    In : de = Eq(Derivative(y(t),t,t)-y(t) ,0)
+    In : y1 = exp(t)
+    In : checkodesol(de,y1)
+    Out: (True, 0)
+    In : y2 = exp(-t)
+    In : checkodesol(de,y2)
+    Out: (True, 0)
+  \end{lstlisting}
   \fi
 \end{ex}
 
@@ -144,19 +135,20 @@ Out: (True, 0)
   Para que $y = e^{rt}$ seja solução da equação dada, devemos ter
   \begin{align}
     y'' - y = 0 &\Rightarrow \left(e^{rt}\right)'' - e^{rt} = 0 \\
-                &\Rightarrow r^2e^{rt} - e^{rt} = 0 \\
-                &\Rightarrow (r^2 - 1)\cdot \underbrace{e^{rt}}_{>0} = 0\\
-                &\Rightarrow r^2 - 1 = 0 \\
-                &\Rightarrow r = \pm 1.
+    &\Rightarrow r^2e^{rt} - e^{rt} = 0 \\
+    &\Rightarrow (r^2 - 1)\cdot \underbrace{e^{rt}}_{>0} = 0\\
+    &\Rightarrow r^2 - 1 = 0 \\
+    &\Rightarrow r = \pm 1.
   \end{align}
   \ifispython
   No \python, podemos computar a solução deste problema com os seguintes comandos:
-\begin{verbatim}
-In : r = symbols('r')
-In : eq = diff(exp(r*t),t,2)-exp(r*t)
-In : solve(eq,r)
-Out: [-1, 1]
-\end{verbatim}
+  \begin{lstlisting}
+    In : from sympy import *
+    In : r = symbols('r')
+    In : eq = diff(exp(r*t),t,2)-exp(r*t)
+    In : solve(eq,r)
+    Out: [-1, 1]
+  \end{lstlisting}
   \fi
 \end{resol}
 
@@ -235,16 +227,16 @@ A solução de uma Equação Diferencial Ordinária (EDO) pode conter uma ou mai
 \end{flushright}
 
 \begin{ex}
-A EDO
-\begin{equation}
-  y' = 1
-\end{equation}
-tem soluções
-\begin{gather}
-  \int y'\,dt = \int 1\cdot dt\\
-  \Rightarrow y = t + c
-\end{gather}
-onde $c$ é uma constante indeterminada.
+  A EDO
+  \begin{equation}
+    y' = 1
+  \end{equation}
+  tem soluções
+  \begin{gather}
+    \int y'\,dt = \int 1\cdot dt\\
+    \Rightarrow y = t + c
+  \end{gather}
+  onde $c$ é uma constante indeterminada.
 \end{ex}
 
 Afim de fixar uma solução única para tais EDOs, comumente define-se uma \emph{condição inicial} apropriada, i.e. o valor da solução para um dado valor da variável independente. O problema de resolver uma EDO com condição inicial dada é chamado de \emph{Problema de Valor Inicial} (PVI).
@@ -277,39 +269,39 @@ Afim de fixar uma solução única para tais EDOs, comumente define-se uma \emph
 EDOs de segunda ordem podem requer duas condições iniciais.
 
 \begin{ex}
-Consideramos o seguinte problema de valores iniciais
-\begin{align}
-  &y'' = 1,\\
-  &y(1) = 0,\quad y'(1) = 1.
-\end{align}
-Integrando a EDO, obtemos
-\begin{gather}
-  \int y''\,dt = \int 1\cdot dt\\
-  y' = t + c_1
-\end{gather}
-Integrando novamente
-\begin{gather}
-  \int y'\,dt = \int t + c_1\,dt\\
-  y = \frac{t^2}{2} + c_1t + c_2
-\end{gather}
-Com isso, obtemos a chamada \emph{solução geral} desta EDO
-\begin{equation}
-  y(t) = \frac{t^2}{2} + c_1t + c_2.
-\end{equation}
-Agora, aplicando as condições iniciais, obtemos
-\begin{align}
-  y(1) = 0 &\Rightarrow \frac{1}{2} + c_1 + c_2 = 0\\
-  y'(1) = 1 &\Rightarrow 1 + c_1 = 1.
-\end{align}
-o que nos fornece o seguinte sistema de equações lineares
-\begin{gather}
-  c_1 + c_2 = -\frac{1}{2}\\
-  c_1 = 0
-\end{gather}
-A segunda equação nos fornece $c_1$ diretamente. Então, utilizando a primeira equação, obtemos $c_2 = -\frac{1}{2}$. Portanto, a solução deste PVI de ordem 2 é:
-\begin{equation}
-  y(t) = \frac{t^2}{2} - \frac{1}{2}.
-\end{equation}
+  Consideramos o seguinte problema de valores iniciais
+  \begin{align}
+    &y'' = 1,\\
+    &y(1) = 0,\quad y'(1) = 1.
+  \end{align}
+  Integrando a EDO, obtemos
+  \begin{gather}
+    \int y''\,dt = \int 1\cdot dt\\
+    y' = t + c_1
+  \end{gather}
+  Integrando novamente
+  \begin{gather}
+    \int y'\,dt = \int t + c_1\,dt\\
+    y = \frac{t^2}{2} + c_1t + c_2
+  \end{gather}
+  Com isso, obtemos a chamada \emph{solução geral} desta EDO
+  \begin{equation}
+    y(t) = \frac{t^2}{2} + c_1t + c_2.
+  \end{equation}
+  Agora, aplicando as condições iniciais, obtemos
+  \begin{align}
+    y(1) = 0 &\Rightarrow \frac{1}{2} + c_1 + c_2 = 0\\
+    y'(1) = 1 &\Rightarrow 1 + c_1 = 1.
+  \end{align}
+  o que nos fornece o seguinte sistema de equações lineares
+  \begin{gather}
+    c_1 + c_2 = -\frac{1}{2}\\
+    c_1 = 0
+  \end{gather}
+  A segunda equação nos fornece $c_1$ diretamente. Então, utilizando a primeira equação, obtemos $c_2 = -\frac{1}{2}$. Portanto, a solução deste PVI de ordem 2 é:
+  \begin{equation}
+    y(t) = \frac{t^2}{2} - \frac{1}{2}.
+  \end{equation}
 \end{ex}
 
 

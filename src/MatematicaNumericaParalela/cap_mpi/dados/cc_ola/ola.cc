@@ -7,7 +7,7 @@ int main(int argc, char** argv) {
   // Inicializa o MPI
   MPI_Init(NULL, NULL);
 
-  // número total de processos
+  // numero total de processos
   int world_size;
   MPI_Comm_size(MPI_COMM_WORLD, &world_size);
 
@@ -16,7 +16,7 @@ int main(int argc, char** argv) {
   MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
 
   // Escreve mensagem
-  printf("Olá! Eu sou o processo %d/%d.\n",
+  printf('Ola! Eu sou o processo %d/%d.\n',
 	 world_rank, world_size);
 
   // Finaliza o MPI

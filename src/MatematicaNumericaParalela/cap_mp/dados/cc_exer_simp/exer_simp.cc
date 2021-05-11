@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
   double s = h/3*(f(a) + 2*s1 + \
 		  4*s2 + f(b));
 
-  printf("%f\n",s);
+  printf('%f\n',s);
   
   return 0;
 }

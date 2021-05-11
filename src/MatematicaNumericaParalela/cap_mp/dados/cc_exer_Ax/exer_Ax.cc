@@ -49,7 +49,7 @@ int main (int arc, char *argv[]) {
     }
   }
   time_t tp = (time(NULL) - t);
-  printf("Parallel took: %ld s\n", tp);
+  printf('Parallel took: %ld s\n', tp);
 
   t = time(NULL);
   double ya;
@@ -59,10 +59,10 @@ int main (int arc, char *argv[]) {
     gsl_vector_set(ys, i, ya);
   }
   time_t ts = time(NULL) - t;
-  printf("Serial took: %ld s\n", ts);
+  printf('Serial took: %ld s\n', ts);
     
   // for (int i=0; i<n; i++)
-  //   printf("%lf %lf\n", gsl_vector_get(yp, i), gsl_vector_get(ys, i));
+  //   printf('%lf %lf\n', gsl_vector_get(yp, i), gsl_vector_get(ys, i));
   
   
   

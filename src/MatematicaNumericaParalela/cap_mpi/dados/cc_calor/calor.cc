@@ -8,7 +8,7 @@ int main (int argc, char** argv) {
   // Inicializa o MPI
   MPI_Init(NULL, NULL);
 
-  // número total de processos
+  // numero total de processos
   int world_size;
   MPI_Comm_size(MPI_COMM_WORLD, &world_size);
 
@@ -16,7 +16,7 @@ int main (int argc, char** argv) {
   int world_rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
 
-  // parâmetros
+  // parametros
   size_t M = 1000;
   size_t I = 10;
 
@@ -36,15 +36,15 @@ int main (int argc, char** argv) {
   for (size_t j=0; j<=my_I; j++)
     x[j] = (ip+j) * hx;
   
-  // solução local
+  // solucao local
   double u0[my_I+1], u[my_I+1];
   
-  // condição inicial
+  // condicao inicial
   for (size_t j=0; j<=my_I; j++) {
     u0[j] = sin (M_PI * x[j]);
   }
 
-  // condições de contorno de Dirichlet
+  // condicoes de contorno de Dirichlet
   if (world_rank == 0) 
     u[0] = 0.0;
   if (world_rank == world_size-1)
@@ -54,7 +54,7 @@ int main (int argc, char** argv) {
   double u00, u0I;
   
 
-  // iterações no tempo
+  // iteracoes no tempo
   for (size_t m=0; m<M; m++) {
 
     if (world_rank == 0) {
@@ -83,7 +83,7 @@ int main (int argc, char** argv) {
 		world_size-2, 0, MPI_COMM_WORLD);
     }
     
-    // atualização
+    // atualizacao
     u[1] = u0[1]
       + cfl * u00
       - 2*cfl * u0[1]
@@ -99,7 +99,7 @@ int main (int argc, char** argv) {
 	- 2*cfl * u0[my_I]
 	+ cfl * u0I;
 
-    // prepara nova iteração
+    // prepara nova iteracao
     for (size_t j=0; j<=my_I; j++)
       u0[j] = u[j];
 

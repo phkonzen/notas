@@ -7,7 +7,7 @@ int main (int argc, char** argv) {
   // Inicializa o MPI
   MPI_Init(NULL, NULL);
 
-  // número total de processos
+  // numero total de processos
   int world_size;
   MPI_Comm_size(MPI_COMM_WORLD, &world_size);
 
@@ -31,10 +31,10 @@ int main (int argc, char** argv) {
     
     MPI_Recv (&w[0], 3, MPI_INT, 0,
 	      0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-    printf ("Processo 1: w=\n");
+    printf ('Processo 1: w=\n');
     for (int i=0; i<5; i++)
-      printf ("%d ", w[i]);
-    printf("\n");
+      printf ('%d ', w[i]);
+    printf('\n');
   }
 
   // Finaliza o MPI

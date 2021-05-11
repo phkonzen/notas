@@ -17,7 +17,7 @@ int main(int argc, char** argv) {
   MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
 
   // Escreve mensagem
-  printf("Olá! Eu sou o processo %s %d/%d.\n",
+  printf('Olá! Eu sou o processo %s %d/%d.\n',
 	 processor_name, world_rank, world_size);
 
   // Finaliza o MPI

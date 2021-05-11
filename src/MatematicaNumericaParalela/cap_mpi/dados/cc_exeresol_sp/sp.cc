@@ -8,14 +8,14 @@ int main(int argc, char** argv) {
   // Inicializa o MPI
   MPI_Init(NULL, NULL);
 
-  // número total de processos
+  // numero total de processos
   int world_size;
   MPI_Comm_size(MPI_COMM_WORLD, &world_size);
 
   // verifica o num. de processos
   if (world_size != 2) {
-    printf("ERRO! Número de processos "
-	   "deve ser igual 2.\n");
+    printf('ERRO! Numero de processos '
+	   'deve ser igual 2.\n');
     int errorcode=-1;
     MPI_Abort(MPI_COMM_WORLD, errorcode);
   }
@@ -28,9 +28,9 @@ int main(int argc, char** argv) {
   int m = 3;
 
   if (world_rank == 0)
-    printf("n+m = %d\n", n+m);
+    printf('n+m = %d\n', n+m);
   else if (world_rank == 1)
-    printf("n*m = %d\n", n*m);
+    printf('n*m = %d\n', n*m);
 
   // Finaliza o MPI
   MPI_Finalize();

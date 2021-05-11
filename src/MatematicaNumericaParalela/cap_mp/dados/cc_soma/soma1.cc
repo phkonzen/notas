@@ -20,6 +20,6 @@ int main(int argc, char *argv[]) {
       #pragma omp critical
       s += 1;
   }
-  printf("%d\n",s);
+  printf('%d\n',s);
   return 0;
 }

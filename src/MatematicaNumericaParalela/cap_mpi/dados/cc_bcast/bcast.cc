@@ -9,7 +9,7 @@ int main(int argc, char** argv) {
   // Inicializa o MPI
   MPI_Init(NULL, NULL);
 
-  // número total de processos
+  // numero total de processos
   int world_size;
   MPI_Comm_size(MPI_COMM_WORLD, &world_size);
 
@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
   MPI_Bcast (&x, 1, MPI_DOUBLE,
 	     0, MPI_COMM_WORLD);
 
-  printf ("Processo %d x = %f\n",
+  printf ('Processo %d x = %f\n',
 	  world_rank, x);  
 
   // Finaliza o MPI

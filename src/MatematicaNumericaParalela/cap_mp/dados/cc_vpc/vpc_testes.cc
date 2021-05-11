@@ -10,8 +10,8 @@ int main(int argc, char *argv[]) {
 #pragma omp parallel private(tid)
   {
     
-    printf("Processo %d/%d\n", tid, nt);
+    printf('Processo %d/%d\n', tid, nt);
   }
-  printf("%d\n",tid);
+  printf('%d\n',tid);
   return 0;
 }

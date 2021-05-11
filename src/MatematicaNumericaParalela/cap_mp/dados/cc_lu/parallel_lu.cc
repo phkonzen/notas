@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
   gsl_rng_set(rng, time(NULL));
 
   // inicialização
-  printf("Inicializando ... \n"); 
+  printf('Inicializando ... \n'); 
   for (int i=0; i<n; i++) {
     for (int j=0; j<i; j++) {
       int sig = 1;
@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
     gsl_matrix_set(a, i, i,
   		     sig*gsl_rng_uniform_pos(rng));
   }
-  printf("feito.\n");
+  printf('feito.\n');
 
   // U = A
   gsl_matrix_memcpy(u,a);

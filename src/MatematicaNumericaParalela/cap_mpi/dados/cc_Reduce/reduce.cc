@@ -9,7 +9,7 @@ int main(int argc, char** argv) {
   // Inicializa o MPI
   MPI_Init(NULL, NULL);
 
-  // número total de processos
+  // numero total de processos
   int world_size;
   MPI_Comm_size(MPI_COMM_WORLD, &world_size);
 
@@ -20,12 +20,12 @@ int main(int argc, char** argv) {
   // cronometro
   time_t init = time (NULL);
 
-  // semente do gerador randômico
+  // semente do gerador randomico
   srand (init + world_rank);
 
   double x = double (rand ()) / RAND_MAX;
 
-  printf ("%d: %f\n",
+  printf ('%d: %f\n',
 	  world_rank, x);
 
   double y;
@@ -33,7 +33,7 @@ int main(int argc, char** argv) {
 	      MPI_MAX, 0, MPI_COMM_WORLD);
 
   if (world_rank == 0)
-    printf ("Máx. entre os números = %f\n",
+    printf ('Max. entre os numeros = %f\n',
 	    y);
   // Finaliza o MPI
   MPI_Finalize();

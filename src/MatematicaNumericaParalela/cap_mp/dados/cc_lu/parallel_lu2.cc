@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
   gsl_rng_set(rng, time(NULL));
 
   // inicialização
-  printf("Inicializando ... \n");
+  printf('Inicializando ... \n');
 #pragma omp parallel for
   for (int i=0; i<n; i++) {
     for (int j=0; j<i; j++) {
@@ -40,17 +40,17 @@ int main(int argc, char *argv[]) {
     gsl_matrix_set(u, i, i,
 		   sig*gsl_rng_uniform_pos(rng));
   }
-  printf("feito.\n");
+  printf('feito.\n');
 
   // for (int i=0; i<n; i++) {
   //   for (int j=0; j<n; j++)
-  //     printf("%1.1f ", gsl_matrix_get(u,i,j));
-  //   printf("\n");
+  //     printf('%1.1f ', gsl_matrix_get(u,i,j));
+  //   printf('\n');
   // }
-  // printf("\n");
+  // printf('\n');
 
 
-  printf("LU parallel ... \n");
+  printf('LU parallel ... \n');
   time_t t = time(NULL);
   #pragma omp parallel
   for (int i=0; i<n; i++) {
@@ -74,27 +74,27 @@ int main(int argc, char *argv[]) {
     }
   }
   t = time(NULL)-t;
-  printf("feito. %ld s\n", t);
+  printf('feito. %ld s\n', t);
 
   // for (int i=0; i<n; i++) {
   //   for (int j=0; j<n; j++)
-  //     printf("%1.1f ", gsl_matrix_get(l,i,j));
-  //   printf("\n");
+  //     printf('%1.1f ', gsl_matrix_get(l,i,j));
+  //   printf('\n');
   // }
-  // printf("\n");
+  // printf('\n');
   // for (int i=0; i<n; i++) {
   //   for (int j=0; j<n; j++)
-  //     printf("%1.1f ", gsl_matrix_get(u,i,j));
-  //   printf("\n");
+  //     printf('%1.1f ', gsl_matrix_get(u,i,j));
+  //   printf('\n');
   // }
-  //   printf("\n");
+  //   printf('\n');
   // gsl_matrix *a = gsl_matrix_alloc(n,n);
   // gsl_blas_dgemm(CblasNoTrans,CblasNoTrans,
   // 		 1.0,l,u,0.0,a);
   // for (int i=0; i<n; i++) {
   //   for (int j=0; j<n; j++)
-  //     printf("%1.1f ", gsl_matrix_get(a,i,j));
-  //   printf("\n");
+  //     printf('%1.1f ', gsl_matrix_get(a,i,j));
+  //   printf('\n');
   // }
   
 

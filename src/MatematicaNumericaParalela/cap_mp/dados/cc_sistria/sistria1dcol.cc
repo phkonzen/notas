@@ -20,8 +20,8 @@ int main(int argc, char *argv[]) {
   gsl_vector *b = gsl_vector_alloc(n);
   gsl_vector *x = gsl_vector_alloc(n);
 
-  // inicialização
-  printf("Inicializando ... \n");
+  // inicializacao
+  printf('Inicializando ... \n');
 
   for (int i=0; i<n; i++) {
     for (int j=0; j<i; j++) {
@@ -34,9 +34,9 @@ int main(int argc, char *argv[]) {
   		   pow(-1.0,i)/(i+1));
   }
 
-  printf("feito.\n");
+  printf('feito.\n');
 
-  printf("Executando em paralelo ... \n");
+  printf('Executando em paralelo ... \n');
 
   time_t t = time(NULL);
   #pragma omp parallel
@@ -65,7 +65,7 @@ int main(int argc, char *argv[]) {
 
   t = time(NULL)-t;
 
-  printf("feito. %ld s\n", t);
+  printf('feito. %ld s\n', t);
 
 
   gsl_spmatrix_free(a);

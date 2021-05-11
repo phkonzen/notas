@@ -51,7 +51,7 @@ int main (int arc, char *argv[]) {
     }
   }
   time_t tp = (time(NULL) - t);
-  printf("Parallel took: %ld s\n", tp);
+  printf('Parallel took: %ld s\n', tp);
 
   t = time(NULL);
   double ya;
@@ -64,20 +64,20 @@ int main (int arc, char *argv[]) {
     }
   }
   time_t ts = time(NULL) - t;
-  printf("Serial took: %ld s\n", ts);
+  printf('Serial took: %ld s\n', ts);
 
-  // printf("\n");
+  // printf('\n');
   // for (int i=0; i<n; i++) {
   //   for (int j=0; j< m; j++)
-  //     printf("%lf ", gsl_matrix_get(cp, i, j));
-  //   printf("\n");
+  //     printf('%lf ', gsl_matrix_get(cp, i, j));
+  //   printf('\n');
   // }
 
-  // printf("\n");
+  // printf('\n');
   // for (int i=0; i<n; i++) {
   //   for (int j=0; j< m; j++)
-  //     printf("%lf ", gsl_matrix_get(cp, i, j));
-  //   printf("\n");
+  //     printf('%lf ', gsl_matrix_get(cp, i, j));
+  //   printf('\n');
   // }
 
   
