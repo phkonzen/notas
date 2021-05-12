@@ -27,6 +27,11 @@ class Notas:
         text += 'height: auto;\n'
         text += 'padding: 5px;\n'
         text += '}\n\n'
+
+        if (srcref != 'MatematicaNumericaParalela'):
+            text += '.ltx_lst_numbers_left .ltx_listingline .ltx_tag {\n'
+            text += 'margin-left:-1em; width:2.5em;\n'
+            text += 'text-align:right; }\n'
         
         f.write(text)
         f.close()
@@ -37,13 +42,7 @@ class Notas:
         head += '<meta name="author" content="Pedro H A Konzen"/>\n'
         head += '<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">\n'
 
-        # # BootstrapCDN v.3.3
-        # head += '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">\n'
-        # head += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>\n'
-        # head += '<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>\n'
-
         #BootstrapCDN v.4.5
-        # head += '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">\n'
         head += '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">\n'
         head += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>\n'
         head += '<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>\n'
@@ -54,15 +53,8 @@ class Notas:
 
         # Goodies CSS
         head += '<!-- Computer Modern Serif-->'
-        head += '<link rel="stylesheet" href="fonts/cmun-serif.css"></link>'
+        head += '<link rel="stylesheet" href="fonts/cmun-serif.css">\n'
         head += '<link rel="stylesheet" href="goodies.css" type="text/css">\n'
-
-        # head += '\n\n'
-        # head+= '<!-- JavaScript -->\n'
-        # head += '<!-- jQuery first, then Popper.js, then Bootstrap JS -->\n'
-        # head += '<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>\n'
-        # head += '<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>\n'
-        # head += '<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>\n\n'
 
         head += '<script>'
         head += '$(document).ready(function(){'
