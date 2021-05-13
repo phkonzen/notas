@@ -105,8 +105,10 @@ class Index:
         # jumbotron
         body += '<div class="myjumbotron">\n'
         body += '<div class="jumbotron text-center">\n'
-        body += '<h1 class="display-4">Notas de Aula</h1>\n'
+        # body += '<h1 class="display-4">Notas de Aula</h1>\n'
+        body += '<h1 class="display-4 text-left"><i class="fas fa-fist-raised"></i></h1>\n'
         # body += '<hr class="my-4">'
+        body += '<h2 class="display-4">Notas de Aula</h2>\n'
         body += '<p class="lead">Pedro H A Konzen</p>\n'
         body += '</div> <!-- div class="jumbotron text-center" -->\n'
         body += '<p class="mb-0" style="text-align:right"><small>Imagem: <a href="https://flic.kr/p/4krYcm">Eli Duke</a>.</small></p>\n'
