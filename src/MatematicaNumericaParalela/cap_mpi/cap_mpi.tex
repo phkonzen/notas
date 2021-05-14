@@ -3,9 +3,17 @@
 \chapter{Computação paralela e distribuída (MPI)}\label{cap_mpi}
 \thispagestyle{fancy}
 
+\begin{flushright}
+  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
+\end{flushright}
+
 Neste capítulo, vamos estudar aplicações da computação paralela em arquitetura de memória distribuída. Para tanto, vamos utilizar códigos C/C++ com a API \href{https://www.open-mpi.org/}{Open MPI}.
 
 \section{Olá, Mundo!}\label{cap_mpi_sec_ola}
+
+\begin{flushright}
+  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
+\end{flushright}
 
 A computação paralela com MPI inicia-se simultaneamente com múltiplos processadores (instâncias de processamento), cada um utilizando seu próprio endereço de memória (memória distribuída). Cada processo lê e escreve em seu próprio endereço de memória privada. Observamos que o processamento já inicia-se ramificado e distribuído, sendo possível a comunicação entre os processos por instruções explícitas (instruções MPI, {\it Message Passing Interface}). A sincronização entre os processos também requer instruções específicas.
 
@@ -49,6 +57,10 @@ A saída irá variar conforme o processo que primeiro enviar a mensagem para o d
 
 \subsection*{Exercícios resolvidos}
 
+\begin{flushright}
+  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
+\end{flushright}
+
 \begin{exeresol}
   O número de instâncias de processamento pode ser alterado diretamente na instrução \verb+mpirun+ pela opção \verb+-np+. Altere o número de instâncias de processamento para 4 e execute o Código ola.cc.
 \end{exeresol}
@@ -86,6 +98,10 @@ Então, um dos processos deve escrever a soma $n+m$ e o outro deve escrever o pr
 
 \subsection*{Exercícios}
 
+\begin{flushright}
+  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
+\end{flushright}
+
 \begin{exer}
   Rode o Código \verb+ola.cc+ com um número de processadores ({\it core}) maior do que o disponível em sua máquina. O que você observa? Modifique a instrução \verb+mpirun+ para aceitar a execução confirme o número de {\it threads} disponível na máquina. Por fim, modifique a instrução de forma a aceitar um número arbitrário de instâncias de processamento.
 \end{exer}
@@ -106,9 +122,17 @@ e escrever o quociente $b/a$.
 
 \section {Rotinas de comunicação ponto-a-ponto}\label{cap_mpi_sec_p2pcom}
 
+\begin{flushright}
+  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
+\end{flushright}
+
 Em computação distribuída, rotinas de comunicação entre as instâncias de processamento são utilizadas para o compartilhamento de dados. Neste capítulo, vamos discutir sobre as rotinas de comunicação ponto-a-ponto, i.e. comunicações entre uma instância de processamento com outra.
 
 \subsection {Envio e recebimento síncronos}
+
+\begin{flushright}
+  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
+\end{flushright}
 
 O envio e recebimento de dados entre duas instâncias de processamento pode ser feita com as rotinas \href{https://www.open-mpi.org/doc/current/man3/MPI\_Send.3.php}{MPI\_Send} e \href{https://www.open-mpi.org/doc/current/man3/MPI\_Recv.3.php}{MPI\_Recv}. A primeira é utilizada para o envio de um dado a partir de uma instância de processamento e a segunda é utilizada para o recebimento de um dado em uma instância de processamento.
 
@@ -163,6 +187,10 @@ O código acima pode rodado com pelo menos duas instâncias de processamento (ve
 
 \subsubsection {Envio e recebimento de {\it array}}
 
+\begin{flushright}
+  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
+\end{flushright}
+
 As rotinas \verb+MPI_Send+ e \verb+MPI_Recv+ podem ser utilizadas para o envio e recebimento de {\it arrays}. A sintaxe é a mesma vista acima, sendo que o primeiro argumento \verb+*buf+ deve apontar para o início do {\it array} e o segundo argumento \verb+count+ corresponde ao tamanho da {\it array}.
 
 Vamos estudar o seguinte código. Nele, o processo 0 aloca $v = (0,1,2,3,4)$ e o processo 1 aloca $w = (4,3,2,1,0)$. O processo 0 envia os valores $v_1, v_2, v_3$ para o processo 1. Então, o processo 1 recebe estes valores e os aloca em $w_0, w_1, w_2$. Desta forma, a saída impressa no terminal é
@@ -175,6 +203,10 @@ Verifique!
 
 
 \subsection {Envio e recebimento assíncrono}
+
+\begin{flushright}
+  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
+\end{flushright}
 
 O \verb+MPI+ também suporta rotinas \href{https://www.open-mpi.org/doc/current/man3/MPI_Isend.3.php}{MPI\_Isend} de envio e \href{https://www.open-mpi.org/doc/current/man3/MPI_Irecv.3.php}{MPI\_Irecv} de recebimento assíncronos. Neste caso, o processo emissor envia o dado para outro processo e segue imediatamente a computação. O processo receptor deve conter uma rotina \href{https://www.open-mpi.org/doc/current/man3/MPI_Irecv.3.php}{MPI\_Irecv}, mas também não aguarda sua conclusão para seguir a computação.
 
@@ -238,6 +270,10 @@ int MPI_Wait(
 
 \subsection* {Exercícios}
 
+\begin{flushright}
+  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
+\end{flushright}
+
 \begin{exer}
   Faça um código MPI para ser executado com 2 processadores. Um processo aloca $x = 0$ e o outro processo aloca $y=1$. Logo, os processos trocam os valores, de forma que ao final o processo zero tem $x = 1$ e o processo 1 tem $y=0$.
 \end{exer}
@@ -270,9 +306,17 @@ int MPI_Wait(
 
 \section {Comunicações coletivas}\label{cap_mpi_sec_colcom}
 
+\begin{flushright}
+  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
+\end{flushright}
+
 Nesta seção, vamos discutir sobre rotinas de comunicações MPI coletivas. Basicamente, rotinas de sincronização, envio e recebimento de dados envolvendo múltiplas instâncias de processamento ao mesmo tempo.
 
 \subsection {Barreira de sincronização}
+
+\begin{flushright}
+  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
+\end{flushright}
 
 Podemos forçar a sincronização de todos os processos em um determinado ponto do código utilizando a rotina de sincronização \href{https://www.open-mpi.org/doc/current/man3/MPI\_Barrier.3.php}{MPI\_Barrier}
 \begin{verbatim}
@@ -307,6 +351,10 @@ srand (init + world_rank);
 
 \subsection {Transmissão coletiva}
 
+\begin{flushright}
+  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
+\end{flushright}
+
 A rotina de transmissão de dados \href{https://www.open-mpi.org/doc/current/man3/MPI\_Bcast.3.php}{MPI\_Bcast} permite o envio de dados de um processo para todos os demais. Sua sintaxe é a seguinte
 \begin{verbatim}
 int MPI_Bcast(
@@ -334,6 +382,10 @@ Processo 2 x = 3.141593
 \end{ex}
 
 \subsection {Distribuição coletiva de dados}
+
+\begin{flushright}
+  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
+\end{flushright}
 
 A rotina \href{https://www.open-mpi.org/doc/current/man3/MPI\_Scatter.3.php}{MPI\_Scatter} permite que um processo faça a distribuição uniforme de pedaços sequenciais de um {\it array} de dados para todos os demais processos. Sua sintaxe é a seguinte
 \begin{verbatim}
@@ -380,6 +432,10 @@ Processo 1 soma = 40.000000
 \end{obs}
 
 \subsection {Recebimento coletivo de dados distribuídos}
+
+\begin{flushright}
+  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
+\end{flushright}
 
 A rotina \href{https://www.open-mpi.org/doc/current/man3/MPI\_Gather.3.php}{MPI\_Gather}, permite que um processo receba simultaneamente dados que estão distribuídos entre os demais processos. Sua sintaxe é a seguinte
 \begin{verbatim}
@@ -451,6 +507,10 @@ int MPI_Allgather(
 
 \subsection* {Exercícios}
 
+\begin{flushright}
+  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
+\end{flushright}
+
 \begin{exer}
   Faça um código MPI para computar a média aritmética simples de $n$ números randômicos em ponto flutuante.
 \end{exer}
@@ -477,6 +537,10 @@ int MPI_Allgather(
 
 
 \section {Reduções} \label {cap_mpi_sec_redu}
+
+\begin{flushright}
+  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
+\end{flushright}
 
 Reduções são rotinas que reduzem um conjunto de dados em um conjunto menor de dados. Um exemplo de redução é a rotina de calcular o traço de uma matriz quadrada. Aqui, vamos apresentar algumas soluções MPI de rotinas de redução.
 
@@ -553,6 +617,10 @@ Vetor soma = 0.656458 0.843728
 
 \subsection* {Exercícios}
 
+\begin{flushright}
+  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
+\end{flushright}
+
 \begin{exer}
   Faça um código MPI em cada processo aloca um número randômico na variável \verb+x+. Então, o processo 0 recebe o mínimo entre os números alocados em cada processo, inclusive nele mesmo.
 \end{exer}
@@ -582,6 +650,10 @@ Vetor soma = 0.656458 0.843728
 \end{exer}
 
 \section {Aplicação: Equação do calor}\label{cap_mpi_sec_calor}
+
+\begin{flushright}
+  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
+\end{flushright}
 
 Nesta seção, vamos construir um código MPI para a resolução da equação do calor pelo método das diferenças finitas. Como um caso teste, vamos considerar a equação do calor
 \begin{equation}\label{eq:mpi_calor_eq}
@@ -667,6 +739,10 @@ No código acima, as comunicações entre os processos foram implementadas de fo
 As últimas comunicações também ocorrem de forma cíclica, começando pelo envio de $u^0_{i_p+1}$ pelo processo $n_p-1$ (linhas 81-83) e o recebimento de $u^0_{f_p+1}$ pelo processo $n_p-2$ (linhas 73-75). Em sequência, ocorrem as comunicações entre o processo $n_p-2$ e o processo $n_p-3$, entre o $n_p-3$ e o $n_p-4$, até o término das comunicações entre o processo 1 (linhas 76-77) e o processo 0 (linhas 63-65).
 
 \subsection* {Exercícios}
+
+\begin{flushright}
+  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
+\end{flushright}
 
 \begin{exer}\label{exer:mpi_calor_sa}
   O problema \eqref{eq:mpi_calor_eq}-\eqref{eq:mpi_calor_ci} tem solução analítica
