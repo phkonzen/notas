@@ -68,11 +68,11 @@ class Index:
     def add_body(self):
         body = '<body>\n'
         
-        body += '<div class=container-fluid>\n'
-        body += '<div class=row>\n'
-        body += '<div class=col-lg-1>\n'
+        body += '<div class="container-fluid">\n'
+        body += '<div class="row">\n'
+        body += '<div class="col-lg-1">\n'
         body += '</div>'
-        body += '<div class=col-lg-10>\n\n'
+        body += '<div class="col-lg-10">\n\n'
 
         # Navbar
         body += '\n\n<!-- begin: navbar -->\n'
@@ -105,11 +105,16 @@ class Index:
         # jumbotron
         body += '<div class="myjumbotron">\n'
         body += '<div class="jumbotron text-center">\n'
-        # body += '<h1 class="display-4">Notas de Aula</h1>\n'
-        body += '<h1 class="display-4 text-left"><i class="fas fa-fist-raised"></i></h1>\n'
+        # body += '<h1 class="display-4 text-left"><i class="fas fa-fist-raised"></i></h1>\n'
+        body += '<div class="row">'
+        body += '<div class="col-lg-3 col-md-2">'
+        body += '</div>'
+        body += '<div class="col-lg-6 col-md-8 ">'
+        body += '<h1 class="display-4 bg-white text-dark mb-0" style="opacity:75%;">Notas de Aula</h1>\n'
         # body += '<hr class="my-4">'
-        body += '<h2 class="display-4">Notas de Aula</h2>\n'
-        body += '<p class="lead">Pedro H A Konzen</p>\n'
+        body += '<p class="lead bg-white text-dark mt-0" style="opacity:75%;">Pedro H A Konzen</p>\n'
+        body += '</div>'
+        body += '</div>'
         body += '</div> <!-- div class="jumbotron text-center" -->\n'
         body += '<p class="mb-0" style="text-align:right"><small>Imagem: <a href="https://flic.kr/p/4krYcm">Eli Duke</a>.</small></p>\n'
         body += '</div> <!-- class="myjumbotron" -->\n'
