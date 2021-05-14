@@ -201,10 +201,13 @@ class Notas:
                     page = page.replace('</h1>',link_to_src+'</h1>')
                     page = page.replace('</h2>',link_to_src+'</h2>')
 
-                    # # vídeo icon
-                    # page = page.replace('[Vídeo]','<i class="fas fa-film"></i>')
-                    # # áudio icon
-                    # page = page.replace('[Áudio]','<i class="fas fa-music"></i>')
+                    # vídeo icon
+                    page = page.replace('[Vídeo]',' <i class="fas fa-film"></i> Vídeo ')
+                    # áudio icon
+                    page = page.replace('[Áudio]',' <i class="fas fa-music"></i> Áudio')
+
+                    # áudio icon
+                    page = page.replace('[Contatar]',' <i class="fas fa-exclamation-triangle"></i> Contatar')
 
                     # #cria formulário de contato
                     # f = open("contato.html",'r')
