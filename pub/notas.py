@@ -170,6 +170,7 @@ class Notas:
 
         for p in pages:
             fn,ext = os.path.splitext(p)
+            print('goodies em: %s', fn)
             if (ext == '.html'):
                 print("goodies: affecting "+htmldir+"/"+p)
                 #lê a página atual
@@ -201,25 +202,60 @@ class Notas:
                     page = page.replace('</h1>',link_to_src+'</h1>')
                     page = page.replace('</h2>',link_to_src+'</h2>')
 
-                    # vídeo icon
-                    page = page.replace('[Vídeo]',' <i class="fas fa-film"></i> Vídeo ')
-                    # áudio icon
-                    page = page.replace('[Áudio]',' <i class="fas fa-music"></i> Áudio')
+                    # mídia
+                    i1 = page.find('[Vídeo]')
+                    while (i1 != -1):
+                        vurl = ''
+                        aurl = ''
+                        # vídeo URL
+                        if (page[i1+7:i1+11] == '</a>'):
+                            i2 = page.rindex('href="',0,i1)
+                            f2 = page.index('"',i2+6,i1)
+                            vurl = page[i2+6:f2]
+                            print(vurl)
+                            
+                        # áudio URL
+                        i1 = page.index('[Áudio]',i1)
+                        if (page[i1+7:i1+11] == '</a>'):
+                            i2 = page.rindex('href="',0,i1)
+                            f2 = page.index('"',i2+6,i1)
+                            aurl = page[i2+6:f2]
+                            print(aurl)
+                            
+                        # remove
+                        i2 = page.rindex('<div ',0,i1)
+                        f2 = page.index('</div>',i1)
+                        print('rv: ', page[i2:f2+6])
+                        # page = page[0:i2] + \
+                        #     '<!-- mídia -->' + \
+                        #     page[f2+6:len(page)]
 
-                    # áudio icon
-                    page = page.replace('[Contatar]',' <i class="fas fa-exclamation-triangle"></i> Contatar')
+                        f3 = page.index('right',i2)
+                        inc = '' # page[i2:f3] + 'left">\n'
+                        if (aurl != ''):
+                            # inc += '<p class="ltx_p">\n'
+                            aurl = aurl.replace('/details/','/embed/')
+                            inc += '<iframe src="' + \
+                                aurl + \
+                                '" width="500" height="30" style="max-width:100%;" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>\n'
+                            inc += '<p class="ltx_p"></p>\n'
+                            
+                        if (vurl != ''):
+                            vurl = vurl.replace('/details/','/embed/')
+                            inc += '<iframe src="' + \
+                                vurl + \
+                                '" width="640" height="480" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen style="max-width:100%;"></iframe>\n'
+                            #inc += '</p>\n'
+                        #inc += '</div>\n\n'
 
-                    # #cria formulário de contato
-                    # f = open("contato.html",'r')
-                    # tcon = f.read()
-                    # f.close()
+                        page = page[0:i2] + \
+                            inc + \
+                            page[f2+6:len(page)]
+                            
+                        i1 = page.find('[Vídeo]')
 
-                    # tcon = tcon.replace('+++fromurl+++',srcref+'/'+p)
 
-                    # f = open(htmldir+'/contato_'+p,'w')
-                    # f.write(tcon)
-                    # f.close()
-
+                    
                 #colapsa as respostas dos exercícios
                 paux = page.find('ltx_theorem_resp')
                 while (paux != -1):
