@@ -1,0 +1,371 @@
+%Este trabalho está licenciado sob a Licença Atribuição-CompartilhaIgual 4.0 Internacional Creative Commons. Para visualizar uma cópia desta licença, visite http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR ou mande uma carta para Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+
+\chapter{Números reais}\label{cap_numreal}
+\thispagestyle{fancy}
+
+\begin{flushright}
+  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
+\end{flushright}
+
+\section{Conjuntos numéricos}\label{cap_numreal_sec_funconj}
+
+\begin{flushright}
+  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
+\end{flushright}
+
+\subsection{Definição de conjunto}
+
+\begin{flushright}
+  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
+\end{flushright}
+
+Um \emph{conjunto} $A$ é uma coleção de elementos ou objetos. Quando $x$ é um elemento do conjunto $A$, denotamos
+\begin{equation}
+  x\in A,
+\end{equation}
+lê-se x pertence ao conjunto A. Já, a notação
+\begin{equation}
+  x\not\in A
+\end{equation}
+é usada para denotar que $x$ não pertence ao $A$.
+
+Usualmente, um conjunto é descrito usando a notação
+\begin{equation}
+  A = \{x:~\text{condição}\},
+\end{equation}
+lê-se $A$ é o conjunto dos elementos $x$ tais que $x$ satisfaz a condição.
+
+\begin{ex}
+  O conjunto $A$ formado por números positivos pode ser denotado por
+  \begin{equation}
+    A = \{x: x>0\}.
+  \end{equation}
+  Ainda, observamos que $2\in A$, $\sqrt{2}\in A$, mas $-1\not\in A$. Você saberia escolher mais elementos que pertençam ou que não pertençam a $A$?
+
+  \ifispython
+  No \python, podemos definir este conjunto com
+  \begin{lstlisting}
+    from sympy import *
+    A = ConditionSet(x, x>0)
+  \end{lstlisting}
+  o que nos fornece
+  \begin{lstlisting}
+    In : 2 in A
+    Out: True
+    In : sqrt(2) in A
+    Out: True
+    In : -1 in A
+    Out: False
+  \end{lstlisting}
+  \fi
+\end{ex}
+
+\subsubsection{Conjunto finito}
+
+Um \emph{conjunto finito} é todo aquele que contém um número finito de elementos. Tais conjuntos podem ser descritos de forma simplificada como segue
+\begin{equation}
+  A = \{a_1, a_2, \ldots, a_n\},
+\end{equation}
+neste caso, temos um conjunto com $n$ elementos. Analogamente, um conjunto que contenha infinitos elementos é chamado de \emph{conjunto infinito}.
+
+\begin{obs}
+  \begin{equation}
+    A = \{-1,3,2\}
+  \end{equation}
+  é o conjunto que contém apenas pelos números $-1$, $3$ e $2$.
+
+  \ifispython
+  No \python, podemos definir tal conjunto com o seguinte código
+  \begin{lstlisting}
+    from sympy import *
+    A = FiniteSet(-1, 3, 2)
+  \end{lstlisting}
+  Com este, obtemos
+  \begin{lstlisting}
+    In : -1 in A
+    Out: True
+    In : sqrt(2) in A
+    Out: False
+  \end{lstlisting}
+  \fi
+\end{obs}
+
+\subsubsection{Conjunto vazio}
+
+O conjunto que não contém elemento algum é chamado de \emph{conjunto vazio} e é denotado por $\emptyset$ ou por $\{\}$.
+
+\begin{ex}
+  O conjunto $A$ de todos os números negativos e positivos é vazio, i.e.
+  \begin{equation}
+    A = \emptyset
+  \end{equation}
+\end{ex}
+
+\ifispython
+\begin{obs}
+  No \python, podemos definir o conjunto vazio com
+  \begin{lstlisting}
+    from sympy import *
+    A = EmptySet
+  \end{lstlisting}
+\end{obs}
+\fi
+
+\subsubsection{Igualdade de conjuntos}
+
+Dois \emph{conjuntos} $A$ e $B$ são \emph{iguais}, quando todos os elementos $A$ pertencem a $B$ e vice-versa. Em notação matemática, escrevemos $A=B$ quando
+\begin{equation}
+  x\in A \Leftrightarrow x\in B,
+\end{equation}
+lê-se $x\in A$ se, e somente se, $x\in B$.
+
+\begin{ex}
+  \begin{enumerate}[a)]
+  \item São iguais os conjuntos
+    \begin{gather}
+      A = \{-1, 3, 2\}\\
+      B = \{3, 2, -1\},
+    \end{gather}
+    i.e. $A = B$.
+
+    \ifispython
+    No \python, temos
+    \begin{lstlisting}
+      from sympy import *
+      A = FiniteSet(-1, 3, 2)
+      B = FiniteSet(3, 2, -1)
+    \end{lstlisting}
+    Com este, obtemos
+    \begin{lstlisting}
+      In : A == B
+      Out: True
+    \end{lstlisting}
+    \fi
+
+  \item São diferentes os conjuntos
+    \begin{gather}
+      C = \{-3, -2, -1, 0\}\\
+      D = \{-3, -1, 0, 2\},
+    \end{gather}
+    i.e. $C\neq D$.
+
+    \ifispython
+    No \python, temos
+    \begin{lstlisting}
+      from sympy import *
+      A = FiniteSet(-3, -2, -1, 0)
+      B = FiniteSet(-33, -1, 0, 2)
+    \end{lstlisting}
+    Com este, obtemos
+    \begin{lstlisting}
+      In : C != D
+      Out: True
+    \end{lstlisting}
+    \fi
+
+  \end{enumerate}
+\end{ex}
+
+\subsubsection{Subconjuntos}
+
+Dizemos que $A$ é subconjunto de $B$, quando todos os elementos de $A$ pertencem a $B$. Neste caso, denotamos
+\begin{equation}
+  A \subset B.
+\end{equation}
+Mais precisamente, $A\subset B$ quando
+\begin{equation}
+  x\in A \Rightarrow x\in B,
+\end{equation}
+lê-se $x\in A$ implica $x\in B$. O mesmo pode ser denotado por $B\supset A$.
+
+\subsection{Operações entre conjuntos}
+
+\begin{flushright}
+  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
+\end{flushright}
+
+\subsubsection{União de conjuntos}
+
+Sejam $A$ e $B$ dois conjuntos dados. A união do conjunto $A$ com o conjunto $B$ é o conjunto $A\cup B$ que contém todos os elementos de $A$ e todos os elementos de $B$. Mais precisamente, temos
+\begin{equation}
+  A\cup B = \{x:~x\in A \lor x\in B\},
+\end{equation}
+lê-se o conjunto dos elementos $x$ tais que $x\in A$ ou $x\in B$.
+
+\begin{ex}
+  Se
+  \begin{equation}
+    A = \{-1, 3, 2\}\\
+    B = \{-2, 0\},
+  \end{equation}
+  então
+  \begin{equation}
+    A\cup B = \{-2, -1, 0, 2, 3\}.
+  \end{equation}
+
+  \ifispython
+  No \python, temos
+  \begin{lstlisting}
+    from sympy import *
+    A = FiniteSet(-1, 3, 2)
+    B = FiniteSet(-2, 0)
+  \end{lstlisting}
+  \begin{lstlisting}
+    In : Union(A, B)
+    Out: FiniteSet(-2, -1, 0, 2, 3)
+  \end{lstlisting}
+  \fi
+\end{ex}
+
+\subsubsection{Interseção de conjuntos}
+
+Sejam $A$ e $B$ dois conjuntos dados. A interseção do conjunto $A$ com o conjunto $B$ é o conjunto $A\cap B$ que contém os elementos que pertencem simultaneamente a ambos os conjuntos $A$ e $B$. Mais precisamente, temos
+\begin{equation}
+  A\cap B = \{x:~x\in A \land x\in B\},
+\end{equation}
+lê-se o conjunto dos elementos $x$ tais que $x\in A$ e $x\in B$.
+
+\begin{ex}
+  Se
+  \begin{equation}
+    A = \{-1, 3, 2\}\\
+    B = \{3, 0\},
+  \end{equation}
+  então
+  \begin{equation}
+    A\cap B = \{3\}.
+  \end{equation}
+
+  \ifispython
+  No \python, temos
+  \begin{lstlisting}
+    from sympy import *
+    A = FiniteSet(-1, 3, 2)
+    B = FiniteSet(3, 0)
+  \end{lstlisting}
+  \begin{lstlisting}
+    In : Intersection(A, B)
+    Out: FiniteSet(3)
+  \end{lstlisting}
+  \fi
+\end{ex}
+
+\subsubsection{Diferença entre conjuntos}
+
+Sejam $A$ e $B$ dois conjuntos dados. A diferença (ou complemento relativo) do conjunto $A$ com o conjunto $B$ é o conjunto $A\setminus B$ que contém os elementos que pertencem ao $A$ e não pertencem ao conjunto $B$. Mais precisamente, temos
+\begin{equation}
+  A\setminus B = \{x:~x\in A \land x\not\in B\},
+\end{equation}
+lê-se o conjunto dos elementos $x$ tais que $x\in A$ e $x\not\in B$.
+
+\begin{ex}
+  Se
+  \begin{equation}
+    C = \{-3, -2, -1, 0\}\\
+    D = \{-3, -1 0, 2\},
+  \end{equation}
+  então
+  \begin{equation}
+    C\setminus D = \{-2\}.
+  \end{equation}
+
+  \ifispython
+  No \python, temos
+  \begin{lstlisting}
+    from sympy import *
+    C = FiniteSet(-3,-2,-1,0)
+    D = FiniteSet(-3,-1,0,2)
+  \end{lstlisting}
+  \begin{lstlisting}
+    In : C - D
+    Out: FiniteSet(-2)
+  \end{lstlisting}
+  \fi
+\end{ex}
+
+\subsubsection{Produto cartesiano}
+
+Sejam $A$ e $B$ dois conjuntos. O produto cartesiano de $A$ com $B$ é o conjunto $A\times B$, cujos elementos são os \emph{pares ordenados} $(x, y)$ com $x\in A$ e $y\in B$. Mais precisamente, temos
+\begin{equation}
+  A\times B = \{(x, y):~x\in A \land y\in B\},
+\end{equation}
+lê-se o conjunto dos pares ordenados $(x, y)$ tais que $x\in A$ e $x\in B$.
+
+\begin{obs}
+  Um par ordenado $(x, y)$ é um conjunto formado por $x$ e $y$, no qual a posição dos elementos importa. Por exemplo, temos
+  \begin{gather}
+    (3, -1) \neq (-1, 3),
+  \end{gather}
+  enquanto que
+  \begin{gather}
+    \{3, -1\} = \{-1, 3\}.
+  \end{gather}
+
+  \ifispython
+  No \python, escrevemos
+  \begin{lstlisting}
+    from sympy import *
+    A = (3, -1)
+    B = (-1, 3)
+  \end{lstlisting}
+  então
+  \begin{lstlisting}
+    In : A = (3, -1)
+    In : B = (-1, 3)
+    In : A == B
+    Out: False
+  \end{lstlisting}
+  \fi
+\end{obs}
+
+\begin{ex}
+  Se
+  \begin{equation}
+    A = \{-3, -2, -1\}\\
+    B = \{0, 1\},
+  \end{equation}
+  então
+  \begin{gather}
+    A\times B = \{(-3,0), (-2, 0), (-1, 0), \\
+    (-3, 1), (-2, 1), (-1, 1)\}.
+  \end{gather}
+
+  \ifispython
+  No \python, temos
+  \begin{lstlisting}
+    from sympy import *
+    A = FiniteSet(-3,-2,-1)
+    B = FiniteSet(0, 1)
+    C = ProductSet(A, B)
+  \end{lstlisting}
+  então
+  \begin{lstlisting}
+    In : (-3, 1) in C 
+    Out: True
+  \end{lstlisting}
+  \fi
+\end{ex}
+
+\emconstrucao ...
+
+\subsection*{Exercícios}
+
+\emconstrucao
+
+\section{Conjunto dos números reais}\label{cap_numreal_conjreal}
+
+\emconstrução
+
+\subsection{Conjunto de números}
+
+\emconstrução
+
+\subsection{Intervalos}
+
+\emconstrução
+
+\subsection*{Exercícios}
+
+\emconstrucao
+
+\section{}
