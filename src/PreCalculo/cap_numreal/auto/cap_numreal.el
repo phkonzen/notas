@@ -3,6 +3,7 @@
  (lambda ()
    (LaTeX-add-labels
     "cap_numreal_sec_funconj"
-    "cap_numreal_conjreal"))
+    "cap_numreal_racionais"
+    "fig:conjreal_retareal"))
  :latex)
 

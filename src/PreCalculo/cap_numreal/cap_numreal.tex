@@ -178,6 +178,29 @@ Mais precisamente, $A\subset B$ quando
 \end{equation}
 lê-se $x\in A$ implica $x\in B$. O mesmo pode ser denotado por $B\supset A$.
 
+\begin{ex}
+  Sejam os seguintes conjuntos
+  \begin{gather}
+    A = \{-1, 3, 2\}\\
+    B = \{2, 3\}.
+  \end{gather}
+  Temos que $B$ é subconjunto de $A$, i.e. $A\subset B$.
+    
+  \ifispython
+  No \python, temos
+  \begin{lstlisting}
+    from sympy import *
+    A = FiniteSet(-1, 3, 2)
+    B = FiniteSet(2, 3)
+  \end{lstlisting}
+  Com este, obtemos
+  \begin{lstlisting}
+    In : B.is_subset(A)
+    Out: True
+  \end{lstlisting}
+  \fi
+\end{ex}
+
 \subsection{Operações entre conjuntos}
 
 \begin{flushright}
@@ -343,29 +366,583 @@ lê-se o conjunto dos pares ordenados $(x, y)$ tais que $x\in A$ e $x\in B$.
     In : (-3, 1) in C 
     Out: True
   \end{lstlisting}
+  Ainda, podemos imprimir todos os pares ordenados de $C$ com o seguinte código
+  \begin{lstlisting}
+    for i,p in enumerate(C):
+        print(p)
+  \end{lstlisting}
+  verifique!    
   \fi
 \end{ex}
 
-\emconstrucao ...
+\subsection*{Exercícios}
+
+\emconstrucao
+
+\section{Conjunto dos números racionais}\label{cap_numreal_racionais}
+
+\emconstrucao
+
+\subsection{Números naturais}
+
+Os números naturais são os números de contagem
+\begin{equation}
+  \mathbb{N} = \{0, 1, 2, 3, \ldots\},
+\end{equation}
+onde as reticências denotam a sequência dos números.
+
+O conjunto dos números naturais pode ser construído dos \href{https://pt.wikipedia.org/wiki/Axiomas\_de\_Peano}{axiomas de Peano}\footnote{Giuseppe Peano, 1858 - 1932, matemático italiano. Fonte: \href{https://pt.wikipedia.org/wiki/Giuseppe\_Peano}{Giuseppe Peano}}
+\begin{enumerate}[a)]
+\item todo número natural tem um sucessor;
+\item números que têm o mesmo sucessor são iguais;
+\item $0$ é o único número natural que não é sucessor de nenhum outro;
+\item Se um subconjunto $A$ de números naturais contém o $0$ e contém o sucessor de cada um de seus elementos, então $A = \mathbb{N}$.
+\end{enumerate}
+
+\ifispython
+\begin{obs}
+  No \python, o conjunto dos números naturais é definido por \lstinline!S.Naturals0!. Por exemplo,
+  \begin{lstlisting}
+    In : from sympy import *
+    In : 10 in S.Naturals0
+    Out: True
+    In : -1 in S.Naturals0
+    Out: False
+  \end{lstlisting}
+\end{obs}
+\fi
+
+Nos números naturais $m,n\in\mathbb{N}$ estão bem definidas as operações usuais de:
+\begin{enumerate}[a)]
+\item \emph{adição}
+  \begin{equation}
+    m+n = m + \underbrace{1 + 1 + \cdots + 1}_{n\text{ vezes}}
+  \end{equation}
+\item \emph{multiplicação}
+  \begin{equation}
+    m\cdot n = \underbrace{m + m + \cdots + m}_{n\text{ vezes}}
+  \end{equation}
+\end{enumerate}
+
+\begin{ex}
+  Vejamos os seguintes casos:
+  \begin{enumerate}[a)]
+  \item $2 + 1 = 3$
+  \item $1 + 2 = 3$
+  \item $10 + 5 = 15$
+  \item $3\cdot 2 = 6$
+  \item $2\cdot 3 = 6$
+  \end{enumerate}
+
+  \ifispython
+  No \python, \lstinline!+! é o operador de adição e \lstinline!*! é o operador de multiplicação. Nos casos acima, temos
+  \begin{lstlisting}
+    In : 2 + 1
+    Out: 3
+    In : 1 + 2
+    Out: 3
+    In : 10 + 5
+    Out: 15
+    In : 3 * 2
+    Out: 6
+    In : 2 * 3
+    Out: 6
+  \end{lstlisting}
+  \fi
+\end{ex}
+
+\ifispython
+\begin{obs}
+  No \python, podemos definir uma variável simbólica no conjunto dos números naturais como, por exemplo
+  \begin{lstlisting}
+    from sympy import *
+    m = Symbol('m', natural0=True)
+  \end{lstlisting}
+\end{obs}
+\fi
+
+Sendo $m, n, p\in\mathbb{N}$, temos ainda as seguintes propriedades fundamentais:
+\begin{itemize}
+\item $0$ é o \emph{elemento neutro da adição}
+  \begin{equation}
+    m + 0 = m.
+  \end{equation}
+\item \emph{comutatividade da adição}
+  \begin{equation}
+    m + n = n + m
+  \end{equation}
+\item \emph{associatividade da adição}
+  \begin{equation}
+    m + (n + p) = (m + n) + p
+  \end{equation}
+\item $1$ é o \emph{elemento neutro da multiplicação}
+  \begin{equation}
+    m \cdot 1 = m.
+  \end{equation}
+\item \emph{comutatividade da adição}
+  \begin{equation}
+    m \cdot n = n \cdot m
+  \end{equation}
+\item \emph{associatividade da adição}
+  \begin{equation}
+    m \cdot (n \cdot p) = (m \cdot n) \cdot p
+  \end{equation}
+\end{itemize}
+
+\ifispython
+\begin{obs}
+  No \python, podemos checar as propriedades. Por exemplo,
+  \begin{lstlisting}
+    from sympy import *
+    m, n, p = symbols('m, n, p', naturals0=True)
+  \end{lstlisting}
+  com o que obtemos
+  \begin{lstlisting}
+    In : m + (n + p) == (m + n) + p
+    Out: True
+  \end{lstlisting}
+\end{obs}
+\fi
+
+\subsection{Números inteiros}
+
+O conjuntos dos números inteiros é
+\begin{equation}
+  \mathbb{Z} = \{\ldots, -3, -2 , -1, 0, 1, 2, 3, \ldots\}.
+\end{equation}
+Os números com sinal negativo ``$-$'' são definidos como sendo opostos aos respectivos números naturais. Mais precisamente, o oposto de um número $m$ é denotado por $-m$ e é tal que
+\begin{equation}
+  m + (-m) = 0.
+\end{equation}
+
+\begin{ex}
+  Consideramos os seguintes casos:
+  \begin{enumerate}[a)]
+  \item $-1$ é o oposto de $-1$:
+    \begin{equation}
+      1 + (-1) = 0
+    \end{equation}
+  \item $2$ é o oposto de $-2$:
+    \begin{equation}
+      -2 + 2 = 0
+    \end{equation}
+  \end{enumerate}
+\end{ex}
+
+Os números inteiros contém os números naturais, i.e.
+\begin{equation}
+  \mathbb{N} \subset \mathbb{Z}.
+\end{equation}
+Ainda, as operações de adição e multiplicação podem ser imediatamente estendidas para os números inteiros, assim como suas propriedades de elemento neutro, comutatividade e associatividade.
+
+Com a definição de oposto, podemos definir a operação de subtração de dois números inteiros da seguinte forma
+\begin{gather}
+  m - n = m + (-n) \\
+  = -n + m,
+\end{gather}
+sendo a operação de adição definida usualmente.
+
+\begin{ex}
+  \begin{gather}
+    2 - 3 = 2 + (-3) \\
+    = -3 + 2 = -1
+  \end{gather}
+
+  \ifispython
+  No \python, esta operação pode ser feita de forma usual
+  \begin{lstlisting}
+    In : 2 - 3
+    Out: -1
+  \end{lstlisting}
+  \fi
+\end{ex}
+
+\ifispython
+\begin{obs}
+  No \sympy, o conjunto dos números naturais é definido por \lstinline!S.Integers! e uma variável simbólica inteira pode ser definida com
+  \begin{lstlisting}
+    from sympy import *
+    m = Symbols('m', integer=True)
+  \end{lstlisting}
+\end{obs}
+\fi
+
+\subsection{Números racionais}
+
+O conjunto dos números racionais é
+\begin{equation}
+  \mathbb{Q} = \left\{\frac{p}{q}:~p\in\mathbb{Z}\land q\in\mathbb{Z}^*\right\},
+\end{equation}
+sendo $\mathbb{Z}^*=\mathbb{Z}\setminus\{0\}$. A razão $p/q$ é definida como sendo o resultado da operação de divisão de $p$ por $q$. Mais precisamente,
+\begin{equation}
+  \frac{p}{q} = x \Leftrightarrow p = x\cdot q.
+\end{equation}
+
+\begin{obs}
+  Não está definida a divisão por zero! Note que não existe $x$ tal que
+  \begin{equation}
+    \frac{p}{0} = x \Leftrightarrow p = 0\cdot x.
+  \end{equation}
+  Mesmo, $0/0$ não está bem definido. Neste caso, não há como determinar um único número $x$ tal que
+  \begin{equation}
+    \frac{0}{0} = x \Leftrightarrow 0 = 0\cdot x.
+  \end{equation}
+\end{obs}
+
+A operação de adição de fica assim definida
+\begin{equation}
+  \frac{a}{b} + \frac{c}{d} = \frac{a\cdot d + b\cdot c}{b\cdot d}
+\end{equation}
+
+\begin{ex}
+  \begin{gather}
+    \frac{2}{5} + \frac{3}{4} = \frac{2\cdot 4 + 3\cdot 5}{5\cdot 4} \\
+    = \frac{8 + 15}{20} \\
+    = \frac{23}{20}
+  \end{gather}
+
+  \ifispython
+  No \python, as operações são realizadas no conjunto dos números reais\footnote{Introduziremos os números reais na sequência.}\footnote{Mais precisamente, as operações são realizadas em ponto flutuante. Para mais informações, consulte \href{https://phkonzen.github.io/notas/MatematicaNumerica/cap_aritm.html}{aritmética de máquina}.}, por padrão. Por exemplo,
+  \begin{lstlisting}
+    In : 2/3
+    Out: 1.5
+  \end{lstlisting}
+  Com o \sympy, podemos restringir a aritmética aos números racionais, com
+  \begin{lstlisting}
+    In : from sympy import S
+    In : S(2)/3
+    Out: 2/3
+  \end{lstlisting}
+  No caso do exemplo acima, temos
+  \begin{lstlisting}
+    In : S(2)/5 + S(3)/4
+    Out: 23/20
+  \end{lstlisting}
+  \fi
+\end{ex}
+
+A operação de multiplicação fica definida por
+\begin{equation}
+  \frac{a}{b}\cdot\frac{c}{d} = \frac{a\cdot c}{b\cdot d}.
+\end{equation}
+
+\begin{ex}
+  \begin{gather}
+    \frac{2}{5}\cdot\frac{3}{2} = \frac{\cancel{2}\cdot 3}{5\cdot \cancel{2}} \\
+    = \frac{3}{5}
+  \end{gather}
+
+  \ifispython
+  No \python, temos
+  \begin{lstlisting}
+    In : from sympy import S
+    In : S(2)/5 * S(3)/2
+    Out: 3/5
+  \end{lstlisting}
+  \fi
+\end{ex}
+
+\begin{obs}
+  \begin{equation}
+    \mathbb{N} \subset \mathbb{Z} \subset \mathbb{Q}
+  \end{equation}
+  Isso segue do fato de que se $m\in\mathbb{Z}$, então
+  \begin{equation}
+    m = \frac{m}{1}.
+  \end{equation}
+  
+  Os números racionais também herdam as propriedade de elemento neutro, comutatividade e associatividade nas operações de adição e multiplicação.
+\end{obs}
+
+Outra operação fundamental é a operação de \emph{potenciação}. A potenciação de um número racional $p/q\neq 0$ por um número natural $n$ é definida por
+\begin{equation}
+  \left(\frac{p}{q}\right)^n = \underbrace{\frac{p}{q}\cdot\frac{p}{q}\cdot\cdots\cdot\frac{p}{q}}_{n\text{ vezes}},
+\end{equation}
+sendo $(p/q)^0 = 1$. Ainda, definimos o inverso de um número racional $p/q$ por
+\begin{equation}
+  \left(\frac{p}{q}\right)^{-1} = \frac{q}{p}.
+\end{equation}
+
+\begin{ex}
+  vejamos os seguintes casos:
+  \begin{enumerate}[a)]
+  \item
+    \begin{gather}
+      \left(\frac{3}{2}\right)^3 = \frac{3}{2}\cdot\frac{3}{2}\cdot\frac{3}{2} \\
+      = \frac{9}{4}\cdot\frac{3}{2} \\
+      = \frac{27}{8}
+    \end{gather}
+  \item
+    \begin{gather}
+      2^3 = 2\cdot 2 \cdot 2 \\
+      = 4\cdot 2\\
+      = 8
+    \end{gather}
+  \item
+    \begin{equation}
+      \left(\frac{3}{2}\right)^{-1} = \frac{2}{3}
+    \end{equation}
+  \end{enumerate}
+
+  \ifispython
+  No \python, o operador de potenciação é \lstinline!**!. Os casos acima podem ser computados como segue
+  \begin{lstlisting}
+    In : from sympy import S
+    In : (S(3)/2)**3
+    Out: 27/8
+    In : 2**3
+    Out: 8
+    In : (S(3)/2)**-1
+    Out: 2/3
+  \end{lstlisting}
+  \fi
+\end{ex}
+
+Sendo $a,b\in\mathbb{Q}$ e $n, m\in\mathbb{N}$, temos as seguintes propriedades fundamentais da operação de potenciação:
+\begin{itemize}
+\item $a^{m+n} = a^m\cdot a^n$
+\item $\displaystyle a^{-m} = \left(a^m\right)^{-1} = \left(a^{-1}\right)^m$
+\item $\displaystyle a^{m\cdot n} = \left(a^m\right)^n = \left(a^n\right)^m$
+\item $\displaystyle \left(\frac{a}{b}\right)^m = \frac{a^m}{b^m}$
+\end{itemize}
+
+\begin{obs}
+  As seguintes potenciações não estão definidas:
+  \begin{itemize}
+  \item $\nexists ~0^{-1}$
+    \begin{equation}
+      0^{-1} = \cancelto{\nexists}{\frac{1}{0}}
+    \end{equation}
+    O símbolo $\exists$ lê-se existe e o $\nexists$ lê-se não existe.
+    
+  \item $\nexists ~0^0$
+
+    \begin{gather}
+      0^0 = 0^{1-1} \\
+      = 0^1\cdot 0^{-1}\\
+      = 0\cdot \cancelto{\nexists}{\frac{1}{0}}
+    \end{gather}
+  \end{itemize}
+\end{obs}
+
+\ifispython
+\begin{obs}
+  No \sympy, o conjunto dos números racionais é definido por \lstinline!S.Rationals! e uma variável simbólica racional pode ser definida com
+  \begin{lstlisting}
+    from sympy import *
+    a = Symbols('a', rational=True)
+  \end{lstlisting}
+\end{obs}
+\fi
+
+\begin{obs}
+  A representatividade de números racionais não é única. Por exemplo,
+  \begin{equation}
+    \frac{2}{3} = \frac{4}{6} = \frac{14}{21} = \cdots
+  \end{equation}
+  Isto nos motiva a introduzir o conceito de razão irredutível. Dizemos que $p/q$ é uma razão irredutível, quando $p$ e $q$ não têm divisor comum\footnote{Um número $m\in\mathbb{N}^*$ é divisor de $n\in\mathbb{Z}$, quando $m/n\in\mathbb{Z}$.}. Por exemplo, $2/3$ é uma razão irredutível, enquanto $4/6$ não é, pois $4$ e $6$ têm $2$ como divisor comum.
+\end{obs}
 
 \subsection*{Exercícios}
 
 \emconstrucao
 
-\section{Conjunto dos números reais}\label{cap_numreal_conjreal}
+\section{Conjunto dos números reais}
 
-\emconstrução
+\subsection{Existência de números irracionais}
 
-\subsection{Conjunto de números}
+Para introduzirmos os números reais, vamos fazer a tentativa de estender a operação de potenciação para potências racionais. Mais especificamente, vamos tentar determinar $\sqrt{2}$, a qual é definida por
+\begin{equation}
+  \sqrt{2} = 2^{\frac{1}{2}}.
+\end{equation}
+Assumindo válidas as propriedades de potenciação vista para números racionais, teríamos
+\begin{gather}
+  \left(2^{\frac{1}{2}}\right)^2 = 2^{\frac{1}{2}\cdot 2} \\
+  = 2^1 = 2.
+\end{gather}
+Será que $2^{\frac{1}{2}}$ é um número racional? Se fosse, então existiria uma razão irredutível $p/q$ tal que $2^{\frac{1}{2}} = p/q$, $p\in\mathbb{Z}$ e $q\in\mathbb{Z}^*$, com
+\begin{gather}
+  \left(\frac{p}{q}\right)^2 = 2 \\
+  \Leftrightarrow \frac{p^2}{q^2} = 2 \\
+  \Leftrightarrow p^2 = 2\cdot q^2.
+\end{gather}
+Logo, $p^2$ é um número par\footnote{Número múltiplo inteiro de $2$.} e, portanto, $p$ é um número par\footnote{O quadrado de um número ímpar é um número ímpar. Número ímpar é um número inteiro não divisível por $2$.}. Ou seja, existiria $m\in\mathbb{Z}$ tal que $p = 2m$. Mas, então
+\begin{gather}
+  (2\cdot m)^2 = 2\cdot q^2 \\
+  \Leftrightarrow 4\cdot m^2 = 2\cdot q^2 \\
+  \Leftrightarrow 2\cdot m^2 = q^2.
+\end{gather}
+Com isso, $q^2$ seria par e, portanto, $q$ deveria ser par. Isso é uma contradição, por $p/q$ é uma razão irredutível. Logo, concluímos que
+\begin{equation}
+  \sqrt{2}\not\in\mathbb{Q}.
+\end{equation}
+Assim sendo, dizemos que $\sqrt{2}$ é um \emph{número irracional}. Ou seja, é um número que não é racional. :D
 
-\emconstrução
+\begin{obs}
+  Uma aplicação em geometria. Observamos que $\sqrt{2}$ é o comprimente do lado do quadrado de área 2. Ou ainda, $\sqrt{2}$ é a hipotenusa do triângulo retângulo de catetos com comprimento igual a 1!
+\end{obs}
 
-\subsection{Intervalos}
+\subsection{Fecho dos números racionais}
 
-\emconstrução
+Mas então, como podemos calcular o número $\sqrt{2}$? Bem, podemos aproximá-lo usando o \href{https://en.wikipedia.org/wiki/Methods\_of\_computing\_square_roots#Babylonian\_method}{método babilônico}. Observamos que $\sqrt{2}$ é um número entre $1$ e $2$, exclusivamente. Vamos, então, escolher como aproximação inicial
+\begin{equation}
+  x_0 = \frac{3}{2} = 1.5
+\end{equation}
+Daí, calculamos uma nova aproximação como
+\begin{gather}
+  x_1 = \frac{1}{2}\left(x_0 + \frac{2}{x_0}\right) \\
+  = \frac{1}{2}\left(\frac{3}{2} + \frac{2}{\frac{3}{2}}\right) \\
+  = \frac{1}{2}\left(\frac{3}{2} + \frac{4}{3}\right) \\
+  = \frac{1}{2}\left(\frac{9+8}{6}\right)\\
+  = \frac{1}{2}\cdot\frac{17}{6} \\
+  = \frac{17}{12} = 1,41\bar{6}
+\end{gather}
+Então, analogamente podemos calcular uma melhor aproximação com
+\begin{gather}
+  x_2 = \frac{1}{2}\left(x_1 + \frac{2}{x_1}\right) \\
+  = \frac{1}{2}\left(\frac{17}{12} + \frac{2}{\frac{17}{12}}\right) \\
+  = \frac{577}{408} = 1,41421\overline{5686274509803921}
+\end{gather}
+e assim sucessivamente. Estes números racionais estão de fato se aproximando do valor de $\sqrt{2}$. Notamos que
+\begin{gather}
+  x_0^2 = \left(\frac{3}{2}\right)^2 = 2,25\\
+  x_1^2 = \left(\frac{17}{12}\right)^2 = 2,0069\bar{4} \\
+  x_2^2 = \left(\frac{577}{408}\right)^2 = 2,000006\ldots
+\end{gather}
+
+O método babilônico, nos mostra que $\sqrt{2}$ pode ser calculado como o \emph{limite} de uma \emph{sequência} de números racionais. Ou seja, é sempre possível escolher um número racional que aproxime do valor de $\sqrt{2}$ tão bem quanto se queira. No caso, basta iterarmos o método babilônico um número suficiente de vezes.
+
+Neste caso, ainda dizemos que $\sqrt{2}$ pertence ao \emph{fecho} dos números racionais, escrevemos
+\begin{equation}
+  \sqrt{2}\in\overline{\mathbb{Q}}.
+\end{equation}
+Mais precisamente, $x\in\overline{\mathbb{Q}}$ quando sempre é possível escolher um número racional $p/q\in\mathbb{Q}$ que aproxima o valor de $x$ tão bem quanto se queira.
+
+O \emph{conjunto dos números reais} é denotado por $\mathbb{R}$ e é tal que
+\begin{equation}
+  \mathbb{R} = \overline{\mathbb{Q}}.
+\end{equation}
+Ou seja, é a união dos números racionais com os números irracionais que podem ser arbitrariamente aproximados por números racionais.
+
+\begin{obs}
+  \begin{equation}
+    \mathbb{N}\subset\mathbb{Z}\subset\mathbb{Q}\subset\mathbb{R}
+  \end{equation}
+  Além disso, os números reais herdam as operações e suas propriedades dos números racionais.
+\end{obs}
+
+\begin{ex}
+  Consideramos os seguintes casos:
+  \begin{enumerate}[a)]
+  \item todo número inteiro é um número real.
+  \item todo número racional é um número real.
+  \item $\sqrt{3}, \sqrt{5}, \sqrt{7}, \cdots$ são números reais.
+  \item $\pi = 3,141592\ldots$ é um número real.
+
+    O $\pi$ é a área da circunferência de raio 1.
+  \end{enumerate}
+
+  \ifispython
+  No \python, estes exemplos podem ser verificados com
+  \begin{lstlisting}
+    >>> from sympy import *
+    >>> S.Integers.is_subset(S.Reals)
+    True
+    >>> S.Rationals.is_subset(S.Reals)
+    True
+    >>> sqrt(3) in S.Reals
+    True
+    >>> sqrt(5) in S.Reals
+    True
+    >>> sqrt(7) in S.Reals
+    True
+    >>> pi in S.Reals
+    True
+  \end{lstlisting}
+  \fi
+\end{ex}
+
+De posse dos números reais, vamos deixar definir a raiz $m$-ésima raiz de um número $x\in\mathbb{R}$ por
+\begin{equation}
+  \sqrt[m]{x} = x^{\frac{1}{m}},
+\end{equation}
+sendo que quando $m=2$, escrevermos simplesmente $\sqrt{x}$.
+
+\begin{obs}
+  \begin{equation}
+    \sqrt{-1}\not\in\mathbb{R}
+  \end{equation}
+
+  De fato, seja
+  \begin{equation}
+    x = \sqrt{-1},
+  \end{equation}
+  então
+  \begin{equation}
+    x^2 = -1.
+  \end{equation}
+  Entretanto, o quadrado que qualquer número real é um número não negativo! Ou seja, $x\not\in\mathbb{R}$.
+
+  Mais geralmente, não é número real a raiz de índice par de qualquer número negativo.
+\end{obs}
+
+\subsection{Reta real}
+
+A reta real é uma representação geométrica do conjunto dos números reais (Figura \ref{fig:conjreal_retareal}).
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{./cap_numreal/dados/fig_retareal/fig_retareal}
+  \caption{Reta real.}
+  \label{fig:conjreal_retareal}
+\end{figure}
+
+Traçamos uma reta horizontal e escolhemos um ponto como sendo a origem. Neste ponto, marcamos a posição do número zero. Usando um espaçamento fixo, posicionamos os números naturais a direita do zero e de forma sucessiva. Os números inteiros negativos são posicionados à esquerda do zero, também em posições sucessivas. Os números racionais são posicionados tomando as frações do espaçamento escolhido. A Figura \ref{fig:conjreal_retareal} é um esboço da reta real.
+
+Uma das propriedades notáveis dos números reais é a chamada \emph{tricotomia}, i.e. um número real $x$ é
+\begin{itemize}
+\item positivo (posicionado à direita da origem),
+\item zero (posicionado na origem), ou
+\item negativo (posicionado à esquerda da origem),
+\end{itemize}
+exclusivamente.
+
+\subsection{Infinito}
+
+O infinito é denotado por $\infty$ e representa a noção daquilo que não tem fim. Quando sem sinal, é interpretado na direção positiva (direita) da reta real. Quando escrito $-\infty$ (lê-se menos infinito) é interpretado na direção negativa (esquerda) da reta real. Nesta reta (Fig. \ref{fig:conjreal_retareal}), $\infty$ é representado por sua seta à direta e $-\infty$ por sua seta à esquerda.
+
+\begin{obs}
+  $\infty$ não é um número!
+\end{obs}
+
+Sendo $x$ é um número real, podemos inferir as seguintes propriedades:
+\begin{itemize}
+\item $\pm\infty \pm x = \pm\infty$ \\
+\item $\pm\infty \mp x = \pm\infty$ \\
+\item $-\infty$ é o oposto de $\infty$ \\
+\item $x\cdot(\pm\infty) = \pm\infty$, $x>0$
+\item $x\cdot(\pm\infty) = \mp\infty$, $x<0$
+\item $\pm\infty \pm \infty = \pm\infty$ \\
+\item $(\pm\infty)\cdot(\pm\infty) = \infty$ \\
+\item $(\pm\infty)\cdot(\mp\infty) = -\infty$
+\end{itemize}
+
+No entanto, são consideradas \emph{indeterminações matemáticas} as seguintes operações:
+\begin{itemize}
+\item $\infty - \infty$
+\item $0\cdot\infty$
+\item $\displaystyle\frac{\infty}{\infty}$
+\item $\infty^0$
+\item $1^\infty$
+\item $0^0$
+\item $\displaystyle\frac{0}{0}$
+\end{itemize}
+
+\subsection{Intervalos de números reais}
+
+\emconstrucao
 
 \subsection*{Exercícios}
 
 \emconstrucao
 
-\section{}
