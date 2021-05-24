@@ -583,7 +583,7 @@ sendo $\mathbb{Z}^*=\mathbb{Z}\setminus\{0\}$. A razão $p/q$ é definida como s
   \begin{equation}
     \frac{p}{0} = x \Leftrightarrow p = 0\cdot x.
   \end{equation}
-  Mesmo, $0/0$ não está bem definido. Neste caso, não há como determinar um único número $x$ tal que
+  Mesmo, $0/0$ não está bem definido. Neste caso, temos uma \emph{indeterminação matemática}, de fato não existe um único número $x$ tal que
   \begin{equation}
     \frac{0}{0} = x \Leftrightarrow 0 = 0\cdot x.
   \end{equation}
@@ -927,6 +927,34 @@ Sendo $x$ é um número real, podemos inferir as seguintes propriedades:
 \item $(\pm\infty)\cdot(\mp\infty) = -\infty$
 \end{itemize}
 
+\begin{ex}
+  Estudamos os seguintes casos:
+  \begin{enumerate}[a)]
+  \item $\infty + \infty = \infty$
+  \item $-1\cdot (-\infty) = \infty$
+  \item $2\cdot (-\infty) = -\infty$
+  \item $\infty\cdot\infty = \infty$
+  \item $-\infty\cdot\infty = -\infty$
+  \end{enumerate}
+
+  \ifispython
+  No \python, podemos verificar estas contas com os seguintes comandos:
+  \begin{lstlisting}
+    >>> from sympy import *
+    >>> oo + oo
+    oo
+    >>> -1 * -oo
+    oo
+    >>> 2 * -oo
+    -oo
+    >>> oo * oo
+    oo
+    >>> -oo * oo
+    -oo
+  \end{lstlisting}
+  \fi
+\end{ex}
+
 No entanto, são consideradas \emph{indeterminações matemáticas} as seguintes operações:
 \begin{itemize}
 \item $\infty - \infty$
@@ -938,7 +966,129 @@ No entanto, são consideradas \emph{indeterminações matemáticas} as seguintes
 \item $\displaystyle\frac{0}{0}$
 \end{itemize}
 
+\ifispython
+\begin{obs}
+  Com o \sympy, as indeterminações são marcadas como \lstinline!nan!\footnote{Do inglês, {\it not a number}.} ou retornam erro. Por exemplo:
+  \begin{lstlisting}
+    >>> from sympy import *
+    >>> oo - oo
+    nan
+    >>> 0/0
+    Traceback (most recent call last):
+    File "<stdin>", line 1, in <module>
+    ZeroDivisionError: division by zero
+  \end{lstlisting}
+  Exceções são os casos envolvendo potências de expoente $0$, por exemplo:
+  \begin{lstlisting}
+    >>> 0**0
+    1
+    >>> oo**0
+    1
+  \end{lstlisting}
+\end{obs}
+\fi
+
 \subsection{Intervalos de números reais}
+
+Intervalos de números reais são conjuntos especiais e muito utilizados. Por simplicidade, recebem uma notação própria. Para $a, b\in\mathbb{R}$, temos os seguintes tipos de intervalos:
+\begin{itemize}
+\item Intervalo fechado
+  \begin{equation}
+    [a, b] = \{x\in\mathbb{R}:~a\leq x\leq b\}
+  \end{equation}
+\item Intervalo semi-aberto à esquerda (semi-fechado à direita)
+  \begin{equation}
+    (a, b] = \{x\in\mathbb{R}:~a< x\leq b\}
+  \end{equation}  
+\item Intervalo semi-aberto à direita (semi-fechado à esquerda)
+  \begin{equation}
+    [a, b) = \{x\in\mathbb{R}:~a\leq x< b\}
+  \end{equation}  
+\item Intervalo aberto
+  \begin{equation}
+    (a, b) = \{x\in\mathbb{R}:~a< x< b\}
+  \end{equation}  
+\end{itemize}
+
+\begin{ex}
+  Vamos estudar os seguintes casos:
+  \begin{enumerate}[a)]
+  \item $-2\in [-3, 1]$
+  \item $\displaystyle \sqrt{2}\in \left(1, \frac{3}{2}\right)$
+  \item $2\not\in [-3, 2)$
+  \item $\pi\in (3, 4]$
+  \item $[a, a] = \{a\}$
+  \item $[3, 2]=\emptyset$
+  \item $(1, 1)=\emptyset$
+  \end{enumerate}
+  
+
+  \ifispython
+  Com o \sympy, podemos checar os casos acima usando o comando \href{https://docs.sympy.org/latest/modules/sets.html#sympy.sets.sets.Interval}{\lstinline{Interval}}. Vejamos alguns dos casos acima:
+  \begin{lstlisting}
+    >>> from sympy import *
+    >>> -2 in Interval(-3, 1)
+    True
+    >>> sqrt(2) in Interval(1,3/2,
+    ... left_open=True, right_open=True)
+    True
+    >>> 2 in Interval(-3,2,right_open=True)
+    False
+    >>> Interval(3,2)
+    EmptySet
+  \end{lstlisting}
+  \fi
+\end{ex}
+
+Ainda, temos os seguintes casos especiais
+\begin{itemize}
+\item Intervalos semi-limitados à esquerda
+  \begin{gather}
+    [a, \infty) = \{x\in\mathbb{R}:~a\leq x\}
+    (a, \infty) = \{x\in\mathbb{R}:~a< x\}
+  \end{gather}
+\item Intervalos semi-limitados à direita
+  \begin{gather}
+    (-\infty, b] = \{x\in\mathbb{R}:~x\leq b\}
+    (-\infty, b) = \{x\in\mathbb{R}:~x< b\}
+  \end{gather}
+\item Intervalo ilimitado
+  \begin{equation}
+    (-\infty, \infty) = \mathbb{R}
+  \end{equation}
+\end{itemize}
+
+\begin{ex}
+  Estudamos os seguintes casos:
+  \begin{enumerate}[a)]
+  \item $2\in [2, \infty)$
+  \item $10^6\in (2, \infty)$
+  \item $1 \not\in (-\infty, 1)$
+  \item $-10^{308} \in (-\infty, 1]$
+  \item $\pi \in (-\infty, \infty)$
+  \end{enumerate}
+  \ifispython
+  Com o \python, podemos fazer estas verificações com os seguintes comandos:
+  \begin{lstlisting}
+    >>> from sympy import *
+    >>> oo in Interval(2,oo)
+    False
+    >>> from sympy import *
+    >>> 2 in Interval(2,oo)
+    True
+    >>> 10**6 in Interval(2,oo,
+    ... left_open=True)
+    True
+    >>> 1 in Interval(-oo, 1,
+    ... right_open=True)
+    False
+    >>> -10**308 in Interval(-oo, 1)
+    True
+    >>> pi in Interval(-oo, oo)
+    True
+  \end{lstlisting}
+  \fi
+\end{ex}
 
 \emconstrucao
 
