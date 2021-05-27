@@ -7,4 +7,322 @@
   [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
 \end{flushright}
 
+\section{Equações}\label{cap_ineq_sec_eq}
+
+Uma equação é uma declaração de que duas expressões são iguais. Escrevemos
+\begin{equation}
+  E_e = E_d
+\end{equation}
+para estabelecer que a expressão à esquerda $E_e$ é igual a expressão à direira $E_d$.
+
+\begin{ex}
+  Estudemos os seguintes casos:
+  \begin{enumerate}[a)]
+  \item $2^2 = 4$
+  \item $2x - 1 = 0$
+  \item $e^{x+y} = e^xe^y$
+  \item $\displaystyle \frac{x^2-1}{x+1} = x - 1$
+  \end{enumerate}
+
+  \begin{ifispython}
+    No \python, podemos declarar as equações com a função \lstinline{https://docs.sympy.org/latest/modules/core.html?highlight=equality#sympy.core.relational.Equality}{Eq}. Os casos são implementados como segue:
+    \begin{lstlisting}
+      >>> from sympy import *
+      >>> Eq(2**2, 4)
+      True
+      >>> x = Symbol('x')
+      >>> Eq(2*x - 1, 0)
+      Eq(2*x - 1, 0)
+      >>> y = Symbol('y')
+      >>> Eq(exp(x+y), exp(x)*exp(y))
+      Eq(exp(x + y), exp(x)*exp(y))
+      >>> Eq((x**2-1)/(x+1), x-1)
+      Eq((x**2 - 1)/(x + 1), x - 1)
+    \end{lstlisting}
+  \end{ifispython}
+\end{ex}
+
+\subsection{Solução de uma equação}
+
+Equação é uma poderosa ferramenta matemática para impor uma condição sobre uma ou mais \emph{incógnitas} (ou \emph{variáveis}). Por exemplo, quando escrevemos
+\begin{equation}
+  2^x = 4
+\end{equation}
+estamos impondo que a incógnita $x$ seja aquela a satisfazer esta equação. No caso, $x=2$ satisfaz a equação, pois ao substituirmos $x$ por $2$ nela, obtemos
+\begin{gather}
+  2^2 = 4
+  \Leftrightarrow 4 = 4.
+\end{gather}
+Usualmente, dizemos que $x=2$ é \emph{solução} da equação. O procedimento de encontrar a(s) solução(ões) de uma equação é chamado de \emph{resolução} da equação, i.e. o procedimento de resolver a equação.
+
+\begin{obs}
+  Uma equação pode ter uma única solução, várias soluções, infinitas soluções ou nenhuma solução.
+\end{obs}
+
+\begin{ex}
+  Estudemos os seguintes casos:
+  \begin{enumerate}[a)]
+  \item $x - 1 = 0$ tem solução única $x=1$.
+  \item $y^2 - 1 = 0$ têm soluções $y=-1$ ou $y=1$.
+  \item $x^2 = -1$ não tem solução.
+  \item $(u+1)^2 = u^2 + 2u + 1$, qualquer $u\in\mathbb{R}$ é solução.
+  \end{enumerate}
+
+  \ifispython
+  No \python, podemos resolver estas equação com o comando \href{https://docs.sympy.org/latest/tutorial/solvers.html#solving-equations-algebraically}{solve ou solveset}. Estudemos as seguintes entradas e saídas:
+  \begin{lstlisting}
+    >>> from sympy import *
+    >>> x = Symbol('x', real=True)
+    >>> solve(x-1, domain=S.Reals)
+    [1]
+    >>> solveset(x-1, domain=S.Reals)
+    FiniteSet(1)
+    >>> y,u = symbols('y,u', real=True)
+    >>> solve(y**2-1, domain=S.Reals)
+    [-1, 1]
+    >>> solve(Eq(x**2, -1), domain=S.Reals)
+    []
+    >>> solveset(Eq(x**2, -1), domain=S.Reals)
+    EmptySet
+    >>> solveset(Eq((u+1)**2, u**2 + 2*u + 1), domain=S.Reals)
+    Reals
+  \end{lstlisting}
+  \fi
+\end{ex}
+
+Não existe um procedimento único para a resolução de equações em geral. Em síntese, a resolução, quando possível, é obtida da aplicação das seguintes propriedades. Sendo $E_1, E_2 e E_3$ expressões matemáticas, temos
+\begin{itemize}
+\item
+  \begin{equation}
+    {\color{red}E_1} = {\color{olive}E_2} \Leftrightarrow {\color{olive}E_2} = {\color{red}E_1}
+  \end{equation}
+\item
+  \begin{equation}
+    E_1 = E_2 \Leftrightarrow E_1 + {\color{blue}E_3} = E_2 + {\color{blue}E_3}
+\end{equation}
+\item Para $E_3\in\mathbb{R}^*$
+  \begin{equation}
+    E_1 = E_2 \Leftrightarrow E_1\cdot {\color{blue}E_3} = E_2 \cdot {\color{blue}E_3}
+  \end{equation}
+\end{itemize}
+
+\subsection{Equações lineares}
+
+Equação algébricas lineares de uma incógnita são aquelas que podem ser escritas na seguinte forma
+\begin{equation}
+  ax + b = 0,
+\end{equation}
+onde, são conhecidos (dados) os parâmetros $a\in\mathbb{R}^*$ e $b\in\mathbb{R}$. Sua resolução pode ser feita da seguinte forma
+\begin{gather}
+  ax + b = 0 \\
+  ax + b - b = 0 - b \\
+  ax = -b \\
+  \frac{1}{a}\cdot ax = \frac{1}{a}\cdot (-b) \\
+  1\cdot x = -\frac{b}{a} \\
+  x = -\frac{b}{a}.
+\end{gather}
+
+\begin{ex}
+  Vamos resolver
+  \begin{equation}
+    2x -4 = 5 - x
+  \end{equation}
+  Esta é uma equação linear, pois
+  \begin{gather}
+    2x - 4 - 5 = 5 - x - 5 \\
+    2x -9 = -x \\
+    x + 2x - 9 = x - x \\
+    3x - 9 = 0.
+  \end{gather}
+  Logo, a solução é
+  \begin{equation}
+    x = \frac{9}{3} = 3.
+  \end{equation}
+
+  \ifispython
+  No \python, podemos resolver esta equação com
+  \begin{lstlisting}
+    >>> from sympy import *
+    >>> x = Symbol('x', real=True)
+    >>> solve(Eq(2*x - 4, 5 - x), domain=S.Reals)
+    [3]
+  \end{lstlisting}
+  \fi
+\end{ex}
+
+\subsection{Equação quadrática}
+
+Uma equação algébrica quadrática de um incógnita é aquela que pode ser escrita na forma
+\begin{equation}\label{eq:ineq_eqquad}
+  ax^2 + bx + c = 0,
+\end{equation}
+com $a\in\mathbb{R}^*$ e $b,c\in\mathbb{R}$.
+
+Para resolver tal equação, vamos, primeiro, lembrar que
+\begin{equation}
+  (a + b)^2 = a^2 + 2ab + b^2,
+\end{equation}
+para quaisquer $a,b\in\mathbb{R}$. Daí, a ideia é \emph{completar os quadrados} na equação \eqref{eq:ineq_eqquad}, fazendo
+\begin{gather}
+  ax^2 + bx + c - c= 0 - c \\
+  ax^2 + bx = -c \\
+  \left(ax^2 + bx\right)\frac{1}{a} = -c\cdot\frac{1}{a} \\
+  x^2 + \frac{b}{a}x = -\frac{c}{a} \\
+  x^2 + \frac{b}{a}x + \left(\frac{b}{2a}\right)^2 = -\frac{c}{a}  + \left(\frac{b}{2a}\right)^2 \\
+  \left(x + \frac{b}{2a}\right)^2 = -\frac{c}{a} + \frac{b^2}{4a^2} \\
+  \left(x + \frac{b}{2a}\right)^2 = \frac{b^2 - 4ac}{4a^2} \\  
+  \sqrt{\left(x + \frac{b}{2a}\right)^2} = \sqrt{\frac{b^2 - 4ac}{4a^2}} \\
+  x + \frac{b}{2a} = \pm\frac{b^2 - 4ac}{2a} \\
+  x + \frac{b}{2a} - \frac{b}{2a} = - \frac{b}{2a} \pm\frac{b^2 - 4ac}{2a}\\
+\end{gather}
+donde temos a chamada \href{https://pt.wikipedia.org/wiki/Bhaskara\_II}{fórumla de Bhaskara}
+\begin{equation}
+  x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}.
+\end{equation}
+
+\begin{ex}
+  Vamos resolver
+  \begin{equation}
+    x^2 = x + 2.
+  \end{equation}
+  Esta é uma equação quadrática, pois
+  \begin{gather}
+    x^2 - x - 2 = x + 2 - x - 2 \\
+    x^2 -x - 2 = 0.
+  \end{gather}
+  Logo, da fórmula da Bhaskara, obtemos
+  \begin{gather}
+    x = \frac{-(-1) \pm \sqrt{(-1)^2 - 4\cdot 1 \cdot (-2)}}{2\cdot 1} \\
+    x = \frac{1 \pm \sqrt{1 + 8}}{2} \\
+    x = \frac{1 \pm \sqrt{9}}{2} \\
+    x = \frac{1 \pm 3}{2}
+  \end{gather}
+  Donde,
+  \begin{gather}
+    x = \frac{1 - 3}{2} \\
+    x = \frac{-2}{2} \\
+    x = -1
+  \end{gather}
+  ou
+  \begin{gather}
+    x = \frac{1 + 3}{2} \\
+    x = \frac{4}{2} \\
+    x = 2
+  \end{gather}
+  Concluímos que a equação tem soluções $x=-1$ ou $x=2$.
+
+  \ifispython
+  No \python, podemos resolver esta equação com
+  \begin{lstlisting}
+    >>> from sympy import *
+    >>> x = Symbol('x', real=True)
+    >>> solve(Eq(x**2, x + 2), domain=S.Reals)
+    [-1, 2]
+  \end{lstlisting}
+  \fi
+\end{ex}
+
+\subsection{Equações exponenciais}
+
+Um equação exponencial é aquela em que a incógnita aparece como expoente em um ou mais termos. Tais equações não tem formato único, nem procedimento geral de resolução. Quando possível, a ideia é reescrever todos os termos da equação em uma base comum.
+
+\begin{obs}
+  Lembramos que\footnote{Quando bem definido.}:
+  \begin{itemize}
+  \item $\displaystyle b^x = b^y \Leftrightarrow x=y$
+  \item $\displaystyle b^{x+y} = b^x\cdot b^y$
+  \item $\displaystyle b^{xy} = \left(b^x\right)^y$
+  \item $\displaystyle b^{-x} = \frac{1}{b^x}$
+  \item $\displaystyle b^{\frac{x}{y}} = \sqrt[y]{b^x}$
+  \end{itemize}
+\end{obs}
+
+
+\begin{ex}
+  Vamos resolver
+  \begin{equation}
+    5^{x+3} = 25.
+  \end{equation}
+  Para resolver esta equação, vamos escrever $25$ como potência de $5$, i.e.
+  \begin{equation}
+    25 = 5^2.
+  \end{equation}
+  Logo, a equação é equivalente a
+  \begin{equation}
+    5^{x+3} = 5^2
+  \end{equation}
+  donde
+  \begin{gather}
+    x+3 = 2 \\
+    x = -1.
+  \end{gather}
+  Ou seja, a solução é $x=-1$.
+
+  \ifispython
+  No \python:
+  \begin{lstlisting}
+    >>> from sympy import *
+    >>> x = Symbol('x', real=True)
+    >>> solve(Eq(5**(x+3), 25), domain=S.Reals)
+    [-1]
+  \end{lstlisting}
+  \fi
+\end{ex}
+
+\begin{ex}
+  Vamos resolver
+  \begin{equation}
+    5^{x+3} = 5^{-x} + 20.
+  \end{equation}
+  Notamos que esta equação é equivalente a
+  \begin{equation}
+    5^x\cdot 5^3 = \left(5^x\right)^{-1} + 20.
+  \end{equation}
+  Fazemos, então, a seguinte \emph{mudança de variável}
+  \begin{equation}
+    y = 5^x.
+  \end{equation}
+  Com isso, a equação se resume a
+  \begin{equation}
+    y\cdot 5^3 = y^{-1} + 20
+  \end{equation}
+  Resolvemos esta equação como segue
+  \begin{gather}
+    125y = \frac{1}{y} + 20 \\
+    125y^2 = 1 + 20y \\
+    125y^2 - 20y - 1 = 0
+  \end{gather}
+  Usando a fórmula de Bhaskara, obtemos
+  \begin{gather}
+    y = \frac{20 \pm \sqrt{20^2 - 4\cdot 125\cdot (-1)}}{2\cdot 125}\\
+    y = \frac{20 \pm \sqrt{900}}{250} \\
+    y = \frac{20 - \pm 30}{250}
+  \end{gather}
+  Ou seja, $y = -1/25$ ou $y = 1/5$. Observando que $y=5^x$ e, portanto positivo, temos
+  \begin{equation}
+    5^x = \frac{1}{5} = 5^{-1}.
+  \end{equation}
+  Concluímos que $x = -1$.
+
+  \ifispython
+  No \python:
+  \begin{lstlisting}
+    >>> from sympy import *
+    >>> x = Symbol('x', real=True)
+    >>> solve(Eq(5**(x+3), 25), domain=S.Reals)
+    [-1]
+  \end{lstlisting}
+  \fi  
+\end{ex}
+
+\subsection*{Exercícios}
+
+\emconstrucao
+
+\section*{Inequações}\label{cap_ineq_sec_ineq}
+
+\emconstrucao
+
+\subsection*{Exercícios}
+
 \emconstrucao

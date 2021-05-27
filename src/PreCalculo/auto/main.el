@@ -9,6 +9,7 @@
     "licenca"
     "prefacio"
     "./cap_numreal/cap_numreal"
+    "./cap_ineq/cap_ineq"
     "./cap_funcao/cap_funcao"
     "./cap_respostas/cap_respostas"
     "book"
