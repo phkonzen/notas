@@ -242,11 +242,16 @@ class Notas:
                             
                         if (vurl != ''):
                             vurl = vurl.replace('/details/','/embed/')
+                            inc += '<div class="row">\n'
+                            inc += '<div class="col-xl-4 col-lg-3 col-md-3"></div>\n'
+                            inc += '<div class="col-xl-4 col-lg-6 col-md-6">\n'
+                            inc += '<div class="container" style="position:relative; width:100%; padding-top:75%; background-color:black;">\n'
                             inc += '<iframe src="' + \
                                 vurl + \
-                                '" width="640" height="480" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen style="max-width:100%;"></iframe>\n'
-                            #inc += '</p>\n'
-                        #inc += '</div>\n\n'
+                                '" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" style="display:block; position:absolute; width:100%; height:100%; left:0; right:0; top:0; bottom:0;" allowfullscreen></iframe>\n'
+                            inc += '</div>\n'
+                            inc += '</div>\n'
+                            inc += '</div>\n'
 
                         page = page[0:i2] + \
                             inc + \
