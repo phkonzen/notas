@@ -138,8 +138,8 @@ class Index:
         
         body += '<div class="carousel-item active">\n'
         body += '<div>\n'
-        body += '<div class="spinner-grow spinner-grow-sm text-danger mb-1" role="status"></div>\n'
-        body += '<a href="http://www.ufrgs.br/ppgmap/selecao/editais-de-selecao-mestrado">PPGMAp-UFRGS: Processo Seletivo - Mestrado 2021/1</a>\n'
+        body += '<div class="spinner-grow spinner-grow-sm text-primary mb-1" role="status"></div>\n'
+        body += '<a href="http://www.cnmac.org.br">XL CNMAC 13 - 17/09/21</a>\n'
         body += '</div>\n'
         body += '</div>\n\n'
 
