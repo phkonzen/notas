@@ -126,12 +126,12 @@ class Index:
         # Área de anúncios
         #body += '<p></p>'
         body += '<div id="demo" class="carousel slide" data-ride="carousel">'
-        body += '<!-- Indicators -->'
-        body += '<ul class="carousel-indicators">'
-        body += '<li data-target="#demo" data-slide-to="0"></li>'
-        # body += '<li data-target="#demo" data-slide-to="1"></li>'
-        # body += '<li data-target="#demo" data-slide-to="2"></li>'
-        body += '</ul>'
+        #body += '<!-- Indicators -->'
+        #body += '<ul class="carousel-indicators">'
+        #body += '<li data-target="#demo" data-slide-to="0"></li>'
+        #body += '<li data-target="#demo" data-slide-to="1"></li>'
+        #body += '<li data-target="#demo" data-slide-to="2"></li>'
+        #body += '</ul>'
         
         body += '<!-- The slideshow -->'
         body += '<div class="carousel-inner">\n'
@@ -150,14 +150,6 @@ class Index:
         body += '<a href="http://www.ufrgs.br/ppgmap/selecao/editais-de-selecao-doutorado">PPGMAp-UFRGS: Processo Seletivo Doutorado 2021</a>\n'
         body += '</div>\n'        
         body += '</div>\n\n'
-
-        body += '<div class="carousel-item">\n'
-        body += '<div>\n'
-        body += '<div class="spinner-grow spinner-grow-sm text-primary mb-1" role="status"></div>\n'
-        body += '<a href="https://semanacademicamat.wixsite.com/home">XV SEMANACA - UFRGS: 07-11/06/2021</a>\n'
-        body += '</div>\n'
-        body += '</div>'
-
 
         body += '</div>'
   

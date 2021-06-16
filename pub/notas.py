@@ -99,7 +99,7 @@ class Notas:
       
         # Navbar
         body += '\n\n<!-- begin: navbar -->\n'
-        body += '<nav class="navbar navbar-expand-md navbar-light bg-light">\n'
+        body += '<nav class="navbar navbar-expand-lg navbar-light bg-light">\n'
         body += '<a class="navbar-brand" href="main.html">Notas de Aula<br/><small>'+titulo_notas+'</small></a>\n'
         body += '<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">\n'
         body += '<span class="navbar-toggler-icon"></span>\n'
