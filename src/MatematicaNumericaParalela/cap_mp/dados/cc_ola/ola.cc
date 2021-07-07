@@ -3,8 +3,6 @@
 // OpenMP API
 #include <omp.h>
 
-using namespace std;
-
 int main(int argc, char *argv[]) {
 
   // regiao paralela
@@ -13,7 +11,7 @@ int main(int argc, char *argv[]) {
     // id da instancia de processamento
     int id = omp_get_thread_num();
     
-    printf('Processo %d, ola!\n', id);
+    printf("Processo %d, ola!\n", id);
   }
   
   return 0;
