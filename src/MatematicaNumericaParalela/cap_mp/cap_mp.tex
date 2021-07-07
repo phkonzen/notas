@@ -15,7 +15,7 @@ Neste capítulo, vamos estudar aplicações da computação paralela em arquitet
   [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
 \end{flushright}
 
-A computação paralela com MP inicia-se por uma instância de processamento \emph{thread master}. Todas as instâncias de processamento disponíveis (\emph{threads}) leem e escrevem variáveis compartilhadas. A ramificação ({\it fork}) do processo entre os {\it threads} disponíveis é feita por instrução explícita no início de uma região paralela do código. Ao final da região paralela, todos os {\it threads} sincronizam-se ({\it join}) e o processo segue apenas com o {\it thread master}. Veja a Figura \ref{fig:mpwf}.
+A computação paralela com MP inicia-se por uma instância de processamento \emph{master thread}. Todas as instâncias de processamento disponíveis (\emph{threads}) leem e escrevem variáveis compartilhadas. A ramificação ({\it fork}) do processo entre os {\it threads} disponíveis é feita por instrução explícita no início de uma região paralela do código. Ao final da região paralela, todos os {\it threads} sincronizam-se ({\it join}) e o processo segue apenas com o {\it thread master}. Veja a Figura \ref{fig:mpwf}.
 
 \begin{figure}[H]
   \centering
@@ -24,7 +24,7 @@ A computação paralela com MP inicia-se por uma instância de processamento \em
   \label{fig:mpwf}
 \end{figure}
 
-Vamos escrever nosso primeiro programa MP. O Código \verb+ola.cc+ inicia uma região paralela e cada instância de processamento escreve ``Olá'' e identifica-se.
+Vamos escrever nosso primeiro código MP. O Código \verb+ola.cc+ inicia uma região paralela e cada instância de processamento escreve ``Olá'' e identifica-se.
 
 \lstinputlisting[title={Código: ola.cc}]{cap_mp/dados/cc_ola/ola.cc}
 
@@ -55,7 +55,7 @@ Processo 2, olá!
 A saída irá depender do número de {\it threads} disponíveis na máquina e a ordem dos {\it threads} pode variar a cada execução. Execute o código várias vezes e analise as saídas!
 
 \begin{obs}
-  As variáveis declaradas dentro de uma região paralela são privadas de cada {\it threads}. As variáveis declaradas fora de uma região paralela são globais, sendo acessíveis por todos os {\it threads}.
+  As variáveis declaradas dentro de uma região paralela são privadas de cada {\it thread}. As variáveis declaradas fora de uma região paralela são compartilhadas, sendo acessíveis por todos os {\it threads}.
 \end{obs}
 
 \subsection*{Exercícios resolvidos}
