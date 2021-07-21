@@ -4,7 +4,7 @@
 
 int main(int argc, char *argv[]) {
 
-  int n = 99999999;
+  int n = 999999991;
   
   int s = 0;
   #pragma omp parallel

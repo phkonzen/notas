@@ -1,42 +1,35 @@
-#include <omp.h>
+// io
 #include <stdio.h>
+// rand
+#include <cstdlib>
+// time
 #include <ctime>
+// openMP
+#include <omp.h>
 
-// GSL vector
-#include <gsl/gsl_vector.h>
-#include <gsl/gsl_rng.h>
+#define n 99999
 
 int main(int argc, char *argv[]) {
 
-  int n = 99999999;
+  double a[n], b[n];
 
-  // vetores
-  gsl_vector *a = gsl_vector_alloc(n);
-  gsl_vector *b = gsl_vector_alloc(n);
-
-  // gerador randomico
-  gsl_rng *rng = gsl_rng_alloc(gsl_rng_default);
-  gsl_rng_set(rng, time(NULL));
+  // inicializa rand
+  srand(time(NULL));
 
   // inicializa os vetores
   #pragma omp parallel for
   for (int i=0; i<n; i++) {
-    gsl_vector_set(a, i, gsl_rng_uniform(rng));
-    gsl_vector_set(b, i, gsl_rng_uniform(rng));
+    a[i] = double(rand())/RAND_MAX;
+    b[i] = double(rand())/RAND_MAX;
   }
 
   // produto escalar
   double dot = 0;
   #pragma omp parallel for reduction(+: dot)
   for (int i=0; i<n; i++)
-    dot += gsl_vector_get(a, i) * \
-      gsl_vector_get(b, i);
+    dot += a[i] * b[i];
 
-  printf('%f\n',dot);
+  printf("%lf\n",dot);
 
-  gsl_vector_free(a);
-  gsl_vector_free(b);
-  gsl_rng_free(rng);
-  
   return 0;
 }

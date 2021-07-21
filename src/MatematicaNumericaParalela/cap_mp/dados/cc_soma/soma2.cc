@@ -4,7 +4,7 @@
 
 int main(int argc, char *argv[]) {
 
-  int n = 99999999;
+  int n = 999999991;
   
   int s = 0;
   #pragma omp parallel
@@ -12,10 +12,10 @@ int main(int argc, char *argv[]) {
     int tid = omp_get_thread_num();
     int nt = omp_get_num_threads();
 
-    int ini = n/nt*tid;
-    int fin = n/nt*(tid+1);
+    int ini = (n+1)/nt*tid;
+    int fin = (n+1)/nt*(tid+1);
     if (tid == nt-1)
-      fin = n;
+      fin = n+1;
 
     int st = 0;
     for (int i=ini; i<fin; i++)
@@ -24,6 +24,8 @@ int main(int argc, char *argv[]) {
     #pragma omp critical
     s += st;
   }
-  printf('%d\n',s);
+  
+  printf("%d\n",s);
+  
   return 0;
 }

@@ -8,11 +8,11 @@ using namespace std;
 int main(int argc, char *argv[]) {
 
   double a,b;
-  printf('Digite o primeiro numero: ');
-  scanf('%lf', &a);
+  printf("Digite o primeiro numero: ");
+  scanf("%lf", &a);
   
-  printf('Digite o segundo numero: ');
-  scanf('%lf', &b);
+  printf("Digite o segundo numero: ");
+  scanf("%lf", &b);
 
   // regiao paralela
   #pragma omp parallel				
@@ -21,10 +21,10 @@ int main(int argc, char *argv[]) {
     int id = omp_get_thread_num();
     
     if (id == 0) {
-      printf('Soma: %f\n', (a+b));
+      printf("Soma: %f\n", (a+b));
     }
     else if (id == 1) {
-      printf('Produto: %f\n', (a*b));
+      printf("Produto: %f\n", (a*b));
     }
   }
   
