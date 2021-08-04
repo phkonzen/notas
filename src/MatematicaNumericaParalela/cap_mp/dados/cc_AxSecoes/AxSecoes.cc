@@ -1,31 +1,28 @@
-#include <omp.h>
 #include <stdio.h>
+#include <cstdlib>
 #include <ctime>
+#include <omp.h>
 
-#include <gsl/gsl_matrix.h>
-#include <gsl/gsl_vector.h>
-#include <gsl/gsl_rng.h>
-#include <gsl/gsl_blas.h>
+#define n 9999
 
 int main(int argc, char *argv[]) {
 
-  int n = 9999;
-
+  // matriz
+  double a[n][n];
   // vetores
-  gsl_matrix *a = gsl_matrix_alloc(n,n);
-  gsl_vector *x = gsl_vector_alloc(n);
-  gsl_vector *y = gsl_vector_alloc(n);
+  double x[n], y[n];
 
-  // gerador randomico
-  gsl_rng *rng = gsl_rng_alloc(gsl_rng_default);
-  gsl_rng_set(rng, time(NULL));
+  // inicializa rand
+  srand(time(NULL));
 
   // inicializacao
   for (int i=0; i<n; i++) {
     for (int j=0; j<n; j++) {
-      gsl_matrix_set(a, i, j, gsl_rng_uniform(rng));
+      a[i][j] = double(rand())/RAND_MAX;
     }
-    gsl_vector_set(x, i, gsl_rng_uniform(rng));
+    x[i] = double(rand())/RAND_MAX;
+    
+    y[i] = 0.;
   }
 
   // y = A*x
@@ -33,35 +30,18 @@ int main(int argc, char *argv[]) {
   {
     #pragma omp section
     {
-      gsl_matrix_const_view as1
-  	= gsl_matrix_const_submatrix(a,
-				     0,0,
-				     n/2,n);
-      gsl_vector_view ys1
-  	= gsl_vector_subvector(y,0,n/2);
-      gsl_blas_dgemv(CblasNoTrans,
-		     1.0, &as1.matrix, x,
-		     0.0, &ys1.vector);
+      for (int i=0; i<n/2; i++)
+	for (int j=0; j<n; j++)
+	  y[i] += a[i][j] * x[j];
     }
     
     #pragma omp section
     {
-      gsl_matrix_const_view as2
-  	= gsl_matrix_const_submatrix(a,
-				     n/2,0,
-				     (n-n/2),n);
-      gsl_vector_view ys2
-  	= gsl_vector_subvector(y,n/2,(n-n/2));
-      gsl_blas_dgemv(CblasNoTrans,
-		     1.0, &as2.matrix, x,
-		     0.0, &ys2.vector);
+      for (int i=n/2; i<n; i++)
+	for (int j=0; j<n; j++)
+	  y[i] += a[i][j] * x[j];
     }
   }
-
-  gsl_matrix_free(a);
-  gsl_vector_free(x);
-  gsl_vector_free(y);
-  gsl_rng_free(rng);
   
   return 0;
 }
