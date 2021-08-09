@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
       // seção 1
       #pragma omp section
       {
-	printf('%d/%d exec seção 1\n', \
+	printf("%d/%d exec seção 1\n", \
 	       tid, nt);
       }
       
@@ -29,12 +29,12 @@ int main(int argc, char *argv[]) {
 	time_t t0 = time(NULL);
 	while (time(NULL) - t0 < 1) {
 	}
-	printf('%d/%d exec a seção 2\n', \
+	printf("%d/%d exec a seção 2\n", \
 	       tid, nt);
       }
     }
 
-    printf('%d/%d terminou\n', tid, nt);
+    printf("%d/%d terminou\n", tid, nt);
   }
 
   return 0;

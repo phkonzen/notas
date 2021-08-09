@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
       }
     }
       
-    printf('Processo %d/%d.\n', tid, nt);
+    printf("Processo %d/%d.\n", tid, nt);
   }  
   return 0;
 }
