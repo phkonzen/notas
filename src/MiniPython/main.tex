@@ -1,0 +1,308 @@
+%Este trabalho está licenciado sob a Licença Atribuição-CompartilhaIgual 4.0 Internacional Creative Commons. Para visualizar uma cópia desta licença, visite http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR ou mande uma carta para Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+
+\documentclass[12pt]{article}
+
+\input ../preambulo.tex
+
+\usepackage{url}
+
+\makeindex
+
+\begin{document}
+
+\ifispython
+\lstset { %
+  language=Python,
+  numbers=right,
+  numberstyle=\small,
+  stepnumber=1,    
+  firstnumber=1,
+  xleftmargin=-1em,
+  extendedchars=true,
+  inputencoding=utf8,
+  upquote=true,
+  basicstyle=\ttfamily,
+  keywordstyle=\ttfamily,
+  stringstyle=\ttfamily,
+  commentstyle=\ttfamily,
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+}
+\fi
+
+\title{Minicurso de Python para Matemática}
+\author{Pedro H A Konzen}
+\date{\today}
+% \ifishtml
+% \else
+% \addcontentsline{toc}{chapter}{Capa}
+% \fi
+
+\maketitle
+
+\tableofcontents
+
+\section*{Licença}\label{licenca}
+
+Este trabalho é uma adaptação livre a partir está licenciado sob a Licença Atribuição-CompartilhaIgual 4.0 Internacional Creative Commons. Para visualizar uma cópia desta licença, visite http://creativecommons.org/licenses/by-sa/4.0/deed.pt\_BR ou mande uma carta para Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+
+
+\section{Sobre a linguagem}
+
+{\python} é uma linguagem de programação de alto nível e multi-paradigma. Ou seja, é relativamente próxima das linguagens humanas naturais, é desenvolvida para aplicações diversas e permite a utilização de diferentes paradigmas de programação (programação estruturada, orientada a objetos, orientada a eventos, paralelização, etc.).
+
+\begin{itemize}
+\item Site oficial: \href{https://www.python.org/}{https://www.python.org/}
+\end{itemize}
+
+\subsection{Instalação e execução}
+
+Para executar um código {\python} é necessário instalar um interpretador. No \href{https://www.python.org/}{site oficial do \python} estão disponível para {\it download} interpretadores gratuitos e com licença para uso livre. Neste minicurso, vamos utilizar {\python} 3 instalado em um sistema \verb+Linux+. Para outros sistemas, pode ser necessário fazer algumas pequenas adequações.
+
+\subsection{Utilização}
+
+A execução de códigos \python pode ser feita de três formas básicas:
+\begin{itemize}
+\item em modo iterativa em um console \python;
+\item por execução de um código \verb+.py+ em um console \python;
+\item por execução de um cógido \verb+.py+ em um terminal;
+\end{itemize}
+
+\begin{ex}
+  Implemente o seguinte pseudocódigo.
+\begin{verbatim}
+s = "Ola, mundo!".
+imprime(s). (imprime a string s)
+\end{verbatim}
+  \begin{enumerate}[a)]
+  \item em modo iterativo no console;
+  \item escrevendo o código \verb+.py+ e executando-o no console;
+  \item escrevendo o código \verb+.py+ e executando-o no terminal.
+  \end{enumerate}
+  
+  \noindent{\bf Resolução.} Seguem as implementações em cada caso.
+
+  \begin{enumerate}[a)]
+  \item Em modo iterativo.
+
+    Iniciamos um console {\python} em terminal digitando
+\begin{verbatim}
+$ python3
+\end{verbatim}
+    Então, digitamos
+    \begin{lstlisting}[xleftmargin=-3em]
+      >>> s = "Ola, Mundo!"
+      >>> print(s) #imprime a string s
+      Ola, Mundo!
+    \end{lstlisting}
+    Para encerrar o console, digitamos
+    \begin{lstlisting}[xleftmargin=-3em]
+      >>> quit()
+    \end{lstlisting}
+    
+  \item Executando {\it script} \verb+.py+ no console.
+
+    Primeiramente, escrevemos o código
+    \begin{lstlisting}
+      s = "Ola, Mundo!"
+      print(s) # imprime a string s
+    \end{lstlisting}
+    em um editor de texto (ou no seu IDE de preferência) e salvamo-lo em \verb+/pasta/codigo.py+. Então, executamo-lo no console {\python} com
+    \begin{lstlisting}[xleftmargin=-3em]
+      >>> exec(open('/pasta/codigo.py').read())
+      Ola, mundo!
+    \end{lstlisting}
+
+  \item Executando o código em terminal.
+
+    Considerando que já temos o código salvo em \verb+/pasta/codigo.py+, executamo-lo com
+\begin{verbatim}
+$ python3 /pasta/codigo.py
+Olá, mundo!
+\end{verbatim}
+  \end{enumerate}
+\end{ex}
+
+\section{Elementos da linguagem}
+
+{\python} é uma linguagem de programação dinâmica em que as variáveis são declaradas automaticamente ao receberem um valor. Por exemplo, consideremos as seguintes instruções
+\begin{lstlisting}
+  >>> x = 1
+  >>> y = x * 2.0
+\end{lstlisting}
+Na primeira instrução, a variável \lstinline+x+ é recebe o valor inteiro $1$ e, então, é armazenado na memória do computador como um objeto da classe \lstinline+int+. Na segunda instrução, \lstinline+y+ recebe o valor decimal $2.0$ (resultado de $1\times 2.0$) e é armazenado como um objeto da classe \lstinline+float+ (ponto flutuante de 64-{\it bits}). Podemos verificar isso, com as seguintes instruções
+\begin{lstlisting}
+  >>> print(x, y)
+  1 2.0
+  >>> print(type(x), type(y))
+  <class 'int'> <class 'float'>
+\end{lstlisting}
+
+Códigos {\python} admitem comentários e continuação de linha como no seguinte exemplo
+\begin{lstlisting}
+  >>> # isso eh um comentario
+  >>> s = "isso eh uma \
+  ... string"
+  >>> print(s)
+  isso eh uma string
+  >>> type(s)
+  <class 'str'>
+\end{lstlisting}
+
+\begin{obs}(Notação científica)
+  O {\python} aceita notação científca, por exemplo $5.2\times 10^{-2}$ é digitado como
+  \begin{lstlisting}
+    >>> 5.2e-2
+    0.052
+  \end{lstlisting}
+\end{obs}
+
+\begin{obs}
+  Além dos tipos numéricos e {\it string}, {\python} também conta com os tipos de dados \lstinline+list+ (lista), \lstinline+tuple+ ($n$-upla) e \lstinline+dict+ (dicionário). Estudaremos estes tipos mais adiante neste minicurso.
+\end{obs}
+
+\subsection{Operações aritméticas elementares}
+
+Os operadores aritméticos elementares são:
+\begin{itemize}
+\item[]\lstinline-+-: adição
+\item[]\lstinline+-+: subtração
+\item[]\lstinline+*+: multiplicação
+\item[]\lstinline+/+: divisão
+\item[]\lstinline+**+: potenciação
+\item[]\lstinline+%+: módulo
+\item[]\lstinline+//+: módulo
+\end{itemize}
+
+Consideremos o seguinte exemplo
+\begin{lstlisting}
+  >>> 2+8*3/2**2-1
+  7.0
+\end{lstlisting}
+Observamos que as operações \lstinline+**+ tem precedência sobre as operações \lstinline+*, /+, as quais têm precedência sobre as operações \lstinline!+, -!. Operações de mesma precedência seguem a ordem da esquerda para direita, conforme escritas na linha de comando. Usa-se parênteses para alterar a precedência entre as operações, por exemplo
+\begin{lstlisting}
+  >>> (2+8*3)/2**2-1
+  5.5
+\end{lstlisting}
+Consulte mais informações sobre a precedência de operadores em \href{https://docs.python.org/3/reference/expressions.html#operator-precedence}{Python Docs}.
+
+\begin{exr}
+  Compute as raízes do seguinte polinômio quadrático
+  \begin{equation}
+    x^2 - x - 2
+  \end{equation}
+  usando a fórmula de Bhaskara\footnote{Bhaskara Akaria, 1114 - 1185, matemático e astrônomo indiano. Fonte: \href{https://pt.wikipedia.org/wiki/Bhaskara\_II}{Wikipédia}.}
+\end{exr}
+
+O operador \lstinline+%+ módulo computa o resto da divisão e o operador \lstinline+//+ a divisão inteira, por exemplo
+\begin{lstlisting}
+  >>> 5 % 2
+  1
+  >>> 5 // 2
+  2
+\end{lstlisting}
+
+\begin{exr}
+  Use o {\python} para verificar se $14/21$ é menor ou igual a $15/23$. Então, compute o resto da divisão do maior quociente.
+\end{exr}
+
+\subsection{Funções e constantes elementares}
+
+O módulo Python \href{https://docs.python.org/3/library/math.html}{math} disponibiliza várias funções e constantes elementares. Para usá-las, precisamos importar o módulo para nossa seção. Fazemos isso com a instrução
+\begin{lstlisting}
+  >>> import math
+\end{lstlisting}
+Com isso, temos acesso a todas as definições e declarações contidas neste módulo. Por exemplo
+\begin{lstlisting}
+  >>> math.pi
+  3.141592653589793
+  >>> math.cos(math.pi)
+  -1.0
+  >>> math.sqrt(2)
+  1.4142135623730951
+  >>> math.log(math.e)
+  1.0
+\end{lstlisting}
+
+\begin{obs}
+  Notemos que \lstinline+math.log+ é a função logaritmo natural, i.e. $\ln(x) = \log_e(x)$. A implementação {\python} para o logaritmo de base 10 é \lstinline+math.log(x,10)+ ou, mais acurado, \lstinline+math.log10+.
+\end{obs}
+
+\begin{exr}
+  Compute $e^{\log_3(\pi)}$.
+\end{exr}
+
+\subsection{Operadores de comparação elementares}
+
+Os operadores de comparação elementares são
+\begin{itemize}
+\item[]\lstinline+==+: igual a
+\item[]\lstinline+!=+: diferente de
+\item[]\lstinline+>+: maior que
+\item[]\lstinline+<+: menor que
+\item[]\lstinline+>=+: maior ou igual que
+\item[]\lstinline+<=+: menor ou igual que
+\end{itemize}
+Estes operadores retornam os valores lógicos \lstinline+True+ (verdadeiro) ou \lstinline+False+ (falso).
+
+Por exemplo, temos
+\begin{lstlisting}
+  >>> x = 2
+  >>> x + x == 4
+  True
+\end{lstlisting}
+
+\begin{exr}
+  Atribua a variável \lstinline+x+ o valor $\sqrt{3}$. Então, verifique se o valor computado de $x^2$ é maior que $3$. Em caso negativo, verifique se $x^2$ é menor que 3. Comente o resultado obtido.
+\end{exr}
+
+\subsection{Operações lógicos elementares}
+
+Os operadores lógicos elementares são:
+\begin{itemize}
+\item[]\lstinline+and+: e lógico
+\item[]\lstinline+or+: ou lógico
+\item[]\lstinline+not+: não lógico
+\end{itemize}
+
+A tabela booleana\footnote{George Boole, 1815 - 1864, matemático e filósofo britânico. Fonte: \href{https://pt.wikipedia.org/wiki/George\_Boole}{Wikipédia}.} do ``e'' lógico é
+\begin{center}
+  \begin{tabular}[H]{ll|l}
+    Valor & Valor & Resultado \\\hline
+    True & True & True \\
+    True & False & False \\
+    False & True & False \\
+    False & False & False \\\hline
+  \end{tabular}
+\end{center}
+Podemos verificar isso no {\python} como segue
+\begin{lstlisting}
+  >>> True and True
+  True
+  >>> True and False
+  False
+  >>> False and True
+  False
+  >>> False and False
+  False
+\end{lstlisting}
+
+\begin{exr}
+  Construa as tabelas booleanas do operador \lstinline+or+ e do \lstinline+not+.
+\end{exr}
+
+\begin{exr}
+  Use {\python} para verificar se $1.4 <= \sqrt{2} < 1.5$. E, também, verifique se $\sqrt{3} > 1.7$ ou $\sqrt{3} >= 1.7321$.
+\end{exr}
+
+\emconstrucao
+
+
+%references
+\nocite{*}
+% \bibliographystyle{plain}
+\bibliography{main}
+\addcontentsline{toc}{section}{Referências Bibliográficas}
+
+\end{document}
