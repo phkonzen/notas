@@ -43,12 +43,12 @@
 
 \tableofcontents
 
-\section*{Licença}\label{licenca}
+\section*{Licença}\label{sec_licenca}
 
 Este trabalho é uma adaptação livre a partir está licenciado sob a Licença Atribuição-CompartilhaIgual 4.0 Internacional Creative Commons. Para visualizar uma cópia desta licença, visite http://creativecommons.org/licenses/by-sa/4.0/deed.pt\_BR ou mande uma carta para Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
 
 
-\section{Sobre a linguagem}
+\section{Sobre a linguagem}\label{sec_sobrepy}
 
 {\python} é uma linguagem de programação de alto nível e multi-paradigma. Ou seja, é relativamente próxima das linguagens humanas naturais, é desenvolvida para aplicações diversas e permite a utilização de diferentes paradigmas de programação (programação estruturada, orientada a objetos, orientada a eventos, paralelização, etc.).
 
@@ -124,7 +124,7 @@ Olá, mundo!
   \end{enumerate}
 \end{ex}
 
-\section{Elementos da linguagem}
+\section{Elementos da linguagem}\label{sec_elem}
 
 {\python} é uma linguagem de programação dinâmica em que as variáveis são declaradas automaticamente ao receberem um valor. Por exemplo, consideremos as seguintes instruções
 \begin{lstlisting}
@@ -257,7 +257,7 @@ Por exemplo, temos
   Atribua a variável \lstinline+x+ o valor $\sqrt{3}$. Então, verifique se o valor computado de $x^2$ é maior que $3$. Em caso negativo, verifique se $x^2$ é menor que 3. Comente o resultado obtido.
 \end{exr}
 
-\subsection{Operações lógicos elementares}
+\subsection{Operadores lógicos elementares}
 
 Os operadores lógicos elementares são:
 \begin{itemize}
@@ -295,6 +295,189 @@ Podemos verificar isso no {\python} como segue
 \begin{exr}
   Use {\python} para verificar se $1.4 <= \sqrt{2} < 1.5$. E, também, verifique se $\sqrt{3} > 1.7$ ou $\sqrt{3} >= 1.7321$.
 \end{exr}
+
+\subsection{Conjuntos}
+
+{\python} tem conjuntos finitos como um tipo básico de variável. Um conjunto é uma coleção de itens \emph{não ordenada} e \emph{imutável} e \emph{não admite itens duplicados}. Por exemplo,
+\begin{lstlisting}
+  >>> a = {1, 2, 3}
+  >>> type(a)
+  <class 'set'>
+  >>> b = set((2, 1, 3, 3))
+  >>> b
+  {1, 2, 3}
+  >>> a == b
+  True
+  >>> # conjunto vazio
+  >>> e = set()
+\end{lstlisting}
+aloca o conjunto $a = {1,2 3}$. Note que o conjunto $b$ é igual a $a$. Observamos que o conjunto vazio deve ser construído com a instrução \verb+set()+ e não com \verb+{}+\footnote{Isso constrói um dicionário vazio, como introduziremos logo mais.}.
+
+\begin{obs}
+  A função {\python} \verb+len+ retorna o número de elementos de um conjunto. Por exemplo,
+  \begin{lstlisting}
+    >>> len(a)
+    3
+  \end{lstlisting}
+\end{obs}
+
+\begin{itemize}
+\item Operadores envolvendo conjuntos:
+  \begin{itemize}
+  \item[] \verb+-+: diferença entre conjuntos;
+  \item[] \verb+|+: união de conjuntos;
+  \item[] \verb+&+: interseção de conjuntos;
+  \item[] \verb+^+: diferença simétrica;
+  \end{itemize}
+\end{itemize}
+
+\begin{ex}
+  Sejam os conjuntos
+  \begin{gather}
+    A = \{2, \pi, -0.25, 3, \text{'banana'}\}\\
+    B = \{\text{'laranja'}, 3, \operatorname{arc cos}(-1), -1\}
+  \end{gather}
+  Compute
+  \begin{enumerate}[a)]
+  \item $A\setminus B$
+  \item $A\cup B$
+  \item $A\cap B$
+  \item $A\Delta B = (A\setminus B) \cup (B\setminus A)$
+  \end{enumerate}
+
+  \noindent{\bf Resolução.} Começamos alocando os conjuntos como segue
+  \begin{lstlisting}
+    >>> import math
+    >>> A = {2, math.pi, -0.25, 3, 'banana'}
+    >>> B = {'laranja', 3, math.acos(-1), -1}
+  \end{lstlisting}
+  
+  \begin{enumerate}[a)]
+  \item $A\setminus B$
+    \begin{lstlisting}
+      >>> A - B
+      {-0.25, 2, 'banana'}
+    \end{lstlisting}
+  \item $A\cup B$
+    \begin{lstlisting}
+      >>> A | B
+      {-0.25, 2, 3, 3.141592653589793, \
+      'laranja', 'banana', -1}
+    \end{lstlisting}
+  \item $A\cap B$
+    \begin{lstlisting}
+      >>> A & B
+      {3, 3.141592653589793}
+    \end{lstlisting}
+  \item $A\Delta B$
+    \begin{lstlisting}
+      >>> A ^ B
+      {-0.25, 2, 'laranja', 'banana', -1}
+    \end{lstlisting}
+  \end{enumerate}
+\end{ex}
+
+\begin{obs}
+  {\python} disponibiliza a sintaxe de compreensão de conjuntos. Por exemplo,
+  \begin{lstlisting}
+    >>> {x for x in A if type(x) == type('')}
+    {'banana'}
+  \end{lstlisting}
+\end{obs}
+
+\begin{exr}
+  Considere o conjunto
+  \begin{equation}
+    Z = {-3, -2, -1, 0, 1, 2, 3}.
+  \end{equation}
+  Faça um código {\python} para extrair os números pares do conjunto $Z$.
+\end{exr}
+
+\subsection{Listas}
+
+O tipo {\python} \verb+list+ permite alocar em uma única variável uma lista de itens ordenada. Por exemplo, observemos as seguintes listas
+\begin{lstlisting}
+  >>> x = [-1, 2, -3, -5]
+  >>> type(x)
+  <class 'list'>
+  >>> y = ['a', 'b', 'a']
+  >>> y
+  ['a', 'b', 'a']
+  >>> vazia = []
+  >>> len(x)
+  4
+\end{lstlisting}
+
+Os elementos de uma lista são indexados, o índice $0$ corresponde ao primeiro elemento, o índice $1$ ao segundo elemento e assim por diante. Desta forma é possível o acesso direto a um elemento de uma lista usando-se sua posição. Por exemplo,
+\begin{lstlisting}
+  >>> x[0]
+  -1
+  >>> y[2] = 'c'
+  >>> y
+  ['a', 'b', 'c']
+\end{lstlisting}
+Pode-se fazer um corte de elementos de uma lista usando o operador \verb+:+. Por exemplo,
+\begin{lstlisting}
+  >>> x = [1,2,-1,3,-2]
+  >>> x[1:3]
+  [2,-1]
+\end{lstlisting}
+
+\begin{itemize}
+\item Operadores básicos:
+  \begin{itemize}
+  \item[] \lstinline-+-: concatenação
+    \begin{lstlisting}
+      >>> [1, 2] + [3, 4, 5]
+      [1, 2, 3, 4, 5]
+    \end{lstlisting}
+  \item[] \lstinline+*+: repetição
+    \begin{lstlisting}
+      >>> [1, 2] * 2
+      [1, 2, 1, 2]
+    \end{lstlisting}
+  \item[] \lstinline+in+: pertencimento
+    \begin{lstlisting}
+      >>> 1 in [-1, 0, 1, 2]
+      True
+    \end{lstlisting}
+  \end{itemize}
+\end{itemize}
+
+\begin{obs}
+  Listas contam com várias funções prontas para a execução de diversas tarefas práticas como, por exemplo, inserir/deletar itens, contar ocorrências, ordenar itens, etc. Consulte \href{https://docs.python.org/3/tutorial/datastructures.html#more-on-lists}{Python Docs}.
+\end{obs}
+
+\begin{obs}(Alocação {\it versus} cópia)
+  Estude o seguinte exemplo
+  \begin{lstlisting}
+    >>> x = [2, 3, 1]
+    >>> y = x
+    >>> y[1] = 0
+    >>> x
+    [2, 0, 1]
+  \end{lstlisting}
+  Notamos que \lstinline+y+ aponta para o mesmo endereço de memória de \lstinline+x+. Para copiar uma lista e alocá-la em um novo endereço de memória, deve-se usar a função \lstinline+list.copy()+, como segue
+  \begin{lstlisting}
+    >>> x = [2, 3, 1]
+    >>> y = x.copy()
+    >>> y[1] = 0
+    >>> x
+    [2, 3, 1]
+    >>> y
+    [2, 0, 1]
+  \end{lstlisting}
+\end{obs}
+
+\begin{exr}
+  \emconstrucao
+\end{exr}
+
+\subsection{$n$-uplas}
+
+\emconstrucao
+
+\subsection{Dicionários}
 
 \emconstrucao
 
