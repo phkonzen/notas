@@ -1261,23 +1261,129 @@ Já, o \emph{determinante} é fornecido no módulo \lstinline+np.linalg+. Por ex
     \begin{bmatrix}
       3 & 1 & -1 \\
       1 & 0 & 2 \\
-      4 & 2 -1
+      4 & 2 & -1
     \end{bmatrix}
   \end{gather}
 \end{exr}
 
 \subsubsection{Rank e inversa de uma matriz}
 
-\emconstrucao
+O \emph{rank} de uma matriz é o número de linhas ou colunas linearmente independentes. O \href{https://numpy.org/}{NumPy} conta com a função \lstinline+matrix_rank()+ para computá-lo. Por exemplo,
+\begin{lstlisting}
+  >>> np.linalg.matrix_rank(np.eye(3))
+  3
+  >>> A = np.array([[1,2,3],[-1,1,-1],[0,3,2]])
+  >>> np.linalg.matrix_rank(A)
+  2
+\end{lstlisting}
+
+A inversa de uma matriz \emph{full rank} pode ser computada com a função \lstinline+np.linalg.inv()+. Por exemplo,
+\begin{lstlisting}
+  >>> A = np.array([[1,2,3],[-1,1,-1],[1,3,2]])
+  >>> np.linalg.matrix_rank(A)
+  3
+  >>> Ainv = np.linalg.inv(A)
+  >>> np.matmul(A,Ainv)
+  array([[ 1.00000000e+00,  0.00000000e+00,  0.00000000e+00],
+         [ 1.11022302e-16,  1.00000000e+00,  2.22044605e-16],
+         [-2.22044605e-16,  0.00000000e+00,  1.00000000e+00]])
+\end{lstlisting}
+
+\begin{exr}
+  Compute, se possível, a matriz inversa de cada uma das seguintes matrizes
+  \begin{gather}
+    B =
+    \begin{bmatrix}
+      2 & -1\\
+      -2 & 1
+    \end{bmatrix}\\
+    C =
+    \begin{bmatrix}
+      -2 & 0 & 1\\
+      3 & 1 & -1\\
+      2 & 1 & 0
+    \end{bmatrix}
+  \end{gather}
+  Verifique suas respostas.
+\end{exr}
 
 \subsubsection{Autovalores e autovetores de uma matriz}
 
-\emconstrucao
+Um auto-par $(\lambda, v)$, $\lambda$ um escalar chamado de autovalor e $v\neq 0$ é um vetor chamado de autovetor, é tal que
+\begin{equation}
+  A\lambda = \lambda v.
+\end{equation}
+O \href{https://numpy.org/}{NumPy} tem a função \lstinline+np.linalg.eig()+ para computar os auto-pares de uma matriz. Por exemplo,
+\begin{lstlisting}
+  >>> np.linalg.eig(np.eye(3))
+  (array([1., 1., 1.]), array([[1., 0., 0.],
+         [0., 1., 0.],
+         [0., 0., 1.]]))
+\end{lstlisting}
+Observamos que a função uma dupla, sendo o primeiro item um \lstinline+array+ contendo os autovalores (repetidos conforme suas multiplicidades) e o segundo item é a matriz dos autovetores, onde estes são suas colunas.
+
+\begin{exr}
+  Compute os auto-pares da matriz
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      1 & 3 & 2\\
+      3 & 2 & -1\\
+      2 & -1 & 1
+    \end{bmatrix}.
+  \end{equation}
+  Então, verifique se, de fato, $A\lambda = \lambda v$ para cada auto-par $(\lambda, v)$ computado.
+\end{exr}
 
 \section{Gráficos}
 
-\emconstrucao
+\href{https://matplotlib.org/}{Matplotlib} é uma biblioteca {\python} livre e gratuita para a visualização de dados. É muito utilizada para a criação de gráficos estáticos, animados ou iterativos. Aqui, vamos introduzir alguma de suas ferramentas básicas para gráficos.
 
+Para utilizá-la, é necessário instalá-la. Pacotes de instalação estão disponíveis para os principais sistemas operacionais, consule a sua loja de {\it apps} ou \href{https://matplotlib.org/stable/users/installing.html}{Matplotlib Installation}. Para importá-la, usamos
+\begin{lstlisting}
+  >>> import matplotlib.pyplot as plt
+\end{lstlisting}
+
+\begin{obs}
+  Se você está usando um console {\python} remoto, você pode querer adicionar a seguinte linha de comando para que os gráficos sejam visualizados no próprio console.
+  \begin{lstlisting}
+    >>> %matplotlib inline
+  \end{lstlisting}
+\end{obs}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{./data/sen}
+  \caption{Esboço do gráfico da função $y=\sen(x)$ no intervalo $[-\pi,\pi]$.}
+  \label{fig:sen}
+\end{figure}
+
+Gráficos bidimensionais podem ser criados com a função \lstinline+plt.plot(x,y)+, onde \lstinline+x+ e \lstinline+y+ são \lstinline+arrays+ que fornecem os pontos cartesianos $(x_i, y_i)$ a serem plotados. Por exemplo,
+\begin{lstlisting}
+  >>> import matplotlib.pyplot as plt
+  >>> x = np.linspace(-np.pi, np.pi)
+  >>> y = np.cos(x)
+  >>> plt.plot(x,y)
+  [<matplotlib.lines.Line2D object at 0x7f99f578a370>]
+  >>> plt.show()
+\end{lstlisting}
+produz o seguinte esboço do gráfico da função $y=\sen(x)$ no intervalo $[-\pi,\pi]$. Consulte a Figura \ref{fig:sen}.
+
+\begin{obs}
+  Matplotlib é uma poderosa ferramenta para a visualização de gráficos. Consulte a galeria de exemplos no seu site oficial
+  \begin{center}
+    \url{https://matplotlib.org/stable/gallery/index.html}
+  \end{center}
+\end{obs}
+
+\begin{exr}
+  Crie um esboço do gráfico de cada uma das seguintes funções no intervalo indicado:
+  \begin{enumerate}[a)]
+  \item $y = \cos(x)$, $\left[0, 2\pi\right]$
+  \item $y = x^2 - x + 1$, $[-2, 2]$
+  \item $y = \tg\left(\frac{\pi}{2}x\right)$, $(-1, 1)$
+  \end{enumerate}
+\end{exr}
 
 %references
 \nocite{*}
