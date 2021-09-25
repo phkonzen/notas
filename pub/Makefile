@@ -34,6 +34,9 @@ GeometriaAnalitica: mainGeometriaAnalitica.py
 MiniCalcPy: mainMiniCalcPy.py
 	python3 mainMiniCalcPy.py
 
+MiniPython: mainMiniPython.py
+	python3 mainMiniPython.py
+
 .PHONY: clean
 
 clean:

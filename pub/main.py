@@ -4,7 +4,7 @@ Constroi/atualiza o __site__
 das notas de aula.
 
 Autor: Pedro H A Konzen - 05/2018
-Modificado: 01/2021
+Modificado: 09/2021
 '''
 
 #pacotes do Python
@@ -25,6 +25,7 @@ from metodoelementosfinitos import *
 from vetores import *
 from geometriaanalitica import *
 from minicalcpy import *
+from minipython import *
 
 #pastas temporárias
 odir = '.docs'
@@ -63,7 +64,8 @@ mnp = MatematicaNumericaParalela(srcdir,odir)
 mef = MetodoElementosFinitos(srcdir,odir)
 v = Vetores(srcdir,odir)
 ga = GeometriaAnalitica(srcdir,odir)
-mini = MiniCalcPy(srcdir,odir)
+minicalcpy = MiniCalcPy(srcdir,odir)
+minipy = MiniPython(srcdir,odir)
 
 def build(id):
     id.build()
@@ -71,7 +73,7 @@ def build(id):
 #região paralelizada
 if __name__ == '__main__':
     p = Pool()
-    p.map(build,[ci,ead,edo,mn,mnp,mef,v,ga,mini])
+    p.map(build,[ci,ead,edo,mn,mnp,mef,v,ga,minicalcpy,minipy])
 
 #cria o README.md do ../docs
 os.system('cp docs_readme.md '+odir+'/README.md')

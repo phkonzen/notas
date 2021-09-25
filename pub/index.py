@@ -273,14 +273,27 @@ class Index:
 
         body += '</div> <!-- div class=row-->\n\n'
 
-        
-        body += '<div class="row">\n'
-        body += '<div class="col-md-6">\n'
-
+        # Minicursos
         body += '<h3>Minicurso</h3>\n\n'
 
-        
+        body += '<div class="row">\n'
+
+        # card: notas do Minicurso de Python para Matemática
+        body += '<div class="col-lg-3 col-md-4 col-sm-6">'
+        body += '<!-- card: notas do MiniPython -->\n'
+        body += '<div class="card border-success mb-3" style="max-width: 20rem;">\n'
+        body += '<div class="card-header">Minicurso</div>\n'
+        body += '<div class="card-body">\n'
+        body += '<h5 class="card-title">Python para Matemática</h5>\n'
+        body += '<p class="card-text" style="color: gray">Introdução à Python para Matemática</p>\n'
+        body += '<a href="./MiniPython/main.html" class="btn btn-success float-right">\n'
+        body += 'Abrir</a>\n'
+        body += '</div>\n'
+        body += '</div>\n'
+        body += '</div>\n\n'
+
         # card: Mini Cálculo com python
+        body += '<div class="col-lg-3 col-md-4 col-sm-6">'
         body += '<!-- card: Mini Cálculo com python -->\n'
         body += '<div class="card border-primary mb-3" style="max-width: 24rem;">\n'
         body += '<div class="card-header">Minicurso</div>\n'
@@ -295,13 +308,20 @@ class Index:
         body += '<li><a href="MiniCalcPy/4-integracao.html">Parte 4 - Integrais</a></li>\n'
         body += '</ul>\n'
         body += '</div>\n'
+        body += '</div>\n'
         body += '</div>\n\n'
 
-        body += '</div><!-- div class="col-md-6" -->\n'
 
+        body += '</div> <!-- div class="row" -->\n'
+
+
+        
+        body += '<div class="row">\n'
         body += '<div class="col-md-6">\n'
 
         body += '<h3>Vídeos & áudios</h3>'
+
+        
 
         # card: Internet Archive
         body += '<!-- card: Internet Archive -->\n'
@@ -319,7 +339,8 @@ class Index:
         body += '</div><!-- div class="col-md-6" -->\n'
         
         body += '</div><!-- div class="row" -->\n'
-    
+
+        
         body += '<div class="row">\n'
 
         body += '<div class="col-md-6">\n'
