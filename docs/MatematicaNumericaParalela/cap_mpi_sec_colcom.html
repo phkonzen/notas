@@ -1,0 +1,1232 @@
+<!DOCTYPE html><html lang="pt-BR">
+<head>
+<title>3.3 Comunicações coletivas‣ Capítulo 3 Computação paralela e distribuída (MPI) ‣ Matemática Numérica Paralela</title>
+<!--Generated on Mon Sep 27 15:44:11 2021 by LaTeXML (version 0.8.5) http://dlmf.nist.gov/LaTeXML/.-->
+<!--Document created on 27 de setembro de 2021.-->
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="LaTeXML.css" type="text/css">
+<link rel="stylesheet" href="ltx-book.css" type="text/css">
+<link rel="stylesheet" href="ltx-listings.css" type="text/css">
+<link rel="stylesheet" href="ltx-ulem.css" type="text/css">
+<link rel="stylesheet" href="main.css" type="text/css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=MML_SVG" type="text/javascript"></script>
+<script src="mymathcfg.js" type="text/javascript"></script>
+<link rel="up" href="cap_mpi.html" title="Capítulo 3 Computação paralela e distribuída (MPI) ‣ Matemática Numérica Paralela">
+<link rel="up up" href="main.html" title="Matemática Numérica Paralela">
+<link rel="start" href="main.html" title="Matemática Numérica Paralela">
+<link rel="prev" href="cap_mpi_sec_p2pcom.html" title="3.2 Rotinas de comunicação ponto-a-ponto ‣ Capítulo 3 Computação paralela e distribuída (MPI) ‣ Matemática Numérica Paralela">
+<link rel="next" href="cap_mpi_sec_redu.html" title="3.4 Reduções ‣ Capítulo 3 Computação paralela e distribuída (MPI) ‣ Matemática Numérica Paralela">
+<link rel="section" href="cap_mpi_sec_ola.html" title="3.1 Olá, Mundo! ‣ Capítulo 3 Computação paralela e distribuída (MPI) ‣ Matemática Numérica Paralela">
+<link rel="section" href="cap_mpi_sec_p2pcom.html" title="3.2 Rotinas de comunicação ponto-a-ponto ‣ Capítulo 3 Computação paralela e distribuída (MPI) ‣ Matemática Numérica Paralela">
+<link rel="section" href="cap_mpi_sec_redu.html" title="3.4 Reduções ‣ Capítulo 3 Computação paralela e distribuída (MPI) ‣ Matemática Numérica Paralela">
+<link rel="section" href="cap_mpi_sec_calor.html" title="3.5 Aplicação: Equação do calor ‣ Capítulo 3 Computação paralela e distribuída (MPI) ‣ Matemática Numérica Paralela">
+<link rel="chapter" href="licenca.html" title="Licença ‣ Matemática Numérica Paralela">
+<link rel="chapter" href="prefacio.html" title="Prefácio ‣ Matemática Numérica Paralela">
+<link rel="chapter" href="cap_intro.html" title="Capítulo 1 Introdução ‣ Matemática Numérica Paralela">
+<link rel="chapter" href="cap_mp.html" title="Capítulo 2 Multiprocessamento (MP) ‣ Matemática Numérica Paralela">
+<link rel="chapter" href="cap_mpi.html" title="Capítulo 3 Computação paralela e distribuída (MPI) ‣ Matemática Numérica Paralela">
+<link rel="bibliography" href="bib.html" title="Referências ‣ Matemática Numérica Paralela">
+<meta name="author" content="Pedro H A Konzen"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://kit.fontawesome.com/dfbff2c7ed.js" crossorigin="anonymous"></script><!-- Computer Modern Serif--><link rel="stylesheet" href="fonts/cmun-serif.css">
+<link rel="stylesheet" href="goodies.css" type="text/css">
+<script>$(document).ready(function(){$(".toast").toast();});</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-17226092-2"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag("js", new Date());
+
+gtag("config", "UA-17226092-2")
+</script>
+<script>
+$(document).ready(function () {
+$("#colabAlert").hide();
+$("#generalAlert").hide();
+if (document.referrer.lastIndexOf("://phkonzen.github.io/notas/") == -1) {
+$("#generalAlert").fadeIn(100);
+}
+$("#colabAlert").delay(3000).fadeIn(100);
+});
+</script>
+
+</head>
+
+<body>
+
+<div class=container-fluid>
+<div class=row>
+<div class=col-lg-1>
+</div><div class=col-lg-10>
+
+
+
+<!-- begin: navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<a class="navbar-brand" href="main.html">Notas de Aula<br/><small>Matemática Numérica Paralela</small></a>
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+<span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarNav">
+<ul class="navbar-nav">
+<li class="nav-item"><a class="nav-link" href="../index.html"><i class="fas fa-home"></i> Início</a></li>
+<li class="nav-item active"><a class="nav-link" href="main.html">Sumário</a></li>
+<li class="nav-item"><a class="nav-link" href="main.pdf"><i class="fa fa-download" aria-hidden="true"></i> PDF</a></li>
+<li class="nav=item"><a class="nav-link" href="https://mybinder.org/v2/gh/phkonzen/notas/master?filepath=notas.ipynb">Jupyter NB</a></li>
+<li class="nav-item dropdown">
+<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+Contato
+</a>
+<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+<a class="dropdown-item" href="../contato.html"><i class="fas fa-envelope"></i> Mensagem</a>
+<a class="dropdown-item" href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i> notas.pedrok</a>
+</div><!-- div class="dropdown-menu" aria-labelledby="navbarDropdown" -->
+</li> <!-- li class="nav-item dropdown" -->
+<li class="nav-item"><a class="nav-link" href="https://github.com/phkonzen/notas"><i class="fa fa-github" aria-hidden="true"></i> Repo</a></li>
+<li class="nav-item"><a class="nav-link" href="../politica.html">Política de dados</a></li>
+</ul>
+</div><!-- /.navbar-collapse -->
+</nav>
+
+
+<!-- end: navbar -->
+
+
+
+<div class="ltx_page_main">
+<header class="ltx_page_header">
+<div>
+<a href="cap_mpi.html" title="Capítulo 3 Computação paralela e distribuída (MPI) ‣ Matemática Numérica Paralela" class="ltx_ref" rel="up"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">3 </span>Computação paralela e distribuída (MPI)</span></a><a href="cap_mpi_sec_p2pcom.html" title="3.2 Rotinas de comunicação ponto-a-ponto ‣ Capítulo 3 Computação paralela e distribuída (MPI) ‣ Matemática Numérica Paralela" class="ltx_ref" rel="prev"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">3.2 </span>Rotinas de comunicação ponto-a-ponto</span></a><a href="cap_mpi_sec_redu.html" title="3.4 Reduções ‣ Capítulo 3 Computação paralela e distribuída (MPI) ‣ Matemática Numérica Paralela" class="ltx_ref" rel="next"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">3.4 </span>Reduções</span></a>
+</div></header>
+<div class="ltx_page_content">
+<section class="ltx_section ltx_authors_1line" lang="pt-BR">
+<h1 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">3.3 </span>Comunicações coletivas <small><a href="../contato.html"><i class="fas fa-envelope"></i></a></small></h1>
+<div class="ltx_dates">(27 de setembro de 2021)</div>
+
+
+<div id="p2" class="ltx_para">
+<p class="ltx_p">Nesta seção, vamos discutir sobre rotinas de comunicações MPI coletivas. Basicamente, rotinas de sincronização, envio e recebimento de dados envolvendo múltiplas instâncias de processamento ao mesmo tempo.</p>
+</div>
+<section id="SS1" class="ltx_subsection">
+<h2 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">3.3.1 </span>Barreira de sincronização <small><a href="../contato.html"><i class="fas fa-envelope"></i></a></small></h2>
+
+
+<div id="SS1.p2" class="ltx_para">
+<p class="ltx_p">Podemos forçar a sincronização de todos os processos em um determinado ponto do código utilizando a rotina de sincronização <a href="https://www.open-mpi.org/doc/current/man3/MPI%5C_Barrier.3.php" title="" class="ltx_ref ltx_href">MPI_Barrier</a></p>
+<pre class="ltx_verbatim ltx_font_typewriter">
+int MPI_Barrier (MPI_Comm comm)
+</pre>
+<p class="ltx_p">Quando um processo encontra esta rotina ele aguarda todos os demais processos. No momento em que todos os processo tiverem alcançados esta rotina, todos são liberados para seguirem com suas computações.</p>
+</div>
+<div id="Thmex1" class="ltx_theorem ltx_theorem_ex">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Exemplo 3.3.1</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmex1.p1" class="ltx_para">
+<p class="ltx_p">No Código <code class="ltx_verbatim ltx_font_typewriter">barrier.cc</code>, abaixo, cada instância de processamento aguarda randomicamente até 3 segundos para alcançar a rotina de sincronização <a href="https://www.open-mpi.org/doc/current/man3/MPI%5C_Barrier.3.php" title="" class="ltx_ref ltx_href">MPI_Barrier</a> na linha 36. Em seguida, elas são liberadas juntas. Estude o código.</p>
+</div>
+<figure id="LSTx25" class="ltx_float ltx_lstlisting">
+<figcaption class="ltx_caption">Código: barrier.cc</figcaption>
+<div class="ltx_listing ltx_lst_language_C++ ltx_lst_numbers_left ltx_lstlisting ltx_listing">
+<div class="ltx_listing_data"><a href="data:text/plain;base64,I2luY2x1ZGUgPHN0ZGlvLmg+CiNpbmNsdWRlIDxzdGRsaWIuaD4KI2luY2x1ZGUgPHVuaXN0ZC5oPgoKLy8gQVBJIE1QSQojaW5jbHVkZSA8bXBpLmg+CgppbnQgbWFpbihpbnQgYXJnYywgY2hhcioqIGFyZ3YpIHsKICAKICAvLyBJbmljaWFsaXphIG8gTVBJCiAgTVBJX0luaXQoTlVMTCwgTlVMTCk7CgogIC8vIG51bWVybyB0b3RhbCBkZSBwcm9jZXNzb3MKICBpbnQgd29ybGRfc2l6ZTsKICBNUElfQ29tbV9zaXplKE1QSV9DT01NX1dPUkxELCAmd29ybGRfc2l6ZSk7CgogIC8vIElEIChyYW5rKSBkbyBwcm9jZXNzbwogIGludCB3b3JsZF9yYW5rOwogIE1QSV9Db21tX3JhbmsoTVBJX0NPTU1fV09STEQsICZ3b3JsZF9yYW5rKTsKCiAgLy8gY3Jvbm9tZXRybwogIHRpbWVfdCBpbml0ID0gdGltZSAoTlVMTCk7CgogIC8vIHNlbWVudGUgZG8gZ2VyYWRvciByYW5kb21pY28KICBzcmFuZCAoaW5pdCArIHdvcmxkX3JhbmspOwogIAogIC8vIG1heC4gb2YgMyBzZWd1bmRvcwogIHNpemVfdCBlc3BlcmEgPSByYW5kKCkgJSAzMDAwMDAwOwoKICB1c2xlZXAgKGVzcGVyYSk7CiAgCiAgcHJpbnRmICgnJWQgY2hlZ291IG5hIGJhcnJlaXJhOiAlbGQgcy5cbicsCgkgIHdvcmxkX3JhbmssICh0aW1lIChOVUxMKSAtIGluaXQpKTsKICAKICBNUElfQmFycmllciAoTVBJX0NPTU1fV09STEQpOwogIAogIHByaW50ZiAoJyVkIHNhaXUgZGEgIGJhcnJlaXJhOiAlbGQgcy5cbicsCgkgIHdvcmxkX3JhbmssICh0aW1lIChOVUxMKSAtIGluaXQpKTsKICAKCiAgLy8gRmluYWxpemEgbyBNUEkKICBNUElfRmluYWxpemUoKTsKCiAgcmV0dXJuIDA7Cn0K">⬇</a></div>
+<div id="lstnumberx1185" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">1</span></span>
+                <span class="ltx_text ltx_lst_directive ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">#include</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&lt;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">stdio</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">h</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&gt;</span>
+</div>
+<div id="lstnumberx1186" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">2</span></span>
+                <span class="ltx_text ltx_lst_directive ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">#include</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&lt;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">stdlib</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">h</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&gt;</span>
+</div>
+<div id="lstnumberx1187" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">3</span></span>
+                <span class="ltx_text ltx_lst_directive ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">#include</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&lt;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">unistd</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">h</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&gt;</span>
+</div>
+<div id="lstnumberx1188" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">4</span></span>
+                
+</div>
+<div id="lstnumberx1189" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">5</span></span>
+                <span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;">//<span class="ltx_text ltx_lst_space"> </span>API<span class="ltx_text ltx_lst_space"> </span>MPI</span>
+</div>
+<div id="lstnumberx1190" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">6</span></span>
+                <span class="ltx_text ltx_lst_directive ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">#include</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&lt;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">mpi</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">h</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&gt;</span>
+</div>
+<div id="lstnumberx1191" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">7</span></span>
+                
+</div>
+<div id="lstnumberx1192" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">8</span></span>
+                <span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">int</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">main</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">int</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">argc</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">char</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">**</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">argv</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">)</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">{</span>
+</div>
+<div id="lstnumberx1193" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">9</span></span>
+                
+</div>
+<div id="lstnumberx1194" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">10</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;">//<span class="ltx_text ltx_lst_space"> </span>Inicializa<span class="ltx_text ltx_lst_space"> </span>o<span class="ltx_text ltx_lst_space"> </span>MPI</span>
+</div>
+<div id="lstnumberx1195" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">11</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_Init</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">NULL</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">NULL</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1196" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">12</span></span>
+                
+</div>
+<div id="lstnumberx1197" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">13</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;">//<span class="ltx_text ltx_lst_space"> </span>numero<span class="ltx_text ltx_lst_space"> </span>total<span class="ltx_text ltx_lst_space"> </span>de<span class="ltx_text ltx_lst_space"> </span>processos</span>
+</div>
+<div id="lstnumberx1198" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">14</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">int</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_size</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">;</span>
+</div>
+<div id="lstnumberx1199" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">15</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_Comm_size</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_COMM_WORLD</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&amp;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_size</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1200" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">16</span></span>
+                
+</div>
+<div id="lstnumberx1201" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">17</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;">//<span class="ltx_text ltx_lst_space"> </span>ID<span class="ltx_text ltx_lst_space"> </span>(rank)<span class="ltx_text ltx_lst_space"> </span>do<span class="ltx_text ltx_lst_space"> </span>processo</span>
+</div>
+<div id="lstnumberx1202" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">18</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">int</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_rank</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">;</span>
+</div>
+<div id="lstnumberx1203" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">19</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_Comm_rank</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_COMM_WORLD</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&amp;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_rank</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1204" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">20</span></span>
+                
+</div>
+<div id="lstnumberx1205" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">21</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;">//<span class="ltx_text ltx_lst_space"> </span>cronometro</span>
+</div>
+<div id="lstnumberx1206" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">22</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">time_t</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">init</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">time</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">NULL</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1207" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">23</span></span>
+                
+</div>
+<div id="lstnumberx1208" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">24</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;">//<span class="ltx_text ltx_lst_space"> </span>semente<span class="ltx_text ltx_lst_space"> </span>do<span class="ltx_text ltx_lst_space"> </span>gerador<span class="ltx_text ltx_lst_space"> </span>randomico</span>
+</div>
+<div id="lstnumberx1209" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">25</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">srand</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">init</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">+</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_rank</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1210" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">26</span></span>
+                
+</div>
+<div id="lstnumberx1211" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">27</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;">//<span class="ltx_text ltx_lst_space"> </span>max.<span class="ltx_text ltx_lst_space"> </span>of<span class="ltx_text ltx_lst_space"> </span>3<span class="ltx_text ltx_lst_space"> </span>segundos</span>
+</div>
+<div id="lstnumberx1212" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">28</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">size_t</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">espera</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">rand</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">()</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">%</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">3000000;</span>
+</div>
+<div id="lstnumberx1213" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">29</span></span>
+                
+</div>
+<div id="lstnumberx1214" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">30</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">usleep</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">espera</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1215" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">31</span></span>
+                
+</div>
+<div id="lstnumberx1216" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">32</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">printf</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_string ltx_font_typewriter" style="font-size:90%;">'%d<span class="ltx_text ltx_lst_space"> </span>chegou<span class="ltx_text ltx_lst_space"> </span>na<span class="ltx_text ltx_lst_space"> </span>barreira:<span class="ltx_text ltx_lst_space"> </span>%ld<span class="ltx_text ltx_lst_space"> </span>s.\n'</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span>
+</div>
+<div id="lstnumberx1217" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">33</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">          </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_rank</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">time</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">NULL</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">)</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">-</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">init</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">));</span>
+</div>
+<div id="lstnumberx1218" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">34</span></span>
+                
+</div>
+<div id="lstnumberx1219" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">35</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_Barrier</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_COMM_WORLD</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1220" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">36</span></span>
+                
+</div>
+<div id="lstnumberx1221" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">37</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">printf</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_string ltx_font_typewriter" style="font-size:90%;">'%d<span class="ltx_text ltx_lst_space"> </span>saiu<span class="ltx_text ltx_lst_space"> </span>da<span class="ltx_text ltx_lst_space">  </span>barreira:<span class="ltx_text ltx_lst_space"> </span>%ld<span class="ltx_text ltx_lst_space"> </span>s.\n'</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span>
+</div>
+<div id="lstnumberx1222" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">38</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">          </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_rank</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">time</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">NULL</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">)</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">-</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">init</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">));</span>
+</div>
+<div id="lstnumberx1223" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">39</span></span>
+                
+</div>
+<div id="lstnumberx1224" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">40</span></span>
+                
+</div>
+<div id="lstnumberx1225" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">41</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;">//<span class="ltx_text ltx_lst_space"> </span>Finaliza<span class="ltx_text ltx_lst_space"> </span>o<span class="ltx_text ltx_lst_space"> </span>MPI</span>
+</div>
+<div id="lstnumberx1226" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">42</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_Finalize</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">();</span>
+</div>
+<div id="lstnumberx1227" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">43</span></span>
+                
+</div>
+<div id="lstnumberx1228" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">44</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">return</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">0;</span>
+</div>
+<div id="lstnumberx1229" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">45</span></span>
+                <span class="ltx_text ltx_font_typewriter" style="font-size:90%;">}</span>
+</div>
+</div>
+</figure>
+<div id="Thmex1.p2" class="ltx_para">
+<p class="ltx_p">Vamos observar o seguinte teste de rodagem</p>
+<pre class="ltx_verbatim ltx_font_typewriter">
+$ mpic++ barrier.cc
+$ mpirun -np 2 a.out
+1 chegou na barreira: 1 s.
+0 chegou na barreira: 3 s.
+0 saiu da  barreira: 3 s.
+1 saiu da  barreira: 3 s.
+</pre>
+<p class="ltx_p">Neste caso, o processo 1 foi o primeiro a alcançar a barreira de sincronização e permaneceu esperando aproximadamente 2 segundos até que o processo 0 alcançasse a barreira. Imediatamente após o processo 1 chegar a barreira, ambos seguiram suas computações. Rode várias vezes este código e analise as saídas!</p>
+</div>
+</div>
+<div id="Thmobs1" class="ltx_theorem ltx_theorem_obs">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Observação 3.3.1</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmobs1.p1" class="ltx_para">
+<p class="ltx_p">No Código <code class="ltx_verbatim ltx_font_typewriter">barrier.cc</code> acima, o gerador de números randômicos é inicializado com a semente</p>
+<pre class="ltx_verbatim ltx_font_typewriter">
+srand (init + world_rank);
+</pre>
+<p class="ltx_p">onde, <code class="ltx_verbatim ltx_font_typewriter">init</code> é o tempo colhido pela rotina <code class="ltx_verbatim ltx_font_typewriter">time</code> no início do processamento (veja as linhas 22-25). Observamos que somar o identificado <code class="ltx_verbatim ltx_font_typewriter">rank</code> garante que cada processo inicie o gerador randômico com uma semente diferente.
+</p>
+</div>
+</div>
+</section>
+<section id="SS2" class="ltx_subsection">
+<h2 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">3.3.2 </span>Transmissão coletiva <small><a href="../contato.html"><i class="fas fa-envelope"></i></a></small></h2>
+
+
+<div id="SS2.p2" class="ltx_para">
+<p class="ltx_p">A rotina de transmissão de dados <a href="https://www.open-mpi.org/doc/current/man3/MPI%5C_Bcast.3.php" title="" class="ltx_ref ltx_href">MPI_Bcast</a> permite o envio de dados de um processo para todos os demais. Sua sintaxe é a seguinte</p>
+<pre class="ltx_verbatim ltx_font_typewriter">
+int MPI_Bcast(
+  void *buffer,
+  int count,
+  MPI_Datatype datatype,
+  int root,
+  MPI_Comm comm)
+</pre>
+<p class="ltx_p">O primeiro argumento <code class="ltx_verbatim ltx_font_typewriter">buffer</code> aponta para o endereço da memória do dado a ser transmitido. O argumento <code class="ltx_verbatim ltx_font_typewriter">count</code> é a quantidade de dados sucessivos que serão transmitidos (tamanho do <code class="ltx_verbatim ltx_font_typewriter">buffer</code>). O tipo de dado é informado no argumento <code class="ltx_verbatim ltx_font_typewriter">datatype</code>. Por fim, <code class="ltx_verbatim ltx_font_typewriter">root</code> é o identificador <code class="ltx_verbatim ltx_font_typewriter">rank</code> do processo que está transmitindo e <code class="ltx_verbatim ltx_font_typewriter">comm</code> é o comunicador.</p>
+</div>
+<div id="Thmex2" class="ltx_theorem ltx_theorem_ex">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Exemplo 3.3.2</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmex2.p1" class="ltx_para">
+<p class="ltx_p">No seguinte Código <code class="ltx_verbatim ltx_font_typewriter">bcast.cc</code>, o processo 0 inicializa a variável de ponto flutuante <math id="Thmex2.p1.m1" class="ltx_Math" alttext="x=\pi" display="inline"><mrow><mi>x</mi><mo>=</mo><mi>π</mi></mrow></math> (linhas 22-23) e, então, transmite ela para todos os demais processos (linhas 25-26). Por fim, cada processo imprime no terminal o valor alocado na sua variável <math id="Thmex2.p1.m2" class="ltx_Math" alttext="x" display="inline"><mi>x</mi></math> (linhas 28-29).</p>
+</div>
+<figure id="LSTx26" class="ltx_float ltx_lstlisting">
+<figcaption class="ltx_caption">Código: bcast.cc</figcaption>
+<div class="ltx_listing ltx_lst_language_C++ ltx_lst_numbers_left ltx_lstlisting ltx_listing">
+<div class="ltx_listing_data"><a href="data:text/plain;base64,I2luY2x1ZGUgPHN0ZGlvLmg+CiNpbmNsdWRlIDxtYXRoLmg+CgovLyBBUEkgTVBJCiNpbmNsdWRlIDxtcGkuaD4KCmludCBtYWluKGludCBhcmdjLCBjaGFyKiogYXJndikgewogIAogIC8vIEluaWNpYWxpemEgbyBNUEkKICBNUElfSW5pdChOVUxMLCBOVUxMKTsKCiAgLy8gbnVtZXJvIHRvdGFsIGRlIHByb2Nlc3NvcwogIGludCB3b3JsZF9zaXplOwogIE1QSV9Db21tX3NpemUoTVBJX0NPTU1fV09STEQsICZ3b3JsZF9zaXplKTsKCiAgLy8gSUQgKHJhbmspIGRvIHByb2Nlc3NvCiAgaW50IHdvcmxkX3Jhbms7CiAgTVBJX0NvbW1fcmFuayhNUElfQ09NTV9XT1JMRCwgJndvcmxkX3JhbmspOwoKICBkb3VibGUgeDsKCiAgaWYgKHdvcmxkX3JhbmsgPT0gMCkKICAgIHggPSBNX1BJOwoKICBNUElfQmNhc3QgKCZ4LCAxLCBNUElfRE9VQkxFLAoJICAgICAwLCBNUElfQ09NTV9XT1JMRCk7CgogIHByaW50ZiAoJ1Byb2Nlc3NvICVkIHggPSAlZlxuJywKCSAgd29ybGRfcmFuaywgeCk7ICAKCiAgLy8gRmluYWxpemEgbyBNUEkKICBNUElfRmluYWxpemUoKTsKCiAgcmV0dXJuIDA7Cn0K">⬇</a></div>
+<div id="lstnumberx1230" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">1</span></span>
+                <span class="ltx_text ltx_lst_directive ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">#include</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&lt;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">stdio</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">h</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&gt;</span>
+</div>
+<div id="lstnumberx1231" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">2</span></span>
+                <span class="ltx_text ltx_lst_directive ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">#include</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&lt;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">math</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">h</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&gt;</span>
+</div>
+<div id="lstnumberx1232" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">3</span></span>
+                
+</div>
+<div id="lstnumberx1233" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">4</span></span>
+                <span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;">//<span class="ltx_text ltx_lst_space"> </span>API<span class="ltx_text ltx_lst_space"> </span>MPI</span>
+</div>
+<div id="lstnumberx1234" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">5</span></span>
+                <span class="ltx_text ltx_lst_directive ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">#include</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&lt;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">mpi</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">h</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&gt;</span>
+</div>
+<div id="lstnumberx1235" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">6</span></span>
+                
+</div>
+<div id="lstnumberx1236" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">7</span></span>
+                <span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">int</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">main</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">int</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">argc</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">char</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">**</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">argv</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">)</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">{</span>
+</div>
+<div id="lstnumberx1237" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">8</span></span>
+                
+</div>
+<div id="lstnumberx1238" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">9</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;">//<span class="ltx_text ltx_lst_space"> </span>Inicializa<span class="ltx_text ltx_lst_space"> </span>o<span class="ltx_text ltx_lst_space"> </span>MPI</span>
+</div>
+<div id="lstnumberx1239" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">10</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_Init</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">NULL</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">NULL</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1240" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">11</span></span>
+                
+</div>
+<div id="lstnumberx1241" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">12</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;">//<span class="ltx_text ltx_lst_space"> </span>numero<span class="ltx_text ltx_lst_space"> </span>total<span class="ltx_text ltx_lst_space"> </span>de<span class="ltx_text ltx_lst_space"> </span>processos</span>
+</div>
+<div id="lstnumberx1242" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">13</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">int</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_size</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">;</span>
+</div>
+<div id="lstnumberx1243" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">14</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_Comm_size</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_COMM_WORLD</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&amp;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_size</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1244" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">15</span></span>
+                
+</div>
+<div id="lstnumberx1245" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">16</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;">//<span class="ltx_text ltx_lst_space"> </span>ID<span class="ltx_text ltx_lst_space"> </span>(rank)<span class="ltx_text ltx_lst_space"> </span>do<span class="ltx_text ltx_lst_space"> </span>processo</span>
+</div>
+<div id="lstnumberx1246" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">17</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">int</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_rank</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">;</span>
+</div>
+<div id="lstnumberx1247" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">18</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_Comm_rank</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_COMM_WORLD</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&amp;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_rank</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1248" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">19</span></span>
+                
+</div>
+<div id="lstnumberx1249" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">20</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">double</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">x</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">;</span>
+</div>
+<div id="lstnumberx1250" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">21</span></span>
+                
+</div>
+<div id="lstnumberx1251" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">22</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">if</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_rank</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">==</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">0)</span>
+</div>
+<div id="lstnumberx1252" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">23</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">    </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">x</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">M_PI</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">;</span>
+</div>
+<div id="lstnumberx1253" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">24</span></span>
+                
+</div>
+<div id="lstnumberx1254" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">25</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_Bcast</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(&amp;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">x</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">1,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_DOUBLE</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span>
+</div>
+<div id="lstnumberx1255" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">26</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">             </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">0,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_COMM_WORLD</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1256" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">27</span></span>
+                
+</div>
+<div id="lstnumberx1257" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">28</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">printf</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_string ltx_font_typewriter" style="font-size:90%;">'Processo<span class="ltx_text ltx_lst_space"> </span>%d<span class="ltx_text ltx_lst_space"> </span>x<span class="ltx_text ltx_lst_space"> </span>=<span class="ltx_text ltx_lst_space"> </span>%f\n'</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span>
+</div>
+<div id="lstnumberx1258" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">29</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">          </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_rank</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">x</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1259" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">30</span></span>
+                
+</div>
+<div id="lstnumberx1260" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">31</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;">//<span class="ltx_text ltx_lst_space"> </span>Finaliza<span class="ltx_text ltx_lst_space"> </span>o<span class="ltx_text ltx_lst_space"> </span>MPI</span>
+</div>
+<div id="lstnumberx1261" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">32</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_Finalize</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">();</span>
+</div>
+<div id="lstnumberx1262" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">33</span></span>
+                
+</div>
+<div id="lstnumberx1263" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">34</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">return</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">0;</span>
+</div>
+<div id="lstnumberx1264" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">35</span></span>
+                <span class="ltx_text ltx_font_typewriter" style="font-size:90%;">}</span>
+</div>
+</div>
+</figure>
+<div id="Thmex2.p2" class="ltx_para">
+<p class="ltx_p">Vejamos o seguinte teste de rodagem
+</p>
+<pre class="ltx_verbatim ltx_font_typewriter">
+$ mpic++ bcast.cc
+$ mpirun -np 3 ./a.out
+Processo 0 x = 3.141593
+Processo 1 x = 3.141593
+Processo 2 x = 3.141593
+</pre>
+</div>
+</div>
+</section>
+<section id="SS3" class="ltx_subsection">
+<h2 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">3.3.3 </span>Distribuição coletiva de dados <small><a href="../contato.html"><i class="fas fa-envelope"></i></a></small></h2>
+
+
+<div id="SS3.p2" class="ltx_para">
+<p class="ltx_p">A rotina <a href="https://www.open-mpi.org/doc/current/man3/MPI%5C_Scatter.3.php" title="" class="ltx_ref ltx_href">MPI_Scatter</a> permite que um processo faça a distribuição uniforme de pedaços sequenciais de um <span class="ltx_text ltx_font_italic">array</span> de dados para todos os demais processos. Sua sintaxe é a seguinte</p>
+<pre class="ltx_verbatim ltx_font_typewriter">
+int MPI_Scatter(
+  const void *sendbuf,
+  int sendcount,
+  MPI_Datatype sendtype,
+  void *recvbuf,
+  int recvcount,
+  MPI_Datatype recvtype,
+  int root,
+  MPI_Comm comm)
+</pre>
+<p class="ltx_p">O primeiro argumento <code class="ltx_verbatim ltx_font_typewriter">sendbuf</code> aponta para o endereço de memória do <span class="ltx_text ltx_font_italic">array</span> de dados a ser distribuído. O argumento <code class="ltx_verbatim ltx_font_typewriter">sendcount</code> é o tamanho do pedaço e <code class="ltx_verbatim ltx_font_typewriter">sendtype</code> é o tipo de dado a ser transmitido. Os argumentos <code class="ltx_verbatim ltx_font_typewriter">recvbuf</code>, <code class="ltx_verbatim ltx_font_typewriter">recvcount</code> e <code class="ltx_verbatim ltx_font_typewriter">recvtype</code> se referem ao ponteiro para o local de memória onde o dado recebido será alocado, o tamanho do pedaço a ser recebido e o tipo de dado, respectivamente. Por fim, o argumento <code class="ltx_verbatim ltx_font_typewriter">root</code> identifica o processo de origem da distribuição dos dados e <code class="ltx_verbatim ltx_font_typewriter">comm</code> é o comunicador.</p>
+</div>
+<div id="Thmex3" class="ltx_theorem ltx_theorem_ex">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Exemplo 3.3.3</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmex3.p1" class="ltx_para">
+<p class="ltx_p">No Código <code class="ltx_verbatim ltx_font_typewriter">scatter.cc</code> abaixo, o processo 0 aloca o vetor</p>
+<table id="Ch3.E5" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E5.m1" class="ltx_Math" alttext="v=(1,2,\dotsc,10)," display="block"><mrow><mrow><mi>v</mi><mo>=</mo><mrow><mo stretchy="false">(</mo><mn>1,2</mn><mo>,</mo><mrow><mi mathvariant="normal">…</mi><mo>⁢</mo><mn>,10</mn></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.5)</span></td>
+</tr>
+</table>
+<p class="ltx_p">distribui pedaços sequenciais do vetor para cada processo no comunicador <code class="ltx_verbatim ltx_font_typewriter">MPI_COMM_WORLD</code> e, então, cada processo computa a soma dos elementos recebidos.</p>
+</div>
+<figure id="LSTx27" class="ltx_float ltx_lstlisting">
+<figcaption class="ltx_caption">Código: scatter.cc</figcaption>
+<div class="ltx_listing ltx_lst_language_C++ ltx_lst_numbers_left ltx_lstlisting ltx_listing">
+<div class="ltx_listing_data"><a href="data:text/plain;base64,I2luY2x1ZGUgPHN0ZGlvLmg+CiNpbmNsdWRlIDxtYXRoLmg+CgovLyBBUEkgTVBJCiNpbmNsdWRlIDxtcGkuaD4KCi8vIGdzbAojaW5jbHVkZSA8Z3NsL2dzbF92ZWN0b3IuaD4KCmludCBtYWluKGludCBhcmdjLCBjaGFyKiogYXJndikgewogIAogIC8vIEluaWNpYWxpemEgbyBNUEkKICBNUElfSW5pdChOVUxMLCBOVUxMKTsKCiAgLy8gbnVtZXJvIHRvdGFsIGRlIHByb2Nlc3NvcwogIGludCB3b3JsZF9zaXplOwogIE1QSV9Db21tX3NpemUoTVBJX0NPTU1fV09STEQsICZ3b3JsZF9zaXplKTsKCiAgLy8gSUQgKHJhbmspIGRvIHByb2Nlc3NvCiAgaW50IHdvcmxkX3Jhbms7CiAgTVBJX0NvbW1fcmFuayhNUElfQ09NTV9XT1JMRCwgJndvcmxkX3JhbmspOwoKICBjb25zdCBzaXplX3QgbiA9IDEwOwogIGdzbF92ZWN0b3IgKnYgPSBnc2xfdmVjdG9yX2FsbG9jICgwKTsKCiAgaWYgKHdvcmxkX3JhbmsgPT0gMCkgewogICAgdiA9IGdzbF92ZWN0b3JfYWxsb2MgKG4pOwoKICAgIGZvciAoc2l6ZV90IGk9MDsgaTxuOyBpKyspCiAgICAgIGdzbF92ZWN0b3Jfc2V0ICh2LCBpLCBpKzEpOwogIH0KCiAgc2l6ZV90IG15X24gPSBuL3dvcmxkX3NpemU7ICAKICBnc2xfdmVjdG9yICpteV92ID0gZ3NsX3ZlY3Rvcl9hbGxvYyAobXlfbik7CgogIE1QSV9TY2F0dGVyICh2LT5kYXRhLCBteV9uLCBNUElfRE9VQkxFLAoJICAgICAgIG15X3YtPmRhdGEsIG15X24sIE1QSV9ET1VCTEUsCgkgICAgICAgMCwgTVBJX0NPTU1fV09STEQpOwoKICBkb3VibGUgc29tYSA9IDAuMDsKICBmb3IgKHNpemVfdCBpPTA7IGk8bXlfbjsgaSsrKSB7CiAgICBzb21hICs9IGdzbF92ZWN0b3JfZ2V0IChteV92LCBpKTsKICB9CgogIHByaW50ZiAoJ1Byb2Nlc3NvICVkIHNvbWEgPSAlZlxuJywKICAJICB3b3JsZF9yYW5rLCBzb21hKTsgIAoKICAvLyBGaW5hbGl6YSBvIE1QSQogIE1QSV9GaW5hbGl6ZSgpOwoKICByZXR1cm4gMDsKfQo=">⬇</a></div>
+<div id="lstnumberx1265" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">1</span></span>
+                <span class="ltx_text ltx_lst_directive ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">#include</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&lt;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">stdio</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">h</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&gt;</span>
+</div>
+<div id="lstnumberx1266" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">2</span></span>
+                <span class="ltx_text ltx_lst_directive ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">#include</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&lt;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">math</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">h</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&gt;</span>
+</div>
+<div id="lstnumberx1267" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">3</span></span>
+                
+</div>
+<div id="lstnumberx1268" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">4</span></span>
+                <span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;">//<span class="ltx_text ltx_lst_space"> </span>API<span class="ltx_text ltx_lst_space"> </span>MPI</span>
+</div>
+<div id="lstnumberx1269" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">5</span></span>
+                <span class="ltx_text ltx_lst_directive ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">#include</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&lt;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">mpi</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">h</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&gt;</span>
+</div>
+<div id="lstnumberx1270" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">6</span></span>
+                
+</div>
+<div id="lstnumberx1271" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">7</span></span>
+                <span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;">//<span class="ltx_text ltx_lst_space"> </span>gsl</span>
+</div>
+<div id="lstnumberx1272" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">8</span></span>
+                <span class="ltx_text ltx_lst_directive ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">#include</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&lt;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">gsl</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">/</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">gsl_vector</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">h</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&gt;</span>
+</div>
+<div id="lstnumberx1273" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">9</span></span>
+                
+</div>
+<div id="lstnumberx1274" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">10</span></span>
+                <span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">int</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">main</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">int</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">argc</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">char</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">**</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">argv</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">)</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">{</span>
+</div>
+<div id="lstnumberx1275" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">11</span></span>
+                
+</div>
+<div id="lstnumberx1276" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">12</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;">//<span class="ltx_text ltx_lst_space"> </span>Inicializa<span class="ltx_text ltx_lst_space"> </span>o<span class="ltx_text ltx_lst_space"> </span>MPI</span>
+</div>
+<div id="lstnumberx1277" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">13</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_Init</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">NULL</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">NULL</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1278" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">14</span></span>
+                
+</div>
+<div id="lstnumberx1279" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">15</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;">//<span class="ltx_text ltx_lst_space"> </span>numero<span class="ltx_text ltx_lst_space"> </span>total<span class="ltx_text ltx_lst_space"> </span>de<span class="ltx_text ltx_lst_space"> </span>processos</span>
+</div>
+<div id="lstnumberx1280" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">16</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">int</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_size</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">;</span>
+</div>
+<div id="lstnumberx1281" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">17</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_Comm_size</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_COMM_WORLD</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&amp;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_size</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1282" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">18</span></span>
+                
+</div>
+<div id="lstnumberx1283" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">19</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;">//<span class="ltx_text ltx_lst_space"> </span>ID<span class="ltx_text ltx_lst_space"> </span>(rank)<span class="ltx_text ltx_lst_space"> </span>do<span class="ltx_text ltx_lst_space"> </span>processo</span>
+</div>
+<div id="lstnumberx1284" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">20</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">int</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_rank</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">;</span>
+</div>
+<div id="lstnumberx1285" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">21</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_Comm_rank</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_COMM_WORLD</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&amp;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_rank</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1286" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">22</span></span>
+                
+</div>
+<div id="lstnumberx1287" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">23</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">const</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">size_t</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">n</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">10;</span>
+</div>
+<div id="lstnumberx1288" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">24</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">gsl_vector</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">*</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">v</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">gsl_vector_alloc</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(0);</span>
+</div>
+<div id="lstnumberx1289" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">25</span></span>
+                
+</div>
+<div id="lstnumberx1290" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">26</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">if</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_rank</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">==</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">0)</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">{</span>
+</div>
+<div id="lstnumberx1291" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">27</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">    </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">v</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">gsl_vector_alloc</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">n</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1292" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">28</span></span>
+                
+</div>
+<div id="lstnumberx1293" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">29</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">    </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">for</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">size_t</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">i</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=0;</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">i</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&lt;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">n</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">;</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">i</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">++)</span>
+</div>
+<div id="lstnumberx1294" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">30</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">      </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">gsl_vector_set</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">v</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">i</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">i</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">+1);</span>
+</div>
+<div id="lstnumberx1295" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">31</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">}</span>
+</div>
+<div id="lstnumberx1296" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">32</span></span>
+                
+</div>
+<div id="lstnumberx1297" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">33</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">size_t</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">my_n</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">n</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">/</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_size</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">;</span>
+</div>
+<div id="lstnumberx1298" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">34</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">gsl_vector</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">*</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">my_v</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">gsl_vector_alloc</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">my_n</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1299" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">35</span></span>
+                
+</div>
+<div id="lstnumberx1300" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">36</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_Scatter</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">v</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">-&gt;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">data</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">my_n</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_DOUBLE</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span>
+</div>
+<div id="lstnumberx1301" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">37</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">               </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">my_v</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">-&gt;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">data</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">my_n</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_DOUBLE</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span>
+</div>
+<div id="lstnumberx1302" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">38</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">               </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">0,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_COMM_WORLD</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1303" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">39</span></span>
+                
+</div>
+<div id="lstnumberx1304" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">40</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">double</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">soma</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">0.0;</span>
+</div>
+<div id="lstnumberx1305" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">41</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">for</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">size_t</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">i</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=0;</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">i</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&lt;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">my_n</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">;</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">i</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">++)</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">{</span>
+</div>
+<div id="lstnumberx1306" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">42</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">    </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">soma</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">+=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">gsl_vector_get</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">my_v</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">i</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1307" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">43</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">}</span>
+</div>
+<div id="lstnumberx1308" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">44</span></span>
+                
+</div>
+<div id="lstnumberx1309" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">45</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">printf</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_string ltx_font_typewriter" style="font-size:90%;">'Processo<span class="ltx_text ltx_lst_space"> </span>%d<span class="ltx_text ltx_lst_space"> </span>soma<span class="ltx_text ltx_lst_space"> </span>=<span class="ltx_text ltx_lst_space"> </span>%f\n'</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span>
+</div>
+<div id="lstnumberx1310" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">46</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">          </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_rank</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">soma</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1311" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">47</span></span>
+                
+</div>
+<div id="lstnumberx1312" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">48</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;">//<span class="ltx_text ltx_lst_space"> </span>Finaliza<span class="ltx_text ltx_lst_space"> </span>o<span class="ltx_text ltx_lst_space"> </span>MPI</span>
+</div>
+<div id="lstnumberx1313" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">49</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_Finalize</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">();</span>
+</div>
+<div id="lstnumberx1314" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">50</span></span>
+                
+</div>
+<div id="lstnumberx1315" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">51</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">return</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">0;</span>
+</div>
+<div id="lstnumberx1316" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">52</span></span>
+                <span class="ltx_text ltx_font_typewriter" style="font-size:90%;">}</span>
+</div>
+</div>
+</figure>
+<div id="Thmex3.p2" class="ltx_para">
+<p class="ltx_p">Vejamos o seguinte teste de rodagem</p>
+<pre class="ltx_verbatim ltx_font_typewriter">
+$ mpic++ scatter.cc -lgsl -lgslcblas
+$ mpirun -np 2 ./a.out
+Processo 0 soma = 15.000000
+Processo 1 soma = 40.000000
+</pre>
+<p class="ltx_p">Neste caso, o processo 0 recebe</p>
+<table id="Ch3.E6" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E6.m1" class="ltx_Math" alttext="\verb+my_v+=(1,2,3,4,5)," display="block"><mrow><mrow><mi mathvariant="monospace">my_v</mi><mo>=</mo><mrow><mo stretchy="false">(</mo><mn>1,2,3,4,5</mn><mo stretchy="false">)</mo></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.6)</span></td>
+</tr>
+</table>
+<p class="ltx_p">enquanto o processo 1 recebe
+</p>
+<table id="Ch3.E7" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E7.m1" class="ltx_Math" alttext="\verb+my_v+=(6,7,8,9,10)." display="block"><mrow><mrow><mi mathvariant="monospace">my_v</mi><mo>=</mo><mrow><mo stretchy="false">(</mo><mn>6,7,8,9,10</mn><mo stretchy="false">)</mo></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.7)</span></td>
+</tr>
+</table>
+</div>
+</div>
+<div id="Thmobs2" class="ltx_theorem ltx_theorem_obs">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Observação 3.3.2</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmobs2.p1" class="ltx_para">
+<p class="ltx_p">Note que o <a href="https://www.open-mpi.org/doc/current/man3/MPI%5C_Scatter.3.php" title="" class="ltx_ref ltx_href">MPI_Scatter</a> distribuí apenas pedaços de <span class="ltx_text ltx_font_italic">arrays</span> de mesmo tamanho. Para a distribuição de pedaços de tamanhos diferentes entre os processos, pode-se usar a rotina <a href="https://www.open-mpi.org/doc/current/man3/MPI%5C_Scatterv.3.php" title="" class="ltx_ref ltx_href">MPI_Scatterv</a>. Veja os exercícios resolvidos abaixo.</p>
+</div>
+</div>
+</section>
+<section id="SS4" class="ltx_subsection">
+<h2 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">3.3.4 </span>Recebimento coletivo de dados distribuídos <small><a href="../contato.html"><i class="fas fa-envelope"></i></a></small></h2>
+
+
+<div id="SS4.p2" class="ltx_para">
+<p class="ltx_p">A rotina <a href="https://www.open-mpi.org/doc/current/man3/MPI%5C_Gather.3.php" title="" class="ltx_ref ltx_href">MPI_Gather</a>, permite que um processo receba simultaneamente dados que estão distribuídos entre os demais processos. Sua sintaxe é a seguinte</p>
+<pre class="ltx_verbatim ltx_font_typewriter">
+int MPI_Gather(
+  const void *sendbuf,
+  int sendcount,
+  MPI_Datatype sendtype,
+  void *recvbuf,
+  int recvcount,
+  MPI_Datatype recvtype,
+  int root,
+  MPI_Comm comm)
+</pre>
+<p class="ltx_p">Sua sintaxe é parecida com a da rotina <a href="https://www.open-mpi.org/doc/current/man3/MPI%5C_Scatter.3.php" title="" class="ltx_ref ltx_href">MPI_Scatter</a>. Veja lá! Aqui, <code class="ltx_verbatim ltx_font_typewriter">root</code> é o identificador <span class="ltx_text ltx_font_italic">rank</span> do processo receptor.</p>
+</div>
+<div id="Thmex4" class="ltx_theorem ltx_theorem_ex">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Exemplo 3.3.4</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmex4.p1" class="ltx_para">
+<p class="ltx_p">No Código <code class="ltx_verbatim ltx_font_typewriter">gather.cc</code>, cada processo <math id="Thmex4.p1.m1" class="ltx_Math" alttext="i" display="inline"><mi>i</mi></math> aloca um vetor</p>
+<table id="Ch3.E8" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E8.m1" class="ltx_Math" alttext="\verb+my_v+=(5i+1,5i+2,\dotsc,5i+5)," display="block"><mrow><mrow><mi mathvariant="monospace">my_v</mi><mo>=</mo><mrow><mo stretchy="false">(</mo><mrow><mrow><mn>5</mn><mo>⁢</mo><mi>i</mi></mrow><mo>+</mo><mrow><mn>1,5</mn><mo>⁢</mo><mi>i</mi></mrow><mo>+</mo><mn>2</mn></mrow><mo>,</mo><mrow><mrow><mi mathvariant="normal">…</mi><mo>⁢</mo><mn>,5</mn><mo>⁢</mo><mi>i</mi></mrow><mo>+</mo><mn>5</mn></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.8)</span></td>
+</tr>
+</table>
+<p class="ltx_p">então, o processo 0 recebe estes vetores alocando-os em um único vetor</p>
+<table id="Ch3.E9" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E9.m1" class="ltx_Math" alttext="\verb+v+=(1,2,\dotsc,5n_{p})," display="block"><mrow><mrow><mi>𝚟</mi><mo>=</mo><mrow><mo stretchy="false">(</mo><mn>1,2</mn><mo>,</mo><mrow><mi mathvariant="normal">…</mi><mo>⁢</mo><mn>,5</mn><mo>⁢</mo><msub><mi>n</mi><mi>p</mi></msub></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.9)</span></td>
+</tr>
+</table>
+<p class="ltx_p">onde <math id="Thmex4.p1.m2" class="ltx_Math" alttext="n_{p}" display="inline"><msub><mi>n</mi><mi>p</mi></msub></math> é o número de processos inicializados.</p>
+</div>
+<figure id="LSTx28" class="ltx_float ltx_lstlisting">
+<figcaption class="ltx_caption">Código: gather.cc</figcaption>
+<div class="ltx_listing ltx_lst_language_C++ ltx_lst_numbers_left ltx_lstlisting ltx_listing">
+<div class="ltx_listing_data"><a href="data:text/plain;base64,I2luY2x1ZGUgPHN0ZGlvLmg+CiNpbmNsdWRlIDxtYXRoLmg+CgovLyBBUEkgTVBJCiNpbmNsdWRlIDxtcGkuaD4KCi8vIGdzbAojaW5jbHVkZSA8Z3NsL2dzbF92ZWN0b3IuaD4KCmludCBtYWluKGludCBhcmdjLCBjaGFyKiogYXJndikgewogIAogIC8vIEluaWNpYWxpemEgbyBNUEkKICBNUElfSW5pdChOVUxMLCBOVUxMKTsKCiAgLy8gbnVtZXJvIHRvdGFsIGRlIHByb2Nlc3NvcwogIGludCB3b3JsZF9zaXplOwogIE1QSV9Db21tX3NpemUoTVBJX0NPTU1fV09STEQsICZ3b3JsZF9zaXplKTsKCiAgLy8gSUQgKHJhbmspIGRvIHByb2Nlc3NvCiAgaW50IHdvcmxkX3Jhbms7CiAgTVBJX0NvbW1fcmFuayhNUElfQ09NTV9XT1JMRCwgJndvcmxkX3JhbmspOwoKICBjb25zdCBzaXplX3QgbXlfbiA9IDU7CiAgZ3NsX3ZlY3RvciAqbXlfdiA9IGdzbF92ZWN0b3JfYWxsb2MgKG15X24pOwogIGZvciAoc2l6ZV90IGk9MDsgaTxteV9uOyBpKyspCiAgICAgIGdzbF92ZWN0b3Jfc2V0IChteV92LCBpLCA1KndvcmxkX3JhbmsraSsxKTsKCiAgY29uc3Qgc2l6ZV90IG4gPSB3b3JsZF9zaXplKm15X247CiAgZ3NsX3ZlY3RvciAqdiA9IGdzbF92ZWN0b3JfYWxsb2MgKDApOwogIGlmICh3b3JsZF9yYW5rID09IDApIHsKICAgIHYgPSBnc2xfdmVjdG9yX2FsbG9jIChuKTsKICB9CgogIE1QSV9HYXRoZXIgKG15X3YtPmRhdGEsIG15X24sIE1QSV9ET1VCTEUsCgkgICAgICB2LT5kYXRhLCBteV9uLCBNUElfRE9VQkxFLAoJICAgICAgMCwgTVBJX0NPTU1fV09STEQpOwoKICBpZiAod29ybGRfcmFuayA9PSAwKSB7CiAgICBwcmludGYgKCd2ID0gJyk7CiAgICBmb3IgKHNpemVfdCBpPTA7IGk8bjsgaSsrKQogICAgICBwcmludGYgKCclZiAnLCBnc2xfdmVjdG9yX2dldCAodiwgaSkpOwogICAgcHJpbnRmKCdcbicpOwogIH0KCiAgLy8gRmluYWxpemEgbyBNUEkKICBNUElfRmluYWxpemUoKTsKCiAgcmV0dXJuIDA7Cn0K">⬇</a></div>
+<div id="lstnumberx1317" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">1</span></span>
+                <span class="ltx_text ltx_lst_directive ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">#include</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&lt;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">stdio</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">h</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&gt;</span>
+</div>
+<div id="lstnumberx1318" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">2</span></span>
+                <span class="ltx_text ltx_lst_directive ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">#include</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&lt;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">math</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">h</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&gt;</span>
+</div>
+<div id="lstnumberx1319" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">3</span></span>
+                
+</div>
+<div id="lstnumberx1320" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">4</span></span>
+                <span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;">//<span class="ltx_text ltx_lst_space"> </span>API<span class="ltx_text ltx_lst_space"> </span>MPI</span>
+</div>
+<div id="lstnumberx1321" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">5</span></span>
+                <span class="ltx_text ltx_lst_directive ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">#include</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&lt;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">mpi</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">h</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&gt;</span>
+</div>
+<div id="lstnumberx1322" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">6</span></span>
+                
+</div>
+<div id="lstnumberx1323" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">7</span></span>
+                <span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;">//<span class="ltx_text ltx_lst_space"> </span>gsl</span>
+</div>
+<div id="lstnumberx1324" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">8</span></span>
+                <span class="ltx_text ltx_lst_directive ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">#include</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&lt;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">gsl</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">/</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">gsl_vector</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">h</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&gt;</span>
+</div>
+<div id="lstnumberx1325" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">9</span></span>
+                
+</div>
+<div id="lstnumberx1326" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">10</span></span>
+                <span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">int</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">main</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">int</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">argc</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">char</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">**</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">argv</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">)</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">{</span>
+</div>
+<div id="lstnumberx1327" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">11</span></span>
+                
+</div>
+<div id="lstnumberx1328" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">12</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;">//<span class="ltx_text ltx_lst_space"> </span>Inicializa<span class="ltx_text ltx_lst_space"> </span>o<span class="ltx_text ltx_lst_space"> </span>MPI</span>
+</div>
+<div id="lstnumberx1329" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">13</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_Init</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">NULL</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">NULL</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1330" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">14</span></span>
+                
+</div>
+<div id="lstnumberx1331" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">15</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;">//<span class="ltx_text ltx_lst_space"> </span>numero<span class="ltx_text ltx_lst_space"> </span>total<span class="ltx_text ltx_lst_space"> </span>de<span class="ltx_text ltx_lst_space"> </span>processos</span>
+</div>
+<div id="lstnumberx1332" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">16</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">int</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_size</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">;</span>
+</div>
+<div id="lstnumberx1333" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">17</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_Comm_size</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_COMM_WORLD</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&amp;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_size</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1334" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">18</span></span>
+                
+</div>
+<div id="lstnumberx1335" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">19</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;">//<span class="ltx_text ltx_lst_space"> </span>ID<span class="ltx_text ltx_lst_space"> </span>(rank)<span class="ltx_text ltx_lst_space"> </span>do<span class="ltx_text ltx_lst_space"> </span>processo</span>
+</div>
+<div id="lstnumberx1336" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">20</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">int</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_rank</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">;</span>
+</div>
+<div id="lstnumberx1337" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">21</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_Comm_rank</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_COMM_WORLD</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&amp;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_rank</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1338" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">22</span></span>
+                
+</div>
+<div id="lstnumberx1339" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">23</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">const</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">size_t</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">my_n</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">5;</span>
+</div>
+<div id="lstnumberx1340" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">24</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">gsl_vector</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">*</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">my_v</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">gsl_vector_alloc</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">my_n</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1341" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">25</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">for</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">size_t</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">i</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=0;</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">i</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&lt;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">my_n</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">;</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">i</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">++)</span>
+</div>
+<div id="lstnumberx1342" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">26</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">      </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">gsl_vector_set</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">my_v</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">i</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">5*</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_rank</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">+</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">i</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">+1);</span>
+</div>
+<div id="lstnumberx1343" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">27</span></span>
+                
+</div>
+<div id="lstnumberx1344" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">28</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">const</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">size_t</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">n</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_size</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">*</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">my_n</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">;</span>
+</div>
+<div id="lstnumberx1345" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">29</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">gsl_vector</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">*</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">v</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">gsl_vector_alloc</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(0);</span>
+</div>
+<div id="lstnumberx1346" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">30</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">if</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_rank</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">==</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">0)</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">{</span>
+</div>
+<div id="lstnumberx1347" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">31</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">    </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">v</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">gsl_vector_alloc</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">n</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1348" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">32</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">}</span>
+</div>
+<div id="lstnumberx1349" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">33</span></span>
+                
+</div>
+<div id="lstnumberx1350" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">34</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_Gather</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">my_v</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">-&gt;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">data</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">my_n</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_DOUBLE</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span>
+</div>
+<div id="lstnumberx1351" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">35</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">              </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">v</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">-&gt;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">data</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">my_n</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_DOUBLE</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span>
+</div>
+<div id="lstnumberx1352" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">36</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">              </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">0,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_COMM_WORLD</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1353" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">37</span></span>
+                
+</div>
+<div id="lstnumberx1354" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">38</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">if</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_rank</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">==</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">0)</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">{</span>
+</div>
+<div id="lstnumberx1355" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">39</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">    </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">printf</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_string ltx_font_typewriter" style="font-size:90%;">'v<span class="ltx_text ltx_lst_space"> </span>=<span class="ltx_text ltx_lst_space"> </span>'</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1356" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">40</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">    </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">for</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">size_t</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">i</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=0;</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">i</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&lt;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">n</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">;</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">i</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">++)</span>
+</div>
+<div id="lstnumberx1357" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">41</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">      </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">printf</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_string ltx_font_typewriter" style="font-size:90%;">'%f<span class="ltx_text ltx_lst_space"> </span>'</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">gsl_vector_get</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">v</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">i</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">));</span>
+</div>
+<div id="lstnumberx1358" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">42</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">    </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">printf</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_string ltx_font_typewriter" style="font-size:90%;">'\n'</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1359" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">43</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">}</span>
+</div>
+<div id="lstnumberx1360" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">44</span></span>
+                
+</div>
+<div id="lstnumberx1361" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">45</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;">//<span class="ltx_text ltx_lst_space"> </span>Finaliza<span class="ltx_text ltx_lst_space"> </span>o<span class="ltx_text ltx_lst_space"> </span>MPI</span>
+</div>
+<div id="lstnumberx1362" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">46</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_Finalize</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">();</span>
+</div>
+<div id="lstnumberx1363" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">47</span></span>
+                
+</div>
+<div id="lstnumberx1364" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">48</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">return</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">0;</span>
+</div>
+<div id="lstnumberx1365" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">49</span></span>
+                <span class="ltx_text ltx_font_typewriter" style="font-size:90%;">}</span>
+</div>
+</div>
+</figure>
+<div id="Thmex4.p2" class="ltx_para">
+<p class="ltx_p">Vejamos o seguinte teste de rodagem</p>
+<pre class="ltx_verbatim ltx_font_typewriter">
+$ mpic++ gather.cc -lgsl -lgslcblas
+$ mpirun -np 2 ./a.out
+v = 1.000000 2.000000 3.000000 4.000000 5.000000
+6.000000 7.000000 8.000000 9.000000 10.000000
+</pre>
+<p class="ltx_p">Neste caso, o processo 0 aloca
+</p>
+<table id="Ch3.E10" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E10.m1" class="ltx_Math" alttext="\verb+my_v+=(1,2,3,4,5)" display="block"><mrow><mi mathvariant="monospace">my_v</mi><mo>=</mo><mrow><mo stretchy="false">(</mo><mn>1,2,3,4,5</mn><mo stretchy="false">)</mo></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.10)</span></td>
+</tr>
+</table>
+<p class="ltx_p">e o processo 1 aloca</p>
+<table id="Ch3.E11" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E11.m1" class="ltx_Math" alttext="\verb+my_v+=(6,7,8,9,10)." display="block"><mrow><mrow><mi mathvariant="monospace">my_v</mi><mo>=</mo><mrow><mo stretchy="false">(</mo><mn>6,7,8,9,10</mn><mo stretchy="false">)</mo></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.11)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Então, o processo 0, recebe os dois pedaços de cada um, formando o vetor</p>
+<table id="Ch3.E12" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E12.m1" class="ltx_Math" alttext="\verb+v+=(1,2,\dotsc,10)." display="block"><mrow><mrow><mi>𝚟</mi><mo>=</mo><mrow><mo stretchy="false">(</mo><mn>1,2</mn><mo>,</mo><mrow><mi mathvariant="normal">…</mi><mo>⁢</mo><mn>,10</mn></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.12)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Verifique!</p>
+</div>
+</div>
+<div id="Thmobs3" class="ltx_theorem ltx_theorem_obs">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Observação 3.3.3</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmobs3.p1" class="ltx_para">
+<p class="ltx_p">Para recebimento de pedaços distribuídos e de tamanhos diferentes, pode-se usar a rotina <a href="https://www.open-mpi.org/doc/current/man3/MPI%5C_Gatherv.3.php" title="" class="ltx_ref ltx_href">MPI_Gatherv</a>. Veja os exercícios resolvidos abaixo.</p>
+</div>
+</div>
+<div id="Thmobs4" class="ltx_theorem ltx_theorem_obs">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Observação 3.3.4</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmobs4.p1" class="ltx_para">
+<p class="ltx_p">Observamos que com a rotina <a href="https://www.open-mpi.org/doc/current/man3/MPI%5C_Gather.3.php" title="" class="ltx_ref ltx_href">MPI_Gather</a> podemos juntar pedaços de dados distribuídos em um único processo. Analogamente, a rotina <a href="https://www.open-mpi.org/doc/current/man3/MPI%5C_Allgather.3.php" title="" class="ltx_ref ltx_href">MPI_Allgather</a> nos permite juntar os pedaços de dados distribuídos e ter uma cópia do todo em cada um dos processos. Sua sintaxe é a seguinte</p>
+<pre class="ltx_verbatim ltx_font_typewriter">
+int MPI_Allgather(
+  const void *sendbuf,
+  int  sendcount,
+  MPI_Datatype sendtype,
+  void *recvbuf,
+  int recvcount,
+  MPI_Datatype recvtype,
+  MPI_Comm comm)
+</pre>
+<p class="ltx_p">Note que esta rotina não contém o argumento <code class="ltx_verbatim ltx_font_typewriter">root</code>, pois neste caso todos os processos receberam os dados juntados na variável <code class="ltx_verbatim ltx_font_typewriter">recvbuf</code>!</p>
+</div>
+</div>
+</section>
+<section id="SSx1" class="ltx_subsection">
+<h2 class="ltx_title ltx_title_subsection">Exercícios <small><a href="../contato.html"><i class="fas fa-envelope"></i></a></small></h2>
+
+
+<div id="Thmexer1" class="ltx_theorem ltx_theorem_exer">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">E 3.3.1</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmexer1.p1" class="ltx_para">
+<p class="ltx_p">Faça um código MPI para computar a média aritmética simples de <math id="Thmexer1.p1.m1" class="ltx_Math" alttext="n" display="inline"><mi>n</mi></math> números randômicos em ponto flutuante.</p>
+</div>
+</div>
+<div id="Thmexer2" class="ltx_theorem ltx_theorem_exer">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">E 3.3.2</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmexer2.p1" class="ltx_para">
+<p class="ltx_p">Faça um código MPI para computar o produto interno de dois vetores de <math id="Thmexer2.p1.m1" class="ltx_Math" alttext="n" display="inline"><mi>n</mi></math> elementos randômicos em ponto flutuante.</p>
+</div>
+</div>
+<div id="Thmexer3" class="ltx_theorem ltx_theorem_exer">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">E 3.3.3</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmexer3.p1" class="ltx_para">
+<p class="ltx_p">Faça um código MPI para computar a norma <math id="Thmexer3.p1.m1" class="ltx_Math" alttext="L^{2}" display="inline"><msup><mi>L</mi><mn>2</mn></msup></math> de um vetor de <math id="Thmexer3.p1.m2" class="ltx_Math" alttext="n" display="inline"><mi>n</mi></math> elementos randômicos em ponto flutuante.</p>
+</div>
+</div>
+<div id="Thmexer4" class="ltx_theorem ltx_theorem_exer">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">E 3.3.4</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmexer4.p1" class="ltx_para">
+<p class="ltx_p">Faça um código MPI para computar</p>
+<table id="Ch3.E13" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E13.m1" class="ltx_Math" alttext="erf(x)=\frac{2}{\sqrt{\pi}}\int_{0}^{x}e^{-t^{2}}\,dt" display="block"><mrow><mrow><mi>e</mi><mo>⁢</mo><mi>r</mi><mo>⁢</mo><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mfrac><mn>2</mn><msqrt><mi>π</mi></msqrt></mfrac><mo>⁢</mo><mrow><msubsup><mo largeop="true" symmetric="true">∫</mo><mn>0</mn><mi>x</mi></msubsup><mrow><mpadded width="+1.7pt"><msup><mi>e</mi><mrow><mo>-</mo><msup><mi>t</mi><mn>2</mn></msup></mrow></msup></mpadded><mo>⁢</mo><mrow><mo rspace="0pt">𝑑</mo><mi>t</mi></mrow></mrow></mrow></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.13)</span></td>
+</tr>
+</table>
+<p class="ltx_p">usando a <a href="https://phkonzen.github.io/notas/MatematicaNumerica/cap_integr_sec_int_comp.html" title="" class="ltx_ref ltx_href">regra composta do ponto médio</a>.</p>
+</div>
+</div>
+<div id="Thmexer5" class="ltx_theorem ltx_theorem_exer">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">E 3.3.5</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmexer5.p1" class="ltx_para">
+<p class="ltx_p">Faça uma implementação MPI do método de Jacobi para computar a solução de um sistema <math id="Thmexer5.p1.m1" class="ltx_Math" alttext="Ax=b" display="inline"><mrow><mrow><mi>A</mi><mo>⁢</mo><mi>x</mi></mrow><mo>=</mo><mi>b</mi></mrow></math> <math id="Thmexer5.p1.m2" class="ltx_Math" alttext="n\times n" display="inline"><mrow><mi>n</mi><mo>×</mo><mi>n</mi></mrow></math>. Inicialize <math id="Thmexer5.p1.m3" class="ltx_Math" alttext="A" display="inline"><mi>A</mi></math> e <math id="Thmexer5.p1.m4" class="ltx_Math" alttext="b" display="inline"><mi>b</mi></math> com números randômicos em ponto flutuante.</p>
+</div>
+</div>
+</section>
+</section>
+</div>
+<footer class="ltx_page_footer">
+<div>
+<a href="cap_mpi_sec_p2pcom.html" title="3.2 Rotinas de comunicação ponto-a-ponto ‣ Capítulo 3 Computação paralela e distribuída (MPI) ‣ Matemática Numérica Paralela" class="ltx_ref" rel="prev"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">3.2 </span>Rotinas de comunicação ponto-a-ponto</span></a><a href="bib.html" title="Referências ‣ Matemática Numérica Paralela" class="ltx_ref" rel="bibliography"><span class="ltx_text ltx_ref_title">Referências</span></a><a href="cap_mpi_sec_redu.html" title="3.4 Reduções ‣ Capítulo 3 Computação paralela e distribuída (MPI) ‣ Matemática Numérica Paralela" class="ltx_ref" rel="next"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">3.4 </span>Reduções</span></a>
+</div>
+<div class="ltx_page_logo">
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />O texto acima está sob Licença <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR">Creative Commons Atribuição-CompartilhaIgual 4.0 Internacional</a>. Generated  on Mon Sep 27 15:44:11 2021 by <a href="http://dlmf.nist.gov/LaTeXML/">LaTeXML <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg==" alt="[LOGO]"></a>
+</div></footer>
+</div>
+<div class="card" id="rodape" style="">
+  <div class="card-footer text-left">
+    <a href="https://github.com/phkonzen/notas"><i class="fa fa-github" aria-hidden="true"></i> Repo</a> <a href="../contato.html"><i class="fas fa-envelope"></i> Mensagem</a> <a href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i> notas.pedrok</a>
+  </div> <!-- div class="card" -->
+</div> <!-- div class="card-footer text-right" -->
+<div class="alert alert-success alert-dismissible" id="colabAlert" role="alert" style="display : none !important; position: fixed; top: 100px;  max-width: 90vw;">
+  <span type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></span>
+  <h4>Colabore!</h4>
+  <p style="">Este é um <i>site</i> <strong>gratuito</strong> de recursos educacionais abertos. Colabore informando <strong>erros</strong> ou dando <strong>sugestões.</strong></p>
+  <p><a class="btn btn-primary float-center m-1" href="../contato.html" style=""><i class="fas fa-envelope"></i></a> 
+    <a class="btn btn-primary float-center m-1" href="https://www.instagram.com/notas.pedrok/" style=""><i class="fab fa-instagram"></i></a>
+    <a class="btn btn-primary float-center m-1" href="https://github.com/phkonzen/notas/discussions" style=""><i class="fab fa-github"></i></a></p>
+</div>
+<div class="alert alert-warning alert-dismissible" id="generalAlert" role="alert" style="display : none !important; position: fixed; bottom: 0;  max-width: 90vw;">
+  <span type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></span>
+  Ao navegar por este <i>site</i>, você concorda com a sua <a href="../politica.html">Política de uso de dados</a>.
+</div>
+</div> <!-- div class=col-lg-1 -->
+<div class=col-lg-1>
+</div>
+</div> <!-- div class=row -->
+</div> <!-- div class=container-fluid -->
+
+</body>
+
+</html>
