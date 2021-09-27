@@ -20,22 +20,12 @@ class Notas:
         f = open(htmldir+'/goodies.css','w')
         text = '* {\n'
         text += 'font-family: "Computer Modern Serif", serif;\n'
-        text += 'font-size: 101%;\n'
         text += '}\n\n'
-        text = '.ltx_listing {\n'
-        text += 'font-size: 97%;\n'
-        text += '}\n\n'
-        text += '.ltx_verbatim {\n'
-        text += 'margin: 1em 0em 0em 0em;\n'
-        text += 'background-color: #d3f3d3;\n'
-        text += '}\n\n'
-        text += '.ltx_listing {\n'
-        text += 'margin: 1em 0em 0em 0em;\n'
-        text += 'background-color: #d3f3d3;\n'
-        text += '}\n\n'
-        text += '.ltx_text.ltx_lst_language_Python.ltx_lst_numbers_right.ltx_lstlisting.ltx_font_typewriter {\n'
-        text += 'margin: 1em 0em 0em 0em;\n'
-        text += 'background-color: #d3f3d3;\n'
+
+        text += '.ltx_lst_numbers_left .ltx_listingline .ltx_tag {\n'
+        text += 'margin-left: 0em;\n'
+        text += 'text-align: right;\n'
+        text += 'position: relative;\n'
         text += '}\n\n'
         
         text += '.navbar {\n'
@@ -43,10 +33,10 @@ class Notas:
         text += 'padding: 5px;\n'
         text += '}\n\n'
 
-        if (srcref != 'MatematicaNumericaParalela'):
-            text += '.ltx_lst_numbers_left .ltx_listingline .ltx_tag {\n'
-            text += 'margin-left:-1em; width:2.5em;\n'
-            text += 'text-align:right; }\n'
+        # if (srcref != 'MatematicaNumericaParalela'):
+        #     text += '.ltx_lst_numbers_left .ltx_listingline .ltx_tag {\n'
+        #     text += 'margin-left:-1em; width:2.5em;\n'
+        #     text += 'text-align:right; }\n'
         
         f.write(text)
         f.close()
