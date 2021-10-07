@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
 
   double x = double (rand ()) / RAND_MAX;
 
-  printf ('%d: %f\n',
+  printf ("%d: %f\n",
 	  world_rank, x);
 
   double y;
@@ -33,7 +33,7 @@ int main(int argc, char** argv) {
 	      MPI_MAX, 0, MPI_COMM_WORLD);
 
   if (world_rank == 0)
-    printf ('Max. entre os numeros = %f\n',
+    printf ("Max. entre os numeros = %f\n",
 	    y);
   // Finaliza o MPI
   MPI_Finalize();

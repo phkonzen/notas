@@ -29,12 +29,12 @@ int main(int argc, char** argv) {
 
   usleep (espera);
   
-  printf ('%d chegou na barreira: %ld s.\n',
+  printf ("%d chegou na barreira: %d s.\n",
 	  world_rank, (time (NULL) - init));
   
   MPI_Barrier (MPI_COMM_WORLD);
   
-  printf ('%d saiu da  barreira: %ld s.\n',
+  printf ("%d saiu da  barreira: %d s.\n",
 	  world_rank, (time (NULL) - init));
   
 

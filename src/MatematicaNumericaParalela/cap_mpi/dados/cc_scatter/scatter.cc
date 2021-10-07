@@ -42,7 +42,7 @@ int main(int argc, char** argv) {
     soma += gsl_vector_get (my_v, i);
   }
 
-  printf ('Processo %d soma = %f\n',
+  printf ("Processo %d soma = %f\n",
   	  world_rank, soma);  
 
   // Finaliza o MPI

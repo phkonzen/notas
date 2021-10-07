@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
   MPI_Bcast (&x, 1, MPI_DOUBLE,
 	     0, MPI_COMM_WORLD);
 
-  printf ('Processo %d x = %f\n',
+  printf ("Processo %d x = %f\n",
 	  world_rank, x);  
 
   // Finaliza o MPI

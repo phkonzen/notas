@@ -26,7 +26,7 @@ int main(int argc, char** argv) {
   double x[2] = {double (rand ()) / RAND_MAX,
 		 double (rand ()) / RAND_MAX};
 
-  printf ('%d: %f %f\n',
+  printf ("%d: %f %f\n",
 	  world_rank, x[0], x[1]);
 
   double y[2];
@@ -34,8 +34,9 @@ int main(int argc, char** argv) {
 	      MPI_SUM, 0, MPI_COMM_WORLD);
 
   if (world_rank == 0)
-    printf ('Vetor soma = %f %f\n',
+    printf ("Vetor soma = %f %f\n",
 	    y[0], y[1]);
+  
   // Finaliza o MPI
   MPI_Finalize();
 
