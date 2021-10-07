@@ -1,11 +1,9 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 
 // API MPI
 #include <mpi.h>
-
-// gsl
-#include <gsl/gsl_vector.h>
 
 int main(int argc, char** argv) {
   
@@ -21,29 +19,32 @@ int main(int argc, char** argv) {
   MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
 
   const size_t n = 10;
-  gsl_vector *v = gsl_vector_alloc (0);
+  double *v = NULL; 
 
   if (world_rank == 0) {
-    v = gsl_vector_alloc (n);
+    v = (double*) malloc (n * sizeof(double));
 
     for (size_t i=0; i<n; i++)
-      gsl_vector_set (v, i, i+1);
+      v[i] = i+1;
   }
 
   size_t my_n = n/world_size;  
-  gsl_vector *my_v = gsl_vector_alloc (my_n);
+  double *my_v = (double*) malloc (my_n * sizeof(double));
 
-  MPI_Scatter (v->data, my_n, MPI_DOUBLE,
-	       my_v->data, my_n, MPI_DOUBLE,
+  MPI_Scatter (v, my_n, MPI_DOUBLE,
+	       my_v, my_n, MPI_DOUBLE,
 	       0, MPI_COMM_WORLD);
 
   double soma = 0.0;
   for (size_t i=0; i<my_n; i++) {
-    soma += gsl_vector_get (my_v, i);
+    soma += my_v[i];
   }
 
   printf ("Processo %d soma = %f\n",
-  	  world_rank, soma);  
+  	  world_rank, soma);
+
+  free (v);
+  free (my_v);
 
   // Finaliza o MPI
   MPI_Finalize();
