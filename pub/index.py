@@ -274,7 +274,7 @@ class Index:
         body += '</div> <!-- div class=row-->\n\n'
 
         # Minicursos
-        body += '<h3>Minicurso</h3>\n\n'
+        body += '<h3>Minicursos</h3>\n\n'
 
         body += '<div class="row">\n'
 
