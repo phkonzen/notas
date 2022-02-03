@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 '''
-Atualiza as notas de Matemática Numérica Paralela
+Atualiza as notas de Matemática Numérica Avancada
 para o __site__.
 
 Autor: Pedro H A Konzen - 02/2022
@@ -11,7 +11,7 @@ import os
 
 # classes
 from sitemap import *
-from matematicanumericaparalela import *
+from matematicanumericaavancada import *
 
 # pastas temporárias
 odir = '.docs'
@@ -26,10 +26,10 @@ os.system('rm -rvf '+srcdir+'/*')
 os.system('cp -rvf ../src/* '+srcdir+'/')
 
 # del as notas antigas
-os.system('rm -rvf ../docs/MatematicaNumericaParalela')
+os.system('rm -rvf ../docs/MatematicaNumericaAvancada')
 
 # constroi as notas
-mn = MatematicaNumericaParalela(srcdir,odir)
+mn = MatematicaNumericaAvancada(srcdir,odir)
 mn.build()
 
 # make sitemap.txt

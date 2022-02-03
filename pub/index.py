@@ -139,7 +139,7 @@ class Index:
         body += '<div class="carousel-item active">\n'
         body += '<div>\n'
         body += '<div class="spinner-grow spinner-grow-sm text-primary mb-1" role="status"></div>\n'
-        body += '<a href="http://www.cnmac.org.br">XL CNMAC 13 - 17/09/21</a>\n'
+        body += '<a href="http://www.cnmac.org.br">CNMAC 2022: Submissão de trabalhos: 15/01 - 15/03</a>\n'
         body += '</div>\n'
         body += '</div>\n\n'
 
@@ -147,7 +147,7 @@ class Index:
         body += '<div class="carousel-item">\n'
         body += '<div>\n'
         body += '<div class="spinner-grow spinner-grow-sm text-primary mb-1" role="status"></div>\n'
-        body += '<a href="http://www.ufrgs.br/ppgmap/selecao/editais-de-selecao-doutorado">PPGMAp-UFRGS: Processo Seletivo Doutorado 2021</a>\n'
+        body += '<a href="http://www.ufrgs.br/ppgmap">PPGMAp-UFRGS</a>\n'
         body += '</div>\n'        
         body += '</div>\n\n'
 
@@ -238,6 +238,20 @@ class Index:
         body += '<h5 class="card-title">Matemática numérica paralela</h5>\n'
         body += '<p class="card-text" style="color: gray">Introdução à computação paralela aplicada a métodos numéricos</p>\n'
         body += '<a href="./MatematicaNumericaParalela/main.html" class="btn btn-warning float-right">\n'
+        body += 'Abrir</a>\n'
+        body += '</div>\n'
+        body += '</div>\n'
+        body += '</div>\n\n'
+
+        # card: notas de aula de Matemática Numérica Avançada
+        body += '<div class="col-lg-3 col-md-4 col-sm-6">'
+        body += '<!-- card: notas de aula de Matemática numérica avançada -->\n'
+        body += '<div class="card border-warning mb-3" style="max-width: 20rem;">\n'
+        body += '<div class="card-header">Notas de aula</div>\n'
+        body += '<div class="card-body">\n'
+        body += '<h5 class="card-title">Matemática Numérica Avançada</h5>\n'
+        body += '<p class="card-text" style="color: gray">Tópicos de matemática numérica avançada</p>\n'
+        body += '<a href="./MatematicaNumericaAvancada/main.html" class="btn btn-warning float-right">\n'
         body += 'Abrir</a>\n'
         body += '</div>\n'
         body += '</div>\n'

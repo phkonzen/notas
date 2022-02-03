@@ -16,6 +16,9 @@ MatematicaNumerica: mainMatematicaNumerica.py
 MatematicaNumericaParalela: mainMatematicaNumericaParalela.py
 	python3 mainMatematicaNumericaParalela.py
 
+MatematicaNumericaAvancada: mainMatematicaNumericaAvancada.py
+	python3 mainMatematicaNumericaAvancada.py
+
 MetodoElementosFinitos: mainMetodoElementosFinitos.py
 	python3 mainMetodoElementosFinitos.py
 
