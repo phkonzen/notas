@@ -9,7 +9,7 @@
 
 Neste capítulo, apresentam-se métodos numéricos para a resolução de sistemas lineares de grande porte. Salvo explicitado ao contrário, assume-se que os sistemas são quadrados e têm solução única.
 
-\section{Matrizes esparsas}\label{cap_matesparsa}
+\section{Matrizes Esparsas}\label{cap_sislin_sec_matesparsa}
 
 \begin{flushright}
   [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
@@ -36,7 +36,7 @@ Por exemplo, a matriz identidade de tamanho $n=100$ tem esparsidade
   \frac{100}{100^2}\times 100\% = 1\% 
 \end{equation}
 
-\subsection{Sistemas tridiagonais}
+\subsection{Sistemas Tridiagonais}
 
 Um sistema tridiagonal tem a seguinte forma matricial
 \begin{equation}\label{eq:sistridiag}
@@ -162,7 +162,7 @@ com $i=n-1,n-2,\dotsc,1$.
   \end{enumerate}
 \end{exer}
 
-\subsection{Matrizes banda}
+\subsection{Matrizes Banda}
 
 Uma matriz banda é aquela em que os elementos não nulos estão dispostos em apenas algumas de suas diagonais. Consulte a Figura \ref{fig:MatrizBanda}.
 
@@ -206,5 +206,59 @@ Uma matriz banda é aquela em que os elementos não nulos estão dispostos em ap
 \end{exer}
 
 
+\subsubsection{Matrizes bloco}
 
+\begin{exer}
+  Seja o seguinte PVC
+  \begin{gather}
+    -u'' + v(x) = f(x),\quad 0<x<1\\
+    -v'' - u(x) = g(x),\quad 0<x<1\\
+    ~\nonumber\\
+    u(0)=u(1)=0\\
+    v(0)=v(1)=0
+  \end{gather}
+  Vamos considerar sua formulação discreta pelo Método de Diferenças Finitas em uma malha uniforme
+  \begin{equation}
+    x_i = (i-1)h,
+  \end{equation}
+  com $i=1,2,\dotsc,n$, com tamanho de malha $h = 1/(n-1)$. Usando a fórmula de diferenças central de ordem 2 nas EDOs, obtemos
+  \begin{gather}
+    -\left(\frac{u_{i-1}-2u_i+u_{i+1}}{h^2}\right) + v_i = f_i\\
+    -\left(\frac{v_{i-1}-2v_i+v_{i+1}}{h^2}\right) - u_i = g_i,
+  \end{gather}
+  sendo, $u_i \approx u(x_i)$, $v_i\approx v(x_i)$, $f_i=f(x_i)$, $g_i = g(x_i)$ com $i=2,\dotsc,n-1$. Considerando as condições iniciais, tomamos $u_1=u_n=v_1=v_n=0$ e multiplicando por $h^2$, temos
+  \begin{gather}
+    2u_2 - u_3 + h^2v_2 = h^2f_2\\
+    -u_{i-1} + 2u_i -u_{i+1} + h^2v_i = h^2f_i\\
+    -u_{n-2} + 2u_{n-1} + h^2v_{n-1} = h^2f_{n-1}\\
+    ~\nonumber\\
+    2v_2 - v_3 - u_2 = h^2g_2\\
+    - v_{i-1} + 2v_i -v_{i-1} - h^2u_i = h^2g_i\\
+    - v_{n-2} + 2v_{n-1}  - h^2u_{n-1} = h^2g_{n-1}\\    
+  \end{gather}
+  onde, $i=3,\dotsc,n-2$.
 
+  As equações acima formam um sistema linear $2(n-2)\times 2(n-2)$. Podemos escrever sua forma matricial
+  \begin{equation}
+    Aw = h
+  \end{equation}
+  de várias formas a depender da escolha do vetor $w$ em função de $u$ e $v$. Vamos aqui considerar duas delas:
+  \begin{itemize}
+  \item[F1.] $w = (u_2,v_2,\dotsc,u_{n-1},v_{n-1})$
+    \begin{gather}
+      u_i = w_{2(i-1)-1}\\
+      f_i = h_{2(i-1)-1}\\
+      ~\nonumber\\
+      v_i = w_{2(i-1)}\\
+      g_i = h_{2(i-1)}
+    \end{gather}
+  \item[F2.] $w = (u_2,\dotsc,u_{n-1},v_2,\dotsc,v_{n-1})$
+    \begin{gather}
+      u_i = w_{i-1}\\
+      f_i = h_{i-1}\\
+      ~\nonumber\\
+      v_i = w_{i+n-3}\\
+      g_i = h_{i+n-3}
+    \end{gather}    
+  \end{itemize}
+\end{exer}
