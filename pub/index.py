@@ -232,7 +232,7 @@ class Index:
         # card: notas de aula de Matemática Numérica Paralela
         body += '<div class="col-lg-3 col-md-4 col-sm-6">'
         body += '<!-- card: notas de aula de Matemática numérica paralela -->\n'
-        body += '<div class="card border-warning mb-3" style="max-width: 20rem;">\n'
+        body += '<div class="card border-primary mb-3" style="max-width: 20rem;">\n'
         body += '<div class="card-header">Notas de aula</div>\n'
         body += '<div class="card-body">\n'
         body += '<h5 class="card-title">Matemática numérica paralela</h5>\n'
