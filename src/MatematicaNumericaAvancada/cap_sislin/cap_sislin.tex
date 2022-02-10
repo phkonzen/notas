@@ -206,9 +206,11 @@ Uma matriz banda é aquela em que os elementos não nulos estão dispostos em ap
 \end{exer}
 
 
-\subsubsection{Matrizes bloco}
+\subsection{Reordenamento}
 
-\begin{exer}
+O reordenamento de linhas e colunas é uma técnica bastante utilizada para melhorar a estrutura de matrizes esparsas e, com isso, otimizar a aplicação de métodos de solução.
+
+\begin{ex}\label{ex:reordenamento}
   Seja o seguinte PVC
   \begin{gather}
     -u'' + v(x) = f(x),\quad 0<x<1\\
@@ -261,4 +263,32 @@ Uma matriz banda é aquela em que os elementos não nulos estão dispostos em ap
       g_i = h_{i+n-3}
     \end{gather}    
   \end{itemize}
+
+  
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.45\textwidth]{./cap_sislin/dados/figExReordenamento/f1}
+  \includegraphics[width=0.45\textwidth]{./cap_sislin/dados/figExReordenamento/f2}
+  \caption{Esquerda: F1. Direita: F2. Consulte o Exemplo \ref{ex:reordenamento}.}
+  \label{fig:exReordenamento}
+\end{figure}
+
+As escolhas F1. e F2. são duas \emph{enumerações} distintas das incógnitas. A Figure \ref{fig:exReordenamento} mostra a estrutura das matrizes geradas em cada caso. Observamos que a enumeração F1 a matriz gerada tem blocos bem estruturados. Já, a enumeração F2, nos fornece uma matriz banda, o que é uma estrutura mais eficiente.
+\end{ex}
+
+\begin{exer}\label{exer:reordenamento}
+  Consideremos o Exemplo \ref{ex:reordenamento} e assumimos
+  \begin{gather}
+    f(x) = \pi^2\sen(\pi x) + x(x-1)\\
+    g(x) = -2 - \sen(\pi x)
+  \end{gather}
+  Neste caso, a solução analítica do sistema de EDOs associado é
+  \begin{gather}
+    u(x) = \sen(\pi x)\\
+    v(x) = x(x-1)
+  \end{gather}
+  \begin{enumerate}[a)]
+  \item Compute a solução numérica com o Método da Eliminação Gaussiana\footnote{Use o método SciPy \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.solve.html}{scipy.linalg.solve}} usando as enumerações F1 e F2. Compare a soluções numéricas com a analítica. Verifique o tempo e a demanda de memória computacionais para $n=10, 10^2, 10^3, 10^4$.
+  \item Considerando a enumeração F2. Compute a solução numérica com o Método de Eliminação Gaussiana para Matrizes Banda\footnote{Use o método Scipy \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.solve_banded.html}{scipy.linalg.solve\_banded}}. Verifique o tempo e a demanda de memória computacionais para $n=10, 10^2, 10^3, 10^4$ e compare com os resultados obtidos no item a). 
+  \end{enumerate}
 \end{exer}
