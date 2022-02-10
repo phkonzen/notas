@@ -294,4 +294,179 @@ As escolhas F1. e F2. são duas \emph{enumerações} distintas das incógnitas. 
   \end{enumerate}
 \end{exer}
 
+\begin{obs}
+  As enumerações F1 e F2 consideradas no Exemplo \ref{ex:reordenamento} correspondem a permutações na coluna da matriz (e no vetor solução) do sistema linear. Já, no item c) do Exercício \ref{exer:reordenamento}, fizemos o reordenamento das linhas da matriz (e do vetor dos termos constantes) do sistema, em conformidade com a enumeração das incógnitas. Normalmente, esta segunda abordagem leva a uma estrutura computacionalmente mais eficiente.  
+\end{obs}
+
+\subsection{Esquemas de Armazenamento}
+
+A ideia é armazenar apenas os elementos não-nulos de uma matriz esparsa, de forma a economizar a demanda de armazenamento computacional. Cuidados devem ser tomados para que a estrutura de armazenamento utilizada seja adequada para a computação das operações matriciais mais comuns.
+
+\subsubsection{Formato COO}
+
+O formato COO ({\it COOrdinate format}) é o esquema de armazenamento mais simples. As estrutura de dados consiste em três arranjos: (1) um arranjo contendo as entradas não-nulas da matriz; (2) um arranjo contendo seus índices de linha; (3) um arranjo contendo seus índices de coluna.
+
+\begin{ex}\label{ex:coo}
+  Consideremos a seguinte matriz
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      2. & 0. & 1.  & 0.\\
+      0. & 3. & 2.  & -1.\\
+      0  & -1 & -2. & 0.\\
+      0  & 0  & 0   & 1.
+    \end{bmatrix}
+  \end{equation}
+  O formato COO está disponível na biblioteca SciPy com o método \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.coo_matrix.html}{scipy.sparse.coo\_matrix}\footnote{Versões recentes do SciPy estão migrando para a nomenclatura do NumPy. Consulte mais em \href{https://docs.scipy.org/doc/scipy/reference/sparse.html}{SciPy Sparse}.}. Neste caso, temos
+  \begin{lstlisting}
+    import numpy as np
+    import scipy as sp
+    from scipy.sparse import coo_matrix
+
+    data = np.array([2.,1.,3.,2.,-1.,-1.,-2.,1.])
+    row = np.array([0,0,1,1,1,2,2,3])
+    col = np.array([0,2,1,2,3,1,2,3])
+    coo = coo_matrix((data, (row, col)), shape=(4,4))
+    print("coo = \n", coo)
+    print("A = \n", coo.toarray())
+  \end{lstlisting}
+\end{ex}
+
+\begin{itemize}
+\item Vantagens do formato COO são:
+  \begin{itemize}
+  \item permite a entrada de dados duplicados (simplicidade);
+  \item possível conversão rápida entre os formatos CSR e CSC\footnote{Estes formatos são mais eficientes para a computação matricial e são apresentados na sequência.}.
+  \end{itemize}
+  
+\item Desavantagens do formato COO são:
+  \begin{itemize}
+  \item complexidade em operações aritméticas;
+  \item complexidade na extração de submatrizes.
+  \end{itemize}
+\end{itemize}
+
+\begin{obs}
+  O SciPy conta com vários métodos para o tratamento e operação com matrizes esparsas armazenadas no formato COO. Consulte mais em \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.coo_matrix.html}{scipy.sparse.coo\_matrix}.
+\end{obs}
+
+\subsubsection{Formato CSR}
+
+O formato {\it Compressed Sparse Row} (CSR) é uma variação do COO que busca diminuir a alocação de dados repetidos. Assim como o COO, o formato conta com três arranjos $d$, $c$, $p$:
+\begin{itemize}
+\item $d$ é o arranjo contendo os elementos não-nulos da matriz, ordenados por linhas (i.e., da esquerda para direita, de cima para baixo);
+\item $c$ é o arranjo contendo o índice das colunas das entradas não-nulas da matriz (como no formato COO);
+\item $p$ é um arranjo cujos elementos são a posição no arranjo $c$ em que cada linha da matriz começa a ser representada. O número de elementos de $i$-ésima linha da matriz dado por $p_{j+1}-p_j$.
+\end{itemize}
+
+\begin{ex}
+  No Exemplo \ref{ex:coo}, alocamos a matriz
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      2. & 0. & 1.  & 0. \\
+      0. & 3. & 2.  & -1.\\
+      0  & -1 & -2. & 0. \\
+      0  & 0  & 0   & 1.
+    \end{bmatrix}
+  \end{equation}
+  no formato COO. Aqui, vamos converter a alocação para o formato CSR e, então, verificar seus atributos.
+  \begin{lstlisting}
+    from scipy.sparse import csr_matrix
+    csr = coo.tocsr()
+    d = csr.data
+    c = csr.indices
+    p = csr.indptr
+    print(d)
+    print(c)
+    print(p)
+  \end{lstlisting}
+  Para fixarmos as ideias, temos
+  \begin{gather}
+    d = (2., 1., 3., 2., -1., -1., -2., 1.)\\
+    c = (0, 2, 1, 2, 3, 1, 2, 3)\\
+    p = (0, 2, 5, 7, 8)
+  \end{gather}
+  Assim sendo, o elemento \lstinline+p[i=2] = 5+ aponta para o \lstinline+c[k=5] = 1+, o que fornece que \lstinline+A[i=2,j=1]=d_{k}=-1.+. Verifique!
+\end{ex}
+
+\begin{itemize}
+\item Vantagens do formato CSR:
+  \begin{itemize}
+  \item operações aritméticas eficientes;
+  \item fatiamento por linhas eficiente;
+  \item multiplicação matriz vetor eficiente.
+  \end{itemize}
+\item Desvantagens do formato COO:
+  \begin{itemize}
+  \item fatiamento por colunas não eficiente;
+  \item custo elevado de realocamento com alteração da esparsidade da matriz.
+  \end{itemize}
+\end{itemize}
+
+\begin{obs}
+  O SciPy conta com vários métodos para o tratamento e operação com matrizes esparsas armazenadas no formato CSR. Consulte mais em \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html}{scipy.sparse.csr\_matrix}.
+\end{obs}
+
+\subsubsection{Formato CSC}
+
+O formato {\it Compressed Sparse Column} (CSC) é uma variação análoga do CSR, mas para armazenamento por colunas. O formato conta com três arranjos $d$, $l$, $p$:
+\begin{itemize}
+\item $d$ é o arranjo contendo os elementos não-nulos da matriz, ordenados por colunas (i.e., de cima para baixo, da esquerda para direita);
+\item $l$ é o arranjo contendo o índice das linhas das entradas não-nulas da matriz;
+\item $p$ é um arranjo cujos elementos são a posição no arranjo $l$ em que cada coluna da matriz começa a ser representada. O número de elementos de $j$-ésima coluna da matriz dado por $p_{j+1}-p_j$.
+\end{itemize}
+
+\begin{ex}
+  No Exemplo \ref{ex:coo}, alocamos a matriz
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      2. & 0. & 1.  & 0. \\
+      0. & 3. & 2.  & -1.\\
+      0  & -1 & -2. & 0. \\
+      0  & 0  & 0   & 1.
+    \end{bmatrix}
+  \end{equation}
+  no formato COO. Aqui, vamos converter a alocação para o formato CSC e, então, verificar seus atributos.
+  \begin{lstlisting}
+    from scipy.sparse import csc_matrix
+    csc = coo.tocsc()
+    d = csc.data
+    l = csc.indices
+    p = csc.indptr
+    print(d)
+    print(l)
+    print(p)
+  \end{lstlisting}
+  Para fixarmos as ideias, temos
+  \begin{gather}
+    d = (2.,  3., -1.,  1.,  2., -2., -1.,  1.)\\
+    l = (0, 1, 2, 0, 1, 2, 1, 3)\\
+    p = (0 1 3 6 8)
+  \end{gather}
+  Assim sendo, o elemento \lstinline+p[j=2] = 3+ aponta para o \lstinline+l[k=3] = 0+, o que informa que \lstinline+A[i=0,j=2]=d_{k}=1.+. Verifique!
+\end{ex}
+
+\begin{itemize}
+\item Vantagens do formato CSC:
+  \begin{itemize}
+  \item fatiamento por colunas eficiente;
+  \item operações aritméticas eficientes;
+  \item multiplicação matriz vetor eficiente\footnote{CSR é mais eficiente em muitos casos.}.
+  \end{itemize}
+\item Desvantagens do formato COO:
+  \begin{itemize}
+  \item fatiamento por linhas não eficiente;
+  \item custo elevado de realocamento com alteração da esparsidade da matriz.
+  \end{itemize}
+\end{itemize}
+
+\begin{obs}
+  O SciPy conta com vários métodos para o tratamento e operação com matrizes esparsas armazenadas no formato CSC. Consulte mais em \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csc_matrix.html}{scipy.sparse.csc\_matrix}.
+\end{obs}
+
+\begin{obs}
+  Além dos formatos COO, CSR e CSC, exitem ainda vários outros que podem empregados e que são mais eficientes em determinadas aplicações. Recomendamos a leitura de \cite[Seção 3.4]{Saad2003} e da documentação do \href{https://docs.scipy.org/doc/scipy/reference/sparse.html}{scipy.sparse}.
+\end{obs}
 
