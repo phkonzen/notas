@@ -452,96 +452,105 @@ O formato {\it Compressed Sparse Column} (CSC) é uma variação análoga do CSR
   Além dos formatos COO, CSR e CSC, exitem ainda vários outros que podem empregados e que são mais eficientes em determinadas aplicações. Recomendamos a leitura de \cite[Seção 3.4]{Saad2003} e da documentação do \href{https://docs.scipy.org/doc/scipy/reference/sparse.html}{scipy.sparse}.
 \end{obs}
 
-\subsection{Reordenamento}
-
-O reordenamento de linhas e colunas é uma técnica bastante utilizada para melhorar a estrutura de matrizes esparsas e, com isso, otimizar a aplicação de métodos de solução.
-
-\begin{ex}\label{ex:reordenamento}
-  Seja o seguinte PVC
-  \begin{gather}
-    -u'' + v(x) = f(x),\quad 0<x<1\\
-    -v'' - u(x) = g(x),\quad 0<x<1\\
-    ~\nonumber\\
-    u(0)=u(1)=0\\
-    v(0)=v(1)=0
-  \end{gather}
-  Vamos considerar sua formulação discreta pelo Método de Diferenças Finitas em uma malha uniforme
-  \begin{equation}
-    x_i = (i-1)h,
-  \end{equation}
-  com $i=1,2,\dotsc,n$, com tamanho de malha $h = 1/(n-1)$. Usando a fórmula de diferenças central de ordem 2 nas EDOs, obtemos
-  \begin{gather}
-    -\left(\frac{u_{i-1}-2u_i+u_{i+1}}{h^2}\right) + v_i = f_i\\
-    -\left(\frac{v_{i-1}-2v_i+v_{i+1}}{h^2}\right) - u_i = g_i,
-  \end{gather}
-  sendo, $u_i \approx u(x_i)$, $v_i\approx v(x_i)$, $f_i=f(x_i)$, $g_i = g(x_i)$ com $i=2,\dotsc,n-1$. Considerando as condições iniciais, tomamos $u_1=u_n=v_1=v_n=0$ e multiplicando por $h^2$, temos
-  \begin{gather}
-    2u_2 - u_3 + h^2v_2 = h^2f_2\\
-    -u_{i-1} + 2u_i -u_{i+1} + h^2v_i = h^2f_i\\
-    -u_{n-2} + 2u_{n-1} + h^2v_{n-1} = h^2f_{n-1}\\
-    ~\nonumber\\
-    2v_2 - v_3 - u_2 = h^2g_2\\
-    - v_{i-1} + 2v_i -v_{i-1} - h^2u_i = h^2g_i\\
-    - v_{n-2} + 2v_{n-1}  - h^2u_{n-1} = h^2g_{n-1}\\    
-  \end{gather}
-  onde, $i=3,\dotsc,n-2$.
-
-  As equações acima formam um sistema linear $2(n-2)\times 2(n-2)$. Podemos escrever sua forma matricial
-  \begin{equation}
-    Aw = h
-  \end{equation}
-  de várias formas a depender da escolha do vetor $w$ em função de $u$ e $v$. Vamos aqui considerar duas delas:
-  \begin{itemize}
-  \item[F1.] $w = (u_2,v_2,\dotsc,u_{n-1},v_{n-1})$
-    \begin{gather}
-      u_i = w_{2(i-1)-1}\\
-      f_i = h_{2(i-1)-1}\\
-      ~\nonumber\\
-      v_i = w_{2(i-1)}\\
-      g_i = h_{2(i-1)}
-    \end{gather}
-  \item[F2.] $w = (u_2,\dotsc,u_{n-1},v_2,\dotsc,v_{n-1})$
-    \begin{gather}
-      u_i = w_{i-1}\\
-      f_i = h_{i-1}\\
-      ~\nonumber\\
-      v_i = w_{i+n-3}\\
-      g_i = h_{i+n-3}
-    \end{gather}    
-  \end{itemize}
-
-  
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.45\textwidth]{./cap_sislin/dados/figExReordenamento/f1}
-  \includegraphics[width=0.45\textwidth]{./cap_sislin/dados/figExReordenamento/f2}
-  \caption{Esquerda: F1. Direita: F2. Consulte o Exemplo \ref{ex:reordenamento}.}
-  \label{fig:exReordenamento}
-\end{figure}
-
-As escolhas F1. e F2. são duas \emph{enumerações} distintas das incógnitas. A Figure \ref{fig:exReordenamento} mostra a estrutura das matrizes geradas em cada caso. Observamos que a enumeração F1 a matriz gerada tem blocos bem estruturados. Já, a enumeração F2, nos fornece uma matriz banda, o que é uma estrutura mais eficiente.
-\end{ex}
-
-\begin{exer}\label{exer:reordenamento}
-  Consideremos o Exemplo \ref{ex:reordenamento} e assumimos
-  \begin{gather}
-    f(x) = \pi^2\sen(\pi x) + x(x-1)\\
-    g(x) = -2 - \sen(\pi x)
-  \end{gather}
-  Neste caso, a solução analítica do sistema de EDOs associado é
-  \begin{gather}
-    u(x) = \sen(\pi x)\\
-    v(x) = x(x-1)
-  \end{gather}
+\begin{exer}
+  Considere o problema de Poisson dado no Exemplo \ref{ex:poisson}.
   \begin{enumerate}[a)]
-  \item Compute a solução numérica com o Método da Eliminação Gaussiana\footnote{Use o método SciPy \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.solve.html}{scipy.linalg.solve}} usando as enumerações F1 e F2. Compare a soluções numéricas com a analítica. Verifique o tempo e a demanda de memória computacionais para $n=10, 10^2, 10^3, 10^4$.
-  \item Considerando a enumeração F2. Implemente o Método de Eliminação Gaussiana otimizado para matriz banda gerada\footnote{Baseie-se no Algoritmo de Thomas, Código\ref{lst:algThomas}}. Verifique o tempo e a demanda de memória computacionais para $n=10, 10^2, 10^3, 10^4$ e compare com os resultados obtidos no item a).
-  \item Considerando a enumeração F1. Reordene as equações do sistema discreto de forma a obter uma matriz pentadiagonal. Então, compare seu uso computacional em relação as abordagens dos itens anteriores\footnote{Neste caso, pode-se utilizar o método SciPy \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.solve_banded.html}{scipy.linalg.solve\_banded}}. Por fim, qual é a melhor abordagem?
+  \item Armazene a matriz do problema discreto associado usando o formato COO.
+  \item Converta a matriz armazenada para o formato CSR\footnote{Use o método \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.coo_matrix.tocsr.html}{coo\_matrix.tocsr()}.}. Então, compute a solução do problema discreto com o método \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.spsolve.html}{spsolve}\footnote{\lstinline+scipy.sparse.linalg.spsolve+ é uma implementação do Método LU otimizado para matrizes esparsas.}.
+  \item Converta a matriz armazenada para o formato CSC\footnote{Use o método \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.coo_matrix.tocsc.html}{coo\_matrix.tocsc()}.}. Então, compute a solução do problema discreto com o método \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.spsolve.html}{spsolve}.
+  \item Compare a eficiência da computação entre os itens b) e c) para tamanhos de malha $h = 10^{-1}, 10^{-2}, 10^{-3}, 10^{-4}$.
   \end{enumerate}
 \end{exer}
 
-\begin{obs}
-  As enumerações F1 e F2 consideradas no Exemplo \ref{ex:reordenamento} correspondem a permutações na coluna da matriz (e no vetor solução) do sistema linear. Já, no item c) do Exercício \ref{exer:reordenamento}, fizemos o reordenamento das linhas da matriz (e do vetor dos termos constantes) do sistema, em conformidade com a enumeração das incógnitas. Normalmente, esta segunda abordagem leva a uma estrutura computacionalmente mais eficiente.  
-\end{obs}
+% \subsection{Reordenamento}
+
+% O reordenamento de linhas e colunas é uma técnica bastante utilizada para melhorar a estrutura de matrizes esparsas e, com isso, otimizar a aplicação de métodos de solução.
+
+% \begin{ex}\label{ex:reordenamento}
+%   Seja o seguinte PVC
+%   \begin{gather}
+%     -u'' + v(x) = f(x),\quad 0<x<1\\
+%     -v'' - u(x) = g(x),\quad 0<x<1\\
+%     ~\nonumber\\
+%     u(0)=u(1)=0\\
+%     v(0)=v(1)=0
+%   \end{gather}
+%   Vamos considerar sua formulação discreta pelo Método de Diferenças Finitas em uma malha uniforme
+%   \begin{equation}
+%     x_i = (i-1)h,
+%   \end{equation}
+%   com $i=1,2,\dotsc,n$, com tamanho de malha $h = 1/(n-1)$. Usando a fórmula de diferenças central de ordem 2 nas EDOs, obtemos
+%   \begin{gather}
+%     -\left(\frac{u_{i-1}-2u_i+u_{i+1}}{h^2}\right) + v_i = f_i\\
+%     -\left(\frac{v_{i-1}-2v_i+v_{i+1}}{h^2}\right) - u_i = g_i,
+%   \end{gather}
+%   sendo, $u_i \approx u(x_i)$, $v_i\approx v(x_i)$, $f_i=f(x_i)$, $g_i = g(x_i)$ com $i=2,\dotsc,n-1$. Considerando as condições iniciais, tomamos $u_1=u_n=v_1=v_n=0$ e multiplicando por $h^2$, temos
+%   \begin{gather}
+%     2u_2 - u_3 + h^2v_2 = h^2f_2\\
+%     -u_{i-1} + 2u_i -u_{i+1} + h^2v_i = h^2f_i\\
+%     -u_{n-2} + 2u_{n-1} + h^2v_{n-1} = h^2f_{n-1}\\
+%     ~\nonumber\\
+%     2v_2 - v_3 - u_2 = h^2g_2\\
+%     - v_{i-1} + 2v_i -v_{i-1} - h^2u_i = h^2g_i\\
+%     - v_{n-2} + 2v_{n-1}  - h^2u_{n-1} = h^2g_{n-1}\\    
+%   \end{gather}
+%   onde, $i=3,\dotsc,n-2$.
+
+%   As equações acima formam um sistema linear $2(n-2)\times 2(n-2)$. Podemos escrever sua forma matricial
+%   \begin{equation}
+%     Aw = h
+%   \end{equation}
+%   de várias formas a depender da escolha do vetor $w$ em função de $u$ e $v$. Vamos aqui considerar duas delas:
+%   \begin{itemize}
+%   \item[F1.] $w = (u_2,v_2,\dotsc,u_{n-1},v_{n-1})$
+%     \begin{gather}
+%       u_i = w_{2(i-1)-1}\\
+%       f_i = h_{2(i-1)-1}\\
+%       ~\nonumber\\
+%       v_i = w_{2(i-1)}\\
+%       g_i = h_{2(i-1)}
+%     \end{gather}
+%   \item[F2.] $w = (u_2,\dotsc,u_{n-1},v_2,\dotsc,v_{n-1})$
+%     \begin{gather}
+%       u_i = w_{i-1}\\
+%       f_i = h_{i-1}\\
+%       ~\nonumber\\
+%       v_i = w_{i+n-3}\\
+%       g_i = h_{i+n-3}
+%     \end{gather}    
+%   \end{itemize}
+
+  
+% \begin{figure}[H]
+%   \centering
+%   \includegraphics[width=0.45\textwidth]{./cap_sislin/dados/figExReordenamento/f1}
+%   \includegraphics[width=0.45\textwidth]{./cap_sislin/dados/figExReordenamento/f2}
+%   \caption{Esquerda: F1. Direita: F2. Consulte o Exemplo \ref{ex:reordenamento}.}
+%   \label{fig:exReordenamento}
+% \end{figure}
+
+% As escolhas F1. e F2. são duas \emph{enumerações} distintas das incógnitas. A Figure \ref{fig:exReordenamento} mostra a estrutura das matrizes geradas em cada caso. Observamos que a enumeração F1 a matriz gerada tem blocos bem estruturados. Já, a enumeração F2, nos fornece uma matriz banda, o que é uma estrutura mais eficiente.
+% \end{ex}
+
+% \begin{exer}\label{exer:reordenamento}
+%   Consideremos o Exemplo \ref{ex:reordenamento} e assumimos
+%   \begin{gather}
+%     f(x) = \pi^2\sen(\pi x) + x(x-1)\\
+%     g(x) = -2 - \sen(\pi x)
+%   \end{gather}
+%   Neste caso, a solução analítica do sistema de EDOs associado é
+%   \begin{gather}
+%     u(x) = \sen(\pi x)\\
+%     v(x) = x(x-1)
+%   \end{gather}
+%   \begin{enumerate}[a)]
+%   \item Compute a solução numérica com o Método da Eliminação Gaussiana\footnote{Use o método SciPy \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.solve.html}{scipy.linalg.solve}} usando as enumerações F1 e F2. Compare a soluções numéricas com a analítica. Verifique o tempo e a demanda de memória computacionais para $n=10, 10^2, 10^3, 10^4$.
+%   \item Considerando a enumeração F2. Implemente o Método de Eliminação Gaussiana otimizado para matriz banda gerada\footnote{Baseie-se no Algoritmo de Thomas, Código\ref{lst:algThomas}}. Verifique o tempo e a demanda de memória computacionais para $n=10, 10^2, 10^3, 10^4$ e compare com os resultados obtidos no item a).
+%   \item Considerando a enumeração F1. Reordene as equações do sistema discreto de forma a obter uma matriz pentadiagonal. Então, compare seu uso computacional em relação as abordagens dos itens anteriores\footnote{Neste caso, pode-se utilizar o método SciPy \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.solve_banded.html}{scipy.linalg.solve\_banded}}. Por fim, qual é a melhor abordagem?
+%   \end{enumerate}
+% \end{exer}
+% \begin{obs}
+%   As enumerações F1 e F2 consideradas no Exemplo \ref{ex:reordenamento} correspondem a permutações na coluna da matriz (e no vetor solução) do sistema linear. Já, no item c) do Exercício \ref{exer:reordenamento}, fizemos o reordenamento das linhas da matriz (e do vetor dos termos constantes) do sistema, em conformidade com a enumeração das incógnitas. Normalmente, esta segunda abordagem leva a uma estrutura computacionalmente mais eficiente.  
+% \end{obs}
 
 
