@@ -130,7 +130,7 @@ com $i=n-1,n-2,\dotsc,1$.
   \end{enumerate}
 \end{exer}
 
-\begin{exer}
+\begin{exer}\label{exer:pvc1d}
   Considere que o problema de valor de contorno (PVC)
   \begin{gather}
     -u'' = \sen \pi x,\quad 0 < x < 1,\\
@@ -554,3 +554,139 @@ O formato {\it Compressed Sparse Column} (CSC) é uma variação análoga do CSR
 % \end{obs}
 
 
+\section{Métodos Iterativos}\label{cap_sislin_sec_metiter}
+
+\subsection{Método de Subespaço de Krylov}
+
+A ideia básica é resolver o sistema linear
+\begin{equation}
+  Ax = b
+\end{equation}
+por um \emph{método de projeção}. Mais especificamente, busca-se uma solução aproximada $x_m\in\mathbb{R^n}$ no subespaço afim $x_0 + \mathcal{K}_m$ de dimensão $m$, impondo-se a \emph{condição de Petrov}\footnote{Georgi Iwanowitsch Petrov, 1912 - 1987, engenheiro soviético. Fonte: \href{https://de.wikipedia.org/wiki/Georgi_Iwanowitsch_Petrow}{Wikipedia}.}\emph{-Galerkin}\footnote{Boris Galerkin, 1871 - 1945, engenheiro e matemático soviético. Fonte: \href{https://pt.wikipedia.org/wiki/Boris_Galerkin}{Wikipédia}.}
+\begin{equation}
+  b - Ax_m \perp \mathcal{L}_m,
+\end{equation}
+onde $\mathcal{L}_m$ também é um subespaço de dimensão $m$. Quando $\mathcal{K}_m$ é um \emph{subespaço de Krylov}\footnote{Alexei Nikolajewitsch Krylov, 1863 - 1945, engenheiro e matemático russo. Fonte: \href{https://pt.wikipedia.org/wiki/Alexei_Krylov}{Wikipédia}.}, i.e.
+\begin{equation}
+  \mathcal{K}_m(A,r_0) = \{r_0, Ar_0, A^2r_0,\dotsc,A^{m-1}r_0\},
+\end{equation}
+temos o Método de Subespaço de Krylov. Aqui, temos o \emph{resíduo}
+\begin{equation}
+  r_0 = b - Ax_0,
+\end{equation}
+sendo $x_0$ uma aproximação inicial para a solução do sistema. Notemos que com isso, temos que a aproximação calculada é tal que
+\begin{equation}
+  A^{-1}b \approx x_m = x_0 + q_{m-1}(A)r_0,
+\end{equation}
+onde $q_{m-1}$ é um dado polinômio de grau $m-1$. No caso particular de $x_0 = 0$, temos
+\begin{equation}
+  A^{-1}b \approx q_{m-1}(A)x_0.
+\end{equation}
+
+Diferentes versões deste método são obtidas pelas escolhas do subespaço $\mathcal{L}_m$ e formas de precondicionamento do sistema.
+
+\subsection{GMRES}
+
+O GMRES (do inglês, {\it Generalized Minimum Residual Method}\footnote{Desenvolvido por Yousef Saad e H. Schultz, 1986. Fonte: \href{https://en.wikipedia.org/wiki/Generalized_minimal_residual_method}{Wikipedia}.}) é um Método de Subespaço de Krylov assumindo $\mathcal{L}_m = A\mathcal{K}_m$, com
+\begin{equation}
+  \mathcal{K}_m = \mathcal{K}_m(A,v_1) = \{v_1, Av_1, \dotsc, A^{m-1}v_1\},
+\end{equation}
+onde $v_1 = r_0/\|r_0\|$ é o vetor unitário do resíduo $r_0 = b - Ax_0$ para uma dada aproximação inicial $x_0$ da solução do sistema $Ax = b$.
+
+Vamos derivar o método observando que qualquer vetor $x$ em $x_0 + \mathcal{K}_m$ pode ser escrito como segue
+\begin{equation}
+  x = x_0 + V_my
+\end{equation}
+onde, $V_m = [v_1,\dotsc,v_m]$ é a matriz $n\times m$ cujas colunas formam uma base ortogonal $\{v_1, \dotsc, v_m\}$ de $\mathcal{K}_m$ e $y\in\mathcal{R}^m$. Aqui, $V_m$ é computada usando-se o seguinte \emph{Método de Arnoldi}\footnote{Walter Edwin Arnoldi, 1917 - 1995, engenheiro americano estadunidense. Fonte: \href{https://pt.wikipedia.org/wiki/Walter_Edwin_Arnoldi}{Wikipédia}.}\emph{- Gram}\footnote{Jørgen Pedersen Gram, 1850 - 1916, matemático dinamarquês. Fonte: \href{https://pt.wikipedia.org/wiki/J\%C3\%B8rgen_Pedersen_Gram}{Wikipédia}.}\emph{-Schmidt}\footnote{Erhard Schmidt, 1876 - 1959, matemático alemão. Fonte: \href{https://pt.wikipedia.org/wiki/Erhard_Schmidt}{Wikipédia}.} \emph{Modificado} \cite[Subseção 6.3]{Saad2003}:
+\begin{enumerate}[1.]
+\item Dado $v_1$ de norma 1
+\item Para $j=1,\dotsc,m$:
+\item \qquad $w_j := Av_j$
+\item \qquad Para $i=1,\dotsc,j$:
+\item \qquad \qquad $h_{i,j} := (w_j,v_i)$
+\item \qquad $w_j := w_j - h_{i,j}v_i$
+\item \quad $h_{j+1,j} := \|w_j\|$
+\item \quad Se $h_{j+1,j}=0$, então pare.
+\item \quad $v_{j+1} = w_j/h_{j+1,j}$
+\end{enumerate}
+
+Seja, então, $\bar{H}_m = [h_{i,j}]_{i,j=1}^{m+1,m}$ a matriz de Hessenberg\footnote{Karl Adolf Hessenberg, 1904 - 1959, engenheiro e matemático alemão. Fonte: \href{https://pt.wikipedia.org/wiki/Karl_Hessenberg}{Wikipédia}.} cujas entradas não nulas são computadas pelo algoritmo acima (Passos 5. e 6.). Pode-se mostrar\footnote{Consulte \cite[Proposição 6.5]{Saad2003}.} que
+\begin{align}
+  J(y) &= \|b-Ax\|\\
+       &= \|b - A(x_0 + V_my)\|\\
+       &= \|\beta e_1 - \bar{H}_my\|
+\end{align}
+onde, $\beta = \|r_0\|$.
+
+A aproximação GMRES $x_m$ é então computada como
+\begin{align}
+  x_m &= x_0 + V_my_m,\\
+  y_m &= \min_{y} \|\beta e_1 - \bar{H}_my\|
+\end{align}
+Observamos que este último é um pequeno problema de minimização, sendo que requer a solução de um sistema $(m+1)\times m$ de mínimos quadrados, sendo $m$ normalmente pequeno.
+
+
+Em resumo, a solução GMRES $x_m$ é computada seguindo os seguintes passos:
+\begin{enumerate}[1.]
+\item Escolhemos uma aproximação inicial $x_0$ para a solução de $Ax = b$.
+\item Calculamos o resíduo $r_0 = b - Ax_0$.
+\item Calculamos o vetor unitário $v_1 = r_0/\|r_0\|$.
+\item Usamos o Método de Arnoldi-Gram-Schmidt Modificado para calculamos uma base ortogonal $V_m$ de $\mathcal{K}_m$ e a matriz de Hessenberg $\bar{H}_m$ associada.
+\item Calculamos $y_m = \min_{y} \|\beta e_1 - \hat{H}_my\|$.
+\item Calculamos $x_m = x_0 + V_my$.
+\end{enumerate}
+
+\begin{obs}[Convergência]
+  Pode-se mostrar que o GMRES converge em ao menos $n$ passos.
+\end{obs}
+
+\begin{obs}[GMRES com a ortogonalização de Householder]
+  No algoritmo acima, o Método Modificado de Gram-Schmidt é utilizado no processo de Arnoldi. Uma versão numericamente mais eficiente é obtida quando a \emph{Transformação de Householder}\footnote{Alston Scott Householder, 1904 - 1993, matemático americano estadunidense. Fonte: \href{https://pt.wikipedia.org/wiki/Alston_Scott_Householder}{Wikipédia}.} é utilizada. Consulte mais em \cite[Subsetion 6.5.2]{Saad2003}.
+\end{obs}
+
+\begin{obs}[GMRES com Reinicialização]
+  O {\it Restarted GMRES} é uma variação do método para sistemas que requerem uma aproximação GMRES $x_m$ com $m$ grande. Nestes casos, o método original pode demandar um custo muito alto de memória computacional. A ideia consiste em assumir $m$ pequeno e, caso não suficiente, recalcular a aproximação GMRES com $x_0 = x_m$. Este algoritmo pode ser descrito como segue.
+  \begin{enumerate}[1.]
+  \item Computamos $r_0 = b - Ax_0$, $\beta = \|r_0\|$ e $v_1 = r_0/\beta$
+  \item Computamos $V_m$ e $\hat{H}_m$ pelo método de Arnoldi
+  \item Computamos
+    \begin{gather}
+      y_m = \min_y \|\beta e_1 - \hat{H}_my\|\\
+      x_m = x_0 + V_my_m
+    \end{gather}
+  \item Se $\|b-Ax_m\|$ é satisfatória, paramos. Caso contrário, setamos $x_0 := x_m$ e voltamos ao passo 1.
+  \end{enumerate}
+
+  A convergência do {\it Restarted GMRES} não é garantida para matrizes que não sejam positiva-definidas.
+\end{obs}
+
+\begin{exer}\label{exer:pvc1d_gmres}
+  Considere o problema discreto do Exercício \ref{exer:pvc1d}.
+  \begin{enumerate}[a)]
+  \item Compute a solução com a implementação {\it Restarted GMRES}
+    \begin{center}
+    \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.gmres.html}{scipy.sparse.linalg.gmres}.
+  \end{center}
+  \item Por padrão, o intervalo de iterações entre as inicializações é \lstinline+restart=20+. Compare o desempenho para diferentes intervalos de reinicialização.
+  \item Compare o desempenho entre as abordagens dos ítens a) e b) frente a implementação do Método de Eliminação Gaussiana disponível em
+    \begin{center}
+    \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.spsolve.html#scipy.sparse.linalg.spsolve}{scypi.sparse.linalg.spsolve}.
+  \end{center}
+
+  \end{enumerate}
+\end{exer}
+
+\begin{exer}\label{exer:poisson_gmres}
+  Considere o problema discreto trabalhado no Exemplo \ref{ex:poisson}.
+  \begin{enumerate}[a)]
+  \item Compute a solução com a implementação {\it Restarted GMRES}
+    \begin{center}
+\href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.gmres.html}{scipy.sparse.linalg.gmres}.
+\end{center}
+  \item Por padrão, o intervalo de iterações entre as inicializações é \lstinline+restart=20+. Compare o desempenho para diferentes intervalos de reinicialização.
+  \item Compare o desempenho entre as abordagens dos ítens a) e b) frente a implementação do Método de Eliminação Gaussiana disponível em
+    \begin{center}
+\href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.spsolve.html#scipy.sparse.linalg.spsolve}{scypi.sparse.linalg.spsolve}.
+\end{center}
+  \end{enumerate}
+\end{exer}
