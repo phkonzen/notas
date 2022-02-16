@@ -556,7 +556,11 @@ O formato {\it Compressed Sparse Column} (CSC) é uma variação análoga do CSR
 
 \section{Métodos Iterativos}\label{cap_sislin_sec_metiter}
 
-\subsection{Método de Subespaço de Krylov}
+\subsection{GMRES}
+
+O GMRES (do inglês, {\it Generalized Minimum Residual Method}\footnote{Desenvolvido por Yousef Saad e H. Schultz, 1986. Fonte: \href{https://en.wikipedia.org/wiki/Generalized_minimal_residual_method}{Wikipedia}.}) é um Método de Subespaço de Krylov e é considerado uma das mais eficientes técnicas para a resolução de sistemas lineares gerais e de grande porte (esparsos).
+
+\subsubsection{Método de Subespaço de Krylov}
 
 A ideia básica é resolver o sistema linear
 \begin{equation}
@@ -585,9 +589,9 @@ onde $q_{m-1}$ é um dado polinômio de grau $m-1$. No caso particular de $x_0 =
 
 Diferentes versões deste método são obtidas pelas escolhas do subespaço $\mathcal{L}_m$ e formas de precondicionamento do sistema.
 
-\subsection{GMRES}
+\subsubsection{GMRES}
 
-O GMRES (do inglês, {\it Generalized Minimum Residual Method}\footnote{Desenvolvido por Yousef Saad e H. Schultz, 1986. Fonte: \href{https://en.wikipedia.org/wiki/Generalized_minimal_residual_method}{Wikipedia}.}) é um Método de Subespaço de Krylov assumindo $\mathcal{L}_m = A\mathcal{K}_m$, com
+O GMRES é um Método de Subespaço de Krylov assumindo $\mathcal{L}_m = A\mathcal{K}_m$, com
 \begin{equation}
   \mathcal{K}_m = \mathcal{K}_m(A,v_1) = \{v_1, Av_1, \dotsc, A^{m-1}v_1\},
 \end{equation}
@@ -690,3 +694,34 @@ Em resumo, a solução GMRES $x_m$ é computada seguindo os seguintes passos:
 \end{center}
   \end{enumerate}
 \end{exer}
+
+\subsection{Método do Gradiente Conjugado}
+
+O Método do Gradiente Conjugado é o uma das mais eficientes técnicas iterativas para a resolução de sistema linear com matriz esparsa, simétrica e definida positiva. Portanto, vamos assumir que o sistema
+\begin{equation}
+  Ax = b
+\end{equation}
+onde, a $A$ é \emph{simétrica} e \emph{definida positiva}.
+
+O método pode ser derivado a partir do \footnote{Walter Edwin Arnoldi, 1917 - 1995, engenheiro americano estadunidense. Fonte: \href{https://pt.wikipedia.org/wiki/Walter_Edwin_Arnoldi}{Wikipédia}.} \cite[Seção 6.7]{Saad2003} ou como uma variação do Método do Gradiente. Este é caminho que será adotado aqui.
+
+\subsubsection{Método do Gradiente}
+
+A ideia é reformular o sistema $Ax = b$ como um problema de minimização. Vamos começar definindo o funcional
+\begin{equation}
+  J(y) = \frac{1}{2}y^TAy - y^Tb.
+\end{equation}
+O vetor $y$ que minimiza $J$ é a solução de $Ax = b$. De fato, denotando $x$ a solução de $Ax = b$, temos
+\begin{align}
+  J(y) &= \frac{1}{2}y^TAy - y^Tb + \frac{1}{2}x^TAx - \frac{1}{2}x^TAx\\
+       &= \frac{1}{2}(y-x)^TA(y-x) - \frac{1}{2}x^TAx
+\end{align}
+O termo é independente de $y$ e, portanto, $J$ é mínimo quando
+\begin{equation}
+  \frac{1}{2}(y-x)^TA(y-x)
+\end{equation}
+é minimizado. Agora, como $A$ é definida positiva\footnote{$x^TAx > 0$ para todo $x\neq 0$.}, o menor valor deste termo ocorre quando $y-x = 0$, i.e. $y=x$.
+
+
+
+
