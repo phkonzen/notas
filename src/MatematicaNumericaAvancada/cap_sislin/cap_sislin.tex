@@ -695,6 +695,10 @@ Em resumo, a solução GMRES $x_m$ é computada seguindo os seguintes passos:
   \end{enumerate}
 \end{exer}
 
+\begin{exer}
+  Faça sua própria implementação do método GMRES. Valide-a e compare-a com as resoluções dos Exercícios \ref{exer:pvc1d_gmres} e \ref{exer:possion_gmres}.
+\end{exer}
+
 \subsection{Método do Gradiente Conjugado}
 
 O Método do Gradiente Conjugado é o uma das mais eficientes técnicas iterativas para a resolução de sistema linear com matriz esparsa, simétrica e definida positiva. Portanto, vamos assumir que o sistema
@@ -722,6 +726,63 @@ O termo é independente de $y$ e, portanto, $J$ é mínimo quando
 \end{equation}
 é minimizado. Agora, como $A$ é definida positiva\footnote{$x^TAx > 0$ para todo $x\neq 0$.}, o menor valor deste termo ocorre quando $y-x = 0$, i.e. $y=x$.
 
+Observamos, também, que o gradiente de $J$ é
+\begin{equation}
+  \nabla J = Ay - b
+\end{equation}
+i.e., é o oposto do resíduo $r = b - Ay$. Com isso, temos que $y = x$ é a única escolha tal que $\nabla J = 0$. Ainda, temos que $\nabla J$ é o vetor que aponta na direção e sentido de maior crescimento de $J$. Isso nos motiva a aplicarmos a seguinte iteração\footnote{Iteração do Método da Descida mais Rápida.}
+\begin{gather}
+  x^{(0)} = \text{aprox. inicial}\\
+  x^{(k+1)} = x^{(k)} - \alpha_k\nabla J\left(x^{(k)}\right)
+\end{gather}
+onde, $\alpha_k>0$ é um escalar que regula o tamanho do passo a cada iteração. Lembrando que $-\nabla J = r$, temos que a iteração é equivalente a
+\begin{equation}
+  x^{(k+1)} = x^{(k)} + \alpha_kr^{(k)}.
+\end{equation}
+Notamos que $x^{(k+1)}$ é um ponto na reta $\left\{x^{(k)} + \alpha r^{(k)}:~\alpha\in\mathbb{R}\right\}$ que tem a mesma direção de $\nabla J\left(x^{(k)}\right)$ e passa pelo ponto $x^{(k)}$. O procedimento de escolher um $\alpha^{(k)}$ entre todos os possíveis, é conhecido como pesquisa linear (em inglês, {\it line search}).
 
+A cada iteração, queremos escolher $\alpha_k$ de forma que $J\left(x^{(k+1)}\right) \leq J\left(x^{(k)}\right)$. Isso pode ser garantido fazendo a seguinte escolha\footnote{Chamada de pesquisa linear exata. Qualquer outra escolha para $\alpha$ é conhecida como pesquisa linear não exata.}
+\begin{equation}
+  J\left(x^{(k+1)}\right) = \min_{\alpha\in\mathbb{R}} J\left(x^{(k)} + \alpha r^{(k)}\right)
+\end{equation}
+A fim de resolver este problema de minimização, vamos denotar
+\begin{gather}
+  g(\alpha) = J\left(x^{(k)} + \alpha r^{(k)}\right).
+\end{gather}
+Então, observamos que
+\begin{align}
+  g(\alpha) &= \frac{1}{2}\left(x^{(k)} + \alpha r^{(k)}\right)^TA\left(x^{(k)} + \alpha r^{(k)}\right)
+              - \left(x^{(k)} + \alpha r^{(k)}\right)^Tb \nonumber\\
+            &= \frac{1}{2}{x^{(k)}}^TAx^{(k)} + \frac{\alpha}{2}{x^{(k)}}^TAr^{(k)}  + \frac{\alpha}{2} {r^{(k)}}^TAx^{(k)} \nonumber\\
+            & + \frac{\alpha^2}{2}{r^{(k)}}^TAr^{(k)} - {x^{(k)}}^Tb - \alpha {r^{(k)}}^Tb
+\end{align}
+Agora, usando o fato de $A$ ser simétrica, obtemos
+\begin{align}
+  g(\alpha) &= J\left(x^{(k)}\right) + \alpha {r^{(k)}}^TAx^{(k)} + \frac{\alpha^2}{2}{r^{(k)}}^TAr^{(k)} - \alpha {r^{(k)}}^Tb\\
+            &= J\left(x^{(k)}\right) - \alpha {r^{(k)}}^Tr^{(k)} + \frac{\alpha^2}{2}{r^{(k)}}^TAr^{(k)}
+\end{align}
+a qual, é uma função quadrática. Seu único mínimo, ocorre quando
+\begin{align}
+  0 &= g'(\alpha)\\
+    &= - {r^{(k)}}^Tr^{(k)} + \alpha {r^{(k)}}^Tb.
+\end{align}
+Logo, encontramos
+\begin{equation}
+  \alpha = \frac{{r^{(k)}}^Tr^{(k)}}{{r^{(k)}}^TAr^{(k)}}
+\end{equation}
 
+Com isso, temos a iteração do Método do Gradiente
+\begin{gather}
+  x^{(0)} = \text{aprox. inicial}\\
+  x^{(k+1)} = x^{(k)} + \alpha_kr^{(k)},\\
+  \alpha_k = \frac{{r^{(k)}}^Tr^{(k)}}{{r^{(k)}}^TAr^{(k)}}
+\end{gather}
 
+\begin{obs}
+  Observamos que, a cada iteração, precisamos computar $Ar^{(k)}$ (no cálculo de $\alpha_k$) e $Ax^{(k)}$ (no cálculo do resíduo). Essas multiplicações matriz-vetor são os passos computacionais mais custosos do método. Podemos otimizar isso usando o fato de que
+  \begin{equation}
+    r^{(k+1)} = r^{(k)} - \alpha Ar^{(k)}.
+  \end{equation}
+\end{obs}
+
+\emconstrucao
