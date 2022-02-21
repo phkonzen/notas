@@ -558,7 +558,7 @@ O formato {\it Compressed Sparse Column} (CSC) é uma variação análoga do CSR
 
 \subsection{GMRES}
 
-O GMRES (do inglês, {\it Generalized Minimum Residual Method}\footnote{Desenvolvido por Yousef Saad e H. Schultz, 1986. Fonte: \href{https://en.wikipedia.org/wiki/Generalized_minimal_residual_method}{Wikipedia}.}) é um Método de Subespaço de Krylov e é considerado uma das mais eficientes técnicas para a resolução de sistemas lineares gerais e de grande porte (esparsos).
+O GMRES (do inglês, {\it Generalized Minimal Residual Method}\footnote{Desenvolvido por Yousef Saad e H. Schultz, 1986. Fonte: \href{https://en.wikipedia.org/wiki/Generalized_minimal_residual_method}{Wikipedia}.}) é um Método de Subespaço de Krylov e é considerado uma das mais eficientes técnicas para a resolução de sistemas lineares gerais e de grande porte (esparsos).
 
 \subsubsection{Método de Subespaço de Krylov}
 
@@ -601,20 +601,24 @@ Vamos derivar o método observando que qualquer vetor $x$ em $x_0 + \mathcal{K}_
 \begin{equation}
   x = x_0 + V_my
 \end{equation}
-onde, $V_m = [v_1,\dotsc,v_m]$ é a matriz $n\times m$ cujas colunas formam uma base ortogonal $\{v_1, \dotsc, v_m\}$ de $\mathcal{K}_m$ e $y\in\mathcal{R}^m$. Aqui, $V_m$ é computada usando-se o seguinte \emph{Método de Arnoldi}\footnote{Walter Edwin Arnoldi, 1917 - 1995, engenheiro americano estadunidense. Fonte: \href{https://pt.wikipedia.org/wiki/Walter_Edwin_Arnoldi}{Wikipédia}.}\emph{- Gram}\footnote{Jørgen Pedersen Gram, 1850 - 1916, matemático dinamarquês. Fonte: \href{https://pt.wikipedia.org/wiki/J\%C3\%B8rgen_Pedersen_Gram}{Wikipédia}.}\emph{-Schmidt}\footnote{Erhard Schmidt, 1876 - 1959, matemático alemão. Fonte: \href{https://pt.wikipedia.org/wiki/Erhard_Schmidt}{Wikipédia}.} \emph{Modificado} \cite[Subseção 6.3]{Saad2003}:
+onde, $V_m = [v_1,\dotsc,v_m]$ é a matriz $n\times m$ cujas colunas formam uma base ortogonal $\{v_1, \dotsc, v_m\}$ de $\mathcal{K}_m$ e $y\in R^m$. Aqui, $V_m$ é computada usando-se o seguinte \emph{Método de Arnoldi}\footnote{Walter Edwin Arnoldi, 1917 - 1995, engenheiro americano estadunidense. Fonte: \href{https://pt.wikipedia.org/wiki/Walter_Edwin_Arnoldi}{Wikipédia}.}\emph{- Gram}\footnote{Jørgen Pedersen Gram, 1850 - 1916, matemático dinamarquês. Fonte: \href{https://pt.wikipedia.org/wiki/J\%C3\%B8rgen_Pedersen_Gram}{Wikipédia}.}\emph{-Schmidt}\footnote{Erhard Schmidt, 1876 - 1959, matemático alemão. Fonte: \href{https://pt.wikipedia.org/wiki/Erhard_Schmidt}{Wikipédia}.} \emph{Modificado} \cite[Subseção 6.3]{Saad2003}:
 \begin{enumerate}[1.]
 \item Dado $v_1$ de norma 1
 \item Para $j=1,\dotsc,m$:
-\item \qquad $w_j := Av_j$
-\item \qquad Para $i=1,\dotsc,j$:
-\item \qquad \qquad $h_{i,j} := (w_j,v_i)$
-\item \qquad $w_j := w_j - h_{i,j}v_i$
-\item \quad $h_{j+1,j} := \|w_j\|$
-\item \quad Se $h_{j+1,j}=0$, então pare.
-\item \quad $v_{j+1} = w_j/h_{j+1,j}$
+  \begin{enumerate}
+  \item $w_j := Av_j$
+  \item Para $i=1,\dotsc,j$:
+    \begin{enumerate}
+    \item $h_{i,j} := (w_j,v_i)$
+    \item $w_j := w_j - h_{i,j}v_i$
+    \end{enumerate}
+  \item $h_{j+1,j} := \|w_j\|$
+  \item Se $h_{j+1,j}=0$, então pare.
+  \item $v_{j+1} = w_j/h_{j+1,j}$
+\end{enumerate}
 \end{enumerate}
 
-Seja, então, $\bar{H}_m = [h_{i,j}]_{i,j=1}^{m+1,m}$ a matriz de Hessenberg\footnote{Karl Adolf Hessenberg, 1904 - 1959, engenheiro e matemático alemão. Fonte: \href{https://pt.wikipedia.org/wiki/Karl_Hessenberg}{Wikipédia}.} cujas entradas não nulas são computadas pelo algoritmo acima (Passos 5. e 6.). Pode-se mostrar\footnote{Consulte \cite[Proposição 6.5]{Saad2003}.} que
+Seja, então, $\bar{H}_m = [h_{i,j}]_{i,j=1}^{m+1,m}$ a matriz de Hessenberg\footnote{Karl Adolf Hessenberg, 1904 - 1959, engenheiro e matemático alemão. Fonte: \href{https://pt.wikipedia.org/wiki/Karl_Hessenberg}{Wikipédia}.} cujas entradas não nulas são computadas pelo algoritmo acima (Passos 2(a)i-ii). Pode-se mostrar\footnote{Consulte \cite[Proposição 6.5]{Saad2003}.} que
 \begin{align}
   J(y) &= \|b-Ax\|\\
        &= \|b - A(x_0 + V_my)\|\\
