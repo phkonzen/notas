@@ -572,7 +572,7 @@ por um \emph{método de projeção}. Mais especificamente, busca-se uma soluçã
 \end{equation}
 onde $\mathcal{L}_m$ também é um subespaço de dimensão $m$. Quando $\mathcal{K}_m$ é um \emph{subespaço de Krylov}\footnote{Alexei Nikolajewitsch Krylov, 1863 - 1945, engenheiro e matemático russo. Fonte: \href{https://pt.wikipedia.org/wiki/Alexei_Krylov}{Wikipédia}.}, i.e.
 \begin{equation}
-  \mathcal{K}_m(A,r_0) = \{r_0, Ar_0, A^2r_0,\dotsc,A^{m-1}r_0\},
+  \mathcal{K}_m(A,r_0) = \spn\{r_0, Ar_0, A^2r_0,\dotsc,A^{m-1}r_0\},
 \end{equation}
 temos o Método de Subespaço de Krylov. Aqui, temos o \emph{resíduo}
 \begin{equation}
@@ -593,7 +593,7 @@ Diferentes versões deste método são obtidas pelas escolhas do subespaço $\ma
 
 O GMRES é um Método de Subespaço de Krylov assumindo $\mathcal{L}_m = A\mathcal{K}_m$, com
 \begin{equation}
-  \mathcal{K}_m = \mathcal{K}_m(A,v_1) = \{v_1, Av_1, \dotsc, A^{m-1}v_1\},
+  \mathcal{K}_m = \mathcal{K}_m(A,v_1) = \spn\{v_1, Av_1, \dotsc, A^{m-1}v_1\},
 \end{equation}
 onde $v_1 = r_0/\|r_0\|$ é o vetor unitário do resíduo $r_0 = b - Ax_0$ para uma dada aproximação inicial $x_0$ da solução do sistema $Ax = b$.
 
@@ -699,24 +699,81 @@ Em resumo, a solução GMRES $x_m$ é computada seguindo os seguintes passos:
   \end{enumerate}
 \end{exer}
 
+\begin{exer}\label{exer:poissonDNH}
+    Consideremos o seguinte problema de Poisson\footnote{Baron Siméon Denis Poisson, 1781 - 1840, matemático, engenheiro e físico francês. Fonte: \href{https://en.wikipedia.org/wiki/Sim\%C3\%A9on_Denis_Poisson}{Wikipedia}.} com condições de contorno não homogêneas.
+  \begin{gather}
+    - \Delta u = f(x,y),~(x, y)\in D,\\
+    u = g, \quad\text{em }\p D
+  \end{gather}
+  Para fixarmos as ideias, vamos assumir o domínio $D = (0,1)\times (0,1)$, a fonte
+  \begin{equation}
+    f(x,y) = 2\pi^2 \sen \pi (x+y)
+  \end{equation}
+  e os valores no contorno
+  \begin{equation}
+    g = \sen \pi(x+y),\quad (x,y)\in \p D.
+  \end{equation}
+  Observamos que a solução analítica deste problema é
+  \begin{equation}
+    u(x,y) = \sen \pi(x+y).
+  \end{equation}
+  
+  Vamos empregar o Método de Diferenças Finitas\footnote{Observamos que $\Delta u = u_{xx} + u_{yy}$.} para computar uma aproximação para a solução. Assumimos uma malha uniforme de $n^2$ nodos
+  \begin{gather}
+    x_i = (i-1)h\\
+    y_j = (j-1)h
+  \end{gather}
+  com tamanho de malha $h = 1/(n-1)$, $i=1,2,\dotsc,n$ e $j=1,2,\dotsc,n$. Empregando a Fórmula de Diferenças Central\footnote{Consulte mais em \href{https://phkonzen.github.io/notas/MatematicaNumerica/cap_edp_sec_Poisson.html}{Notas de Aula: Matemática Numérica}.} encontramos o seguinte problema discreto associado
+  \begin{gather}
+    u_{i, 1} = g(x_i, 0)\\
+    u_{1, j} = g(0, y_j)\\
+    ~\nonumber\\
+    - \frac{1}{h^2}u_{i-1,j} - \frac{1}{h^2}u_{i,j-1} + \frac{4}{h^2}u_{i,j} \nonumber\\
+    - \frac{1}{h^2}u_{i+1,j} - \frac{1}{h^2}u_{i,j+1} = f(x_i, y_j)\\
+    ~\nonumber\\
+    u_{i,n} = g(x_i, 1)\\
+    u_{n,j} = g(1, y_j)
+  \end{gather}
+  Este pode ser escrito na forma matricial
+  \begin{equation}
+    Aw = b
+  \end{equation}
+  tomando a enumeração
+  \begin{equation}
+    u_{i,j} = w_{k=i-1 + (j-1)n},\quad i,j=1,\dotsc,n
+  \end{equation}
+  e análogo para o vetor $b$.
+
+  \begin{enumerate}
+  \item Compute a solução do problema discreto associado usando a seguinte implementação {\python} do GMRES
+    \begin{center}
+      \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.gmres.html}{scipy.sparse.linalg.gmres}
+    \end{center}
+  \item Compare o desempenho com a aplicação do Método LU implemento em
+    \begin{center}
+      \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.spsolve.html}{scipy.sparse.linalg.spsolve}
+    \end{center}
+  \end{enumerate}
+\end{exer}
+
 \begin{exer}
-  Faça sua própria implementação do método GMRES. Valide-a e compare-a com as resoluções dos Exercícios \ref{exer:pvc1d_gmres} e \ref{exer:poisson_gmres}.
+  Faça sua própria implementação do método GMRES. Valide-a e compare-a com a resolução do exercício anterior (Exercício \ref{exer:poissonDNH}).
 \end{exer}
 
 \subsection{Método do Gradiente Conjugado}
 
-O Método do Gradiente Conjugado é o uma das mais eficientes técnicas iterativas para a resolução de sistema linear com matriz esparsa, simétrica e definida positiva. Portanto, vamos assumir que o sistema
+O Método do Gradiente Conjugado é uma das mais eficientes técnicas iterativas para a resolução de sistema linear com matriz esparsa, simétrica e definida positiva. Portanto, vamos assumir que o sistema
 \begin{equation}
   Ax = b
 \end{equation}
 onde, a $A$ é \emph{simétrica} e \emph{definida positiva}.
 
-O método pode ser derivado a partir do \footnote{Walter Edwin Arnoldi, 1917 - 1995, engenheiro americano estadunidense. Fonte: \href{https://pt.wikipedia.org/wiki/Walter_Edwin_Arnoldi}{Wikipédia}.} \cite[Seção 6.7]{Saad2003} ou como uma variação do Método do Gradiente. Este é caminho que será adotado aqui.
+O método pode ser derivado a partir do Método de Arnoldi\footnote{Walter Edwin Arnoldi, 1917 - 1995, engenheiro americano estadunidense. Fonte: \href{https://pt.wikipedia.org/wiki/Walter_Edwin_Arnoldi}{Wikipédia}.} \cite[Seção 6.7]{Saad2003} ou como uma variação do Método do Gradiente. Este é caminho que será adotado aqui.
 
 \subsubsection{Método do Gradiente}
 
 A ideia é reformular o sistema $Ax = b$ como um problema de minimização. Vamos começar definindo o funcional
-\begin{equation}
+\begin{equation}\label{eq:funcional_mg}
   J(y) = \frac{1}{2}y^TAy - y^Tb.
 \end{equation}
 O vetor $y$ que minimiza $J$ é a solução de $Ax = b$. De fato, denotando $x$ a solução de $Ax = b$, temos
@@ -734,7 +791,7 @@ Observamos, também, que o gradiente de $J$ é
 \begin{equation}
   \nabla J = Ay - b
 \end{equation}
-i.e., é o oposto do resíduo $r = b - Ay$. Com isso, temos que $y = x$ é a única escolha tal que $\nabla J = 0$. Ainda, temos que $\nabla J$ é o vetor que aponta na direção e sentido de maior crescimento de $J$. Isso nos motiva a aplicarmos a seguinte iteração\footnote{Iteração do Método da Descida mais Rápida.}
+i.e., é o oposto do resíduo $r = b - Ay$. Com isso, temos que $y = x$ é a única escolha tal que $\nabla J = 0$. Ainda, temos que $\nabla J$ é o vetor que aponta na direção e sentido de maior crescimento de $J$. Isso nos motiva a aplicarmos a seguinte iteração\footnote{Iteração do Método do Máximo Declive.}
 \begin{gather}
   x^{(0)} = \text{aprox. inicial}\\
   x^{(k+1)} = x^{(k)} - \alpha_k\nabla J\left(x^{(k)}\right)
@@ -788,5 +845,62 @@ Com isso, temos a iteração do Método do Gradiente
     r^{(k+1)} = r^{(k)} - \alpha Ar^{(k)}.
   \end{equation}
 \end{obs}
+
+% \lstinputlisting[caption=Algoritmo do Gradiente, label={lst:algG}]{./cap_sislin/dados/pyMG/main.py}
+
+\begin{exer}\label{exer:mg}
+  Faça sua implementação do Método do Gradiente.
+\end{exer}
+
+\begin{exer}\label{exer:mg}
+  Use a implementação feita no exercício anterior (Exercício \ref{exer:mg}) nos seguintes itens.
+  \begin{enumerate}
+  \item Compute a solução do problema discreto do Exemplo \ref{ex:poisson} pelo Método do Gradiente. Quantas iterações são necessárias para obter um resíduo com norma $\leq 10^{-14}$?
+  \item Compute a solução do problema discreto do Exercício \ref{ex:poissonDNH} pelo Método do Gradiente. Quantas iterações são necessárias para obter um resíduo com norma $\leq 10^{-14}$?
+  \item Compare a aplicação do Método GMRES\footnote{\href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.gmres.html}{scipy.sparse.linalg.gmres}} e do Método LU\footnote{\href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.spsolve.html}{scipy.sparse.linalg.spsolve}} nos itens anteriores.
+  \end{enumerate}
+\end{exer}
+
+\subsubsection{Método do Gradiente Conjugado}
+
+O Método do Gradiente consiste em uma iteração da forma
+\begin{gather}
+  x_0 = \text{aprox. inicial},
+  x^{(k+1)} = x^{(k)} + \alpha_kp^{(k)},
+\end{gather}
+com $p^{(k)} = r^{(k)}$. Ou seja, a nova aproximação $x^{(k+1)}$ é buscada na direção de $p^{(k)}$. Aqui, a ideia é usar uma melhor direção para buscar a solução.
+
+
+O Método do Gradiente Conjugado é um Método de Gradiente que busca encontrar a solução de $Ax = b$ pela computação do mínimo do seguinte funcional\footnote{Compare com o funcional $J$ dado em \eqref{eq:funcional_mg}.}
+\begin{equation}
+  J(y) = \frac{1}{2}\left<y,y\right>_A - \left<b,y\right>, 
+\end{equation}
+onde, $\left<\cdot,\cdot\right>$ denota o produto interno padrão e
+\begin{equation}
+  \left<x,y\right>_A := x^TAy
+\end{equation}
+é o \emph{produto interno induzido por $A$}, lembrando que $A$ é positiva definida\footnote{Mostre que $\left<\cdot,\cdot\right>_A$ é de fato um produto interno.}. Associada a este produto interno, temos a norma
+\begin{equation}
+  \|x\|_A := \sqrt{\left<x,x\right>_A},
+\end{equation}
+chamada de \emph{norma da energia}. O produto interno associado é também conhecido como \emph{produto interno da energia}. Com isso, definimos que dois vetores $x$ e $y$ são \emph{conjugados}, quando eles são ortogonais com respeito ao produto interno da energia, i.e. quando
+\begin{equation}
+  \left<x,y\right>_A = 0.
+\end{equation}
+
+Aqui, a ideia é desenvolver um método iterativo em que o erro a cada passo seja conjugado a todas as direções de busca anteriores. Consulte o desenvolvimento detalhado do método em \cite[Seção 7.7]{Watkins2002}.
+
+\lstinputlisting[caption=Algoritmo do Gradiente Conjugado, label={lst:algGC}]{./cap_sislin/dados/pyMGC/main.py}
+
+\begin{exer}\label{exer:mg}
+  Use a implementação acima (Listing \ref{lst:algGC}) na resolução dos seguintes itens.
+  \begin{enumerate}
+  \item Compute a solução do problema discreto do Exemplo \ref{ex:poisson} pelo Método do Gradiente Conjugado. Quantas iterações são necessárias para obter um resíduo com norma $\leq 10^{-14}$?
+  \item Compute a solução do problema discreto do Exercício \ref{ex:poissonDNH} pelo Método do Gradiente Conjugado. Quantas iterações são necessárias para obter um resíduo com norma $\leq 10^{-14}$?
+  \item Compare a aplicação do Método GMRES\footnote{\href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.gmres.html}{scipy.sparse.linalg.gmres}} e da implementação {\scipy} do Método do Gradiente Conjugado\footnote{\href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.cg.html}{scipy.sparse.linalg.cg}}
+  \end{enumerate}
+\end{exer}
+
+\subsection{Precondicionamento}
 
 \emconstrucao
