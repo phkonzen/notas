@@ -8,7 +8,7 @@ def mgc(A, b, x, tol=1e-14):
   p = r
   nu = np.dot(r,r)
   for it in np.arange(n):
-    q = A*r
+    q = A*p
     mu = np.dot(p,q)
     alpha = nu/mu
     x = x + alpha*p

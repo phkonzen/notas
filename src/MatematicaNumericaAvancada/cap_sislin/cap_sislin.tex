@@ -738,11 +738,11 @@ Em resumo, a solução GMRES $x_m$ é computada seguindo os seguintes passos:
   \begin{equation}
     Aw = b
   \end{equation}
-  tomando a enumeração
+  onde, $A$ é $(n-2)**2\times (n-2)**2$ e assumindo a enumeração
   \begin{equation}
-    u_{i,j} = w_{k=i-1 + (j-1)n},\quad i,j=1,\dotsc,n
+    u_{i,j} = w_{k=i-1 + (j-2)(n-2)},\quad i,j=2,\dotsc,n-2.
   \end{equation}
-  e análogo para o vetor $b$.
+  Consulte a Figura \ref{fig:exPoissonMatriz}.
 
   \begin{enumerate}
   \item Compute a solução do problema discreto associado usando a seguinte implementação {\python} do GMRES
@@ -842,7 +842,7 @@ Com isso, temos a iteração do Método do Gradiente
 \begin{obs}
   Observamos que, a cada iteração, precisamos computar $Ar^{(k)}$ (no cálculo de $\alpha_k$) e $Ax^{(k)}$ (no cálculo do resíduo). Essas multiplicações matriz-vetor são os passos computacionais mais custosos do método. Podemos otimizar isso usando o fato de que
   \begin{equation}
-    r^{(k+1)} = r^{(k)} - \alpha Ar^{(k)}.
+    r^{(k+1)} = r^{(k)} - \alpha_k Ar^{(k)}.
   \end{equation}
 \end{obs}
 
@@ -858,6 +858,17 @@ Com isso, temos a iteração do Método do Gradiente
   \item Compute a solução do problema discreto do Exemplo \ref{ex:poisson} pelo Método do Gradiente. Quantas iterações são necessárias para obter um resíduo com norma $\leq 10^{-14}$?
   \item Compute a solução do problema discreto do Exercício \ref{ex:poissonDNH} pelo Método do Gradiente. Quantas iterações são necessárias para obter um resíduo com norma $\leq 10^{-14}$?
   \item Compare a aplicação do Método GMRES\footnote{\href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.gmres.html}{scipy.sparse.linalg.gmres}} e do Método LU\footnote{\href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.spsolve.html}{scipy.sparse.linalg.spsolve}} nos itens anteriores.
+  \end{enumerate}
+\end{exer}
+
+\begin{exer}
+  Considere o Exercício \ref{exer:poissonDNH}.
+  \begin{enumerate}[a)]
+  \item Use sua implementação do Método do Gradiente para computar uma solução aproximada, cuja norma do resíduo $\leq 10^{-14}$.
+  \item Compare o desempenho com a aplicação da implementação GMRES
+    \begin{center}
+      \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.gmres.html}{scipy.sparse.linalg.gmres}
+    \end{center}
   \end{enumerate}
 \end{exer}
 
@@ -892,12 +903,24 @@ Aqui, a ideia é desenvolver um método iterativo em que o erro a cada passo sej
 
 \lstinputlisting[caption=Algoritmo do Gradiente Conjugado, label={lst:algGC}]{./cap_sislin/dados/pyMGC/main.py}
 
-\begin{exer}\label{exer:mg}
+\begin{exer}\label{exer:mgc}
   Use a implementação acima (Listing \ref{lst:algGC}) na resolução dos seguintes itens.
   \begin{enumerate}
   \item Compute a solução do problema discreto do Exemplo \ref{ex:poisson} pelo Método do Gradiente Conjugado. Quantas iterações são necessárias para obter um resíduo com norma $\leq 10^{-14}$?
   \item Compute a solução do problema discreto do Exercício \ref{ex:poissonDNH} pelo Método do Gradiente Conjugado. Quantas iterações são necessárias para obter um resíduo com norma $\leq 10^{-14}$?
   \item Compare a aplicação do Método GMRES\footnote{\href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.gmres.html}{scipy.sparse.linalg.gmres}} e da implementação {\scipy} do Método do Gradiente Conjugado\footnote{\href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.cg.html}{scipy.sparse.linalg.cg}}
+  \end{enumerate}
+\end{exer}
+
+\begin{exer}
+  Considere o Exercício \ref{exer:poissonDNH}.
+  \begin{enumerate}[a)]
+  \item Use sua implementação do Método do Gradiente Conjugado acima (Listing \ref{lst:algGC}) para computar uma solução aproximada, cuja norma do resíduo $\leq 10^{-14}$.
+  \item Compare o desempenho com a aplicação de sua implementação do Método do Gradiente (Exercício \ref{exer:mg}).
+  \item Compare o desempenho com a aplicação da implementação GMRES
+    \begin{center}
+      \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.gmres.html}{scipy.sparse.linalg.gmres}
+    \end{center}
   \end{enumerate}
 \end{exer}
 
