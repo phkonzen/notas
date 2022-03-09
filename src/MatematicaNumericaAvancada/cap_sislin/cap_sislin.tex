@@ -926,4 +926,49 @@ Aqui, a ideia é desenvolver um método iterativo em que o erro a cada passo sej
 
 \subsection{Precondicionamento}
 
-\emconstrucao
+Precondicionamento refere-se a modificar o sistema linear original de forma que a computação de sua solução possa ser feita de forma mais eficiente. No lugar do sistema original
+\begin{equation}
+  Ax = b
+\end{equation}
+resolvemos o sistema equivalente
+\begin{equation}
+  MAx = Mb,
+\end{equation}
+onde $M = P^{-1}$ e a matriz $P$ é chamada de \emph{precondicionador} do sistema. De forma geral, a escolha do precondicionador é tal que $P \approx A$, mas com inversa fácil de ser computada. Além disso, uma característica esperada é que $MA$ tenha esparsidade parecida com $A$.
+
+\subsubsection{Precondicionamento ILU}
+
+A ideia é tomar $P$ igual a uma fatoração LU incompleta (ILU, do inglês, {\it Incomplete LU}). Incompleta no sentido que entradas de $L$ e de $U$ sejam adequadamente removidas, buscando-se uma boa esparsidade e ao mesmo tempo uma boa aproximação $LU$ para $A$.
+
+\subsubsection{ILU(0)}
+
+O precondicionamento ILU(0) impõe que as matrizes $L$ e $U$ tenham o mesmo padrão de esparsidade da matriz $A$.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.45\textwidth]{cap_sislin/dados/figPoissonDnhIlu0/A}~
+  \includegraphics[width=0.45\textwidth]{cap_sislin/dados/figPoissonDnhIlu0/L}\\
+  \includegraphics[width=0.45\textwidth]{cap_sislin/dados/figPoissonDnhIlu0/U}~
+  \includegraphics[width=0.45\textwidth]{cap_sislin/dados/figPoissonDnhIlu0/LU}
+  \caption{Representação das matrizes ILU(0).}
+  \label{fig:poissonDnhIlu0}
+\end{figure}
+
+\begin{ex}{ex:possoinDnhIlu0}
+  Consideramos o sistema linear $Ax = b$ associado ao problema discreto trabalhado no Exercício \ref{exer:poissonDNH}. Para uma malha $n\times n=8\times 8$, obtemos as matrizes representadas na Figura \ref{fig:poissonDnhIlu0}.
+
+  Observamos que a matriz $LU$ contém duas diagonais com elementos não nulos a mais que a matriz original $A$. Estes elementos são chamados de {\it fill-in}. 
+\end{ex}
+
+
+\lstinputlisting[caption=Algoritmo ILU(0), label={lst:algIlu0}]{./cap_sislin/dados/pyIlu0/main.py}
+
+\begin{exer}
+  Considere o problema discreto do Exercício \ref{exer:poissonDNH}.
+  \begin{enumerate}[a)]
+  \item Compute a solução com o método GMRES com precondicionamento ILU(0).
+  \item Compare com a resolução com o método GMRES sem precondicionamento.
+  \item Compare com a resolução com o método CG sem precondicionamento.
+  \item O precondicionamento ILU(0) é eficiente para o método CG?
+  \end{enumerate}
+\end{exer}
