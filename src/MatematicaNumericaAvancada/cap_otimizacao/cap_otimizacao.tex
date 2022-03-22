@@ -28,6 +28,10 @@ A iteração básica do \emph{Método de Newton}\footnote{Isaac Newton, 1642 - 1
 \end{align}
 para $k=0,1,2,\ldots$ até convergência $x^{(k)}\to x^*$.
 
+\begin{obs}\label{obs:convNewton}
+  Para $x^{(0)}$ suficientemente próximo da solução $x^*$, o Método de Newton é quadraticamente convergente. Mais precisamente, este resultado de convergência local requer que $J_F^{-1}(x^*)$ seja não singular e que $J_F:\mathbb{R}^n\to\mathbb{R}^{n\times n}$ seja Lipschitz\footnote{Rudolf Otto Sigismund Lipschitz, 1832 - 1903, matemático alemão. Fonte: \href{https://en.wikipedia.org/wiki/Rudolf_Lipschitz}{Wikipédia}.} contínua. Consulte \cite[Seção 7.1]{Quarteroni2007} para mais detalhes.
+\end{obs}
+
 \begin{ex}\label{ex:burgers}
   Consideremos a \emph{Equação de Burgers}\footnote{Johannes Martinus Burgers, 1895 - 1981, físico holandês. Fonte: \href{https://en.wikipedia.org/wiki/Jan_Burgers}{Wikipedia}.}
   \begin{equation}
@@ -95,4 +99,49 @@ para $k=0,1,2,\ldots$ até convergência $x^{(k)}\to x^*$.
   \item Observe que a jacobiana é uma matriz tridiagonal. Simule o problema aplicando o Método de Newton com o {\it solver} linear \lstinline+npla.solve_banded+.
   \item Aloque a jacobiana como uma matriz esparsa. Então, simule o problema aplicando o Método de Newton com {\it solver} linear adequado para matrizes esparsas.
   \end{enumerate}
+\end{exer}
+
+\section{Método Tipo Newton}
+
+Existem várias modificações do Método de Newton\footnote{Isaac Newton, 1642 - 1727, matemático, físico, astrônomo, teólogo e autor inglês. Fonte: \href{https://pt.wikipedia.org/wiki/Isaac_Newton}{Wikipédia}.} que buscam reduzir o custo computacional. Há estratégias para simplificar as computações da matriz jacobiana\footnote{Carl Gustav Jakob Jacobi, 1804 - 1851, matemático alemão. Fonte: \href{https://pt.wikipedia.org/wiki/Carl_Gustav_Jakob_Jacobi}{Wikipédia}.} e para reduzir o custo nas computações das atualizações de Newton.
+
+\subsection{Atualização Cíclica da Matriz Jacobiana}
+
+Geralmente, ao simplificarmos a matriz jacobina $J_F$ ou aproximarmos a atualização de Newton $\delta^{(k)}$, perdemos a convergência quadrática do método (consulte a Observação \ref{obs:convNewton}). A ideia é, então, buscar uma convergência pelo menos super-linear, i.e.
+\begin{equation}
+  \|e^{(k+1)}\|\approx \rho_k\|e^{(k)}\|,
+\end{equation}
+com $\rho_k\to 0$ quando $k\to\infty$. Aqui, $e^{(k)}:=x^*-x^{(k)}$. Se a convergência é superlinear, então podemos usar a seguinte aproximação
+\begin{equation}
+  \rho_k \approx \frac{\|\delta^{(k)}\|}{\|\delta^{(k-1)}\|}
+\end{equation}
+ou, equivalentemente,
+\begin{equation}
+  \rho_k \approx \left(\frac{\|\delta^{(k)}\|}{\|\delta^{(0)}\|}\right)^{\frac{1}{k}}
+\end{equation}
+Isso mostra que podemos acompanhar a convergência das iterações pelo fator
+\begin{equation}
+  \beta_k = \frac{\|\delta^{(k)}\|}{\|\delta^{(0)}\|}.
+\end{equation}
+Ao garantirmos $0<\beta_k<1$, deveremos ter uma convergência superlinear.
+
+Vamos, então, propor o seguinte  método tipo Newton de atualização cíclica da matriz jacobiana.
+\begin{enumerate}
+\item Escolha $0<\beta<1$
+\item $J := J_F(x^{(0)})$
+\item $J\delta^{(0)}=-F(x^{(0)})$
+\item $x^{(1)} = x^{(0)} + \delta^{(0)}$
+\item Para $k=1,\ldots$ até critério de convergência:
+  \begin{enumerate}
+  \item $J\delta^{(k)}=-F(x^{(k)})$
+  \item $x^{(k+1)}=x^{(k)} + \delta^{(k)}$
+  \item Se $\|\delta^{(k)}\|/\|\delta^{(0)}\| > \beta$:
+    \begin{enumerate}
+    \item $J := J_F(x^{(k)})$
+    \end{enumerate}
+  \end{enumerate}
+\end{enumerate}
+
+\begin{exer}
+  Implemente uma versão do Método Tipo Newton apresentado acima e aplique-o para simular o problema discutido no Exemplo \ref{ex:burgers} para $\nu = 1., 0.1, 0.01, 0.001, 0.0001$. Faça uma implementação com suporte para matrizes esparsas.
 \end{exer}
