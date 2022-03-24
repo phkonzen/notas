@@ -1,0 +1,709 @@
+<!DOCTYPE html><html lang="pt-BR">
+<head>
+<title>2.3 Problemas de Minimização‣ Capítulo 2 Sistemas Não Lineares e Otimização ‣ Matemática Numérica Avançada</title>
+<!--Generated on Thu Mar 24 16:16:14 2022 by LaTeXML (version 0.8.5) http://dlmf.nist.gov/LaTeXML/.-->
+<!--Document created on 24 de março de 2022.-->
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="LaTeXML.css" type="text/css">
+<link rel="stylesheet" href="ltx-book.css" type="text/css">
+<link rel="stylesheet" href="ltx-listings.css" type="text/css">
+<link rel="stylesheet" href="ltx-ulem.css" type="text/css">
+<link rel="stylesheet" href="main.css" type="text/css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=MML_SVG" type="text/javascript"></script>
+<script src="mymathcfg.js" type="text/javascript"></script>
+<link rel="up" href="cap_otimizacao.html" title="Capítulo 2 Sistemas Não Lineares e Otimização ‣ Matemática Numérica Avançada">
+<link rel="up up" href="main.html" title="Matemática Numérica Avançada">
+<link rel="start" href="main.html" title="Matemática Numérica Avançada">
+<link rel="prev" href="cap_otimizacao_sec_tipoNewton.html" title="2.2 Método Tipo Newton ‣ Capítulo 2 Sistemas Não Lineares e Otimização ‣ Matemática Numérica Avançada">
+<link rel="next" href="bib.html" title="Referências ‣ Matemática Numérica Avançada">
+<link rel="section" href="cap_otimizacao_sec_newton.html" title="2.1 Método de Newton ‣ Capítulo 2 Sistemas Não Lineares e Otimização ‣ Matemática Numérica Avançada">
+<link rel="section" href="cap_otimizacao_sec_tipoNewton.html" title="2.2 Método Tipo Newton ‣ Capítulo 2 Sistemas Não Lineares e Otimização ‣ Matemática Numérica Avançada">
+<link rel="chapter" href="licenca.html" title="Licença ‣ Matemática Numérica Avançada">
+<link rel="chapter" href="prefacio.html" title="Prefácio ‣ Matemática Numérica Avançada">
+<link rel="chapter" href="cap_sislin.html" title="Capítulo 1 Sistemas Lineares ‣ Matemática Numérica Avançada">
+<link rel="chapter" href="cap_otimizacao.html" title="Capítulo 2 Sistemas Não Lineares e Otimização ‣ Matemática Numérica Avançada">
+<link rel="bibliography" href="bib.html" title="Referências ‣ Matemática Numérica Avançada">
+<meta name="author" content="Pedro H A Konzen"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://kit.fontawesome.com/dfbff2c7ed.js" crossorigin="anonymous"></script><!-- Computer Modern Serif--><link rel="stylesheet" href="fonts/cmun-serif.css">
+<link rel="stylesheet" href="goodies.css" type="text/css">
+<script>$(document).ready(function(){$(".toast").toast();});</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-17226092-2"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag("js", new Date());
+
+gtag("config", "UA-17226092-2")
+</script>
+<script>
+$(document).ready(function () {
+$("#colabAlert").hide();
+$("#generalAlert").hide();
+if (document.referrer.lastIndexOf("://phkonzen.github.io/notas/") == -1) {
+$("#generalAlert").fadeIn(100);
+}
+$("#colabAlert").delay(3000).fadeIn(100);
+});
+</script>
+
+</head>
+
+<body>
+
+<div class=container-fluid>
+<div class=row>
+<div class=col-lg-1>
+</div><div class=col-lg-10>
+
+
+
+<!-- begin: navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<a class="navbar-brand" href="main.html">Notas de Aula<br/><small>Matemática Numérica Avançada</small></a>
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+<span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarNav">
+<ul class="navbar-nav">
+<li class="nav-item"><a class="nav-link" href="../index.html"><i class="fas fa-home"></i> Início</a></li>
+<li class="nav-item active"><a class="nav-link" href="main.html">Sumário</a></li>
+<li class="nav-item"><a class="nav-link" href="main.pdf"><i class="fa fa-download" aria-hidden="true"></i> PDF</a></li>
+<li class="nav=item"><a class="nav-link" href="https://mybinder.org/v2/gh/phkonzen/notas/master?filepath=notas.ipynb">Jupyter NB</a></li>
+<li class="nav-item dropdown">
+<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+Contato
+</a>
+<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+<a class="dropdown-item" href="../contato.html"><i class="fas fa-envelope"></i> Mensagem</a>
+<a class="dropdown-item" href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i> notas.pedrok</a>
+</div><!-- div class="dropdown-menu" aria-labelledby="navbarDropdown" -->
+</li> <!-- li class="nav-item dropdown" -->
+<li class="nav-item"><a class="nav-link" href="https://github.com/phkonzen/notas"><i class="fa fa-github" aria-hidden="true"></i> Repo</a></li>
+<li class="nav-item"><a class="nav-link" href="../politica.html">Política de dados</a></li>
+</ul>
+</div><!-- /.navbar-collapse -->
+</nav>
+
+
+<!-- end: navbar -->
+
+
+
+<div class="ltx_page_main">
+<header class="ltx_page_header">
+<div>
+<a href="cap_otimizacao.html" title="Capítulo 2 Sistemas Não Lineares e Otimização ‣ Matemática Numérica Avançada" class="ltx_ref" rel="up"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">2 </span>Sistemas Não Lineares e Otimização</span></a><a href="cap_otimizacao_sec_tipoNewton.html" title="2.2 Método Tipo Newton ‣ Capítulo 2 Sistemas Não Lineares e Otimização ‣ Matemática Numérica Avançada" class="ltx_ref" rel="prev"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">2.2 </span>Método Tipo Newton</span></a><a href="bib.html" title="Referências ‣ Matemática Numérica Avançada" class="ltx_ref" rel="next"><span class="ltx_text ltx_ref_title">Referências</span></a>
+</div></header>
+<div class="ltx_page_content">
+<section class="ltx_section ltx_authors_1line" lang="pt-BR">
+<h1 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">2.3 </span>Problemas de Minimização <small><a href="../contato.html"><i class="fas fa-envelope"></i></a></small></h1>
+<div class="ltx_dates">(24 de março de 2022)</div>
+
+<div id="p1" class="ltx_para">
+<p class="ltx_p">Vamos considerar o seguinte <span class="ltx_text ltx_font_bold">problema de minimização</span>: dada a <span class="ltx_text ltx_font_bold">função objetivo</span> <math id="p1.m1" class="ltx_Math" alttext="f:D\subset\mathbb{R}^{n}\to\mathbb{R}" display="inline"><mrow><mi>f</mi><mo>:</mo><mrow><mi>D</mi><mo>⊂</mo><msup><mi>ℝ</mi><mi>n</mi></msup><mo>→</mo><mi>ℝ</mi></mrow></mrow></math>, resolver</p>
+<table id="Ch2.E32" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E32.m1" class="ltx_Math" alttext="\min_{x\in D}f(x)." display="block"><mrow><mrow><mrow><munder><mi>min</mi><mrow><mi>x</mi><mo>∈</mo><mi>D</mi></mrow></munder><mo>⁡</mo><mi>f</mi></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.32)</span></td>
+</tr>
+</table>
+<p class="ltx_p">No que segue e salvo dito explicitamente ao contrário, vamos assumir que o problema está bem determinado e que <math id="p1.m2" class="ltx_Math" alttext="f" display="inline"><mi>f</mi></math> é suficientemente suave. Ainda, vamos assumir as seguintes notações:</p>
+<ul id="I1" class="ltx_itemize">
+<li id="I1.i1" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span> 
+<div id="I1.i1.p1" class="ltx_para">
+<p class="ltx_p">gradiente de <math id="I1.i1.p1.m1" class="ltx_Math" alttext="f" display="inline"><mi>f</mi></math></p>
+<table id="Ch2.E33" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E33.m1" class="ltx_Math" alttext="\nabla f(x)=\left(\frac{\partial f}{\partial x_{1}}(x),\dotsc,\frac{\partial f%
+}{\partial x_{n}}(x)\right)" display="block"><mrow><mrow><mrow><mo>∇</mo><mo>⁡</mo><mi>f</mi></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mo>(</mo><mrow><mfrac><mrow><mo>∂</mo><mo>⁡</mo><mi>f</mi></mrow><mrow><mo>∂</mo><mo>⁡</mo><msub><mi>x</mi><mn>1</mn></msub></mrow></mfrac><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mrow><mfrac><mrow><mo>∂</mo><mo>⁡</mo><mi>f</mi></mrow><mrow><mo>∂</mo><mo>⁡</mo><msub><mi>x</mi><mi>n</mi></msub></mrow></mfrac><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>)</mo></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.33)</span></td>
+</tr>
+</table>
+</div>
+</li>
+<li id="I1.i2" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span> 
+<div id="I1.i2.p1" class="ltx_para">
+<p class="ltx_p">derivada direcional de <math id="I1.i2.p1.m1" class="ltx_Math" alttext="f" display="inline"><mi>f</mi></math> com respeito a <math id="I1.i2.p1.m2" class="ltx_Math" alttext="d\in\mathbb{R}^{n}" display="inline"><mrow><mi>d</mi><mo>∈</mo><msup><mi>ℝ</mi><mi>n</mi></msup></mrow></math></p>
+<table id="Ch2.E34" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E34.m1" class="ltx_Math" alttext="\frac{\partial f}{\partial d}=\nabla f(x)\cdot d" display="block"><mrow><mfrac><mrow><mo>∂</mo><mo>⁡</mo><mi>f</mi></mrow><mrow><mo>∂</mo><mo>⁡</mo><mi>d</mi></mrow></mfrac><mo>=</mo><mrow><mrow><mrow><mo>∇</mo><mo>⁡</mo><mi>f</mi></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>⋅</mo><mi>d</mi></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.34)</span></td>
+</tr>
+</table>
+</div>
+</li>
+<li id="I1.i3" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span> 
+<div id="I1.i3.p1" class="ltx_para">
+<p class="ltx_p">matriz hessiana de f, <math id="I1.i3.p1.m1" class="ltx_Math" alttext="H=[h_{i,j}]_{i,j=1}^{n,n}" display="inline"><mrow><mi>H</mi><mo>=</mo><msubsup><mrow><mo stretchy="false">[</mo><msub><mi>h</mi><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow></msub><mo stretchy="false">]</mo></mrow><mrow><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow><mo>=</mo><mn>1</mn></mrow><mrow><mi>n</mi><mo>,</mo><mi>n</mi></mrow></msubsup></mrow></math></p>
+<table id="Ch2.E35" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E35.m1" class="ltx_Math" alttext="h_{i,j}(x)=\frac{\partial^{2}f}{\partial x_{i}\partial x_{j}}" display="block"><mrow><mrow><msub><mi>h</mi><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mfrac><mrow><msup><mo>∂</mo><mn>2</mn></msup><mo>⁡</mo><mi>f</mi></mrow><mrow><mrow><mo>∂</mo><mo>⁡</mo><msub><mi>x</mi><mi>i</mi></msub></mrow><mo>⁢</mo><mrow><mo>∂</mo><mo>⁡</mo><msub><mi>x</mi><mi>j</mi></msub></mrow></mrow></mfrac></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.35)</span></td>
+</tr>
+</table>
+</div>
+</li>
+</ul>
+</div>
+<div id="Thmobs1" class="ltx_theorem ltx_theorem_obs">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Observação 2.3.1</span></span><span class="ltx_text ltx_font_bold"> </span>(Condições de Otimização)<span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmobs1.p1" class="ltx_para">
+<p class="ltx_p">Se <math id="Thmobs1.p1.m1" class="ltx_Math" alttext="\nabla f(x^{*})=0" display="inline"><mrow><mrow><mrow><mo>∇</mo><mo>⁡</mo><mi>f</mi></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mo>*</mo></msup><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>0</mn></mrow></math> e <math id="Thmobs1.p1.m2" class="ltx_Math" alttext="H(x^{*})" display="inline"><mrow><mi>H</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mo>*</mo></msup><mo stretchy="false">)</mo></mrow></mrow></math> é positiva definida, então <math id="Thmobs1.p1.m3" class="ltx_Math" alttext="x^{*}" display="inline"><msup><mi>x</mi><mo>*</mo></msup></math> é um mínimo local de <math id="Thmobs1.p1.m4" class="ltx_Math" alttext="f" display="inline"><mi>f</mi></math> em uma vizinhança não vazia de <math id="Thmobs1.p1.m5" class="ltx_Math" alttext="x^{*}" display="inline"><msup><mi>x</mi><mo>*</mo></msup></math>. Consulte mais em <cite class="ltx_cite ltx_citemacro_cite">[<a href="bib.html#bib3" title="Numerical mathematics" class="ltx_ref">3</a>, Seção 7.2]</cite>. Um ponto <math id="Thmobs1.p1.m6" class="ltx_Math" alttext="x^{*}" display="inline"><msup><mi>x</mi><mo>*</mo></msup></math> tal que <math id="Thmobs1.p1.m7" class="ltx_Math" alttext="\nabla f(x^{*})=0" display="inline"><mrow><mrow><mrow><mo>∇</mo><mo>⁡</mo><mi>f</mi></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mo>*</mo></msup><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>0</mn></mrow></math> é chamado de <span class="ltx_text ltx_font_bold">ponto crítico</span>.</p>
+</div>
+</div>
+<section id="SS1" class="ltx_subsection">
+<h2 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">2.3.1 </span>Métodos de descida <small><a href="../contato.html"><i class="fas fa-envelope"></i></a></small></h2>
+
+<div id="SS1.p1" class="ltx_para">
+<p class="ltx_p">Um método de descida consiste em uma iteração tal que: dada uma aproximação inicial <math id="SS1.p1.m1" class="ltx_Math" alttext="x^{(0)}\in\mathbb{R}^{n}" display="inline"><mrow><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo></mrow></msup><mo>∈</mo><msup><mi>ℝ</mi><mi>n</mi></msup></mrow></math>, computa-se</p>
+<table id="Ch2.E36" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E36.m1" class="ltx_Math" alttext="x^{(k+1)}=x^{(k)}+\alpha_{k}d^{(k)}," display="block"><mrow><mrow><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mrow><mi>k</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><mrow><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo>+</mo><mrow><msub><mi>α</mi><mi>k</mi></msub><mo>⁢</mo><msup><mi>d</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup></mrow></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.36)</span></td>
+</tr>
+</table>
+<p class="ltx_p">com <span class="ltx_text ltx_font_bold">tamanho de passo</span> <math id="SS1.p1.m2" class="ltx_Math" alttext="\alpha_{k}&gt;0" display="inline"><mrow><msub><mi>α</mi><mi>k</mi></msub><mo>&gt;</mo><mn>0</mn></mrow></math>, para <math id="SS1.p1.m3" class="ltx_Math" alttext="k=0,1,2,\ldots" display="inline"><mrow><mi>k</mi><mo>=</mo><mrow><mn>0,1,2</mn><mo>,</mo><mi mathvariant="normal">…</mi></mrow></mrow></math> até convergência. As <span class="ltx_text ltx_font_bold">direções descendentes</span> são tais que</p>
+<table id="EGx31" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="eq:condDirecoes0"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch2.E37.m1" class="ltx_Math" alttext="\displaystyle d^{(k)}\cdot\nabla f(x^{(k)})&lt;0,\quad\text{se }\nabla f(x^{(k)})%
+\neq 0," display="inline"><mrow><mrow><mrow><mrow><mrow><msup><mi>d</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo>⋅</mo><mrow><mo>∇</mo><mo>⁡</mo><mi>f</mi></mrow></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow><mo>&lt;</mo><mn>0</mn></mrow><mo rspace="12.5pt">,</mo><mrow><mrow><mtext>se </mtext><mo>⁢</mo><mrow><mo>∇</mo><mo>⁡</mo><mi>f</mi></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow><mo>≠</mo><mn>0</mn></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.37)</span></td>
+</tr></tbody>
+<tbody id="eq:condDirecoes1"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch2.E38.m1" class="ltx_Math" alttext="\displaystyle d^{(k)}=0,\quad\text{noutro caso.}" display="inline"><mrow><msup><mi>d</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><mrow><mn>0</mn><mo rspace="12.5pt">,</mo><mtext>noutro caso.</mtext></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.38)</span></td>
+</tr></tbody>
+</table>
+</div>
+<div id="Thmobs2" class="ltx_theorem ltx_theorem_obs">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Observação 2.3.2</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmobs2.p1" class="ltx_para">
+<p class="ltx_p">(Condição de Convergência)
+Da Série de Taylor<span id="Ch2.footnote10" class="ltx_note ltx_role_footnote"><sup class="ltx_note_mark">10</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">10</sup>
+                  <span class="ltx_tag ltx_tag_note">10</span>
+                  
+                  
+                  
+                Brook Taylor, 1685 - 1731, matemático britânico. Fonte: <a href="https://pt.wikipedia.org/wiki/Brook_Taylor" title="" class="ltx_ref ltx_href">Wikipédia</a>.</span></span></span>, temos que</p>
+<table id="Ch2.E39" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E39.m1" class="ltx_Math" alttext="f(x+\alpha_{k}d^{(k)})-f(x^{(k)})=\alpha_{k}\nabla f(x^{(k)})\cdot d^{(k)}+\varepsilon," display="block"><mrow><mrow><mrow><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>x</mi><mo>+</mo><mrow><msub><mi>α</mi><mi>k</mi></msub><mo>⁢</mo><msup><mi>d</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>-</mo><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow></mrow><mo>=</mo><mrow><mrow><mrow><msub><mi>α</mi><mi>k</mi></msub><mo>⁢</mo><mrow><mo>∇</mo><mo>⁡</mo><mi>f</mi></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow><mo>⋅</mo><msup><mi>d</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup></mrow><mo>+</mo><mi>ε</mi></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.39)</span></td>
+</tr>
+</table>
+<p class="ltx_p">com <math id="Thmobs2.p1.m1" class="ltx_Math" alttext="\varepsilon\to 0" display="inline"><mrow><mi>ε</mi><mo>→</mo><mn>0</mn></mrow></math> quando <math id="Thmobs2.p1.m2" class="ltx_Math" alttext="\alpha_{k}\to 0" display="inline"><mrow><msub><mi>α</mi><mi>k</mi></msub><mo>→</mo><mn>0</mn></mrow></math>. Como consequência da continuidade da <math id="Thmobs2.p1.m3" class="ltx_Math" alttext="f" display="inline"><mi>f</mi></math>, para <math id="Thmobs2.p1.m4" class="ltx_Math" alttext="\alpha_{k}" display="inline"><msub><mi>α</mi><mi>k</mi></msub></math> suficientemente pequeno, o sinal do lado esquerdo é igual a do direito desta última equação. Logo, para tais <math id="Thmobs2.p1.m5" class="ltx_Math" alttext="\alpha_{k}" display="inline"><msub><mi>α</mi><mi>k</mi></msub></math> e <math id="Thmobs2.p1.m6" class="ltx_Math" alttext="d^{(k)}\neq 0" display="inline"><mrow><msup><mi>d</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo>≠</mo><mn>0</mn></mrow></math> uma direção descendente temos garantido que</p>
+<table id="Ch2.E40" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E40.m1" class="ltx_Math" alttext="f(x^{(k)}+\alpha_{k}d^{(k)})&lt;f(x^{(k)})." display="block"><mrow><mrow><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo>+</mo><mrow><msub><mi>α</mi><mi>k</mi></msub><mo>⁢</mo><msup><mi>d</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>&lt;</mo><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.40)</span></td>
+</tr>
+</table>
+</div>
+</div>
+<div id="SS1.p2" class="ltx_para">
+<p class="ltx_p">Notamos que um método de descida fica determinado pelas escolhas da direção de descida <math id="SS1.p2.m1" class="ltx_Math" alttext="d_{k}" display="inline"><msub><mi>d</mi><mi>k</mi></msub></math> e o tamanho do passo <math id="SS1.p2.m2" class="ltx_Math" alttext="\alpha_{k}" display="inline"><msub><mi>α</mi><mi>k</mi></msub></math>. Primeiramente, vamos a este último item.
+</p>
+</div>
+<section id="SS1.SSSx1" class="ltx_subsubsection">
+<h3 class="ltx_title ltx_title_subsubsection">Pesquisa linear</h3>
+
+<div id="SS1.SSSx1.p1" class="ltx_para">
+<p class="ltx_p">A computação de <math id="SS1.SSSx1.p1.m1" class="ltx_Math" alttext="\alpha_{k}" display="inline"><msub><mi>α</mi><mi>k</mi></msub></math> consiste em resolver o seguinte problema de minimização:</p>
+<table id="Ch2.E41" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E41.m1" class="ltx_Math" alttext="\min_{\alpha\in\mathbb{R}}\phi(\alpha)=f(x^{(k)}+\alpha d^{(k)})." display="block"><mrow><mrow><mrow><mrow><munder><mi>min</mi><mrow><mi>α</mi><mo>∈</mo><mi>ℝ</mi></mrow></munder><mo>⁡</mo><mi>ϕ</mi></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>α</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo>+</mo><mrow><mi>α</mi><mo>⁢</mo><msup><mi>d</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.41)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Entretanto, a resolução exata deste problema é muitas vezes não factível. Técnicas de aproximações para a resolução deste problema são, então, aplicadas. Tais técnicas são chamadas de <span class="ltx_text ltx_font_bold">pesquisa linear não exata</span>.</p>
+</div>
+<div id="SS1.SSSx1.p2" class="ltx_para">
+<p class="ltx_p">A <span class="ltx_text ltx_font_bold">condição de Armijo</span> é que a escolha de <math id="SS1.SSSx1.p2.m1" class="ltx_Math" alttext="\alpha_{k}" display="inline"><msub><mi>α</mi><mi>k</mi></msub></math> deve ser tal que</p>
+<table id="eq:condArmijo" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E42.m1" class="ltx_Math" alttext="f(x^{(k)}+\alpha_{k}d^{(k)})\leq f(x^{(k)})+\sigma\alpha\nabla f(x^{(k)})\cdot
+d%
+^{(k)}," display="block"><mrow><mrow><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo>+</mo><mrow><msub><mi>α</mi><mi>k</mi></msub><mo>⁢</mo><msup><mi>d</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>≤</mo><mrow><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><mrow><mi>σ</mi><mo>⁢</mo><mi>α</mi><mo>⁢</mo><mrow><mo>∇</mo><mo>⁡</mo><mi>f</mi></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow><mo>⋅</mo><msup><mi>d</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup></mrow></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.42)</span></td>
+</tr>
+</table>
+<p class="ltx_p">para alguma constante <math id="SS1.SSSx1.p2.m2" class="ltx_Math" alttext="\sigma\in(0,1)" display="inline"><mrow><mi>σ</mi><mo>∈</mo><mrow><mo stretchy="false">(</mo><mn>0,1</mn><mo stretchy="false">)</mo></mrow></mrow></math>. Ou seja, a redução em <math id="SS1.SSSx1.p2.m3" class="ltx_Math" alttext="f" display="inline"><mi>f</mi></math> é esperada ser proporcional à derivada direcional de <math id="SS1.SSSx1.p2.m4" class="ltx_Math" alttext="f" display="inline"><mi>f</mi></math> com relação a direção <math id="SS1.SSSx1.p2.m5" class="ltx_Math" alttext="d^{(k)}" display="inline"><msup><mi>d</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup></math> no ponto <math id="SS1.SSSx1.p2.m6" class="ltx_Math" alttext="x^{(k)}" display="inline"><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup></math>. Em aplicações computacionais, <math id="SS1.SSSx1.p2.m7" class="ltx_Math" alttext="\sigma" display="inline"><mi>σ</mi></math> é normalmente escolhido no intervalo <math id="SS1.SSSx1.p2.m8" class="ltx_Math" alttext="[10^{-5},10^{-1}]" display="inline"><mrow><mo stretchy="false">[</mo><mrow><msup><mn>10</mn><mrow><mo>-</mo><mn>5</mn></mrow></msup><mo>⁢</mo><msup><mn>,10</mn><mrow><mo>-</mo><mn>1</mn></mrow></msup></mrow><mo stretchy="false">]</mo></mrow></math>.</p>
+</div>
+<div id="SS1.SSSx1.p3" class="ltx_para">
+<p class="ltx_p">A condição (<a href="#eq:condArmijo" title="(2.42) ‣ Pesquisa linear ‣ 2.3.1 Métodos de descida ‣ 2.3 Problemas de Minimização ‣ Capítulo 2 Sistemas Não Lineares e Otimização ‣ Matemática Numérica Avançada" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.42</span></a>) não é suficiente para evitar escolhas muito pequenas de <math id="SS1.SSSx1.p3.m1" class="ltx_Math" alttext="\alpha_{k}" display="inline"><msub><mi>α</mi><mi>k</mi></msub></math>. Para tanto, pode-se empregar a <span class="ltx_text ltx_font_bold">condição de curvatura</span>, a qual requer que</p>
+<table id="eq:condCurvatura" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E43.m1" class="ltx_Math" alttext="\nabla f(x^{(k)}+\alpha_{k}d^{(k)})\cdot d^{(k)}\geq\beta\nabla f(x^{(k)})d^{(%
+k)}," display="block"><mrow><mrow><mrow><mrow><mrow><mo>∇</mo><mo>⁡</mo><mi>f</mi></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo>+</mo><mrow><msub><mi>α</mi><mi>k</mi></msub><mo>⁢</mo><msup><mi>d</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>⋅</mo><msup><mi>d</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup></mrow><mo>≥</mo><mrow><mi>β</mi><mo>⁢</mo><mrow><mo>∇</mo><mo>⁡</mo><mi>f</mi></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow><mo>⁢</mo><msup><mi>d</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.43)</span></td>
+</tr>
+</table>
+<p class="ltx_p">para <math id="SS1.SSSx1.p3.m2" class="ltx_Math" alttext="\beta\in[\sigma,1/2]" display="inline"><mrow><mi>β</mi><mo>∈</mo><mrow><mo stretchy="false">[</mo><mrow><mrow><mi>σ</mi><mo>⁢</mo><mn>,1</mn></mrow><mo>/</mo><mn>2</mn></mrow><mo stretchy="false">]</mo></mrow></mrow></math>. Notemos que o lado esquerdo de (<a href="#eq:condCurvatura" title="(2.43) ‣ Pesquisa linear ‣ 2.3.1 Métodos de descida ‣ 2.3 Problemas de Minimização ‣ Capítulo 2 Sistemas Não Lineares e Otimização ‣ Matemática Numérica Avançada" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.43</span></a>) é igual a <math id="SS1.SSSx1.p3.m3" class="ltx_Math" alttext="\phi^{\prime}(\alpha_{k})" display="inline"><mrow><msup><mi>ϕ</mi><mo>′</mo></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>α</mi><mi>k</mi></msub><mo stretchy="false">)</mo></mrow></mrow></math>. Ou seja, este condição impõe que <math id="SS1.SSSx1.p3.m4" class="ltx_Math" alttext="\alpha_{k}" display="inline"><msub><mi>α</mi><mi>k</mi></msub></math> seja maior que <math id="SS1.SSSx1.p3.m5" class="ltx_Math" alttext="\beta\phi^{\prime}(0)" display="inline"><mrow><mi>β</mi><mo>⁢</mo><msup><mi>ϕ</mi><mo>′</mo></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo></mrow></mrow></math>. Normalmente, escolhe-se <math id="SS1.SSSx1.p3.m6" class="ltx_Math" alttext="\beta\in 10^{-1},1/2]" display="inline"><mrow><mi>β</mi><mo>∈</mo><msup><mn>10</mn><mrow><mo>-</mo><mn>1</mn></mrow></msup><mn>,1</mn><mo>/</mo><mn>2</mn><mo stretchy="false">]</mo></mrow></math>. Juntas, (<a href="#eq:condArmijo" title="(2.42) ‣ Pesquisa linear ‣ 2.3.1 Métodos de descida ‣ 2.3 Problemas de Minimização ‣ Capítulo 2 Sistemas Não Lineares e Otimização ‣ Matemática Numérica Avançada" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.42</span></a>) e (<a href="#eq:condCurvatura" title="(2.43) ‣ Pesquisa linear ‣ 2.3.1 Métodos de descida ‣ 2.3 Problemas de Minimização ‣ Capítulo 2 Sistemas Não Lineares e Otimização ‣ Matemática Numérica Avançada" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.43</span></a>) são conhecidas como <span class="ltx_text ltx_font_bold">condições de Wolfe<span id="Ch2.footnote11" class="ltx_note ltx_role_footnote"><sup class="ltx_note_mark">11</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">11</sup>
+                    <span class="ltx_tag ltx_tag_note"><span class="ltx_text ltx_font_medium">11</span></span>
+                    
+                    
+                    
+                  <span class="ltx_text ltx_font_medium">Philip Wolfe, 1927 - 2016, matemático estadunidense. Fonte: </span><a href="https://pt.wikipedia.org/wiki/Philip_Wolfe" title="" class="ltx_ref ltx_href ltx_font_medium">Wikipédia</a><span class="ltx_text ltx_font_medium">.</span></span></span></span></span>.</p>
+</div>
+</section>
+</section>
+<section id="SS2" class="ltx_subsection">
+<h2 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">2.3.2 </span>Método do Gradiente <small><a href="../contato.html"><i class="fas fa-envelope"></i></a></small></h2>
+
+<div id="SS2.p1" class="ltx_para">
+<p class="ltx_p">O Método do Gradiente (<span class="ltx_text ltx_font_bold">Método do Máximo Declive</span>) é um Método de Descida tal que as direções descendentes são o oposto do gradiente da <math id="SS2.p1.m1" class="ltx_Math" alttext="f" display="inline"><mi>f</mi></math>, i.e.</p>
+<table id="Ch2.E44" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E44.m1" class="ltx_Math" alttext="d^{(k)}=-\nabla f(x^{(k)})." display="block"><mrow><mrow><msup><mi>d</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><mrow><mo>-</mo><mrow><mrow><mo>∇</mo><mo>⁡</mo><mi>f</mi></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.44)</span></td>
+</tr>
+</table>
+<p class="ltx_p">É fácil verificar que as condições (<a href="#eq:condDirecoes0" title="(2.37) ‣ 2.3.1 Métodos de descida ‣ 2.3 Problemas de Minimização ‣ Capítulo 2 Sistemas Não Lineares e Otimização ‣ Matemática Numérica Avançada" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.37</span></a>)-(<a href="#eq:condDirecoes1" title="(2.38) ‣ 2.3.1 Métodos de descida ‣ 2.3 Problemas de Minimização ‣ Capítulo 2 Sistemas Não Lineares e Otimização ‣ Matemática Numérica Avançada" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.38</span></a>) são satisfeitas.</p>
+</div>
+<div id="ex:Rosenbrock" class="ltx_theorem ltx_theorem_ex">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Exemplo 2.3.1</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmex1.p1" class="ltx_para">
+<p class="ltx_p">Consideremos o problema de encontrar o mínimo da <span class="ltx_text ltx_font_bold">função de Rosenbrock<span id="Ch2.footnote12" class="ltx_note ltx_role_footnote"><sup class="ltx_note_mark">12</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">12</sup>
+                    <span class="ltx_tag ltx_tag_note"><span class="ltx_text ltx_font_medium">12</span></span>
+                    
+                    
+                    
+                  <span class="ltx_text ltx_font_medium">Howard Harry Rosenbrock, 1920 - 2010, engenheiro britânico. Fonte: </span><a href="https://en.wikipedia.org/wiki/Howard_Harry_Rosenbrock" title="" class="ltx_ref ltx_href ltx_font_medium">Wikipedia</a><span class="ltx_text ltx_font_medium">.</span></span></span></span></span></p>
+<table id="Ch2.E45" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E45.m1" class="ltx_Math" alttext="f(x)=\sum_{i=1}^{n}100(x_{i+1}-x_{i}^{2})^{2}+(1-x_{i})^{2}." display="block"><mrow><mrow><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><munderover><mo largeop="true" movablelimits="false" symmetric="true">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><mn>100</mn><mo>⁢</mo><msup><mrow><mo stretchy="false">(</mo><mrow><msub><mi>x</mi><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>-</mo><msubsup><mi>x</mi><mi>i</mi><mn>2</mn></msubsup></mrow><mo stretchy="false">)</mo></mrow><mn>2</mn></msup></mrow></mrow><mo>+</mo><msup><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>-</mo><msub><mi>x</mi><mi>i</mi></msub></mrow><mo stretchy="false">)</mo></mrow><mn>2</mn></msup></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.45)</span></td>
+</tr>
+</table>
+<p class="ltx_p">O valor mínimo desta função é zero e ocorre no ponto <math id="Thmex1.p1.m1" class="ltx_Math" alttext="x=0" display="inline"><mrow><mi>x</mi><mo>=</mo><mn>0</mn></mrow></math>. Esta função é comumente usada como caso padrão para teste de métodos de otimização.</p>
+</div>
+<div id="Thmex1.p2" class="ltx_para">
+<p class="ltx_p">Para o Método do Gradiente, precisamos de suas derivadas parciais:</p>
+<table id="EGx32" class="ltx_equationgroup ltx_eqn_gather ltx_eqn_table">
+
+<tbody id="Ch2.E46"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E46.m1" class="ltx_Math" alttext="\displaystyle\frac{\partial f}{\partial x_{1}}=-400x_{1}(x_{2}-x_{1}^{2})-2(1-%
+x_{1})" display="block"><mrow><mfrac><mrow><mo>∂</mo><mo>⁡</mo><mi>f</mi></mrow><mrow><mo>∂</mo><mo>⁡</mo><msub><mi>x</mi><mn>1</mn></msub></mrow></mfrac><mo>=</mo><mrow><mrow><mo>-</mo><mrow><mn>400</mn><mo>⁢</mo><msub><mi>x</mi><mn>1</mn></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msub><mi>x</mi><mn>2</mn></msub><mo>-</mo><msubsup><mi>x</mi><mn>1</mn><mn>2</mn></msubsup></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow><mo>-</mo><mrow><mn>2</mn><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>-</mo><msub><mi>x</mi><mn>1</mn></msub></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.46)</span></td>
+</tr></tbody>
+<tbody id="Ch2.E47"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E47.m1" class="ltx_Math" alttext="\displaystyle\frac{\partial f}{\partial x_{j}}=\sum_{i=1}^{n}200(x_{i}-x_{i-1}%
+^{2})(\delta_{i,j}-2x_{i-1}\delta_{i-1,j})-2(1-x_{i-1})\delta_{i-1,j}" display="block"><mrow><mfrac><mrow><mo>∂</mo><mo>⁡</mo><mi>f</mi></mrow><mrow><mo>∂</mo><mo>⁡</mo><msub><mi>x</mi><mi>j</mi></msub></mrow></mfrac><mo>=</mo><mrow><mrow><munderover><mo largeop="true" movablelimits="false" symmetric="true">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><mn>200</mn><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msub><mi>x</mi><mi>i</mi></msub><mo>-</mo><msubsup><mi>x</mi><mrow><mi>i</mi><mo>-</mo><mn>1</mn></mrow><mn>2</mn></msubsup></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msub><mi>δ</mi><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow></msub><mo>-</mo><mrow><mn>2</mn><mo>⁢</mo><msub><mi>x</mi><mrow><mi>i</mi><mo>-</mo><mn>1</mn></mrow></msub><mo>⁢</mo><msub><mi>δ</mi><mrow><mrow><mi>i</mi><mo>-</mo><mn>1</mn></mrow><mo>,</mo><mi>j</mi></mrow></msub></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow><mo>-</mo><mrow><mn>2</mn><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>-</mo><msub><mi>x</mi><mrow><mi>i</mi><mo>-</mo><mn>1</mn></mrow></msub></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><msub><mi>δ</mi><mrow><mrow><mi>i</mi><mo>-</mo><mn>1</mn></mrow><mo>,</mo><mi>j</mi></mrow></msub></mrow></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.47)</span></td>
+</tr></tbody>
+<tbody id="Ch2.E48"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E48.m1" class="ltx_Math" alttext="\displaystyle\frac{\partial f}{\partial x_{n}}=200(x_{n}-x_{n-1}^{2}" display="block"><mrow><mfrac><mrow><mo>∂</mo><mo>⁡</mo><mi>f</mi></mrow><mrow><mo>∂</mo><mo>⁡</mo><msub><mi>x</mi><mi>n</mi></msub></mrow></mfrac><mo>=</mo><mn>200</mn><mrow><mo stretchy="false">(</mo><msub><mi>x</mi><mi>n</mi></msub><mo>-</mo><msubsup><mi>x</mi><mrow><mi>n</mi><mo>-</mo><mn>1</mn></mrow><mn>2</mn></msubsup></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.48)</span></td>
+</tr></tbody>
+</table>
+</div>
+<figure id="lst:algOtimMG" class="ltx_float ltx_lstlisting">
+<figcaption class="ltx_caption"><span class="ltx_tag ltx_tag_float">Listing 4: </span>Algoritmo do Gradiente</figcaption>
+<div class="ltx_listing ltx_lst_language_Python ltx_lst_numbers_left ltx_lstlisting ltx_listing">
+<div class="ltx_listing_data"><a href="data:text/plain;base64,aW1wb3J0IG51bXB5IGFzIG5wCmltcG9ydCBudW1weS5saW5hbGcgYXMgbnBsYQppbXBvcnQgc2NpcHkub3B0aW1pemUgYXMgc3BvcHQKCiMgZnVuIG9iagpkZWYgZnVuKHgpOgogICcnJwogIEZ1bmNhbyBkZSBSb3NlbmJyb2NrCiAgJycnCiAgcmV0dXJuIHN1bSgxMDAuKih4WzE6XS14WzotMV0qKjIuKSoqMi4gKyAoMS4teFs6LTFdKSoqMi4pCgojIGdyYWRpZW50ZSBkYSBmdW4KZGVmIGdyYWQoeCk6CiAgeG0gPSB4WzE6LTFdCiAgeG1fbTEgPSB4WzotMl0KICB4bV9wMSA9IHhbMjpdCiAgZGVyID0gbnAuemVyb3NfbGlrZSh4KQogIGRlclsxOi0xXSA9IDIwMCooeG0teG1fbTEqKjIpIC0gNDAwKih4bV9wMSAtIHhtKioyKSp4bSAtIDIqKDEteG0pCiAgZGVyWzBdID0gLTQwMCp4WzBdKih4WzFdLXhbMF0qKjIpIC0gMiooMS14WzBdKQogIGRlclstMV0gPSAyMDAqKHhbLTFdLXhbLTJdKioyKQogIAogIHJldHVybiBkZXIKCiMgcHJvYmxlbSBkaW1lbnNpb24KbiA9IDIKCiMgbnVtIG1heCBpdGVycwptYXhpdGVyID0gMTAwMDAwCiMgdG9sZXJhbmNpYQp0b2wgPSAxZS0xMAoKIyBhcHJveC4gaW5pY2lhbAp4ID0gbnAuemVyb3MobikKCnNpZ2EgPSBbeF0KZm9yIGsgaW4gcmFuZ2UobWF4aXRlcik6CiAgIyBkaXJlY2FvIGRlc2NlbmRlbnRlCiAgZCA9IC1ncmFkKHgpCgogICMgcGVzcXVpc2EgbGluZWFyCiAgYWxwaGEgPSBzcG9wdC5saW5lX3NlYXJjaChmdW4sIGdyYWQsIHgsIGQpWzBdCgogICMgYXR1YWxpemFjYW8KICB4ID0geCArIGFscGhhICogZAoKICBuYWQgPSBucGxhLm5vcm0oYWxwaGEgKiBkKQogIG5mdW4gPSBucGxhLm5vcm0oZnVuKHgpKQoKICBpZiAoKGsrMSkgJSAxMCA9PSAwKToKICAgIHByaW50KGYie2srMX06IHthbHBoYToxLjJlfSB7bmFkOjEuMmV9IHtuZnVuOjEuMmV9IikKICAgIHNpZ2EuYXBwZW5kKHgpCgogIGlmICgobmZ1biA8IHRvbCkgb3IgbnAuaXNuYW4obmZ1bikpOgogICAgYnJlYWsK">⬇</a></div>
+<div id="lstnumberx75" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">1</span></span>
+                <span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">import</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">numpy</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">as</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">np</span>
+</div>
+<div id="lstnumberx76" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">2</span></span>
+                <span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">import</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">numpy</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">linalg</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">as</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">npla</span>
+</div>
+<div id="lstnumberx77" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">3</span></span>
+                <span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">import</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">scipy</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">optimize</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">as</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">spopt</span>
+</div>
+<div id="lstnumberx78" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">4</span></span>
+                
+</div>
+<div id="lstnumberx79" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">5</span></span>
+                <span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;">#<span class="ltx_text ltx_lst_space"> </span>fun<span class="ltx_text ltx_lst_space"> </span>obj</span>
+</div>
+<div id="lstnumberx80" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">6</span></span>
+                <span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">def</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">fun</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">x</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">):</span>
+</div>
+<div id="lstnumberx81" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">7</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_string ltx_font_typewriter" style="font-size:90%;">''</span><span class="ltx_text ltx_lst_string ltx_font_typewriter" style="font-size:90%;">'</span>
+</div>
+<div id="lstnumberx82" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">8</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">Funcao</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">de</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">Rosenbrock</span>
+</div>
+<div id="lstnumberx83" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">9</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">'</span><span class="ltx_text ltx_lst_string ltx_font_typewriter" style="font-size:90%;">''</span>
+</div>
+<div id="lstnumberx84" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">10</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">return</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_keyword ltx_lst_keywords2 ltx_font_typewriter ltx_font_bold" style="font-size:90%;">sum</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(100.*(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">x</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">[1:]-</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">x</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">[:-1]**2.)**2.</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">+</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(1.-</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">x</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">[:-1])**2.)</span>
+</div>
+<div id="lstnumberx85" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">11</span></span>
+                
+</div>
+<div id="lstnumberx86" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">12</span></span>
+                <span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;">#<span class="ltx_text ltx_lst_space"> </span>gradiente<span class="ltx_text ltx_lst_space"> </span>da<span class="ltx_text ltx_lst_space"> </span>fun</span>
+</div>
+<div id="lstnumberx87" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">13</span></span>
+                <span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">def</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">grad</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">x</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">):</span>
+</div>
+<div id="lstnumberx88" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">14</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">xm</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">x</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">[1:-1]</span>
+</div>
+<div id="lstnumberx89" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">15</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">xm_m1</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">x</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">[:-2]</span>
+</div>
+<div id="lstnumberx90" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">16</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">xm_p1</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">x</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">[2:]</span>
+</div>
+<div id="lstnumberx91" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">17</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">der</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">np</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">zeros_like</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">x</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">)</span>
+</div>
+<div id="lstnumberx92" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">18</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">der</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">[1:-1]</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">200*(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">xm</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">-</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">xm_m1</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">**2)</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">-</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">400*(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">xm_p1</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">-</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">xm</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">**2)*</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">xm</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">-</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">2*(1-</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">xm</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">)</span>
+</div>
+<div id="lstnumberx93" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">19</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">der</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">[0]</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">-400*</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">x</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">[0]*(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">x</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">[1]-</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">x</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">[0]**2)</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">-</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">2*(1-</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">x</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">[0])</span>
+</div>
+<div id="lstnumberx94" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">20</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">der</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">[-1]</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">200*(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">x</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">[-1]-</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">x</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">[-2]**2)</span>
+</div>
+<div id="lstnumberx95" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">21</span></span>
+                
+</div>
+<div id="lstnumberx96" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">22</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">return</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">der</span>
+</div>
+<div id="lstnumberx97" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">23</span></span>
+                
+</div>
+<div id="lstnumberx98" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">24</span></span>
+                <span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;">#<span class="ltx_text ltx_lst_space"> </span>problem<span class="ltx_text ltx_lst_space"> </span>dimension</span>
+</div>
+<div id="lstnumberx99" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">25</span></span>
+                <span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">n</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">2</span>
+</div>
+<div id="lstnumberx100" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">26</span></span>
+                
+</div>
+<div id="lstnumberx101" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">27</span></span>
+                <span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;">#<span class="ltx_text ltx_lst_space"> </span>num<span class="ltx_text ltx_lst_space"> </span>max<span class="ltx_text ltx_lst_space"> </span>iters</span>
+</div>
+<div id="lstnumberx102" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">28</span></span>
+                <span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">maxiter</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">100000</span>
+</div>
+<div id="lstnumberx103" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">29</span></span>
+                <span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;">#<span class="ltx_text ltx_lst_space"> </span>tolerancia</span>
+</div>
+<div id="lstnumberx104" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">30</span></span>
+                <span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">tol</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">1</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">e</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">-10</span>
+</div>
+<div id="lstnumberx105" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">31</span></span>
+                
+</div>
+<div id="lstnumberx106" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">32</span></span>
+                <span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;">#<span class="ltx_text ltx_lst_space"> </span>aprox.<span class="ltx_text ltx_lst_space"> </span>inicial</span>
+</div>
+<div id="lstnumberx107" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">33</span></span>
+                <span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">x</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">np</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">zeros</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">n</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">)</span>
+</div>
+<div id="lstnumberx108" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">34</span></span>
+                
+</div>
+<div id="lstnumberx109" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">35</span></span>
+                <span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">siga</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">[</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">x</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">]</span>
+</div>
+<div id="lstnumberx110" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">36</span></span>
+                <span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">for</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">k</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">in</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_keyword ltx_lst_keywords2 ltx_font_typewriter ltx_font_bold" style="font-size:90%;">range</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">maxiter</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">):</span>
+</div>
+<div id="lstnumberx111" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">37</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;">#<span class="ltx_text ltx_lst_space"> </span>direcao<span class="ltx_text ltx_lst_space"> </span>descendente</span>
+</div>
+<div id="lstnumberx112" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">38</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">d</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">-</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">grad</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">x</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">)</span>
+</div>
+<div id="lstnumberx113" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">39</span></span>
+                
+</div>
+<div id="lstnumberx114" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">40</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;">#<span class="ltx_text ltx_lst_space"> </span>pesquisa<span class="ltx_text ltx_lst_space"> </span>linear</span>
+</div>
+<div id="lstnumberx115" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">41</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">alpha</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">spopt</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">line_search</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">fun</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">grad</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">x</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">d</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">)[0]</span>
+</div>
+<div id="lstnumberx116" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">42</span></span>
+                
+</div>
+<div id="lstnumberx117" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">43</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;">#<span class="ltx_text ltx_lst_space"> </span>atualizacao</span>
+</div>
+<div id="lstnumberx118" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">44</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">x</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">x</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">+</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">alpha</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">*</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">d</span>
+</div>
+<div id="lstnumberx119" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">45</span></span>
+                
+</div>
+<div id="lstnumberx120" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">46</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">nad</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">npla</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">norm</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">alpha</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">*</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">d</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">)</span>
+</div>
+<div id="lstnumberx121" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">47</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">nfun</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">npla</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">norm</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">fun</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">x</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">))</span>
+</div>
+<div id="lstnumberx122" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">48</span></span>
+                
+</div>
+<div id="lstnumberx123" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">49</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">if</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">((</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">k</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">+1)</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">%</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">10</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">==</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">0):</span>
+</div>
+<div id="lstnumberx124" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">50</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">    </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">print</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">f</span><span class="ltx_text ltx_lst_string ltx_font_typewriter" style="font-size:90%;">"{k+1}:<span class="ltx_text ltx_lst_space"> </span>{alpha:1.2e}<span class="ltx_text ltx_lst_space"> </span>{nad:1.2e}<span class="ltx_text ltx_lst_space"> </span>{nfun:1.2e}"</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">)</span>
+</div>
+<div id="lstnumberx125" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">51</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">    </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">siga</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">append</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">x</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">)</span>
+</div>
+<div id="lstnumberx126" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">52</span></span>
+                
+</div>
+<div id="lstnumberx127" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">53</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">if</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">((</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">nfun</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&lt;</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">tol</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">)</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">or</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">np</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">isnan</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">nfun</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">)):</span>
+</div>
+<div id="lstnumberx128" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">54</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">    </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter ltx_font_bold" style="font-size:90%;">break</span>
+</div>
+</div>
+</figure>
+</div>
+<div id="Thmexer1" class="ltx_theorem ltx_theorem_exer">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Exercício 2.3.1</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmexer1.p1" class="ltx_para">
+<p class="ltx_p">Aplique o Método do Gradiente para resolver o problema de minimização com as seguintes funções objetivos:
+</p>
+<ol id="I2" class="ltx_enumerate">
+<li id="I2.i1" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">a)</span> 
+<div id="I2.i1.p1" class="ltx_para">
+<p class="ltx_p">Função de Beale</p>
+<table id="Ch2.E49" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E49.m1" class="ltx_Math" alttext="f(x,y)=(1.5-x-xy)^{2}+(2.25-x+xy^{2})^{2}+(2.625-x+xy^{3})^{2}" display="block"><mrow><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><msup><mrow><mo stretchy="false">(</mo><mrow><mn>1.5</mn><mo>-</mo><mi>x</mi><mo>-</mo><mrow><mi>x</mi><mo>⁢</mo><mi>y</mi></mrow></mrow><mo stretchy="false">)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo stretchy="false">(</mo><mrow><mrow><mn>2.25</mn><mo>-</mo><mi>x</mi></mrow><mo>+</mo><mrow><mi>x</mi><mo>⁢</mo><msup><mi>y</mi><mn>2</mn></msup></mrow></mrow><mo stretchy="false">)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo stretchy="false">(</mo><mrow><mrow><mn>2.625</mn><mo>-</mo><mi>x</mi></mrow><mo>+</mo><mrow><mi>x</mi><mo>⁢</mo><msup><mi>y</mi><mn>3</mn></msup></mrow></mrow><mo stretchy="false">)</mo></mrow><mn>2</mn></msup></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.49)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Solução: f(3, 0.5) = 0.</p>
+</div>
+</li>
+<li id="I2.i2" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">b)</span> 
+<div id="I2.i2.p1" class="ltx_para">
+<p class="ltx_p">Função de Goldstein-Price</p>
+<table id="EGx33" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="Ch2.Ex5"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch2.Ex5.m1" class="ltx_Math" alttext="\displaystyle f(x,y)" display="inline"><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false">)</mo></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch2.Ex5.m2" class="ltx_Math" alttext="\displaystyle=\left[1+\left(x+y+1\right)^{2}\left(19-14x+3x^{2}-14y+6xy+3y^{2}%
+\right)\right]" display="inline"><mrow><mi></mi><mo>=</mo><mrow><mo>[</mo><mrow><mn>1</mn><mo>+</mo><mrow><msup><mrow><mo>(</mo><mrow><mi>x</mi><mo>+</mo><mi>y</mi><mo>+</mo><mn>1</mn></mrow><mo>)</mo></mrow><mn>2</mn></msup><mo>⁢</mo><mrow><mo>(</mo><mrow><mrow><mrow><mrow><mn>19</mn><mo>-</mo><mrow><mn>14</mn><mo>⁢</mo><mi>x</mi></mrow></mrow><mo>+</mo><mrow><mn>3</mn><mo>⁢</mo><msup><mi>x</mi><mn>2</mn></msup></mrow></mrow><mo>-</mo><mrow><mn>14</mn><mo>⁢</mo><mi>y</mi></mrow></mrow><mo>+</mo><mrow><mn>6</mn><mo>⁢</mo><mi>x</mi><mo>⁢</mo><mi>y</mi></mrow><mo>+</mo><mrow><mn>3</mn><mo>⁢</mo><msup><mi>y</mi><mn>2</mn></msup></mrow></mrow><mo>)</mo></mrow></mrow></mrow><mo>]</mo></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+<tbody id="Ch2.E50"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch2.E50.m2" class="ltx_Math" alttext="\displaystyle\times\left[30+\left(2x-3y\right)^{2}\left(18-32x+12x^{2}+48y-36%
+xy+27y^{2}\right)\right]" display="inline"><mrow><mi></mi><mo>×</mo><mrow><mo>[</mo><mrow><mn>30</mn><mo>+</mo><mrow><msup><mrow><mo>(</mo><mrow><mrow><mn>2</mn><mo>⁢</mo><mi>x</mi></mrow><mo>-</mo><mrow><mn>3</mn><mo>⁢</mo><mi>y</mi></mrow></mrow><mo>)</mo></mrow><mn>2</mn></msup><mo>⁢</mo><mrow><mo>(</mo><mrow><mrow><mrow><mrow><mn>18</mn><mo>-</mo><mrow><mn>32</mn><mo>⁢</mo><mi>x</mi></mrow></mrow><mo>+</mo><mrow><mn>12</mn><mo>⁢</mo><msup><mi>x</mi><mn>2</mn></msup></mrow><mo>+</mo><mrow><mn>48</mn><mo>⁢</mo><mi>y</mi></mrow></mrow><mo>-</mo><mrow><mn>36</mn><mo>⁢</mo><mi>x</mi><mo>⁢</mo><mi>y</mi></mrow></mrow><mo>+</mo><mrow><mn>27</mn><mo>⁢</mo><msup><mi>y</mi><mn>2</mn></msup></mrow></mrow><mo>)</mo></mrow></mrow></mrow><mo>]</mo></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.50)</span></td>
+</tr></tbody>
+</table>
+<p class="ltx_p">Solução: f(0,-1) = 3.</p>
+</div>
+</li>
+<li id="I2.i3" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">c)</span> 
+<div id="I2.i3.p1" class="ltx_para">
+<p class="ltx_p">Função de Booth</p>
+<table id="Ch2.E51" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E51.m1" class="ltx_Math" alttext="f(x,y)=\left(x+2y-7\right)^{2}+\left(2x+y-5\right)^{2}" display="block"><mrow><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><msup><mrow><mo>(</mo><mrow><mrow><mi>x</mi><mo>+</mo><mrow><mn>2</mn><mo>⁢</mo><mi>y</mi></mrow></mrow><mo>-</mo><mn>7</mn></mrow><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mrow><mrow><mrow><mn>2</mn><mo>⁢</mo><mi>x</mi></mrow><mo>+</mo><mi>y</mi></mrow><mo>-</mo><mn>5</mn></mrow><mo>)</mo></mrow><mn>2</mn></msup></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.51)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Solução: f(1,3)=0.</p>
+</div>
+</li>
+<li id="I2.i4" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">d)</span> 
+<div id="I2.i4.p1" class="ltx_para">
+<p class="ltx_p">Função de Rastringin:</p>
+<table id="Ch2.E52" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E52.m1" class="ltx_Math" alttext="f(x)=10n+\sum_{i=1}^{n}\left[x_{i}^{2}-10\cos(2\pi x_{i})\right]" display="block"><mrow><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mn>10</mn><mo>⁢</mo><mi>n</mi></mrow><mo>+</mo><mrow><munderover><mo largeop="true" movablelimits="false" symmetric="true">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><mo>[</mo><mrow><msubsup><mi>x</mi><mi>i</mi><mn>2</mn></msubsup><mo>-</mo><mrow><mn>10</mn><mo>⁢</mo><mrow><mi>cos</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mrow><mn>2</mn><mo>⁢</mo><mi>π</mi><mo>⁢</mo><msub><mi>x</mi><mi>i</mi></msub></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow><mo>]</mo></mrow></mrow></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.52)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Solução: f(0)=0.</p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</section>
+</section>
+</div>
+<footer class="ltx_page_footer">
+<div>
+<a href="cap_otimizacao_sec_tipoNewton.html" title="2.2 Método Tipo Newton ‣ Capítulo 2 Sistemas Não Lineares e Otimização ‣ Matemática Numérica Avançada" class="ltx_ref" rel="prev"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">2.2 </span>Método Tipo Newton</span></a><a href="bib.html" title="Referências ‣ Matemática Numérica Avançada" class="ltx_ref" rel="bibliography"><span class="ltx_text ltx_ref_title">Referências</span></a><a href="bib.html" title="Referências ‣ Matemática Numérica Avançada" class="ltx_ref" rel="next"><span class="ltx_text ltx_ref_title">Referências</span></a>
+</div>
+<div class="ltx_page_logo">
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />O texto acima está sob Licença <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR">Creative Commons Atribuição-CompartilhaIgual 4.0 Internacional</a>. Generated  on Thu Mar 24 16:16:14 2022 by <a href="http://dlmf.nist.gov/LaTeXML/">LaTeXML <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg==" alt="[LOGO]"></a>
+</div></footer>
+</div>
+<div class="card" id="rodape" style="">
+  <div class="card-footer text-left">
+    <a href="https://github.com/phkonzen/notas"><i class="fa fa-github" aria-hidden="true"></i> Repo</a> <a href="../contato.html"><i class="fas fa-envelope"></i> Mensagem</a> <a href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i> notas.pedrok</a>
+  </div> <!-- div class="card" -->
+</div> <!-- div class="card-footer text-right" -->
+<div class="alert alert-success alert-dismissible" id="colabAlert" role="alert" style="display : none !important; position: fixed; top: 100px;  max-width: 90vw;">
+  <span type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></span>
+  <h4>Colabore!</h4>
+  <p style="">Este é um <i>site</i> <strong>gratuito</strong> de recursos educacionais abertos. Colabore informando <strong>erros</strong> ou dando <strong>sugestões.</strong></p>
+  <p><a class="btn btn-primary float-center m-1" href="../contato.html" style=""><i class="fas fa-envelope"></i></a> 
+    <a class="btn btn-primary float-center m-1" href="https://www.instagram.com/notas.pedrok/" style=""><i class="fab fa-instagram"></i></a>
+    <a class="btn btn-primary float-center m-1" href="https://github.com/phkonzen/notas/discussions" style=""><i class="fab fa-github"></i></a></p>
+</div>
+<div class="alert alert-warning alert-dismissible" id="generalAlert" role="alert" style="display : none !important; position: fixed; bottom: 0;  max-width: 90vw;">
+  <span type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></span>
+  Ao navegar por este <i>site</i>, você concorda com a sua <a href="../politica.html">Política de uso de dados</a>.
+</div>
+</div> <!-- div class=col-lg-1 -->
+<div class=col-lg-1>
+</div>
+</div> <!-- div class=row -->
+</div> <!-- div class=container-fluid -->
+
+</body>
+
+</html>
