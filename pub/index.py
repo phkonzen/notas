@@ -123,7 +123,7 @@ class Index:
         
         #miolo
 
-        # Área de anúncios
+# Área de anúncios
         #body += '<p></p>'
         body += '<div id="demo" class="carousel slide" data-ride="carousel">'
         #body += '<!-- Indicators -->'
@@ -136,20 +136,20 @@ class Index:
         body += '<!-- The slideshow -->'
         body += '<div class="carousel-inner">\n'
         
-        body += '<div class="carousel-item-active">\n'
+        body += '<div class="carousel-item active">\n'
         body += '<div>\n'
         body += '<div class="spinner-grow spinner-grow-sm text-warning mb-1" role="status"></div>\n'
         body += '<a href="http://www.ufrgs.br/ppgmap/news/selecao-de-mestrado-2022-1">PPGMAp-UFRGS: <strong>Aberta Seleção de Mestrado !</strong></a>\n'
-        body += '</div>\n'        
+        body += '</div>\n'
         body += '</div>\n\n'
+
 
         body += '<div class="carousel-item">\n'
         body += '<div>\n'
         body += '<div class="spinner-grow spinner-grow-sm text-danger mb-1" role="status"></div>\n'
         body += '<a href="http://www.cnmac.org.br">CNMAC 2022: Submissão de trabalhos: até 31/03 !</a>\n'
-        body += '</div>\n'
+        body += '</div>\n'        
         body += '</div>\n\n'
-
 
         body += '<div class="carousel-item">\n'
         body += '<div>\n'
