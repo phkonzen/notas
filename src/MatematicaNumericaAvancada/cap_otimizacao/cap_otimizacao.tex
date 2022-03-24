@@ -145,3 +145,134 @@ Vamos, então, propor o seguinte  método tipo Newton de atualização cíclica 
 \begin{exer}
   Implemente uma versão do Método Tipo Newton apresentado acima e aplique-o para simular o problema discutido no Exemplo \ref{ex:burgers} para $\nu = 1., 0.1, 0.01, 0.001, 0.0001$. Faça uma implementação com suporte para matrizes esparsas.
 \end{exer}
+
+\section{Problemas de Minimização}\label{cap_otimizacao_sec_minimi}
+
+Vamos considerar o seguinte \emph{problema de minimização}: dada a \emph{função objetivo} $f:D\subset \mathbb{R}^n\to\mathbb{R}$, resolver
+\begin{equation}
+  \min_{x\in D} f(x).
+\end{equation}
+No que segue e salvo dito explicitamente ao contrário, vamos assumir que o problema está bem determinado e que $f$ é suficientemente suave. Ainda, vamos assumir as seguintes notações:
+\begin{itemize}
+\item gradiente de $f$
+  \begin{equation}
+    \nabla f(x) = \left(\frac{\p f}{\p x_1}(x),\dotsc,\frac{\p f}{\p x_n}(x)\right)
+  \end{equation}
+\item derivada direcional de $f$ com respeito a $d\in\mathbb{R}^n$
+  \begin{equation}
+    \frac{\p f}{\p d} = \nabla f(x)\cdot d
+  \end{equation}
+\item matriz hessiana de f, $H=[h_{i,j}]_{i,j=1}^{n,n}$
+  \begin{equation}
+    h_{i,j}(x) = \frac{\p^2 f}{\p x_i\p x_j}
+  \end{equation}
+\end{itemize}
+
+\begin{obs}[Condições de Otimização]
+  Se $\nabla f(x^*) = 0$ e $H(x^*)$ é positiva definida, então $x^*$ é um mínimo local de $f$ em uma vizinhança não vazia de $x^*$. Consulte mais em \cite[Seção 7.2]{Quarteroni2007}. Um ponto $x^*$ tal que $\nabla f(x^*) = 0$ é chamado de \emph{ponto crítico}.
+\end{obs}
+
+\subsection{Métodos de descida}
+
+Um método de descida consiste em uma iteração tal que: dada uma aproximação inicial $x^{(0)}\in\mathbb{R}^n$, computa-se
+\begin{equation}
+  x^{(k+1)} = x^{(k)} + \alpha_k d^{(k)},
+\end{equation}
+com \emph{tamanho de passo} $\alpha_k>0$, para $k=0,1,2,\ldots$ até convergência. As \emph{direções descendentes} são tais que
+\begin{align}
+  &d^{(k)}\cdot\nabla f(x^{(k)}) < 0,\quad \text{se } \nabla f(x^{(k)}) \neq 0,\label{eq:condDirecoes0}\\
+  &d^{(k)} = 0,\quad \text{noutro caso.}\label{eq:condDirecoes1}
+\end{align}
+
+\begin{obs}(Condição de Convergência)
+  Da Série de Taylor\footnote{Brook Taylor, 1685 - 1731, matemático britânico. Fonte: \href{https://pt.wikipedia.org/wiki/Brook_Taylor}{Wikipédia}.}, temos que
+  \begin{equation}
+    f(x+\alpha_kd^{(k)}) - f(x^{(k)}) = \alpha_k\nabla f(x^{(k)})\cdot d^{(k)} + \varepsilon,
+  \end{equation}
+  com $\varepsilon\to 0$ quando $\alpha_k\to 0$. Como consequência da continuidade da $f$, para $\alpha_k$ suficientemente pequeno, o sinal do lado esquerdo é igual a do direito desta última equação. Logo, para tais $\alpha_k$ e $d^{(k)}\neq 0$ uma direção descendente temos garantido que
+  \begin{equation}
+    f(x^{(k)}+\alpha_kd^{(k)}) < f(x^{(k)}).
+  \end{equation}
+\end{obs}
+
+
+Notamos que um método de descida fica determinado pelas escolhas da direção de descida $d_k$ e o tamanho do passo $\alpha_k$. Primeiramente, vamos a este último item.
+
+\subsubsection{Pesquisa linear}
+
+A computação de $\alpha_k$ consiste em resolver o seguinte problema de minimização:
+\begin{equation}
+  \min_{\alpha\in\mathbb{R}} \phi(\alpha) = f(x^{(k)}+\alpha d^{(k)}).
+\end{equation}
+Entretanto, a resolução exata deste problema é muitas vezes não factível. Técnicas de aproximações para a resolução deste problema são, então, aplicadas. Tais técnicas são chamadas de \emph{pesquisa linear não exata}.
+
+A \emph{condição de Armijo} é que a escolha de $\alpha_k$ deve ser tal que
+\begin{equation} \label{eq:condArmijo}
+  f(x^{(k)}+\alpha_k d^{(k)}) \leq f(x^{(k)}) + \sigma \alpha \nabla f(x^{(k)})\cdot d^{(k)},
+\end{equation}
+para alguma constante $\sigma\in (0, 1)$. Ou seja, a redução em $f$ é esperada ser proporcional à derivada direcional de $f$ com relação a direção $d^{(k)}$ no ponto $x^{(k)}$. Em aplicações computacionais, $\sigma$ é normalmente escolhido no intervalo $[10^{-5}, 10^{-1}]$. 
+
+A condição \eqref{eq:condArmijo} não é suficiente para evitar escolhas muito pequenas de $\alpha_k$. Para tanto, pode-se empregar a \emph{condição de curvatura}, a qual requer que
+\begin{equation}\label{eq:condCurvatura}
+  \nabla f(x^{(k)} + \alpha_kd^{(k)})\cdot d^{(k)} \geq \beta\nabla f(x^{(k)})d^{(k)},
+\end{equation}
+para $\beta\in [\sigma, 1/2]$. Notemos que o lado esquerdo de \eqref{eq:condCurvatura} é igual a $\phi'(\alpha_k)$. Ou seja, este condição impõe que $\alpha_k$ seja maior que $\beta\phi'(0)$. Normalmente, escolhe-se $\beta\in 10^{-1}, 1/2]$. Juntas, \eqref{eq:condArmijo} e \eqref{eq:condCurvatura} são conhecidas como \emph{condições de Wolfe}\footnote{Philip Wolfe, 1927 - 2016, matemático estadunidense. Fonte: \href{https://pt.wikipedia.org/wiki/Philip_Wolfe}{Wikipédia}.}.
+
+\subsection{Método do Gradiente}
+
+O Método do Gradiente (\emph{Método do Máximo Declive}) é um Método de Descida tal que as direções descendentes são o oposto do gradiente da $f$, i.e.
+\begin{equation}
+  d^{(k)} = -\nabla f(x^{(k)}).
+\end{equation}
+É fácil verificar que as condições \eqref{eq:condDirecoes0}-\eqref{eq:condDirecoes1} são satisfeitas.
+
+\begin{ex}\label{ex:Rosenbrock}
+  Consideremos o problema de encontrar o mínimo da \emph{função de Rosenbrock}\footnote{Howard Harry Rosenbrock, 1920 - 2010, engenheiro britânico. Fonte: \href{https://en.wikipedia.org/wiki/Howard_Harry_Rosenbrock}{Wikipedia}.}
+  \begin{equation}
+    f(x) = \sum_{i=1}^n 100(x_{i+1}-x_i^2)^2 + (1-x_i)^2.
+  \end{equation}
+  O valor mínimo desta função é zero e ocorre no ponto $x=0$. Esta função é comumente usada como caso padrão para teste de métodos de otimização.
+
+  Para o Método do Gradiente, precisamos de suas derivadas parciais:
+  \begin{gather}
+    \frac{\p f}{\p x_1} = -400x_1(x_2-x_1^2) - 2(1-x_1)\\
+    ~\nonumber\\
+    \frac{\p f}{\p x_j} = \sum_{i=1}^n 200(x_i-x_{i-1}^2)(\delta_{i,j}-2x_{i-1}\delta_{i-1,j})-2(1-x_{i-1})\delta_{i-1,j}\\
+    ~\nonumber\\
+    \frac{\p f}{\p x_{n}} = 200(x_n - x_{n-1}^2
+  \end{gather}
+
+  \lstinputlisting[caption=Algoritmo do Gradiente, label={lst:algOtimMG}]{./cap_otimizacao/dados/pyMG/main.py}
+\end{ex}
+
+\begin{exer}
+  Aplique o Método do Gradiente para resolver o problema de minimização com as seguintes funções objetivos:
+  \begin{enumerate}[a)]
+  \item Função de Beale
+    \begin{equation}
+      f(x,y) = (1.5-x-xy)^2 + (2.25-x+xy^2)^2 + (2.625-x+xy^3)^2
+    \end{equation}
+    Solução: f(3, 0.5) = 0.
+  \item Função de Goldstein-Price
+    \begin{align}
+      f(x,y) &= \left[1+\left(x+y+1\right)^{2}\left(19-14x+3x^{2}-14y+6xy+3y^{2}\right)\right]\nonumber\\
+      &\times \left[30+\left(2x-3y\right)^{2}\left(18-32x+12x^{2}+48y-36xy+27y^{2}\right)\right]
+    \end{align}
+    Solução: f(0,-1) = 3.
+  \item Função de Booth
+    \begin{equation}
+      f(x,y) = \left( x + 2y -7\right)^{2} + \left(2x +y - 5\right)^{2}
+    \end{equation}
+    Solução: f(1,3)=0.
+  \item Função de Rastringin:
+    \begin{equation}
+      f(x) = 10 n + \sum_{i=1}^n \left[x_i^2 - 10\cos(2 \pi x_i)\right]
+    \end{equation}
+    Solução: f(0)=0.
+  \end{enumerate}
+\end{exer}
+
+
+
+
+
