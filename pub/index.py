@@ -123,7 +123,7 @@ class Index:
         
         #miolo
 
-# Área de anúncios
+        # Área de anúncios
         #body += '<p></p>'
         body += '<div id="demo" class="carousel slide" data-ride="carousel">'
         #body += '<!-- Indicators -->'
@@ -158,7 +158,7 @@ class Index:
         body += '</div>\n'        
         body += '</div>\n\n'
 
-        body += '</div>'
+        #body += '</div>'
   
         body += '</div>'
 
