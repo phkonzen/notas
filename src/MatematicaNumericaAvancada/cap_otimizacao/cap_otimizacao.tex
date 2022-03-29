@@ -21,7 +21,7 @@ Salvo explicitado ao contrário, assumiremos que $F\in C^1(D)$, i.e. $F$ é uma 
 \end{equation}
 onde $F(x) = (f_1(x), f_2(x), \dotsc, f_n(x))$ e $x = (x_1, x_2,\dotsc, x_n)$.
 
-A iteração básica do \emph{Método de Newton}\footnote{Isaac Newton, 1642 - 1727, matemático, físico, astrônomo, teólogo e autor inglês. Fonte: \href{https://pt.wikipedia.org/wiki/Isaac_Newton}{Wikipédia}.} consiste em: dada uma aproximação inicial $x^{(0)}\in\mathbb{R}^n$,
+A iteração básica do \emph{Método de Newton}\footnote{{\newton}} consiste em: dada uma aproximação inicial $x^{(0)}\in\mathbb{R}^n$,
 \begin{align}
   &\text{resolver}\quad J_F\left(x^{(k)}\right)\delta^{(k)} = -F\left(x^{(k)}\right)\\
   &\text{calcular}\quad x^{(k+1)} = x^{(k)} + \delta^{(k)}
@@ -245,7 +245,7 @@ O Método do Gradiente (\emph{Método do Máximo Declive}) é um Método de Decl
   \lstinputlisting[caption=Algoritmo do Gradiente, label={lst:algOtimMG}]{./cap_otimizacao/dados/pyMG/main.py}
 \end{ex}
 
-\begin{exer}
+\begin{exer}\label{exer:optFuns}
   Aplique o Método do Gradiente para resolver o problema de minimização com as seguintes funções objetivos:
   \begin{enumerate}[a)]
   \item Função de Beale
@@ -273,6 +273,76 @@ O Método do Gradiente (\emph{Método do Máximo Declive}) é um Método de Decl
 \end{exer}
 
 
+\subsection{Método de Newton}
 
+O Método de Newton{\newton} para problemas de otimização é um Método de Declive com direções descendentes
+\begin{equation}
+  d^{(k)} = -H^{-1}(x^{(k)})\nabla f(x^{(k)}),
+\end{equation}
+assumindo que a hessiana $H$ seja definida positiva dentro de uma vizinhança suficientemente grande do ponto de mínimo $x^*$.
 
+\begin{obs}
+  A cada iteração de Newton é necessário computar a inversa da matriz hessiana. Este é um passo crítico para o desempenho computacional. Desta forma, a escolha do método para o cálculo da inversa é normalmente explicitado, este é chamado de {\it solver} linear. Por exemplo, \emph{Newton-Krylov} é o nome dado ao Método de Newton que utiliza um Método de Subespaço de Krylov como {\it solver} linear. Mais especificamente, \emph{Newton-GMRES} quando a inversa é computada com o GMRES. Uma escolha natural é \emph{Newton-GC}, tendo em vista que o Método de Gradiente Conjugado é ideal para matriz simétrica e definida positiva.
+\end{obs}
 
+\begin{obs}
+  Na implementação computacional não é necessário computar a inversa da hessiana, mais apenas computar $d^{(k)}$ resolvendo o seguinte sistema linear
+  \begin{equation}
+    H(x^{(k)})d^{(k)} = -\nabla f(x^{(k)}).
+  \end{equation}
+\end{obs}
+
+\begin{ex}\label{ex:optNewtonGC}
+  Seguindo o Exemplo \label{ex:Rosenbrock}, temos que a hessiana associada é a matriz simétrica $H = [h_{i,j}]_{i,j=1}^{n,n}$ com
+  \begin{align}
+    h_{1,1} &= \frac{\p^2 f}{\p x_1^2} = 1200x_1^2-400x_2+2\\
+    h_{1,2} &= \frac{\p^2 f}{\p x_1\p x_2} = -400x_1\\
+            &~\nonumber\\
+    h_{i,j} &= \frac{\p^2 f}{\p x_i\p x_j} = 200(\delta_{i,j}-2x_{i-1}\delta_{i-1,j}) - 400(\delta_{i+1,j}-2x_i\delta_{i,j})\nonumber\\
+            &- 400\delta_{i,j}(x_{i+1}-x_i^2) + 2\delta_{i,j}\\
+            &~\nonumber\\
+    h_{n-1,n} &= \frac{\p^2 f}{\p x_{n-1}\p x_n} = -400x_{n-1}\\
+    h_{n,n} &= \frac{\p^2 f}{\p x_{n-1}} = 200
+  \end{align}
+  Notemos que a hessiana é uma matriz tridiagonal.
+
+  \lstinputlisting[caption=Algoritmo de Newton, label={lst:algOtimNewton}]{./cap_otimizacao/dados/pyNewton/main.py}  
+\end{ex}
+
+\begin{obs}{Métodos Tipo Newton}
+  Métodos Tipo Newton são aqueles que utilizam uma aproximação para a inversa da matriz hessiana. Uma estratégia comumente aplicada, é a de atualizar a hessiana apenas em algumas iterações, baseando-se em uma estimativa da taxa de convergência. Na Seção \ref{cap_optimizacao_sec_tipoNewton}, exploramos esta técnica no contexto de resolução de sistemas não lineares.
+\end{obs}
+
+\begin{exer}
+  Aplique o Método de Newton para minimizar a função de Rosenbrock no caso de várias dimensões. Para tanto, utilize uma implementação eficiente com suporte para matrizes esparsas. Compare o desempenho entre os métodos Newton-GMRES e Newton-GC. 
+\end{exer}
+
+\begin{exer}
+  Aplique o Método de Newton para minimizar as funções dadas no Exercício \ref{exer:optFuns}.
+\end{exer}
+
+\subsection{Método do Gradiente Conjugado}
+
+Métodos do Gradiente Conjugado são obtidos escolhendo-se as direções descendentes
+\begin{equation}
+  d^{(k)} = -\nabla f(x^{(k)}) + \beta_k d^{(k-1)},
+\end{equation}
+onde $\beta_k$ é um escalar escolhido de forma que as direções $\{d^{(k)}\}$ sejam mutuamente ortogonais com respeito a uma dada norma. Por exemplo, o \emph{Método de Fletcher}-\emph{Reeves} consiste em escolher
+\begin{equation}
+  \beta_k = \frac{\nabla f(x^{(k)})\cdot\nabla f(x^{(k)})}{\nabla f(x^{(k-1)}\cdot\nabla f(x^{(k-1)})},
+\end{equation}
+o que garante que as direções sejam mutuamente ortogonais com respeito ao produto interno euclidiano.
+
+\begin{obs}
+  Outras variações comumente empregadas são o Método de Polak-Ribière e suas variantes. Consulte mais em \cite[Seção 5.2]{Nocedal2003}.
+\end{obs}
+
+\begin{ex}
+  Implementação do Método de Fletcher-Reeves para a minimização da função de Rosenbrock dada no Exemplo \ref{ex:Rosenbrock}.
+  
+  \lstinputlisting[caption=Algoritmo de Fletcher-Reeves, label={lst:algOtimGC}]{./cap_otimizacao/dados/pyMGC/main.py}    
+\end{ex}
+
+\begin{exer}
+  Teste o Método de Fletcher-Reeves para a minimização das funções dadas no Exercício \ref{exer:optFuns}.
+\end{exer}
