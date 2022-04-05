@@ -1,0 +1,85 @@
+%Este trabalho está licenciado sob a Licença Atribuição-CompartilhaIgual 4.0 Internacional Creative Commons. Para visualizar uma cópia desta licença, visite http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR ou mande uma carta para Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+
+\chapter{Autovalores e Autovetores}\label{cap_autoval}
+\thispagestyle{fancy}
+
+\begin{flushright}
+  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
+\end{flushright}
+
+Neste capítulo, estudamos métodos numéricos para a computação de autovalores e autovetores de matrizes.
+
+\section{Método da Potência}\label{cap_autoval_sec_pot}
+
+O método da potência é uma técnica iterativa para computar o autovalor dominante de uma matriz e um autovetor associado. Modificações do método, tornam possível sua aplicação para a determinação de outros autovalores próximos a um dado número. Desta forma, pode ser utilizá-lo em conjunto com outra técnica de aproximação de autovalores e autovetores.
+
+\subsection{Autovalor dominante}
+
+Vamos denotar o \emph{espectro} de uma dada matriz $A\in\mathbb{C}^{n\times n}$ por
+\begin{equation}
+  \sigma(A) = \{\lambda_1, \lambda_2, \dotsc, \lambda_n\},
+\end{equation}
+sendo $\lambda_i\in \mathbb{C}$ o $i$-ésimo \emph{autovalor} de uma \emph{matriz diagonalizável}\footnote{Existe uma base de $\mathbb{C}^{n\times n}$ formada apenas de autovetores de $A$.} $A=[a_{i,j}]_{i,j=1}^{n,n}$, i.e. existe um vetor $0\neq v^{(i)}\in\mathbb{C}^n$ tal que
+\begin{equation}
+  Av^{(i)} = \lambda_i v^{(i)},
+\end{equation}
+sendo $v^{(i)}$ chamado de \emph{autovetor} associado a $\lambda_i$. No desenvolvimento do \emph{Método da Potência}, vamos assumir que os autovalores podem ser ordenados da seguinte forma
+\begin{equation}
+  |\lambda_1| > |\lambda_2| \geq \cdots \geq |\lambda_n|.
+\end{equation}
+Assim sendo, o $\lambda_1$ é chamado de \emph{autovalor dominante}. Na sequência, vamos denotar por $A^H$ a matriz adjunta\footnote{Também, chamada de matriz conjugada transposta de $A$.} de $A$, i.e. $A^H=[\bar{a}_{j,i}]_{i,j=1}^{n,n}$.
+
+A \emph{iteração} do Método da Potência consiste em
+\begin{align}
+  z^{(k)} &= Aq^{(k-1)},\\
+  q^{(k)} &= z^{(k)}/\|z^{(k)}\|,\\
+  \nu_k &= (q^{(k)})^H A q^{(k)},
+\end{align}
+com dada aproximação inicial $q^{(0)}$ para o autovetor associado a $\lambda_1$. Quando o método é bem sucedido, tem-se $\nu_k\to \lambda_1$ quando $k\to\infty$.
+
+Para mostrar a \emph{convergência} do método, basta mostrar que $q^{(k)}$ converge para um autovetor associado a $\lambda_1$. Primeiramente, notemos que\footnote{Segue por indução matemática.}
+\begin{equation}
+  q^{(k)} = \frac{A^kq^{(0)}}{\|A^kq^{(0)}\|},\quad k\geq 1.
+\end{equation}
+Como $A$ é diagonalizável, temos que existe uma base $\{v^{(1)}, v^{(2)}, \dotsc, v^{(n)}\}$ de $\mathbb{C}^{n\times n}$ formada apenas de autovetores de $A$. Segue que
+\begin{equation}
+  q^{(0)} = \sum_{i=1}^n \alpha_i v^{(i)},
+\end{equation}
+onde $\alpha_i\in\mathbb{C}$. Vamos assumir que $\alpha_1\neq 0$\footnote{Condição necessária para a convergência.}. Ainda, $Av^{(i)} = \lambda_i v^{(i)}$, donde
+\begin{align}
+  A^kq^{(0)} &= \sum_{i=1}^n \alpha_iA^kv^{(i)}\\
+             &= \sum_{i=1}^n \alpha_i\lambda_i^kv^{(i)}\\
+             &= \alpha_1\lambda_1^k\left[v^{(1)} + \sum_{i=2}^n\frac{\alpha_i}{\alpha_1}\left(\frac{\lambda_k}{\lambda_1}\right)^kv^{(i)}\right]
+\end{align}
+Como $|\lambda_i|/|\lambda_1| < 1$, $i=2,\dotsc,n$, temos que
+\begin{equation}
+  y^{(k)} = \sum_{i=2}^n\frac{\alpha_i}{\alpha_1}\left(\frac{\lambda_k}{\lambda_1}\right)^kv^{(i)} \to 0,
+\end{equation}
+quando $k\to \infty$. Logo, temos que
+\begin{align}
+  q^{(k)} &= \frac{\alpha_1\lambda_1^k(v^{(1)}+y^{(k)})}{\|\alpha_1\lambda_1(v^{(1)}+y^{(k)})\|}\\
+          &= \frac{\lambda_1}{|\lambda_1|}\frac{(v^{(1)}+y^{(k)}}{\|v^{(1)}+y^{(k)}\|}.
+\end{align}
+Por fim, observamos que $\lambda_1/|\lambda_1|$ tem o mesmo sinal de $\lambda_1$. Portanto, $q^{(k)}$ tende a um múltiplo não nulo de $v^{(1)}$ quando $k\to\infty$.
+
+\begin{obs}[Taxa de convergência.]
+  Pode-se mostrar a seguinte taxa de convergência para o Método da Potência
+  \begin{equation}
+    \|\tilde{q}^{(k)}-v^{(1)}\| \leq C\left|\frac{\lambda_2}{\lambda_1}\right|^k,\quad k\geq 1,
+  \end{equation}
+  onde
+  \begin{equation}
+    \tilde{q}^{(k)} = v^{(1)} + \sum_{i=2}^n \frac{\alpha_i}{\alpha_1}\left(\frac{\lambda_i}{\lambda_1}\right)^kv^{(i)}.
+  \end{equation}
+  Consulte \cite[Seção 5.3.]{Quarteroni2007}.
+\end{obs}
+
+\lstinputlisting[caption=Algoritmo do Método da Potência, label={lst:algMetPot}]{./cap_autoval/dados/pyMetPot/main.py}
+
+\begin{exer}
+  Use o Método da Potência para computar o autovalor dominante da matriz de coeficientes do problema discreto associado ao Exercício \ref{exer:pvc1d}. Estude sua convergência para diferentes tamanhos da matriz. 
+\end{exer}
+
+\begin{exer}
+  Use o Método da Potência para computar o autovalor dominante da matriz de coeficientes do problema discreto associado ao Exemplo \ref{ex:poisson}. Estude sua convergência para diferentes tamanhos da matriz. 
+\end{exer}
