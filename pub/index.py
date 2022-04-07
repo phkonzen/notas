@@ -146,8 +146,8 @@ class Index:
 
         body += '<div class="carousel-item">\n'
         body += '<div>\n'
-        body += '<div class="spinner-grow spinner-grow-sm text-danger mb-1" role="status"></div>\n'
-        body += '<a href="http://www.cnmac.org.br">CNMAC 2022: Submissão de trabalhos: até 31/03 !</a>\n'
+        body += '<div class="spinner-grow spinner-grow-sm text-primary mb-1" role="status"></div>\n'
+        body += '<a href="http://www.cnmac.org.br">CNMAC 2022 - Inscrições Abertas !</a>\n'
         body += '</div>\n'        
         body += '</div>\n\n'
 
