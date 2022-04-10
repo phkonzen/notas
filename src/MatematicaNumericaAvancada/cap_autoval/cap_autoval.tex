@@ -83,3 +83,39 @@ Por fim, observamos que $\lambda_1/|\lambda_1|$ tem o mesmo sinal de $\lambda_1$
 \begin{exer}
   Use o Método da Potência para computar o autovalor dominante da matriz de coeficientes do problema discreto associado ao Exemplo \ref{ex:poisson}. Estude sua convergência para diferentes tamanhos da matriz. 
 \end{exer}
+
+\subsection{Método da Potência Inverso}
+
+Esta variação do Método da Potência nos permite computar o autovalor mais próximo de um dado número $\mu\in\mathbb{C}$, $\mu\not\in\sigma(A)$. A ideia é aplicar o método para a matriz
+\begin{equation}
+  M_\mu^{-1} = (A-\mu I)^{-1}.
+\end{equation}
+Neste contexto, $\mu$ é chamado de \emph{deslocamento} (em inglês, {\it shift}).
+
+Notemos que se $(\lambda_i, v_i)$ é um autopar de $A$, então $\xi_i=(\lambda_i-\mu)^{-1}$ é autovalor de $M_\mu^{-1}$ associado ao autovetor $v_i$. De fato,
+\begin{gather}
+  (\lambda_i - \mu) v_i = (A-\mu I)v_i\\
+  M_\mu^{-1}(\lambda_i-\mu)v_i = v_i\\
+  M_\mu^{-1}v_i = (\lambda_i-\mu)^{-1}v_i.
+\end{gather}
+Isso também mostra que $A$ e $M_\mu^{-1}$ têm os mesmos autovetores.
+
+Agora, se $\mu$ for suficientemente próximo de $\lambda_m$, autovalor simples de $A$, então
+\begin{equation}
+  |\lambda_m-\mu| < |\lambda_i-\mu|,\quad i=1,2,\dotsc,n,~i\neq m.
+\end{equation}
+Com isso, $\xi_i=(\lambda_m-\mu)^{-1}$ é o autovalor dominante de $M_\mu^{-1}$ e, portanto, a iteração do Método da Potência aplicada a $M_\mu^{-1}$ fornece este autovalor. Mais especificamente, como $A$ e $M_\mu^{-1}$ tem os  mesmos autovetores, a \emph{iteração do Método da Potência Inverso} é dada como segue
+\begin{gather}
+  (A-\mu I)z^{(k)} = q^{(k-1)}, \label{eq:slmpi}\\
+  q^{(k)}=z^{(k)}/\|z^{(k)}\|,\\
+  \nu_k = (q^{(k)})^H A q^{(k)}.
+\end{gather}
+
+
+\begin{exer}
+  Use o Método da Potência para computar diferentes autovalores da matriz de coeficientes do problema discreto associado ao Exercício \ref{exer:pvc1d}. Estude sua convergência para diferentes tamanhos da matriz. 
+\end{exer}
+
+\begin{exer}
+  Use o Método da Potência para computar diferentes autovalores da matriz de coeficientes do problema discreto associado ao Exemplo \ref{ex:poisson}. Verifique se há vantagem em aplicar os métodos GMRES e GC na resolução de \eqref{eq:slmpi}.
+\end{exer}
