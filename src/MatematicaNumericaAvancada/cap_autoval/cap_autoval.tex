@@ -119,3 +119,88 @@ Com isso, $\xi_i=(\lambda_m-\mu)^{-1}$ é o autovalor dominante de $M_\mu^{-1}$ 
 \begin{exer}
   Use o Método da Potência para computar diferentes autovalores da matriz de coeficientes do problema discreto associado ao Exemplo \ref{ex:poisson}. Verifique se há vantagem em aplicar os métodos GMRES e GC na resolução de \eqref{eq:slmpi}.
 \end{exer}
+
+\section{Iteração QR}\label{cap_autoval_sec_qr}
+
+A iteração QR é um método para a computação aproximada de todos os autovalores de uma dada matriz $A$. A ideia é explorar um método iterativo para a computação da \emph{decomposição de Schur}\footnote{Issai Schur, 1875 - 1941, matemático russo-alemão. Fonte: \href{https://pt.wikipedia.org/wiki/Issai_Schur}{Wikipédia}.} de A, i.e. encontrar uma \emph{matriz unitária} $U$\footnote{Uma matriz $U$ é dita unitária quando $U^{-1} = U^H$.} tal que
+\begin{equation}
+  U^{H}AU =
+  \begin{bmatrix}
+    \lambda_1 & t_{12} & \cdots & t_{1n}\\
+    0 & \lambda_2 & & t_{2n}\\
+    \vdots & & \ddots & \vdots\\
+    0 & \vdots & 0 & \lambda_n
+  \end{bmatrix}
+\end{equation}
+
+Assumindo $A\in\mathbb{R}^{n\times n}$, sejam $Q^{(0)}\in\mathbb{R}^{n\times n}$ uma \emph{matriz ortogonal}\footnote{Uma matriz $Q$ é dita ortogonal quando $Q^TQ = I$.} e $T^{(0)} = (Q^{(0)})^TAQ^{(0)}$. A iteração $QR$ consiste em
+\begin{align}
+  &\text{determinar }Q^{(k)}, R^{(k)}\text{ tal que}\nonumber\\
+  &Q^{(k)}R^{(k)} = T^{(k-1)}\qquad\text{(fatoração QR)}\\
+  &T^{(k)} = R^{(k)}Q^{(k)},
+\end{align}
+para $k=1,2,\ldots$.
+
+Ou seja, a cada iteração $k$, computa-se a fatoração da matriz $T^{(k-1)}$ como o produto de uma matriz ortogonal $Q^{(k)}$ com uma matriz triangular superior $R^{(k)}$. Então, computa-se uma nova aproximação $T^{(k)}$ pela multiplicação de $R^{(k)}$ por $Q^{(k)}$. Com isso, temos
+\begin{align}
+  T^{(k)} &= R^{(k)}Q^{(k)}\\
+          &= (Q^{(k)})^T(Q^{(k)}R^{(k)})Q^{(k)}\\
+          &= (Q^{(k)})^TT^{(k-1)}Q^{(k)}\\
+          &= (Q^{(k)})^TR^{(k-1)}Q^{(k-1)}Q^{(k)}\\
+          &= (Q^{(k)})^T(Q^{(k-1)})^TQ^{(k-1)}R^{(k-1)}Q^{(k-1)}Q^{(k)}\\
+          &= (Q^{(k-1)}Q^{(k)})^TT^{(k-2)}(Q^{(k-1)}Q^{(k)})\\
+          &=(Q^{(0)}\cdots Q^{(k)})^TA(Q^{(0)}\cdots Q^{(k)}).
+\end{align}
+
+\begin{obs}[Convergência do método QR]
+  Se $A\in\mathbb{R}^{n\times n}$ for uma matriz com autovalores tais que
+  \begin{equation}
+    |\lambda_1| > |\lambda_2| > \cdots > |\lambda_n|,
+  \end{equation}
+  então
+  \begin{equation}
+    \lim_{k\to\infty} T^{(k)} =   \begin{bmatrix}
+    \lambda_1 & t_{12} & \cdots & t_{1n}\\
+    0 & \lambda_2 & & t_{2n}\\
+    \vdots & & \ddots & \vdots\\
+    0 & \vdots & 0 & \lambda_n
+  \end{bmatrix}.
+\end{equation}
+
+  Para a taxa de convergência, temos
+  \begin{equation}
+    |t^{(k)}_{i,i-1}| = \mathcal{O}\left(\left|\frac{\lambda_i}{\lambda_{i-1}}\right|^k\right),\quad i=2,\dotsc,n,
+  \end{equation}
+  quando $k\to\infty$.
+
+  Ainda, se $A$ for uma \emph{matriz simétrica}, então $T^{(k)}$ tende a uma matriz diagonal quando $k\to\infty$.
+\end{obs}
+
+\begin{obs}
+  Variantes do método QR permitem sua aplicação para matrizes mais gerais. Consulte \cite{Golub2013a}.
+\end{obs}
+
+Uma forma de eficiente do método QR é chamada de \emph{iteração Hessenberg}\footnote{Karl Adolf Hessenberg, 1904 - 1959, matemático e engenheiro alemão. Fonte: \href{https://pt.wikipedia.org/wiki/Karl_Hessenberg}{Wikipédia}.}\emph{-QR}. Consiste em inicializar $T^{(0)}$ como uma \emph{matriz de Hessenberg superior}, i.e. $t^{(0)}_{i,j}=0$ para $i>j+1$. A computação de $T^{(0)}$ é feito com \emph{matrizes de Householder}\footnote{Alston Scott Householder, 1904 - 1993, matemático estadunidense. Fonte: \href{https://pt.wikipedia.org/wiki/Alston_Scott_Householder}{Wikipédia}.} e a fatoração $QR$ de $T^{(k)}$ utiliza de \emph{matrizes de Givens}\footnote{James Wallace Givens Jr., 1910 - 1993, matemático estadunidense. Fonte: \href{https://pt.wikipedia.org/wiki/Wallace_Givens}{Wikipédia}.}.
+
+\begin{obs}[Computação dos autovalores]
+  Se $v$ é autovetor associado ao autovalor simples $\lambda$ de $A$, então
+  \begin{align}
+    Av &= \lambda v\\
+    (Q^{(k)})^TAQ^{(k)}(Q^{(k)})^Tv &\approx \lambda (Q^{(k)})^Tv
+  \end{align}
+  Denotando, $y = (Q^{(k)})^Tv$, temos
+  \begin{equation}
+    T^{(k)}y = \lambda y.
+  \end{equation}
+
+  Com isso, podemos computar $y$ e, então, temos $v\approx Q^{(k)}y$.
+\end{obs}
+
+
+\begin{exer}
+  Use a iteração QR para computar os autovalores da matriz de coeficientes do problema discreto associado ao Exercício \ref{exer:pvc1d}.
+\end{exer}
+
+\begin{exer}
+  Use a iteração QR para computar os autovalores da matriz de coeficientes do problema discreto associado ao Exemplo \ref{ex:poisson}. Use \lstinline+spla.hessenberg+ para computar $T^{(0)}$.
+\end{exer}
