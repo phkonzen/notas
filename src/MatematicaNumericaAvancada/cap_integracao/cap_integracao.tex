@@ -1,0 +1,69 @@
+%Este trabalho está licenciado sob a Licença Atribuição-CompartilhaIgual 4.0 Internacional Creative Commons. Para visualizar uma cópia desta licença, visite http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR ou mande uma carta para Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+
+\chapter{Integração}\label{cap_integracao}
+\thispagestyle{fancy}
+
+\begin{flushright}
+  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
+\end{flushright}
+
+Neste capítulo, estudamos métodos numéricos para a integração de funções reais.
+
+\section{Integração Autoadaptativa}\label{cap_integracao_sec_autoadapt}
+
+Vamos considerar o problema de integrar
+\begin{equation}
+  I(a,b) = \int_a^b f(x)\,dx
+\end{equation}
+pela \emph{Regra de Simpson}\footnote{Consulte mais sobre a Regra de Simpson em \href{https://phkonzen.github.io/notas/MatematicaNumerica/cap_integr_sec_NC.html}{Seção 10.1 Regras de Newton-Cotes}.}. Em um dado subintervalo $[\alpha, \beta]\subset [a, b]$, temos
+\begin{equation}
+  I(\alpha, \beta) = \underbrace{\frac{h_0}{3}\left[f(\alpha) + 4f(\alpha+h_0) + f(\beta)\right]}_{S(\alpha,\beta)}-\frac{h^5}{90}f^{(4)}(\xi),
+\end{equation}
+onde $h_0=(\beta-\alpha)/2$ e $\xi\in (\alpha, \beta)$. Ou seja, temos que
+\begin{equation}\label{eq:estS1}
+  I(\alpha,\beta) - S(\alpha,\beta) = -\frac{h_0^5}{90}f^{(4)}(\xi).
+\end{equation}
+A ideia é explorarmos esta informação de forma a obtermos uma estimativa para o erro de integração no intervalo $[\alpha,\beta]$ sem necessitar computar $f^{(4)}$.
+
+Aplicando a Regra de Simpson na partição $[\alpha,(\alpha+\beta)/2]\cup [(\alpha+\beta)/2, \beta]$, obtemos
+\begin{equation}
+  I(\alpha,\beta) - S_2(\alpha,\beta) = -\frac{(h_0/2)^5}{90}\left(f^{(4)}(\xi) + f^{(4)}(\eta)\right),
+\end{equation}
+onde $\xi\in (\alpha,(\alpha+\beta)/2)$, $\eta\in (\alpha+\beta)/2, \beta)$ e
+\begin{equation}
+  S_2(\alpha,\beta) = S(\alpha,(\alpha+\beta)/2) + S((\alpha+\beta)/2,\beta).
+\end{equation}
+Agora, \emph{vamos assumir que} $f^{(4)}(\xi)\approx f^{(4)}(\eta)$ de forma que temos
+\begin{equation}\label{eq:estS2}
+  I(\alpha,\beta) - S_2(\alpha,\beta) \approx -\frac{1}{16}\frac{h_0^5}{90}f^{(4)}(\xi).
+\end{equation}
+De \eqref{eq:estS1} e \eqref{eq:estS2}, obtemos
+\begin{equation}
+  \frac{h_0^5}{90}f^{(4)}(\xi) \approx \frac{16}{15}\underbrace{\left[S(\alpha,\beta)-S_2(\alpha,\beta)\right]}_{\mathcal{E}(\alpha,\beta)}.
+\end{equation}
+Isto nos fornece a seguinte estimativa {\it a posteriori} do erro
+\begin{equation}
+  |I(\alpha,\beta)-S_2(\alpha,\beta)| \approx \frac{|\mathcal{E}(\alpha,\beta)|}{15}.
+\end{equation}
+Na prática, costuma-se utilizar a seguinte estimativa mais restrita
+\begin{equation}
+  |I(\alpha,\beta)-S_2(\alpha,\beta)| \approx \frac{|\mathcal{E}(\alpha,\beta)|}{10}.
+\end{equation}
+Para garantir uma precisão global em $[a,b]$ igual a uma dada tolerância, é suficiente impor que
+\begin{equation}
+  \frac{|\mathcal{E}(\alpha,\beta)|}{10} \leq \epsilon\frac{\beta-\alpha}{b-a}.
+\end{equation}
+
+\lstinputlisting[caption=Algoritmo Simpson Autoadaptativo, label={lst:algSimAd}]{./cap_integracao/dados/pySimAd/main.py}
+
+\begin{ex}
+  \begin{align}
+    \int_{-3}^4\arctg(10x)\,dx &= -3\arctg(30) - \frac{\ln(1601)}{20} + \frac{\ln(901)}{20} + 4\arctg(40)\\
+                               &\approx 1.54203622
+  \end{align}
+\end{ex}
+
+\begin{exer}
+  Implemente uma abordagem autoadaptativa usando a Regra do Trapézio. Valide-a e compare com o exemplo anterior.
+\end{exer}
+
