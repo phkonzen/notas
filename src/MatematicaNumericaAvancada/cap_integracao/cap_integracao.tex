@@ -67,3 +67,86 @@ Para garantir uma precisão global em $[a,b]$ igual a uma dada tolerância, é s
   Implemente uma abordagem autoadaptativa usando a Regra do Trapézio. Valide-a e compare com o exemplo anterior.
 \end{exer}
 
+\section{Integrais múltiplas}\label{cap_integracao_sec_intmul}
+
+Vamos trabalhar com métodos para a computação de integrais múltiplas
+\begin{equation}
+  \int\int_R f(x,y)\,dA.
+\end{equation}
+Em uma região retangular $A=[a,b]\times [c,d]$, podemos reescrevê-la como uma \emph{integral iterada}
+\begin{equation}
+  \int\int_R f(x,y)\,dA = \int_a^b\int_c^d f(x,y)\,dy\,dx.
+\end{equation}
+
+\subsection{Regras de Newton-Cotes}
+
+\subsubsection{Regra do Trapézio}
+
+A Regra do Trapézio\footnote{\href{https://phkonzen.github.io/notas/MatematicaNumerica/cap_integr_sec_NC.html}{Notas de Aula - Matemática Numérica}.} nos fornece
+\begin{equation}
+  \int_c^d f(x,y)\,dy = \frac{h_y}{2}\left[f(x,c) + f(x,d)\right] - \frac{h_y^3}{12}f''(x,\eta)
+\end{equation}
+com $h_y = (d-c)$ e $\eta\in (c,d)$. De forma iterada, temos
+\begin{align}
+  \int_a^b\int_c^d f(x,y)\,dy\,dx &= \frac{h_y}{2}\int_a^b f(x,c)\,dx + \frac{h_x}{2}\int_a^bf(x,d)\,dx\\
+                                  &- \frac{h_y^3}{12}\int_a^b f''(x,\eta)\,dx.
+\end{align}
+Então, à exceção do termo do erro, aplicamos a Regra do Trapézio para as integrais em $x$. Obtemos
+\begin{align}
+  \int_a^b\int_c^d f(x,y)\,dy\,dx &= \frac{h_y}{2}\frac{h_x}{2}\left[f(a,c) + f(b,c)\right]\\
+                                  &+ \frac{h_y}{2}\frac{h_x}{2}\left[f(a,d) + f(b,d)\right]\\
+                                  &-\frac{h_y}{2}\frac{h_x^3}{12}f''(\mu',c)\\
+                                  &-\frac{h_y}{2}\frac{h_x^3}{12}f''(\mu'',d)\\
+                                  &-\frac{h_y^3}{12}\int_a^b f''(x,\eta)\,dx,
+\end{align}
+com $h_x = (b-a)$, $\mu',\mu''\in (a,b)$. Pelos Teorema do Valor Intermediário e pelo Teorema do Valor Médio, podemos ver que o erro é $O(h_xh_y^3 + h_x^3h_y)$. Por fim, obtemos a Regra do Trapézio para Integrais Iteradas
+\begin{align}
+  \int_a^b\int_c^d f(x,y)\,dy\,dx &= \frac{h_y}{2}\frac{h_x}{2}\left[f(a,c)+f(b,c)+f(b,d)+f(a,d)\right]\\
+                                  &+ O(h_xh_y^3 + h_x^3h_y).
+\end{align}
+
+\begin{ex}
+  A Regra do Trapézio fornece
+  \begin{equation}
+    \int_{1.5}^{2}\int_{1}^{1.5}\ln(x + 2y)\,dy\,dx \approx 0.366897.
+  \end{equation}
+  Verifique!
+\end{ex}
+
+\subsubsection{Regra de Simpson}
+
+A Regra do Simpson\footnote{\href{https://phkonzen.github.io/notas/MatematicaNumerica/cap_integr_sec_NC.html}{Notas de Aula - Matemática Numérica}.} nos fornece
+\begin{align}
+  \int_c^d f(x,y)\,dy &= \frac{h_y}{3}\left[f(x,y_1) + 4f(x,y_2) + f(x,y_3)\right] \\
+                      &- \frac{h_y^5}{90}f^{(4)}(x,\eta)
+\end{align}
+com $h_y = (d-c)/2$, $y_j=(j-1)h_y$, $j=1,2,3$, e $\eta\in (c,d)$. De forma iterada, temos
+\begin{align}
+  \int_a^b\int_c^d f(x,y)\,dy\,dx &= \frac{h_y}{3}\left[\int_a^bf(x,y_1)\,dx + 4\int_a^bf(x,y_2)\,dx + \int_a^bf(x,y_3)\,dx\right] \\
+                                  &- \frac{h_y^5}{90}\int_a^bf^{(4)}(x,\eta)\,dx
+\end{align}
+Então, à exceção do termo do erro, aplicamos a Regra de Simpson para as integrais em $x$. Obtemos
+\begin{align}
+  \int_a^b\int_c^d f(x,y)\,dy\,dx &= \frac{h_xh_y}{9}\left[f(x_1,y_1) + 4f(x_2,y_1) + f(x_3,y_1)\right] \\
+                                  &+ \frac{4h_xh_y}{9}\left[f(x_1,y_2) + 4f(x_2,y_2) + f(x_3,y_2)\right] \\
+                                  &+ \frac{h_xh_y}{9}\left[f(x_1,y_3) + 4f(x_2,y_3) + f(x_3,y_3)\right] \\
+                                  &- \frac{h_x^5h_y}{270}f^{(4)}(\mu_1,y_1)\\
+                                  &- \frac{4h_x^5h_y}{270}f^{(4)}(\mu_2,y_2)\\
+                                  &- \frac{h_x^5h_y}{270}f^{(4)}(\mu_3,y_3) \\
+                                  &- \frac{h_y^5}{90}\int_a^bf^{(4)}(x,\eta)\,dx
+\end{align}
+com $h_x = (b-a)/2$, $\mu_1,\mu_2,\mu_3\in (a,b)$. Pelos Teorema do Valor Intermediário e Teorema do Valor Médio, podemos ver que o erro é $O(h_xh_y^5 + h_x^5h_y)$. Por fim, obtemos a \emph{Regra de Simpson para Integrais Iteradas}
+\begin{align}
+  \int_a^b\int_c^d f(x,y)\,dy\,dx &= \frac{h_xh_y}{9}\left[f(x_1,y_1) + 4f(x_2,y_1) + f(x_3,y_1)\right] \\
+                                  &+ \frac{4h_xh_y}{9}\left[f(x_1,y_2) + 4f(x_2,y_2) + f(x_3,y_2)\right] \\
+                                  &+ \frac{h_xh_y}{9}\left[f(x_1,y_3) + 4f(x_2,y_3) + f(x_3,y_3)\right] \\
+                                  &+ O(h_xh_y^5 + h_x^5h_y).
+\end{align}
+
+\begin{ex}
+  A Regra de Simpson fornece
+  \begin{equation}
+    \int_{1.5}^{2}\int_{1}^{1.5}\ln(x + 2y)\,dy\,dx \approx 0.361003.
+  \end{equation}
+  Verifique!
+\end{ex}
