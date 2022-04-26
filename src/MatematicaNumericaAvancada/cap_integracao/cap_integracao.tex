@@ -150,3 +150,93 @@ com $h_x = (b-a)/2$, $\mu_1,\mu_2,\mu_3\in (a,b)$. Pelos Teorema do Valor Interm
   \end{equation}
   Verifique!
 \end{ex}
+
+\subsection{Regras Compostas de Newton-Cotes}
+
+A ideia é particionar a região de integração em células e o resultado da integração é a soma da aplicação da regra de quadratura em cada uma das células.
+
+\subsubsection{Regra Composta do Trapézio}
+
+Para uma região retangular $R = [a,b]\times [c,d]$, vamos construir a malha
+\begin{equation}
+  M = \{c_k=[x_i,x_{i+1}]\times [y_j,y_{j+1}]:~k=i + (j-1)n_x\},
+\end{equation}
+onde $x_i=(i-1)h_x$, $h_x = (b-a)/n_x$, $i=1,2,\dotsc,n_x+1$ e $y_j=(j-1)h_y$, $h_y=(d-c)/n_y$, $j=1,2,\dotsc,n_y+1$. Consulte a Figura \ref{fig:malhaTrap}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics{./cap_integracao/dados/figMalhaTrap/fig}
+  \caption{Representação da malha para a Regra Composta do Trapézio.}
+  \label{fig:malhaTrap}
+\end{figure}
+
+Aplicando a ideia, temos
+\begin{align}
+  \int_a^b\int_c^d f(x,y)\,dy\,dx &= \sum_{k=1}^{n_xn_y}\int\int_{C_k} f(x,y)\,dy\,dx\\
+                                  &= \sum_{i=1}^{n_x}\sum_{j=1}^{n_y}\int_{x_i}^{x_{i+1}}\int_{y_j}^{y_{j+1}} f(x,y)\,dy\,dx
+\end{align}
+Em cada integral em $C_k$, aplicamos a Regra do Trapézio, segue
+\begin{align}
+  \int_{x_i}^{x_{i+1}}\int_{y_j}^{y_{j+1}} f(x,y)\,dy\,dx &\approx \frac{h_y}{2}\frac{h_x}{2}\left[f(x_i,y_j) + f(x_{i+1},y_j)\right.\\
+                                                          &+ \left.f(x_{i+1},y_{j+1}) + f(x_{i+1},y_{j})\right]
+\end{align}
+Observamos que nos conjuntos de nodos (marcados em azul na Figura \ref{fig:malhaTrap})
+\begin{gather}
+  \{(i,j):~i=2,\dotsc,n_x,j=1\text{ ou }j=n_y+1\},\\
+  \{(i,j):~i=1\text{ ou }i=n_x+1,j=2,\dotsc,n_y\}
+\end{gather}
+a função integranda será avaliada $2$ vezes. Já, em todos os nodos internos, $i=2,\dotsc,n_x$, $j=2,\dotsc,n_y$, a função será avaliada $4$ vezes. Com isso, chegamos à Regra Composta do Trapézio
+\begin{align}
+  \int_a^b\int_c^d f(x,y)\,dy\,dx &= \frac{h_xh_y}{4}\left[f(x_1,y_1)+f(x_{n_x+1},y_1)\right.\nonumber\\
+                                  &\left. + f(x_{n_x+1},y_{n_y+1})+f(x_{1},y_{n_y+1})\right]\nonumber\\
+                                  &+ \frac{h_xh_y}{2}\sum_{i=2}^{n_x}\left[f(x_i,y_1) + f(x_u,y_{n_y+1})\right]\nonumber\\
+                                  &+ \frac{h_xh_y}{2}\sum_{j=2}^{n_y}\left[f(x_1,y_j) + f(x_{n_x+1},y_j)\right]\nonumber\\
+                                  &+ h_xh_y\sum_{i=2}^{n_x}\sum_{j=2}^{n_y}f(x_i,y_j)\nonumber\\
+                                  &+ O(h_x^2 + h_y^2)
+\end{align}
+Observamos que esta é uma quadratura de $(n_x+1)(n_y+1)$ nodos.
+
+\begin{exer}
+  Verifique a aplicação da Regra Composta do Trapézio para computar
+  \begin{equation}
+    \int_{1.5}^{2}\int_{1}^{1.5}\ln(x + 2y)\,dy\,dx.
+  \end{equation}
+\end{exer}
+
+\subsubsection{Regra Composta de Simpson}
+
+Aqui, vamos construir uma malha
+\begin{equation}
+  M = \left\{C_k = [x_i,x_{i+2}]\times[y_j,y_{j+2}]:~i=1,3,\dotsc,n_x-1, j=1,3,\dotsc,n_y-1,~\right\},
+\end{equation}
+onde $x_i=(i-1)h_x$, $h_x=(b-a)/n_x$, $i=1,2,\dotsc,n_x+1$ e $y_j=(j-1)h_y$, $h_y=(d-c)/n_y$, $j=1,2,\dotsc,n_y+1$. Com $n_x,n_y\leq 2$ números pares. Consulte a Figura \ref{fig:malhaSim}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics{./cap_integracao/dados/figMalhaSim/fig}
+  \caption{Representação da malha para a Regra Composta de Simpson.}
+  \label{fig:malhaSim}
+\end{figure}
+
+A Regra Composta de Simpson para Integrais Iteradas fica
+\begin{align}
+  \int_a^b\int_c^d f(x,y)\,dx\,dy &= \frac{h_xh_y}{9}\left\{f(x_1,y_1) + f(x_{n_x+1},y_1)\right.\nonumber\\
+                                  &+ f(x_1,y_{n_y+1}) + f(x_{n_x+1},y_{n_y+1})\nonumber\\
+                                  &+ 2\sum_{i=1}^{n_x/2-1} \left[f(x_{2i+1},y_{1}) + f(x_{2i+1},y_{n_y+1})\right]\nonumber\\
+                                  &+ 2\sum_{j=1}^{n_y/2-1} \left[f(x_{1},y_{2j+1}) + f(x_{n_x+1},y_{2j+1})\right]\nonumber\\
+                                  &+ 4\sum_{i=1}^{n_x/2} \left[f(x_{2i},y_{1}) + f(x_{2i},y_{n_y+1})\right]\nonumber\\
+                                  &+ 4\sum_{j=1}^{n_y/2} \left[f(x_{1},y_{2j}) + f(x_{n_x+1},y_{2j})\right]\nonumber\\
+                                  &+ 4\sum_{i=1}^{n_x/2-1}\sum_{j=1}^{n_y/2-1}f(x_{2j+1},y_{2j+1})\nonumber\\
+                                  &+ 8\sum_{i=1}^{n_x/2-1}\sum_{j=1}^{n_y/2}f(x_{2i+1},y_{2j})\nonumber\\
+                                  &+ 8\sum_{i=1}^{n_x/2}\sum_{j=1}^{n_y/2-1}f(x_{2i},y_{2j+1})\nonumber\\
+                                  &\left.+ 16\sum_{i=1}^{n_x/2}\sum_{j=1}^{n_y/2}f(x_{2i},y_{2j})\right\}\nonumber\\
+                                  &+ O(h_x^4 + h_y^4).
+\end{align}
+
+
+\begin{exer}
+  Verifique a aplicação da Regra Composta de Simpson para computar
+  \begin{equation}
+    \int_{1.5}^{2}\int_{1}^{1.5}\ln(x + 2y)\,dy\,dx.
+  \end{equation}
+\end{exer}
