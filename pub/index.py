@@ -139,7 +139,15 @@ class Index:
         body += '<div class="carousel-item active">\n'
         body += '<div>\n'
         body += '<div class="spinner-grow spinner-grow-sm text-warning mb-1" role="status"></div>\n'
-        body += '<a href="http://www.ufrgs.br/ppgmap/news/selecao-de-mestrado-2022-1">PPGMAp-UFRGS: <strong>Aberta Seleção de Mestrado !</strong></a>\n'
+        body += '<a href="http://www.ufrgs.br/ppgmap/news/processo-seletivo-doutorado-2021">PPGMAp-UFRGS: Seleção de Doutorado !</a>\n'
+        body += '</div>\n'        
+        body += '</div>\n\n'
+
+
+        body += '<div class="carousel-item">\n'
+        body += '<div>\n'
+        body += '<div class="spinner-grow spinner-grow-sm text-primary mb-1" role="status"></div>\n'
+        body += '<a href="http://enmc.ccam.uesc.br/">XXV Encontro Nacional de Modelagem Matemática !</a>\n'
         body += '</div>\n'
         body += '</div>\n\n'
 
@@ -148,13 +156,6 @@ class Index:
         body += '<div>\n'
         body += '<div class="spinner-grow spinner-grow-sm text-primary mb-1" role="status"></div>\n'
         body += '<a href="http://www.cnmac.org.br">CNMAC 2022 - Inscrições Abertas !</a>\n'
-        body += '</div>\n'        
-        body += '</div>\n\n'
-
-        body += '<div class="carousel-item">\n'
-        body += '<div>\n'
-        body += '<div class="spinner-grow spinner-grow-sm text-primary mb-1" role="status"></div>\n'
-        body += '<a href="http://www.ufrgs.br/ppgmap/news/processo-seletivo-doutorado-2021">PPGMAp-UFRGS: Seleção de Doutorado !</a>\n'
         body += '</div>\n'        
         body += '</div>\n\n'
 
