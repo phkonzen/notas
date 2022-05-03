@@ -11,9 +11,9 @@
 
 Uma equação é uma declaração de que duas expressões são iguais. Escrevemos
 \begin{equation}
-  E_e = E_d
+  E_{\text{esq}} = E_{\text{dir}}
 \end{equation}
-para estabelecer que a expressão à esquerda $E_e$ é igual a expressão à direira $E_d$.
+para estabelecer que a expressão à esquerda $E_{\text{esq}}$ é igual a expressão à direita $E_{\text{dir}}$.
 
 \begin{ex}
   Estudemos os seguintes casos:
@@ -69,7 +69,7 @@ Usualmente, dizemos que $x=2$ é \emph{solução} da equação. O procedimento d
   \end{enumerate}
 
   \ifispython
-  No \python, podemos resolver estas equação com o comando \href{https://docs.sympy.org/latest/tutorial/solvers.html#solving-equations-algebraically}{solve ou solveset}. Estudemos as seguintes entradas e saídas:
+  No \python, podemos resolver estas equações com o comando \href{https://docs.sympy.org/latest/tutorial/solvers.html#solving-equations-algebraically}{solve ou solveset}. Estudemos as seguintes entradas e saídas:
   \begin{lstlisting}
     >>> from sympy import *
     >>> x = Symbol('x', real=True)
@@ -90,21 +90,59 @@ Usualmente, dizemos que $x=2$ é \emph{solução} da equação. O procedimento d
   \fi
 \end{ex}
 
-Não existe um procedimento único para a resolução de equações em geral. Em síntese, a resolução, quando possível, é obtida da aplicação das seguintes propriedades. Sendo $E_1, E_2 e E_3$ expressões matemáticas, temos
+Não existe um procedimento único para a resolução de equações em geral. Em síntese, a resolução, quando possível, é obtida da aplicação das seguintes propriedades. Sendo $E_1$, $E_2$ e $E_3$ expressões matemáticas, temos
 \begin{itemize}
-\item
+\item Simetria
   \begin{equation}
-    {\color{red}E_1} = {\color{olive}E_2} \Leftrightarrow {\color{olive}E_2} = {\color{red}E_1}
-  \end{equation}
-\item
-  \begin{equation}
-    E_1 = E_2 \Leftrightarrow E_1 + {\color{blue}E_3} = E_2 + {\color{blue}E_3}
+    \begin{gathered}
+      E_1 = {\color{blue}E_2} \\
+      \Leftrightarrow \\
+      {\color{blue}E_2} = E_1
+    \end{gathered}
 \end{equation}
-\item Para $E_3\in\mathbb{R}^*$
+\item Cancelamento por adição
   \begin{equation}
-    E_1 = E_2 \Leftrightarrow E_1\cdot {\color{blue}E_3} = E_2 \cdot {\color{blue}E_3}
+    \begin{gathered}
+      E_1 = E_2 \\
+      \Leftrightarrow \\
+      E_1 + {\color{blue}E_3} = E_2 + {\color{blue}E_3}
+  \end{gathered}
+\end{equation}
+\item Cancelamento por multiplicação\footnote{Somente no caso de $E_3\in\mathbb{R}^*$}
+  \begin{equation}
+    \begin{gathered}
+      E_1 = E_2 \\
+      \Leftrightarrow \\
+      E_1\cdot {\color{blue}E_3} = E_2 \cdot {\color{blue}E_3}
+  \end{gathered}
   \end{equation}
 \end{itemize}
+
+As operações acima reescrevem a equação original $E_1 = E_2$ em \emph{equações equivalentes}, i.e. equações que têm as mesmas soluções.
+
+\begin{ex}
+  Estudemos os casos a seguir.
+  \begin{enumerate}[a)]
+  \item
+    \begin{gather}
+      -1 = x\\
+      x = 1
+    \end{gather}
+  \item
+    \begin{gather}
+      x - 2 = 1\\
+      x - 2 {\color{blue}+ 2} = 1 {\color{blue}+ 2}\\
+      x = 3
+    \end{gather}
+  \item
+    \begin{gather}
+      2x = 4\\
+      {\color{blue}\frac{1}{2}\cdot}2x = {\color{blue}\frac{1}{2}\cdot}4\\
+      1\cdot x = 2\\
+      x = 2
+    \end{gather}
+  \end{enumerate}
+\end{ex}
 
 \subsection{Equações lineares}
 
@@ -112,14 +150,14 @@ Equação algébricas lineares de uma incógnita são aquelas que podem ser escr
 \begin{equation}
   ax + b = 0,
 \end{equation}
-onde, são conhecidos (dados) os parâmetros $a\in\mathbb{R}^*$ e $b\in\mathbb{R}$. Sua resolução pode ser feita da seguinte forma
+onde, são conhecidos (dados) os \emph{coeficientes} $a\in\mathbb{R}^*$ e $b\in\mathbb{R}$. Sua resolução pode ser feita da seguinte forma
 \begin{gather}
   ax + b = 0 \\
-  ax + b - b = 0 - b \\
+  ax + b {\color{blue}- b} = 0 {\color{blue}- b} \\
   ax = -b \\
-  \frac{1}{a}\cdot ax = \frac{1}{a}\cdot (-b) \\
+  {\color{blue}\frac{1}{a}\cdot}ax = {\color{blue}\frac{1}{a}\cdot}(-b) \\
   1\cdot x = -\frac{b}{a} \\
-  x = -\frac{b}{a}.
+  {\color{blue}x = -\frac{b}{a}}
 \end{gather}
 
 \begin{ex}
@@ -129,10 +167,10 @@ onde, são conhecidos (dados) os parâmetros $a\in\mathbb{R}^*$ e $b\in\mathbb{R
   \end{equation}
   Esta é uma equação linear, pois
   \begin{gather}
-    2x - 4 - 5 = 5 - x - 5 \\
+    2x - 4 {\color{blue}- 5} = 5 - x {\color{blue}- 5} \\
     2x -9 = -x \\
-    x + 2x - 9 = x - x \\
-    3x - 9 = 0.
+    {\color{blue}x} + 2x - 9 = {\color{blue}x} - x \\
+    3x - 9 = 0\\
   \end{gather}
   Logo, a solução é
   \begin{equation}
@@ -153,30 +191,51 @@ onde, são conhecidos (dados) os parâmetros $a\in\mathbb{R}^*$ e $b\in\mathbb{R
 \subsection{Equação quadrática}
 
 Uma equação algébrica quadrática de um incógnita é aquela que pode ser escrita na forma
-\begin{equation}\label{eq:ineq_eqquad}
+\begin{equation}\label{eq:ineq_eqq}
   ax^2 + bx + c = 0,
 \end{equation}
 com $a\in\mathbb{R}^*$ e $b,c\in\mathbb{R}$.
 
 Para resolver tal equação, vamos, primeiro, lembrar que
-\begin{equation}
+\begin{equation}\label{eq:ineq_qp}
   (a + b)^2 = a^2 + 2ab + b^2,
 \end{equation}
-para quaisquer $a,b\in\mathbb{R}$. Daí, a ideia é \emph{completar os quadrados} na equação \eqref{eq:ineq_eqquad}, fazendo
+para quaisquer $a,b\in\mathbb{R}$. A ideia é usar desta \emph{identidade}\footnote{Identidade é o nome dado a uma equação que é satisfeita para todos os possíveis valores de sua(s) incógnita(s).} para reduzirmos a equação em duas equações lineares.
+
+Começamos reescrevendo \eqref{eq:ineq_eqq} da seguinte forma
 \begin{gather}
-  ax^2 + bx + c - c= 0 - c \\
-  ax^2 + bx = -c \\
-  \left(ax^2 + bx\right)\frac{1}{a} = -c\cdot\frac{1}{a} \\
-  x^2 + \frac{b}{a}x = -\frac{c}{a} \\
-  x^2 + \frac{b}{a}x + \left(\frac{b}{2a}\right)^2 = -\frac{c}{a}  + \left(\frac{b}{2a}\right)^2 \\
-  \left(x + \frac{b}{2a}\right)^2 = -\frac{c}{a} + \frac{b^2}{4a^2} \\
-  \left(x + \frac{b}{2a}\right)^2 = \frac{b^2 - 4ac}{4a^2} \\  
-  \sqrt{\left(x + \frac{b}{2a}\right)^2} = \sqrt{\frac{b^2 - 4ac}{4a^2}} \\
-  x + \frac{b}{2a} = \pm\frac{b^2 - 4ac}{2a} \\
-  x + \frac{b}{2a} - \frac{b}{2a} = - \frac{b}{2a} \pm\frac{b^2 - 4ac}{2a}\\
+  ax^2 + bx + c {\color{blue}- c} = 0 {\color{blue}- c}\\
+  ax^2 + bx = -c\\
+  \left(ax^2 + bx\right){\cdot \color{blue}\frac{1}{a}} = -c{\cdot \color{blue}\frac{1}{a}} \\
+  x^2 + \frac{b}{a}x = -\frac{c}{a}
 \end{gather}
-donde temos a chamada \href{https://pt.wikipedia.org/wiki/Bhaskara\_II}{fórumla de Bhaskara}
+Agora, vamos \emph{completar os quadrados} do lado direito para usarmos a identida \eqref{eq:ineq_qp}. Fazemos
+\begin{gather}
+  x^2 + \frac{b}{a}x {\color{blue}+ \left(\frac{b}{2a}\right)^2} = -\frac{c}{a}  {\color{blue}+ \left(\frac{b}{2a}\right)^2} \\
+  \left(x + \frac{b}{2a}\right)^2 = -\frac{c}{a} + \frac{b^2}{4a^2} \\
+  \left(x + \frac{b}{2a}\right)^2 = \frac{b^2 - 4ac}{4a^2}
+\end{gather}
+Agora, extraímos a raiz quadrada de ambos os lados da equação\footnote{$\sqrt{x^2}=|x|$.}
+\begin{gather}
+  \sqrt{\left(x + \frac{b}{2a}\right)^2} = \sqrt{\frac{b^2 - 4ac}{4a^2}} \\
+  \left|x + \frac{b}{2a}\right| = \left|\frac{\sqrt{b^2 - 4ac}}{2a}\right|
+\end{gather}
+Daí, seguem as seguintes equações lineares
+\begin{gather}
+  x + \frac{b}{2a} = \frac{\sqrt{b^2 - 4ac}}{2a}\\
+  {\color{blue}\text{ou}}\nonumber\\
+  x + \frac{b}{2a} = -\frac{\sqrt{b^2 - 4ac}}{2a}\\
+\end{gather}
+Equivalentemente, escrevemos
 \begin{equation}
+  x + \frac{b}{2a} = \pm\frac{\sqrt{b^2 - 4ac}}{2a}
+\end{equation}
+Por fim, isolamos $x$ co
+\begin{equation}
+  x = -\frac{b}{2a} \pm\frac{\sqrt{b^2 - 4ac}}{2a}
+\end{equation}
+donde temos a chamada \emph{Fórumla de Bhaskara}\footnote{Bhaskara Akaria, 1114 - 1185, matemático indiano. Fonte: \href{https://pt.wikipedia.org/wiki/Bhaskara\_II}{Wikipédia}.}
+\begin{equation}\label{eq:ineq_bhaskara}
   x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}.
 \end{equation}
 
@@ -187,10 +246,10 @@ donde temos a chamada \href{https://pt.wikipedia.org/wiki/Bhaskara\_II}{fórumla
   \end{equation}
   Esta é uma equação quadrática, pois
   \begin{gather}
-    x^2 - x - 2 = x + 2 - x - 2 \\
+    x^2 {\color{blue}- x - 2} = x + 2 {\color{blue}- x - 2} \\
     x^2 -x - 2 = 0.
   \end{gather}
-  Logo, da fórmula da Bhaskara, obtemos
+  Logo, da Fórmula da Bhaskara \eqref{eq:ineq_bhaskara}, obtemos
   \begin{gather}
     x = \frac{-(-1) \pm \sqrt{(-1)^2 - 4\cdot 1 \cdot (-2)}}{2\cdot 1} \\
     x = \frac{1 \pm \sqrt{1 + 8}}{2} \\
@@ -236,7 +295,6 @@ Um equação exponencial é aquela em que a incógnita aparece como expoente em 
   \item $\displaystyle b^{\frac{x}{y}} = \sqrt[y]{b^x}$
   \end{itemize}
 \end{obs}
-
 
 \begin{ex}
   Vamos resolver
@@ -317,7 +375,67 @@ Um equação exponencial é aquela em que a incógnita aparece como expoente em 
 
 \subsection*{Exercícios}
 
-\emconstrucao
+\begin{exer}
+  Calcule a solução das seguintes equações:
+  \begin{enumerate}[a)]
+  \item $x - 2 = 0$
+  \item $3 - x = 1$
+  \item $0 = -1 + x$
+  \item $\sqrt{2}\cdot x = 0$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a) $2$; b) $2$; c) $1$; d) $0$
+\end{resp}
+
+\begin{exer}
+  Calcule a solução das seguintes equações:
+  \begin{enumerate}[a)]
+  \item $2x - 3 = 2$
+  \item $2x - 3 = 2 - x$
+  \item $x - 3 = 2 + 2x$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a) $\frac{5}{2}$; b) $\frac{5}{3}$; c) $5$
+\end{resp}
+
+\begin{exer}
+  Calcule a solução das seguintes equações:
+  \begin{enumerate}
+  \item $x^2 = 0$
+  \item $x^2 + 4 = 0$
+  \item $x^2 + 4x + 4 = 0$
+  \item $x^2 - 16 = 0$
+  \item $x^2 + x - 2 = 0$
+  \item $2x - 6 + x^2 = -x^2 - 2$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a) $0$; b) $\nexists$; c) $2$; d) $\{-4,4\}$; e) $\{-2,1\}$; f) $\{-2,1\}$ 
+\end{resp}
+
+\begin{exer}
+  Calcule a solução das seguintes equações:
+  \begin{enumerate}
+  \item $3^x = 27$
+  \item $2^x = 2\cdot 2^x - 1$
+  \item $4^x = 2 - 2^x$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+ a) $3$; b) $0$; c) $0$
+\end{resp}
+
+\begin{exer}
+  Calcule a solução da seguinte equação
+  \begin{equation}
+    x^4 - 2x^2 + 1 = 0
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $\{-1,1\}$
+\end{resp}
 
 \section*{Inequações}\label{cap_ineq_sec_ineq}
 
