@@ -5,7 +5,7 @@ import scipy.optimize as spopt
 # fun obj
 def fun(x):
   '''
-  Funcao de Rosenbrock
+  Função de Rosenbrock
   '''
   return sum(100.*(x[1:]-x[:-1]**2.)**2. + (1.-x[:-1])**2.)
 
