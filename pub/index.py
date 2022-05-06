@@ -84,7 +84,7 @@ class Index:
         body += '<div class="collapse navbar-collapse" id="navbarNav">\n'
         body += '<ul class="navbar-nav">\n'
         body += '<li class="nav-item active"><a class="nav-link" href="index.html"><i class="fas fa-home"></i> Início</a></li>\n'
-        body += '<li class="nav=item"><a class="nav-link" href="https://mybinder.org/v2/gh/phkonzen/notas/master?filepath=notas.ipynb">Jupyter NB</a></li>\n'
+        body += '<li class="nav=item"><a class="nav-link" href="https://colab.research.google.com/github/phkonzen/notas/blob/master/notas.ipynb">Colab NB</a></li>\n'
         body += '<li class="nav-item dropdown">\n'
         body += '<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\n'
         body += 'Contato\n'
