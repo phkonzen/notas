@@ -437,10 +437,256 @@ Um equação exponencial é aquela em que a incógnita aparece como expoente em 
   $\{-1,1\}$
 \end{resp}
 
-\section*{Inequações}\label{cap_ineq_sec_ineq}
+\section{Inequações}\label{cap_ineq_sec_ineq}
 
-\emconstrucao
+Uma inequação é uma sentença matemática que expressa uma relação de desigualdade entre duas expressões matemáticas. São exemplos de inequações
+\begin{gather}
+  E_{\text{esq}} \neq E_{\text{dir}}\\
+  E_{\text{esq}} < E_{\text{dir}}\\
+  E_{\text{esq}} \leq E_{\text{dir}}\\
+  E_{\text{esq}} > E_{\text{dir}}\\
+  E_{\text{esq}} \geq E_{\text{dir}}
+\end{gather}
+Assim como equações, inequações são usadas para descrever propriedades ou restrições sobre uma ou mais incógnitas. Neste caso, a \emph{solução} é o conjunto de valores que a incógnita pode assumir de forma a satisfazer a inequação.
+
+\begin{ex}
+  São exemplos de inequações envolvendo incógnitas:
+  \begin{enumerate}[a)]
+  \item Inequação de primeiro grau
+    \begin{equation}
+      2x + 3 > 5
+    \end{equation}
+  \item Inequação de segundo grau
+    \begin{equation}
+      x^2 \leq x - 3
+    \end{equation}
+  \item Inequação racional
+    \begin{equation}
+      \frac{2x + 3}{x^2} \geq \frac{5}{x-3}
+    \end{equation}
+  \end{enumerate}
+\end{ex}
+
+Não existe um procedimento geral para calcular a solução de uma inequação, mas o chamado estudo de sinal pode ser uma estratégia adequada em várias situações. Na sequência, vamos aplicá-la na resolução de algumas inequações.
+
+\subsection{Inequações de primeiro grau}
+
+Inequações de primeiro grau são aquelas em que a incógnita aparece apenas na potência 1. Ou seja, qualquer inequação que possa ser escrita na seguinte forma
+\begin{equation}\label{eq:ineq_g1}
+  ax + b \gtreqless 0,
+\end{equation}
+onde $a,b\in\mathbb{R}$, $a\neq 0$, são coeficientes/parâmetros dados e $x$ é a incógnita.
+
+Para resolvê-la, podemos usar o \emph{estudo de sinal} da expressão\footnote{Lembremos a tricotomia dos números reais. Consulte a Subseção \ref{ssec:numreal_retareal}.} $ax + b$. Para que seja nula, temos
+\begin{gather}
+  ax + b = 0
+  \Leftrightarrow
+  x = -\frac{b}{a}
+\end{gather}
+Com isso, observamos que no caso de ${\color{blue}a>0}$, temos que
+\begin{equation}
+  x{\color{blue}>}-\frac{b}{a} \Rightarrow ax + b {\color{blue}>} 0
+\end{equation}
+e
+\begin{equation}
+  x {\color{red}<} -\frac{b}{a} \Rightarrow ax + b {\color{red}<} 0.
+\end{equation}
+Consultemos a Figura \ref{fig:ineq_g1ap}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics{./cap_ineq/dados/fig_ineq_g1ap/fig}
+  \caption{Representação geométrica do estudo do sinal de $ax + b$, com $a>0$.}
+  \label{fig:ineq_g1ap}
+\end{figure}
+
+Agora, no caso de ${\color{red}a<0}$, temos
+\begin{equation}
+  x{\color{blue}>}-\frac{b}{a} \Rightarrow ax + b {\color{red}<} 0
+\end{equation}
+e
+\begin{equation}
+  x {\color{red}<} -\frac{b}{a} \Rightarrow ax + b {\color{blue}>} 0.
+\end{equation}
+Consultemos a Figura \ref{fig:ineq_g1an}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics{./cap_ineq/dados/fig_ineq_g1an/fig}
+  \caption{Representação geométrica do estudo do sinal de $ax + b$, com $a<0$.}
+  \label{fig:ineq_g1an}
+\end{figure}
+
+\begin{ex}
+  Vamos resolver
+  \begin{equation}
+    4 + x > -x
+  \end{equation}
+  Primeiramente, vamos reescrever a inequação no formato da \eqref{eq:ineq_g1}. Para tanto, calculamos
+  \begin{gather}
+    4 + x \pmb{+ x} \geq - x \pmb{ + x}\\
+    4 + 2x \geq 0\\
+    2x + 4 \geq 0
+  \end{gather}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics{./cap_ineq/dados/fig_ex_ineq_g1ap/fig}
+  \caption{Estudo do sinal de $2x + 4$.}
+  \label{fig:ex_ineq_g1ap}
+\end{figure}  
+  
+  Agora, fazemos o estudo de sinal de $2x + 3$. Temos
+  \begin{equation}
+    2x + 4 = 0 \Rightarrow x = -2.
+  \end{equation}
+  Daí, segue que
+  \begin{equation}
+    x > -2 \Rightarrow 2x + 4 > 0
+  \end{equation}
+  e
+  \begin{equation}
+    x < -2 \Rightarrow 2x + 4 < 0
+  \end{equation}
+  Consulte a Figura \ref{fig:ex_ineq_g1ap}. Logo, concluímos que a solução é $x\in [-2, \infty)$.
+
+  \ifispython
+  Com o {\sympy}, podemos computar a solução deste problema com os seguintes comandos
+  \begin{lstlisting}
+    >>> from sympy import *
+    >>> x = symbols('x')
+    >>> solve_univariate_inequality(4 + x >= -x, x)
+    (-2 <= x) & (x < oo)
+  \end{lstlisting}
+  \fi
+\end{ex}
+
+Em alguns casos, é possível calcular a solução apenas a partir de manipulações algébricas.
+
+\begin{ex}
+  Vamos resolver
+  \begin{equation}
+    - 2x < 4
+  \end{equation}
+  Começamos multiplicando ambos os lados da inequação por $-1$ para obtermos\footnote{Notemos que a desigualdade de inverte ao multiplicarmos a inequação por um número negativo.}
+  \begin{equation}
+    2x > -4
+  \end{equation}
+  Agora, multiplicamos por $\frac{1}{2}$, como segue
+  \begin{gather}
+    \frac{1}{2}\cdot 2x > \frac{1}{2}\cdot (-4)\\
+    x > -2
+  \end{gather}
+  Donde, temos a solução $x\in (-2, \infty)$.
+
+  \begin{ifispython}
+    Verifique usando o {\sympy}!
+  \end{ifispython}
+\end{ex}
+
+\subsection{Produtos ou quocientes}
+
+Inequações envolvendo produtos ou quocientes de expressões de primeiro grau podemos ser resolvidas fazendo-se o \emph{estudo de sinal}.
+
+\begin{ex}
+  Vamos resolver
+  \begin{equation}
+    (x - 1)(2 - x) < 0.
+  \end{equation}
+  
+  \begin{figure}[H]
+    \centering
+    \includegraphics{./cap_ineq/dados/fig_ex_ineq_pg1/fig}
+    \caption{Estudo do sinal de $(x-1)(2-x)$.}
+    \label{fig:ex_ineq_pg1}
+  \end{figure}  
+
+  Para tanto, fazemos os estudos de sinais do primeiro fator $(x-1)$ e do segundo fator $(x+1)$. Em seguida, fazemos o estudo de sinal do produto $(x-1)(x+1)$. Neste caso, obtemos a Figura \ref{fig:ex_ineq_pg1}. Com isso, temos que a solução é $x\in (-\infty, 1)\cup (2, \infty)$.
+
+  \begin{ifispython}
+    Verifique usando o {\sympy}!
+  \end{ifispython}
+\end{ex}
+
+No caso de quocientes, devemos nos atentar para o fato de que o denominador não seja nulo.
+
+\begin{ex}
+  Vamos resolver
+  \begin{equation}
+    \frac{x - 1}{2 - x} \geq 0.
+  \end{equation}
+  
+  \begin{figure}[H]
+    \centering
+    \includegraphics{./cap_ineq/dados/fig_ex_ineq_qg1/fig}
+    \caption{Estudo do sinal de $(x-1)/(2-x)$.}
+    \label{fig:ex_ineq_qg1}
+  \end{figure}  
+
+  Para tanto, fazemos os estudos de sinais do primeiro fator $(x-1)$ e do segundo fator $(x+1)$. Em seguida, fazemos o estudo de sinal do quociente $(x-1)(x+1)$. Neste caso, obtemos a Figura \ref{fig:ex_ineq_qg1}. Com isso, temos que a solução é $x\in [1, 2)$.
+
+  \begin{ifispython}
+    Verifique usando o {\sympy}!
+  \end{ifispython}
+\end{ex}
 
 \subsection*{Exercícios}
 
-\emconstrucao
+\begin{exer}
+  Resolva as seguintes inequações
+  \begin{enumerate}[a)]
+  \item $x - 1 < 0$
+  \item $2 - x \geq 0$
+  \item $2 - 2x > 5$
+  \item $3x + 2 \leq 3 - x$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a) $(-\infty, 1)$; b) $(-\infty, 2]$; c) $(-3/2, \infty)$; d) $(-\infty, 1/4]$
+\end{resp}
+
+\begin{exer}
+  Resolva as seguintes inequações
+  \begin{enumerate}
+  \item $(x-2)(x+1) > 0$
+  \item $(x-2)(1-x) \geq 0$
+  \item $(x-2)(1-x) < 0$
+  \item $(5x-2)(1-3x) \leq 0$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a) $(-\infty,-1)\cup (2,\infty)$; b) $[1,2]$; c) $(-\infty,1)\cup (2,\infty)$; d) $(-\infty,1/3]\cup [2/5,\infty)$
+\end{resp}
+
+\begin{exer}
+  Resolva as seguintes inequações
+  \begin{enumerate}
+  \item $(x-2)/(x+1) > 0$
+  \item $(x-2)/(1-x) \geq 0$
+  \item $(x-2)/(1-x) < 0$
+  \item $(5x-2)/(1-3x) \leq 0$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a) $(-\infty,-1)\cup (2,\infty)$; b) $(1,2]$; c) $(-\infty,1)\cup (2,\infty)$; d) $(-\infty,1/3)\cup [2/5,\infty)$
+\end{resp}
+
+\begin{exer}
+  Resolva a seguinte inequação
+  \begin{equation}
+    x^2 - 4 < 0
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $(-2,2)$
+\end{resp}
+
+\begin{exer}
+  Resolve a seguinte inequação
+  \begin{equation}
+    \frac{x^2 + x - 2}{x+2} \geq 0
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $(-\infty, -2)\cup (-2, 1]$
+\end{resp}
