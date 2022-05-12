@@ -1,4 +1,13 @@
+import matplotlib.pyplot as plt
 from sympy import *
+
+plt.rcParams.update({
+     "text.usetex": True,
+     "font.family": "serif",
+     "font.size": 12
+     })
+
+
 var('x',real=True)
 
 p = plot(x**2-x-2,(x,-2,3),show=False,
