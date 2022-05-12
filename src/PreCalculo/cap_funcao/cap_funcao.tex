@@ -418,7 +418,7 @@ sendo $m$ e $b$ parâmetros\footnote{números reais.} dados. O parâmetro $m$ é
 
 Quando $m=0$, temos uma \emph{função constante} $f(x) = b$. Esta tem domínio $(-\infty, \infty)$ e imagem $\{b\}$. Quando $b=0$, temos uma \pmb{função linear} $f(x)=mx$, cujo domínio é $(-\infty, \infty)$ e imagem é $(-\infty, \infty)$.
 
-Por outro lado, toda função linear com $m\neq 0$ tem $(-\infty, \infty)$ como domínio e imagem.
+De forma geral, toda função linear com $m\neq 0$ tem $(-\infty, \infty)$ como domínio e imagem.
 
 \begin{ex}\label{ex:funafim}
   A Figura \ref{fig:ex_funafim} mostra esboços dos gráficos das funções afins $f(x)=-5/2$, $f(x)=2$ e $f(x)=2x-1$.
@@ -431,16 +431,25 @@ Por outro lado, toda função linear com $m\neq 0$ tem $(-\infty, \infty)$ como 
   \end{figure}
 
   \ifispython
-  Com o \sympy, podemos plotar os gráficos destas funções com os seguintes comandos:
-\begin{verbatim}
-plot(-5/2,(x,-2,2))
-plot(2,(x,-2,2))
-plot(2*x-1,(x,-2,2))
-\end{verbatim}
+  Com o {\sympy}, podemos plotar o gráfico mostrado na Figura \ref{fig:ex_funafim} com o seguinte código:
+  \begin{lstlisting}
+    from sympy import *
+    x = Symbol('x')
+    p = plot(-5/2, (x,-2,2), line_color="blue", show=False)
+    q = plot(2, (x,-2,2), line_color="red", show=False)
+    p.extend(q)
+    q = plot(2*x-1, (x,-2,2), line_color="green", show=False)
+    p.extend(q)
+    p[0].label = "$y=-5/2$"
+    p[1].label = "$y=2$"
+    p[2].label = "$y=$"
+    p.legend = True
+    p.show() 
+  \end{lstlisting}
   \fi
 \end{ex}
 
-O lugar geométrico do gráfico de uma função afim é uma reta (ou linha). O coeficiente angular $m$ controla a inclinação da reta em relação ao eixo $x$\footnote{eixo das abscissas}. Quando $m=0$, temos uma reta horizontal. Quando $m>0$ temos uma reta com inclinação positiva (crescente) e, quando $m<0$ temos uma reta com inclinação negativa.
+O lugar geométrico do gráfico de uma função afim é uma reta (ou linha). O coeficiente angular $m$ controla a \emph{inclinação da reta} em relação ao eixo $x$\footnote{eixo das abscissas}. Quando $m=0$, temos uma reta horizontal. Quando $m>0$ temos uma reta com inclinação positiva (crescente) e, quando $m<0$ temos uma reta com inclinação negativa.
 
 \begin{ex}\label{ex:funlinear}
   A Figura \ref{fig:ex_funlinear} mostra esboços dos gráficos das funções lineares $f_1(x)=\frac{1}{2}x$, $f_2(x) = x$, $f_3(x) = 2x$, $f_4(x)=-2x$, $f_5(x)=-x$ e $f_6(x)=-\frac{1}{2}x$.
@@ -453,7 +462,7 @@ O lugar geométrico do gráfico de uma função afim é uma reta (ou linha). O c
   \end{figure}
 
   \ifispython
-  Verifique, plotando os gráficos com o \sympy!
+  Verifique, plotando os gráficos com o {\sympy}!
 \end{ex}
 
 \begin{figure}[H]
@@ -463,9 +472,10 @@ O lugar geométrico do gráfico de uma função afim é uma reta (ou linha). O c
   \label{fig:declividade}
 \end{figure}
 
-A inclinação de uma reta é, normalmente, medida pelo ângulo de declividade (veja a Figura \ref{fig:declividade}). Para definirmos este ângulo, sejam $(x_0, y_0)$ e $(x_1, y_1)$, $x_0<x_1$, pontos sobre uma dada reta, gráfico da função afim $f(x)=mx+b$. O ângulo de declividade (ou, simplesmente, a declividade) da reta é, por definição, o ângulo formado pelo segmento que parte de $(x_0, y_0)$ e termina em $(x_1, y_0)$ e o segmente que parte de $(x_0, y_0)$ e termina em $(x_1, y_1)$. Denotando este ângulo por $\theta$, temos
+A inclinação de uma reta é, normalmente, medida pelo \emph{ângulo de declividade} (veja a Figura \ref{fig:declividade}). Para definirmos este ângulo, sejam $(x_0, y_0)$ e $(x_1, y_1)$, $x_0<x_1$, pontos sobre uma dada reta, gráfico da função afim $f(x)=mx+b$. O ângulo de declividade (ou, simplesmente, a declividade) da reta é, por definição, o ângulo formado pelo segmento que parte de $(x_0, y_0)$ e termina em $(x_1, y_0)$ e o segmento que parte de $(x_0, y_0)$ e termina em $(x_1, y_1)$. Denotando este ângulo por $\theta$, temos
 \begin{align}
-  \tg\theta &= \frac{y_1-y_0}{x_1-x_0}\\
+  \tg\theta &= \frac{\text{cateto oposto}}{\text{cateto adjacente}}\\
+            &= \frac{y_1-y_0}{x_1-x_0}\\
             &= \frac{mx_1+b-(mx_0+b)}{x_1-x_0}\\
             &= m,
 \end{align}
@@ -477,29 +487,22 @@ Quaisquer dois pontos $(x_0, y_0)$ e $(x_1, y_1)$, com $x_0\neq x_1$, determinam
   mx_1 + b &= y_1
 \end{align}
 Subtraindo a primeira equação da segunda, obtemos
-\begin{equation}
-  m(x_0-x_1) = y_0-y_1 \Rightarrow m = \frac{y_0-y_1}{x_0-x_1}.
-\end{equation}
+\begin{gather}
+  m(x_0-x_1) = y_0-y_1\\
+  m = \frac{y_0-y_1}{x_0-x_1}
+\end{gather}
 Daí, substituindo o valor de $m$ na primeira equação do sistema, obtemos
-\begin{equation}
-  \frac{y_0-y_1}{x_0-x_1}x_0 + b = y_0 \Rightarrow b = -\frac{y_0-y_1}{x_0-x_1}x_0 + y_0.
-\end{equation}
-Ou seja, a expressão da função linear (equação da reta) que passa pelos pontos $(x_0, y_0)$ e $(x_1, y_1)$ é
+\begin{gather}
+  \frac{y_0-y_1}{x_0-x_1}x_0 + b = y_0 \\
+  b = -\frac{y_0-y_1}{x_0-x_1}x_0 + y_0
+\end{gather}
+Ou seja, a expressão da função linear (\emph{equação da reta}) que passa pelos pontos $(x_0, y_0)$ e $(x_1, y_1)$ é
 \begin{equation}\label{eq:funafim_eq}
   y = \underbrace{\frac{y_0-y_1}{x_0-x_1}}_{m}(x-x_0) + y_0.
 \end{equation}
 
-\subsection*{Exercícios resolvidos}
-
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
-
-\begin{exeresol}
-Trace o esboço da reta que representa o gráfico da função afim $f(x) = -x-1$.  
-\end{exeresol}
-\begin{resol}
-  Para esboçar o gráfico de uma função afim, basta traçarmos a reta que passa por quaisquer dois pontos distintos de seu gráfico. Por exemplo, no caso da função $f(x) = -x -1$, temos
+\begin{ex}
+  Vamos traçar o esboço da reta que representa o gráfico da função afim $f(x) = -x-1$. Para tanto, basta traçarmos a reta que passa por quaisquer dois pontos distintos de seu gráfico. Por exemplo, no caso da função $f(x) = -x -1$, temos
   \begin{center}
   \begin{tabular}[H]{r|c}
     $x$ & $y = -x-1$\\\hline
@@ -517,18 +520,17 @@ Assim sendo, marcamos os pontos $(-1, 0)$ e $(1, -2)$ em um plano cartesiano e t
 \end{figure}
 
 \ifispython
-Com o \sympy, podemos plotar o gráfico da função $f(x)=-x-1$ com o seguinte comando:
-\begin{verbatim}
-plot(-x-1,(x,-3,3))
-\end{verbatim}
+Plote o gráfico com o {\sympy} e compare com o seu esboço!
 \fi
-\end{resol}
+\end{ex}
 
-\begin{exeresol}
-  Determine a função afim $f(x) = mx + b$, cujo gráfico contém os pontos $(1, -1)$ e $(2, 1)$.
-\end{exeresol}
-\begin{resol}
-  Vamos usar \eqref{eq:funafim_eq}. Para tanto, tomamos $(x_0, y_0) = (1, -1)$ e $(x_1, y_1) = (2, 1)$. Desta forma, temos
+\begin{ex}
+  Vamos determinar a função afim $f(x) = mx + b$, cujo gráfico contém os pontos $(1, -1)$ e $(2, 1)$. Para tanto, vamos usar \eqref{eq:funafim_eq}. Tomamos
+  \begin{gather}
+    (x_0, y_0) = (1, -1)\\
+    (x_1, y_1) = (2, 1)
+  \end{gather}
+  Então, substituindo em \eqref{eq:funafim_eq} temos
   \begin{equation}
     m = \frac{y_1 - y_0}{x_1 - x_0} = \frac{1 - (-1)}{2 - 1} = 2.
   \end{equation}
@@ -541,52 +543,20 @@ plot(-x-1,(x,-3,3))
   Ou seja, a função afim desejada é $f(x) = 2x - 3$.
 
   \ifispython
-  Com o \sympy, podemos resolver este exercício utilizando o seguinte código\footnote{Veja a Observação \label{obs:cap_funafom_python}.}:
+  Com o {\sympy}, podemos resolver este exercício utilizando o seguinte código:
 \begin{verbatim}
+from sympy import *
+x = Symbol('x')
 x0 = 1
 y0 = -1
-
 x1 = 2
 y1 = 1
-
 m = (y1-y0)/(x1-x0)
-
-print(m*(x-x0) + y0)
+f = Lambda(x, m*(x-x0) + y0)
+print(f"f(x) = {f(x)}")
 \end{verbatim}
   \fi
-\end{resol}
-
-\begin{exeresol}
-  Verifique se as retas $y = -x - 1$ e $y = 2x - 3$ se interceptam e, caso afirmativo, determine o ponto de interseção.
-\end{exeresol}
-\begin{resol}
-  As retas dadas são gráficos das funções afins $f(x) = -x - 1$ e $g(x) = 2x - 3$. Como os coeficientes angulares de $f(x)$ e $g(x)$ são diferentes, temos que as retas têm ângulos de declividade diferentes e, portanto, são retas concorrentes\footnote{Retas concorrentes são retas que se interceptam em um ponto.}.
-
-  Agora, vamos determinar o ponto de interseção. No ponto de interseção dos gráficos de $f(x)$ e $g(x)$ deve ocorrer que $f(x) = g(x)$. Segue
-  \begin{align}
-    f(x)=g(x) &\Rightarrow -x-1 = 2x-3\\
-              &\Rightarrow 3x = 2\\
-              &\Rightarrow x = \frac{2}{3}.
-  \end{align}
-  Assim, temos que as retas se interceptam no ponto de abscissa $x = 2/3$. Para determinar a ordenada deste ponto, podemos usar qualquer uma das funções. Usando $f(x)$ temos
-  \begin{align}
-    y = f\left(\frac{2}{3}\right) = 2\frac{2}{3} - 3 = \frac{4 - 9}{3} = -\frac{5}{3}.
-  \end{align}
-  Concluímos que as retas se interceptam no ponto $(\frac{2}{3}, -\frac{5}{3})$.
-
-    \ifispython
-    Com o \sympy, podemos resolver este exercício utilizando o seguinte código\footnote{Veja a Observação \label{obs:cap_funafom_python}.}:
-\begin{verbatim}
-f = lambda x: -x-1
-g = lambda x: 2*x-3
-
-px = solve(f(x)-g(x))[0]
-py = f(px)
-
-print(px, py)
-\end{verbatim}
-  \fi
-\end{resol}
+\end{ex}
 
 \subsection*{Exercícios}
 
@@ -594,7 +564,19 @@ print(px, py)
   [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
 \end{flushright}
 
-\begin{ex}
+\begin{exer}
+  Determine o domínio e a imagem de cada uma das seguintes funções afins:
+  \begin{enumerate}[a)]
+  \item $f(x) = -100x + 1$
+  \item $y = -\pi$
+  \item $h(v) = 2 + x$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a) $D=\mathbb{R}$; $I=\mathbb{R}$; b) $D=\mathbb{R}$, $I=\{\pi\}$; c) $D=\mathbb{R}$; $I=\mathbb{R}$
+\end{resp}
+
+\begin{exer}
   Faça um esboço do gráfico de cada uma das seguintes funções:
   \begin{enumerate}[a)]
   \item $f_1(x) = x$
@@ -602,21 +584,30 @@ print(px, py)
   \item $f_3(x) = x-1$
   \item $f_4(x) = -x+1$
   \end{enumerate}
-\end{ex}
+\end{exer}
 
-\begin{ex}
+\begin{exer}
   Determine a função afim $f(x)=mx+b$, cujo gráfico contém os pontos $(-2, 1)$ e $(0, -2)$.
-\end{ex}
+\end{exer}
 \begin{resp}
   $f(x) = -\frac{3}{2}x - 2$
 \end{resp}
 
-\begin{ex}
-  Determine o ponto de interseção dos gráficos das funções afins $f(x) = 2x + 1$ e $g(x) = 2x -1$.
-\end{ex}
+\begin{exer}
+  Verifique se as retas $y = -x - 1$ e $y = 2x - 3$ se interceptam e, caso afirmativo, determine o ponto de interseção.
+\end{exer}
 \begin{resp}
-  não há.
+  $(2/3,-5/3)$
 \end{resp}
+
+\begin{exer}
+  Determine o ponto de interseção dos gráficos das funções afins $f(x) = 2x + 1$ e $g(x) = 2x -1$.
+\end{exer}
+\begin{resp}
+  não há
+\end{resp}
+
+
 
 \section{Função potência}\label{cap_funcao_sec_funpot}
 

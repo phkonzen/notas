@@ -1,4 +1,13 @@
+import matplotlib.pyplot as plt
 from sympy import *
+
+plt.rcParams.update({
+     "text.usetex": True,
+     "font.family": "serif",
+     "font.size": 12
+     })
+
+
 var('x')
 
 p=plot(0.5*x,(x,-2,2),line_color='blue',show=False)
