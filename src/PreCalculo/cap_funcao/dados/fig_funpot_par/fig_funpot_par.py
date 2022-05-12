@@ -1,5 +1,12 @@
+import matplotlib.pyplot as plt
 from sympy import *
 from sympy.abc import *
+
+plt.rcParams.update({
+     "text.usetex": True,
+     "font.family": "serif",
+     "font.size": 12
+     })
 
 p = plot(x**2,(x,-2,2),ylim=(-0.5,2),show=False,
          line_color="blue")
@@ -18,5 +25,6 @@ p.save('fig_funpot_par.png')
 
 fig = p._backend.fig
 ax = fig.axes[0]
+ax.grid()
 ax.legend(loc='center right')
 fig.savefig('fig_funpot_par.png',bbox_inches='tight')

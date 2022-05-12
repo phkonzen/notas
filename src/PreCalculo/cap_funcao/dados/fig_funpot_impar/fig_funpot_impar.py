@@ -2,6 +2,13 @@ import matplotlib.pyplot as plt
 from sympy import *
 from sympy.abc import *
 
+plt.rcParams.update({
+     "text.usetex": True,
+     "font.family": "serif",
+     "font.size": 12
+     })
+
+
 p = plot(x,(x,-2,2),ylim=(-2,2),show=False,
          line_color="blue")
 q = plot(x**3,(x,-2,2),ylim=(-2,2),show=False,
@@ -19,5 +26,6 @@ p.save('fig_funpot_impar.png')
 
 fig = p._backend.fig
 ax = fig.axes[0]
+ax.grid()
 ax.legend(loc='upper left')
 fig.savefig('fig_funpot_impar.png')
