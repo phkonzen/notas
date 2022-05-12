@@ -1,8 +1,15 @@
 #!/bin/python3
 
 import numpy as np
+import matplotlib.pyplot as plt
 from sympy import *
-init_printing()
+
+plt.rcParams.update({
+     "text.usetex": True,
+     "font.family": "serif",
+     "font.size": 12
+     })
+
 var('x',real=True)
 
 # seno
@@ -17,6 +24,7 @@ ax.set_xticks([-np.pi,-np.pi/2,0,np.pi/2,np.pi,3*np.pi/2,2*np.pi])
 ax.set_xticklabels(['$-\\pi$','$-\\frac{\\pi}{2}$','$0$','$\\frac{\\pi}{2}$',
                     '$\\pi$','$\\frac{3\\pi}{2}$','$2\\pi$'])
 ax.set_yticks([-1,1])
+ax.grid()
 fig.savefig('fig_seno_grafico.png')
 
 # cosseno
@@ -31,6 +39,7 @@ ax.set_xticks([-np.pi,-np.pi/2,0,np.pi/2,np.pi,3*np.pi/2,2*np.pi])
 ax.set_xticklabels(['$-\\pi$','$-\\frac{\\pi}{2}$','$0$','$\\frac{\\pi}{2}$',
                     '$\\pi$','$\\frac{3\\pi}{2}$','$2\\pi$'])
 ax.set_yticks([-1,1])
+ax.grid()
 fig.savefig('fig_cosseno_grafico.png')
 
 

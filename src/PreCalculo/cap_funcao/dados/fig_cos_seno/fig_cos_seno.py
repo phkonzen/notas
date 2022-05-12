@@ -6,7 +6,7 @@ plt.rc('text', usetex=True)
 plt.rc('font', family='serif')
 plt.rc('font', size=12)
 
-fig = plt.figure()
+fig = plt.figure(figsize=(7.5,6))
 ax = fig.add_subplot(1,1,1)
 ax.axis('off')
 ax.set_xlim((-1.75,1.75))
