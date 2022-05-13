@@ -1,13 +1,18 @@
+import matplotlib.pyplot as plt
 from sympy import *
-init_printing()
-var('x')
+
+plt.rcParams.update({
+     "text.usetex": True,
+     "font.family": "serif",
+     "font.size": 12
+     })
 
 f = lambda x: x**2-2*x+2
 
-p = plot(f(x),(x,-1,3),line_color="gray",show=False)
-q = plot(f(-x),(x,-3,1),line_color="blue",show=False)
+p = plot(f(x),(x,-1,3),ylim=[-5,5],line_color="gray",show=False)
+q = plot(f(-x),(x,-3,1),ylim=[-5,5],line_color="blue",show=False)
 p.extend(q)
-q = plot(-1,(x,-3,3),line_color="none",show=False)
+q = plot(-1,(x,-3,3),ylim=[-5,5],line_color="none",show=False)
 p.extend(q)
 p.xlabel = '$x$'
 p.ylabel = '$y$'

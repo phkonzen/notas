@@ -1,4 +1,13 @@
+import matplotlib.pyplot as plt
 from sympy import *
+
+plt.rcParams.update({
+     "text.usetex": True,
+     "font.family": "serif",
+     "font.size": 12
+     })
+
+
 init_printing()
 var('x')
 
@@ -8,7 +17,7 @@ f = lambda x: x**2
 p = plot(f(x),(x,-2,2),line_color="gray",show=False)
 q = plot(f(x)+k,(x,-2,2),line_color="blue",show=False)
 p.extend(q)
-p.title = ("$k = %1.1f$" % k)
+p.title = (f"$k = {k}$")
 p.xlabel = '$x$'
 p.ylabel = '$y$'
 p[0].label = "$f(x) = x^2$"

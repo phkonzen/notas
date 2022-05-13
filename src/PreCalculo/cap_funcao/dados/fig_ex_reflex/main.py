@@ -1,5 +1,12 @@
+import matplotlib.pyplot as plt
 from sympy import *
-init_printing()
+
+plt.rcParams.update({
+     "text.usetex": True,
+     "font.family": "serif",
+     "font.size": 12
+     })
+
 var('x')
 
 f = lambda x: x**2-2*x+2
