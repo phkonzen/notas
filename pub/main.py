@@ -4,7 +4,7 @@ Constroi/atualiza o __site__
 das notas de aula.
 
 Autor: Pedro H A Konzen - 05/2018
-Modificado: 02/2022
+Modificado: 05/2022
 '''
 
 #pacotes do Python
@@ -23,6 +23,7 @@ from matematicanumerica import *
 from matematicanumericaparalela import *
 from matematicanumericaavancada import *
 from metodoelementosfinitos import *
+from precalculo import *
 from vetores import *
 from geometriaanalitica import *
 from minicalcpy import *
@@ -64,6 +65,7 @@ mn = MatematicaNumerica(srcdir,odir)
 mnp = MatematicaNumericaParalela(srcdir,odir)
 mna = MatematicaNumericaAvancada(srcdir,odir)
 mef = MetodoElementosFinitos(srcdir,odir)
+pc = PreCalculo(srcdir,odir)
 v = Vetores(srcdir,odir)
 ga = GeometriaAnalitica(srcdir,odir)
 minicalcpy = MiniCalcPy(srcdir,odir)
@@ -75,14 +77,14 @@ def build(id):
 #região paralelizada
 if __name__ == '__main__':
     p = Pool()
-    p.map(build,[ci,ead,edo,mn,mnp,mna,mef,v,ga,minicalcpy,minipy])
+    p.map(build,[ci,ead,edo,mn,mnp,mna,mef,pc,v,ga,minicalcpy,minipy])
 
 #cria o README.md do ../docs
 os.system('cp docs_readme.md '+odir+'/README.md')
 
 #fonts
 os.system('cp -rvf fonts '+odir+'/')
-os.system('cp -rvf fonts '+odir+'/MiniCalcPy/')
+#os.system('cp -rvf fonts '+odir+'/MiniCalcPy/')
     
 #sitemap.txt
 sm = SiteMap(odir)

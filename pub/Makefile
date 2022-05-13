@@ -7,26 +7,29 @@ Index: mainIndex.py
 Politica: mainPolitica.py
 	python3 mainPolitica.py
 
+EaD: mainEaD.py
+	python3 mainEaD.py
+
+EDO: mainEDO.py
+	python3 mainEDO.py
+
 CalculoI: mainCalculoI.py
 	python3 mainCalculoI.py
 
 MatematicaNumerica: mainMatematicaNumerica.py
 	python3 mainMatematicaNumerica.py
 
-MatematicaNumericaParalela: mainMatematicaNumericaParalela.py
-	python3 mainMatematicaNumericaParalela.py
-
 MatematicaNumericaAvancada: mainMatematicaNumericaAvancada.py
 	python3 mainMatematicaNumericaAvancada.py
+
+MatematicaNumericaParalela: mainMatematicaNumericaParalela.py
+	python3 mainMatematicaNumericaParalela.py
 
 MetodoElementosFinitos: mainMetodoElementosFinitos.py
 	python3 mainMetodoElementosFinitos.py
 
-EDO: mainEDO.py
-	python3 mainEDO.py
-
-EaD: mainEaD.py
-	python3 mainEaD.py
+PreCalculo: mainPreCalculo.py
+	python3 mainPreCalculo.py
 
 Vetores: mainVetores.py
 	python3 mainVetores.py
