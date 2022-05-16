@@ -48,11 +48,17 @@ class Notas:
         head += '<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">\n'
 
         #BootstrapCDN v.4.5
-        head += '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">\n'
-        head += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>\n'
-        head += '<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>\n'
-        head += '<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>\n'
+        #head += '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">\n'
+        #head += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>\n'
+        #head += '<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>\n'
+        #head += '<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>\n'
 
+        #BootstrapCDN v.5.1
+        head += '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">\n'
+        head += '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>\n'
+        head += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>\n'
+
+        
         # FontAwesome
         head += '<script src="https://kit.fontawesome.com/dfbff2c7ed.js" crossorigin="anonymous"></script>'
 
@@ -78,16 +84,16 @@ class Notas:
         head += '\ngtag("config", "UA-17226092-2")\n';
         head += '</script>\n'
 
-        head += '<script>\n'
-        head += '$(document).ready(function () {\n'
-        head += '$("#colabAlert").hide();\n'
-        head += '$("#generalAlert").hide();\n'
-        head += 'if (document.referrer.lastIndexOf("://phkonzen.github.io/notas/") == -1) {\n'
-        head += '$("#generalAlert").fadeIn(100);\n'
-        head += '}\n'
-        head += '$("#colabAlert").delay(3000).fadeIn(100);\n'
-        head += '});\n'    
-        head += '</script>\n\n'
+        # head += '<script>\n'
+        # head += '$(document).ready(function () {\n'
+        # head += '$("#colabAlert").hide();\n'
+        # head += '$("#generalAlert").hide();\n'
+        # head += 'if (document.referrer.lastIndexOf("://phkonzen.github.io/notas/") == -1) {\n'
+        # head += '$("#generalAlert").fadeIn(100);\n'
+        # head += '}\n'
+        # head += '$("#colabAlert").delay(3000).fadeIn(100);\n'
+        # head += '});\n'    
+        # head += '</script>\n\n'
 
         head += '</head>\n'
 
@@ -104,19 +110,20 @@ class Notas:
       
         # Navbar
         body += '\n\n<!-- begin: navbar -->\n'
-        body += '<nav class="navbar navbar-expand-lg navbar-light bg-light">\n'
+        body += '<nav class="navbar navbar-dark bg-primary mb-1">\n'
+        body += '<div class="container-fluid">\n'
         body += '<a class="navbar-brand" href="main.html">Notas de Aula<br/><small>'+titulo_notas+'</small></a>\n'
-        body += '<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">\n'
+        body += '<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">\n'
         body += '<span class="navbar-toggler-icon"></span>\n'
         body += '</button>\n'
         body += '<div class="collapse navbar-collapse" id="navbarNav">\n'
         body += '<ul class="navbar-nav">\n'
         body += '<li class="nav-item"><a class="nav-link" href="../index.html"><i class="fas fa-home"></i> Início</a></li>\n'
-        body += '<li class="nav-item active"><a class="nav-link" href="main.html">Sumário</a></li>\n'
+        body += '<li class="nav-item"><a class="nav-link active" href="main.html">Sumário</a></li>\n'
         body += '<li class="nav-item"><a class="nav-link" href="main.pdf"><i class="fa fa-download" aria-hidden="true"></i> PDF</a></li>\n'
         body += '<li class="nav=item"><a class="nav-link" href="https://colab.research.google.com/github/phkonzen/notas/blob/master/notas.ipynb">Google Colab</a></li>\n'
         body += '<li class="nav-item dropdown">\n'
-        body += '<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\n'
+        body += '<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">\n'
         body += 'Contato\n'
         body += '</a>\n'
         body += '<div class="dropdown-menu" aria-labelledby="navbarDropdown">\n'
@@ -128,6 +135,7 @@ class Notas:
         body += '<li class="nav-item"><a class="nav-link" href="../politica.html">Política de dados</a></li>\n'
         body += '</ul>\n'
         body += '</div><!-- /.navbar-collapse -->\n'
+        body += '</div><!-- /.container-fluid -->\n'
         body += '</nav>\n'
         body += '\n\n<!-- end: navbar -->\n\n\n'
 
@@ -141,13 +149,6 @@ class Notas:
         f.close()
         body_end += rp.replace('./contato.html','../contato.html')
 
-        # colab alert
-        f = open('colab_alert.html','r')
-        ga = f.read()
-        f.close()
-        # ga = ga.replace('font-size:0.9em','font-size:0.85em')
-        body_end += ga.replace('./contato.html','../contato.html')
-
         # general alert
         f = open('general_alert.html','r')
         ga = f.read()
@@ -155,6 +156,12 @@ class Notas:
         # ga = ga.replace('font-size:0.9em','font-size:0.85em')
         body_end += ga.replace('./politica.html','../politica.html')
 
+        # colab alert
+        f = open('colab_alert.html','r')
+        ga = f.read()
+        f.close()
+        # ga = ga.replace('font-size:0.9em','font-size:0.85em')
+        body_end += ga.replace('./contato.html','../contato.html')
         
         body_end += '</div> <!-- div class=col-lg-1 -->\n'
         body_end += '<div class=col-lg-1>\n'
@@ -264,7 +271,6 @@ class Notas:
                             
                         i1 = page.find('[Vídeo]')
 
-
                     
                 #colapsa as respostas dos exercícios
                 paux = page.find('ltx_theorem_resp')
@@ -278,10 +284,10 @@ class Notas:
                     paux = respid.index('"')
                     respid = respid[0:paux]
                     page = page.replace(taux, \
-                                '<small><button data-toggle="collapse" '+ \
-                                'data-target="#'+respid+'">Resp.'+ \
-                                '</button></small>'+ \
-                                '\n<div id="'+respid+'" class="collapse">\n')
+                                '<button class="btn btn-info btn-sm" type="button" data-bs-toggle="collapse" '+ \
+                                'data-bs-target="#'+respid+'">Resposta'+ \
+                                '</button>'+ \
+                                '\n<div class="collapse" id="'+respid+'">\n')
                     paux = page.find('ltx_theorem_resp')
                     
                 #modifica o __footer__
