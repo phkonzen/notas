@@ -50,17 +50,6 @@ class Index:
         head += '<!-- Computer Modern Serif-->'
         head += '<link rel="stylesheet" href="fonts/cmun-serif.css"></link>'
         head += '<link rel="stylesheet" href="index.css" type="text/css">\n'
-
-        #head += '<script>\n'
-        #head += '$(document).ready(function () {\n'
-        #head += '$("#colabAlert").hide();\n'
-        ##head += '$("#generalAlert").hide();\n'
-        #head += 'if (document.referrer.lastIndexOf("://phkonzen.github.io/notas/") == -1) {\n'
-        ##head += '$("#generalAlert").fadeIn(100);\n'
-        #head += '$("#colabAlert").delay(3000).fadeIn(100);\n'
-        #head += '}\n'
-        #head += '});\n'    
-        #head += '</script>\n\n'
         
         head += '</head>\n'
 
@@ -129,44 +118,30 @@ class Index:
         #miolo
 
         # Área de anúncios
-        #body += '<p></p>'
-        body += '<div id="demo" class="carousel slide" data-ride="carousel">'
-        #body += '<!-- Indicators -->'
-        #body += '<ul class="carousel-indicators">'
-        #body += '<li data-target="#demo" data-slide-to="0"></li>'
-        #body += '<li data-target="#demo" data-slide-to="1"></li>'
-        #body += '<li data-target="#demo" data-slide-to="2"></li>'
-        #body += '</ul>'
+        body += '<div id="demo" class="carousel slide" data-bs-ride="carousel">'
         
         body += '<!-- The slideshow -->'
         body += '<div class="carousel-inner">\n'
         
         body += '<div class="carousel-item active">\n'
-        body += '<div>\n'
-        body += '<div class="spinner-grow spinner-grow-sm text-warning mb-1" role="status"></div>\n'
-        body += '<a href="https://www.ufrgs.br/ppgmap/">PPGMAp-UFRGS: Vaga Aberta para Aluna(o) Especial !</a>\n'
-        body += '</div>\n'        
+        body += '<div class="spinner-grow spinner-grow-sm text-danger mb-1" role="status"></div>\n'
+        body += '<a href="https://www.ufrgs.br/ppgmap/">PPGMAp-UFRGS: Inscrições para Aluna(o) Especial !</a>\n'
         body += '</div>\n\n'
 
 
         body += '<div class="carousel-item">\n'
-        body += '<div>\n'
         body += '<div class="spinner-grow spinner-grow-sm text-primary mb-1" role="status"></div>\n'
         body += '<a href="http://enmc.ccam.uesc.br/">XXV Encontro Nacional de Modelagem Matemática !</a>\n'
-        body += '</div>\n'
         body += '</div>\n\n'
 
 
         body += '<div class="carousel-item">\n'
-        body += '<div>\n'
         body += '<div class="spinner-grow spinner-grow-sm text-primary mb-1" role="status"></div>\n'
         body += '<a href="http://www.cnmac.org.br">CNMAC 2022 - Inscrições Abertas !</a>\n'
-        body += '</div>\n'        
         body += '</div>\n\n'
-
-        #body += '</div>'
   
-        body += '</div>'
+        body += '</div>\n'
+        body += '</div>\n\n'
 
         body += '<h3 class="mt-1">Notas de Aula</h3>\n\n'
 

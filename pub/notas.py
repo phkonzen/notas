@@ -84,17 +84,6 @@ class Notas:
         head += '\ngtag("config", "UA-17226092-2")\n';
         head += '</script>\n'
 
-        # head += '<script>\n'
-        # head += '$(document).ready(function () {\n'
-        # head += '$("#colabAlert").hide();\n'
-        # head += '$("#generalAlert").hide();\n'
-        # head += 'if (document.referrer.lastIndexOf("://phkonzen.github.io/notas/") == -1) {\n'
-        # head += '$("#generalAlert").fadeIn(100);\n'
-        # head += '}\n'
-        # head += '$("#colabAlert").delay(3000).fadeIn(100);\n'
-        # head += '});\n'    
-        # head += '</script>\n\n'
-
         head += '</head>\n'
 
         #enxerta no __body__ (top)
