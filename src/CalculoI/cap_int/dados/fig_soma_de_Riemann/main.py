@@ -1,10 +1,16 @@
 #!/bin/python3
-
-import numpy as np
+import matplotlib.pyplot as plt
 from sympy import *
+import numpy as np
 from sympy import plot_implicit
 import matplotlib.patches as patches
-init_printing()
+
+plt.rcParams.update({
+     "text.usetex": True,
+     "font.family": "serif",
+     "font.size": 14
+     })
+
 var('x,y',real=True)
 
 f = (x-0.5)**3 - 4*(x-0.5)**2 + 3*(x-0.5)+1 + 2.5
@@ -61,7 +67,7 @@ ax.text(xs-0.1,-0.75,"$x_n^*$")
 
 ax.text(3.25,2.5,"$y=f(x)$")
 
-fig.savefig('fig_soma_de_Riemann.png', bbox_inches="tight")
+fig.savefig('fig_soma_de_Riemann.png', bbox_inches="tight", transparent=True)
 
 
 

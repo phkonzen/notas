@@ -1,4 +1,12 @@
+import matplotlib.pyplot as plt
 from sympy import *
+
+plt.rcParams.update({
+     "text.usetex": True,
+     "font.family": "serif",
+     "font.size": 14
+     })
+
 var('x',real=True)
 
 f=sin(x)
@@ -45,4 +53,4 @@ ax.text(x1-0.5,y1+0.2,'reta tangente',
         fontsize=12)
 ax.text(x1+0.5,y1+0.2,'reta secante',
         fontsize=12)
-fig.savefig('fig_retsectg.png', bbox_inches='tight')
+fig.savefig('fig_retsectg.png', bbox_inches='tight', transparent=True)
