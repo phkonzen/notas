@@ -125,7 +125,7 @@ class Index:
         
         body += '<div class="carousel-item active">\n'
         body += '<div class="spinner-grow spinner-grow-sm text-danger mb-1" role="status"></div>\n'
-        body += '<a href="https://www.ufrgs.br/ppgmap/">PPGMAp-UFRGS: Inscrições para Aluna(o) Especial !</a>\n'
+        body += '<a href="https://professor.ufrgs.br/pedro/announcements/minicurso-de-pr%C3%A9-c%C3%A1lculo-com-python">Minicurso - Pré-Cálculo com Python: Inscrições Abertas !</a>\n'
         body += '</div>\n\n'
 
 
