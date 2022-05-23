@@ -69,7 +69,8 @@ class Politica:
         # Navbar
         body += '\n\n<!-- begin: navbar -->\n'
         body += '<nav class="navbar navbar-dark bg-primary mb-1">\n'
-        body += '<a class="navbar-brand" href="main.html">Notas de Aula<br/><small>Política de Dados</small></a>\n'
+        body += '<div class="container-fluid">\n'
+        body += '<a class="navbar-brand" href="main.html">Notas de Aula<br/><small>Início</small></a>\n'
         body += '<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">\n'
         body += '<span class="navbar-toggler-icon"></span>\n'
         body += '</button>\n'
@@ -113,12 +114,6 @@ class Politica:
 
         body += '<p>Para entrar em contato com o administrador deste <i>site</i>, use o <a href="contato.html">Formulário de contato</a> ou envie e-mail para phkonzen@gmail.com .</p>'
 
-        body += '</div> <!-- div class=col-lg-10 -->\n'
-        body += '<div class=col-lg-1>\n'
-        body += '</div>\n'
-        body += '</div><!-- div class=row -->\n'
-        body += '</div> <!-- div class=container-fluid -->\n\n'
-
         # rodapé (id=rodape)
         f = open('rodape.html','r')
         body += f.read()
@@ -128,6 +123,13 @@ class Politica:
         f = open('general_alert.html','r')
         body += f.read()
         f.close()
+
+        body += '</div> <!-- div class=col-lg-10 -->\n'
+        body += '<div class=col-lg-1>\n'
+        body += '</div>\n'
+        body += '</div><!-- div row -->\n'
+        body += '</div> <!-- div class=container-fluid -->\n\n'
+
 
 
         body += '\n\n'
