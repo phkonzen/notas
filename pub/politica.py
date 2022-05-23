@@ -22,22 +22,17 @@ class Politica:
         head = '<head>\n'
         
         head += '<meta charset="utf-8">\n'
-        head += '<title>Notas de aula</title>\n'
+        head += '<title>Notas de aula - Política de Uso de Dados</title>\n'
         head += '<meta name="author" content="Pedro H A Konzen"/>\n'
         head += '<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">\n'
 
-        # # BootstrapCDN v3.3
-        # head += '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">\n'
-        # head += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>\n'
-        # head += '<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>\n'
-
-        #BootstrapCDN v.4.5
-        # head += '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"x crossorigin="anonymous">\n'
-
-        head += '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">\n'
-        head += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>\n'
-        head += '<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>\n'
-        head += '<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>\n'
+        head += '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">\n'
+        head += '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>\n'
+        head += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>\n'
+        
+        # head += '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">\n'
+        # head += '<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>\n'
+        # head += '<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>\n'
 
         # FontAwesome
         head += '<script src="https://kit.fontawesome.com/dfbff2c7ed.js" crossorigin="anonymous"></script>'
@@ -73,17 +68,17 @@ class Politica:
 
         # Navbar
         body += '\n\n<!-- begin: navbar -->\n'
-        body += '<nav class="navbar navbar-expand-md navbar-light bg-light mb-1">\n'
-        body += '<a class="navbar-brand" href="main.html">Notas de Aula<br/><small>Início</small></a>\n'
-        body += '<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">\n'
+        body += '<nav class="navbar navbar-dark bg-primary mb-1">\n'
+        body += '<a class="navbar-brand" href="main.html">Notas de Aula<br/><small>Política de Dados</small></a>\n'
+        body += '<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">\n'
         body += '<span class="navbar-toggler-icon"></span>\n'
         body += '</button>\n'
         body += '<div class="collapse navbar-collapse" id="navbarNav">\n'
         body += '<ul class="navbar-nav">\n'
         body += '<li class="nav-item"><a class="nav-link" href="index.html"><i class="fas fa-home"></i> Início</a></li>\n'
-        body += '<li class="nav=item"><a class="nav-link" href="https://mybinder.org/v2/gh/phkonzen/notas/master?filepath=notas.ipynb">Jupyter NB</a></li>\n'
+        body += '<li class="nav=item"><a class="nav-link" href="https://colab.research.google.com/github/phkonzen/notas/blob/master/notas.ipynb">Google Colab</a></li>\n'
         body += '<li class="nav-item dropdown">\n'
-        body += '<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\n'
+        body += '<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">\n'
         body += 'Contato\n'
         body += '</a>\n'
         body += '<div class="dropdown-menu" aria-labelledby="navbarDropdown">\n'
@@ -92,9 +87,10 @@ class Politica:
         body += '</div><!-- div class="dropdown-menu" aria-labelledby="navbarDropdown" -->\n'
         body += '</li> <!-- li class="nav-item dropdown" -->\n'
         body += '<li class="nav-item"><a class="nav-link" href="https://github.com/phkonzen/notas"><i class="fa fa-github" aria-hidden="true"></i> Repo</a></li>\n'
-        body += '<li class="nav-item active"><a class="nav-link" href="./politica.html">Política de dados</a></li>\n'
+        body += '<li class="nav-item"><a class="nav-link active" href="./politica.html">Política de Dados</a></li>\n'
         body += '</ul>\n'
         body += '</div><!-- /.navbar-collapse -->\n'
+        body += '</div><!-- /.container-fluid -->\n'
         body += '</nav>\n'
         body += '\n\n<!-- end: navbar -->\n\n\n'
       
@@ -117,29 +113,24 @@ class Politica:
 
         body += '<p>Para entrar em contato com o administrador deste <i>site</i>, use o <a href="contato.html">Formulário de contato</a> ou envie e-mail para phkonzen@gmail.com .</p>'
 
-        #rodapé
-        body += '<div class="card">\n'
-        body += '<div class="card-footer text-left">\n'
-        body += '<i class="fa fa-github" aria-hidden="true"></i> GitHub Repo: '
-        body += '<a href="https://github.com/phkonzen/notas" target="_blank">https://github.com/phkonzen/notas</a>. Contato '
-        body += '<a href="contato.html" target="_blank"><i class="fas fa-envelope"></i></a>\n'
-        body += '</div> <!-- div class="card" -->\n'
-        body += '</div> <!-- div class="card-footer text-right" -->\n'
-
-
         body += '</div> <!-- div class=col-lg-10 -->\n'
         body += '<div class=col-lg-1>\n'
         body += '</div>\n'
         body += '</div><!-- div class=row -->\n'
         body += '</div> <!-- div class=container-fluid -->\n\n'
 
+        # rodapé (id=rodape)
+        f = open('rodape.html','r')
+        body += f.read()
+        f.close()
+
+        # general alert
+        f = open('general_alert.html','r')
+        body += f.read()
+        f.close()
+
 
         body += '\n\n'
-        # body += '<!-- JavaScript -->\n'
-        # body += '<!-- jQuery first, then Popper.js, then Bootstrap JS -->\n'
-        # body += '<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>\n'
-        # body += '<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>\n'
-        # body += '<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>\n'
 
         
         body += '</body>\n'
