@@ -70,7 +70,7 @@ class Politica:
         body += '\n\n<!-- begin: navbar -->\n'
         body += '<nav class="navbar navbar-dark bg-primary mb-1">\n'
         body += '<div class="container-fluid">\n'
-        body += '<a class="navbar-brand" href="main.html">Notas de Aula<br/><small>Início</small></a>\n'
+        body += '<a class="navbar-brand" href="main.html">Notas de Aula<br/><small>Política de Dados</small></a>\n'
         body += '<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">\n'
         body += '<span class="navbar-toggler-icon"></span>\n'
         body += '</button>\n'
