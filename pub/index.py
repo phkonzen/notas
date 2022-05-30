@@ -123,15 +123,15 @@ class Index:
         body += '<!-- The slideshow -->'
         body += '<div class="carousel-inner">\n'
         
-        body += '<div class="carousel-item active">\n'
-        body += '<div class="spinner-grow spinner-grow-sm text-danger mb-1" role="status"></div>\n'
-        body += '<a href="https://professor.ufrgs.br/pedro/announcements/minicurso-de-pr%C3%A9-c%C3%A1lculo-com-python">Minicurso - Pré-Cálculo com Python: Inscrições Abertas !</a>\n'
+        body += '<div class="carousel-item">\n'
+        body += '<div class="spinner-grow spinner-grow-sm text-primary mb-1" role="status"></div>\n'
+        body += '<a href="https://www.ufrgs.br/ppgmap/?p=1136">PPGMAp - UFRGS: Seleção de Doutorado !</a>\n'
         body += '</div>\n\n'
 
 
-        body += '<div class="carousel-item">\n'
-        body += '<div class="spinner-grow spinner-grow-sm text-primary mb-1" role="status"></div>\n'
-        body += '<a href="http://enmc.ccam.uesc.br/">XXV Encontro Nacional de Modelagem Matemática !</a>\n'
+        body += '<div class="carousel-item active">\n'
+        body += '<div class="spinner-grow spinner-grow-sm text-warning mb-1" role="status"></div>\n'
+        body += '<a href="http://enmc.ccam.uesc.br/">XXV ENMC: Chamada de Trabalhos !</a>\n'
         body += '</div>\n\n'
 
 
