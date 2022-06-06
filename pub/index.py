@@ -130,7 +130,7 @@ class Index:
 
 
         body += '<div class="carousel-item active">\n'
-        body += '<div class="spinner-grow spinner-grow-sm text-warning mb-1" role="status"></div>\n'
+        body += '<div class="spinner-grow spinner-grow-sm text-primary mb-1" role="status"></div>\n'
         body += '<a href="http://enmc.ccam.uesc.br/">XXV ENMC: Chamada de Trabalhos !</a>\n'
         body += '</div>\n\n'
 
@@ -192,8 +192,8 @@ class Index:
         # card: Geometria analítica
         body += '<div class="col-lg-3 col-md-4 col-sm-6">'
         body += '<!-- card: Geometria analítica -->\n'
-        body += '<div class="card border-primary mb-3" style="max-width: 20rem;">\n'
-        body += '<div class="card-header bg-primary text-white">Notas de Aula</div>\n'
+        body += '<div class="card border-warning mb-3" style="max-width: 20rem;">\n'
+        body += '<div class="card-header bg-warning">Notas de Aula</div>\n'
         body += '<div class="card-body">\n'
         body += '<h5 class="card-title">Geometria Analítica</h5>\n'
         body += '<p class="card-text" style="color: gray">Introdução à geometria analítica</p>\n'
