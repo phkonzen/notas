@@ -5,13 +5,13 @@
 
 int main(int argc, char *argv[]) {
 
-  // regiao paralela
+  // região paralela
   #pragma omp parallel				
   {
-    // id da instancia de processamento
+    // id da instância de processamento
     int id = omp_get_thread_num();
     
-    printf("Processo %d, ola!\n", id);
+    printf("Processo %d, olá!\n", id);
   }
   
   return 0;

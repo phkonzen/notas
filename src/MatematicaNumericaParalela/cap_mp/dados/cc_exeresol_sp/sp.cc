@@ -1,4 +1,4 @@
-#include <iostream>
+#include <stdio.h>
 
 // OpenMP API
 #include <omp.h>
@@ -8,10 +8,10 @@ using namespace std;
 int main(int argc, char *argv[]) {
 
   double a,b;
-  printf("Digite o primeiro numero: ");
+  printf("Digite o primeiro número: ");
   scanf("%lf", &a);
   
-  printf("Digite o segundo numero: ");
+  printf("Digite o segundo número: ");
   scanf("%lf", &b);
 
   // regiao paralela

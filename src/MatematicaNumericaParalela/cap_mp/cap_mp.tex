@@ -7,7 +7,7 @@
   [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
 \end{flushright}
 
-Neste capítulo, vamos estudar aplicações da computação paralela em arquitetura de memória compartilhada. Para tanto, vamos discutir código C/C++ com a API \href{https://www.openmp.org/}{OpenMP}.
+Neste capítulo, vamos estudar aplicações da computação paralela em arquitetura de memória compartilhada. Para tanto, vamos usar códigos C/C++ com a API {\omp}.
 
 \section{Olá, Mundo!}\label{sec_ola_cap_mp}
 
@@ -24,34 +24,52 @@ A computação paralela com MP inicia-se por uma instância de processamento \em
   \label{fig:mpwf}
 \end{figure}
 
-Vamos escrever nosso primeiro código MP. O Código \verb+ola.cc+ inicia uma região paralela e cada instância de processamento escreve ``Olá'' e identifica-se.
+Vamos escrever nosso primeiro código MP. O Código \ref{lst:ola} inicia uma região paralela e cada instância de processamento escreve ``Olá'' e identifica-se.
 
-\lstinputlisting[title={Código: ola.cc}]{cap_mp/dados/cc_ola/ola.cc}
+\begin{lstlisting}[caption=ola.cc,label={lst:ola}]
+#include <stdio.h>
 
-Na linha 4, o API OpenMP é incluído no código. A região paralela vale dentro do escopo iniciado pela instrução
+// OpenMP API
+#include <omp.h>
+
+int main(int argc, char *argv[]) {
+
+  // região paralela
+  #pragma omp parallel				
+  {
+    // id da instância de processamento
+    int id = omp_get_thread_num();
+    
+    printf("Processo %d, olá!\n", id);
+  }
+  
+  return 0;
+}  
+\end{lstlisting}
+
+Na linha 4, o API {\omp} é incluído no código. A região paralela vale dentro do escopo iniciado pela instrução
 \begin{verbatim}
 # pragma omp parallel
 \end{verbatim}
-i.e., entre as linhas 10 e 15. Em paralelo, cada {\it thread} registra seu número de identificação na variável \verb+id+, veja a linha 12. Na linha 14, escrevem a saudação, identificando-se.
+i.e., entre as linhas 9 e 15. Em paralelo, cada {\it thread} registra seu número de identificação na variável interira \lstinline+id+, veja a linha 12. Na linha 14, escrevem a saudação, identificando-se.
 
 Para compilar este código, digite no terminal
-\begin{verbatim}
+\begin{lstlisting}[language=bash]
 $ g++ -fopenmp ola.cc
-\end{verbatim}
+\end{lstlisting}
 
-Ao compilar, um executável \verb+a.out+ será criado. Para executá-lo, basta digitar no terminal:
-\begin{verbatim}
+Ao compilar, um executável \lstinline+a.out+ será criado. Para executá-lo, basta digitar no terminal:
+\begin{lstlisting}
 $ a.out
-\end{verbatim}
+\end{lstlisting}
 
-Ao executar, devemos ver a saída do terminal como algo parecido com\footnote{O código foi rodado em uma máquina Quadcore com 4 {\it threads}.}
-\begin{verbatim}
+Ao executar, devemos ver a saída do terminal como algo parecido com
+\begin{lstlisting}[language=bash]
 Processo 0, olá!
 Processo 3, olá!
 Processo 1, olá!
 Processo 2, olá!
-\end{verbatim}
-
+\end{lstlisting}
 A saída irá depender do número de {\it threads} disponíveis na máquina e a ordem dos {\it threads} pode variar a cada execução. Execute o código várias vezes e analise as saídas!
 
 \begin{obs}
@@ -65,29 +83,62 @@ A saída irá depender do número de {\it threads} disponíveis na máquina e a 
 \end{flushright}
 
 \begin{exeresol}
-  O número de instâncias de processamento pode ser alterado pela variável do sistema \verb+OMP_NUM_THREADS+. Altere o número de {\it threads} para 2 e execute o Código ola.cc.
+  O número de instâncias de processamento pode ser alterado pela variável do sistema \verb+OMP_NUM_THREADS+. Altere o número de {\it threads} para 2 e execute o Código \ref{lst:ola}.
 \end{exeresol}
 \begin{resol}
   Para alterar o número de {\it threads}, pode-se digitar no terminal
-\begin{verbatim}
+\begin{lstlisting}[language=bash,numbers=none]
 $ export OMP_NUM_THREADS=2
-\end{verbatim}
+\end{lstlisting}
   Caso já tenha compilado o código, não é necessário recompilá-lo. Basta executá-lo com
-\begin{verbatim}
+\begin{lstlisting}[language=bash,numbers=none]
 $ ./a.out
-\end{verbatim}
-  A saída deve ser algo do tipo
-\begin{verbatim}
+\end{lstlisting}
+A saída deve ser algo do tipo
+\begin{lstlisting}[language=bash,numbers=none]
 Olá, processo 0
 Olá, processo 1
-\end{verbatim}
+\end{lstlisting}
 \end{resol}
 
 \begin{exeresol}
   Escreva um código MP para ser executado com 2 {\it threads}. O {\it master thread} deve ler dois números em ponto flutuante. Então, em paralelo, um dos {\it threads} deve calcular a soma dos dois números e o outro thread deve calcular o produto.
 \end{exeresol}
 \begin{resol}
-\lstinputlisting[title={Código: sp.cc}]{cap_mp/dados/cc_exeresol_sp/sp.cc}  
+  \begin{lstlisting}[caption=sp.cc]
+#include <stdio.h>
+
+// OpenMP API
+#include <omp.h>
+
+using namespace std;
+
+int main(int argc, char *argv[]) {
+
+  double a,b;
+  printf("Digite o primeiro número: ");
+  scanf("%lf", &a);
+  
+  printf("Digite o segundo número: ");
+  scanf("%lf", &b);
+
+  // regiao paralela
+  #pragma omp parallel				
+  {
+    // id do processo
+    int id = omp_get_thread_num();
+    
+    if (id == 0) {
+      printf("Soma: %f\n", (a+b));
+    }
+    else if (id == 1) {
+      printf("Produto: %f\n", (a*b));
+    }
+  }
+  
+  return 0;
+}    
+  \end{lstlisting}
 \end{resol}
 
 \subsection*{Exercícios}
@@ -97,22 +148,26 @@ Olá, processo 1
 \end{flushright}
 
 \begin{exer}
-  Defina um número de {\it threads} maior do que o disponível em sua máquina. Então, rode o código \verb+ola.cc+ e analise a saída. O que você observa?
+  Defina um número de {\it threads} maior do que o disponível em sua máquina. Então, rode o Código \ref{lst:ola} e analise a saída. O que você observa?
 \end{exer}
 
 \begin{exer}
-  Modifique o código \verb+ola.cc+ de forma que cada {\it thread} escreva na tela ``Processo ID de NP, olá!'', onde ID é a identificação do {\it thread} e NP é o número total de {\it threads} disponíveis. O número total de {\it threads} pode ser obtido com a função OpenMP
-\begin{verbatim}
-omp_get_num_threads();
-\end{verbatim}
+  Modifique o Código \ref{lst:ola} de forma que cada {\it thread} escreva na tela ``Processo ID de NP, olá!'', onde ID é a identificação do {\it thread} e NP é o número total de {\it threads} disponíveis. O número total de {\it threads} pode ser obtido com a função {\omp}
+\begin{lstlisting}[numbers=none]
+omp_get_num_threads()
+\end{lstlisting}
 \end{exer}
 
 \begin{exer}
   Faça um código MP para ser executado com 2 threads. O {\it master thread} deve ler dois números $a$ e $b$ não nulos em ponto flutuante. Em paralelo, um dos {\it thread} de computar $a-b$ e o outro deve computar $a/b$. Por fim, o {\it master thread} deve escrever $(a-b) + (a/b)$.
 \end{exer}
 
+\begin{exer}\label{exer:cc_exer_dot}
+  Escreva um código MP para computar o produto escalar entre dois vetores de $n$ elementos. Inicialize todos os elementos com números randômicos em ponto flutuante. Ainda, o código deve ser escrito para um número arbitrário $m\geq 1$ de instâncias de processamento.
+\end{exer}
+
 \begin{exer}\label{exer:cc_exer_Ax}
-  Escreva um código MP para computar a multiplicação de uma matriz $n\times n$ com um vetor de $n$ elementos. Inicialize todos os elementos com números randômicos em ponto flutuante. Ainda, o código deve ser escrito para um número arbitrário $m>1$ de instâncias de processamento. Por fim, compare o desempenho do código MP com uma versão serial do código.
+  Escreva um código MP para computar a multiplicação de uma matriz $n\times n$ com um vetor de $n$ elementos. Inicialize todos os elementos com números randômicos em ponto flutuante. Ainda, o código deve ser escrito para um número arbitrário $m\geq 1$ de instâncias de processamento. Por fim, compare o desempenho do código MP com uma versão serial do código.
 \end{exer}
 
 \begin{exer}\label{exer:cc_exer_AB}
