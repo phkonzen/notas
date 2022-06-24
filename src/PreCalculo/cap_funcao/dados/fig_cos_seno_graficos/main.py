@@ -7,7 +7,7 @@ from sympy import *
 plt.rcParams.update({
      "text.usetex": True,
      "font.family": "serif",
-     "font.size": 12
+     "font.size": 16
      })
 
 var('x',real=True)
