@@ -203,63 +203,63 @@ class Notas:
                     page = page.replace('</h1>',link_to_src+'</h1>')
                     page = page.replace('</h2>',link_to_src+'</h2>')
 
-                    # mídia com YouTube
-                    i1 = page.find('[YouTube]')
-                    while (i1 != -1):
-                        yurl = ''
-                        vurl = ''
-                        aurl = ''
-                        # YouTube URL
-                        if (page[i1+9:i1+13] == '</a>'):
-                            i2 = page.rindex('href="',0,i1)
-                            f2 = page.index('"',i2+6,i1)
-                            yurl = page[i2+6:f2]
-                            print(yurl)
+                    # # mídia com YouTube
+                    # i1 = page.find('[YouTube]')
+                    # while (i1 != -1):
+                    #     yurl = ''
+                    #     vurl = ''
+                    #     aurl = ''
+                    #     # YouTube URL
+                    #     if (page[i1+9:i1+13] == '</a>'):
+                    #         i2 = page.rindex('href="',0,i1)
+                    #         f2 = page.index('"',i2+6,i1)
+                    #         yurl = page[i2+6:f2]
+                    #         print(yurl)
 
-                            # raise ValeuError("Teste!")
+                    #         # raise ValeuError("Teste!")
 
-                        # vídeo URL
-                        i1 = page.index('[Vídeo]',i1)
-                        if (page[i1+7:i1+11] == '</a>'):
-                            i2 = page.rindex('href="',0,i1)
-                            f2 = page.index('"',i2+6,i1)
-                            vurl = page[i2+6:f2]
-                            print(vurl)
+                    #     # vídeo URL
+                    #     i1 = page.index('[Vídeo]',i1)
+                    #     if (page[i1+7:i1+11] == '</a>'):
+                    #         i2 = page.rindex('href="',0,i1)
+                    #         f2 = page.index('"',i2+6,i1)
+                    #         vurl = page[i2+6:f2]
+                    #         print(vurl)
                             
-                        # áudio URL
-                        i1 = page.index('[Áudio]',i1)
-                        if (page[i1+7:i1+11] == '</a>'):
-                            i2 = page.rindex('href="',0,i1)
-                            f2 = page.index('"',i2+6,i1)
-                            aurl = page[i2+6:f2]
-                            print(aurl)
+                    #     # áudio URL
+                    #     i1 = page.index('[Áudio]',i1)
+                    #     if (page[i1+7:i1+11] == '</a>'):
+                    #         i2 = page.rindex('href="',0,i1)
+                    #         f2 = page.index('"',i2+6,i1)
+                    #         aurl = page[i2+6:f2]
+                    #         print(aurl)
                             
-                        # remove
-                        i2 = page.rindex('<div ',0,i1)
-                        f2 = page.index('</div>',i1)
-                        print('rv: ', page[i2:f2+6])
-                        page = page[0:i2] + \
-                            '<!-- inc mídia -->' + \
-                            page[f2+6:len(page)]
+                    #     # remove
+                    #     i2 = page.rindex('<div ',0,i1)
+                    #     f2 = page.index('</div>',i1)
+                    #     print('rv: ', page[i2:f2+6])
+                    #     page = page[0:i2] + \
+                    #         '<!-- inc mídia -->' + \
+                    #         page[f2+6:len(page)]
 
-                        inc = ''
-                        if (yurl != ""):
-                            inc += '<p><a href="' + yurl + \
-                                '" target="_blank"><i class="fa-brands fa-youtube-square"></i></a></p>'
+                    #     inc = ''
+                    #     if (yurl != ""):
+                    #         inc += '<p><a href="' + yurl + \
+                    #             '" target="_blank"><i class="fa-brands fa-youtube-square"></i></a></p>'
 
-                        if (vurl != ""):
-                            inc += '<p><a href="' + vurl + \
-                                '" target="_blank"><i class="fa-solid fa-film"></i></a></p>'
+                    #     if (vurl != ""):
+                    #         inc += '<p><a href="' + vurl + \
+                    #             '" target="_blank"><i class="fa-solid fa-film"></i></a></p>'
                             
-                        if (aurl != ""):
-                            inc += '<p><a href="' + vurl + \
-                                '" target="_blank"><i class="fa-solid fa-file-audio"></i></a></p>'
+                    #     if (aurl != ""):
+                    #         inc += '<p><a href="' + vurl + \
+                    #             '" target="_blank"><i class="fa-solid fa-file-audio"></i></a></p>'
 
 
-                        page = page.replace('<!-- inc mídia -->', inc);
+                    #     page = page.replace('<!-- inc mídia -->', inc);
 
-                        break
-                        i1 = page.find('[YouTube]')
+                    #     break
+                    #     i1 = page.find('[YouTube]')
 
                     # mídia sem Youtube
                     i1 = page.find('[Vídeo]')
