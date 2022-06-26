@@ -35,7 +35,10 @@ class Politica:
         # head += '<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>\n'
 
         # FontAwesome
-        head += '<script src="https://kit.fontawesome.com/dfbff2c7ed.js" crossorigin="anonymous"></script>'
+        # head += '<script src="https://kit.fontawesome.com/dfbff2c7ed.js" crossorigin="anonymous"></script>'
+        head += '<link href="./fontawesome/css/all.css" rel="stylesheet">'
+        head += '<link href="./fontawesome/css/brands.css" rel="stylesheet">'
+        head += '<link href="./fontawesome/css/solid.css" rel="stylesheet">'
         
         #google tracking
         head += '\n<!-- Global site tag (gtag.js) - Google Analytics -->\n'
@@ -87,7 +90,7 @@ class Politica:
         body += '<a class="dropdown-item" href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i> notas.pedrok</a>\n'
         body += '</div><!-- div class="dropdown-menu" aria-labelledby="navbarDropdown" -->\n'
         body += '</li> <!-- li class="nav-item dropdown" -->\n'
-        body += '<li class="nav-item"><a class="nav-link" href="https://github.com/phkonzen/notas"><i class="fa fa-github" aria-hidden="true"></i> Repo</a></li>\n'
+        body += '<li class="nav-item"><a class="nav-link" href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i> Repo</a></li>\n'
         body += '<li class="nav-item"><a class="nav-link active" href="./politica.html">Política de Dados</a></li>\n'
         body += '</ul>\n'
         body += '</div><!-- /.navbar-collapse -->\n'

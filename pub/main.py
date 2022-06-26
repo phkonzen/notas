@@ -38,6 +38,9 @@ srcdir = '.src'
 os.system('mkdir -p '+srcdir)
 os.system('rm -rvf '+srcdir+'/*')
 
+#fontawesome6
+os.system('cp -rvf fontawesome ' + odir + '/')
+
 #index.html
 index = Index(odir)
 index.build()

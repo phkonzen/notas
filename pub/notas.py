@@ -60,8 +60,12 @@ class Notas:
 
         
         # FontAwesome
-        head += '<script src="https://kit.fontawesome.com/dfbff2c7ed.js" crossorigin="anonymous"></script>'
+        # head += '<script src="https://kit.fontawesome.com/dfbff2c7ed.js" crossorigin="anonymous"></script>'
+        head += '<link href="../fontawesome/css/all.css" rel="stylesheet">'
+        head += '<link href="../fontawesome/css/brands.css" rel="stylesheet">'
+        head += '<link href="../fontawesome/css/solid.css" rel="stylesheet">'
 
+        
         # Goodies CSS
         head += '<!-- Computer Modern Serif-->'
         head += '<link rel="stylesheet" href="fonts/cmun-serif.css">\n'
@@ -109,7 +113,7 @@ class Notas:
         body += '<ul class="navbar-nav">\n'
         body += '<li class="nav-item"><a class="nav-link" href="../index.html"><i class="fas fa-home"></i> Início</a></li>\n'
         body += '<li class="nav-item"><a class="nav-link active" href="main.html">Sumário</a></li>\n'
-        body += '<li class="nav-item"><a class="nav-link" href="main.pdf"><i class="fa fa-download" aria-hidden="true"></i> PDF</a></li>\n'
+        body += '<li class="nav-item"><a class="nav-link" href="main.pdf"><i class="fas fa-download" aria-hidden="true"></i> PDF</a></li>\n'
         body += '<li class="nav=item"><a class="nav-link" href="https://colab.research.google.com/github/phkonzen/notas/blob/master/notas.ipynb">Google Colab</a></li>\n'
         body += '<li class="nav-item dropdown">\n'
         body += '<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">\n'
@@ -120,7 +124,7 @@ class Notas:
         body += '<a class="dropdown-item" href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i> notas.pedrok</a>\n'
         body += '</div><!-- div class="dropdown-menu" aria-labelledby="navbarDropdown" -->\n'
         body += '</li> <!-- li class="nav-item dropdown" -->\n'
-        body += '<li class="nav-item"><a class="nav-link" href="https://github.com/phkonzen/notas"><i class="fa fa-github" aria-hidden="true"></i> Repo</a></li>\n'
+        body += '<li class="nav-item"><a class="nav-link" href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i> Repo</a></li>\n'
         body += '<li class="nav-item"><a class="nav-link" href="../politica.html">Política de dados</a></li>\n'
         body += '</ul>\n'
         body += '</div><!-- /.navbar-collapse -->\n'
@@ -203,70 +207,23 @@ class Notas:
                     page = page.replace('</h1>',link_to_src+'</h1>')
                     page = page.replace('</h2>',link_to_src+'</h2>')
 
-                    # # mídia com YouTube
-                    # i1 = page.find('[YouTube]')
-                    # while (i1 != -1):
-                    #     yurl = ''
-                    #     vurl = ''
-                    #     aurl = ''
-                    #     # YouTube URL
-                    #     if (page[i1+9:i1+13] == '</a>'):
-                    #         i2 = page.rindex('href="',0,i1)
-                    #         f2 = page.index('"',i2+6,i1)
-                    #         yurl = page[i2+6:f2]
-                    #         print(yurl)
-
-                    #         # raise ValeuError("Teste!")
-
-                    #     # vídeo URL
-                    #     i1 = page.index('[Vídeo]',i1)
-                    #     if (page[i1+7:i1+11] == '</a>'):
-                    #         i2 = page.rindex('href="',0,i1)
-                    #         f2 = page.index('"',i2+6,i1)
-                    #         vurl = page[i2+6:f2]
-                    #         print(vurl)
-                            
-                    #     # áudio URL
-                    #     i1 = page.index('[Áudio]',i1)
-                    #     if (page[i1+7:i1+11] == '</a>'):
-                    #         i2 = page.rindex('href="',0,i1)
-                    #         f2 = page.index('"',i2+6,i1)
-                    #         aurl = page[i2+6:f2]
-                    #         print(aurl)
-                            
-                    #     # remove
-                    #     i2 = page.rindex('<div ',0,i1)
-                    #     f2 = page.index('</div>',i1)
-                    #     print('rv: ', page[i2:f2+6])
-                    #     page = page[0:i2] + \
-                    #         '<!-- inc mídia -->' + \
-                    #         page[f2+6:len(page)]
-
-                    #     inc = ''
-                    #     if (yurl != ""):
-                    #         inc += '<p><a href="' + yurl + \
-                    #             '" target="_blank"><i class="fa-brands fa-youtube-square"></i></a></p>'
-
-                    #     if (vurl != ""):
-                    #         inc += '<p><a href="' + vurl + \
-                    #             '" target="_blank"><i class="fa-solid fa-film"></i></a></p>'
-                            
-                    #     if (aurl != ""):
-                    #         inc += '<p><a href="' + vurl + \
-                    #             '" target="_blank"><i class="fa-solid fa-file-audio"></i></a></p>'
-
-
-                    #     page = page.replace('<!-- inc mídia -->', inc);
-
-                    #     break
-                    #     i1 = page.find('[YouTube]')
-
-                    # mídia sem Youtube
-                    i1 = page.find('[Vídeo]')
+                    # mídia com YouTube
+                    i1 = page.find('[YouTube]')
                     while (i1 != -1):
+                        yurl = ''
                         vurl = ''
                         aurl = ''
+                        # YouTube URL
+                        if (page[i1+9:i1+13] == '</a>'):
+                            i2 = page.rindex('href="',0,i1)
+                            f2 = page.index('"',i2+6,i1)
+                            yurl = page[i2+6:f2]
+                            print(yurl)
+
+                            # raise ValeuError("Teste!")
+
                         # vídeo URL
+                        i1 = page.index('[Vídeo]',i1)
                         if (page[i1+7:i1+11] == '</a>'):
                             i2 = page.rindex('href="',0,i1)
                             f2 = page.index('"',i2+6,i1)
@@ -285,37 +242,93 @@ class Notas:
                         i2 = page.rindex('<div ',0,i1)
                         f2 = page.index('</div>',i1)
                         print('rv: ', page[i2:f2+6])
-                        # page = page[0:i2] + \
-                        #     '<!-- mídia -->' + \
-                        #     page[f2+6:len(page)]
-
-                        f3 = page.index('right',i2)
-                        inc = '' # page[i2:f3] + 'left">\n'
-                        if (aurl != ''):
-                            # inc += '<p class="ltx_p">\n'
-                            aurl = aurl.replace('/details/','/embed/')
-                            inc += '<iframe src="' + \
-                                aurl + \
-                                '" width="500" height="30" style="max-width:100%;" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>\n'
-                            inc += '<p class="ltx_p"></p>\n'
-                            
-                        if (vurl != ''):
-                            vurl = vurl.replace('/details/','/embed/')
-                            inc += '<div class="row">\n'
-                            inc += '<div class="col-xl-4 col-lg-3 col-md-3"></div>\n'
-                            inc += '<div class="col-xl-4 col-lg-6 col-md-6">\n'
-                            inc += '<div class="container" style="position:relative; width:100%; padding-top:75%; background-color:black;">\n'
-                            inc += '<iframe src="' + \
-                                vurl + \
-                                '" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" style="display:block; position:absolute; width:100%; height:100%; left:0; right:0; top:0; bottom:0;" allowfullscreen></iframe>\n'
-                            inc += '</div>\n'
-                            inc += '</div>\n'
-                            inc += '</div>\n'
-
                         page = page[0:i2] + \
-                            inc + \
+                            '<!-- inc mídia -->' + \
                             page[f2+6:len(page)]
+
+                        inc = '<ul class="list-group list-group-flush">\n'
+                        if (yurl != ""):
+                            inc += '<a href="' + yurl + \
+                                '" class="list-group-item list-group-item-action text-primary"><i class="fab fa-youtube fa-2xl"></i> YouTube</a>\n'
+                        else:
+                            inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fab fa-youtube fa-2xl"></i> YouTube</a>\n'
                             
+
+                        if (vurl != ""):
+                            inc += '<a href="' + vurl + \
+                                '" class="list-group-item list-group-item-action text-primary"><i class="fas fa-building-columns fa-2xl"></i> archive.org</a>\n'
+                        else:
+                            inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fas fa-building-columns fa-2xl"></i> archive.org</a>\n'
+                            
+                        if (aurl != ""):
+                            inc += '<a href="' + vurl + \
+                                '" class="list-group-item list-group-item-action text-primary"><i class="fas fa-file-audio fa-2xl"></i> Audioleitura</a></a>\n'
+                        else:
+                            inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fas fa-file-audio fa-2xl"></i> Audioleitura</a></a>\n'
+                            
+                        inc += '</ul></br>\n'
+
+
+                        page = page.replace('<!-- inc mídia -->', inc);
+
+                        i1 = page.find('[YouTube]')
+
+                    # mídia sem Youtube
+                    i1 = page.find('[Vídeo]')
+                    while (i1 != -1):
+                        yurl = ''
+                        vurl = ''
+                        aurl = ''
+
+                        # vídeo URL
+                        i1 = page.index('[Vídeo]',i1)
+                        if (page[i1+7:i1+11] == '</a>'):
+                            i2 = page.rindex('href="',0,i1)
+                            f2 = page.index('"',i2+6,i1)
+                            vurl = page[i2+6:f2]
+                            print(vurl)
+                            
+                        # áudio URL
+                        i1 = page.index('[Áudio]',i1)
+                        if (page[i1+7:i1+11] == '</a>'):
+                            i2 = page.rindex('href="',0,i1)
+                            f2 = page.index('"',i2+6,i1)
+                            aurl = page[i2+6:f2]
+                            print(aurl)
+                            
+                        # remove
+                        i2 = page.rindex('<div ',0,i1)
+                        f2 = page.index('</div>',i1)
+                        print('rv: ', page[i2:f2+6])
+                        page = page[0:i2] + \
+                            '<!-- inc mídia -->' + \
+                            page[f2+6:len(page)]
+
+                        inc = '<ul class="list-group list-group-flush">\n'
+                        if (yurl != ""):
+                            inc += '<a href="' + yurl + \
+                                '" class="list-group-item list-group-item-action text-primary"><i class="fab fa-youtube fa-2xl"></i> YouTube</a>\n'
+                        else:
+                            inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fab fa-youtube fa-2xl"></i> YouTube</a>\n'
+                            
+
+                        if (vurl != ""):
+                            inc += '<a href="' + vurl + \
+                                '" class="list-group-item list-group-item-action text-primary"><i class="fas fa-building-columns fa-2xl"></i> archive.org</a>\n'
+                        else:
+                            inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fas fa-building-columns fa-2xl"></i> archive.org</a>\n'
+                            
+                        if (aurl != ""):
+                            inc += '<a href="' + vurl + \
+                                '" class="list-group-item list-group-item-action text-primary"><i class="fas fa-file-audio fa-2xl"></i> Audioleitura</a></a>\n'
+                        else:
+                            inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fas fa-file-audio fa-2xl"></i> Audioleitura</a></a>\n'
+                            
+                        inc += '</ul></br>\n'
+
+
+                        page = page.replace('<!-- inc mídia -->', inc);
+
                         i1 = page.find('[Vídeo]')
 
                     
