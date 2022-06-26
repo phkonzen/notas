@@ -249,22 +249,22 @@ class Notas:
                         inc = '<ul class="list-group list-group-flush">\n'
                         if (yurl != ""):
                             inc += '<a href="' + yurl + \
-                                '" class="list-group-item list-group-item-action text-primary"><i class="fab fa-youtube fa-2xl"></i> YouTube</a>\n'
+                                '" class="list-group-item list-group-item-action text-primary"><i class="fab fa-youtube fa-xl"></i> Assista no YouTube!</a>\n'
                         else:
-                            inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fab fa-youtube fa-2xl"></i> YouTube</a>\n'
+                            inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fab fa-youtube fa-xl"></i> Assista no YouTube</a>\n'
                             
 
                         if (vurl != ""):
                             inc += '<a href="' + vurl + \
-                                '" class="list-group-item list-group-item-action text-primary"><i class="fas fa-building-columns fa-2xl"></i> archive.org</a>\n'
+                                '" class="list-group-item list-group-item-action text-primary"><i class="fas fa-building-columns fa-xl"></i> Assista no archive.org!</a>\n'
                         else:
-                            inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fas fa-building-columns fa-2xl"></i> archive.org</a>\n'
+                            inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fas fa-building-columns fa-xl"></i> Assista no archive.org!</a>\n'
                             
                         if (aurl != ""):
                             inc += '<a href="' + vurl + \
-                                '" class="list-group-item list-group-item-action text-primary"><i class="fas fa-file-audio fa-2xl"></i> Audioleitura</a></a>\n'
+                                '" class="list-group-item list-group-item-action text-primary"><i class="fas fa-file-audio fa-xl"></i> Escute a audioleitura!</a></a>\n'
                         else:
-                            inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fas fa-file-audio fa-2xl"></i> Audioleitura</a></a>\n'
+                            inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fas fa-file-audio fa-xl"></i> Escute a audioleitura!</a></a>\n'
                             
                         inc += '</ul></br>\n'
 
@@ -307,22 +307,22 @@ class Notas:
                         inc = '<ul class="list-group list-group-flush">\n'
                         if (yurl != ""):
                             inc += '<a href="' + yurl + \
-                                '" class="list-group-item list-group-item-action text-primary"><i class="fab fa-youtube fa-2xl"></i> YouTube</a>\n'
+                                '" class="list-group-item list-group-item-action text-primary"><i class="fab fa-youtube fa-xl"></i> Assista no YouTube!</a>\n'
                         else:
-                            inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fab fa-youtube fa-2xl"></i> YouTube</a>\n'
+                            inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fab fa-youtube fa-xl"></i> Assista no YouTube!</a>\n'
                             
 
                         if (vurl != ""):
                             inc += '<a href="' + vurl + \
-                                '" class="list-group-item list-group-item-action text-primary"><i class="fas fa-building-columns fa-2xl"></i> archive.org</a>\n'
+                                '" class="list-group-item list-group-item-action text-primary"><i class="fas fa-building-columns fa-xl"></i> Assista no archive.org!</a>\n'
                         else:
-                            inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fas fa-building-columns fa-2xl"></i> archive.org</a>\n'
+                            inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fas fa-building-columns fa-xl"></i> Assista no archive.org!</a>\n'
                             
                         if (aurl != ""):
                             inc += '<a href="' + vurl + \
-                                '" class="list-group-item list-group-item-action text-primary"><i class="fas fa-file-audio fa-2xl"></i> Audioleitura</a></a>\n'
+                                '" class="list-group-item list-group-item-action text-primary"><i class="fas fa-file-audio fa-xl"></i> Escute a audioleitura!</a></a>\n'
                         else:
-                            inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fas fa-file-audio fa-2xl"></i> Audioleitura</a></a>\n'
+                            inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fas fa-file-audio fa-xl"></i> Escute a audioleitura!</a></a>\n'
                             
                         inc += '</ul></br>\n'
 
