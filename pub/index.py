@@ -98,6 +98,8 @@ class Index:
         body += '</nav>\n'
         body += '\n\n<!-- end: navbar -->\n\n\n'
 
+        # redes sociais
+        body += '<p class="text-left mb-0"><a href="./contato.html"><i class="fas fa-envelope"></i></a> | <a href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i></a> | <a href="https://archive.org/details/notas-de-aula"><i class="fas fa-building-columns"></i></a> | <a href="https://www.youtube.com/channel/UCwutHKlKLgVj6IkFSUFBqoA"><i class="fab fa-youtube"></i></a> | <a href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i></a></p>\n\n\n'
 
         # jumbotron
         body += '<div class="myjumbotron">\n'
@@ -335,7 +337,7 @@ class Index:
 
         
         body += '<div class="row">\n'
-        body += '<div class="col-md-6">\n'
+        # body += '<div class="col-md-6">\n'
 
         body += '<h3>Vídeos & Áudios</h3>'
 
@@ -343,18 +345,34 @@ class Index:
 
         # card: Internet Archive
         body += '<!-- card: Internet Archive -->\n'
+        body += '<div class="col-lg-3 col-md-4 col-sm-6">'
         body += '<div class="card border-primary mb-3" style="max-width: 20rem;">\n'
         body += '<div class="card-header bg-primary text-white">Vídeos & Áudios</div>\n'
         body += '<div class="card-body">\n'
-        body += '<h5 class="card-title">Internet Archive</h5>\n'
-        body += '<p class="card-text" style="color: gray">Coleção de vídeos e áudios no archive.org.</p>\n'
+        body += '<h5 class="card-title"><i class="fas fa-building-columns"></i> Internet Archive</h5>\n'
+        body += '<p class="card-text" style="color: gray">Coleção de vídeos e áudios das Notas de Aula no archive.org.</p>\n'
         body += '<a href="https://archive.org/details/notas-de-aula" class="btn btn-primary">\n'
         body += 'Abrir</a>\n'
         body += '</div>\n'
+        body += '</div>\n'
         body += '</div>\n\n'
+
+        # card: YouTube
+        body += '<!-- card: YouTube -->\n'
+        body += '<div class="col-lg-3 col-md-4 col-sm-6">'
+        body += '<div class="card border-primary mb-3" style="max-width: 20rem;">\n'
+        body += '<div class="card-header bg-primary text-white">Vídeos & Áudios <span class="badge bg-success">Novo</span></div>\n'
+        body += '<div class="card-body">\n'
+        body += '<h5 class="card-title"><i class="fab fa-youtube"></i> YouTube</h5>\n'
+        body += '<p class="card-text" style="color: gray">Página das Notas de Aula no YouTube.</p>\n'
+        body += '<a href="https://www.youtube.com/channel/UCwutHKlKLgVj6IkFSUFBqoA" class="btn btn-primary">\n'
+        body += 'Abrir</a>\n'
+        body += '</div>\n'
+        body += '</div>\n'
+        body += '</div>\n\n'
+
         
-        
-        body += '</div><!-- div class="col-md-6" -->\n'
+        #body += '</div><!-- div class="col-lg-3 ..." -->\n'
         
         body += '</div><!-- div class="row" -->\n'
 

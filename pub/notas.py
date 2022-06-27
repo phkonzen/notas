@@ -132,7 +132,9 @@ class Notas:
         body += '</nav>\n'
         body += '\n\n<!-- end: navbar -->\n\n\n'
 
-       
+        # redes sociais
+        body += '<p class="text-left mb-0"><a href="./contato.html"><i class="fas fa-envelope"></i></a> | <a href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i></a> | <a href="https://archive.org/details/notas-de-aula"><i class="fas fa-building-columns"></i></a> | <a href="https://www.youtube.com/channel/UCwutHKlKLgVj6IkFSUFBqoA"><i class="fab fa-youtube"></i></a> | <a href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i></a></p>\n\n\n'
+        
         #enxerta no __body__ (bottom)
         body_end = ''
 
@@ -246,7 +248,7 @@ class Notas:
                             '<!-- inc mídia -->' + \
                             page[f2+6:len(page)]
 
-                        inc = '<ul class="list-group list-group-flush">\n'
+                        inc = '<ul class="list-group list-group-flush  d-inline-flex">\n'
                         if (yurl != ""):
                             inc += '<a href="' + yurl + \
                                 '" class="list-group-item list-group-item-action text-primary"><i class="fab fa-youtube fa-xl"></i> Assista no YouTube!</a>\n'
@@ -304,7 +306,7 @@ class Notas:
                             '<!-- inc mídia -->' + \
                             page[f2+6:len(page)]
 
-                        inc = '<ul class="list-group list-group-flush">\n'
+                        inc = '<ul class="list-group list-group-flush d-inline-flex">\n'
                         if (yurl != ""):
                             inc += '<a href="' + yurl + \
                                 '" class="list-group-item list-group-item-action text-primary"><i class="fab fa-youtube fa-xl"></i> Assista no YouTube!</a>\n'
