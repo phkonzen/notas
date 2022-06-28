@@ -1,4 +1,12 @@
+import matplotlib as plt
 from sympy import *
+
+plt.rcParams.update({
+     "text.usetex": True,
+     "font.family": "serif",
+     "font.size": 16
+     })
+
 var('x,y', real=True)
 
 x0 = 2
@@ -12,10 +20,10 @@ p.extend(q)
 q = plot(7,(x,-1,3),line_color="none",show=False)
 p.extend(q)
 q = plot_implicit(y<x**2,(x,x0-tol,x0),(y,0,8),
-                  line_color="gray",show=False)
+                  line_color="0.85",show=False)
 p.extend(q)
 q = plot_implicit(x<sqrt(y),(x,0,2),(y,(x0-tol)**2,x0**2),
-                  line_color="gray",show=False)
+                  line_color="0.85",show=False)
 p.extend(q)
 p.xlabel = '$x$'
 p.ylabel = '$y$'
@@ -26,12 +34,12 @@ ax = fig.axes[0]
 ax.set_yticks([])
 ax.set_xticks([])
 ax.grid()
-ax.text(x0-tol-0.1,-0.4,"$x\\rightarrow$")
+ax.text(x0-tol-0.2,-0.45,"$x\\rightarrow$")
 ax.plot([x0,x0],[0,x0**2-0.2],ls='--',color="red")
 ax.plot([0,x0-0.05],[x0**2,x0**2],ls='--',color="red")
-ax.text(x0-0.05,-0.4,"$x_0$")
-ax.text(-0.15,(x0-tol)**2,"$\\uparrow$")
-ax.text(-0.15,x0**2-0.1,"$L$")
-ax.plot([x0],[x0**2],marker="o",markersize=5,markeredgecolor="red",markerfacecolor="white")
-ax.plot([x0],[-(x0-2)**2+5],marker="o",markersize=5,markeredgecolor="red",markerfacecolor="white")
+ax.text(x0-0.05,-0.45,"$x_0$")
+ax.text(-0.15,(x0-tol)**2+0.2,"$\\uparrow$")
+ax.text(-0.2,x0**2-0.1,"$L$")
+ax.plot([x0],[x0**2],marker="o",markersize=6,markeredgecolor="red",markerfacecolor="white")
+ax.plot([x0],[-(x0-2)**2+5],marker="o",markersize=6,markeredgecolor="red",markerfacecolor="white")
 fig.savefig('fig_lim_esq.png', bbox_inches='tight')

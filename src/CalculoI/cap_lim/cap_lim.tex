@@ -739,13 +739,13 @@ Quando o fator em comum não aparece explicitamente, podemos tentar trabalhar al
 
 Seja dada uma função $f$ definida para todo $x$ em um intervalo aberto $(a, x_0)$. O {\bf limite lateral à esquerda} de $f$ no ponto $x_0$ é denotado por
 \begin{equation}
-  \lim_{x\to x_0^-} f(x)
+  \lim_{x\to {\color{red}x_0^-}} f(x)
 \end{equation}
 e é computado tendo em vista a tendência da função apenas para pontos $x<x_0$. Em outras palavras, o
 \begin{equation}
   \lim_{x\to x_0^-} f(x) = L
 \end{equation}
-quando $f(x)$ pode ser tomado arbitrariamente próximo de $L$, desde que tomemos $x<x_0$ suficientemente próximo de $a$. Veja a Figura \ref{fig:lim_esq}.
+quando $f(x)$ é arbitrariamente próximo de $L$, para todo $x<x_0$ suficientemente próximo de $x_0$. Veja a Figura \ref{fig:lim_esq}.
 
 \begin{figure}[H]
   \centering
@@ -756,13 +756,13 @@ quando $f(x)$ pode ser tomado arbitrariamente próximo de $L$, desde que tomemos
 
 Para uma função $f$ definida para todo $x$ em um intervalo aberto $(x_0, b)$, o {\bf limite lateral à direita} de $f$ no ponto $x_0$ é denotado por
 \begin{equation}
-  \lim_{x\to x_0^+} f(x)
+  \lim_{x\to {\color{blue}x_0^+}} f(x)
 \end{equation}
 e é computado tendo em vista a tendência da função apenas para pontos $x>x_0$. Em outras palavras, temos
 \begin{equation}
   \lim_{x\to x_0^+} f(x) = L,
 \end{equation}
-quando $f(x)$ pode ser tomado arbitrariamente próximo de $L$, desde que tomemos $x>x_0$ suficientemente próximo de $x_0$. Veja a Figura \ref{fig:lim_dir}.
+quando $f(x)$ é arbitrariamente próximo de $L$, para todo $x>x_0$ suficientemente próximo de $x_0$. Veja a Figura \ref{fig:lim_dir}.
 
 \begin{figure}[H]
   \centering
@@ -774,9 +774,13 @@ quando $f(x)$ pode ser tomado arbitrariamente próximo de $L$, desde que tomemos
 \begin{obs}
   Por inferência direta, temos
   \begin{equation}
-    \lim_{x\to x_0^{\pm}} k = k\quad\text{e}\quad\lim_{x\to x_0^{\pm}} x = x_0,
+    \lim_{x\to x_0^{\pm}} k = k
   \end{equation}
-  onde $x_0$ e $k$ são quaisquer números reais.
+  e
+  \begin{equation}
+    \lim_{x\to x_0^{\pm}} x = x_0,
+  \end{equation}
+  onde $x_0$ e $k$ são quaisquer dados números reais.
 \end{obs}
 
 \begin{exer}\label{ex:lim_absx}
@@ -794,9 +798,10 @@ quando $f(x)$ pode ser tomado arbitrariamente próximo de $L$, desde que tomemos
     \right.
   \end{equation}
   Como estamos interessados no limite lateral à esquerda de $x=0$, trabalhamos com $x<0$ e, então
-  \begin{equation}
-    \lim_{x\to 0^-} |x| = \lim_{x\to 0^-} -x = -\lim_{x\to 0^-} x = 0.
-  \end{equation}
+  \begin{align}
+    \lim_{x\to 0^-} |x| &= \lim_{x\to 0^-} -x\\
+                        &= -\lim_{x\to 0^-} x = 0.
+  \end{align}
   
   Analogamente, calculamos
   \begin{equation}
@@ -805,9 +810,10 @@ quando $f(x)$ pode ser tomado arbitrariamente próximo de $L$, desde que tomemos
   Verifique!
 
   \ifispython
-  Usando o {\sympy}, podemos computar os limites acima com os seguintes comandos:
+  Com o {\python}+{\sympy}, podemos computar os limites acima com os seguintes comandos.
   \begin{lstlisting}
     from sympy import *
+    x = Symbol("x")
     limit(abs(x),x,0,'-')
     limit(abs(x),x,0,'+')
   \end{lstlisting}
@@ -815,7 +821,11 @@ quando $f(x)$ pode ser tomado arbitrariamente próximo de $L$, desde que tomemos
 \end{exer}
 
 \begin{teo}\label{teo:lim_existe}
-  Existe o limite de uma dada função $f$ no ponto $x=x_0$ e $\lim_{x\to x_0} f(x) = L$ se, e somente se, existem e são iguais a $L$ os limites laterais à esquerda e à direita de $f$ no ponto $x=x_0$.
+  Existe o limite de uma dada função $f$ no ponto $x=x_0$ e
+  \begin{equation}
+    \lim_{x\to x_0} f(x) = L
+  \end{equation}
+  se, e somente se, existem e são iguais a $L$ os limites laterais à esquerda e à direita de $f$ no ponto $x=x_0$.
 \end{teo}
 
 \begin{exer}
@@ -844,12 +854,13 @@ quando $f(x)$ pode ser tomado arbitrariamente próximo de $L$, desde que tomemos
     \lim_{x\to 0^+} \frac{|x|}{x} &= \lim_{x\to 0^+} \frac{x}{x}\\
     &= \lim_{x\to 0^+} 1 = 1.
   \end{align}
-  Como os limites laterais à esquerda e à direita são diferentes, concluímos que não existe o limite de $|x|/x$ no ponto $x=0$.
+  Como os \emph{limites laterais} à esquerda e à direita \emph{são diferentes}, concluímos que \emph{não existe o limite} de $|x|/x$ no ponto $x=0$.
 
   \ifispython
   Com o {\sympy}, por padrão o limite computado é sempre o limite lateral à direita. É por isso que o comando
   \begin{lstlisting}
     from sympy import *
+    x = Symbol("x")
     limit(abs(x)/x,x,0)
   \end{lstlisting}
   fornece o valor $1$ como saída.
@@ -859,7 +870,11 @@ quando $f(x)$ pode ser tomado arbitrariamente próximo de $L$, desde que tomemos
 \begin{obs}
   As regras básicas para o cálculo de limites bilaterais são estendidas para limites laterais. I.e., se
   \begin{equation}
-    \lim_{x\to x_0^{\pm}} f(x) = L_1\quad\text{e}\quad\lim_{x\to x_0^{\pm}} g(x) = L_2,
+    \lim_{x\to x_0^{\pm}} f(x) = L_1
+  \end{equation}
+  e
+  \begin{equation}
+    \lim_{x\to x_0^{\pm}} g(x) = L_2,
   \end{equation}
   então valem a:
   \begin{itemize}
@@ -869,23 +884,27 @@ quando $f(x)$ pode ser tomado arbitrariamente próximo de $L$, desde que tomemos
   \end{equation}
   para qualquer número real $k$.
 \item regra da soma/subtração:
-  \begin{equation}
-    \lim_{x\to x_0^{\pm}} f(x) \pm g(x) = \lim_{x\to x_0^{\pm}} f(x) \pm \lim_{x\to x_0^{\pm}} g(x) = L_1 + L_2
-  \end{equation}
+  \begin{align}
+    \lim_{x\to x_0^{\pm}} f(x) \pm g(x) &= \lim_{x\to x_0^{\pm}} f(x) \pm \lim_{x\to x_0^{\pm}} g(x)\\
+                                        &= L_1 + L_2
+  \end{align}
 \item regra do produto:
-  \begin{equation}
-    \lim_{x\to x_0^\pm} f(x) \cdot g(x) = \lim_{x\to x_0^\pm} f(x) \cdot \lim_{x\to x_0^\pm} g(x) = L_1 \cdot L_2
-  \end{equation}
+  \begin{align}
+    \lim_{x\to x_0^\pm} f(x) \cdot g(x) &= \lim_{x\to x_0^\pm} f(x) \cdot \lim_{x\to x_0^\pm} g(x)\\
+                                        &= L_1 \cdot L_2
+  \end{align}
 \item regra do quociente:
-  \begin{equation}
-    \lim_{x\to x_0^\pm} \frac{f(x)}{g(x)} = \frac{\lim_{x\to x_0^\pm} f(x)}{\lim_{x\to x_0^\pm} g(x)} = \frac{L_1}{L_2},
-  \end{equation}
+  \begin{align}
+    \lim_{x\to x_0^\pm} \frac{f(x)}{g(x)} &= \frac{\lim_{x\to x_0^\pm} f(x)}{\lim_{x\to x_0^\pm} g(x)}\\
+                                          &= \frac{L_1}{L_2},
+  \end{align}
   desde que $L_2\neq 0$.
 \item regra da potenciação:
-  \begin{equation}
-    \lim_{x\to x_0^\pm} (f(x))^s = \left(\lim_{x\to x_0^\pm} f(x) \right)^s = L_1^s,
-  \end{equation}
-  se $L_1^s$ é um número real.
+  \begin{align}
+    \lim_{x\to x_0^\pm} (f(x))^s &= \left(\lim_{x\to x_0^\pm} f(x) \right)^s\\
+    &= L_1^s,
+  \end{align}
+  se, adicionalmente, $L_1^s$ é um número real.
 \end{itemize}
 \end{obs}
 
