@@ -1,4 +1,12 @@
+import matplotlib as plt
 from sympy import *
+
+plt.rcParams.update({
+     "text.usetex": True,
+     "font.family": "serif",
+     "font.size": 16
+     })
+
 var('x,y', real=True)
 
 p = plot(1/x, (x,-5,-0.001), line_color="blue", show=False)

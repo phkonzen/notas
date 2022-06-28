@@ -1097,9 +1097,7 @@ quando $f(x)$ é arbitrariamente próximo de $L$, para todo $x>x_0$ suficienteme
   [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
 \end{flushright}
 
-Limites no infinito descrevem a tendência de uma dada função $f(x)$ quando $x\to -\infty$ ou $x\to\infty$.
-
-Dizemos que o limite de $f(x)$ é $L$ quando $x$ tende a $-\infty$, se os valores de $f(x)$ podem ser tomados arbitrariamente próximos de $L$ para valores de $x$ suficientemente pequenos. Neste caso, escrevemos
+Limites no infinito descrevem a tendência de uma dada função $f(x)$ quando $x\to -\infty$ ou $x\to\infty$. Dizemos que o limite de $f(x)$ é $L$ quando $x$ tende a $-\infty$, se os valores de $f(x)$ são {\bf arbitrariamente próximos} de $L$ para todos os valores de $x$ {\bf suficientemente pequenos}. Neste caso, escrevemos
 \begin{equation}
   \lim_{x\to -\infty} f(x) = L.
 \end{equation}
@@ -1112,7 +1110,7 @@ Veja a Figura \ref{fig:lim_x-infty}.
   \label{fig:lim_x-infty}
 \end{figure}
 
-Analogamente, dizemos que o limite de $f(x)$ é $L$ quando $x$ tende $\infty$, se os valores de $f(x)$ são arbitrariamente próximos de $L$ para valores de $x$ suficientemente grandes. Neste caso, escrevemos
+Analogamente, dizemos que o limite de $f(x)$ é $L$ quando $x$ tende $\infty$, se os valores de $f(x)$ são {\bf arbitrariamente próximos} de $L$ para todos os valores de $x$ {\bf suficientemente grandes}. Neste caso, escrevemos
 \begin{equation}
   \lim_{x\to \infty} f(x) = L.
 \end{equation}
@@ -1150,6 +1148,7 @@ Também, quanto maiores os valores de $x$, mais próximos de $0$ são os valores
 Podemos computar estes limites com o {\sympy}, usando os seguintes comandos:
 \begin{lstlisting}
   from sympy import *
+  x = Symbol("x")
   limit(1/x,x,-oo)
   limit(1/x,x,oo)
 \end{lstlisting}
@@ -1159,10 +1158,18 @@ Podemos computar estes limites com o {\sympy}, usando os seguintes comandos:
 \begin{obs}\normalfont{(Regras para o cálculo de limites no infinito)}\label{obs:lim_regras_xinf}
 Supondo que $L$, $M$ e $k$ são números reais e
 \begin{equation}
-  \lim_{x\to \pm\infty} f(x) = L\quad\text{e}\quad\lim_{x\to\pm\infty}g(x) = M.
+  \lim_{x\to \pm\infty} f(x) = L
+\end{equation}
+e
+\begin{equation}
+  \lim_{x\to\pm\infty}g(x) = M.
 \end{equation}
 Então, temos as seguintes regras para limites no infinito:
 \begin{itemize}
+\item Regra da multiplicação por escalar
+  \begin{equation}
+    \lim_{x\to\pm\infty} kf(x) = kL
+  \end{equation}
 \item Regra da soma/diferença
   \begin{equation}
     \lim_{x\to\pm\infty} (f(x)\pm g(x)) = L\pm M
@@ -1170,10 +1177,6 @@ Então, temos as seguintes regras para limites no infinito:
 \item Regra do produto
   \begin{equation}
     \lim_{x\to\pm\infty} f(x)g(x) = LM
-  \end{equation}
-\item Regra da multiplicação por escalar
-  \begin{equation}
-    \lim_{x\to\pm\infty} kf(x) = kL
   \end{equation}
 \item Regra do quociente
   \begin{equation}
@@ -1203,24 +1206,26 @@ Então, temos as seguintes regras para limites no infinito:
   \begin{align}
     \lim_{x\to\infty} \frac{x^3 - 2x + 1}{2 - 3x^3}\cdot\frac{\frac{1}{x^3}}{\frac{1}{x^3}} = \lim_{x\to\infty} \frac{1-\frac{2}{x^2} + \frac{1}{x^3}}{\frac{2}{x^3}-3}. 
   \end{align}
-  Então, aplicando a regras do quociente, da soma/subtração e da multiplicação por escalar, temos
-  \begin{equation}
-    \lim_{x\to\infty} \frac{x^3 - 2x + 1}{2 - 3x^3} = \lim_{x\to\infty} \frac{1-\frac{2}{x^2} + \frac{1}{x^3}}{\frac{2}{x^3}-3} = -\frac{1}{3}.
-  \end{equation}
+  Então, aplicando as regras do quociente, da soma/subtração e da multiplicação por escalar, temos
+  \begin{align}
+    \lim_{x\to\infty} \frac{x^3 - 2x + 1}{2 - 3x^3} &= \lim_{x\to\infty} \frac{1-\frac{2}{x^2} + \frac{1}{x^3}}{\frac{2}{x^3}-3}\\
+                                                    &= -\frac{1}{3}.
+  \end{align}
 \end{ex}
 
 \begin{obs}\label{obs:lim_xinf_racio}
-  Dados dois polinômios $p(x) = a_nx^n+a_{n-1}x^{n-1}+\cdots + a_0$ e $q(x) = b_mx^m+b_{m-1}x^{m-1}+\cdots + b_0$, temos
+  Dados dois polinômios $p(x) = a_nx^n+a_{n-1}x^{n-1}+\cdots + a_0$ e $q(x) = b_mx^m+b_{m-1}x^{m-1}+\cdots + b_0$, temos\footnote{Demonstração é feita no Exercício \ref{exer:lim_xinf_racio}.}
   \begin{equation}
-    \lim_{x\to \pm\infty} \frac{p(x)}{q(x)} = \frac{a_nx^n}{b_mx^m}.
+    \lim_{x\to \pm\infty} \frac{p(x)}{q(x)} = \lim_{x\to\pm\infty}\frac{a_nx^n}{b_mx^m}.
   \end{equation}
 \end{obs}
 
 \begin{ex}
   Retornando ao exemplo anterior (Exemplo \ref{ex:liminf_funracio}), temos
-  \begin{equation}
-    \lim_{x\to\infty} \frac{x^3 - 2x + 1}{2 - 3x^3} = \lim_{x\to\infty} \frac{x^3}{-3x^3} = -\frac{1}{3}.
-  \end{equation}
+  \begin{align}
+    \lim_{x\to\infty} \frac{x^3 - 2x + 1}{2 - 3x^3} &= \lim_{x\to\infty} \frac{x^3}{-3x^3} \\
+    &= -\frac{1}{3}.
+  \end{align}
 \end{ex}
 
 \subsection{Assíntotas horizontais}
@@ -1229,9 +1234,13 @@ Então, temos as seguintes regras para limites no infinito:
   [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
 \end{flushright}
 
-A reta $y = L$ é uma assíntota horizontal do gráfico da função $y = f(x)$ se
+A reta $y = L$ é dita assíntota horizontal ao gráfico da função $y = f(x)$ se
 \begin{equation}
-  \lim_{x\to -\infty} f(x) = L\quad\text{ou}\quad\lim_{x\to\infty} f(x) = L.
+  \lim_{x\to -\infty} f(x) = L
+\end{equation}
+ou
+\begin{equation}
+  \lim_{x\to\infty} f(x) = L.
 \end{equation}
 
 \begin{ex}\label{ex:ass_hor}
@@ -1243,7 +1252,7 @@ A reta $y = L$ é uma assíntota horizontal do gráfico da função $y = f(x)$ s
   \begin{equation}
     f(x) = \frac{x^3 - 2x + 1}{2 - 3x^3}.
   \end{equation}
-  . Veja a Figura \ref{fig:ex_ass_horizon}.
+  Consulte a Figura \ref{fig:ex_ass_horizon}.
 
       \begin{figure}[H]
       \centering
@@ -1943,6 +1952,17 @@ quando os valores da função $f$ são arbitrariamente grandes para todos os val
 \begin{resp}
   $-\infty$
 \end{resp}
+
+\begin{exer}\label{exer:lim_xinf_racio}
+  Dados dois polinômios $p(x) = a_nx^n+a_{n-1}x^{n-1}+\cdots + a_0$ e $q(x) = b_mx^m+b_{m-1}x^{m-1}+\cdots + b_0$, mostre que
+  \begin{equation}
+    \lim_{x\to \pm\infty} \frac{p(x)}{q(x)} = \lim_{x\to\pm\infty}\frac{a_nx^n}{b_mx^m}.
+  \end{equation}
+\end{exer}
+\begin{resp}
+  Dica: use as regras para o cálculo de limites.
+\end{resp}
+
 
 \section{Continuidade}\label{cap_lim_sec_cont}
 
