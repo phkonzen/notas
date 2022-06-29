@@ -128,14 +128,14 @@ class Index:
         body += '<!-- The slideshow -->'
         body += '<div class="carousel-inner">\n'
         
-        body += '<div class="carousel-item">\n'
-        body += '<div class="spinner-grow spinner-grow-sm text-primary mb-1" role="status"></div>\n'
-        body += '<a href="https://www.ufrgs.br/ppgmap/?p=1136">PPGMAp - UFRGS: Seleção de Doutorado !</a>\n'
+        body += '<div class="carousel-item active">\n'
+        body += '<div class="spinner-grow spinner-grow-sm text-danger mb-1" role="status"></div>\n'
+        body += '<a href="https://www.pec3.org/">PeC3: Conferência, Curso de Inverno, Cursos Virtuais!</a>\n'
         body += '</div>\n\n'
 
 
-        body += '<div class="carousel-item active">\n'
-        body += '<div class="spinner-grow spinner-grow-sm text-primary mb-1" role="status"></div>\n'
+        body += '<div class="carousel-item">\n'
+        body += '<div class="spinner-grow spinner-grow-sm text-warning mb-1" role="status"></div>\n'
         body += '<a href="http://enmc.ccam.uesc.br/">XXV ENMC: Chamada de Trabalhos !</a>\n'
         body += '</div>\n\n'
 
@@ -144,6 +144,13 @@ class Index:
         body += '<div class="spinner-grow spinner-grow-sm text-primary mb-1" role="status"></div>\n'
         body += '<a href="http://www.cnmac.org.br">CNMAC 2022 - Inscrições Abertas !</a>\n'
         body += '</div>\n\n'
+
+
+        body += '<div class="carousel-item">\n'
+        body += '<div class="spinner-grow spinner-grow-sm text-primary mb-1" role="status"></div>\n'
+        body += '<a href="https://www.ufrgs.br/ppgmap/?p=1136">PPGMAp - UFRGS: Seleção de Doutorado !</a>\n'
+        body += '</div>\n\n'
+
   
         body += '</div>\n'
         body += '</div>\n\n'
