@@ -1,5 +1,13 @@
+import matplotlib as plt
 from sympy import *
-var('t', real=True)
+
+plt.rcParams.update({
+     "text.usetex": True,
+     "font.family": "serif",
+     "font.size": 16
+     })
+
+var('x,t', real=True)
 
 P0 = 1
 K = 5
@@ -21,7 +29,7 @@ ax = fig.axes[0]
 ax.set_yticks([P0,K])
 ax.set_yticklabels(["$P_0$","$K$"])
 ax.set_xticks([0])
-ax.grid()
+#ax.grid()
 ax.plot([0,5],[K,K],ls="--",color="red")
 ax.plot([0],[P0],marker="o",markersize=4,color="blue")
 fig.savefig('fig_liminf_ex_funlogic.png', bbox_inches='tight')

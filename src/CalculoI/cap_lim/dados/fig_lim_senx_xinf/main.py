@@ -1,5 +1,13 @@
+import matplotlib as plt
 from sympy import *
-var('x',real=True)
+
+plt.rcParams.update({
+     "text.usetex": True,
+     "font.family": "serif",
+     "font.size": 16
+     })
+
+var('x', real=True)
 
 p = plot(sin(x),(x,-10*pi,10*pi),line_color='blue',show=False)
 q = plot(1.5,(x,-10*pi,10*pi),line_color='none',show=False)
