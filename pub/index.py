@@ -465,6 +465,6 @@ class Index:
         f.close()
 
         #put jumbotron image and index.css
-        os.system('cp jumbotron.jpg '+self.odir+'/')
-        os.system('cp jumbotron2.jpg '+self.odir+'/')
+        #os.system('cp jumbotron.jpg '+self.odir+'/')
+        #os.system('cp jumbotron2.jpg '+self.odir+'/')
         os.system('cp index.css '+self.odir+'/')

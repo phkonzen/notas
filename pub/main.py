@@ -41,6 +41,9 @@ os.system('rm -rvf '+srcdir+'/*')
 #fontawesome6
 os.system('cp -rvf fontawesome ' + odir + '/')
 
+#pics
+os.system('cp -rvf pics ' + odir + '/')
+
 #index.html
 index = Index(odir)
 index.build()
