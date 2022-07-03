@@ -212,9 +212,9 @@ class Notas:
                     # mídia com YouTube
                     i1 = page.find('[YouTube]')
                     while (i1 != -1):
-                        yurl = ''
-                        vurl = ''
-                        aurl = ''
+                        yurl = '#'
+                        vurl = '#'
+                        aurl = '#'
                         # YouTube URL
                         if (page[i1+9:i1+13] == '</a>'):
                             i2 = page.rindex('href="',0,i1)
@@ -248,27 +248,38 @@ class Notas:
                             '<!-- inc mídia -->' + \
                             page[f2+6:len(page)]
 
-                        inc = '<ul class="list-group list-group-flush  d-inline-flex">\n'
-                        if (yurl != ""):
-                            inc += '<a href="' + yurl + \
-                                '" class="list-group-item list-group-item-action text-primary"><i class="fab fa-youtube fa-xl"></i> Assista no YouTube!</a>\n'
-                        else:
-                            inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fab fa-youtube fa-xl"></i> Assista no YouTube</a>\n'
+                        inc = ''
+                        if ((yurl != '#') or (vurl != '#') or (aurl != '#')):
+                            inc += '<div class="container d-flex justify-content-center mb-2">'
+                            inc += '<div class="row">'
+                            inc += '<div class="col-md-6">'
+                            inc += '<a href="' + yurl + '" target="_blank"><img src="../play_video.jpeg" class="card-img-top" alt="Assistir vídeo!" style="max-width: 20rem"></a>'
+                            inc += '</div>'
+                            inc += '<div class="col-md-6">'
+                            inc += '<ul class="list-group list-group-flush  d-inline-flex">\n'
+                            if (yurl != "#"):
+                                inc += '<a href="' + yurl + '" target=_blank' + \
+                                    ' class="list-group-item list-group-item-action text-primary"><i class="fab fa-youtube fa-xl"></i> Assista no YouTube!</a>\n'
+                            else:
+                                inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fab fa-youtube fa-xl"></i> Assista no YouTube</a>\n'
                             
 
-                        if (vurl != ""):
-                            inc += '<a href="' + vurl + \
-                                '" class="list-group-item list-group-item-action text-primary"><i class="fas fa-building-columns fa-xl"></i> Assista no archive.org!</a>\n'
-                        else:
-                            inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fas fa-building-columns fa-xl"></i> Assista no archive.org!</a>\n'
+                            if (vurl != "#"):
+                                inc += '<a href="' + vurl +  '" target=_blank' + \
+                                    ' class="list-group-item list-group-item-action text-primary"><i class="fas fa-building-columns fa-xl"></i> Assista no archive.org!</a>\n'
+                            else:
+                                inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fas fa-building-columns fa-xl"></i> Assista no archive.org!</a>\n'
+                                
+                            if (aurl != "#"):
+                                inc += '<a href="' + aurl +  '" target=_blank' + \
+                                    ' class="list-group-item list-group-item-action text-primary"><i class="fas fa-file-audio fa-xl"></i> Escute a audioleitura!</a></a>\n'
+                            else:
+                                inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fas fa-file-audio fa-xl"></i> Escute a audioleitura!</a></a>\n'
                             
-                        if (aurl != ""):
-                            inc += '<a href="' + vurl + \
-                                '" class="list-group-item list-group-item-action text-primary"><i class="fas fa-file-audio fa-xl"></i> Escute a audioleitura!</a></a>\n'
-                        else:
-                            inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fas fa-file-audio fa-xl"></i> Escute a audioleitura!</a></a>\n'
-                            
-                        inc += '</ul></br>\n'
+                            inc += '</ul>'
+                            inc += '</div>'
+                            inc += '</div>'
+                            inc += '</div>'
 
 
                         page = page.replace('<!-- inc mídia -->', inc);
@@ -278,9 +289,9 @@ class Notas:
                     # mídia sem Youtube
                     i1 = page.find('[Vídeo]')
                     while (i1 != -1):
-                        yurl = ''
-                        vurl = ''
-                        aurl = ''
+                        yurl = '#'
+                        vurl = '#'
+                        aurl = '#'
 
                         # vídeo URL
                         i1 = page.index('[Vídeo]',i1)
@@ -306,28 +317,38 @@ class Notas:
                             '<!-- inc mídia -->' + \
                             page[f2+6:len(page)]
 
-                        inc = '<ul class="list-group list-group-flush d-inline-flex">\n'
-                        if (yurl != ""):
-                            inc += '<a href="' + yurl + \
-                                '" class="list-group-item list-group-item-action text-primary"><i class="fab fa-youtube fa-xl"></i> Assista no YouTube!</a>\n'
-                        else:
-                            inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fab fa-youtube fa-xl"></i> Assista no YouTube!</a>\n'
+                        inc = ''
+                        if ((yurl != '#') or (vurl != '#') or (aurl != '#')):
+                            inc += '<div class="container d-flex justify-content-center mb-2">'
+                            inc += '<div class="row">'
+                            inc += '<div class="col-md-6">'
+                            inc += '<a href="' + vurl + '" target="_blank"><img src="../play_video.jpeg" class="card-img-top" alt="Assistir vídeo!" style="max-width: 20rem"></a>'
+                            inc += '</div>'
+                            inc += '<div class="col-md-6">'
+                            inc += '<ul class="list-group list-group-flush  d-inline-flex">\n'
+                            if (yurl != "#"):
+                                inc += '<a href="' + yurl +  '" target=_blank' + \
+                                    ' class="list-group-item list-group-item-action text-primary"><i class="fab fa-youtube fa-xl"></i> Assista no YouTube!</a>\n'
+                            else:
+                                inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fab fa-youtube fa-xl"></i> Assista no YouTube</a>\n'
                             
 
-                        if (vurl != ""):
-                            inc += '<a href="' + vurl + \
-                                '" class="list-group-item list-group-item-action text-primary"><i class="fas fa-building-columns fa-xl"></i> Assista no archive.org!</a>\n'
-                        else:
-                            inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fas fa-building-columns fa-xl"></i> Assista no archive.org!</a>\n'
+                            if (vurl != "#"):
+                                inc += '<a href="' + vurl +  '" target=_blank' + \
+                                    ' class="list-group-item list-group-item-action text-primary"><i class="fas fa-building-columns fa-xl"></i> Assista no archive.org!</a>\n'
+                            else:
+                                inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fas fa-building-columns fa-xl"></i> Assista no archive.org!</a>\n'
                             
-                        if (aurl != ""):
-                            inc += '<a href="' + vurl + \
-                                '" class="list-group-item list-group-item-action text-primary"><i class="fas fa-file-audio fa-xl"></i> Escute a audioleitura!</a></a>\n'
-                        else:
-                            inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fas fa-file-audio fa-xl"></i> Escute a audioleitura!</a></a>\n'
+                            if (aurl != "#"):
+                                inc += '<a href="' + aurl +  '" target=_blank' + \
+                                    ' class="list-group-item list-group-item-action text-primary"><i class="fas fa-file-audio fa-xl"></i> Escute a audioleitura!</a></a>\n'
+                            else:
+                                inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fas fa-file-audio fa-xl"></i> Escute a audioleitura!</a></a>\n'
                             
-                        inc += '</ul></br>\n'
-
+                            inc += '</ul>'
+                            inc += '</div>'
+                            inc += '</div>'
+                            inc += '</div>'
 
                         page = page.replace('<!-- inc mídia -->', inc);
 
