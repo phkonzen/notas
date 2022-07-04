@@ -69,6 +69,11 @@ class Index:
         body += '</div>'
         body += '<div class="col-lg-10">\n\n'
 
+        # # colab alert (id=colabAlert)
+        # f = open('colab_alert.html','r')
+        # body += f.read()
+        # f.close()
+
         # Navbar
         body += '\n\n<!-- begin: navbar -->\n'
         body += '<nav class="navbar navbar-dark bg-primary mb-1">\n'
@@ -115,7 +120,7 @@ class Index:
         body += '</div>'
         body += '</div>'
         body += '</div> <!-- div class="jumbotron text-center" -->\n'
-        body += '<p class="mb-0" style="text-align:right"><small>Imagem: <a href="https://flic.kr/p/4krYcm">Eli Duke</a>.</small></p>\n'
+        body += '<p class="mb-0" style="text-align: right; font-size: x-small;">Imagem: <a href="https://flic.kr/p/4krYcm">Eli Duke</a></p>\n'
         body += '</div> <!-- class="myjumbotron" -->\n'
 
         
@@ -123,7 +128,7 @@ class Index:
         #miolo
 
         # Área de anúncios
-        body += '<div id="demo" class="carousel slide" data-bs-ride="carousel">'
+        body += '<div id="demo" class="carousel slide" data-bs-ride="carousel" style="height: 3em;">'
         
         body += '<!-- The slideshow -->'
         body += '<div class="carousel-inner">\n'
@@ -160,9 +165,9 @@ class Index:
 
         body += '<div class=row>\n'
         # card: notas de aula de Cálculo I
-        body += '<div class="col-lg-3 col-md-4 col-sm-6">'
+        body += '<div class="col-lg-3 col-md-4 col-sm-6 d-flex justify-content-center">'
         body += '<!-- card: notas de aula de Cálculo I -->\n'
-        body += '<div class="card border-warning mb-3" style="max-width: 20rem;">\n'
+        body += '<div class="card border-warning mb-3" style="width: 20rem;">\n'
         body += '<div class="card-header bg-warning">Notas de Aula <span class="badge bg-secondary">Python</span></div>\n'
         body += '<div class="card-body">\n'
         body += '<h5 class="card-title">Cálculo I</h5>\n'
@@ -174,9 +179,9 @@ class Index:
         body += '</div>\n\n'
 
         # card: notas de aula de EaD
-        body += '<div class="col-lg-3 col-md-4 col-sm-6">'
+        body += '<div class="col-lg-3 col-md-4 col-sm-6 d-flex justify-content-center">'
         body += '<!-- card: notas de aula de EaD -->\n'
-        body += '<div class="card border-primary mb-3" style="max-width: 20rem;">\n'
+        body += '<div class="card border-primary mb-3" style="width: 20rem;">\n'
         body += '<div class="card-header bg-primary text-white">Notas de Aula <span class="badge bg-secondary">Python</span></div>\n'
         body += '<div class="card-body">\n'
         body += '<h5 class="card-title">Equações a Diferenças</h5>\n'
@@ -188,9 +193,9 @@ class Index:
         body += '</div>\n\n'
 
         # card: notas de aula de EDO
-        body += '<div class="col-lg-3 col-md-4 col-sm-6">'
+        body += '<div class="col-lg-3 col-md-4 col-sm-6 d-flex justify-content-center">'
         body += '<!-- card: notas de aula de EDO -->\n'
-        body += '<div class="card border-primary mb-3" style="max-width: 20rem;">\n'
+        body += '<div class="card border-primary mb-3" style="width: 20rem;">\n'
         body += '<div class="card-header bg-primary text-white">Notas de Aula <span class="badge bg-secondary">Python</span></div>\n'
         body += '<div class="card-body">\n'
         body += '<h5 class="card-title">Equações Diferencias Ordinárias</h5>\n'
@@ -202,9 +207,9 @@ class Index:
         body += '</div>\n\n'
 
         # card: Geometria analítica
-        body += '<div class="col-lg-3 col-md-4 col-sm-6">'
+        body += '<div class="col-lg-3 col-md-4 col-sm-6 d-flex justify-content-center">'
         body += '<!-- card: Geometria analítica -->\n'
-        body += '<div class="card border-warning mb-3" style="max-width: 20rem;">\n'
+        body += '<div class="card border-warning mb-3" style="width: 20rem;">\n'
         body += '<div class="card-header bg-warning">Notas de Aula</div>\n'
         body += '<div class="card-body">\n'
         body += '<h5 class="card-title">Geometria Analítica</h5>\n'
@@ -216,9 +221,9 @@ class Index:
         body += '</div>\n\n'
 
         # card: notas de aula de Matemática numérica
-        body += '<div class="col-lg-3 col-md-4 col-sm-6">'
+        body += '<div class="col-lg-3 col-md-4 col-sm-6 d-flex justify-content-center">'
         body += '<!-- card: notas de aula de Matemática numérica -->\n'
-        body += '<div class="card border-primary mb-3" style="max-width: 20rem;">\n'
+        body += '<div class="card border-primary mb-3" style="width: 20rem;">\n'
         body += '<div class="card-header bg-primary text-white">Notas de Aula <span class="badge bg-secondary">Octave</span></div>\n'
         body += '<div class="card-body">\n'
         body += '<h5 class="card-title">Matemática Numérica</h5>\n'
@@ -230,9 +235,9 @@ class Index:
         body += '</div>\n\n'
 
         # card: notas de aula de Matemática Numérica Avançada
-        body += '<div class="col-lg-3 col-md-4 col-sm-6">'
+        body += '<div class="col-lg-3 col-md-4 col-sm-6 d-flex justify-content-center">'
         body += '<!-- card: notas de aula de Matemática numérica avançada -->\n'
-        body += '<div class="card border-primary mb-3" style="max-width: 20rem;">\n'
+        body += '<div class="card border-primary mb-3" style="width: 20rem;">\n'
         body += '<div class="card-header bg-primary text-white">Notas de Aula <span class="badge bg-secondary">Python</span></div>\n'
         body += '<div class="card-body">\n'
         body += '<h5 class="card-title">Matemática Numérica Avançada</h5>\n'
@@ -244,9 +249,9 @@ class Index:
         body += '</div>\n\n'
 
         # card: notas de aula de Matemática Numérica Paralela
-        body += '<div class="col-lg-3 col-md-4 col-sm-6">'
+        body += '<div class="col-lg-3 col-md-4 col-sm-6 d-flex justify-content-center">'
         body += '<!-- card: notas de aula de Matemática numérica paralela -->\n'
-        body += '<div class="card border-warning mb-3" style="max-width: 20rem;">\n'
+        body += '<div class="card border-warning mb-3" style="width: 20rem;">\n'
         body += '<div class="card-header bg-warning">Notas de Aula <span class="badge bg-secondary">C/C++</span></div>\n'
         body += '<div class="card-body">\n'
         body += '<h5 class="card-title">Matemática Numérica Paralela</h5>\n'
@@ -258,9 +263,9 @@ class Index:
         body += '</div>\n\n'
 
         # card: Método de elementos finitos
-        body += '<div class="col-lg-3 col-md-4 col-sm-6">'
+        body += '<div class="col-lg-3 col-md-4 col-sm-6 d-flex justify-content-center">'
         body += '<!-- card: Método de elementos finitos -->\n'
-        body += '<div class="card border-primary mb-3" style="max-width: 20rem;">\n'
+        body += '<div class="card border-primary mb-3" style="width: 20rem;">\n'
         body += '<div class="card-header bg-primary text-white">Notas de Aula <span class="badge bg-secondary">Python</span></div>\n'
         body += '<div class="card-body">\n'
         body += '<h5 class="card-title">Método de Elementos Finitos</h5>\n'
@@ -272,9 +277,9 @@ class Index:
         body += '</div>\n\n'
 
         # card: Pré-Cálculo
-        body += '<div class="col-lg-3 col-md-4 col-sm-6">'
+        body += '<div class="col-lg-3 col-md-4 col-sm-6 d-flex justify-content-center">'
         body += '<!-- card: Pré-Cálculo -->\n'
-        body += '<div class="card border-warning mb-3" style="max-width: 20rem;">\n'
+        body += '<div class="card border-warning mb-3" style="width: 20rem;">\n'
         body += '<div class="card-header bg-warning">Notas de Aula <span class="badge bg-secondary">Python</span></div>\n'
         body += '<div class="card-body">\n'
         body += '<h5 class="card-title">Pré-Cálculo</h5>\n'
@@ -286,9 +291,9 @@ class Index:
         body += '</div>\n\n'
 
         # card: Vetores
-        body += '<div class="col-lg-3 col-md-4 col-sm-6">'
+        body += '<div class="col-lg-3 col-md-4 col-sm-6 d-flex justify-content-center">'
         body += '<!-- card: Vetores -->\n'
-        body += '<div class="card border-primary mb-3" style="max-width: 20rem;">\n'
+        body += '<div class="card border-primary mb-3" style="width: 20rem;">\n'
         body += '<div class="card-header bg-primary text-white">Notas de Aula</div>\n'
         body += '<div class="card-body">\n'
         body += '<h5 class="card-title">Vetores</h5>\n'
@@ -307,9 +312,9 @@ class Index:
         body += '<div class="row">\n'
 
         # card: notas do Minicurso de Python para Matemática
-        body += '<div class="col-lg-3 col-md-4 col-sm-6">'
+        body += '<div class="col-lg-3 col-md-4 col-sm-6 d-flex justify-content-center">'
         body += '<!-- card: notas do MiniPython -->\n'
-        body += '<div class="card border-primary mb-3" style="max-width: 20rem;">\n'
+        body += '<div class="card border-primary mb-3" style="width: 20rem;">\n'
         body += '<div class="card-header bg-primary text-white">Minicurso <span class="badge bg-secondary">Python</span></div>\n'
         body += '<div class="card-body">\n'
         body += '<h5 class="card-title">Python para Matemática</h5>\n'
@@ -321,9 +326,9 @@ class Index:
         body += '</div>\n\n'
 
         # card: Mini Cálculo com Python
-        body += '<div class="col-lg-3 col-md-4 col-sm-6">'
+        body += '<div class="col-lg-3 col-md-4 col-sm-6 d-flex justify-content-center">'
         body += '<!-- card: Mini Cálculo com python -->\n'
-        body += '<div class="card border-primary mb-3" style="max-width: 20rem;">\n'
+        body += '<div class="card border-primary mb-3" style="width: 20rem;">\n'
         body += '<div class="card-header bg-primary text-white">Minicurso <span class="badge bg-secondary">Python</span></div>\n'
         body += '<div class="card-body">\n'
         body += '<h5 class="card-title">Cálculo com Python</h5>\n'
@@ -352,7 +357,7 @@ class Index:
 
         # card: Internet Archive
         body += '<!-- card: Internet Archive -->\n'
-        body += '<div class="col-lg-3 col-md-4 col-sm-6">'
+        body += '<div class="col-lg-3 col-md-4 col-sm-6 d-flex justify-content-center">'
         body += '<div class="card border-primary mb-3" style="max-width: 20rem;">\n'
         body += '<div class="card-header bg-primary text-white">Vídeos & Áudios</div>\n'
         body += '<div class="card-body">\n'
@@ -366,7 +371,7 @@ class Index:
 
         # card: YouTube
         body += '<!-- card: YouTube -->\n'
-        body += '<div class="col-lg-3 col-md-4 col-sm-6">'
+        body += '<div class="col-lg-3 col-md-4 col-sm-6 d-flex justify-content-center">'
         body += '<div class="card border-primary mb-3" style="max-width: 20rem;">\n'
         body += '<div class="card-header bg-primary text-white">Vídeos & Áudios <span class="badge bg-success">Novo</span></div>\n'
         body += '<div class="card-body">\n'

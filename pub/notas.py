@@ -148,14 +148,12 @@ class Notas:
         f = open('general_alert.html','r')
         ga = f.read()
         f.close()
-        # ga = ga.replace('font-size:0.9em','font-size:0.85em')
         body_end += ga.replace('./politica.html','../politica.html')
 
         # colab alert
         f = open('colab_alert.html','r')
         ga = f.read()
         f.close()
-        # ga = ga.replace('font-size:0.9em','font-size:0.85em')
         body_end += ga.replace('./contato.html','../contato.html')
         
         body_end += '</div> <!-- div class=col-lg-1 -->\n'
