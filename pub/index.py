@@ -63,7 +63,7 @@ class Index:
     def add_body(self):
         body = '<body>\n'
         
-        body += '<div class="container-fluid">\n'
+        body += '<div class="container-fluid mb-0">\n'
         body += '<div class="row">\n'
         body += '<div class="col-lg-1">\n'
         body += '</div>'
