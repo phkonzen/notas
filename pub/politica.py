@@ -69,6 +69,7 @@ class Politica:
         body += '</div>'
         body += '<div class=col-lg-10>\n\n'
 
+        
         # Navbar
         body += '\n\n<!-- begin: navbar -->\n'
         body += '<nav class="navbar navbar-dark bg-primary mb-1">\n'
@@ -122,11 +123,6 @@ class Politica:
 
         # rodapé (id=rodape)
         f = open('rodape.html','r')
-        body += f.read()
-        f.close()
-
-        # general alert
-        f = open('general_alert.html','r')
         body += f.read()
         f.close()
 

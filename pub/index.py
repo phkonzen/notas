@@ -69,6 +69,16 @@ class Index:
         body += '</div>'
         body += '<div class="col-lg-10">\n\n'
 
+        # colab alert (id=colabAlert)
+        f = open('colab_alert.html','r')
+        body += f.read()
+        f.close()
+
+        # general alert
+        f = open('general_alert.html','r')
+        body += f.read()
+        f.close()
+        
         # # colab alert (id=colabAlert)
         # f = open('colab_alert.html','r')
         # body += f.read()
@@ -430,16 +440,6 @@ class Index:
 
         # rodapé (id=rodape)
         f = open('rodape.html','r')
-        body += f.read()
-        f.close()
-
-        # colab alert (id=colabAlert)
-        f = open('colab_alert.html','r')
-        body += f.read()
-        f.close()
-
-        # general alert
-        f = open('general_alert.html','r')
         body += f.read()
         f.close()
 

@@ -100,7 +100,18 @@ class Notas:
         body += '<div class=col-lg-1>\n'
         body += '</div>'
         body += '<div class=col-lg-10>\n\n'
-      
+
+        # general alert
+        f = open('general_alert.html','r')
+        body += f.read().replace('./politica.html','../politica.html')
+        f.close()
+
+        # colab alert
+        f = open('colab_alert.html','r')
+        body += f.read().replace('./contato.html','../contato.html')
+        f.close()
+
+        
         # Navbar
         body += '\n\n<!-- begin: navbar -->\n'
         body += '<nav class="navbar navbar-dark bg-primary mb-1">\n'
@@ -143,18 +154,6 @@ class Notas:
         rp = f.read()
         f.close()
         body_end += rp.replace('./contato.html','../contato.html')
-
-        # general alert
-        f = open('general_alert.html','r')
-        ga = f.read()
-        f.close()
-        body_end += ga.replace('./politica.html','../politica.html')
-
-        # colab alert
-        f = open('colab_alert.html','r')
-        ga = f.read()
-        f.close()
-        body_end += ga.replace('./contato.html','../contato.html')
         
         body_end += '</div> <!-- div class=col-lg-1 -->\n'
         body_end += '<div class=col-lg-1>\n'
