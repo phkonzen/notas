@@ -1,4 +1,12 @@
+import matplotlib as plt
 from sympy import *
+
+plt.rcParams.update({
+     "text.usetex": True,
+     "font.family": "serif",
+     "font.size": 16
+     })
+
 var('x,y', real=True)
 
 x0 = 1
@@ -12,7 +20,7 @@ q = plot(3*x-2,(x,-1,3),line_color="green",show=False)
 p.extend(q)
 p.xlabel = '$x$'
 p.ylabel = '$y$'
-p.save('fig_cap_deriv_ex_rt_x2.png')
+p.save('fig.png')
 
 fig = p._backend.fig
 ax = fig.axes[0]
@@ -23,4 +31,4 @@ ax.plot([2],[4],marker="o",markersize=4,color="green")
 ax.text(1.75,5.1,"$y=x^2$")
 ax.text(2.52,5.4,"$y=3x-2$")
 ax.text(2.52,3.75,"$y=2x-1$")
-fig.savefig('fig_cap_deriv_ex_rt_x2.png', bbox_inches='tight')
+fig.savefig('fig.png', bbox_inches='tight')
