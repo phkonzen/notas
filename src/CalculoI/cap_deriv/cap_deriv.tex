@@ -3,20 +3,6 @@
 \chapter{Derivadas}\label{cap_deriv}
 \thispagestyle{fancy}
 
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
-
-\ifispython
-\begin{obs}\normalfont{(Códigos \python}\label{obs:cap_deriv_python}
-  Nos códigos \python~inseridos ao longo deste capítulo, estaremos assumindo o seguinte preâmbulo:
-\begin{verbatim}
-from sympy import *
-var('x',real=True)
-\end{verbatim}
-\end{obs}
-\fi
-
 \section{Derivada no ponto}\label{cap_deriv_sec_derivpt}
 
 \begin{flushright}
@@ -100,22 +86,24 @@ Menos formal, é a reta limite das retas secantes ao gráfico da função pelos 
   Na Figura \ref{fig:cap_deriv_ex_rt_x2}, temos os esboços dos gráfico da função e da reta tangente (vermelho).
   
   \ifispython
-  Com o \sympy, podemos obter a expressão da reta secante com os seguintes comandos\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}:
-\begin{verbatim}
-x0 = 1
-x1 = 2
-f = lambda x: x**2
-msec = (f(x1)-f(x0))/(x1-x0)
-msec*(x-x0)+f(x0)
-\end{verbatim}
-A expressão da reta tangente pode ser obtida com os seguintes comandos\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}:
-\begin{verbatim}
-h = var("h",real=True)
-x0 = 1
-f = lambda x: x**2
-mtg = limit((f(x0+h)-f(x0))/h,h,0)
-mtg*(x-x0)+f(x0)
-\end{verbatim}
+  Com o \sympy, podemos obter a expressão da reta secante com os seguintes comandos:
+  \begin{lstlisting}
+    from sympy import *
+    x = Symbol('x')
+    x0 = 1
+    x1 = 2
+    f = lambda x: x**2
+    msec = (f(x1)-f(x0))/(x1-x0)
+    msec*(x-x0)+f(x0)
+  \end{lstlisting}
+  A expressão da reta tangente pode ser obtida com os seguintes comandos:
+  \begin{lstlisting}
+    h = Symbol("h")
+    x0 = 1
+    f = lambda x: x**2
+    mtg = limit((f(x0+h)-f(x0))/h,h,0)
+    mtg*(x-x0)+f(x0)
+  \end{lstlisting}
   \fi
 \end{ex}
 
@@ -385,21 +373,22 @@ quando este limite existe. Dizemos que $f$ é {\bf derivável} (ou {\bf diferenc
   \end{figure}  
   
   \ifispython
-  Com o \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}, podemos usar os seguintes comandos para verificarmos este resultado:
-\begin{verbatim}
-h = symbols('h',real=True)
-f = lambda x: x**2
-limit((f(x+h)-f(x))/h,h,0)
-\end{verbatim}
+  Com o \sympy, podemos usar os seguintes comandos para verificarmos este resultado:
+  \begin{lstlisting}
+    from sympy import *
+    x,h = symbols('x,h')
+    f = lambda x: x**2
+    limit((f(x+h)-f(x))/h,h,0)
+  \end{lstlisting}
 
   Mais adequadamente, podemos usar o comando:
-\begin{verbatim}
-diff(x**2,x)
-\end{verbatim}
+  \begin{lstlisting}
+    diff(x**2,x)
+  \end{lstlisting}
   ou, equivalentemente,
-\begin{verbatim}
-diff(x**2)
-\end{verbatim}
+  \begin{lstlisting}
+    diff(x**2)
+  \end{lstlisting}
   para computar a derivada de $x^2$ em relação a $x$.
   \fi
 \end{ex}
@@ -436,15 +425,16 @@ diff(x**2)
   \end{figure}
 
   \ifispython
-  No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}, a computação de $f'_{+}(0)$ pode ser feita com os comandos\footnote{Por padrão no \sympy, o limite é tomado à direita.}:
-\begin{verbatim}
-var('h', real=True)
-limit((sqrt(0+h)-sqrt(0))/h,h,0)
-\end{verbatim}
+  No \sympy, a computação de $f'_{+}(0)$ pode ser feita com os comandos\footnote{Por padrão no \sympy, o limite é tomado à direita.}:
+  \begin{lstlisting}
+    from sympy import *
+    h = Symbol('h')
+    limit((sqrt(0+h)-sqrt(0))/h,h,0)
+  \end{lstlisting}
   E, a derivada de $f(x) = \sqrt{x}$ (nos pontos de diferenciabilidade) pode ser obtida com o comando:
-\begin{verbatim}
-diff(sqrt(x),x)
-\end{verbatim}
+  \begin{lstlisting}
+    diff(sqrt(x),x)
+  \end{lstlisting}
   \fi
 \end{ex}
 
@@ -485,10 +475,10 @@ diff(sqrt(x),x)
   \end{figure}
 
   \ifispython
-  No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}, podemos computar a derivada da função valor absoluto com o comando:
-\begin{verbatim}
-diff(abs(x))
-\end{verbatim}
+  No \sympy, podemos computar a derivada da função valor absoluto com o comando:
+  \begin{lstlisting}
+    diff(abs(x))
+  \end{lstlisting}
   \fi
 \end{ex}
 
@@ -553,10 +543,10 @@ A derivada de uma função $y = f(x)$ em relação a $x$ é a função $y = f'(x
   i.e. $f''(x) = 6x$.
 
   \ifispython
-  No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}, podemos computar a segunda derivada da função com o comando:
-\begin{verbatim}
-diff(x**3,x,2)
-\end{verbatim}
+  No \sympy, podemos computar a segunda derivada da função com o comando:
+  \begin{lstlisting}
+    diff(x**3,x,2)
+  \end{lstlisting}
   \fi  
 \end{ex}
 
@@ -577,10 +567,10 @@ com $f^{(3)}\equiv f'''$, $f^{(2)}\equiv f''$, $f^{(1)}\equiv f'$ e $f^{(0)}\equ
     A quarta derivada de $f(x) = x^3$ em relação a $x$ é $f^{(4)}(x) \equiv 0$, bem como $f^{(5)}(x) \equiv 0$. Verifique!
 
     \ifispython
-    No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}, podemos computar a terceira derivada da função com o comando:
-\begin{verbatim}
-diff(x**3,x,3)
-\end{verbatim}
+    No \sympy, podemos computar a terceira derivada da função com o comando:
+    \begin{lstlisting}
+      diff(x**3,x,3)
+    \end{lstlisting}
   \fi  
 \end{ex}
 
@@ -770,19 +760,21 @@ Vejamos as derivadas da função constante e da função potência.
 \end{itemize}
 
 \ifispython
-No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}, podemos usar os seguintes comandos para obtermos as regras de derivação acima:
-\begin{verbatim}
-# (k)' = 0
-var('k', real=True, constant=True)
-diff(k,x)
+No \sympy, podemos usar os seguintes comandos para obtermos as regras de derivação acima:
+\begin{lstlisting}
+  from sympy import *
+  # (k)' = 0
+  k = Symbol('k', real=True, constant=True)
+  diff(k,x)
 
-# (x)' = 1
-diff(x,x)
+  # (x)' = 1
+  x = Symbols('x')
+  diff(x,x)
 
-# (x^n)' = nx^(n-1)
-var('n',integer=True, positive=True)
-diff(x**n,x)
-\end{verbatim}
+  # (x^n)' = nx^(n-1)
+  n = Symbols('n',integer=True, positive=True)
+  diff(x**n,x)
+\end{lstlisting}
 \fi
 
 \begin{ex}
@@ -831,14 +823,16 @@ Vejamos o cálculo da derivada de função exponencial.
 \end{itemize}
 
 \ifispython
-No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}, podemos usar os seguintes comandos para computarmos as derivadas acima:
-\begin{verbatim}
-var('a', real=True)
-# (a^x)'
-diff(a**x,x)
-# (e^x)'
-diff(E**x,x)
-\end{verbatim}
+No \sympy, podemos usar os seguintes comandos para computarmos as derivadas acima:
+\begin{lstlisting}
+  from sympy import *
+  a = Symbol('a', real=True)
+  # (a^x)'
+  diff(a**x,x)
+  
+  # (e^x)'
+  diff(E**x,x)
+\end{lstlisting}
 \fi
 
 
@@ -850,7 +844,7 @@ Vejamos os seguintes casos:
 \end{enumerate}
 
 \ifispython
-No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}, podemos usar os seguintes comandos para computarmos as derivadas acima:
+No \sympy, podemos usar os seguintes comandos para computarmos as derivadas acima:
 \begin{verbatim}
 # a)
 diff(2**x,x)
@@ -879,12 +873,13 @@ Sejam $k$ um número real, $u = u(x)$ e $v = v(x)$ funções deriváveis. Temos 
   \end{align}
   
   \ifispython
-  No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}, podemos usar os seguintes comandos para obtermos esta regra de derivação:
-\begin{verbatim}
-var('k', real=True)
-u = Function('u', real=True)(x)
-diff(k*u,x)
-\end{verbatim}
+  No \sympy, podemos usar os seguintes comandos para obtermos esta regra de derivação:
+  \begin{lstlisting}
+    from sympy import *
+    k = Symbol('k', real=True)
+    u = Function('u', real=True)
+    diff(k*u(x),x)
+  \end{lstlisting}
   \fi
 
 \item $\pmb{(u\pm v)' = u'\pm v'}$.
@@ -904,12 +899,13 @@ diff(k*u,x)
   \end{equation}
   
   \ifispython
-  No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}, podemos usar os seguintes comandos para obtermos a regra de derivação para soma:
-\begin{verbatim}
-u = Function('u', real=True)(x)
-v = Function('v', real=True)(x)
-diff(u+v,x)
-\end{verbatim}
+  No \sympy, podemos usar os seguintes comandos para obtermos a regra de derivação para soma:
+  \begin{lstlisting}
+    from sympy import *
+    u = Function('u', real=True)
+    v = Function('v', real=True)
+    diff(u(x)+v(x),x)
+  \end{lstlisting}
   \fi
 \end{itemize}
 
@@ -924,10 +920,12 @@ diff(u+v,x)
     \end{equation}
 
   \ifispython
-  No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}, podemos computar esta derivada com o comando:
-\begin{verbatim}
-diff(2*x,x)
-\end{verbatim}
+  No \sympy, podemos computar esta derivada com o comando:
+  \begin{lstlisting}
+    from sympy import *
+    x = Symbol('x')
+    diff(2*x,x)
+  \end{lstlisting}
   \fi
     
 
@@ -939,10 +937,12 @@ diff(2*x,x)
     \end{equation}
 
     \ifispython
-    No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}, podemos computar esta derivada com o comando:
-\begin{verbatim}
-diff(2*x+3,x)
-\end{verbatim}
+    No \sympy, podemos computar esta derivada com o comando:
+    \begin{lstlisting}
+      from sympy import *
+      x = Symbols('x')
+      diff(2*x+3,x)
+    \end{lstlisting}
     \fi
 
   \item $f(x) = e^x - x^2$.
@@ -953,10 +953,12 @@ diff(2*x+3,x)
     \end{equation}
 
     \ifispython
-    No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}, podemos computar esta derivada com o comando:
-\begin{verbatim}
-diff(exp(x)-x**2,x)
-\end{verbatim}
+    No \sympy, podemos computar esta derivada com o comando:
+    \begin{lstlisting}
+      from sympy import *
+      x = Symbols('x')
+      diff(exp(x)-x**2,x)
+    \end{lstlisting}
     \fi
   \end{enumerate}
 \end{ex}
@@ -983,12 +985,12 @@ Sejam $y = u(x)$ e $y = v(x)$ funções deriváveis. Então:
   \end{align}
   
   \ifispython
-  No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}, podemos usar os seguintes comandos para obtermos tal regra de derivação:
-\begin{verbatim}
-u = Function('u', real=True)(x)
-v = Function('v', real=True)(x)
-diff(u*v,x)
-\end{verbatim}
+  No \sympy, podemos usar os seguintes comandos para obtermos tal regra de derivação:
+  \begin{lstlisting}
+    u = Function('u', real=True)
+    v = Function('v', real=True)
+    diff(u(x)*v(x), x)
+  \end{lstlisting}
   \fi
   
 \item $\displaystyle\pmb{\left(\frac{u}{v}\right)' = \frac{u'v-uv'}{v^2}}$, no caso de $v(x)\neq 0$.
@@ -1005,12 +1007,14 @@ diff(u*v,x)
   \end{align}
   
   \ifispython
-  No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}, podemos usar os seguintes comandos para obtermos tal regra de derivação:
-\begin{verbatim}
-u = Function('u', real=True)(x)
-v = Function('v', real=True)(x)
-simplify(diff(u/v,x))
-\end{verbatim}
+  No \sympy, podemos usar os seguintes comandos para obtermos tal regra de derivação:
+  \begin{lstlisting}
+    from sympy import *
+    x = Symbol('x')
+    u = Function('u', real=True)
+    v = Function('v', real=True)
+    simplify(diff(u(x)/v(x),x))
+\end{lstlisting}
   \fi
 \end{itemize}
 
@@ -1107,11 +1111,13 @@ simplify(diff(u/v,x))
   \end{align}
   
   \ifispython
-  Com o \sympy, podemos computar esta derivada com os seguintes comandos\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}:
-\begin{verbatim}
-d = diff((x**2+x)*(1+x**3)-2x^2,x)
-simplify(d)
-\end{verbatim}
+  Com o \sympy, podemos computar esta derivada com os seguintes comandos:
+  \begin{lstlisting}
+    from sympy import *
+    x = Symbol('x')
+    d = diff((x**2+x)*(1+x**3)-2x^2,x)
+    simplify(d)
+  \end{lstlisting}
   \fi
 \end{resol}
 
@@ -1131,11 +1137,13 @@ simplify(d)
   \end{align}
   
   \ifispython
-  Com o \sympy, podemos computar esta derivada com os seguintes comandos\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}:
-\begin{verbatim}
-d = diff((x**2+x)/(1-x**3),x)
-simplify(d)
-\end{verbatim}
+  Com o \sympy, podemos computar esta derivada com os seguintes comandos:
+  \begin{lstlisting}
+    from sympy import *
+    x = Symbol('x')
+    d = diff((x**2+x)/(1-x**3),x)
+    simplify(d)
+  \end{lstlisting}
   \fi
 \end{resol}
 
@@ -1171,14 +1179,16 @@ simplify(d)
   \end{figure}
 
   \ifispython
-  Com o \sympy, podemos computar a expressão desta reta tangente com os seguintes comandos\footnote{Veja a Observação \ref{obs:cap_deriv_python}.}:
-\begin{verbatim}
-f = x*exp(-x)
-x0 = 1
-fl = diff(f,x)
-# y = 
-fl.subs(x,1)*(x-1)+f.subs(x,1)
-\end{verbatim}
+  Com o \sympy, podemos computar a expressão desta reta tangente com os seguintes comandos:
+  \begin{lstlisting}
+    from sympy import *
+    x = Symbol('x')
+    f = x*exp(-x)
+    x0 = 1
+    fl = diff(f,x)
+    # y = 
+    fl.subs(x,1)*(x-1)+f.subs(x,1)
+  \end{lstlisting}
   \fi
 \end{resol}
 
@@ -1339,10 +1349,12 @@ Ou seja,
   conforme esperado.
 
   \ifispython
-  Com o \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}}, podemos computar esta derivada com o seguinte comando:
-\begin{verbatim}
-diff(sin(x)**2+cos(x)**2,x)
-\end{verbatim}
+  Com o \sympy, podemos computar esta derivada com o seguinte comando:
+\begin{lstlisting}
+    from sympy import *
+    x = Symbol('x')
+    diff(sin(x)**2+cos(x)**2,x)
+  \end{lstlisting}
   \fi
 \end{ex}
 
@@ -1411,10 +1423,12 @@ Conhecidas as derivadas da função seno e cosseno, podemos obter as derivadas d
   \end{align}
 
   \ifispython
-  Com o \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}}, podemos computar esta derivada com o seguinte comando:
-\begin{verbatim}
-diff((x+tan(x))/sec(x),x)
-\end{verbatim}
+  Com o \sympy, podemos computar esta derivada com o seguinte comando:
+\begin{lstlisting}
+    from sympy import *
+    x = Symbol('x')
+    diff((x+tan(x))/sec(x),x)
+  \end{lstlisting}
   \fi
 \end{ex}
 
@@ -1468,18 +1482,20 @@ diff((x+tan(x))/sec(x),x)
   \end{figure}
 
   \ifispython
-  Com o \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}}, podemos resolver este exercício com os seguintes comandos:
-\begin{verbatim}
-f = sin(x)
-x0 = 0
+  Com o \sympy, podemos resolver este exercício com os seguintes comandos:
+  \begin{lstlisting}
+    from sympy import *
+    x = Symbol('x')
+    f = sin(x)
+    x0 = 0
 
-# reta tangente
-rt = diff(f,x).subs(x,x0)*(x-x0)+f.subs(x,x0)
-print("Reta tangente: y = %s" % rt)
+    # reta tangente
+    rt = diff(f,x).subs(x,x0)*(x-x0)+f.subs(x,x0)
+    print("Reta tangente: y = %s" % rt)
 
-# graficos
-plot(f,rt,(x,-pi,pi))
-\end{verbatim}
+    # graficos
+    plot(f,rt,(x,-pi,pi))
+  \end{lstlisting}
   \fi  
 \end{resol}
 
@@ -1580,11 +1596,13 @@ chamada de regra da cadeia.
   \end{enumerate}
 
   \ifispython
-  Com o \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}}, temos:
-\begin{verbatim}
->>> diff((x+1)**2,x)
-2*x + 2
-\end{verbatim}
+  Com o \sympy, temos:
+  \begin{lstlisting}
+    from sympy import *
+    x = Symbol('x')
+    diff((x+1)**2,x)
+    2*x + 2
+  \end{lstlisting}
   \fi  
 \end{ex}
 
@@ -1608,11 +1626,13 @@ onde $u$ é uma função derivável em $x$ e $f$ é derivável em $u(x)$.
   \end{align}
 
   \ifispython
-  No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}}, temos:
-\begin{verbatim}
->>> diff(sqrt(x**2+1),x)
-x/sqrt(x**2 + 1)
-\end{verbatim}
+  No \sympy, temos:
+\begin{lstlisting}
+    from sympy import *
+    x = Symbol('x')
+    diff(sqrt(x**2+1),x)
+    x/sqrt(x**2 + 1)
+  \end{lstlisting}
   \fi  
 \end{ex}
 
@@ -1631,11 +1651,13 @@ Neste caso, a regra é válida para todo ponto tal que $h$ é derivável em $x$ 
   \end{align}
 
   \ifispython
-  No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}}, temos:
-\begin{verbatim}
->>> diff(sin(cos(x**2)))
--2*x*sin(x**2)*cos(cos(x**2))
-\end{verbatim}
+  No \sympy, temos:
+  \begin{lstlisting}
+    from sympy import *
+    x = Symbol('x')
+    diff(sin(cos(x**2)))
+    -2*x*sin(x**2)*cos(cos(x**2))
+  \end{lstlisting}
   \fi  
 \end{ex}
 
@@ -1692,11 +1714,13 @@ Neste caso, a regra é válida para todo ponto tal que $h$ é derivável em $x$ 
   \end{equation}
 
   \ifispython
-  No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}}, temos:
-\begin{verbatim}
->>> diff(exp(sqrt(x+1)),x)
-exp(sqrt(x + 1))/(2*sqrt(x + 1))
-\end{verbatim}
+  No \sympy, temos:
+  \begin{lstlisting}
+    from sympy import *
+    x = Symbol('x')
+    diff(exp(sqrt(x+1)),x)
+    exp(sqrt(x + 1))/(2*sqrt(x + 1))
+  \end{lstlisting}
   \fi  
 \end{resol}
 
@@ -1871,11 +1895,13 @@ Seja $f$ uma função diferenciável e injetora em um intervalo aberto $I$. Ent�
   \end{align}
 
   \ifispython
-  No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}}, temos:
-\begin{verbatim}
->>> diff(log(1/x),x)
--1/x
-\end{verbatim}
+  No \sympy, temos:
+  \begin{lstlisting}
+    from sympy import *
+    x = Symbol('x')
+    diff(log(1/x),x)
+    -1/x
+  \end{lstlisting}
   \fi  
 \end{ex}
 
@@ -1974,11 +2000,13 @@ Como $\cos(\arc\sen x) = \sqrt{1-x^2}$ (veja Figura \ref{fig:diff_arc_sen}), con
   \end{equation}
 
   \ifispython
-  No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}}, temos:
-\begin{verbatim}
->>> diff(asin(x**2),x)
-2*x/sqrt(-x**4 + 1)
-\end{verbatim}
+  No \sympy, temos:
+  \begin{lstlisting}
+    from sympy import *
+    x = Symbol('x')
+    diff(asin(x**2),x)
+    2*x/sqrt(-x**4 + 1)
+  \end{lstlisting}
   \fi    
 \end{ex}
 
@@ -2002,11 +2030,13 @@ Com argumentos análogos aos usados no cálculo da derivada da função arco sen
   \end{align}
 
   \ifispython
-  No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}}, temos:
-\begin{verbatim}
->>> diff(atan(sqrt(x)))
-1/(2*sqrt(x)*(x + 1))
-\end{verbatim}
+  No \sympy, temos:
+  \begin{lstlisting}
+    from sympy import *
+    x = Symbol('x')
+    diff(atan(sqrt(x)))
+    1/(2*sqrt(x)*(x + 1))
+  \end{lstlisting}
   \fi    
 \end{ex}
 
@@ -2066,12 +2096,14 @@ Com argumentos análogos aos usados no cálculo da derivada da função arco sen
   \end{figure}
 
   \ifispython
-  No \sympy\footnote{Veja a Observação \ref{obs:cap_deriv_python}}, temos:
-\begin{verbatim}
->>> rt = diff(log(x)).subs(x,1)*(x-1)+log(1)
->>> print("y = %s" % rt)
-y = x - 1
-\end{verbatim}
+  No \sympy, temos:
+  \begin{lstlisting}
+    from sympy import *
+    x = Symbol('x')
+    rt = diff(log(x)).subs(x,1)*(x-1)+log(1)
+    print("y = %s" % rt)
+    y = x - 1
+  \end{lstlisting}
   \fi    
 \end{resol}
 
