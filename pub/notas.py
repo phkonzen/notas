@@ -65,6 +65,8 @@ class Notas:
         head += '<link href="../fontawesome/css/brands.css" rel="stylesheet">'
         head += '<link href="../fontawesome/css/solid.css" rel="stylesheet">'
 
+        # Google icons
+        head += '<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">'
         
         # Goodies CSS
         head += '<!-- Computer Modern Serif-->'
@@ -108,7 +110,10 @@ class Notas:
 
         # colab alert
         f = open('colab_alert.html','r')
-        body += f.read().replace('./contato.html','../contato.html')
+        aux = f.read().replace('./contato.html','../contato.html')
+        aux = aux.replace('<span></span>',
+                          '<span class="material-icons" style="font-size: 18px;">screen_rotation</span>')
+        body += aux
         f.close()
 
         
