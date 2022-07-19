@@ -11,7 +11,7 @@ class SiteMap:
     
     def __init__(self,odir):
         self.odir = odir
-        self.site = 'https://phkonzen.github.io/notas'
+        self.site = 'https://notaspedrok.com.br/notas'
         self.sitemap = ''
         
     def build(self):
