@@ -1,5 +1,13 @@
+import matplotlib as plt
 from sympy import *
-var('x',real=True)
+
+plt.rcParams.update({
+     "text.usetex": True,
+     "font.family": "serif",
+     "font.size": 16
+     })
+
+var('x,y', real=True)
 
 f = lambda x: (x-2)*(x+2)**2/((x-1)*(x+1))
 
@@ -10,11 +18,12 @@ q = plot(f(x),(x,1+0.001,5),line_color='blue',show=False)
 p.extend(q)
 p.xlabel = '$x$'
 p.ylabel = '$y$'
-p.save('fig_ex_lim_assvert_racio.png')
+p.save('fig.png')
 
 fig = p._backend.fig
 ax = fig.axes[0]
+ax.grid()
 ax.set_ylim((-30,30))
 ax.plot([-1,-1],[-30,30],ls="--",color="red",lw=2)
 ax.plot([1,1],[-30,30],ls="--",color="red",lw=2)
-fig.savefig('fig_ex_lim_assvert_racio.png', bbox_inches='tight')
+fig.savefig('fig.png', bbox_inches='tight')

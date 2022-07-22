@@ -1,9 +1,13 @@
-#!/bin/python3
-
-import numpy as np
+import matplotlib as plt
 from sympy import *
-init_printing()
-var('x',real=True)
+
+plt.rcParams.update({
+     "text.usetex": True,
+     "font.family": "serif",
+     "font.size": 16
+     })
+
+var('x,y', real=True)
 
 th = 1e-2
 
@@ -19,7 +23,7 @@ p.save('fig_sec_grafico.png')
 
 fig = p._backend.fig
 ax = fig.axes[0]
-ax.set_xticks([-3*np.pi/2,-np.pi,-np.pi/2,0,np.pi/2,np.pi,3*np.pi/2])
+ax.set_xticks([-3*pi/2,-pi,-pi/2,0,pi/2,pi,3*pi/2])
 ax.set_xticklabels(['$-\\frac{3\\pi}{2}$','$-\\pi$',
                     '$-\\frac{\\pi}{2}$','$0$',
                     '$\\frac{\\pi}{2}$','$\\pi$','$\\frac{3\\pi}{2}$'],
@@ -45,13 +49,12 @@ p.save('fig_cosec_grafico.png')
 
 fig = p._backend.fig
 ax = fig.axes[0]
-ax.set_xticks([-np.pi,-np.pi/2,0,np.pi/2,np.pi,3*np.pi/2,2*np.pi])
+ax.grid()
+ax.set_xticks([-pi,-pi/2,0,pi/2,pi,3*pi/2,2*pi])
 ax.set_xticklabels(['$-\\pi$','$-\\frac{\\pi}{2}$','$0$','$\\frac{\\pi}{2}$',
-                    '$\\pi$','$\\frac{3\\pi}{2}$','$2\\pi$'],
-                   fontsize=12)
+                    '$\\pi$','$\\frac{3\\pi}{2}$','$2\\pi$'])
 ax.set_yticks([-1,1])
 ax.set_ylim((-4,4))
-ax.grid()
 ax.plot([-pi,-pi],[-4,4],ls="--",color="gray",zorder=0)
 ax.plot([0,0],[-4,4],ls="--",color="gray",zorder=0)
 ax.plot([pi,pi],[-4,4],ls="--",color="gray",zorder=0)
