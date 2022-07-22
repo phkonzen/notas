@@ -1,31 +1,6 @@
-# notas/MiniCalcPy
-
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/phkonzen/notas/master?filepath=%2Fsrc%2FMiniCalcPy)
+# notas/src/MiniCalcPy
 
 Minicurso de Cálculo com Python.
-
-## Sobre
-
-Este é um **minicurso** sobre **resolução de problemas** de **cálculo** diferencial e integral usando [Python][py] e a biblioteca de matemática simbólica [Sympy][sympy]. Não é necessário ter qualquer experiência na linguagem de programação [Python][py] para seguir este curso.
-
-Neste minicurso você vai **aprender** a usar o [Python][py] para:
-- manipular e graficar **funções** de uma variável;
-- calcular **limites**;
-- calcular **derivadas**;
-- calcular **integrais** definidas e indefinidas.
-
-Se você é um iniciante em [Python][py] não é necessário instalar nenhum programa em seu computador para seguir este curso. O material do curso está disponível neste [repositório GitHub][repo] em formatos `IPYNB` ([Binder Jupyter NB](https://mybinder.org/v2/gh/phkonzen/notas/master?filepath=%2Fsrc%2FMiniCalcPy)) e em [HTML](https://phkonzen.github.io/notas).
-
-[py]:https://www.python.org/
-[sympy]:http://www.sympy.org/
-[repo]:https://github.com/phkonzen/notas
-[jupy]:http://jupyter.org/
-[1fun.ipynb]:
-[1fun.html]:
-
-## Contato
-
-phkonzen@gmail.com
 
 ## Licença
 

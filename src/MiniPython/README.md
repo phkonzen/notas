@@ -1,6 +1,10 @@
-# notas/src/EaD
+# notas/src/MiniPython
 
-Notas de aula de Equações a Diferenças.
+Notas de aula do Minicurso de Python para Matemática.
+
+## Como compilar
+
+	$ make
 
 ## Licença
 

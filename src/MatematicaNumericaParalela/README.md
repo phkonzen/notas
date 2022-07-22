@@ -1,6 +1,10 @@
-# notas/src/Vetores
+# notas/src/MatematicaNumericaParalela
 
-Notas de aula sobre Vetores.
+Notas de aula sobre Matemática Numérica Paralela.
+
+## Como compilar
+
+	$ make
 
 ## Licença
 

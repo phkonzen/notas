@@ -1,6 +1,10 @@
 # notas/src/MetodoElementosFinitos
 
-Notas de aula sobre o método de elementos finitos.
+Notas de aula sobre o Método de Elementos Finitos.
+
+## Como compilar
+
+	$ make
 
 ## Licença
 
