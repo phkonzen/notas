@@ -36,9 +36,9 @@ class Politica:
 
         # FontAwesome
         # head += '<script src="https://kit.fontawesome.com/dfbff2c7ed.js" crossorigin="anonymous"></script>'
-        head += '<link href="./fontawesome/css/all.css" rel="stylesheet">'
-        head += '<link href="./fontawesome/css/brands.css" rel="stylesheet">'
-        head += '<link href="./fontawesome/css/solid.css" rel="stylesheet">'
+        head += '<link href="./fontawesome/css/all.min.css" rel="stylesheet">'
+        # head += '<link href="./fontawesome/css/brands.css" rel="stylesheet">'
+        # head += '<link href="./fontawesome/css/solid.css" rel="stylesheet">'
         
         #google tracking
         f = open('gtag.js','r')

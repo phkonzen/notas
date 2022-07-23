@@ -61,9 +61,9 @@ class Notas:
         
         # FontAwesome
         # head += '<script src="https://kit.fontawesome.com/dfbff2c7ed.js" crossorigin="anonymous"></script>'
-        head += '<link href="../fontawesome/css/all.css" rel="stylesheet">'
-        head += '<link href="../fontawesome/css/brands.css" rel="stylesheet">'
-        head += '<link href="../fontawesome/css/solid.css" rel="stylesheet">'
+        head += '<link href="../fontawesome/css/all.min.css" rel="stylesheet">'
+        # head += '<link href="../fontawesome/css/brands.css" rel="stylesheet">'
+        # head += '<link href="../fontawesome/css/solid.css" rel="stylesheet">'
 
         # Google icons
         head += '<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">'
@@ -73,11 +73,11 @@ class Notas:
         head += '<link rel="stylesheet" href="fonts/cmun-serif.css">\n'
         head += '<link rel="stylesheet" href="goodies.css" type="text/css">\n'
 
-        head += '<script>'
-        head += '$(document).ready(function(){'
-        head += '$(".toast").toast();'
-        head += '});'
-        head += '</script>'
+        # head += '<script>'
+        # head += '$(document).ready(function(){'
+        # head += '$(".toast").toast();'
+        # head += '});'
+        # head += '</script>'
 
 
         # Google tracking
