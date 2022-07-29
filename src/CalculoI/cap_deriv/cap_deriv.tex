@@ -728,96 +728,366 @@ com $f^{(3)}\equiv f'''$, $f^{(2)}\equiv f''$, $f^{(1)}\equiv f'$ e $f^{(0)}\equ
   a)~$2x-3x^2$; b)~$2-6x$; c)~$-6$; d)~$0$; e)~$0$
 \end{resp}
 
-\section{Regras básicas de derivação}\label{cap_deriv_sec_regras}
+\section{Derivada de Funções Constante, Identidade e Potência}\label{cap_deriv_sec_funcip}
 
 \begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
+  [YouTube] | [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
 \end{flushright}
 
-Nesta seção, vamos estudar sobre algumas regras fundamentais para o cálculo da derivada de funções. Começaremos pelas derivadas de função constante, de função potência e de função exponencial. Em seguida, passamos a derivadas da soma, multiplicação e quociente de funções.
+Nesta seção, vamos estudar as derivadas de função constante, de função identidade e de função potência.
 
-\subsection{Derivadas de função constante e função potência}
+\subsection{Derivada de Função Constante}
 
 \begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
+  [YouTube] | [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
 \end{flushright}
 
-Vejamos as derivadas da função constante e da função potência.
-\begin{itemize}
-\item $(k)' = 0$, onde $k$ é uma constante.
-
-  De fato, para $f(x) \equiv k$ temos
-  \begin{align}
-    f'(x) &= \lim_{h\to 0} \frac{f(x+h)-f(x)}{h}\\
-          &= \lim_{h\to 0} \frac{k-k}{h} \\
-          &= \lim_{h\to 0} 0 = 0.
-  \end{align}
-
-\item $\pmb{(x)' = 1}$.
-
-  De fato, para a função identidade $f(x) = x$ temos
-  \begin{align}
-    f'(x) &= \lim_{h\to 0} \frac{f(x+h)-f(x)}{h}\\
-          &= \lim_{h\to 0} \frac{x+h-x}{h}\\
-          &= \lim_{h\to 0} \frac{h}{h} = 1.\\
-  \end{align}
-
-\item $\pmb{(x^n)' = nx^{n-1}}$, para $n > 1$ inteiro positivo.
-
-  De fato, para $f(x) = x^n$ temos
-  \begin{align}
-    f'(x) &= \lim_{h\to 0} \frac{f(x+h)-f(x)}{h}\\
-          &= \lim_{h\to 0} \frac{(x+h)^n-x^n}{h}
-  \end{align}
-  Usando binômio de Newton\footnote{Isaac Newton, 1643 - 1727, matemático inglês. Fonte: \href{https://pt.wikipedia.org/wiki/Isaac_Newton}{Wikipédia}.}, temos
-  \begin{align}
-    (x+h)^n &= \sum_{k=0}^n \binom{n}{k}x^{n-k}h^k,
-  \end{align}
-  onde os coeficientes binomiais são
-  \begin{equation}
-    \binom{n}{k} = \frac{n!}{k!(n-k)!}.
-  \end{equation}
-  Assim, segue que
-  \begin{align}
-    f'(x) &= \lim_{h\to 0} \frac{x^n+nx^{n-1}h+\frac{n(n-1)}{2}x^{n-2}h^2 + \cdots +h^n-x^n}{h}\\
-          &= \lim_{h\to 0} nx^{n-1}+\frac{n(n-1)}{2}x^{n-2}h+\cdots+h^{n-1}\\
-          &= nx^{n-1}.
-  \end{align}
-\end{itemize}
-
-\ifispython
-No \sympy, podemos usar os seguintes comandos para obtermos as regras de derivação acima:
-\begin{lstlisting}
-  from sympy import *
-  # (k)' = 0
-  k = Symbol('k', real=True, constant=True)
-  diff(k,x)
-
-  # (x)' = 1
-  x = Symbols('x')
-  diff(x,x)
-
-  # (x^n)' = nx^(n-1)
-  n = Symbols('n',integer=True, positive=True)
-  diff(x**n,x)
-\end{lstlisting}
-\fi
+A derivada de função constante $f(x) \equiv k$, com $k$ constante, é
+\begin{equation}
+  {\color{blue}(k)' = 0}
+\end{equation}
+De fato, da definição de derivada temos
+\begin{align}
+  f'(x) &= \lim_{h\to 0} \frac{f(x+h)-f(x)}{h}\\
+        &= \lim_{h\to 0} \frac{k-k}{h} \\
+        &= \lim_{h\to 0} 0 = 0.
+\end{align}
 
 \begin{ex}
-  Vejamos os seguintes casos:
+  Estudemos os seguintes casos:
   \begin{enumerate}[a)]
-  \item $(-1)' = 0$.
-  \item $(\sqrt{2})' = 0$.
-  \item $(x^3)' = 3x^2$.
-  \item $(x^{11})' = 11x^{10}$.
+  \item $(2)' = 0$
+  \item $(-3)' = 0$
+  \item $(\pi)' = 0$
+  \item $(a)' = 0$ para qualquer $a\in\mathbb{R}$
+  \end{enumerate}
+  \ifispython
+  Com {\python}+{\sympy}, podemos computar essas derivadas com os seguintes comandos:
+  \begin{lstlisting}
+    In : from sympy import *
+    In : diff(2)
+    Out: 0
+    
+    In : diff(-3)
+    Out: 0
+
+    In : diff(pi)
+    Out: 0
+
+    In : x = Symbol('x')
+    In : a = Symbol('a', const=True)
+    In : diff(a, x)
+    Out: 0
+  \end{lstlisting}
+  \fi
+\end{ex}
+
+\subsection{Derivada de Função Identidade}
+
+\begin{flushright}
+  [YouTube] | [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
+\end{flushright}
+
+A derivada da função identidade $f(x) = x$ é
+\begin{equation}
+  {\color{blue}(x)' = 1}
+\end{equation}
+De fato, da definição de derivada temos
+\begin{align}
+  f'(x) &= \lim_{h\to 0} \frac{f(x+h)-f(x)}{h}\\
+        &= \lim_{h\to 0} \frac{x+h-x}{h}\\
+        &= \lim_{h\to 0} \frac{h}{h} = 1.\\
+\end{align}
+
+\ifispython
+\begin{ex}
+  Usando {\python}+{sympy}, podemos computar a derivada da função identidade com as seguintes instruções:
+  \begin{lstlisting}
+    In : from sympy import *
+    In : x = Symbol('x')
+    In : diff(x)
+    Out: 1
+  \end{lstlisting}
+\end{ex}
+\fi
+
+\subsection{Derivada de Função Potência}
+
+\begin{flushright}
+  [YouTube] | [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
+\end{flushright}
+
+A derivada da função potência $f(x) = x^n$, $n$ número inteiro positivo, é
+\begin{equation}
+  {\color{blue}\left(x^n\right)' = nx^{n-1}}
+\end{equation}
+De fato, da definição de derivada, temos
+\begin{align}
+  f'(x) &= \lim_{h\to 0} \frac{f(x+h)-f(x)}{h}\\
+        &= \lim_{h\to 0} \frac{(x+h)^n-x^n}{h}
+\end{align}
+Usando binômio de Newton\footnote{Isaac Newton, 1643 - 1727, matemático inglês. Fonte: \href{https://pt.wikipedia.org/wiki/Isaac_Newton}{Wikipédia}.}, temos
+\begin{align}
+  (x+h)^n &= \sum_{k=0}^n \binom{n}{k}x^{n-k}h^k,
+\end{align}
+onde os coeficientes binomiais são
+\begin{equation}
+  \binom{n}{k} = \frac{n!}{k!(n-k)!}.
+\end{equation}
+Assim, segue que
+\begin{align}
+  f'(x) &= \lim_{h\to 0} \frac{x^n+nx^{n-1}h+\frac{n(n-1)}{2}x^{n-2}h^2 + \cdots +h^n-x^n}{h}\\
+        &= \lim_{h\to 0} nx^{n-1}+\frac{n(n-1)}{2}x^{n-2}h+\cdots+h^{n-1}\\
+        &= nx^{n-1}.
+\end{align}
+
+\begin{ex}
+  Estudemos os seguintes casos:
+  \begin{enumerate}[a)]
+  \item $\left(x^2\right)' = 2x^{1-1} = 2x$
+  \item $\left(x^5\right)' = 5x^{5-1} = 5x^4$
+  \item $\left(x^{2001}\right)' = 2001x^{2000}$
+  \item $\left(x^m\right)' = mx^{m-1}$ para qualquer $m$ inteiro positivo.
+  \end{enumerate}
+  \ifispython
+  Com {\python}+{\sympy}, podemos computar essas derivadas com os seguintes comandos:
+  \begin{lstlisting}
+    In : from sympy import *
+    In : x = Symbol('x')
+    In : diff(x**2)
+    Out: 2*x
+
+    In : diff(x**5)
+    Out: 5*x**4
+
+    In : diff(x**2001)
+    Out: 2001*x**2000
+
+    In : m = Symbol('m', integer=True, positive=True)
+    In : simplify(diff(x**m, x))
+    Out: m*x**(m - 1)
+  \end{lstlisting}
+  \fi
+\end{ex}
+
+\begin{obs}
+  Ao longo das notas de Cálculo, vamos estudar que a fórmula de derivação
+  \begin{equation}
+    {\color{blue}(x^r)'= rx^{r-1}}
+  \end{equation}
+  {\bf vale para qualquer $r$ número real não nulo}, considerando-se o domínio natural das funções potência. Assim sendo, vamos assumir passar a aplicá-la para qualquer função potência a partir de agora.
+\end{obs}
+
+\begin{ex}
+  Estudemos os seguintes casos:
+  \begin{enumerate}[a)]
+  \item $\displaystyle\left(x^{-1}\right)' = -1x^{-1-1} = -x^{-2}$
+  \item $\displaystyle\left(x^{\frac{1}{2}}\right)' = \frac{1}{2}x^{\frac{1}{2}-1} = \frac{1}{2}x^{-\frac{1}{2}}$
+  \item $\displaystyle\left(x^e\right)' = ex^{e-1}$
+  \end{enumerate}
+  \ifispython
+  Com {\python}+{\sympy}, podemos computar essas derivadas com os seguintes comandos:
+  \begin{lstlisting}
+    In : from sympy import *
+    In : x = Symbol('x')
+    In : diff(x**(-1))
+    Out: -1/x**2
+
+    In : diff(x**(S(1)/2))
+    Out: 1/(2*sqrt(x))
+
+    In : diff(x**E)
+    Out: E*x**E/x
+  \end{lstlisting}
+  \fi  
+\end{ex}
+
+\subsection{Lista de derivadas}
+
+\begin{align}
+  &(k)' = 0\\
+  &(x)' = 1\\
+  &(x^n)' = nx^{n-1}
+\end{align}
+
+
+\subsection*{Exercícios Resolvidos}
+
+\begin{exeresol}
+  Calcule o ângulo de declividade da reta tangente ao gráfico de cada uma das seguintes funções em qualquer ponto fixado $x = x_0$.
+  \begin{enumerate}[a)]
+  \item Função constante $f(x) \equiv k$
+  \item Função identidade $f(x) = x$
+  \end{enumerate}
+\end{exeresol}
+\begin{resol}
+  O ângulo $\theta$ de declividade da reta tangente ao gráfico de uma dada função $f$ em um ponto $x=x_0$ é
+  \begin{equation}
+    \theta = \arctg(f'(x_0)).
+  \end{equation}
+  \begin{enumerate}[a)]
+  \item Função constante $f(x) \equiv k$
+
+    Nesse caso, $f'(x) = 0$ para todo $x$, logo
+    \begin{align*}
+      \theta &= \arctg(0)\\
+             &= 0.
+    \end{align*}
+  \item Função identidade $f(x) = x$
+
+    Nesse caso, $f'(x) = 1$ para todo $x$, logo
+    \begin{align*}
+      \theta &= \arctg(1)\\
+             &= \frac{\pi}{4}
+    \end{align*}
+  \end{enumerate}
+\end{resol}
+
+\begin{exeresol}
+  Determine a equação da reta tangente ao gráfico da função $f(x) = x^2$ no ponto $x=1$.
+\end{exeresol}
+\begin{resol}
+  A equação da reta tangente ao gráfico de uma função $f$ em um ponto $x = x_0$ é
+  \begin{equation}
+    y = f'(x_0)(x-x_0) + f(x_0)
+  \end{equation}
+  Nesse caso,
+  \begin{equation}
+    y = f'(1)(x-1) + f(1)
+  \end{equation}
+  Temos $f(1) = (1)^2 = 1$. Agora, pela derivada de função potência, temos
+  \begin{equation}
+    f'(x) = (x^2)' = 2x
+  \end{equation}
+  Logo,
+  \begin{equation}
+    f'(1) = 2\cdot 1 = 2
+  \end{equation}
+  Concluímos que equação da reta tangente é
+  \begin{gather}
+    y = 2(x-1) + 1\\
+    y = 2x - 1
+  \end{gather}
+\end{resol}
+
+\subsection*{Exercícios}
+
+\begin{exer}
+  Calcule as seguintes derivadas:
+  \begin{enumerate}[a)]
+  \item $(7)'$
+  \item $(-1,7)'$
+  \item $\left(\sqrt{2}\right)'$
+  \item $\left(\sec(\pi)\right)'$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a) $0$; b) $0$; c) $0$; d) $0$
+\end{resp}
+
+\begin{exer}
+  Calcule as seguintes derivadas:
+  \begin{enumerate}[a)]
+  \item $\left(x\right)'$
+  \item $\left(x^3\right)'$
+  \item $\left(\sqrt{x}\right)'$
+  \item $\displaystyle\left(\frac{1}{x}\right)'$
+  \item $\displaystyle\left(\frac{1}{\sqrt[3]{x^2}}\right)'$
+  \item $\left(x^\pi\right)'$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a) $1$; b) $3x^2$; c) $\displaystyle\frac{1}{2\sqrt{x}}$; d) $\displaystyle -\frac{1}{x^2}$; e) $\displaystyle -\frac{2}{3\sqrt[3]{x^5}}$; f) $\pi x^{\pi - 1}$
+\end{resp}
+
+\begin{exer}
+  Calcule as seguintes derivadas de ordem mais alta:
+  \begin{enumerate}[a)]
+  \item $(2)''$
+  \item $\left(2^{1001}\right)'''$
+  \item $\left[(-3)^{4}\right]^{(4)}$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a) $0$; b) $0$; c) $0$
+\end{resp}
+
+\begin{exer}
+  Calcule o coeficiente angular da reta tangente $y = mx + b$ ao gráfico da função $f(x) = x^3$ no ponto $x = 0$. Faça o esboço do gráfico desta função.
+\end{exer}
+\begin{resp}
+  $0$
+\end{resp}
+
+\begin{exer}
+  Calcule o ponto de interseção das retas tangentes ao gráfico da função $f(x) = x^2$ nos pontos $x_0=-1$ e $x_1 = 1$. Faça, em um mesmo esboço, os gráficos de $f$ e das retas tangentes calculadas.
+\end{exer}
+\begin{resp}
+  $(0, -1)$
+\end{resp}
+
+\section{Derivada de Funções Exponenciais e Logarítmicas}\label{cap_deriv_sec_funexplog}
+
+\begin{flushright}
+  [YouTube] | [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
+\end{flushright}
+
+Nesta seção vamos estudar a derivada de funções exponenciais e logarítmicas. Começamos com a definição no número de Euler\footnote{Leonhard Paul Euler, 1707 - 1783, matemático suíço. Fonte: \href{https://pt.wikipedia.org/wiki/Leonhard_Euler}{Wikipédia}.} por limites.
+
+\subsection{Número de Euler}
+
+\begin{flushright}
+  [YouTube] | [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
+\end{flushright}
+
+O número de Euler $e\approx 2,7183...$ pode ser definido pelo seguinte limite
+\begin{equation}\label{eq:defe}
+  {\color{blue} e = \lim_{h\to 0}(1 + h)^{\frac{1}{h}}}
+\end{equation}
+
+\begin{ex}
+  Consideremos os seguintes limites.
+  \begin{enumerate}[a)]
+  \item $\displaystyle\lim_{h\to 0} (1 + h)^{\frac{2}{h}}$
+    \begin{align}
+      \lim_{h\to 0} (1 + h)^{\frac{2}{h}} &= \lim_{h\to 0} \left[(1 + h)^{\frac{1}{h}}\right]^2\\
+                                                     &= \left[\lim_{h\to 0}\cancelto{e}{(1 + h)^{\frac{1}{h}}}\quad\right]^2\\
+                                                     &= e^2
+    \end{align}
+    \ifispython
+    Com o {\python}+{\sympy}, podemos computar este limite com os seguintes comandos:
+    \begin{lstlisting}
+      In : from sympy import *
+      ...: h = Symbol('h')
+      ...: limit((1+h)**(2/h), h, 0)
+      Out: exp(2)
+    \end{lstlisting}
+    \fi
+  \item $\displaystyle \lim_{h\to 0}\left(1 + 2h\right)^{\frac{1}{h}}$
+    
+    Para calcular este limite, podemos fazer a seguinte \emph{mudança de variável}
+    \begin{equation}
+      u = 2h
+    \end{equation}
+    donde, temos que $u\to 0$ quando $h\to 0$. Então, segue que
+    \begin{align}
+      \lim_{h\to 0}\left(1 + 2h\right)^{\frac{1}{h}} &= \lim_{u\to 0}\left(1 + u\right)^{\frac{2}{u}}\\
+                                                     &= e^2
+    \end{align}
+    \ifispython
+    Com o {\python}+{\sympy}, podemos computar este limite com os seguintes comandos:
+    \begin{lstlisting}
+      In : from sympy import *
+      ...: h = Symbol('h')
+      ...: limit((1+2*h)**(1/h), h, 0)
+      Out: exp(2)
+    \end{lstlisting}
+    \fi
   \end{enumerate}
 \end{ex}
 
-\subsection{Derivada de função exponencial}
-
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
+% ESTOU AQUI!!!
+\subsection{Derivadas de Funções Exponenciais}
 
 Vejamos o cálculo da derivada de função exponencial.
 
@@ -879,6 +1149,49 @@ diff(E**x,x)
 \end{verbatim}
 \fi
 \end{ex}
+
+\subsection{Lista de derivadas}
+
+\begin{align}
+  &(k)' = 0\\
+  &(x)' = 1\\
+  &(x^n)' = nx^{n-1}\\
+  &(a^x)' = a^x\ln a\\
+  &(e^x)' = e^x
+\end{align}
+
+
+\subsection*{Exercícios Resolvidos}
+
+\begin{exeresol}
+  Mostre que
+  \begin{equation}
+    e = \lim_{h\to\infty} \left(1 + \frac{1}{h}\right)^h
+  \end{equation}
+\end{exeresol}
+\begin{resol}
+  Tendo em mente a definição dada na Equação \ref{eq:defe}, fazemos a seguinte mudança de variável
+  \begin{equation}
+    u = \frac{1}{h}
+  \end{equation}
+  donde, $u\to 0$ quando $h\to \infty$. Logo, temos
+  \begin{align}
+    \lim_{h\to\infty} \left(1 + \frac{1}{h}\right)^h &= \lim_{u\to 0} \left(1 + u\right)^{\frac{1}{u}}\\
+                                                     &= e.
+  \end{align}
+\end{resol}
+
+\emconstrucao
+
+\subsection*{Exercícios}
+
+\emconstrucao
+
+\section{Regas Básicas de Derivação}\label{cap_deriv_sec_regrasderiv}
+
+\begin{flushright}
+  [YouTube] | [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
+\end{flushright}
 
 \subsection{Regras da multiplicação por constante e da soma}\label{subsec:deriv_rmcs}
 
@@ -1099,20 +1412,6 @@ Sejam $y = u(x)$ e $y = v(x)$ funções deriváveis. Então:
           &= (x + 1)e^x.
   \end{align}
 \end{ex}
-
-\subsection{Tabela de derivadas}
-
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
-
-\begin{align}
-  &(ku)' = ku' && (u\pm v)' = u' \pm v'\\
-  &(uv)' = u'v + uv' && \left(\frac{u}{v}\right)' = \frac{u'v - uv'}{v^2} \\
-  &(k)' = 0 && (x^n)' = nx^{n-1}\\
-  &(a^x)' = a^x\ln a && (e^x)' = e^x \\
-\end{align}
-
 
 \subsection*{Exercícios resolvidos}
 
