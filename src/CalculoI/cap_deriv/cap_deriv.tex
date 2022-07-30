@@ -1086,69 +1086,100 @@ O número de Euler $e\approx 2,7183...$ pode ser definido pelo seguinte limite
   \end{enumerate}
 \end{ex}
 
-% ESTOU AQUI!!!
-\subsection{Derivadas de Funções Exponenciais}
+\subsection{Derivada de Funções Exponenciais}
 
-Vejamos o cálculo da derivada de função exponencial.
+\begin{flushright}
+  [YouTube] | [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
+\end{flushright}
 
-\begin{itemize}
-\item $\pmb{(a^x)' = a^x\ln a}$, para $a>0$ e $a\neq 1$.
-  
-  De fato, tomando $f(x) = a^x$, $a>0$ e $a\neq 1$ temos
-  \begin{align}
-    f'(x) &= \lim_{h\to 0} \frac{f(x+h)-f(x)}{h}\\
-          &= \lim_{h\to 0} \frac{a^{x+h}-a^x}{h} \\
-          &= \lim_{h\to 0} \frac{a^xa^h-a^x}{h} \\
-          &= a^x \lim_{h\to 0} \frac{a^h-1}{h}
-  \end{align}
-  Pode-se mostrar que\footnote{Pode-se mostrar isso a partir da definição integral da função logaritmo.}
-  \begin{equation}
-    \lim_{h\to 0} \frac{a^h-1}{h} = \ln a.
-  \end{equation}
-  Desta forma, temos
-  \begin{equation}
-    f'(x) = a^x\ln a = (a^x)'.
-  \end{equation}
+Vamos calcular a derivada da função exponencial
+\begin{equation}
+  f(x) = a^x
+\end{equation}
+com $a>0$. Partindo da definição de definição de derivada, temos
+\begin{align}
+  f'(x) &= \lim_{h\to 0}\frac{f(x+h)-f(x)}{h}\\
+        &= \lim_{h\to 0}\frac{a^{x+h}-a^x}{h}\\
+        &= \lim_{h\to 0}\frac{a^x\left(a^h-1\right)}{h}\\
+        &= a^x\lim_{h\to 0}\frac{a^h-1}{h}\label{eq:ax_aux}
+\end{align}
+Agora, fazemos a seguinte \emph{mudança de variável}
+\begin{equation}
+  u = a^h-1
+\end{equation}
+donde, $u\to 0$ quando $h\to 0$ e
+\begin{equation}
+  h = \log_a(1 + u).
+\end{equation}
+Com isso, voltando a \eqref{eq:ax_aux} segue que
+\begin{align}
+  \left(a^x\right) &= a^x\lim_{u\to 0}\frac{u}{\log_a(1+u)}\\
+                   &= a^x\lim_{u\to 0}\frac{1}{\frac{1}{u}\log_a(1+u)}\\
+                   &= a^x\lim_{u\to 0}\frac{1}{\log_a\cancelto{e}{(1+u)^{\frac{1}{u}}}}\\
+                   &= a^x\frac{1}{\log_a e}
+\end{align}
+Lembrando que
+\begin{equation}
+  \log_a x = \frac{\ln x}{\ln a}
+\end{equation}
+concluímos que
+\begin{equation}
+  {\color{blue}\left(a^x\right)' = a^x\ln a}
+\end{equation}
 
-\item $\pmb{(e^x)' = e^x}$.
-
-  De fato, $(a^x)' = a^x\ln a$, para $a>0$ e $a\neq 1$. Tomando $a = e$, temos
-  \begin{equation}
-    (e^x)' = e^x\underbrace{\ln e}_{=1} = e^x.
-  \end{equation}
-\end{itemize}
-
-\ifispython
-No \sympy, podemos usar os seguintes comandos para computarmos as derivadas acima:
-\begin{lstlisting}
-  from sympy import *
-  a = Symbol('a', real=True)
-  # (a^x)'
-  diff(a**x,x)
-  
-  # (e^x)'
-  diff(E**x,x)
-\end{lstlisting}
-\fi
-
+No caso particular da \emph{função exponencial natural}, temos
+\begin{equation}
+  \left(e^x\right)' = e^x\ln e
+\end{equation}
+ou seja,
+\begin{equation}
+  {\color{blue}\left(e^x\right)' = e^x}
+\end{equation}
 
 \begin{ex}
-Vejamos os seguintes casos:
-\begin{enumerate}[a)]
-\item $(2^x)' = 2^x\ln 2$.
-\item $(e^x)' = e^x$.
-\end{enumerate}
+  Estudemos os seguintes casos:
+  \begin{enumerate}[a)]
+  \item
+    \begin{equation}
+      \displaystyle\left(2^x\right)' = 2^x\ln 2
+    \end{equation}
+  \item
+    \begin{equation}
+      \displaystyle\left[\left(\frac{3}{2}\right)^x\right]' = \left(\frac{3}{2}\right)^x\ln\frac{3}{2}
+    \end{equation}
+  \item
+    \begin{align}
+      \displaystyle\left(e^{\frac{1}{2}x}\right)' &= \left[(\sqrt{e})^x\right]' \\
+                                                  &= (\sqrt{e})^x\ln \sqrt{e}\\
+                                                  &= \frac{1}{2}e^{\frac{1}{2}x}
+    \end{align}
+  \end{enumerate}
+  \ifispython
+  Com o {\python}+{\sympy}, podemos computar essas derivadas como segue:
+  \begin{lstlisting}
+    In : from sympy import *
+    In : x = Symbol('x')
+    In : diff(2**x)
+    Out: 2**x*log(2)
 
-\ifispython
-No \sympy, podemos usar os seguintes comandos para computarmos as derivadas acima:
-\begin{verbatim}
-# a)
-diff(2**x,x)
-# b)
-diff(E**x,x)
-\end{verbatim}
-\fi
+    In : diff((S(3)/2)**x)
+    Out: (3/2)**x*log(3/2)
+
+    In : diff(exp(x/2))
+    Out: exp(x/2)/2
+  \end{lstlisting}
+  \fi
 \end{ex}
+
+\subsection{Derivada de Funções Logarítmicas}
+
+\begin{flushright}
+  [YouTube] | [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
+\end{flushright}
+
+% ESTOU AQUI!!!
+
+\emconstrucao
 
 \subsection{Lista de derivadas}
 
