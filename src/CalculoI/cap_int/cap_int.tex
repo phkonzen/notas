@@ -102,13 +102,19 @@ De forma genérica, a integral definida de $a$ até $b$ é o limite das somas de
   \begin{equation}
     \int_0^1 1\,dx = 1\cdot 1 = 1.
   \end{equation}
+
+  \ifispython
+  Com o {\python}+{\sympy}, podemos computar esta integral com os seguintes comandos
+  \begin{lstlisting}
+    ...: from sympy import *
+    ...: x = Symbol('x')
+    ...: integrate(1, (x,0,1))
+    Out: 1
+  \end{lstlisting}
+  \fi
 \end{ex}
 
 \subsection*{Exercícios resolvidos}
-
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
 
 \begin{exeresol}
   Calcule
@@ -126,6 +132,16 @@ De forma genérica, a integral definida de $a$ até $b$ é o limite das somas de
   \begin{equation}
     \int_{-1}^1 \sqrt{1 - x^2}\,dx = \frac{\pi \cdot 1^2}{2} = \frac{\pi}{2}.
   \end{equation}
+
+  \ifispython
+  Com o {\python}+{\sympy}, podemos computar esta integral com os seguintes comandos
+  \begin{lstlisting}
+    In : from sympy import *
+    ...: x = Symbol('x')
+    ...: integrate(sqrt(1-x**2), (x,-1,1))
+    Out: pi/2
+  \end{lstlisting}
+  \fi
 \end{resol}
 
 \begin{exeresol}
@@ -135,7 +151,7 @@ De forma genérica, a integral definida de $a$ até $b$ é o limite das somas de
   \end{equation}
   para todo $x\geq 0$. Então, mostre que $F'(x) = x$.
 \end{exeresol}
-\begin{resp}
+\begin{resol}
   A integral definida
   \begin{equation}
     \int_0^x t\,dt
@@ -148,7 +164,21 @@ De forma genérica, a integral definida de $a$ até $b$ é o limite das somas de
   \begin{equation}
     F'(x) = \frac{1}{2}\cdot 2x = x.
   \end{equation}
-\end{resp}
+
+  \ifispython
+  Com o {\python}+{\sympy}, podemos fazer essas computações com os seguintes comandos
+  \begin{lstlisting}
+    In : from sympy import *
+    ...: x, t = symbols('x,t')
+    ...: F = integrate(t, (t,0,x))
+    ...: print("F(x) = ", F)
+    ...: 
+    F(x) =  x**2/2
+    In : diff(F,x)
+    Out: x
+  \end{lstlisting}
+  \fi  
+\end{resol}
 
 \subsection*{Exercícios}
 
@@ -355,9 +385,10 @@ para algum número real $a$ dado.
           &= \lim_{h\to 0} \frac{1}{h}\int_x^{x+h} f(x)\,dx.
   \end{align}
   Agora, do Teorema do valor médio para integrais (Teorema \ref{teo:int_teomed}), temos que existe $c_h \in [x, x+h]$ tal que
-  \begin{equation}
-    f(c_h) = \frac{1}{x+h-x}\int_x^{x+h} f(x)\,dx = \frac{1}{h}\int_x^{x+h} f(x)\,dx.
-  \end{equation}
+  \begin{align}
+    f(c_h) &= \frac{1}{x+h-x}\int_x^{x+h} f(x)\,dx \\
+           &= \frac{1}{h}\int_x^{x+h} f(x)\,dx.
+  \end{align}
   Notemos que $c_h\to x$ quando $h\to 0$ e, portanto, temos
   \begin{align}
     F'(x) &= \lim_{h\to 0} \frac{1}{h}\int_x^{x+h} f(x)\,dx \\
@@ -378,6 +409,21 @@ para algum número real $a$ dado.
       \frac{d}{dx}\int_0^x \sen(t)\,dt = \sen(x)
     \end{equation}
   \end{enumerate}
+
+  \ifispython
+  Com o {\python}+{\sympy}, podemos computar os resultados acima com os seguintes comandos:
+  \begin{lstlisting}
+    In : from sympy import *
+    ...: x, t = symbols('x,t')
+    ...: # a)
+    ...: diff(integrate(t**2, (t,1,x)))
+    ...: 
+    Out: x**2
+    
+    In : diff(integrate(sin(t), (t,0,x)))
+    Out: sin(x)
+  \end{lstlisting}
+  \fi
 \end{ex}
 
 \subsection{Integral indefinida}
@@ -393,12 +439,15 @@ A parte I do Teorema fundamental do cálculo (Teorema \ref{teo:int_tfc1}), mostr
 Dizemos que $F$ é uma \emph{primitiva} da função $f$.
 
 Observamos que se $F$ é uma primitiva de $f$, então $G(x) = F(x) + C$ também é primitiva de $f$ para qualquer constante $C$, i.e.
-\begin{equation}
-  G'(x) = (F(x) + C)' = F'(x) + (C)' = f(x) + 0 = f(x).
-\end{equation}
+\begin{align}
+  G'(x) &= (F(x) + C)' \\
+        &= F'(x) + (C)' \\
+        &= f(x) + 0 \\
+        &= f(x).
+\end{align}
 Mais ainda, do Corolário \ref{corol:apderiv_teomed_2} do Teorema do valor médio para derivadas, temos que quaisquer duas primitivas de uma mesma função diferem-se apenas uma constante.
 
-Com isso, definimos \emph{integral indefinida} de $f$ em relação a $x$ por
+Com isso, definimos a \emph{integral indefinida} de $f$ em relação a $x$ por
 \begin{equation}
   \int f(x)\,dx = F(x) + C,
 \end{equation}
@@ -412,6 +461,28 @@ onde $F$ é qualquer primitiva de $f$ e $C$ uma constante indeterminada.
   \item $\displaystyle \int \cos(x)\,dx = \sen(x) + C$
   \item $\displaystyle \int e^x\,dx = e^x + C$
   \end{enumerate}
+  \ifispython
+  Com o {\python}+{\sympy}, podemos computar as integrais indefinidas acima com os seguintes comandos:
+  \begin{lstlisting}
+    In : from sympy import *
+    In : x = symbols('x')
+    ...: # a)
+    ...: integrate(1, x)
+    ...: 
+    Out: x
+    # b)
+    In : integrate(2*x, x)
+    ...: 
+    Out: x**2
+    # c)
+    In : integrate(cos(x), x)
+    ...: 
+    Out: sin(x)
+    # d)
+    In : integrate(exp(x), x)
+    Out: exp(x)
+  \end{lstlisting}
+  \fi  
 \end{ex}
 
 \subsection{Teorema fundamental do cálculo, parte II}
@@ -442,11 +513,27 @@ onde $F$ é qualquer primitiva de $f$ e $C$ uma constante indeterminada.
 
 \begin{ex}
   Vejamos os seguintes casos:
-  \begin{enumerate}
+  \begin{enumerate}[a)]
   \item $\displaystyle \int_0^1 \,dx = \left. x \right|_0^1 = 1 - 0 = 1$
   \item $\displaystyle \int_0^1 x\,dx = \left.\frac{x^2}{2}\right|_0^1 = \frac{1^2}{2}-\frac{0^2}{2} = \frac{1}{2}$
   \item $\displaystyle \int_{-\frac{\pi}{2}}^{\frac{\pi}{2}} \cos(x)\,dx = \left.\sen(x)\right|_{-\frac{\pi}{2}}^{\frac{\pi}{2}} = \sen\left(\frac{\pi}{2}\right) - \sen\left(-\frac{\pi}{2}\right) = 2$
   \end{enumerate}
+  \ifispython
+  Com o {\python}+{\sympy}, podemos computar as integrais indefinidas acima com os seguintes comandos:
+  \begin{lstlisting}
+    In : from sympy import *
+    ...: x = symbols('x')
+    ...: # a)
+    ...: integrate(1, (x,0,1))
+    Out: 1
+    ..: # b)
+    In : integrate(x, (x,0,1))
+    Out: 1/2
+    ..: c)
+    In : integrate(cos(x), (x,-pi/2,pi/2))
+    Out: 2
+  \end{lstlisting}
+  \fi  
 \end{ex}
 
 \begin{obs}
@@ -503,6 +590,15 @@ onde $F$ é qualquer primitiva de $f$ e $C$ uma constante indeterminada.
                                           &= \frac{e}{2} - \frac{1}{2} - \frac{1}{2}\ln(e) - 0 \\
                                           &= \frac{e}{2} - 1.
   \end{align}
+  \ifispython
+  Com o {\python}+{\sympy}, podemos computar essa integral definida com os seguintes comandos:
+  \begin{lstlisting}
+    In : from sympy import *
+    ...: x = symbols('x')
+    ...: integrate((x - 1/x), (x,1,sqrt(E)))
+    Out: -1 + E/2
+  \end{lstlisting}
+  \fi  
 \end{resol}
 
 \begin{exeresol}
@@ -524,6 +620,17 @@ onde $F$ é qualquer primitiva de $f$ e $C$ uma constante indeterminada.
       &= -\left[-\cos(x)\right]_{-\frac{\pi}{2}}^0 + \left[-\cos(x)\right]_0^{\frac{\pi}{2}} \\
       &= -[-1 - 0] + [-0 - (-1)] = 2. 
   \end{align}
+  \ifispython
+  Com o {\python}+{\sympy}, podemos computar essa integral definida com os seguintes comandos:
+  \begin{lstlisting}
+    In : from sympy import *
+    ...: x = symbols('x')
+    ...: A = -integrate(sin(x), (x,-pi/2,0))
+    ...: A += integrate(sin(x), (x,0,pi/2))
+    ...: A
+    Out: 2
+  \end{lstlisting}
+  \fi  
 \end{resol}
 
 \begin{exeresol}
@@ -535,15 +642,27 @@ onde $F$ é qualquer primitiva de $f$ e $C$ uma constante indeterminada.
 \end{exeresol}
 \begin{resol}
   Integrando ambos os lados da equação diferencial em relação a $x$, temos
-  \begin{equation}
-    \int \frac{dy}{dx}\,dx = \int x\,dx \Rightarrow y = \frac{x^2}{2} + C \\
-  \end{equation}
+  \begin{gather}
+    \int \frac{dy}{dx}\,dx = \int x\,dx \\
+    y = \frac{x^2}{2} + C \\
+  \end{gather}
   Agora, da condição $y(0) = 1$, segue
-  \begin{align}
-    y(0) = 1 &\Rightarrow \frac{0^2}{2} + C = 1 \\
-             &\Rightarrow C = 1.
-  \end{align}
+  \begin{gather}
+    y(0) = 1 \\
+    \frac{0^2}{2} + C = 1 \\
+    C = 1.
+  \end{gather}
   Concluímos que $y = x^2/2 + 1$.
+  \ifispython
+  Com o {\python}+{\sympy}, podemos resolver esta computar essa integral definida com os seguintes comandos:
+  \begin{lstlisting}
+    In : from sympy import *
+    ...: y = Function('y')
+    ...: x = symbols('x')
+    ...: dsolve(Eq(diff(y(x),x), x), y(x), ics={y(0):1})
+    Out: Eq(y(x), x**2/2 + 1)
+  \end{lstlisting}
+  \fi  
 \end{resol}
 
 \subsection*{Exercícios}
