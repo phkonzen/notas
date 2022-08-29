@@ -2024,6 +2024,17 @@ x · log(x)    x
   $-\frac{5}{e}+e$
 \end{resp}
 
+\section{Integração por substituição trigonométrica}\label{cap_int_sec_substrigo}
+
+\emconstrucao
+
+\subsection*{Exercícios resolvidos}
+
+\emconstrucao
+
+\subsection*{Exercícios}
+
+\emconstrucao
 
 \section{Integração por frações parciais}\label{cap_int_sec_frapar}
 
@@ -2031,25 +2042,166 @@ x · log(x)    x
   [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
 \end{flushright}
 
+O método de integração por frações parciais aplica-se a integrais de funções racionais
+\begin{equation}
+  \int \frac{p(x)}{q(x)}\,dx
+\end{equation}
+onde, $p$ e $q$ são funções polinomiais. A ideia é usar a chamada \emph{decomposição por fatores parciais}: toda função racional própria\footnote{Uma função racional $p/q$ é própria, quando o grau de $p$ é menor que o grau do denominador.} $p/q$ pode ser reescrita da seguinte forma
+\begin{equation}
+  \frac{p(x)}{q(x)} = f_1(x) + f_2(x) + \cdots + f_n(x),
+\end{equation}
+onde $f_1, f_2, \dotsc, f_n$ são chamadas de \emph{frações parciais} e têm a forma
+\begin{equation}
+  \frac{A}{(ax + b)^m}
+\end{equation}
+ou
+\begin{equation}
+  \frac{Ax + b}{(ax^2 + bx + c)^m}
+\end{equation}
+sendo seus denominadores os fatores de $q$.
+
+\begin{ex}
+  Vamos calcular
+  \begin{equation}
+    \int \frac{2x-4}{2x^2 - 5x + 3}\,dx.
+  \end{equation}
+  Para fazermos a decomposição por frações parciais, começamos calculando as raízes do denominador.
+  \begin{gather}
+    {\color{red}2}x^2 - 5x + 3 = 0\\
+    x^2 - \frac{5}{2}x + \frac{3}{2} = 0\\
+    x_{1,2} = \frac{\frac{5}{2} \pm \sqrt{\frac{25}{4} - 4\cdot \frac{3}{2}}}{2}\\
+    x_1 = {\color{blue}1},\quad x_2 = {\color{blue}\frac{3}{2}}
+  \end{gather}
+  Com isso, decompomos o denominador como segue
+  \begin{align}
+    2x^2 - 5x + 3 &= {\color{red}2}(x-{\color{blue}1})\left(x-{\color{blue}\frac{3}{2}}\right)\\
+                  &= (x-1)(2x-3)
+  \end{align}
+
+  \ifispython
+  Com o {\python}+{\sympy}, podemos computar a fatoração do polinômio acima como segue:
+  \begin{lstlisting}
+    In : from sympy import *
+    ...: x = symbols('x')
+    ...: factor(2*x**2 - 5*x + 3)
+    Out: (x - 1)*(2*x - 3)
+  \end{lstlisting}
+  \fi
+
+  Uma vez fatorado o denominador, a decomposição por frações parciais consistem em calcular os parâmetros $A$ e $B$ tais que
+  \begin{align}
+    \frac{2x-4}{2x^2 - 5x + 3} &= \frac{A}{x-1} + \frac{B}{2x-3}\\
+                               &= \frac{A(2x-3) + B(x-1)}{(x-1)(2x-3)}\\
+                               &= \frac{(2A+B)x + (-3A - B))}{(x-1)(2x-3)}
+  \end{align}
+  Então, por comparação direta, obtemos o seguinte sistema linear de duas equações e duas incógnitas
+  \begin{equation}
+    2A + B = 2\\
+    -3A - B = -4
+  \end{equation}
+  Resolvendo-o, encontramos $A = 2$ e $B = -2$.
+
+  \ifispython
+  Com o {\python}+{\sympy}, podemos computar a solução deste sistema como segue:
+  \begin{lstlisting}
+    In : from sympy import *
+    ...: A,B = symbols('A,B')
+    ...: solve([Eq(2*A + B, 2),
+    ...:        Eq(-3*A - B, -4)])
+    Out: {A: 2, B: -2}
+  \end{lstlisting}
+  \fi
+
+  Em fim, obtemos a decomposição por frações parciais
+  \begin{equation}
+    \frac{2x-4}{2x^2 - 5x + 3} = \frac{2}{x-1} - \frac{2}{2x-3}.
+  \end{equation}
+
+  \ifispython
+  Com o {\python}+{\sympy}, podemos computar a decomposição por frações parciais diretamente com o método \lstinline+apart+. Neste caso aqui, temos:
+  \begin{lstlisting}
+    In : from sympy import *
+    ...: x = symbols('x')
+    ...: apart((2*x-4)/(2*x**2 - 5*x + 3))
+    Out: -2/(2*x - 3) + 2/(x - 1)
+  \end{lstlisting}
+  \fi
+
+  Uma vez, calculada a decomposição, temos que a integral que queremos calcular pode ser reescrita da seguinte forma
+  \begin{equation}
+    \int\frac{2x-4}{2x^2 - 5x + 3}\,dx = \int\frac{2}{x-1}\,dx - \int\frac{2}{2x-3}\,dx
+  \end{equation}
+  As integrais do lado esquerdo podem ser computadas pelo método da substituição, obtendo-se
+  \begin{equation}
+    \int\frac{2x-4}{2x^2 - 5x + 3}\,dx = 2\ln|x-1| - \ln|2x-3| + C
+  \end{equation}
+\end{ex}
+
+\subsection{Raízes reais múltiplas}
+
+No caso em que o denominador tem raízes reais múltiplas, a decomposição por frações parciais tem a forma
+\begin{equation}
+  \frac{p(x)}{(ax+b)^m} = \frac{A_1}{(ax+b)} + \frac{A_2}{(ax+b)^2} + \cdots + \frac{A_m}{(ax+b)^m}. 
+\end{equation}
+
+\begin{ex}
+  Vamos calcular
+  \begin{equation}
+    \int \frac{2-x}{x^2 - 2x + 1}\,dx
+  \end{equation}
+  O denominador tem raiz real dupla $x_{1,2} = 1$, podendo ser fatorado como segue
+  \begin{equation}
+    x^2 - 2x + 1 = (x-1)^2
+  \end{equation}
+  Então, a decomposição do integrando por frações parciais tem a forma
+  \begin{align}
+    \frac{2-x}{x^2 - 2x + 1} &= \frac{A_1}{x-1} + \frac{A_2}{(x-1)^2}\\
+                             &= \frac{A_1(x-1) + A_2}{(x-1)^2}\\
+                             &= \frac{A_1x + (-A_1 + A_2)}{(x-1)^2}
+  \end{align}
+  Por comparação direta, encontramos o seguinte sistema de equações lineares
+  \begin{equation}
+    A_1 = -1\\
+    -A_1 + A_2 = 2
+  \end{equation}
+  Donde, obtemos os parâmetros $A_1 = -1$ e $A_2 = 1$. Com isso, a integral pode ser reescrita da seguinte forma
+  \begin{equation}
+    \int\frac{2-x}{x^2 - 2x + 1}\,dx = -\int\frac{1}{x-1}\,dx + \int\frac{1}{(x-1)^2}\,dx
+  \end{equation}
+  Estas últimas podem ser calculadas pelo método de substituição, donde concluímos que
+  \begin{equation}
+    \int\frac{2-x}{x^2 - 2x + 1}\,dx = -\ln|x-1| - \frac{1}{x-1} + C
+  \end{equation}
+
+  \ifispython
+  Com o {\python}+{\sympy}, podemos computar esta integral diretamente com os seguintes comandos:
+  \begin{lstlisting}
+    In : from sympy import *
+    ...: x = symbols('x')
+    ...: integrate((2-x)/(x**2 - 2*x + 1))
+    Out: -log(x - 1) - 1/(x - 1)
+  \end{lstlisting}
+  \fi  
+\end{ex}
+
+\subsection{Raízes complexas}
+
+Quando o denominador tem raízes complexas, a decomposição por frações parciais tem a forma
+\begin{equation}
+  \frac{p(x)}{(ax^2 + bx + c)^m} = \frac{A_1x + B_1}{ax^2 + bx + c} + \cdots + \frac{A_mx + B_m}{(ax^2 + bx + c)^m}
+\end{equation}
+
 \emconstrucao
 
 \subsection*{Exercícios resolvidos}
-
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
 
 \emconstrucao
 
 \subsection*{Exercícios}
 
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
-
 \emconstrucao
 
-\section{Integração por substituição trigonométrica}\label{cap_int_sec_substrigo}
+\section{Integrais Impróprias}\label{cap_int_sec_intimp}
 
 \begin{flushright}
   [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
@@ -2059,16 +2211,8 @@ x · log(x)    x
 
 \subsection*{Exercícios resolvidos}
 
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
-
 \emconstrucao
 
 \subsection*{Exercícios}
-
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
 
 \emconstrucao
