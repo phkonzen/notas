@@ -1628,9 +1628,19 @@ integrate(x*sqrt(1-x**2),(x,0,1))
     \int_0^{\pi/4} \sec^2(x)e^{\tg(x)}\,dx.
   \end{equation}
 \end{exer}
-\begin{resol}
+\begin{resp}
   $e-1$
-\end{resol}
+\end{resp}
+
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \int\sec^2(x)\tg(x)\,dx
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $\frac{1}{2}\tg^2(x) + C$
+\end{resp}
 
 \begin{exer}\label{exer:int_subs_cotg}
   Use a regra da substituição para mostrar que
@@ -2024,17 +2034,288 @@ x · log(x)    x
   $-\frac{5}{e}+e$
 \end{resp}
 
+\begin{exer}\label{eq:int_sec3_x}
+  Calcule
+  \begin{equation}
+    \int \sec^3(x)\,dx
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $\displaystyle\frac{\sec(x)\tg(x)}{2} + \frac{1}{2}\ln|\sec(x)+\tg(x)| + C$
+\end{resp}
+
 \section{Integração por substituição trigonométrica}\label{cap_int_sec_substrigo}
 
-\emconstrucao
+Em muitos casos, integrais em $x$ envolvendo
+\begin{gather}
+  \sqrt{a^2 - x^2},
+  \sqrt{x^2 + a^2},
+  \sqrt{x^2 - a^2},
+\end{gather}
+com $a>0$, podem ser calculadas por meio de substituições envolvendo funções trigonométricas.
+
+\subsubsection{Integrais envolvendo $\pmb{\sqrt{a^2 - x^2}}$}
+
+No caso de integrais em $x$ envolvendo
+\begin{equation}
+  \sqrt{a^2 - x^2}
+\end{equation}
+com $a>0$, podemos fazer a substituição trigonométrica
+\begin{equation}
+  x = a\sin\theta
+\end{equation}
+com $-\pi/2\leq\theta\leq\pi/2$. Com isso\footnote{Lembremos da identidade trigonométrica fundamental  $\sen^2 \theta + \cos^2 \theta = 1 $.},
+\begin{align}
+  \sqrt{a^2 - x^2} &= \sqrt{a^2 - a^2\sen^2\theta}\\
+                   &= \sqrt{a^2\cos^2\theta}\\
+                   &= a|\cos\theta|\\
+                   &= |a|\cos\theta
+\end{align}
+uma vez que $\cos\theta \geq 0$ para todo $\theta\in [-\pi/2,\pi/2]$. Com isso, eliminamos o termo radical, passando a uma integral envolvendo a função trigonométrica.
+
+\begin{ex}
+  Vamos calcular
+  \begin{equation}
+    \int \frac{1}{\sqrt{1 - x^2}}\,dx
+  \end{equation}
+  \begin{enumerate}[a)]
+  \item Por substituição trigonométrica.
+    Fazemos a substituição trigonométrica
+    \begin{gather}
+      x = \sin\theta,\quad -\frac{\pi}{2}\leq\theta\leq\frac{\pi}{2},\\
+      \Rightarrow\\
+      dx = \cos(\theta)\,d\theta
+    \end{gather}
+    Substituindo na integral, obtemos
+    \begin{align}
+      \int \frac{1}{\sqrt{1 - x^2}}\,dx &= \int \frac{1}{\sqrt{1 - \sen^2(\theta)}}\cos(\theta)\,d\theta\\
+                                        &= \int \frac{\cos(\theta)}{|\cos(\theta)|}\,d\theta\\
+                                        &= \int\,d\theta\\
+                                        &= \theta + C\\
+                                        &= \arc\sen(x) + C
+    \end{align}
+  \item Por integração direta.
+    No estudo de derivadas de funções trigonométricas inversas, vemos que
+    \begin{equation}
+      \frac{d}{dx}\arc\sen(x) = \frac{1}{\sqrt{1-x^2}}.
+    \end{equation}
+    Logo, pela definição de integral indeterminada, temos
+    \begin{equation}
+      \int\frac{1}{\sqrt{1-x^2}}\,dx = \arc\sen(x) + C
+    \end{equation}
+    como esperado.
+  \end{enumerate}
+
+  \ifispython
+  Com {\python}+{\sympy}, podemos computar esta integral como os seguintes comandos:
+  \begin{lstlisting}
+    In : from sympy import *
+    ...: x = symbols('x')
+    ...: integrate(1/sqrt(1-x**2),x)
+    Out: asin(x)
+  \end{lstlisting}
+  \fi
+\end{ex}
+
+\subsubsection{Integrais envolvendo $\pmb{\sqrt{a^2 + x^2}}$}
+
+No caso de integrais em $x$ envolvendo
+\begin{equation}
+  \sqrt{a^2 + x^2}
+\end{equation}
+com $a>0$, podemos fazer a substituição trigonométrica
+\begin{equation}
+  x = a\tg(\theta),\quad -\frac{\pi}{2}\leq\theta\leq\frac{\pi}{2} 
+\end{equation}
+Com isso\footnote{Lembremos a identidade trigonométrica $1 + \tg^2(x) = \sec^2(x)$.},
+\begin{align}
+  \sqrt{a^2 + x^2} &= \sqrt{a^2 + a^2\tg^2(\theta)}\\
+                   &= \sqrt{a^2\sec^2(\theta)}\\
+                   &= |a||\sec(\theta)|\\
+                   &= |a|\sec(\theta),
+\end{align}
+observando que $\sec(\theta) \geq 0$ para $\theta\in(-\pi/2,\pi/2)$.
+
+\begin{ex}
+  Calcule
+  \begin{equation}
+    \int \sqrt{4 + x^2}\,dx
+  \end{equation}
+  Fazemos a substituição trigonométrica
+  \begin{gather}
+    x = 2\tg(\theta),\quad-\frac{\pi}{2}\leq\theta\leq\frac{\pi}{2}\\
+    \Rightarrow
+    dx = 2\sec^2(\theta)\,d\theta
+  \end{gather}
+  Substituindo na integral, temos
+  \begin{align}
+    \int \sqrt{4 + x^2}\,dx &= \int \sqrt{4 + 4\tg^2(\theta)}\,2\sec^2(\theta)\,d\theta\\
+                            &= \int 4\sec^3(\theta)\,d\theta
+  \end{align}
+  Para calcular esta última integral, podemos usar integração por partes\footnote{Consulte o Exercício \ref{eq:int_sec3_x}.}, donde obtemos
+  \begin{align}
+    \int \sqrt{4 + x^2}\,dx &= 2\sec(\theta)\tg(\theta) + 2\ln|\sec(\theta)+\tg(\theta)| + C\\
+                              &= x\sec\left(\arc\tg\left(\frac{x}{2}\right)\right) \\
+                              &+ 2\ln\left|\sec\left(\arc\tg\left(\frac{x}{2}\right)\right) + \frac{x}{2}\right| + C
+  \end{align}
+\end{ex}
+
+\subsubsection{Integrais envolvendo $\pmb{\sqrt{x^2 - a^2}}$}
+
+No caso de integrais em $x$ envolvendo
+\begin{equation}
+  \sqrt{x^2+a^2}
+\end{equation}
+com $a>0$, podemos fazer a substituição trigonométrica
+\begin{equation}
+  x = a\sec(\theta),
+\end{equation}
+assumindo $0\leq\theta\leq\pi/2$, no caso de $x\geq a$, e $\pi/2\leq\theta\leq\pi$, quando $x\leq -a$.
+
+\begin{ex}
+  Vamos calcular
+  \begin{equation}
+    \int\sqrt{x^2-4}\,dx
+  \end{equation}
+  para $x\leq 2$. Fazemos a substituição trigonométrica
+  \begin{gather}
+    x = 2\sec(\theta),\quad 0\leq\theta\leq\frac{\pi}{2}\\
+    dx = 2\sec(\theta)\tg(\theta)
+  \end{gather}
+  Substituindo na integral, temos\footnote{Vamos usar a identidade trigonométrica $\sec^2(x)-1=\tg^2(x)$.}
+  \begin{align}
+    \int\sqrt{x^2-4}\,dx &= \int\sqrt{4\sec^2(\theta)-4}2\sec(\theta)\tg(\theta)\,d\theta\\
+                         &= 4\int\sec(\theta)\tg^2(\theta)\,d\theta\\
+                         &= 4\int\sec^3(\theta)\,d\theta - 4\int\sec(\theta)\,d\theta\\
+                         &= 2\sec(\theta)\tg(\theta) + 2\ln|\sec(\theta)+\tg(\theta)| \\
+                         &- 4\ln|\sec(\theta)+\tg(\theta)|\\
+                         &= x\tg\left(\arc\tg\left(\frac{x}{2}\right)\right) \\
+                         &- 2\ln\left|\frac{x}{2}+\tg\left(\arc\tg\left(\frac{x}{2}\right)\right)\right| + C
+  \end{align}
+\end{ex}
 
 \subsection*{Exercícios resolvidos}
 
-\emconstrucao
+\begin{exeresol}
+  Calcule
+  \begin{equation}
+    \int_{\frac{5}{2}}^{\frac{5}{2}\sqrt{2}}\frac{dx}{x^2\sqrt{25-x^2}}\,dx
+  \end{equation}
+\end{exeresol}
+\begin{resol}
+  Fazemos a substituição trigonométrica
+  \begin{gather}
+    x = 5\sen(\theta),\quad -\frac{\pi}{2}\leq\theta\leq\frac{\pi}{2}\\
+    dx = 5\cos(\theta)\,d\theta
+  \end{gather}
+  Substituindo na integral, temos
+  \begin{equation}
+    \int_{\frac{5}{2}}^{\frac{5}{2}\sqrt{2}}\frac{dx}{x^2\sqrt{25-x^2}} = \int_{x=\frac{5}{2}}^{\frac{5}{2}\sqrt{2}}\frac{5\cos(\theta)}{25\sen^2(\theta)\sqrt{25-\sen^2(\theta)}}\,d\theta
+  \end{equation}
+  Observamos que
+  \begin{gather}
+    \theta = \arc\sen\left(\frac{x}{5}\right)\\
+    x = \frac{5}{2} \Rightarrow \theta = \arc\sen\left(\frac{1}{2}\right) = \frac{\pi}{6}\\
+    x = \frac{5\sqrt{2}}{2} \Rightarrow \theta = \arc\sen\left(\frac{\sqrt{2}}{2}\right) = \frac{\pi}{4}
+  \end{gather}
+  Segue que
+  \begin{align}
+    \int_{\frac{5}{2}}^{\frac{5}{2}\sqrt{2}}\frac{dx}{x^2\sqrt{25-x^2}} &= \int_{\frac{\pi}{6}}^{\frac{\pi}{4}}\frac{5\cos(\theta)}{25\sen^2(\theta)\cdot 5\cos(\theta)}\,d\theta\\
+                                                                        &= \int_{\frac{\pi}{6}}^{\frac{\pi}{4}}\cossec^2(\theta)\,d\theta\\
+                                                                        &= -\frac{1}{25}\left.\cotg^2(\theta)\right|_{\frac{\pi}{6}}^{\frac{\pi}{4}}\\
+                                                                        &= -\frac{1}{25}\cotg\left(\frac{\pi}{4}\right) + \frac{1}{25}\cotg\left(\frac{\pi}{6}\right)\\
+                                                                        &= \frac{\sqrt{3}}{25} - \frac{1}{25}
+  \end{align}  
+\end{resol}
+
+\begin{exeresol}
+  Calcule
+  \begin{equation}
+    \int\frac{\sqrt{x^2-4}}{x}\,dx
+  \end{equation}
+  para $x\leq -2$.
+\end{exeresol}
+\begin{resol}
+  Fazemos a substituição trigonométrica
+  \begin{equation}
+    x = 2\sec(\theta),\quad \frac{\pi}{2}\leq\theta\leq\pi\\
+    dx = 2\sec(\theta)\tg(\theta)
+  \end{equation}
+  Substituindo na integral, obtemos
+  \begin{align}
+    \int\frac{\sqrt{x^2-4}}{x}\,dx &= \int\frac{\sqrt{4-4\sec^2(\theta)}}{2\sec(\theta)}2\sec(\theta)\tg(\theta)\,d\theta\\
+                                   &= \int 2|\tg(\theta)|\tg(\theta)\,d\theta\\
+                                   &= -2\int\tg^2(\theta)\,d\theta\\
+                                   &= -2\int\left(\sec^2(\theta)-1\right)\,d\theta\\
+                                   &= -2\tg(\theta) + 2\theta + C
+  \end{align}
+  
+  Como $x = 2\sec(\theta)$, temos $\theta = \arc\sec(x/2)$ e
+  \begin{align}
+    \tg(\theta) = \frac{\sqrt{x^2-4}}{2}
+  \end{align}
+  Concluímos que
+  \begin{equation}
+    \int\frac{\sqrt{x^2-4}}{x}\,dx = 2\arc\sen\left(\frac{x}{2}\right) - \sqrt{x^2-4} + C
+  \end{equation}
+\end{resol}
 
 \subsection*{Exercícios}
 
-\emconstrucao
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \int\frac{1}{\sqrt{4-x^2}\,dx}
+  \end{equation}
+  \begin{enumerate}[a)]
+  \item Pelo método de substituição.
+  \item Pelo método de substituição trigonométrica.
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a) $u = \frac{1}{2}x$; b) $x = \sen(x)$, $-\frac{\pi}{2}\leq\theta\leq\frac{\pi}{2}$; $\int\frac{1}{\sqrt{4-x^2}\,dx} = \arc\sen(x/2) + C$
+\end{resp}
+
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \int\frac{dx}{x^2\sqrt{4-x^2}}\,dx
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $-\frac{1}{4}\frac{\sqrt{4-x^2}}{x} + C$
+\end{resp}
+
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \int\sqrt{25+x^2}\,dx
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $\displaystyle x\sec\left(\arc\tg\left(\frac{x}{5}\right)\right) + 5\ln\left|\sec\left(\arc\tg\left(\frac{x}{5}\right)\right) + \frac{x}{5}\right| + C$
+\end{resp}
+
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \int_1^{\sqrt{2}}\frac{dx}{x^2\sqrt{4-x^2}}\,dx
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $(\sqrt{3}-1)/4$
+\end{resp}
+
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \int\frac{\sqrt{x^2-9}}{x}\,dx
+  \end{equation}
+  para $x \geq 3$.
+\end{exer}
+\begin{resp}
+  $\sqrt{x^2-9} - 2\arc\sen\left(\frac{x}{3}\right) + C$
+\end{resp}
 
 \section{Integração por frações parciais}\label{cap_int_sec_frapar}
 
