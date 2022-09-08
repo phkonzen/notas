@@ -3,35 +3,35 @@
 \chapter{Aplicações da integral}\label{cap_apint}
 \thispagestyle{fancy}
 
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
-
-\ifispython
-\begin{obs}\label{obs:cap_apint_python}
-  Nos códigos \python~apresentados neste capítulo, assumimos o seguinte preâmbulo:
-\begin{verbatim}
-from sympy import *
-init_session()
-\end{verbatim}
-\end{obs}
-\fi
-
 \section{Cálculo de áreas}\label{cap_apint_sec_areas}
 
 \begin{flushright}
   [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
 \end{flushright}
 
-A integral definida $\int_a^b f(x)\,dx$ está associada a área entre o gráfico da função $f$ e o eixo das abscissas no intervalo $[a,b]$ (Veja Seção \ref{cap_int_sec_nocaoint}). Ocorre que se $f$ for não negativa, então $\int_a^b f(x)\,dx \geq 0$. Se $f$ for negativa, então $\int_a^b f(x)\,dx < 0$. Por isso, dizemos que $\int_a^b f(x)\,dx$ é a \emph{área líquida} (ou com sinal) entre o gráfico de $f$ e o eixo das abscissas.
+A integral definida $\int_a^b f(x)\,dx$ está associada a área entre o gráfico da função $f$ e o eixo das abscissas no intervalo $[a,b]$ (consulte Figura \ref{fig:apint_arealiq}). Ocorre que se $f$ for não negativa, então $\int_a^b f(x)\,dx \geq 0$. Se $f$ for negativa, então $\int_a^b f(x)\,dx < 0$. Por isso, dizemos que $\int_a^b f(x)\,dx$ é a \emph{área líquida} (ou com sinal) entre o gráfico de $f$ e o eixo das abscissas.
 
-\begin{ex}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{./cap_apint/dados/fig_apint_arealiq/fig}
+  \caption{Integral definida e a área com sinal.}
+  \label{fig:apint_arealiq}
+\end{figure}
+
+\begin{ex}\label{ex:apint_arealiq}
   Vamos calcular a área total entre o gráfico de $f(x) = (x-1)^3$ e o eixo das abscissas, restrito ao intervalo $[0, 2]$.
 
-  Começamos fazendo o estudo de sinal de $f$ no intervalo. Como $x-1 \leq 0$ para $x\leq1$ e, $x-1\geq 0$ para $x \geq 1$, temos que $f(x)<0$ em $[0, 1]$ e $f(x)>0$ em $[1, 2]$. Logo, a área total é dada por
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{./cap_apint/dados/fig_ex_apint_arealiq/fig}
+    \caption{Área total entre o gráfico de $f(x) = (x-1)^3$ e o eixo das abscissas para $x\in [0, 2]$.}
+    \label{fig:ex_apint_arealiq}
+  \end{figure}  
+
+  Começamos fazendo o estudo de sinal de $f$ no intervalo. Como $x-1 \leq 0$ para $x\leq 1$ e, $x-1\geq 0$ para $x \geq 1$, temos que $f(x)<0$ em $[0, 1]$ e $f(x)>0$ em $[1, 2]$. Logo, a área total é dada por
   \begin{equation}
     A = -\int_0^1f(x)\,dx + \int_1^2f(x)\,dx.
-  \end{equation}]
+  \end{equation}
   
   Agora, usando a substituição $u=x-1$, temos $du = dx$ e segue que
   \begin{align}
@@ -50,12 +50,17 @@ A integral definida $\int_a^b f(x)\,dx$ está associada a área entre o gráfico
   \end{align}
 
   \ifispython
-  No \sympy~ podemos usar os seguintes comandos\footnote{Veja a Observação \ref{obs:cap_int_python}.}:
-\begin{verbatim}
->>> -integrate((x-1)**3,(x,0,1))+integrate((x-1)**3,(x,1,2))
-1/2
-\end{verbatim}
-\fi  
+  Com {\python}+{\sympy}, podemos computar a área com os seguintes comandos:
+    \begin{lstlisting}
+      In : from sympy import *
+      ...: x = symbols('x')
+      ...: f = (x-1)**3
+      ...: A = integrate(f, (x,0,1))
+      ...: B = integrate(f, (x,1,2))
+      ...: -A+B
+      Out: 1/2
+    \end{lstlisting}
+    \fi  
 \end{ex}
 
 \subsection{Áreas entre curvas}
@@ -77,8 +82,15 @@ corresponde à área entre as curvas $y = f(x)$ e $y = g(x)$ restritas ao interv
   -\int_a^bh(x)\,dx = \int_a^bg(x)\,dx - \int_a^bf(x)\,dx.
 \end{equation}
 
-\begin{ex}
+\begin{ex}\label{ex:apint_areacurvas}
   Vamos calcular a área entre as curvas $y = (x-1)^3$, $y = x-1$, $x=0$ e $x=2$.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{./cap_apint/dados/fig_ex_apint_areacurvas/fig}
+    \caption{Área entre as curvas $y = (x-1)^3$, $y = x-1$, $x=0$ e $x=2$.}
+    \label{fig:ex_apint_areacurvas}
+  \end{figure}  
 
   Começamos definindo $h(x) = (x-1)^3 - (x-1)$. A fim de fazermos o estudo de sinal de $h$, identificamos seus zeros.
   \begin{align}
@@ -118,20 +130,50 @@ corresponde à área entre as curvas $y = f(x)$ e $y = g(x)$ restritas ao interv
   \end{align}
   
   \ifispython
-  No \sympy~ podemos usar os seguintes comandos\footnote{Veja a Observação \ref{obs:cap_int_python}.}:
-\begin{verbatim}
->>> f = (x-1)**3-(x-1)
->>> integrate(f,(x,0,1))-integrate(f,(x,1,2))
-1/2
-\end{verbatim}
-\fi  
+  Com o {\python}+{\sympy}, podemos computar a área com os seguintes comandos:
+  \begin{lstlisting}
+    In : from sympy import *
+    ...: x = symbols('x')
+    ...: f = (x-1)**3 - (x-1)
+    ...: integrate(abs(f), (x,0,2))
+    Out: 1/2
+  \end{lstlisting}
+  \fi  
+\end{ex}
+
+\subsubsection{Calculando áreas em função de $y$}
+
+\begin{ex}
+  Calcule a área determinada pelas curvas $x = y^2$ e $y = 2 - x$.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{./cap_apint/dados/fig_ex_apint_areacurvasy/fig}
+    \caption{Área determinada pelas curvas $x = y^2$ e $y = 2 - x$.}
+    \label{fig:ex_apint_areacurvasy}
+  \end{figure}
+
+  Uma das formas mais práticas de calcular esta área é integrando em relação a $y$. Para isso, precisamos que as curvas sejam descritas por funções de $x$ em $y$. A parábola $x = y^2$ já está escrita como tal, e a reta $y = 2 - x$ é equivalente a $x = 2 - y$. Com isso, temos que a área determinada por estas curvas tem medida
+  \begin{align}
+    \int_{-2}^1 \left[(2-y) - (y^2)\right]\,dy &= \int_{-2}^1 2-y-y^2\,dy\\
+                                               &= \left. 2y-\frac{y^2}{2}-\frac{y^3}{3}\right|_{-2}^1\\
+                                               &= \frac{7}{6} + \frac{10}{3}\\
+                                               &=\frac{9}{2}
+  \end{align}
+  
+  \ifispython
+  Com o {\python}+{\sympy}, podemos computar a área com os seguintes comandos:
+  \begin{lstlisting}
+    In : from sympy import *
+    ...: y = symbols('y')
+    ...: f = 2 - y - y**2
+    ...: integrate(f, (y, -2, 1))
+    Out: 9/2
+  \end{lstlisting}
+  \fi  
 \end{ex}
 
 \subsection*{Exercícios resolvidos}
-
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
 
 \begin{exeresol}
   Cálculo a área entre a reta $y=1$ e o gráfico de $f(x)=x^2$ restritas ao intervalo $[0,1]$.
@@ -196,23 +238,39 @@ corresponde à área entre as curvas $y = f(x)$ e $y = g(x)$ restritas ao interv
   \end{enumerate}
 
   \ifispython
-  Podemos computar a solução deste exercícios usando os seguintes comandos do \sympy\footnote{Veja Observação \ref{obs:cap_apint_python}.}. Para o estudo de sinal, podemos utilizar
-\begin{verbatim}
-f = lambda x: x*(x-1)*(x+1)
-reduce_inequalities(f(x)>=0)
-\end{verbatim}
-  Então, para o cálculo da área, podemos utilizar
-\begin{verbatim}
-integrate(f(x),(x,-1,0))-integrate(f(x),(x,0,1))
-\end{verbatim}
+  Com {\python}+{\sympy}, podemos fazer o estudo de sinal de $f$ com os seguintes comandos
+  \begin{lstlisting}
+    In : from sympy import *
+    ...: x = symbols('x')
+    ...: f = lambda x: x**3 - x
+    ...: reduce_inequalities(f(x)>=0)
+    Out: ((-1 <= x) & (x <= 0)) | ((1 <= x) & (x < oo))
+  \end{lstlisting}
+  E, então, computamos a área com
+  \begin{lstlisting}
+    In : A = integrate(f(x), (x, -1, 0)) 
+    ...: B = integrate(f(x), (x, 0, 1))
+    ...: A - B
+    Out: 1/2 
+  \end{lstlisting}
   \fi
 \end{resol}
 
 \subsection*{Exercícios}
 
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
+\begin{exer}
+  Calcule a área entre o gráfico de $y = x^2-1$ e o eixo das abscissas, restrita ao intervalo $[-1, 1]$.
+\end{exer}
+\begin{resp}
+  $4/3$
+\end{resp}
+
+\begin{exer}
+  Calcule a área entre o gráfico de $y = x^2-1$ e o eixo das abscissas, restrita ao intervalo $[-1, 2]$.
+\end{exer}
+\begin{resp}
+  $8/3$
+\end{resp}
 
 \begin{exer}
   Calcule a área entre o gráfico de $f(x)=x^3$ e a reta $y=1$ restritas ao intervalo $[-1,1]$.
@@ -226,6 +284,13 @@ integrate(f(x),(x,-1,0))-integrate(f(x),(x,0,1))
 \end{exer}
 \begin{resp}
   $1$
+\end{resp}
+
+\begin{exer}
+  Calcule a área determinada pelas curvas $x=y^2$ e $y = x - 2$.
+\end{exer}
+\begin{resp}
+  $9/2$
 \end{resp}
 
 \section{Volumes por fatiamento e rotação}\label{cap_apint_sec_volfat}
