@@ -2636,12 +2636,252 @@ Quando o polinômio denominador tem raízes complexas, a decomposição por fra�
   [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
 \end{flushright}
 
-\emconstrucao
+A integral
+\begin{equation}
+  \int_a^b f(x)\,dx
+\end{equation}
+é chamada de integral imprópria quando $a,b\to\pm\infty$ ou $f$ tem uma descontinuidade infinita no intervalo $[a, b]$. Quando a integral existe, dizemos que ela é convergente.
+
+\begin{ex}
+  Estudemos os seguintes casos:
+  \begin{enumerate}[a)]
+  \item $\displaystyle\int_{-2}^\infty \frac{1}{x^2}\,dx$
+    É uma integral imprópria, pois o intervalo de integração $[-2, \infty)$ é infinito.
+  \item $\displaystyle\int_{-\infty}^{1}e^{x}\,dx$
+    É uma integral imprópria, pois o intervalo de integração $(-\infty, 1]$ é infinito.
+  \item $\displaystyle\int_{-1}^{1}\frac{1}{x+1}\,dx$
+    É uma integral imprópria, pois o integrando $1/(x+1)$ tem uma assíntota vertical no extremo esquerdo do intervalo de integração.
+  \item $\displaystyle\int_{0}^2\frac{x-1}{x^2-1}\,dx$
+    Não é uma integral imprópria, pois o integrando é contínuo por partes no intervalo $[0,2]$.
+  \item $\displaystyle\int_{-2}^2\frac{x-1}{x^2-1}\,dx$
+    É uma integral imprópria, pois o integrando tem uma descontinuidade infinita em $x=-1$.
+  \end{enumerate}
+\end{ex}
+
+\subsection{Limites de integração infinitos}
+
+No caso de integrais impróprias da forma
+\begin{equation}
+  \int_a^\infty f(x)\,dx
+\end{equation}
+calculamos
+\begin{equation}
+  \int_a^\infty f(x)\,dx = \lim_{b\to\infty}\int_a^bf(x)\,dx.
+\end{equation}
+
+\begin{ex}
+  Vamos calcular
+  \begin{equation}
+    \int_1^\infty\frac{1}{x^2}\,dx
+  \end{equation}
+  Temos
+  \begin{align}
+    \int_1^\infty\frac{1}{x^2}\,dx &= \lim_{b\to\infty}\int_1^b\frac{1}{x^2}\,dx\\
+                                   &= \lim_{b\to\infty} \left[-\frac{1}{x}\right]_1^b\\
+                                   &= \lim_{b\to\infty} \left[-\cancelto{0}{\frac{1}{b}} + \frac{1}{1}\right]\\
+                                   &= 1
+  \end{align}
+\end{ex}
+
+Analogamente, calculamos
+\begin{equation}
+  \int_{-\infty}^{b}f(x)\,dx = \lim_{a\to -\infty}\int_a^bf(x)\,dx.
+\end{equation}
+
+\begin{ex}
+  Vamos calcular
+  \begin{equation}
+    \int_{-\infty}^2e^{x}\,dx.
+  \end{equation}
+  Temos
+  \begin{align}
+    \int_{-\infty}^2e^{x}\,dx &= \lim_{a\to -\infty}\int_a^2e^{x}\,dx\\
+                              &= \lim_{a\to -\infty} [e^x]_a^2\\
+                              &= \lim_{a\to -\infty} e^2 - \cancelto{0}{e^a}\\
+                              &= e^2
+  \end{align}
+\end{ex}
+
+No caso de integrais impróprias da forma
+\begin{equation}
+  \int_{-\infty}^\infty f(x)\,dx
+\end{equation}
+escolhemos um $c$ qualquer e calculamos
+\begin{equation}
+  \int_{-\infty}^\infty f(x)\,dx = \int_{-\infty}^c f(x)\,dx + \int_{c}^\infty f(x)\,dx
+\end{equation}
+Dizemos que a integral é divergente no caso de ao menos uma das integrais à direita ser divergente.
+
+\begin{ex}
+  Vamos calcular
+  \begin{equation}
+    \int_{-\infty}^\infty \frac{2dx}{1+4x^2}
+  \end{equation}
+  Escolhendo $c=0$, temos
+  \begin{align}
+    \int_{-\infty}^\infty \frac{2dx}{1+4x^2} &= \int_{-\infty}^0 \frac{2dx}{1+4x^2} + \int_{0}^\infty \frac{2dx}{1+4x^2}\\
+                                             &= \lim_{a\to -\infty}\int_a^0\frac{2dx}{1+4x^2} + \lim_{b\to\infty}\int_{0}^b \frac{2dx}{1+4x^2}\\
+                                             &= \lim_{a\to -\infty}[\arc\tg(2x)]_a^0 + \lim_{b\to\infty}[\arc\tg(2x)]_0^b\\
+                                             &= \lim_{a\to -\infty}[\arc\tg(0) - \cancelto{-\frac{\pi}{4}}{\arc\tg(a)}]_a^0 \\
+                                             &+ \lim_{b\to\infty}[\cancelto{\frac{\pi}{4}}{\arc\tg(b)} - \arc\tg(0)]_0^b\\
+                                             &= \frac{\pi}{4} + \frac{\pi}{4} = \frac{\pi}{2}
+  \end{align}
+\end{ex}
+
+\subsection{Integrandos com descontinuidade infinita}
+
+No caso de integrais impróprias em que o integrando tem descontinuidade infinita no limite de integração inferior, calculamos
+\begin{equation}
+  \int_a^bf(x)\,dx = \lim_{c\to a^+}\int_c^bf(x),dx.
+\end{equation}
+Se a descontinuidade for no limite superior, então calculamos
+\begin{equation}
+  \int_a^bf(x)\,dx = \lim_{c\to b^-}\int_a^cf(x),dx.
+\end{equation}
+
+\begin{ex}
+  Vamos calcular
+  \begin{equation}
+    \int_1^2\frac{2x - 2}{(x-1)^2}\,dx
+  \end{equation}
+  Temos
+  \begin{align}
+    \int_1^2\frac{dx}{(x-1)^2}\,dx &= \lim_{c\to 1^+}\int_c^2\frac{dx}{(x-1)^2}\\
+                                   &= \lim_{c\to 1^+}\int_{x=c}^2\frac{du}{u^2}
+  \end{align}
+  onde, usamos a substituição $u = x-1$ e $du = dx$. Segue que,
+  \begin{align}
+    \int_1^2\frac{dx}{(x-1)^2}\,dx &= \lim_{c\to 1^+}[-u^{-1}]_{x=c}^2\\
+                                   &= \lim_{c\to 1^+}\left[-\frac{1}{x-1}\right]_{c}^2\\
+                                   &= \lim_{c\to 1^+}\left[-1 + \frac{1}{\cancelto{0^+}{c-1}}\right]\\
+                                   &= \infty
+  \end{align}
+\end{ex}
+
+No caso do integrando ter descontinuidade infinita em um ponto interno do limite de integração, calculamos
+\begin{equation}
+  \int_a^bf(x)\,dx = \int_{a}^cf(x)\,dx + \int_c^bf(x)\,dx,
+\end{equation}
+onde, $x=c$ é o ponto de descontinuidade de $f$.
+
+\begin{ex}
+  Vamos calcular
+  \begin{equation}
+    \int_0^3\frac{dx}{x-2}
+  \end{equation}
+  Fazemos
+  \begin{align}
+    \int_0^3\frac{dx}{x-2} &= \int_0^2\frac{dx}{x-2} + \int_2^3\frac{dx}{x-2}\\
+                           &= \lim_{c\to 2^-}\int_0^c\frac{dx}{x-2} + \lim_{c\to 2^+}\int_c^3\frac{dx}{x-2}\\
+                           &= \lim_{c\to 2^-}[\ln|x-2|]_0^c + \lim_{x\to 2^+}[\ln|x-2|]_c^3\\
+                           &= \lim_{c\to 2^-}[\cancelto{-\infty}{\ln|c-2|} + \ln|-2|]_0^c + \lim_{x\to 2^+}[\ln|1| - \cancelto{-\infty}{\ln|c-2|}]_c^3\\
+                           &= -\infty + \infty
+  \end{align}
+  no que concluímos que a integral é divergente.
+\end{ex}
 
 \subsection*{Exercícios resolvidos}
 
-\emconstrucao
+\begin{exeresol}
+  Para quais valores de $p$ a integral
+  \begin{equation}
+    \int_1^\infty\frac{dx}{x^p}
+  \end{equation}
+  é convergente.
+\end{exeresol}
+\begin{resol}
+  Por definição
+  \begin{equation}
+    \int_1^\infty\frac{dx}{x^p} = \lim_{b\to\infty}\int_1^b\frac{dx}{x^p}
+  \end{equation}
+  Para $p=1$, temos
+  \begin{align}
+    \int_1^\infty\frac{dx}{x} &= \lim_{b\to\infty}\int_1^b\frac{dx}{x}\\
+                              &= \lim_{b\to\infty}\left[\ln|x|\right]_1^b\\
+                              &= \lim_{b\to\infty}\left[\cancelto{\infty}{\ln|b|} - \ln|1|\right]\\
+                              &= \infty
+  \end{align}
+  Ou seja, para $p=1$ a integral é divergente. Agora, para $p\neq 1$, temos
+  \begin{align}
+    \int_1^\infty\frac{dx}{x^p} &= \lim_{b\to\infty}\int_1^b\frac{dx}{x^p}\\
+                              &= \lim_{b\to\infty}\left[\frac{x^{1-p}}{1-p}\right]_1^b\\
+                              &= \lim_{b\to\infty}\left[\frac{b^{1-p}}{1-p} - \frac{1}{1-p}\right]
+  \end{align}
+  Para $p<1$, temos que $b^{1-p}\to\infty$ quando $b\to\infty$. Agora, para $p>1$, temos que $b^{1-p}\to 0$ quando $b\to\infty$. Logo, concluímos que a integral é convergente para $p>1$ e
+  \begin{equation}
+    \int_1^\infty\frac{dx}{x^p} = \frac{1}{p-1},\quad p>1.
+  \end{equation}
+\end{resol}
+
+\begin{exeresol}
+  Calcule
+  \begin{equation}
+    \int_1^\infty\frac{dx}{(x-1)^2}
+  \end{equation}
+\end{exeresol}
+\begin{resol}
+  Notamos que, além do limite de integração infinito, o integrando tem uma descontinuidade infinita em $x=1$. Logo, calculamos
+  \begin{align}
+    \int_1^\infty\frac{dx}{x-1} &= \lim_{b\to\infty}\int_1^b\frac{dx}{(x-1)^2}\\
+                                &= \lim_{b\to\infty}\left[\lim_{a\to 1^+}\int_a^b\frac{dx}{(x-1)^2}\right]\\
+                                &= \lim_{b\to\infty}\left[\lim_{a\to 1^+}\left[\frac{1}{1-x}\right]_a^b\right]\\
+                                &= \lim_{b\to\infty}\lim_{a\to 1^+}\left(\cancelto{0}{\frac{1}{1-b}} - \cancelto{-\infty}{\frac{1}{1-a}}\right)\\
+                                &= +\infty
+  \end{align}
+\end{resol}
 
 \subsection*{Exercícios}
 
-\emconstrucao
+\begin{exer}
+  Calcule
+  \begin{enumerate}[a)]
+  \item $\displaystyle\int_1^\infty\frac{dx}{x^3}$
+  \item $\displaystyle\int_{-\infty}^{-\frac{1}{2}}\frac{dx}{x^3}$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a)~$\frac{1}{2}$; b)~$2$
+\end{resp}
+
+\begin{exer}
+  Calcule
+  \begin{enumerate}[a)]
+  \item $\displaystyle\int_{-\infty}^\infty\frac{xdx}{\sqrt{x^2+1}}$
+  \item $\displaystyle\int_{-\infty}^{\infty}\frac{e^{-x}}{1+e^{-2x}}\,dx$
+  \end{enumerate}  
+\end{exer}
+\begin{resp}
+  a) $\infty$; b) $-\frac{\pi}{2}$
+\end{resp}
+
+\begin{exer}
+  Calcule
+  \begin{enumerate}
+  \item $\displaystyle\int_{0}^1\frac{dx}{x^2}$
+  \item $\displaystyle\int_{-1}^{2}\frac{dx}{x-2}\,dx$
+
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a) $\infty$; b) $-\infty$
+\end{resp}
+
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \int_{-2}^2\frac{dx}{x^2}
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $\infty$
+\end{resp}
+
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \int_{-\infty}^{\infty} \frac{dx}{x^3}
+  \end{equation}
+\end{exer}
+\begin{resp}
+  divergente
+\end{resp}
