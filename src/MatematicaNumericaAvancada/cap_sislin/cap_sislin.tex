@@ -19,9 +19,9 @@ Uma matriz é dita ser \emph{esparsa} quando ela tem apenas poucos elementos nã
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.45\textwidth]{./cap_sislin/dados/matriz_esparsa_estruturada/main}
+  \includegraphics[width=0.45\textwidth]{./cap_sislin/dados/matriz_esparsa_estruturada/main}\\
   \includegraphics[width=0.45\textwidth]{./cap_sislin/dados/matriz_esparsa_nao_estruturada/main}
-  \caption{Esquerda: exemplo de uma matriz esparsa estruturada. Direita: exemplo de uma matriz esparsa não-estruturada.}
+  \caption{Em cima: exemplo de uma matriz esparsa estruturada. Em baixo: exemplo de uma matriz esparsa não-estruturada.}
   \label{fig:ex_matriz_esparsa_estrutura}
 \end{figure}
 
@@ -41,92 +41,167 @@ Por exemplo, a matriz identidade de tamanho $n=100$ tem esparsidade
 Um sistema tridiagonal tem a seguinte forma matricial
 \begin{equation}\label{eq:sistridiag}
   \begin{bmatrix}
-    b_1 & c_1 & & & 0\\
-    a_2 & b_2 & c_2 & & \\
-    & a_3 & b_3 & \ddots & \\
-    & & \ddots & \ddots & c_{n-1}\\
-    0 & & & a_n & b_n
+    a_{1,1} & a_{1,2} & & & & 0\\
+    a_{2,1} & a_{2,2} & a_{2,3} & & &\\
+    & a_{3,2} & a_{3,3} & a_{3,4} & &\\
+    & & \ddots & \ddots & \ddots &\\
+    & & & \ddots & \ddots & a_{n-1,n}\\
+    0 & & & & a_{n,n-1} & a_{n,n}
   \end{bmatrix}
   \begin{bmatrix}
     x_1\\
     x_2\\
     x_3\\
     \vdots\\
+    x_{n-1}\\
     x_n
   \end{bmatrix} =
     \begin{bmatrix}
-    d_1\\
-    d_2\\
-    d_3\\
+    b_1\\
+    b_2\\
+    b_3\\
     \vdots\\
-    d_n
+    b_{n-1}\\
+    b_n
   \end{bmatrix}
 \end{equation}
-com, $a_1=0$ e $c_n=0$. Ou seja, é um sistema cuja a matriz dos coeficientes é tridiagonal.
+Ou seja, é um sistema cuja a matriz dos coeficientes é tridiagonal.
 
-Uma \emph{matriz tridiagonal} é uma matriz esparsa estruturada. Mais especificamente, é chamada de \href{https://pt.wikipedia.org/wiki/Matriz_banda}{matriz banda}, em que os elementos não nulos estão apenas em algumas de suas diagonais. Para armazenarmos tal matriz precisamos alocar apenas os seguintes três vetores
+Uma \emph{matriz tridiagonal} é uma matriz esparsa estruturada. Mais especificamente, é um caso particular de uma \href{https://pt.wikipedia.org/wiki/Matriz_banda}{matriz banda}, em que os elementos não nulos estão apenas em algumas de suas diagonais. Para armazenarmos tal matriz precisamos alocar apenas os seguintes três vetores
 \begin{gather}
-  a = (0,a_2,\dotsc,a_n)\\
-  b = (b_1,b_2,\dotsc,b_n)\\
-  c = (c_1,c_2,\dotsc,c_{n-1},0)
+  d_{1} = \left(0,a_{2,1},\dotsc,a_{n-1,n}\right)\\
+  d_{0} = \left(a_{1,1},a_{2,2},\dotsc,a_{n,n}\right)\\
+  d_{-1} = \left(a_{2,1},\dotsc,a_{n,n-1},0\right)
 \end{gather}
-Ou seja, precisamos armazenar $3n$ pontos flutuantes em vez de $n^2$, como seria o caso se a matriz dos coeficientes fosse densa.
+Ou seja, precisamos armazenar $3n$ pontos flutuantes em vez de $n^2$, como seria o caso se a matriz dos coeficientes fosse densa. Com isso, podemos alocar a matriz do sistema da seguinte forma
+\begin{equation}
+  \tilde{A} =
+  \begin{bmatrix}
+    * & a_{2,1} & \cdots & a_{n-1,n}\\
+    a_{1,1} & a_{2,2} & \cdots & a_{n,n}\\
+    a_{2,1} & \dotsc & a_{n,n-1} & *
+  \end{bmatrix}
+\end{equation}
+Ou seja, $\tilde{A} = [\tilde{a}_{i,j}]_{i,j=1}^{3,n}$, sendo
+\begin{equation}
+  \tilde{a}_{1+i-j,j} = a_{i,j}
+\end{equation}
 
-\subsubsection{Algoritmo de Thomas}
+\begin{ex}
+  Seja o seguinte sistema linear
+  \begin{gather}
+    2x_1 - x_2 = 0\\
+    x_{i-1} - 6x_i + 4x_{i+1} = \sen\left(i\frac{\pi}{2(n-1)}\right)\\
+    x_{n-1} + x_n = 1
+  \end{gather}
+  O seguinte código {\python} faz a alocação de seu vetor dos termos constantes $b$ e de sua matriz de coeficientes no formato compacto de $\tilde{A}$.
+  \begin{lstlisting}
+    import numpy as np
+    n = 100000
+    
+    # alocação
+    # vetor dos termos constantes
+    b = np.empty(n)
+    b[0] = 0.
+    for i in range(1,n-1):
+      b[i] = np.sin(i*np.pi/(2*(n-1)))
+    b[n-1] = 1.
+    print(b)
+    print(f"b size: {b.size*b.itemsize/1024} Kbytes")
 
-O Algoritmo de Thomas\footnote{Llewellyn Hilleth Thomas, 1903 - 1992, físico e matemático aplicado britânico. Fonte: \href{https://en.wikipedia.org/wiki/Llewellyn_Thomas}{Wikipedia}.} é uma forma otimizada do Método de Eliminação Gaussiana aplicada à sistemas tridiagonais. Enquanto este requer $O(n^3)$ operações, esse demanda apenas $O(n)$.
+    # matriz compacta
+    tA = np.zeros((3,n))
+
+    # indexação
+    def ind(i,j):
+    return 1+i-j,j
+
+    tA[ind(0,0)] = 2.
+    tA[ind(0,1)] = -1.
+    for i in range(1,n-1):
+      tA[ind(i,i-1)] = 1.
+      tA[ind(i,i)] = -3.
+      tA[ind(i,i+1)] = 4.
+    tA[ind(n-1,n-2)] = 1.
+    tA[ind(n-1,n-1)] = 1.
+    print(tA)
+    print(f"tA size: {tA.size*tA.itemsize/1024**2:1.1f} Mbytes")
+  \end{lstlisting}
+\end{ex}
+
+\subsubsection{Algoritmo de Thomas (TDMA)}
+
+O Algoritmo de Thomas\footnote{Llewellyn Hilleth Thomas, 1903 - 1992, físico e matemático aplicado britânico. Fonte: \href{https://en.wikipedia.org/wiki/Llewellyn_Thomas}{Wikipedia}.} (ou, TDMA, {\it Tridiagonal Matrix Algorithm}) é uma forma otimizada do Método de Eliminação Gaussiana\footnote{Carl Friedrich Gauss, 1777-1855, matemático alemão. Fonte: \href{https://en.wikipedia.org/wiki/Carl_Friedrich_Gauss}{Wikipédia}.} aplicada à sistemas tridiagonais. Enquanto este requer $O(n^3)$ operações, esse demanda apenas $O(n)$.
 
 Eliminando os termos abaixo da diagonal em \eqref{eq:sistridiag}, obtemos o sistema equivalente
 \begin{equation}
   \begin{bmatrix}
-    \tilde{b}_1 & c_1 & & & 0\\
-      & \tilde{b}_2 & c_2 & & \\
-    &  & \tilde{b}_3 & \ddots & \\
-    & & \ddots & \ddots & c_{n-1}\\
-    0 & & &  & \tilde{b}_n
+    a_{1,1} & a_{1,2} & & & 0\\
+      & \tilde{a}_{2,2} & a_{2,3} & & \\
+    &  & \tilde{a}_{3,3} & \ddots & \\
+    & & \ddots & \ddots & a_{n-1,n}\\
+    0 & & &  a_{n,n-1} & \tilde{a}_{n,n}
   \end{bmatrix}
   \begin{bmatrix}
     x_1\\
     x_2\\
     x_3\\
     \vdots\\
+    x_{n-1}\\
     x_n
   \end{bmatrix} =
     \begin{bmatrix}
-    \tilde{d}_1\\
-    \tilde{d}_2\\
-    \tilde{d}_3\\
+    b_1\\
+    \tilde{b}_2\\
+    \tilde{b}_3\\
     \vdots\\
-    \tilde{d}_n
+    \tilde{b}_{n-1}\\
+    \tilde{b}_n
   \end{bmatrix}
 \end{equation}
 Este é obtido pela seguinte iteração
 \begin{gather}
-  w := \frac{a_i}{b_{i-1}}\\
-  b_i := b_i - w c_{i-1}\\
-  d_i := d_i - w d_{i-1}
+  w := \frac{a_{i+1,i}}{a_{i,i}}\\
+  a_{i,i} := a_{i,i} - w a_{i-1,i}\\
+  b_i := b_i - w b_{i-1}
 \end{gather}
-onde, o $\tilde{}$ foi esquecido de propósito, indicando a reutilização dos vetores $b$ e $d$. A solução do sistema é, então, obtida de baixo para cima, i.e.
+onde, o $~\tilde{}~$ foi esquecido de propósito, indicando a reutilização da matriz $\tilde{A}$ e do vetor $b$. A solução do sistema é, então, obtida de baixo para cima, i.e.
 \begin{gather}
-  x_n = \frac{d_n}{b_n}\\
-  x_i = \frac{d_i - c_ix_{i+1}}{b_i},
+  x_n = \frac{b_n}{a_{n,n}}\\
+  x_i = \frac{b_i - a_{i,i+1}x_{i+1}}{a_{i,i}},
 \end{gather}
 com $i=n-1,n-2,\dotsc,1$.
 
-\lstinputlisting[caption=Algoritmo de Thomas, label={lst:algThomas}]{./cap_sislin/dados/pyTDMA/main.py}
+% \lstinputlisting[caption=Algoritmo de Thomas, label={lst:algThomas}]{./cap_sislin/dados/pyTDMA/main.py}
+
+\begin{lstlisting}[caption=TDMA, label={py:tdma}]
+def tdma(ta, b):
+  a = ta.copy()
+  x = b.copy()
+  # eliminação
+  for i in range(1,n):
+    w = a[2,i-1]/a[1,i-1]
+    a[1,i] -= w * a[0,i]
+    x[i] -= w * x[i-1]
+  # resolve
+  x[n-1] = x[n-1]/a[1,n-1]
+  for i in range(n-2,-1,-1):
+    x[i] = (x[i] - a[0,i+1]*x[i+1])/a[1,i]
+  return x
+\end{lstlisting}
 
 \begin{exer}\label{exer:sislin_tridiag}
   Considere o seguinte sistema linear
   \begin{gather}
     2x_1 - x_2 = 0\\
-    x_{i-1} - 3x_i + 4x_{i+1} = \sen\left(i\frac{\pi}{2(n-1)}\right)\\
+    x_{i-1} - 6x_i + 4x_{i+1} = \sen\left(i\frac{\pi}{2(n-1)}\right)\\
     x_{n-1} + x_n = 1
   \end{gather}
   \begin{enumerate}[a)]
   \item Compute sua solução usando o Algoritmo de Thomas para $n=3$.
   \item Compare a solução obtida no item anterior com a gerada pela função \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.solve.html}{\lstinline+scipy.linalg.solve+}.
   \item Compare a solução com a obtida no item anterior com a gerada pela função \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.solve_banded.html}{\lstinline+scipy.linalg.solve_banded+}.
-  \item Use o módulo {\python} \href{https://docs.python.org/3/library/timeit.html}{timeit} para comprar a demanda de tempo computacional de cada um dos métodos acima. Compute para $n=10,100,1000,10000$.
+  \item Use o módulo {\python} \href{https://docs.python.org/3/library/datetime.html?highlight=datetime#module-datetime}{datetime} para comprar a demanda de tempo computacional de cada um dos métodos acima. Compute para $n=10,100,1000,10000$.
   \end{enumerate}
 \end{exer}
 
