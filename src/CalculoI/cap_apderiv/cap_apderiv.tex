@@ -333,15 +333,23 @@ Uma função $f$ tem um valor \emph{máximo local} em um ponto interior $x=a$ de
 Na Figura \ref{fig:ex_vmaxminloc} temos o esboço de seu gráfico. Por inferência, temos que $f$ tem valores máximos locais nos pontos $x=-1$ e $x=-1/2$. No ponto $x=0$ tem um valor mínimo local. Observamos que $x=-2$, $x=2$ e $x=3$ não são pontos de extremos locais desta função. No ponto $x=-2$, $f$ tem seu valor mínimo global. Ainda, $f$ não tem valor máximo global.
 \end{ex}
 
-\begin{teo}\normalfont{(Teorema da derivada para pontos extremos locais.)}
+\begin{teo}\normalfont{(Teorema da derivada para pontos extremos locais.)}\label{teo:ptocritico}
   Se $f$ possui um valor extremo local em um ponto $x=a$ e $f$ é diferenciável neste ponto, então
   \begin{equation}
     f'(a) = 0.
   \end{equation}
 \end{teo}
+\begin{dem}
+  Vamos considerar o caso em que $f$ possui um máximo local em $x=a$. Então, segue que
+  \begin{gather}
+    f'(a) = \lim_{h\to 0^+} \frac{f(x+h)-f(x)}{h} \leq 0\\
+    f'(a) = \lim_{h\to 0^-} \frac{f(x+h)-f(x)}{h} \geq 0
+  \end{gather}
+  Logo, $f'(a) = 0$. Para o caso em que $f$ possui um mínimo local em $x=a$, consulte o Exercício \ref{exer:ptocritico}.
+\end{dem}
 
 Deste teorema, podemos concluir que uma função $f$ pode ter valores extremos em:
-\begin{enumerate}
+\begin{enumerate}[a)]
 \item pontos interiores de seu domínio onde $f' = 0$,
 \item pontos interiores de seu domínio onde $f'$ não existe, ou
 \item pontos extremos de seu domínio.
@@ -395,18 +403,19 @@ Um ponto interior do domínio de uma função $f$ onde $f'=0$ ou $f'$ não exist
 Daí, podemos concluir que $f$ tem o valor mínimo global (e local) de $f(-1)=-1$ no ponto $x=-1$ e tem valor máximo global de $f(1)=3$ no ponto $x=1$.
 
 \ifispython
-Podemos usar o \sympy~para computar os pontos extremos e plotar a função. Por exemplo, com os seguintes comandos\footnote{Veja a Observação \ref{obs:cap_apderiv_python}.}:
-\begin{verbatim}
->>> f = (x+1)**2-1, f
->>> f = (x+1)**2-1; f
-(x + 1)**2 - 1
->>> fl = diff(f,x); fl
-2*x + 2
->>> xc = solve(fl,x); xc
-[-1]
->>> f.subs(x,-2); f.subs(x,-1); f.subs(x,1)
->>> plot(f,(x,-2,1))
-\end{verbatim}
+Podemos usar o {\python}+{\sympy} para computar os pontos extremos e plotar a função. Por exemplo, com os seguintes comandos:
+\begin{lstlisting}
+import sympy as sp
+x = sp.Symbol('x')
+f = sp.lambdify(x, (x+1)**2-1)
+# f' == 0
+xc = sp.solve(sp.diff(f(x),x), x)
+print(f"Pto. crítico xc = {xc}")
+print(f"f(-2) = {f(-2)}")
+print(f"f({xc[0]}) = {f(xc[0])}")
+print(f"f(1) = {f(1)}")
+sp.plot(f(x), (x,-2,1))
+\end{lstlisting}
 \fi
 \end{resol}
 
@@ -493,6 +502,13 @@ Podemos usar o \sympy~para computar os pontos extremos e plotar a função. Por 
 \end{exer}
 \begin{resp}
   a)~$x=0$; b)~$x=-1$ ponto de mínimo global; $x=1$ ponto de máximo global; c)~$f(-1)=-1$ valor mínimo global; $f(1)=1$ valor máximo global;
+\end{resp}
+
+\begin{exer}\label{exer:ptocritico}
+  Mostre que se $f$ tem um mínimo local em $x=a$ e é diferenciável neste ponto, então $f'(a)=0$.
+\end{exer}
+\begin{resp}
+  Dica: consulte a demonstração do Teorema \ref{teo:ptocritico}.
 \end{resp}
 
 
