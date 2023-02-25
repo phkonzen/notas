@@ -1,0 +1,99 @@
+%Este trabalho está licenciado sob a Licença Atribuição-CompartilhaIgual 4.0 Internacional Creative Commons. Para visualizar uma cópia desta licença, visite http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR ou mande uma carta para Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+
+\chapter{Perceptron}\label{cap_perceptron}
+\thispagestyle{fancy}
+
+\section{Unidade de Processamento}
+
+A unidade básica de processamento (neurônio artificial) que exploramos nestas notas é baseado no \emph{perceptron} (consultemos a Fig. \ref{fig:perceptron}). Consiste na composição de uma \emph{função de ativação} $f:\mathbb{R}\to\mathbb{R}$ com a \emph{pré-ativação}
+\begin{align}
+  p &= \pmb{x}\cdot\pmb{w}_{:n} + w_{n}\\
+    &= x_0w_0 + x_1w_1 + \cdots + x_{n-1}w_{n-1} + w_{n}
+\end{align}
+onde, $\pmb{x}\in\mathbb{R}^{n}$ é o vetor de entrada, $\pmb{w}\in\mathbb{R}^{n+1}$ é o vetor de pesos\footnote{$w_{n}$ é chamado de \emph{bias}.}. Escolhida uma função de ativação, a saída do neurônio é dada por
+\begin{align}
+  y &= f(p)\\
+    &= f(\pmb{x}\cdot\pmb{w}_{:n} + w_n)
+\end{align}
+O treinamento (calibração) consiste em determinar os pesos $\pmb{w}$ de forma que o neurônio forneça as saídas $y$ esperadas os valores de entrada $\pmb{x}$.
+
+\begin{figure}[H]
+  \centering
+  
+  \caption{Esquema de um perceptron: unidade de processamento.}
+  \label{fig:perceptron}
+\end{figure}
+
+Uma das vantagens deste modelo de neurônio é sua generalidade, i.e. pode ser aplicado a diferentes problemas. Na sequência, vamos aplicá-lo na resolução de um problema de classificação e noutro de regressão.
+
+\subsection{Um problema de classificação}
+
+Vamos desenvolver um perceptron que faça a operação do \verb+e+-lógico. I.e, receba como entrada dois valores lógicos $A_0$ e $A_1$ (V, verdadeiro ou F, falso) e forneça como saída o valor lógico $R = A_0 \verb+e+ A_1$. Consultemos a seguinte tabela verdade:
+
+\begin{center}
+  \begin{tabular}{cc|c}
+    $A_0$ & $A_1$ & R\\\hline
+    V & V & V\\
+    V & F & F\\
+    F & V & F\\
+    F & F & F\\\hline
+  \end{tabular}
+\end{center}
+
+\subsubsection{Modelo}
+
+Nosso modelo de neurônio será um perceptron com duas entradas $\pmb{x}\in \{-1,1\}^2$ e a função de identidade $f(p)=p$ como função de ativação, i.e.
+\begin{equation}
+  y = \pmb{x}\cdot\pmb{w}_{:2} + w_2,
+\end{equation}
+onde $\pmb{w}\in\mathbb{R}^3$ são pesos a determinar.
+    
+\subsubsection{Pré-processamento}
+
+Uma vez que nosso modelo recebe valores $\pmb{x}\in \{-1,1\}^2$ e retorna $y\in\mathbb{R}$, precisamos pré-processar os dados do problema de forma a utilizá-lo. Uma forma, é assumir que todo valor negativo está associado ao valor lógico $F$ (falso) e valor positivo ao valor lógico $V$ (verdadeiro). Desta forma, os dados podem ser interpretados como na seguinte tabela
+
+\begin{center}
+  \begin{tabular}{rr|c}
+    $x_0$ & $x_1$ & y\\\hline
+    1 & 1 & +\\
+    1 & -1 & -\\
+    -1 & 1 & -\\
+    -1 & -1 & -\\\hline
+  \end{tabular}
+\end{center}
+    
+    
+\subsubsection{Treinamento}
+
+Agora, nos falta treinar nosso neurônio para fornecer o valor de $y$ esperado para cada dada uma entrada $\pmb{x}$. Isso consiste em um método para escolhermos os pesos $\pmb{w}$ que sejam adequados para esta tarefa. Vamos explorar mais sobre isso na sequência do texto e, aqui, apenas escolhemos
+\begin{equation}
+  \pmb{w} = (1, 1, -0.5)
+\end{equation}
+Com isso, nosso perceptron é
+\begin{align}
+  y &= f(\pmb{x}\cdot\pmb{w}_{:n} + w_n)\\
+    &= x_0 + x_1 - 1.5
+\end{align}
+Verifique que ele satisfaz a tabela verdade acima!
+
+\subsubsection{Implementação}
+
+\ifispython
+Podemos implementar nosso perceptron com o {\pytorch} como segue
+
+\lstinputlisting{./cap_perceptron/dados/py_e/main.py}
+
+Verifique! Nesta implementação utilização vários métodos para a manipulação de tensores (\lstinline+torch.Tensor+). Consulte \href{https://pytorch.org/docs/stable/torch.html}{PyTorch Docs: torch} para mais informações sobre estes e muitos outros métodos disponíveis.
+\fi
+
+\subsubsection{Interpretação geométrica}
+
+\emconstrucao
+
+\subsection{Problema de regressão}
+
+\emconstrucao
+
+\section{Treinamento}
+
+\emconstrucao
