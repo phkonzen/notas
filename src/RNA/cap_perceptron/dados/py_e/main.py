@@ -3,13 +3,16 @@ import torch
 # modelo
 
 # func. de ativação
-def activation(p):
-    return p
+def activation(z):
+    return z
 
 # perceptron
-def neuron(x, w):
-    p = x @ w[:2] + w[2]
-    y = activation(p)
+def neuron(x, w, b):
+    ns = x.size(0)
+    y = torch.empty((ns))
+    for s in range(ns):
+        z = torch.dot(w, x[s,:]) + b
+        y[s] = activation(z)
     return y
 
 # (pré-)processamento
@@ -20,9 +23,8 @@ def preproc_out(y):
     return torch.where(y < 0, False, True)
 
 # pesos
-w = torch.tensor([1.,
-                  1.,
-                  -1.5]).reshape(-1,1)
+w = torch.tensor([1.,1.])
+b = torch.tensor([-1.5])
 
 # dados de entrada
 x_in = torch.tensor([[True, True],
@@ -36,7 +38,7 @@ print(x_in)
 x = preproc_in(x_in)
 
 # aplicação do modelo
-y = neuron(x, w)
+y = neuron(x, w, b)
 
 # processamento dos dados de saída
 y_out = preproc_out(y)
