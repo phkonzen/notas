@@ -208,13 +208,13 @@ Entretanto, a resolução exata deste problema é muitas vezes não factível. T
 
 A \emph{condição de Armijo} é que a escolha de $\alpha_k$ deve ser tal que
 \begin{equation} \label{eq:condArmijo}
-  f(x^{(k)}+\alpha_k d^{(k)}) \leq f(x^{(k)}) + \sigma \alpha_k \nabla f(x^{(k)})\cdot d^{(k)},
+  f\left(x^{(k)}+\alpha_k d^{(k)}\right) \leq f(x^{(k)}) + \sigma \alpha_k \nabla f\left(x^{(k)})\cdot d^{(k)}\right),
 \end{equation}
 para alguma constante $\sigma\in (0, 1/2)$. Ou seja, a redução em $f$ é esperada ser proporcional à derivada direcional de $f$ com relação a direção $d^{(k)}$ no ponto $x^{(k)}$. Em aplicações computacionais, $\sigma$ é normalmente escolhido no intervalo $[10^{-5}, 10^{-1}]$. 
 
 A condição \eqref{eq:condArmijo} não é suficiente para evitar escolhas muito pequenas de $\alpha_k$. Para tanto, pode-se empregar a \emph{condição de curvatura}, a qual requer que
 \begin{equation}\label{eq:condCurvatura}
-  \nabla f(x^{(k)} + \alpha_kd^{(k)})\cdot d^{(k)} \geq \beta\nabla f(x^{(k)})d^{(k)},
+  \nabla f\left(x^{(k)} + \alpha_kd^{(k)}\right)\cdot d^{(k)} \geq \beta\nabla f\left(x^{(k)})d^{(k)}\right),
 \end{equation}
 para $\beta\in [\sigma, 1/2]$. Notemos que o lado esquerdo de \eqref{eq:condCurvatura} é igual a $\phi'(\alpha_k)$. Ou seja, este condição impõe que $\alpha_k$ seja maior que $\beta\phi'(0)$. Normalmente, escolhe-se $\beta\in [10^{-1}, 1/2]$. Juntas, \eqref{eq:condArmijo} e \eqref{eq:condCurvatura} são conhecidas como \emph{condições de Wolfe}\footnote{Philip Wolfe, 1927 - 2016, matemático estadunidense. Fonte: \href{https://pt.wikipedia.org/wiki/Philip_Wolfe}{Wikipédia}.}.
 
@@ -229,17 +229,17 @@ O Método do Gradiente (\emph{Método do Máximo Declive}) é um Método de Decl
 \begin{ex}\label{ex:Rosenbrock}
   Consideremos o problema de encontrar o mínimo da \emph{função de Rosenbrock}\footnote{Howard Harry Rosenbrock, 1920 - 2010, engenheiro britânico. Fonte: \href{https://en.wikipedia.org/wiki/Howard_Harry_Rosenbrock}{Wikipedia}.}
   \begin{equation}
-    f(x) = \sum_{i=1}^n 100(x_{i+1}-x_i^2)^2 + (1-x_i)^2.
+    f(x) = \sum_{i=1}^n 100\left(x_{i+1}-x_i^2\right)^2 + (1-x_i)^2.
   \end{equation}
   O valor mínimo desta função é zero e ocorre no ponto $x=1$. Esta função é comumente usada como caso padrão para teste de métodos de otimização.
 
   Para o Método do Gradiente, precisamos de suas derivadas parciais:
   \begin{gather}
-    \frac{\p f}{\p x_1} = -400x_1(x_2-x_1^2) - 2(1-x_1)\\
+    \frac{\p f}{\p x_1} = -400x_1\left(x_2-x_1^2\right) - 2(1-x_1)\\
     ~\nonumber\\
-    \frac{\p f}{\p x_j} = \sum_{i=1}^n 200(x_i-x_{i-1}^2)(\delta_{i,j}-2x_{i-1}\delta_{i-1,j})-2(1-x_{i-1})\delta_{i-1,j}\\
+    \frac{\p f}{\p x_j} = \sum_{i=1}^n 200\left(x_i-x_{i-1}^2\right)(\delta_{i,j}-2x_{i-1}\delta_{i-1,j})-2(1-x_{i-1})\delta_{i-1,j}\\
     ~\nonumber\\
-    \frac{\p f}{\p x_{n}} = 200(x_n - x_{n-1}^2)
+    \frac{\p f}{\p x_{n}} = 200\left(x_n - x_{n-1}^2\right)
   \end{gather}
 
   % \lstinputlisting[caption=Algoritmo do Gradiente, label={lst:algOtimMG}]{./cap_otimizacao/dados/pyMG/main.py}
@@ -350,7 +350,7 @@ assumindo que a hessiana $H$ seja definida positiva dentro de uma vizinhança su
 \end{obs}
 
 \begin{ex}\label{ex:optNewtonGC}
-  Seguindo o Exemplo \label{ex:Rosenbrock}, temos que a hessiana associada é a matriz simétrica $H = [h_{i,j}]_{i,j=1}^{n,n}$ com
+  Seguindo o Exemplo \ref{ex:Rosenbrock}, temos que a hessiana associada é a matriz simétrica $H = [h_{i,j}]_{i,j=1}^{n,n}$ com
   \begin{align}
     h_{1,1} &= \frac{\p^2 f}{\p x_1^2} = 1200x_1^2-400x_2+2\\
     h_{1,2} &= \frac{\p^2 f}{\p x_1\p x_2} = -400x_1\\
