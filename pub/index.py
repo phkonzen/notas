@@ -149,7 +149,7 @@ class Index:
         
         body += '<div class="carousel-item active">\n'
         body += '<div class="spinner-grow spinner-grow-sm text-warning mb-1" role="status"></div>\n'
-        body += '<a href="https://eventos.fgv.br/laciam-2023">LACIAM 2023: 30/01 - 03/02/22, Rio de Janeiro, Brasil</a>\n'
+        body += '<a href="https://wp.ufpel.edu.br/ermacrs23/">XI ERMAC-RS 2023 - Submissão de trabalhos: 01-31/março</a>\n'
         body += '</div>\n\n'
 
         body += '<div class="carousel-item">\n'
