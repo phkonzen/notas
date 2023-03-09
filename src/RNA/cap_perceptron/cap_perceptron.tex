@@ -13,10 +13,10 @@ A unidade básica de processamento (neurônio artificial) que exploramos nestas 
 \end{align}
 onde, $\pmb{x}\in\mathbb{R}^{n}$ é o vetor de entrada, $\pmb{w}\in\mathbb{R}^{n}$ é o vetor de pesos e $b\in\mathbb{R}$ é o {\it bias}. Escolhida uma função de ativação, a saída do neurônio é dada por
 \begin{align}
-  y &= f(z)\\
-    &= f(\pmb{w}\cdot\pmb{x} + b)
+  y &:= \mathcal{N}\left(\pmb{x};(\pmb{w},b)\right)\\
+    &= f(z) = f(\pmb{w}\cdot\pmb{x} + b)
 \end{align}
-O treinamento (calibração) consiste em determinar os parâmetros $(\pmb{w}, b)$ de forma que o neurônio forneça as saídas $y$ esperadas para dados valores de entrada $\pmb{x}$.
+O treinamento (calibração) consiste em determinar os parâmetros $(\pmb{w}, b)$ de forma que o neurônio forneça as saídas $y$ esperadas com base em algum critério predeterminado.
 
 \begin{figure}[H]
   \centering
@@ -30,7 +30,7 @@ Uma das vantagens deste modelo de neurônio é sua generalidade, i.e. pode ser a
 
 \subsection{Um problema de classificação}
 
-Vamos desenvolver um perceptron que faça a operação do \verb+e+-lógico. I.e, receba como entrada dois valores lógicos $A_1$ e $A_2$ (V, verdadeiro ou F, falso) e forneça como saída o valor lógico $R = A_1 \verb+e+ A_2$. Consultemos a seguinte tabela verdade:
+Vamos desenvolver um perceptron que faça a operação $\land$ (e-lógico). I.e, receba como entrada dois valores lógicos $A_1$ e $A_2$ (V, verdadeiro ou F, falso) e forneça como saída o valor lógico $R = A_1 \land A_2$. Consultemos a seguinte tabela verdade:
 
 \begin{center}
   \begin{tabular}{cc|c}
@@ -45,24 +45,34 @@ Vamos desenvolver um perceptron que faça a operação do \verb+e+-lógico. I.e,
 
 \subsubsection{Modelo}
 
-Nosso modelo de neurônio será um perceptron com duas entradas $\pmb{x}\in \{-1,1\}^2$ e a função de identidade $f(z)=z$ como função de ativação, i.e.
+Nosso modelo de neurônio será um perceptron com duas entradas $\pmb{x}\in \{-1,1\}^2$ e a função sinal
 \begin{equation}
-  y = \pmb{w}\cdot\pmb{x} + b,
+  f(z) = \sign(z) = \left\{
+    \begin{array}{ll}
+      1 &, z>0\\
+      0 &, z=0\\
+      -1 &, z<0
+    \end{array}
+\right.
+\end{equation}
+como função de ativação, i.e.
+\begin{equation}
+  \mathcal{N}\left(\pmb{x};(\pmb{w},b)\right) = \sign(\pmb{w}\cdot\pmb{x} + b),
 \end{equation}
 onde $\pmb{w}\in\mathbb{R}^2$ e $b\in\mathbb{R}$ são parâmetros a determinar.
 
 
 \subsubsection{Pré-processamento}
 
-Uma vez que nosso modelo recebe valores $\pmb{x}\in \{-1,1\}^2$ e retorna $y\in\mathbb{R}$, precisamos pré-processar os dados do problema de forma a utilizá-lo. Uma forma, é assumir que todo valor negativo está associado ao valor lógico $F$ (falso) e valor positivo ao valor lógico $V$ (verdadeiro). Desta forma, os dados podem ser interpretados como na seguinte tabela
+Uma vez que nosso modelo recebe valores $\pmb{x}\in \{-1,1\}^2$ e retorna $y\in\{-1,1\}$, precisamos (pre)processar os dados do problema de forma a utilizá-lo. Uma forma, é assumir que todo valor negativo está associado ao valor lógico $F$ (falso) e positivo ao valor lógico $V$ (verdadeiro). Desta forma, os dados podem ser interpretados como na seguinte tabela
 
 \begin{center}
   \begin{tabular}{rr|c}
-    $x_1$ & $x_2$ & y\\\hline
-    1 & 1 & +\\
-    1 & -1 & -\\
-    -1 & 1 & -\\
-    -1 & -1 & -\\\hline
+    $x_1$ & $x_2$ & $y$\\\hline
+    1 & 1 & 1\\
+    1 & -1 & -1\\
+    -1 & 1 & -1\\
+    -1 & -1 & -1\\\hline
   \end{tabular}
 \end{center}
     
@@ -72,46 +82,41 @@ Uma vez que nosso modelo recebe valores $\pmb{x}\in \{-1,1\}^2$ e retorna $y\in\
 Agora, nos falta treinar nosso neurônio para fornecer o valor de $y$ esperado para cada dada uma entrada $\pmb{x}$. Isso consiste em um método para escolhermos os parâmetros $(\pmb{w},b)$ que sejam adequados para esta tarefa. Vamos explorar mais sobre isso na sequência do texto e, aqui, apenas escolhemos
 \begin{gather}
   \pmb{w} = (1, 1)\\
-  b = -1.5
+  b = -1
 \end{gather}
 Com isso, nosso perceptron é
-\begin{align}
-  y &= f(\pmb{w}\cdot\pmb{x} + b)\\
-    &= x_1 + x_2 - 1.5
-\end{align}
+\begin{equation}
+  \mathcal{N}(\pmb{x}) = \sign(x_1 + x_2 - 1)
+\end{equation}
 Verifique que ele satisfaz a tabela verdade acima!
 
 
 \subsubsection{Implementação}
 
 \ifispython
-Podemos implementar nosso perceptron com o {\pytorch} como segue
+Podemos implementar nosso perceptron usando {\python}+{\pytorch} como segue
 
 \lstinputlisting{./cap_perceptron/dados/py_e/main.py}
 
-Verifique! Nesta implementação utilização vários métodos para a manipulação de tensores (\lstinline+torch.Tensor+). Consulte \href{https://pytorch.org/docs/stable/torch.html}{PyTorch Docs: torch} para mais informações sobre estes e muitos outros métodos disponíveis.
+Verifique! Aqui e nas seguintes implementações, utilizamos vários métodos para a manipulação de tensores \lstinline+torch.Tensor+). Consulte \href{https://pytorch.org/docs/stable/torch.html}{PyTorch Docs: torch} para mais informações sobre estes e muitos outros métodos disponíveis.
 \fi
 
 \subsubsection{Interpretação geométrica}
 
 Empregamos o seguinte modelo de neurônio
 \begin{equation}
-  y = w_1x_1 + w_2x_2 + b
+  \mathcal{N}\left(\pmb{x};(\pmb{w},b)\right) = \sign(w_1x_1 + w_2x_2 + b)
 \end{equation}
 Observamos que
 \begin{equation}
   w_1x_1 + w_2x_2 + b = 0
 \end{equation}
-corresponde à equação geral de uma reta no plano $\tau: x_1-x_2$. Esta reta divide o plano em dois semiplanos $\tau^+$ e $\tau^-$. O primeiro está na direção do vetor normal a reta $\pmb{n} = (w_1, w_2)$ e o segundo na sua direção oposta. Ou seja, temos
-\begin{equation}
-  w_1x_1 + w_2x_2 + b = \left\{
-    \begin{array}{ll}
-      <0 &, \pmb{x}\in\tau^+,\\
-      >0 &, \pmb{x}\in\tau^-
-    \end{array}
-  \right.
-\end{equation}
-Com isso, o problema de treinar nosso neurônio para nosso problema de classificação consiste em encontrar a reta
+corresponde à equação geral de uma reta no plano $\tau: x_1\times x_2$. Esta reta divide o plano em dois semiplanos
+\begin{align}
+  \tau^+ = \{\pmb{x}\in\mathbb{R}^2: w_1x_1 + w_2x_2 + b > 0\}\\
+  \tau^- = \{\pmb{x}\in\mathbb{R}^2: w_1x_1 + w_2x_2 + b < 0\}
+\end{align}
+O primeiro está na direção do vetor normal a reta $\pmb{n} = (w_1, w_2)$ e o segundo na sua direção oposta. Com isso, o problema de treinar nosso neurônio para nosso problema de classificação consiste em encontrar a reta
 \begin{equation}
   w_1x_1 + w_2x_2 + b = 0
 \end{equation}
@@ -119,38 +124,42 @@ de forma que o ponto $(1,1)$ esteja no semiplano positivo $\tau^+$ e os demais p
 
 \begin{figure}[H]
   \centering
-  
-  \caption{Interpretação geométrica do perceptron.}
+  \includegraphics[width=0.7\textwidth]{./cap_perceptron/dados/fig_class_e/main}
+  \caption{Interpretação geométrica do perceptron aplicado ao problema de classificação ralacionado à operação lógica $\land$ (e-lógico).}
   \label{fig:}
 \end{figure}
 
 \subsubsection{Algoritmo de treinamento: perceptron}
 
-O algoritmo de treinamento perceptron permite calibrar os pesos de um neurônio para fazer a classificação de dados linearmente separáveis. Trata-se de um algoritmo para o \emph{treinamento supervisionado} de um neurônio, i.e. a calibração dos pesos é feita com base de um dado conjunto de amostras de treinamento.
+O algoritmo de treinamento perceptron permite calibrar os pesos de um neurônio para fazer a classificação de dados linearmente separáveis. Trata-se de um algoritmo para o \emph{treinamento supervisionado} de um neurônio, i.e. a calibração dos pesos é feita com base em um dado \emph{conjunto de amostras de treinamento}.
 
-Seja dado um conjunto de treinamento $\{\pmb{x}^{(s)},y^{(s)}\}_{s=1}^{n_s}$, onde $n_s$ é o número de amostras. O algoritmo consiste no seguinte:
+Seja dado um \emph{conjunto de treinamento} $\{\pmb{x}^{(s)},y^{(s)}\}_{s=1}^{n_s}$, onde $n_s$ é o número de amostras. O algoritmo consiste no seguinte:
 \begin{enumerate}
-\item Sete $\pmb{w} = \pmb{0}$
+\item Sete $\pmb{w} = \pmb{0}$, $b=0$.
 \item Para $e = 1,\dotsc, n_e$:
   \begin{enumerate}
   \item Para $s = 1,\dotsc, n_s$:
     \begin{enumerate}
-    \item Se $y^{(s)}(\pmb{x}^{(s)}\cdot \pmb{w}_{[:n]}+w_n) \leq 0$:
+    \item Se $y^{(s)}\mathcal{N}\left(\pmb{x}^{(s)}\right) \leq 0$:
       \begin{enumerate}
-      \item $\pmb{w}_{:n} = \pmb{w}_{:n}+y^{(i)}\pmb{x}^{(i)}$
-      \item $w_n = w_n + y^{(i)}$
+      \item $\pmb{w} = \pmb{w}+y^{(s)}\pmb{x}^{(s)}$
+      \item $b = b + y^{(s)}$
       \end{enumerate}
     \end{enumerate}
   \end{enumerate}
 \end{enumerate}
 onde, $n_e$ é um dado número de épocas\footnote{Número de vezes que as amostrar serão percorridas para realizar a correção dos pesos.}.
 
-\emconstrucao
+\ifispython
+Podemos implementar nosso algoritmo perceptron usando {\python}+{\pytorch} como segue
+
+\lstinputlisting{./cap_perceptron/dados/py_percep_e/main.py}
+
+Verifique!
+\fi
+
 
 \subsection{Problema de regressão}
 
 \emconstrucao
 
-\section{Treinamento}
-
-\emconstrucao
