@@ -3,7 +3,7 @@
 index.html
 
 Autor: Pedro H A Konzen - 05/2018
-Modificado: 05/2020
+Modificado: 03/2023
 '''
 
 import os
@@ -30,30 +30,15 @@ class Index:
         head += '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>\n'
         head += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>\n'
         
-        # head += '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">\n'
-        # head += '<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>\n'
-        # head += '<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>\n'
 
         # FontAwesome
-        # head += '<script src="https://kit.fontawesome.com/dfbff2c7ed.js" crossorigin="anonymous"></script>'
         head += '<link href="./fontawesome/css/all.min.css" rel="stylesheet">'
-        #head += '<link href="./fontawesome/css/brands.css" rel="stylesheet">'
-        #head += '<link href="./fontawesome/css/solid.css" rel="stylesheet">'
         
         #google tracking
         f = open('gtag.js','r')
         head += f.read()
         f.close()
         
-        # head += '\n<!-- Global site tag (gtag.js) - Google Analytics -->\n'
-        # head += '<script async src="https://www.googletagmanager.com/gtag/js?id=UA-17226092-2"></script>\n'
-        # head += '<script>\n'
-        # head += 'window.dataLayer = window.dataLayer || [];\n'
-        # head += 'function gtag(){dataLayer.push(arguments);}\n'
-        # head += 'gtag("js", new Date());\n'
-        # head += '\ngtag("config", "UA-17226092-2")\n';
-        # head += '</script>\n'
-
         head += '<!-- Computer Modern Serif-->'
         head += '<link rel="stylesheet" href="fonts/cmun-serif.css"></link>'
         head += '<link rel="stylesheet" href="index.css" type="text/css">\n'
@@ -69,9 +54,9 @@ class Index:
         
         body += '<div class="container-fluid mb-0">\n'
         body += '<div class="row">\n'
-        body += '<div class="col-lg-1">\n'
+        body += '<div class="col-xl-1">\n'
         body += '</div>'
-        body += '<div class="col-lg-10">\n\n'
+        body += '<div class="col-xl-10">\n\n'
 
         # colab alert (id=colabAlert)
         f = open('colab_alert.html','r')
@@ -83,11 +68,6 @@ class Index:
         body += f.read()
         f.close()
         
-        # # colab alert (id=colabAlert)
-        # f = open('colab_alert.html','r')
-        # body += f.read()
-        # f.close()
-
         # Navbar
         body += '\n\n<!-- begin: navbar -->\n'
         body += '<nav class="navbar navbar-dark bg-primary mb-1">\n'
@@ -166,11 +146,11 @@ class Index:
         body += '</div>\n\n'
 
         body += '<h3 class="mt-1">Notas de Aula</h3>\n\n'
+        body += '<hr>'
 
-
-        body += '<div class=row>\n'
+        body += '<div class="row row-col-auto">' #row-col-xxl-3 row-col-xl-3 row-col-lg-4 row-col-md-4 row-col-sm-6">\n'  d-flex justify-content-left
         # card: notas de aula de Cálculo I
-        body += '<div class="col-lg-3 col-md-4 col-sm-6 d-flex justify-content-center">'
+        body += '<div class="col">'
         body += '<!-- card: notas de aula de Cálculo I -->\n'
         body += '<div class="card border-warning mb-3" style="width: 20rem;">\n'
         body += '<div class="card-header bg-warning">Notas de Aula <span class="badge bg-secondary">Python</span></div>\n'
@@ -184,7 +164,7 @@ class Index:
         body += '</div>\n\n'
 
         # card: notas de aula de EaD
-        body += '<div class="col-lg-3 col-md-4 col-sm-6 d-flex justify-content-center">'
+        body += '<div class="col">'
         body += '<!-- card: notas de aula de EaD -->\n'
         body += '<div class="card border-primary mb-3" style="width: 20rem;">\n'
         body += '<div class="card-header bg-primary text-white">Notas de Aula <span class="badge bg-secondary">Python</span></div>\n'
@@ -198,7 +178,7 @@ class Index:
         body += '</div>\n\n'
 
         # card: notas de aula de EDO
-        body += '<div class="col-lg-3 col-md-4 col-sm-6 d-flex justify-content-center">'
+        body += '<div class="col">'
         body += '<!-- card: notas de aula de EDO -->\n'
         body += '<div class="card border-primary mb-3" style="width: 20rem;">\n'
         body += '<div class="card-header bg-primary text-white">Notas de Aula <span class="badge bg-secondary">Python</span></div>\n'
@@ -212,7 +192,7 @@ class Index:
         body += '</div>\n\n'
 
         # card: Geometria analítica
-        body += '<div class="col-lg-3 col-md-4 col-sm-6 d-flex justify-content-center">'
+        body += '<div class="col">'
         body += '<!-- card: Geometria analítica -->\n'
         body += '<div class="card border-primary mb-3" style="width: 20rem;">\n'
         body += '<div class="card-header bg-primary text-white">Notas de Aula</div>\n'
@@ -226,7 +206,7 @@ class Index:
         body += '</div>\n\n'
 
         # card: notas de aula de Matemática numérica
-        body += '<div class="col-lg-3 col-md-4 col-sm-6 d-flex justify-content-center">'
+        body += '<div class="col">'
         body += '<!-- card: notas de aula de Matemática numérica -->\n'
         body += '<div class="card border-primary mb-3" style="width: 20rem;">\n'
         body += '<div class="card-header bg-primary text-white">Notas de Aula <span class="badge bg-secondary">Octave</span></div>\n'
@@ -240,7 +220,7 @@ class Index:
         body += '</div>\n\n'
 
         # card: notas de aula de Matemática Numérica Avançada
-        body += '<div class="col-lg-3 col-md-4 col-sm-6 d-flex justify-content-center">'
+        body += '<div class="col">'
         body += '<!-- card: notas de aula de Matemática numérica avançada -->\n'
         body += '<div class="card border-warning mb-3" style="width: 20rem;">\n'
         body += '<div class="card-header bg-warning text-dark">Notas de Aula <span class="badge bg-secondary">Python</span></div>\n'
@@ -254,7 +234,7 @@ class Index:
         body += '</div>\n\n'
 
         # card: notas de aula de Matemática Numérica Paralela
-        body += '<div class="col-lg-3 col-md-4 col-sm-6 d-flex justify-content-center">'
+        body += '<div class="col">'
         body += '<!-- card: notas de aula de Matemática numérica paralela -->\n'
         body += '<div class="card border-primary mb-3" style="width: 20rem;">\n'
         body += '<div class="card-header bg-primary text-white">Notas de Aula <span class="badge bg-secondary">C/C++</span></div>\n'
@@ -268,7 +248,7 @@ class Index:
         body += '</div>\n\n'
 
         # card: Método de elementos finitos
-        body += '<div class="col-lg-3 col-md-4 col-sm-6 d-flex justify-content-center">'
+        body += '<div class="col">'
         body += '<!-- card: Método de elementos finitos -->\n'
         body += '<div class="card border-primary mb-3" style="width: 20rem;">\n'
         body += '<div class="card-header bg-primary text-white">Notas de Aula <span class="badge bg-secondary">Python</span></div>\n'
@@ -282,7 +262,7 @@ class Index:
         body += '</div>\n\n'
 
         # card: Pré-Cálculo
-        body += '<div class="col-lg-3 col-md-4 col-sm-6 d-flex justify-content-center">'
+        body += '<div class="col">'
         body += '<!-- card: Pré-Cálculo -->\n'
         body += '<div class="card border-warning mb-3" style="width: 20rem;">\n'
         body += '<div class="card-header bg-warning">Notas de Aula <span class="badge bg-secondary">Python</span></div>\n'
@@ -296,7 +276,7 @@ class Index:
         body += '</div>\n\n'
 
         # card: Vetores
-        body += '<div class="col-lg-3 col-md-4 col-sm-6 d-flex justify-content-center">'
+        body += '<div class="col">'
         body += '<!-- card: Vetores -->\n'
         body += '<div class="card border-primary mb-3" style="width: 20rem;">\n'
         body += '<div class="card-header bg-primary text-white">Notas de Aula</div>\n'
@@ -313,11 +293,12 @@ class Index:
 
         # Minicursos
         body += '<h3>Minicursos</h3>\n\n'
-
-        body += '<div class="row">\n'
+        body += '<hr>'
+        
+        body += '<div class="row row-col-auto">\n' #col-xxl-3 col-xl-3 col-lg-4 col-md-4 col-sm-6 d-flex justify-content-left
 
         # card: notas do Minicurso de Python para Matemática
-        body += '<div class="col-lg-3 col-md-4 col-sm-6 d-flex justify-content-center">'
+        body += '<div class="col">'
         body += '<!-- card: notas do MiniPython -->\n'
         body += '<div class="card border-primary mb-3" style="width: 20rem;">\n'
         body += '<div class="card-header bg-primary text-white">Minicurso <span class="badge bg-secondary">Python</span></div>\n'
@@ -331,7 +312,7 @@ class Index:
         body += '</div>\n\n'
 
         # card: Mini Cálculo com Python
-        body += '<div class="col-lg-3 col-md-4 col-sm-6 d-flex justify-content-center">'
+        body += '<div class="col">'
         body += '<!-- card: Mini Cálculo com python -->\n'
         body += '<div class="card border-primary mb-3" style="width: 20rem;">\n'
         body += '<div class="card-header bg-primary text-white">Minicurso <span class="badge bg-secondary">Python</span></div>\n'
@@ -353,17 +334,16 @@ class Index:
 
 
         
-        body += '<div class="row">\n'
+        body += '<div class="row row-col-auto">\n'
         # body += '<div class="col-md-6">\n'
 
         body += '<h3>Vídeos & Áudios</h3>'
-
-        
+        body += '<hr>'
 
         # card: Internet Archive
         body += '<!-- card: Internet Archive -->\n'
-        body += '<div class="col-lg-3 col-md-4 col-sm-6 d-flex justify-content-center">'
-        body += '<div class="card border-primary mb-3" style="max-width: 20rem;">\n'
+        body += '<div class="col">'
+        body += '<div class="card border-primary mb-3" style="width: 20rem;">\n'
         body += '<div class="card-header bg-primary text-white">Vídeos & Áudios</div>\n'
         body += '<div class="card-body">\n'
         body += '<h5 class="card-title"><i class="fas fa-building-columns"></i> Internet Archive</h5>\n'
@@ -376,8 +356,8 @@ class Index:
 
         # card: YouTube
         body += '<!-- card: YouTube -->\n'
-        body += '<div class="col-lg-3 col-md-4 col-sm-6 d-flex justify-content-center">'
-        body += '<div class="card border-primary mb-3" style="max-width: 20rem;">\n'
+        body += '<div class="col">'
+        body += '<div class="card border-primary mb-3" style="width: 20rem;">\n'
         body += '<div class="card-header bg-primary text-white">Vídeos & Áudios <span class="badge bg-success">Novo</span></div>\n'
         body += '<div class="card-body">\n'
         body += '<h5 class="card-title"><i class="fab fa-youtube"></i> YouTube</h5>\n'
@@ -394,11 +374,12 @@ class Index:
         body += '</div><!-- div class="row" -->\n'
 
         
-        body += '<div class="row">\n'
+        body += '<div class="row">\n' #row-col-md6
 
         body += '<div class="col-md-6">\n'
 
         body += '<h3>Sobre</h3>\n'
+        body += '<hr>'
         body += '<p>Neste <i>site</i> publico minhas notas de aula. \n'
         body += 'O material está escrito predominante em linguagem de marcação \n'
         body += '<a href="https://www.latex-project.org/">LaTeX</a>. \n'
@@ -417,6 +398,7 @@ class Index:
         body += '<div class="col-md-6">\n'
 
         body += '<h3>Sobre mim?</h3>\n'
+        body += '<hr>'
         body += '<ul>\n'
         body += '<li><a href="http://lattes.cnpq.br/2565213716047382">Currículo Lattes</a></li>\n'
         body += '<li><a href="http://professor.ufrgs.br/pedro/">Página de professor na UFRGS</a></li>\n'
@@ -440,8 +422,8 @@ class Index:
 
         # body += '</div> <!-- div class="container-fluid" -->\n'
 
-        body += '</div> <!-- div class=col-lg-10 -->\n'
-        body += '<div class=col-lg-1>\n'
+        body += '</div> <!-- div class=col-xl-10 -->\n'
+        body += '<div class=col-xl-1>\n'
         body += '</div>\n'
         body += '</div><!-- div row -->\n'
         body += '</div> <!-- div class=container-fluid -->\n\n'

@@ -31,6 +31,9 @@ MetodoElementosFinitos: mainMetodoElementosFinitos.py
 PreCalculo: mainPreCalculo.py
 	python3 mainPreCalculo.py
 
+Teste: mainTeste.py
+	python3 mainTeste.py
+
 Vetores: mainVetores.py
 	python3 mainVetores.py
 

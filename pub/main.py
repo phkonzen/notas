@@ -90,7 +90,6 @@ os.system('cp docs_readme.md '+odir+'/README.md')
 
 #fonts
 os.system('cp -rvf fonts '+odir+'/')
-#os.system('cp -rvf fonts '+odir+'/MiniCalcPy/')
     
 #sitemap.txt
 sm = SiteMap(odir)

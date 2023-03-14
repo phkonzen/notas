@@ -4,7 +4,7 @@
 Classe das notas de aula.
 
 Autor: Pedro H A Konzen - 05/2018
-Modificado: 05/2021
+Modificado: 03/2023
 '''
 
 import os
@@ -17,27 +17,23 @@ class Notas:
     def goodies(self,htmldir,titulo_notas,srcref):
 
         # adiciona goodies.css
-        f = open(htmldir+'/goodies.css','w')
-        text = '* {\n'
-        text += 'font-family: "Computer Modern Serif", serif;\n'
-        text += '}\n\n'
+        f = open(htmldir+'/goodies.css','w')        
+        text = 'body {'
+        text += 'font-family: "Computer Modern Serif", serif;'
+        text += 'font-size: 1.2em;'
+        text += '}'
 
-        text += '.ltx_lst_numbers_left .ltx_listingline .ltx_tag {\n'
-        text += 'margin-left: 0em;\n'
-        text += 'text-align: right;\n'
-        text += 'position: relative;\n'
-        text += '}\n\n'
+        text += '.ltx_lst_numbers_left .ltx_listingline .ltx_tag {'
+        text += 'margin-left: 0em;'
+        text += 'text-align: right;'
+        text += 'position: relative;'
+        text += '}'
         
-        text += '.navbar {\n'
-        text += 'height: auto;\n'
-        text += 'padding: 5px;\n'
-        text += '}\n\n'
+        text += '.navbar {'
+        text += 'height: auto;'
+        text += 'padding: 5px;'
+        text += '}'
 
-        # if (srcref != 'MatematicaNumericaParalela'):
-        #     text += '.ltx_lst_numbers_left .ltx_listingline .ltx_tag {\n'
-        #     text += 'margin-left:-1em; width:2.5em;\n'
-        #     text += 'text-align:right; }\n'
-        
         f.write(text)
         f.close()
         
@@ -45,7 +41,7 @@ class Notas:
         head = ''
         
         head += '<meta name="author" content="Pedro H A Konzen"/>\n'
-        head += '<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">\n'
+        # head += '<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">\n'
 
         #BootstrapCDN v.4.5
         #head += '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">\n'
@@ -69,8 +65,8 @@ class Notas:
         head += '<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">'
         
         # Goodies CSS
-        head += '<!-- Computer Modern Serif-->'
-        head += '<link rel="stylesheet" href="fonts/cmun-serif.css">\n'
+        # head += '<!-- Computer Modern Serif-->'
+        # head += '<link rel="stylesheet" href="fonts/cmun-serif.css">\n'
         head += '<link rel="stylesheet" href="goodies.css" type="text/css">\n'
 
         # head += '<script>'
@@ -100,11 +96,11 @@ class Notas:
 
         # body += '<div class="row">\n'
 
-        body += '<div class=container-fluid>\n'
+        body += '<div class=container-fluid mb-0>\n'
         body += '<div class=row>\n'
-        body += '<div class=col-lg-1>\n'
+        body += '<div class=col-xl-1>\n'
         body += '</div>'
-        body += '<div class=col-lg-10>\n\n'
+        body += '<div class=col-xl-10>\n\n'
 
         # general alert
         f = open('general_alert.html','r')
@@ -115,7 +111,7 @@ class Notas:
         f = open('colab_alert.html','r')
         aux = f.read().replace('./contato.html','../contato.html')
         aux = aux.replace('<span></span>',
-                          '<span class="material-icons" style="font-size: 18px;">screen_rotation</span>')
+                          '<span class="material-icons">screen_rotation</span>')
         body += aux
         f.close()
 
@@ -163,8 +159,8 @@ class Notas:
         f.close()
         body_end += rp.replace('./contato.html','../contato.html')
         
-        body_end += '</div> <!-- div class=col-lg-1 -->\n'
-        body_end += '<div class=col-lg-1>\n'
+        body_end += '</div> <!-- div class=col-xl-1 -->\n'
+        body_end += '<div class=col-xl-1>\n'
         body_end += '</div>\n'
         body_end += '</div> <!-- div class=row -->\n'
         body_end += '</div> <!-- div class=container-fluid -->\n\n'

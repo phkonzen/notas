@@ -158,8 +158,80 @@ Podemos implementar nosso algoritmo perceptron usando {\python}+{\pytorch} como 
 Verifique!
 \fi
 
+\begin{teo}(Perceptron)
+  \emconstrucao
+\end{teo}
 
 \subsection{Problema de regressão}
+
+Vamos treinar um perceptron para resolver um problema de regressão. Dados os pontos
+\begin{center}
+  \begin{tabular}{l|ll}
+    s & $x^{(s)}$ & $y^{(s)}$\\\hline
+    1 & 0.5 & 1.2\\
+    2 & 1.0 & 2.1\\
+    3 & 1.5 & 2.6\\
+    4 & 2.0 & 3.6\\\hline
+  \end{tabular}
+\end{center}
+
+\subsubsection{Modelo}
+
+Vamos determinar o perceptron\footnote{Escolhendo $f(z)=z$ como função de ativação.}
+\begin{equation}\label{eq:percep_regr}
+  \tilde{y} = \mathcal{N}(x; (w, b)) = wx + b
+\end{equation}
+que melhor se ajusta a este conjunto de dados $\left\{(x^{(s)}, y^{(s)})\right\}_{s=1}^{n_s}$, $n_s=4$.
+
+\subsubsection{Treinamento}
+
+A ideia é que o perceptron seja tal que minimize o erro quadrático médio (EQM)\footnote{Em inglês, \it{mean squared error} (MSE).}, i.e.
+\begin{equation}\label{eq_percep:regr_prob}
+  \min_{w,b}\frac{1}{n_s}\sum_{s=1}^{n_s}\left(\tilde{y}^{(s)}-y^{(s)}\right)^2
+\end{equation}
+Vamos denotar a \emph{função erro}\footnote{Em inglês, {\it loss function}.} por
+\begin{align}\label{eq:eqm}
+  \varepsilon(w,b) &:= \frac{1}{n_s}\sum_{s=1}^{n_s}\left(\tilde{y}^{(s)}-y^{(s)}\right)^2\\
+                   &= \frac{1}{n_s}\sum_{s=1}^{n_s}\left(wx^{(s)}+b-y^{(s)}\right)^2
+\end{align}
+
+Observamos que \eqref{eq_percep:regr_prob} é equivalente a \href{https://notaspedrok.com.br/notas/MatematicaNumerica/cap_ajuste_sec_prob_lin.html}{problema linear de mínimos quadrados}, a solução é dada por\footnote{Consulte o Exercício \ref{exer_percep:sol_mq}.}
+\begin{gather}\label{eq_percep:sol_mq}
+  w = \frac{n_s\sum_{s=1}^{n_s}\left(x^{(s)}y^{(s)}\right)-\sum_{s=1}^{n_s}\left(x^{(s)}\right)\sum_{s=1}^{n_s}\left(y^{(s)}\right)}{n_s\sum_{s=1}^{n_s}\left(x^{(s)}\right)^2-\left(\sum_{s=1}^{n_s}x^{(s)}\right)^2}\\
+  b = \frac{\sum_{s=1}^{n_s}\left(y^{(s)}\right)\sum_{s=1}^{n_s}\left(x^{(s)}\right)^2-\sum_{s=1}^{n_s}\left(x^{(s)}\right)\sum_{s=1}^{n_s}\left(x^{(s)}y^{(s)}\right)}{n_s\sum_{s=1}^{n_s}\left(x^{(s)}\right)^2-\left(\sum_{s=1}^{n_s}x^{(s)}\right)^2}
+\end{gather}
+
+\subsubsection{Implementação}
+
+\emconstrucao
+
+\subsubsection{Resultado}
+
+\emconstrucao
+
+\subsection{Exercícios}
+
+\begin{exer}\label{exer:eqm_convexa}
+  Assumindo o modelo de neurônio \eqref{eq:percep_regr}, mostre que \eqref{eq:eqm} é função convexa.
+\end{exer}
+\begin{resp}
+  Dica: verifique que sua matriz hessiana é positiva definida.
+\end{resp}
+
+\begin{exer}\label{exer_percep:sol_mq}
+  Mostre que a solução do problema \eqref{eq_percep:regr_prob} é dada por \eqref{eq_percep:sol_mq}.
+\end{exer}
+\begin{resp}
+  Dica: consulte a ligação \href{https://notaspedrok.com.br/notas/MatematicaNumerica/cap_ajuste_sec_prob_lin.html}{Notas de Aula: Matemática Numérica: 7.1 Problemas lineares}.
+\end{resp}
+
+\emconstrucao
+
+\section{Método do gradiente descendente estocástico}
+
+\emconstrucao
+
+\subsection{Exercícios}
 
 \emconstrucao
 
