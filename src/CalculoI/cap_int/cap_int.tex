@@ -738,19 +738,32 @@ onde $F$ é uma \emph{primitiva} de $f$, i.e. $F' = f$, e $C$ é uma \emph{const
 
 Com base na derivada de função potência, podemos afirmar que
 \begin{equation}
-  \pmb{\int x^r\,dx = \frac{x^{r+1}}{r+1} + C,\quad r\neq -1}.
+  {\color{blue}\int x^r\,dx = \frac{x^{r+1}}{r+1} + C,\quad r\neq -1}.
 \end{equation}
 De fato, temos
-\begin{equation}
-  \left(\frac{x^{r+1}}{r+1}\right)' = (r+1)\cdot \frac{x^r}{r+1} = x^r,
-\end{equation}
+\begin{align}
+  F(x) &= \frac{x^{r+1}}{r+1} + C \\
+  F'(x) &= (r+1) \frac{x^r}{r+1} \\
+  &= x^r,
+\end{align}
 para $r\neq -1$.
 
 \begin{ex}
-  Vejamos os seguintes casos:
+  Estudamos os seguintes casos:
   \begin{enumerate}[a)]
-  \item $\displaystyle \int x\,dx = \frac{x^2}{2} + C$.
-  \item $\displaystyle \int \frac{1}{x^2}\,dx = \int x^{-2}\,dx = -x^{-1} + C = -\frac{1}{x}+C$.
+  \item
+    \begin{equation}
+      \int x\,dx = \frac{x^2}{2} + C.
+    \end{equation}
+  \item
+    \begin{align}
+      \int \frac{1}{x^2}\,dx &= \int x^{-2}\,dx \\
+                             &= -x^{-1} + C \\
+                             &= -\frac{1}{x}+C.
+    \end{align}
+    \ifispython
+    Verifique com o {\python}+{\sympy}!
+    \fi
   \end{enumerate}
 \end{ex}
 
@@ -769,46 +782,95 @@ para $r\neq -1$.
                         &= \frac{1^3}{3} - \frac{(-1)^3}{3} \\
                         &= \frac{1}{3} + \frac{1}{3} = \frac{2}{3}.
   \end{align}
+    \ifispython
+    Verifique com o {\python}+{\sympy}!
+    \fi
 \end{ex}
 
-\subsection{Regras da multiplicação por constante e da soma}
+\subsection{Regra da multiplicação por constante}
 
 \begin{flushright}
   [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
 \end{flushright}
 
-Das regras de multiplicação por constante e da soma para derivadas, podemos concluir que
-\begin{itemize}
-\item $\displaystyle \pmb{\int k\cdot f(x)\,dx = k\cdot \int f(x)\,dx},\quad k\neq 0$ constante.
-
-  De fato, seja $F$ uma primitiva de $f$. Temos $(k\cdot F)' = k\cdot F' = k\cdot f$, i.e. $k\cdot F$ é primitiva de $k\cdot f$.
-  
-\item $\displaystyle \pmb{\int \left[f(x)\pm g(x)\right]\,dx = \int f(x)\,dx \pm \int g(x)\,dx}$.
-
-  De fato, sejam $F$ uma primitiva de $f$ e $G$ uma primitiva de $g$. Temos $(F + G)' = F' + G' = f + g$, i.e. $F + G$ é primitiva de $f+g$.
-\end{itemize}
-
-\begin{obs}
-  Como $(x)' = 1$, temos que a \emph{integral de função constante} $f(x)\equiv k$ é
-  \begin{equation}
-    \int k\,dx = k\int 1\cdot\,dx = k\cdot x + C.
-  \end{equation}
-\end{obs}
+Seja $k$ uma constante. Então, temos a seguinte regra da multiplicação por constante
+\begin{equation}
+  {\color{blue}\int k\cdot f(x)\,dx = k\cdot \int f(x)\,dx}
+\end{equation}
+De fato, se $F$ uma primitiva de $f$, então pela regra da multiplicação por constante para derivadas, temos
+\begin{align}
+  (k\cdot F)' &= k\cdot F'\\
+              &= k\cdot f,
+\end{align}
+i.e. $k\cdot F$ é primitiva de $k\cdot f$.
 
 \begin{ex}
-  Vejamos os seguintes casos:
+  Estudamos os seguintes casos:
   \begin{enumerate}[a)]
   \item
     \begin{align}
-      \int 2x\,dx &= 2\int x\,dx \\
-                  &= 2 \left(\frac{x^2}{2} + C\right) \\
+      \int 2x\,dx &= 2\int x\,dx\\
+                  &= 2\left(\frac{x^2}{2} + C\right)\\
+                  &= x^2 + 2C\\
                   &= x^2 + C
-    \end{align}\footnote{Como $C$ é uma constante indeterminada, $2\cdot C$ também é uma constante indeterminada.}
+    \end{align}
+    Aqui, fizemos um abuso de linguagem ao assumir $2C = C$. Isso pode ser feito, pois $C$ denota uma constante indeterminada e, multiplicá-la por dois continua sendo indeterminada e constante. Vamos fazer este tipo de simplificação de notação várias vezes ao longo do texto.
   \item
     \begin{align}
-      \int (2x^2 - 3x + 1)\,dx &= \int 2x^2\,dx - \int 3x\,dx + \int \,dx \\
-                               &= 2\int x^2\,dx - 3\int x\,dx + x + C \\
-                               &= \frac{2}{3}x^3 - \frac{3}{2}x^2 + x + C
+      \int \frac{1}{3}\sqrt{x}\,dx &= \frac{1}{3}\int x^{\frac{1}{2}}\,dx\\
+                                   &= \frac{1}{3}\frac{x^{\frac{1}{2}+1}}{\frac{1}{2}+1} + C\\
+                                   &= \frac{1}{3}\frac{x^{\frac{3}{2}}}{\frac{3}{2}} + C\\
+                                   &= \frac{2}{9}\sqrt{x^3} + C
+    \end{align}
+  \item
+    \begin{align}
+      \int_0^{1}-x^2\,dx &= -\int_0^1x^2\,dx\\
+                         &= \int_1^0 x^2\,dx\\
+                         &= \left.\frac{x^3}{3}\right|_1^0\\
+                         &= \frac{0^3}{3} - \frac{1^3}{3}\\
+                         &= \frac{1}{3}
+    \end{align}
+    \ifispython
+    Verifique com o {\python}+{\sympy}!
+    \fi
+  \end{enumerate}
+\end{ex}
+
+\subsection{Regra da soma ou subtração}
+
+Se $f$ e $g$ são funções integráveis, então vale a seguinte regra da soma/subtração
+\begin{equation}
+  {\color{blue}\int \left[f(x)\pm g(x)\right]\,dx = \int f(x)\,dx \pm \int g(x)\,dx}.
+\end{equation}
+De fato, sejam $F$ uma primitiva de $f$ e $G$ uma primitiva de $g$. Temos
+\begin{align}
+  (F \pm G)' &= F' \pm G'\\
+             &= f \pm g,
+\end{align}
+i.e. $F \pm G$ é primitiva de $f+g$.
+
+\begin{ex}
+  Estudamos os seguintes casos:
+  \begin{enumerate}[a)]
+  \item
+    \begin{align}
+      \int x + 1\,dx &= {\color{blue}\int x\,dx} + {\color{red}\int\,dx}\\
+                     &= {\color{blue}\frac{x^2}{2} + C_1} + {\color{red}x + C_2}\\
+                     &= \frac{x^2}{2} + x + C
+    \end{align}
+    Aqui, $C_1$, $C_2$ e $C = C_1+C_2$ denotam constantes indeterminadas.
+  \item
+    \begin{align}
+      \int \sqrt{x} - x\,dx &= {\color{blue}\int x^{\frac{1}{2}}\,dx} - {\color{red}\int x\,dx}\\
+                            &= {\color{blue}\frac{3}{2}x^{\frac{3}{2}}} - {\color{red}\frac{x^2}{2}} + C
+    \end{align}
+  \item
+    \begin{align}
+      {\color{blue}\int (2x^2 + 3x - 1)\,dx} &= \int \left[2x^2 + (3x - 1)\right]\,dx\\
+                                             &= \int 2x^2\,dx + \int 3x - 1 \,dx \\
+                                             &= {\color{blue}\int 2x^2\,dx - \int 3x\,dx - \int \,dx}\\
+                                             &= 2\int x^2\,dx + 3\int x\,dx - \int \,dx\\
+                                             &= \frac{2}{3}x^3 + \frac{3}{2}x^2 - x + C
     \end{align}
   \end{enumerate}
 \end{ex}
@@ -831,41 +893,46 @@ Das regras de multiplicação por constante e da soma para derivadas, podemos co
   \end{align}
 \end{ex}
 
-\subsection{Integral de $1/x$}
+\subsection{Integral de $x^{-1}$}
 
 \begin{flushright}
   [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
 \end{flushright}
 
-Na Seção \ref{cap_funcao_sec_funlog}, a função logaritmo natural $y = \ln x$ foi definida como a inversa da função exponencial natural $y = e^x$. Pode-se mostrar que
+Começamos lembrando que, para $x>0$, temos
 \begin{equation}
-  \ln x = \int_1^x\frac{1}{t}\,dt,\quad x>0.
+  \frac{d}{dx}\ln x = \frac{1}{x}
 \end{equation}
-Isto está de acordo com o fato de que da parte I do Teorema Fundamental do Cálculo, temos
-\begin{equation}
-  \frac{d}{dx}\ln x = \frac{1}{x}.
-\end{equation}
-Agora, da Regra da cadeira temos
+Agora, pela regra da cadeia, para $x<0$, temos
 \begin{align}
-  \frac{d}{dx}\ln(-x) &= \frac{1}{-x}\frac{d(-x)}{dx} \\
-                      &= \frac{1}{x}.
+  \frac{d}{dx}\ln(-x) &= \frac{1}{-x}\cdot (-x)'\\
+                      &= -\frac{1}{x}\cdot (-1)\\
+                      &= \frac{1}{x}
 \end{align}
-Com isso, podemos concluir que
+Ou seja, temos que
 \begin{equation}
-  \pmb{\int \frac{1}{x}\,dx = \ln|x| + C}.
+  \frac{d}{dx}\ln|x| = \frac{1}{x}
+\end{equation}
+donde, concluímos que
+\begin{equation}
+  {\color{blue}\int\frac{1}{x}\,dx = \ln|x| + C}
 \end{equation}
 
 \begin{ex}
   Vamos calcular
   \begin{equation}
-    \int_1^e \frac{1}{x}\,dx.
+    \int_1^e x^{-1}\,dx.
   \end{equation}
   Usando o Teorema Fundamental do Cálculo, temos
   \begin{align}
-    \int_1^e \frac{1}{x}\,dx &= \left. \ln x\right|_1^e \\
-                             &= \ln(e) - \ln(1) \\
-                             &= 1.
+    \int_1^e x^{-1}\,dx &= \int_1^e \frac{1}{x}\,dx\\
+                        &= \left. \ln|x|\right|_1^e \\
+                             &= \ln|e| - \ln|1| \\
+                             &= 1 - 0 = 1.
   \end{align}
+  \ifispython
+  Verifique computando com o {\python}+{\sympy}!
+  \fi
 \end{ex}
 
 \subsection{Integral da função exponencial natural}\label{cap_int_subsec_funexp}
@@ -876,16 +943,27 @@ Com isso, podemos concluir que
 
 Da derivada da função exponencial natural, temos
 \begin{equation}
-  \int e^x\,dx = e^x + C.
+  {\color{blue}\int e^x\,dx = e^x + C}.
 \end{equation}
 
 \begin{ex}
-  \begin{align}
-    \int e^{2 + x}\,dx &= \int e^2e^x\,dx \\
-                       &= e^2\int e^x\,dx \\
-                       &= e^2e^x + C \\
-                       &= e^{2+x} + C
-  \end{align}
+  Vamos estudar os seguintes casos:
+  \begin{enumerate}[a)]
+  \item
+    \begin{align}
+      \int e^{2 + x}\,dx &= \int e^2e^x\,dx \\
+                         &= e^2\int e^x\,dx \\
+                         &= e^2e^x + C \\
+                         &= e^{2+x} + C
+    \end{align}
+  \item
+    \begin{align}
+      \int_{0}^{\ln 2}e^x\,dx &= \left. e^x\right|_0^{\ln 2}\\
+                              &= e^{\ln 2} - e^0\\
+                              &= 2 - 1\\
+                              &= 1
+    \end{align}
+\end{enumerate}
 \end{ex}
 
 \subsection{Integrais de funções trigonométricas}\label{cap_int_sec_regrasbasic_trigo}

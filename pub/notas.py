@@ -57,7 +57,8 @@ class Notas:
         head += '<link href="../fontawesome/css/all.min.css" rel="stylesheet">'
 
         # Google icons
-        head += '<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">'
+        # head += '<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">'
+        head += '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">'
         
         # Goodies CSS
         head += '<link rel="stylesheet" href="goodies.css" type="text/css">'
@@ -82,8 +83,8 @@ class Notas:
         # colab alert
         f = open('colab_alert.html','r')
         aux = f.read().replace('./contato.html','../contato.html')
-        # aux = aux.replace('<!-- subs:screen_rotation_icon -->',
-        #                   '<span class="material-symbols-outlined">screen_rotation</span>')
+        aux = aux.replace('<!-- subs:screen_rotation_icon -->',
+                          '<span class="material-symbols-outlined m-0">screen_rotation</span>')
         body += aux
         f.close()
 
