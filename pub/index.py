@@ -58,10 +58,13 @@ class Index:
         self.page = self.page.replace('</html>',head)
         self.page += '</html>'
 
-    def new_card(self, header, title, text, badges, link, color):
+    def new_card(self, header, title, text, badges, link, color, status=""):
         card = ""
         card += f'<div class="card border-{color} mb-3" style="width: 20rem;">'
-        card += f'<div class="card-header text-bg-{color}">Notas de Aula</div>'
+        card += f'<div class="card-header text-bg-{color} d-flex justify-content-between">{header} '
+        if (status != ""):
+            card += f'<span class="badge bg-secondary">{status}</span>'
+        card += '</div>'
         card += '<div class="card-body">'
         card += f'<h4 class="card-title">{title}</h4>'
         card += f'<p class="card-text" style="color: gray">{text}'
@@ -185,7 +188,7 @@ class Index:
                               text = "Cálculo diferencial e integral de funções de uma variável real",
                               badges = ["Python", "Sympy"],
                               link = "CalculoI/main.html",
-                              color = "warning")
+                              color = "warning", status = "Ativo")
         body += '</div>'
 
         # card: notas de aula de EaD
@@ -195,7 +198,7 @@ class Index:
                               text = "Introdução a equações a diferenças",
                               badges = ["Python", "Sympy"],
                               link = "EaD/main.html",
-                              color = "primary")
+                              color = "primary", status = "Estável")
         body += '</div> '
 
         # card: notas de aula de EDO
@@ -205,7 +208,7 @@ class Index:
                               text = "Introdução a equações diferenciais ordinárias",
                               badges = ["Python", "Sympy"],
                               link = "EDO/main.html",
-                              color = "primary")
+                              color = "primary", status = "Estável")
         body += '</div>'
 
         # card: Geometria analítica
@@ -215,7 +218,7 @@ class Index:
                               text = "Introdução a geometria analítica",
                               badges = [],
                               link = "GeometriaAnalitica/main.html",
-                              color = "primary")
+                              color = "primary", status = "Estável")
         body += '</div>'
 
         # card: notas de aula de Matemática numérica
@@ -223,9 +226,9 @@ class Index:
         body += self.new_card(header = "Notas de Aula",
                               title = "Matemática Numérica",
                               text = "Métodos e técnicas de cálculo numérico",
-                              badges = ["Python", "NumPy", "Matplotlib"],
+                              badges = ["Octave"],
                               link = "MatematicaNumerica/main.html",
-                              color = "primary")
+                              color = "danger", status = "Atualizando")
         body += '</div>'
 
         # card: notas de aula de Matemática Numérica Avançada
@@ -235,7 +238,7 @@ class Index:
                               text = "Tópicos de métodos numéricos avançados",
                               badges = ["Python", "NumPy", "SciPy", "Matplotlib"],
                               link = "MatematicaNumericaAvancada/main.html",
-                              color = "warning")
+                              color = "warning", status = "Ativo")
         body += '</div>'
 
         # card: notas de aula de Matemática Numérica Paralela
@@ -245,7 +248,7 @@ class Index:
                               text = "Introdução à computação paralela a métodos numéricos",
                               badges = ["C/C++", "OpenMP", "OpenMPI"],
                               link = "MatematicaNumericaParalela/main.html",
-                              color = "primary")
+                              color = "primary", status = "Estável")
         body += '</div>'
 
         # card: Método de elementos finitos
@@ -255,7 +258,7 @@ class Index:
                               text = "Introdução ao método dos elementos finitos",
                               badges = ["Python", "FEniCS"],
                               link = "MetodoElementosFinitos/main.html",
-                              color = "primary")
+                              color = "primary", status = "Estável")
         body += '</div>'
 
         # card: Pré-Cálculo
@@ -265,7 +268,7 @@ class Index:
                               text = "Matemáticas essencial para um curso de cálculo",
                               badges = ["Python", "SymPy"],
                               link = "PreCalculo/main.html",
-                              color = "warning")
+                              color = "warning", status = "Ativo")
         body += '</div>'
 
         # card: Vetores
@@ -275,7 +278,7 @@ class Index:
                               text = "Vetores no espaço euclidiano tridimensional",
                               badges = [],
                               link = "Vetores/main.html",
-                              color = "primary")
+                              color = "primary", status = "Estável")
         body += '</div>'
 
         body += '</div> <!-- div class=row-->'
@@ -293,7 +296,7 @@ class Index:
                               text = "Introdução à Python para matemática",
                               badges = ["Python", "NumPy", "Matplotlib"],
                               link = "MiniPython/main.html",
-                              color = "primary")
+                              color = "primary", status = "Estável")
         body += '</div>'
 
         # card: Mini Cálculo com Python

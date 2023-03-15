@@ -343,10 +343,11 @@ class Notas:
                     paux = respid.index('"')
                     respid = respid[0:paux]
                     page = page.replace(taux, \
-                                '<button class="btn btn-info btn-sm" type="button" data-bs-toggle="collapse" '+ \
-                                'data-bs-target="#'+respid+'">Resposta'+ \
-                                '</button>'+ \
-                                '<div class="collapse" id="'+respid+'">')
+                                        '<div class="d-grid gap-2 d-md-flex justify-content-md-end">' + \
+                                        '<button class="btn btn-warning" type="button" ' + \
+                                        'data-bs-toggle="collapse" data-bs-target="#' + \
+                                        respid + '">Resposta</button></div>' + \
+                                        '<div class="collapse" id="'+respid+'">')
                     paux = page.find('ltx_theorem_resp')
                     
                 #modifica o __footer__
