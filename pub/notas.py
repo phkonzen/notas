@@ -20,7 +20,7 @@ class Notas:
         f = open(htmldir+'/goodies.css','w')        
         text = 'body {'
         text += 'font-family: "Computer Modern Serif", serif;'
-        text += 'font-size: 1.2em;'
+        text += 'font-size: 120%;'
         text += '}'
 
         text += '.ltx_lst_numbers_left .ltx_listingline .ltx_tag {'
@@ -41,66 +41,43 @@ class Notas:
         head = ''
         
         head += '<meta name="author" content="Pedro H A Konzen"/>\n'
-        # head += '<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">\n'
 
-        #BootstrapCDN v.4.5
-        #head += '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">\n'
-        #head += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>\n'
-        #head += '<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>\n'
-        #head += '<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>\n'
+        # # BootstrapCDN v.5.1
+        # head += '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">\n'
+        # head += '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>\n'
 
-        #BootstrapCDN v.5.1
-        head += '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">\n'
-        head += '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>\n'
+        # bootstrap 5.3.0
+        head += '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">'
+        head += '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>'
+
+        # jquery 3.6.0
         head += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>\n'
-
         
         # FontAwesome
-        # head += '<script src="https://kit.fontawesome.com/dfbff2c7ed.js" crossorigin="anonymous"></script>'
         head += '<link href="../fontawesome/css/all.min.css" rel="stylesheet">'
-        # head += '<link href="../fontawesome/css/brands.css" rel="stylesheet">'
-        # head += '<link href="../fontawesome/css/solid.css" rel="stylesheet">'
 
         # Google icons
         head += '<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">'
         
         # Goodies CSS
-        # head += '<!-- Computer Modern Serif-->'
-        # head += '<link rel="stylesheet" href="fonts/cmun-serif.css">\n'
         head += '<link rel="stylesheet" href="goodies.css" type="text/css">\n'
-
-        # head += '<script>'
-        # head += '$(document).ready(function(){'
-        # head += '$(".toast").toast();'
-        # head += '});'
-        # head += '</script>'
 
 
         # Google tracking
         f = open('gtag.js','r')
         head += f.read()
         f.close()
-        # head += '\n<!-- Global site tag (gtag.js) - Google Analytics -->\n'
-        # head += '<script async src="https://www.googletagmanager.com/gtag/js?id=UA-17226092-2"></script>\n'
-        # head += '<script>\n'
-        # head += 'window.dataLayer = window.dataLayer || [];\n'
-        # head += 'function gtag(){dataLayer.push(arguments);}\n'
-        # head += 'gtag("js", new Date());\n'
-        # head += '\ngtag("config", "UA-17226092-2")\n';
-        # head += '</script>\n'
 
         head += '</head>\n'
 
         #enxerta no __body__ (top)
         body = '<body>\n\n'
 
-        # body += '<div class="row">\n'
-
         body += '<div class=container-fluid mb-0>\n'
         body += '<div class=row>\n'
-        body += '<div class=col-xl-1>\n'
+        body += '<div class=col-xxl-1>\n'
         body += '</div>'
-        body += '<div class=col-xl-10>\n\n'
+        body += '<div class=col-xxl-10>\n\n'
 
         # general alert
         f = open('general_alert.html','r')
@@ -159,9 +136,7 @@ class Notas:
         f.close()
         body_end += rp.replace('./contato.html','../contato.html')
         
-        body_end += '</div> <!-- div class=col-xl-1 -->\n'
-        body_end += '<div class=col-xl-1>\n'
-        body_end += '</div>\n'
+        body_end += '</div> <!-- div class=col-xxl-10 -->\n'
         body_end += '</div> <!-- div class=row -->\n'
         body_end += '</div> <!-- div class=container-fluid -->\n\n'
 

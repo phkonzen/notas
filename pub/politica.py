@@ -26,32 +26,24 @@ class Politica:
         head += '<meta name="author" content="Pedro H A Konzen"/>\n'
         head += '<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">\n'
 
-        head += '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">\n'
-        head += '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>\n'
+        # # bootstrap 5.1.3
+        # head += '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">\n'
+        # head += '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>\n'
+
+        # bootstrap 5.3.0
+        head += '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">'
+        head += '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>'
+        
+        # jquery 3.6.0
         head += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>\n'
         
-        # head += '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">\n'
-        # head += '<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>\n'
-        # head += '<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>\n'
-
         # FontAwesome
-        # head += '<script src="https://kit.fontawesome.com/dfbff2c7ed.js" crossorigin="anonymous"></script>'
         head += '<link href="./fontawesome/css/all.min.css" rel="stylesheet">'
-        # head += '<link href="./fontawesome/css/brands.css" rel="stylesheet">'
-        # head += '<link href="./fontawesome/css/solid.css" rel="stylesheet">'
         
         #google tracking
         f = open('gtag.js','r')
         head += f.read()
         f.close()
-        # head += '\n<!-- Global site tag (gtag.js) - Google Analytics -->\n'
-        # head += '<script async src="https://www.googletagmanager.com/gtag/js?id=UA-17226092-2"></script>\n'
-        # head += '<script>\n'
-        # head += 'window.dataLayer = window.dataLayer || [];\n'
-        # head += 'function gtag(){dataLayer.push(arguments);}\n'
-        # head += 'gtag("js", new Date());\n'
-        # head += '\ngtag("config", "UA-17226092-2")\n';
-        # head += '</script>\n'
 
         head += '<!-- Computer Modern Serif-->'
         head += '<link rel="stylesheet" href="fonts/cmun-serif.css"></link>'

@@ -57,9 +57,10 @@
 
 .ltx_outdent { margin-left: -2em; }
 
-/* .ltx_chapter_title, etc should be in ltx-article.css etc.
- */
-.ltx_page_main { margin:0px; padding:1em 3em 1em 2em; }
+/* .ltx_chapter_title, etc should be in ltx-article.css etc. */
+.ltx_page_main { margin:0px auto;
+    padding:1em 3em 1em 2em;
+    padding:min(1em,1.5%) min(3em,4.5%) min(1em,1.5%) min(2em, 3%); }
 .ltx_tocentry  { list-style-type:none; }
 
 /* support for common author block layouts.*/
@@ -87,7 +88,7 @@
 /*======================================================================
   Para level */
 .ltx_float {
-    margin: 1ex 3em 1ex 3em; }    
+    margin: 1ex 3em 1ex 3em; }
 td.ltx_subfigure,
 td.ltx_subtable,
 td.ltx_subfloat { width:50%; }
@@ -123,6 +124,11 @@ td.ltx_subfloat { width:50%; }
 
 .ltx_tabular .ltx_tabular { width:100%; }
 .ltx_inline-block { display:inline-block; }
+
+/* avoid padding when aligning adjacent columns, e.g. for split decimals */
+.ltx_norightpad { padding-right:0!important; }
+.ltx_noleftpad  { padding-left:0!important; }
+.ltx_nopad      { padding:0!important; }
 
 /* equations in non-aligned mode (not normally used) */
 .ltx_eqn_div { display:block; width:95%; text-align:center; }
@@ -203,7 +209,7 @@ dl.ltx_description dl.ltx_description dd { margin-left:3em; }
 .ltx_lst_numbers_left .ltx_listingline .ltx_tag {
     background-color:transparent;
     margin-left:-3em; width:2.5em;
-    position:absolute; 
+    position:absolute;
     text-align:right; }
 .ltx_lst_numbers_right .ltx_listingline .ltx_tag {
     background-color:transparent;
@@ -238,16 +244,25 @@ span.ltx_rowspan { position:absolute; top:0; bottom:0; }
 
 /*======================================================================
   Columns */
-.ltx_page_column1 {
-    width:44%; float:left; } /* IE uses % of wrong container*/
+.ltx_page_columns {
+    display: flex; }
+.ltx_page_column1,
 .ltx_page_column2 {
-    width:44%; float:right; }
-.ltx_page_columns > .ltx_page_column1 {
-    width:48%; float:left; }
-.ltx_page_columns > .ltx_page_column2 {
-    width:48%; float:right; }
-.ltx_page_columns:after {
-    content:"."; display:block; height:0; clear:both; visibility:hidden; }
+    flex:100%;
+    margin: 0 20px;
+ }
+@media screen and (max-width: 60em){
+  .ltx_page_columns {
+     flex-direction: column; }
+  .ltx_page_column1 > ul,
+  .ltx_page_column1 > ol,
+  .ltx_page_column1 > dl {
+     margin-bottom: 0; }
+  .ltx_page_column2 > ul,
+  .ltx_page_column2 > ol,
+  .ltx_page_column2 > dl {
+     margin-top: 0; }
+}
 
 /*======================================================================
  Borders and such */
@@ -301,7 +316,7 @@ span.ltx_rowspan { position:absolute; top:0; bottom:0; }
 .ltx_note_content {
      max-width: 70%; font-size:90%; left:15%;
      text-align:left;
-     background-color: white; 
+     background-color: white;
      padding: 0.5em 1em 0.5em 1.5em;
      border: 1px solid black; border-radius: 0 5px 5px 5px; box-shadow: 5px 5px 10px gray; }
 .ltx_note_mark    { color:blue; }
@@ -314,7 +329,7 @@ span.ltx_rowspan { position:absolute; top:0; bottom:0; }
 
 .ltx_ERROR        { color:red; }
 .ltx_rdf          { display:none; }
-.ltx_missing      { color:red;} 
+.ltx_missing      { color:red;}
 .ltx_nounicode    { color:red; }
 /*======================================================================
  SVG (pgf/tikz ?) basics */
@@ -341,12 +356,7 @@ span.ltx_rowspan { position:absolute; top:0; bottom:0; }
 .ltx_font_upright    { font-style: normal; font-variant:normal; }
 .ltx_font_slanted    { font-style: oblique; font-variant:normal; }
 .ltx_font_smallcaps  { font-variant: small-caps; font-style:normal; }
-.ltx_font_oldstyle   { font-variant: oldstyle-nums;  /* experimental css3 ? Doesn't seem to work!*/
-                       font-style:normal; 
-                       -moz-font-feature-settings: "onum";
-                       -ms-font-feature-settings: "onum";
-                       -webkit-font-feature-settings: "onum";
-                       font-variant-numeric: oldstyle-nums; }
+.ltx_font_oldstyle   { font-variant-numeric: oldstyle-nums; }
 .ltx_font_mathcaligraphic { font-family: "Lucida Calligraphy", "Zapf Chancery","URW Chancery L"; }
 /*
 
@@ -363,20 +373,9 @@ cite                 { font-style: normal; }
 /* Dubious stuff */
 .ltx_hflipped {
     display:inline-block;
-    -moz-transform: scaleX(-1);
-    -o-transform: scaleX(-1);
-    -webkit-transform: scaleX(-1);
-    transform: scaleX(-1);
-    filter: FlipH;
-    -ms-fliter: "FlipH"; }
+    transform: scaleX(-1); }
 .ltx_vflipped {
     display:inline-block;
-    -moz-transform: scaleY(-1);
-    -o-transform: scaleY(-1);
-    -webkit-transform: scaleY(-1);
-    transform: scaleY(-1);
-    filter: FlipV;
-    -ms-fliter: "FlipV"; }
+    transform: scaleY(-1); }
 
 /* .ltx_phantom handled in xslt */
-

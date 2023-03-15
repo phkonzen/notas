@@ -41,13 +41,13 @@ main.html: main.tex
 	latexml main.tex | latexmlpost \
         --splitat=section -splitnaming=label \
 	--css=../main.css \
-	--css="fonts/cmun-serif.css" \
+	--css="./fonts/cmun-serif.css" \
 	--format=html \
 	--javascript='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=MML_SVG' \
+	--javascript=../mymathcfg.js \
 	--dest=html/main.html -
 	cp config-book.knd config.knd
 
-#       --javascript=../mymathcfg.js \
 ########################################
 # TODOS AS VERSÕES EM FORMATO PDF
 ########################################
