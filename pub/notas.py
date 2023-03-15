@@ -20,7 +20,7 @@ class Notas:
         f = open(htmldir+'/goodies.css','w')        
         text = 'body {'
         text += 'font-family: "Computer Modern Serif", serif;'
-        text += 'font-size: 120%;'
+        text += 'font-size: larger;'
         text += '}'
 
         text += '.ltx_lst_numbers_left .ltx_listingline .ltx_tag {'
@@ -29,10 +29,10 @@ class Notas:
         text += 'position: relative;'
         text += '}'
         
-        text += '.navbar {'
-        text += 'height: auto;'
-        text += 'padding: 5px;'
-        text += '}'
+        # text += '.navbar {'
+        # text += 'height: auto;'
+        # text += 'padding: 5px;'
+        # text += '}'
 
         f.write(text)
         f.close()
@@ -40,18 +40,18 @@ class Notas:
         #enxerta no __head__
         head = ''
         
-        head += '<meta name="author" content="Pedro H A Konzen"/>\n'
+        head += '<meta name="author" content="Pedro H A Konzen"/>'
 
         # # BootstrapCDN v.5.1
-        # head += '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">\n'
-        # head += '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>\n'
+        # head += '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">'
+        # head += '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>'
 
         # bootstrap 5.3.0
         head += '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">'
         head += '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>'
 
         # jquery 3.6.0
-        head += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>\n'
+        head += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>'
         
         # FontAwesome
         head += '<link href="../fontawesome/css/all.min.css" rel="stylesheet">'
@@ -60,7 +60,7 @@ class Notas:
         head += '<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">'
         
         # Goodies CSS
-        head += '<link rel="stylesheet" href="goodies.css" type="text/css">\n'
+        head += '<link rel="stylesheet" href="goodies.css" type="text/css">'
 
 
         # Google tracking
@@ -68,64 +68,64 @@ class Notas:
         head += f.read()
         f.close()
 
-        head += '</head>\n'
+        head += '</head>'
 
         #enxerta no __body__ (top)
-        body = '<body>\n\n'
+        body = '<body>'
 
-        body += '<div class=container-fluid mb-0>\n'
-        body += '<div class=row>\n'
-        body += '<div class=col-xxl-1>\n'
+        body += '<div class="container-fluid mb-0">'
+        body += '<div class="row">'
+        body += '<div class="col-xxl-1">'
         body += '</div>'
-        body += '<div class=col-xxl-10>\n\n'
+        body += '<div class="col-xxl-10">'
+
+        # colab alert
+        f = open('colab_alert.html','r')
+        aux = f.read().replace('./contato.html','../contato.html')
+        # aux = aux.replace('<!-- subs:screen_rotation_icon -->',
+        #                   '<span class="material-symbols-outlined">screen_rotation</span>')
+        body += aux
+        f.close()
 
         # general alert
         f = open('general_alert.html','r')
         body += f.read().replace('./politica.html','../politica.html')
         f.close()
 
-        # colab alert
-        f = open('colab_alert.html','r')
-        aux = f.read().replace('./contato.html','../contato.html')
-        aux = aux.replace('<span></span>',
-                          '<span class="material-icons">screen_rotation</span>')
-        body += aux
-        f.close()
-
         
         # Navbar
-        body += '\n\n<!-- begin: navbar -->\n'
-        body += '<nav class="navbar navbar-dark bg-primary mb-1">\n'
-        body += '<div class="container-fluid">\n'
-        body += '<a class="navbar-brand" href="main.html">Notas de Aula<br/><small>'+titulo_notas+'</small></a>\n'
-        body += '<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">\n'
-        body += '<span class="navbar-toggler-icon"></span>\n'
-        body += '</button>\n'
-        body += '<div class="collapse navbar-collapse" id="navbarNav">\n'
-        body += '<ul class="navbar-nav">\n'
-        body += '<li class="nav-item"><a class="nav-link" href="../index.html"><i class="fas fa-home"></i> Início</a></li>\n'
-        body += '<li class="nav-item"><a class="nav-link active" href="main.html">Sumário</a></li>\n'
-        body += '<li class="nav-item"><a class="nav-link" href="main.pdf"><i class="fas fa-download" aria-hidden="true"></i> PDF</a></li>\n'
-        body += '<li class="nav=item"><a class="nav-link" href="https://colab.research.google.com/github/phkonzen/notas/blob/master/notas.ipynb">Google Colab</a></li>\n'
-        body += '<li class="nav-item dropdown">\n'
-        body += '<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">\n'
-        body += 'Contato\n'
-        body += '</a>\n'
-        body += '<div class="dropdown-menu" aria-labelledby="navbarDropdown">\n'
-        body += '<a class="dropdown-item" href="../contato.html"><i class="fas fa-envelope"></i> Mensagem</a>\n'
-        body += '<a class="dropdown-item" href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i> notas.pedrok</a>\n'
-        body += '</div><!-- div class="dropdown-menu" aria-labelledby="navbarDropdown" -->\n'
-        body += '</li> <!-- li class="nav-item dropdown" -->\n'
-        body += '<li class="nav-item"><a class="nav-link" href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i> Repo</a></li>\n'
-        body += '<li class="nav-item"><a class="nav-link" href="../politica.html">Política de dados</a></li>\n'
-        body += '</ul>\n'
-        body += '</div><!-- /.navbar-collapse -->\n'
-        body += '</div><!-- /.container-fluid -->\n'
-        body += '</nav>\n'
-        body += '\n\n<!-- end: navbar -->\n\n\n'
+        body += '<!-- begin: navbar -->'
+        body += '<nav class="navbar navbar-dark bg-primary mb-1">'
+        body += '<div class="container-fluid">'
+        body += '<a class="navbar-brand" href="main.html">Notas de Aula<br/><small>'+titulo_notas+'</small></a>'
+        body += '<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">'
+        body += '<span class="navbar-toggler-icon"></span>'
+        body += '</button>'
+        body += '<div class="collapse navbar-collapse" id="navbarNav">'
+        body += '<ul class="navbar-nav">'
+        body += '<li class="nav-item"><a class="nav-link" href="../index.html"><i class="fas fa-home"></i> Início</a></li>'
+        body += '<li class="nav-item"><a class="nav-link active" href="main.html">Sumário</a></li>'
+        body += '<li class="nav-item"><a class="nav-link" href="main.pdf"><i class="fas fa-download" aria-hidden="true"></i> PDF</a></li>'
+        body += '<li class="nav=item"><a class="nav-link" href="https://colab.research.google.com/github/phkonzen/notas/blob/master/notas.ipynb">Google Colab</a></li>'
+        body += '<li class="nav-item dropdown">'
+        body += '<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">'
+        body += 'Contato'
+        body += '</a>'
+        body += '<div class="dropdown-menu" aria-labelledby="navbarDropdown">'
+        body += '<a class="dropdown-item" href="../contato.html"><i class="fas fa-envelope"></i> Mensagem</a>'
+        body += '<a class="dropdown-item" href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i> notas.pedrok</a>'
+        body += '</div><!-- div class="dropdown-menu" aria-labelledby="navbarDropdown" -->'
+        body += '</li> <!-- li class="nav-item dropdown" -->'
+        body += '<li class="nav-item"><a class="nav-link" href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i> Repo</a></li>'
+        body += '<li class="nav-item"><a class="nav-link" href="../politica.html">Política de dados</a></li>'
+        body += '</ul>'
+        body += '</div><!-- /.navbar-collapse -->'
+        body += '</div><!-- /.container-fluid -->'
+        body += '</nav>'
+        body += '<!-- end: navbar -->'
 
         # redes sociais
-        body += '<p class="text-left mb-0"><a href="./contato.html"><i class="fas fa-envelope"></i></a> | <a href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i></a> | <a href="https://archive.org/details/notas-de-aula"><i class="fas fa-building-columns"></i></a> | <a href="https://www.youtube.com/channel/UCwutHKlKLgVj6IkFSUFBqoA"><i class="fab fa-youtube"></i></a> | <a href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i></a></p>\n\n\n'
+        body += '<p class="text-left mb-0"><a href="./contato.html"><i class="fas fa-envelope"></i></a> | <a href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i></a> | <a href="https://archive.org/details/notas-de-aula"><i class="fas fa-building-columns"></i></a> | <a href="https://www.youtube.com/channel/UCwutHKlKLgVj6IkFSUFBqoA"><i class="fab fa-youtube"></i></a> | <a href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i></a></p>'
         
         #enxerta no __body__ (bottom)
         body_end = ''
@@ -136,14 +136,14 @@ class Notas:
         f.close()
         body_end += rp.replace('./contato.html','../contato.html')
         
-        body_end += '</div> <!-- div class=col-xxl-10 -->\n'
-        body_end += '</div> <!-- div class=row -->\n'
-        body_end += '</div> <!-- div class=container-fluid -->\n\n'
+        body_end += '</div> <!-- div class=col-xxl-10 -->'
+        body_end += '</div> <!-- div class=row -->'
+        body_end += '</div> <!-- div class=container-fluid -->'
 
-        body_end += '</body>\n'
+        body_end += '</body>'
 
         #enxerta no __footer__
-        foot = '<div class="ltx_page_logo">\n'
+        foot = '<div class="ltx_page_logo">'
         foot += '<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />O texto acima está sob Licença <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR">Creative Commons Atribuição-CompartilhaIgual 4.0 Internacional</a>. '
 
         pages = []
@@ -232,25 +232,25 @@ class Notas:
                             inc += '<a href="' + yurl + '" target="_blank"><img src="../pics/play_video.jpeg" class="card-img-top" alt="Assistir vídeo!" style="max-width: 20rem"></a>'
                             inc += '</div>'
                             inc += '<div class="col-md-6">'
-                            inc += '<ul class="list-group list-group-flush  d-inline-flex">\n'
+                            inc += '<ul class="list-group list-group-flush  d-inline-flex">'
                             if (yurl != "#"):
                                 inc += '<a href="' + yurl + '" target=_blank' + \
-                                    ' class="list-group-item list-group-item-action text-primary"><i class="fab fa-youtube fa-xl"></i> Assista no YouTube!</a>\n'
+                                    ' class="list-group-item list-group-item-action text-primary"><i class="fab fa-youtube fa-xl"></i> Assista no YouTube!</a>'
                             else:
-                                inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fab fa-youtube fa-xl"></i> Assista no YouTube</a>\n'
+                                inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fab fa-youtube fa-xl"></i> Assista no YouTube</a>'
                             
 
                             if (vurl != "#"):
                                 inc += '<a href="' + vurl +  '" target=_blank' + \
-                                    ' class="list-group-item list-group-item-action text-primary"><i class="fas fa-building-columns fa-xl"></i> Assista no archive.org!</a>\n'
+                                    ' class="list-group-item list-group-item-action text-primary"><i class="fas fa-building-columns fa-xl"></i> Assista no archive.org!</a>'
                             else:
-                                inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fas fa-building-columns fa-xl"></i> Assista no archive.org!</a>\n'
+                                inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fas fa-building-columns fa-xl"></i> Assista no archive.org!</a>'
                                 
                             if (aurl != "#"):
                                 inc += '<a href="' + aurl +  '" target=_blank' + \
-                                    ' class="list-group-item list-group-item-action text-primary"><i class="fas fa-file-audio fa-xl"></i> Escute a audioleitura!</a></a>\n'
+                                    ' class="list-group-item list-group-item-action text-primary"><i class="fas fa-file-audio fa-xl"></i> Escute a audioleitura!</a></a>'
                             else:
-                                inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fas fa-file-audio fa-xl"></i> Escute a audioleitura!</a></a>\n'
+                                inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fas fa-file-audio fa-xl"></i> Escute a audioleitura!</a></a>'
                             
                             inc += '</ul>'
                             inc += '</div>'
@@ -301,25 +301,25 @@ class Notas:
                             inc += '<a href="' + vurl + '" target="_blank"><img src="../pics/play_video.jpeg" class="card-img-top" alt="Assistir vídeo!" style="max-width: 20rem"></a>'
                             inc += '</div>'
                             inc += '<div class="col-md-6">'
-                            inc += '<ul class="list-group list-group-flush  d-inline-flex">\n'
+                            inc += '<ul class="list-group list-group-flush  d-inline-flex">'
                             if (yurl != "#"):
                                 inc += '<a href="' + yurl +  '" target=_blank' + \
-                                    ' class="list-group-item list-group-item-action text-primary"><i class="fab fa-youtube fa-xl"></i> Assista no YouTube!</a>\n'
+                                    ' class="list-group-item list-group-item-action text-primary"><i class="fab fa-youtube fa-xl"></i> Assista no YouTube!</a>'
                             else:
-                                inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fab fa-youtube fa-xl"></i> Assista no YouTube</a>\n'
+                                inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fab fa-youtube fa-xl"></i> Assista no YouTube</a>'
                             
 
                             if (vurl != "#"):
                                 inc += '<a href="' + vurl +  '" target=_blank' + \
-                                    ' class="list-group-item list-group-item-action text-primary"><i class="fas fa-building-columns fa-xl"></i> Assista no archive.org!</a>\n'
+                                    ' class="list-group-item list-group-item-action text-primary"><i class="fas fa-building-columns fa-xl"></i> Assista no archive.org!</a>'
                             else:
-                                inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fas fa-building-columns fa-xl"></i> Assista no archive.org!</a>\n'
+                                inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fas fa-building-columns fa-xl"></i> Assista no archive.org!</a>'
                             
                             if (aurl != "#"):
                                 inc += '<a href="' + aurl +  '" target=_blank' + \
-                                    ' class="list-group-item list-group-item-action text-primary"><i class="fas fa-file-audio fa-xl"></i> Escute a audioleitura!</a></a>\n'
+                                    ' class="list-group-item list-group-item-action text-primary"><i class="fas fa-file-audio fa-xl"></i> Escute a audioleitura!</a></a>'
                             else:
-                                inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fas fa-file-audio fa-xl"></i> Escute a audioleitura!</a></a>\n'
+                                inc += '<a href="#" class="list-group-item list-group-item-action list-group-item-light"><i class="fas fa-file-audio fa-xl"></i> Escute a audioleitura!</a></a>'
                             
                             inc += '</ul>'
                             inc += '</div>'
@@ -346,7 +346,7 @@ class Notas:
                                 '<button class="btn btn-info btn-sm" type="button" data-bs-toggle="collapse" '+ \
                                 'data-bs-target="#'+respid+'">Resposta'+ \
                                 '</button>'+ \
-                                '\n<div class="collapse" id="'+respid+'">\n')
+                                '<div class="collapse" id="'+respid+'">')
                     paux = page.find('ltx_theorem_resp')
                     
                 #modifica o __footer__

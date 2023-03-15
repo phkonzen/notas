@@ -15,7 +15,7 @@ class Index:
         self.page = ''
         
     def empty_page(self):
-        self.page += '<!doctype html>'
+        self.page += '<!DOCTYPE html>'
         self.page += '<html lang="pt">'
         self.page += '</html>'
 
@@ -24,7 +24,8 @@ class Index:
         
         head += '<meta charset="utf-8">'
         head += '<title>Notas de Aula</title>'
-        head += '<meta name="author" content="Pedro H A Konzen"/>'
+        head += '<meta name="author" content="Pedro H A Konzen">'
+        head += '<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">'
 
         # # bootstrap 5.1.3
         # head += '<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">'
@@ -48,7 +49,7 @@ class Index:
         f.close()
         
         head += '<!-- Computer Modern Serif-->'
-        head += '<link rel="stylesheet" href="fonts/cmun-serif.css"></link>'
+        head += '<link rel="stylesheet" href="fonts/cmun-serif.css">'
         head += '<link rel="stylesheet" href="index.css" type="text/css">'
         
         head += '</head>'
@@ -320,10 +321,10 @@ class Index:
         body += '</div> <!-- div class="row" -->'
 
         
-        body += '<div class="row">'
-
         body += '<h3>Vídeos & Áudios</h3>'
         body += '<hr>'
+
+        body += '<div class="row row-cols-auto justify-content-around">'
 
         # card: Internet Archive
         body += '<!-- card: Internet Archive -->'
