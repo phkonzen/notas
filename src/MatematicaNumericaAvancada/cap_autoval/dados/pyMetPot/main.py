@@ -1,20 +1,23 @@
 import numpy as np
 import numpy.linalg as npla
 
-def metPot(A,q0,maxiter=1000,tol=1e-14):
+def metPot(A, q0, maxiter=1000, tol=1e-14):
   q = q0/npla.norm(q0)
-  nu0 = np.vdot(q, np.ravel(A @ q))
+  nu0 = np.dot(q, A @ q)
   print(f"{0}: {nu0}")
 
+  info = -1
   for k in range(maxiter):
-    z = np.ravel(A @ q)
+    z = A @ q
     q = z/npla.norm(z)
-    nu = np.vdot(q, np.ravel(A @ q))
+    nu = np.dot(q, A @ q)
 
     print(f"{k+1}: {nu}")
     if (np.fabs(nu-nu0) < tol):
-      return nu, q, 0
-    elif (k+1 == maxiter):
-      return nu, q, 1
+      info = 0
+      break
 
     nu0 = nu
+
+  return nu, q, info
+
