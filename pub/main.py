@@ -15,7 +15,7 @@ from multiprocessing import Pool
 from index import *
 from politica import *
 from sitemap import *
-from analisematematicai import *
+# from analisematematicai import *
 from calculoi import *
 from ead import *
 from edo import *
