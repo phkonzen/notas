@@ -19,9 +19,13 @@ class Notas:
         # adiciona goodies.css
         f = open(htmldir+'/goodies.css','w')        
         text = 'body {'
-        text += 'font-family: "Computer Modern Serif", serif;'
-        text += 'font-size: large;'
-        text += '}'
+        text = 'font-family: "Computer Modern Serif", serif;'
+        text = '}'
+        text = '@media (min-width: 576px) {'
+        text = 'body {'
+	text = 'font-size: larger;'
+        text = '}'
+        text = '}'
 
         text += '.ltx_lst_numbers_left .ltx_listingline .ltx_tag {'
         text += 'margin-left: 0em;'
