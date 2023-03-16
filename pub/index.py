@@ -140,7 +140,6 @@ class Index:
         body += '</div>'
         body += '<div class="col-lg-6 col-md-8 ">'
         body += '<h1 class="display-4 bg-white text-dark mb-0" style="opacity:75%;">Notas de Aula</h1>'
-        # body += '<hr class="my-4">'
         body += '<p class="lead bg-white text-dark mt-0" style="opacity:75%;">Pedro H A Konzen</p>'
         body += '</div>'
         body += '</div>'

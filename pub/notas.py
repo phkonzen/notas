@@ -20,7 +20,7 @@ class Notas:
         f = open(htmldir+'/goodies.css','w')        
         text = 'body {'
         text += 'font-family: "Computer Modern Serif", serif;'
-        text += 'font-size: larger;'
+        text += 'font-size: large;'
         text += '}'
 
         text += '.ltx_lst_numbers_left .ltx_listingline .ltx_tag {'
