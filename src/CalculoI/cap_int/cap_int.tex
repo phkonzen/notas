@@ -844,7 +844,7 @@ i.e. $F \pm G$ é primitiva de $f+g$.
   \begin{enumerate}[a)]
   \item
     \begin{align}
-      \int x + 1\,dx &= {\color{blue}\int x\,dx} + {\color{red}\int\,dx}\\
+      \int x + 1\,dx &= {\color{blue}\int x\,dx} + {\color{red}\int dx}\\
                      &= {\color{blue}\frac{x^2}{2} + C_1} + {\color{red}x + C_2}\\
                      &= \frac{x^2}{2} + x + C
     \end{align}
@@ -1226,7 +1226,7 @@ então, da \emph{regra da cadeira}\footnote{Consulte a Seção \ref{cap_deriv_se
 i.e. $F(u(x))$ é primitiva de $f(u(x))u'(x)$.
 
 \begin{ex}
-  Vamos aplicar integração por partes para calcular as seguintes integrais:
+  Vamos aplicar integração por substituição para calcular as seguintes integrais:
   \begin{enumerate}[a)]
   \item $\displaystyle\int (x+1)^2\,dx$.
 
@@ -1438,7 +1438,7 @@ Na Seção \ref{cap_int_sec_regrasbasic_trigo}, vimos que
   temos
   \begin{align}
     \int \sen^2(x)\,dx &= \int \frac{1-x\cos(2x)}{2}\,dx \\
-                       &= \frac{1}{2}\int\,dx - \frac{1}{2}\int\cos(2x)\,dx.\label{int_subs_aux1}
+                       &= \frac{1}{2}\int dx - \frac{1}{2}\int\cos(2x)\,dx.\label{int_subs_aux1}
   \end{align}
   Agora, tomando $u = 2x$, temos $du = 2\,dx$, donde
   \begin{align}
@@ -1973,7 +1973,7 @@ donde
 \end{equation}
 Daí, segue a \emph{fórmula de integração por partes}
 \begin{equation}
-  \pmb{\int udv = uv - \int vdu}.
+  {\color{blue}\int udv = uv - \int vdu}.
 \end{equation}
 
 \begin{ex}
@@ -1981,27 +1981,32 @@ Daí, segue a \emph{fórmula de integração por partes}
   \begin{equation}
     \int xe^x\,dx.
   \end{equation}
-  Tomando
+  usando integração por partes. Escolhemos
+  \begin{gather}
+    {\color{blue}u = x}\\
+    \frac{du}{dx} = 1\\
+    {\color{blue}du = dx}
+  \end{gather}
+  e
+  \begin{gather}
+    {\color{red}dv = e^x\,dx}\\
+    \int dv = \int e^x\,dx\\
+    {\color{red}v = e^x}.
+  \end{gather}
+  Observamos que no cálculo de $v$, desprezamos a constante indeterminada. Então, da fórmula de integração por partes, temos
   \begin{align}
-    &u = x \Rightarrow \frac{du}{dx} = 1 \Rightarrow du = dx,\\
-    &dv = e^x\,dx \Rightarrow \int dv = \int e^x\,dx \Rightarrow v = e^x.
-  \end{align}
-  Observa-se que no cálculo de $v$, desprezamos a constante indeterminada. Então, da fórmula de integração por partes, temos
-  \begin{align}
-    \int xe^x\,dx &= \int udv = uv - \int vdu \\
+    \int {\color{blue}x}{\color{red}e^x\,dx} &= \int {\color{blue}u}{\color{red}dv}\\
+                  &= {\color{blue}u}{\color{red}v} - \int {\color{red}v}{\color{blue}du} \\
                   &= xe^x - \int e^xdx \\
                   &= xe^x - e^x + C.
   \end{align}
   
   \ifispython
-  No \sympy\footnote{Veja a Observação \ref{obs:cap_int_python}.}, temos:
-\begin{verbatim}
->>> integrate(x*exp(-x),x)
-      x
-(x-1)e
-\end{verbatim}
+  Verifique computando esta integral com {\python}+{\sympy}!
   \fi
 \end{ex}
+
+Em alguns casos, é possível fazer mais de uma escolha na aplicação da integração por partes.
 
 \subsection{A integral do logaritmo natural}
 
@@ -2013,101 +2018,107 @@ Vamos calcular
 \begin{equation}
   \int \ln x\,dx.
 \end{equation}
-Usando integração por partes, tomamos
-\begin{align}
-  &u = \ln x \Rightarrow du = \frac{1}{x}\,dx \\
-  &dv = dx \Rightarrow v = \int\,dx = x
-\end{align}
-Segue que
+Usando integração por partes, escolhemos
+\begin{gather}
+  u = \ln x\\
+  du = \frac{1}{x}\,dx
+\end{gather}
+e
+\begin{gather}
+  dv = dx\\
+  v = \int dx = x
+\end{gather}
+Pela fórmula de integração por partes, segue que
 \begin{align}
   \int \ln x \,dx &= \int u\,dv \\
                   &= uv - \int v\,du \\
                   &= x\ln(x) - \int x\frac{1}{x}\,dx \\
-                  &= x\ln(x) - \int\,dx \\
+                  &= x\ln(x) - \int dx \\
                   &= x\ln(x) - x + C.
 \end{align}
 Ou seja, concluímos que
 \begin{equation}\label{eq:int_lnx}
-  \pmb{\int \ln x \,dx = x\ln(x) - x + C}.
+  {\color{blue}\int \ln x \,dx = x\ln(x) - x + C}.
 \end{equation}
 
 \begin{ex}
-  Vamos calcular
-  \begin{equation}
-    \int \ln(2x)\,dx.
-  \end{equation}
-  Da equação \ref{eq:int_lnx}, temos
-  \begin{equation}
-    \int \ln x\,dx = x\ln(x) - x + C.
-  \end{equation}
-  Usando a regra da substituição (veja Seção \ref{cap_int_sec_subs}), escolhemos
-  \begin{equation}
-    u = 2x \Rightarrow du = 2\,dx.
-  \end{equation}
-  Fazendo a substituição e calculando, temos
-  \begin{align}
-    \int \ln(2x)\,dx &= \int \ln(u)\frac{du}{2} \\
-                     &= \frac{1}{2}\int \ln(u)\,du \\
-                     &= \frac{u\ln(u)}{2} - \frac{u}{2} + C \\
-                     &= x\ln(2x) - x + C.
-  \end{align}
+  Calculamos as seguintes integrais:
+  \begin{enumerate}[a)]
+  \item $\displaystyle\int_1^e\ln(x)\,dx$
+    \begin{align}
+      \int_1^e\ln(x)\,dx &= \left. x\ln(x) - x\right|_1^e\\
+                         &= e\ln(e) - e - [1\cdot\ln(1) - 1]\\
+                         &= e\ln(e) - e + 1
+    \end{align}
 
+  \item $\displaystyle\int\ln(2x)\,dx$
+    
+    Usando o método da substituição\footnote{Consulte a Seção \ref{cap_int_sec_subs} para mais informações sobre integração por substituição.}, escolhemos
+    \begin{gather}
+      u = 2x\\
+      \Rightarrow du = 2\,dx.
+    \end{gather}
+    Fazendo a substituição e calculando, temos
+    \begin{align}
+      \int \ln(2x)\,dx &= \int \ln(u)\frac{du}{2} \\
+                       &= \frac{1}{2}\int \ln(u)\,du \\
+                       &= \frac{u\ln(u)}{2} - \frac{u}{2} + C \\
+                       &= x\ln(2x) - x + C.
+    \end{align}
+    
   \ifispython
-  No \sympy\footnote{Veja a Observação \ref{obs:cap_int_python}.}, temos:
-\begin{verbatim}
->>> integrate(log(2*x),x)
-x·log(2·x) - x
-\end{verbatim}
+  Verifique as soluções com o {\python}+{\sympy}!
   \fi
+  \end{enumerate}
 \end{ex}
 
-\begin{ex}
-  Vamos calcular
-  \begin{equation}
-    \int \sen(x)e^x\,dx.
-  \end{equation}
-  Para integrar por partes, podemos escolher
-  \begin{align}
-    u = \sen(x) &\Rightarrow du = \cos(x)\,dx \\
-    dv = e^x\,dx &\Rightarrow v = e^x
-  \end{align}
-  Então, segue
-  \begin{equation}\label{eq:int_aux_p1}
-    \int\sen(x)e^x\,dx = \sen(x)e^x - \int\cos(x)e^x\,dx.
-  \end{equation}
-  Agora, aplicamos integração por partes a esta última integral. Tomamos as seguintes novas escolhas
-  \begin{align}
-    u = \cos(x) &\Rightarrow du = -\sen(x)\,dx \\
-    dv = e^x\,dx &\Rightarrow dv = e^x
-  \end{align}
-  Segue que
-  \begin{equation}
-    \int\cos(x)e^x\,dx = \cos(x)e^x + \int\sen(x)e^x\,dx.
-  \end{equation}
-  Substituindo este resultado na equação \eqref{eq:int_aux_p1}, obtemos
-  \begin{equation}
-    \int\sen(x)e^x\,dx = \sen(x)e^x-\cos(x)e^x-\int\sen(x)e^x\,dx.
-  \end{equation}
-  Somando este primeiro termo em ambos os lados desta equação, obtemos
-  \begin{equation}
-    2\int\sen(x)e^x\,dx = (\sen(x)-\cos(x))e^x.
-  \end{equation}
-  Daí, concluímos que
-  \begin{equation}
-    \int\sen(x)e^x\,dx = \frac{\sen(x)-\cos(x)}{2}e^x + C.
-  \end{equation}
+% \begin{ex}
+%   Vamos calcular
+%   \begin{equation}
+%     \int \sen(x)e^x\,dx.
+%   \end{equation}
+%   Para integrar por partes, podemos escolher
+%   \begin{align}
+%     u = \sen(x) &\Rightarrow du = \cos(x)\,dx \\
+%     dv = e^x\,dx &\Rightarrow v = e^x
+%   \end{align}
+%   Então, segue
+%   \begin{equation}\label{eq:int_aux_p1}
+%     \int\sen(x)e^x\,dx = \sen(x)e^x - \int\cos(x)e^x\,dx.
+%   \end{equation}
+%   Agora, aplicamos integração por partes a esta última integral. Tomamos as seguintes novas escolhas
+%   \begin{align}
+%     u = \cos(x) &\Rightarrow du = -\sen(x)\,dx \\
+%     dv = e^x\,dx &\Rightarrow dv = e^x
+%   \end{align}
+%   Segue que
+%   \begin{equation}
+%     \int\cos(x)e^x\,dx = \cos(x)e^x + \int\sen(x)e^x\,dx.
+%   \end{equation}
+%   Substituindo este resultado na equação \eqref{eq:int_aux_p1}, obtemos
+%   \begin{equation}
+%     \int\sen(x)e^x\,dx = \sen(x)e^x-\cos(x)e^x-\int\sen(x)e^x\,dx.
+%   \end{equation}
+%   Somando este primeiro termo em ambos os lados desta equação, obtemos
+%   \begin{equation}
+%     2\int\sen(x)e^x\,dx = (\sen(x)-\cos(x))e^x.
+%   \end{equation}
+%   Daí, concluímos que
+%   \begin{equation}
+%     \int\sen(x)e^x\,dx = \frac{\sen(x)-\cos(x)}{2}e^x + C.
+%   \end{equation}
 
-  \ifispython
-  No \sympy\footnote{Veja a Observação \ref{obs:cap_int_python}.}, temos:
-\begin{verbatim}
->>> integrate(sin(x)*exp(x),x)
- x            x
-e · sin(x)   e · cos(x)
----------- - ----------
-     2           2
-\end{verbatim}
-  \fi
-\end{ex}
+%   \ifispython
+%   No \sympy\footnote{Veja a Observação \ref{obs:cap_int_python}.}, temos:
+% \begin{verbatim}
+% >>> integrate(sin(x)*exp(x),x)
+%  x            x
+% e · sin(x)   e · cos(x)
+% ---------- - ----------
+%      2           2
+% \end{verbatim}
+%   \fi
+% \end{ex}
 
 \subsection{Integral definida}
 
@@ -2117,7 +2128,7 @@ e · sin(x)   e · cos(x)
 
 Sejam $u=u(x)$ e $v=v(x)$ funções diferenciáveis em $x$. Segue que $du = u'(x)\,dx$ e $dv = v'(x)\,dx$. Segue que a fórmula de integração por partes para integrais definidas é
 \begin{equation}
-  \pmb{\int_{x=a}^b u\,dv = \left. uv \right|_{x=a}^b - \int_{x=a}^b v\,du}.
+  {\color{blue}\int_{x=a}^b u\,dv = \left. uv \right|_{x=a}^b - \int_{x=a}^b v\,du}.
 \end{equation}
 
 \begin{ex}
@@ -2126,24 +2137,25 @@ Sejam $u=u(x)$ e $v=v(x)$ funções diferenciáveis em $x$. Segue que $du = u'(x
     \int_0^2 xe^{-x}\,dx.
   \end{equation}
   Para aplicar integração por partes, escolhemos
-  \begin{align}
-    & u = x \Rightarrow du = dx \\
-    & dv = e^{-x}\,dx \Rightarrow v = \int e^{-x}\,dx = -e^{-x}
-  \end{align}
+  \begin{gather}
+    u = x\\
+    du = dx
+  \end{gather}
+  e
+  \begin{gather}
+    dv = e^{-x}\,dx\\
+    v = -e^{-x}
+  \end{gather}
   Segue da fórmula de integração por partes para integrais definidas que
   \begin{align}
-    \int_0^2 xe^{-x}\,dx &= \left. -xe^{-x}\right|_0^2 + \int_0^2 e^{-x}\,dx \\
+    \int_0^2 xe^{-x}\,dx &= \left. uv \right|_{x=0}^2 - \int_{x=0}^2 e^{-x}\,dx\\
+                         &= \left. -xe^{-x}\right|_0^2 + \int_0^2 e^{-x}\,dx \\
                          &= -2e^{-2} + \left[-e^{-x}\right]_0^2 \\
                          &= -3e^{-2} + 1.
   \end{align}
 
   \ifispython
-  No \sympy\footnote{Veja a Observação \ref{obs:cap_int_python}.}, temos:
-\begin{verbatim}
->>> integrate(x*exp(-x),(x,0,2))
-    -2    
-- 3e   + 1
-\end{verbatim}
+  Verifique computando com o {\python}+{\sympy}!
   \fi
 \end{ex}
 
@@ -2155,19 +2167,19 @@ Sejam $u=u(x)$ e $v=v(x)$ funções diferenciáveis em $x$. Segue que $du = u'(x
 
 \begin{small}
 \begin{align}
-  & \int k\cdot f(x)\,dx = k\cdot\int f(x)\,dx\\
-  & \int \left[f(x)\pm g(x)\right]\,dx = \int f(x)\,dx \pm \int g(x)\,dx\\
-  & \int x^r\,dx = \frac{x^{r+1}}{r+1} + C,\quad r\neq -1\\
-  & \int \frac{1}{x}\,dx = \ln |x| + C \\
-  & \int e^x\,dx = e^x + C \\
-  & \int a^x\,dx = \frac{a^x}{\ln a} + C \\
-  & \int \ln x \,dx = x\ln(x) - x + C \\
-  & \int \sen(x)\,dx = -\cos(x) + C \\
-  & \int \cos(x)\,dx = \sen(x) + C \\
-  & \int \tg(x)\,dx = \ln|\sec(x)| + C \\
-  & \int \cotg(x)\,dx = \ln|\sen(x)| + C \\
-  & \int \sec(x)\,dx = \ln|\sec(x)+\tg(x)| + C \\
-  & \int \cossec(x)\,dx = -\ln|\cossec(x)+\cotg(x)| + C
+  & \int k\cdot f(u)\,du = k\cdot\int f(u)\,du\\
+  & \int \left[f(u)\pm g(u)\right]\,du = \int f(u)\,du \pm \int g(u)\,du\\
+  & \int u^r\,du = \frac{u^{r+1}}{r+1} + C,\quad r\neq -1\\
+  & \int \frac{1}{u}\,du = \ln |u| + C \\
+  & \int e^u\,du = e^u + C \\
+  & \int a^u\,du = \frac{a^u}{\ln a} + C \\
+  & \int \ln u \,du = u\ln(u) - u + C \\
+  & \int \sen(u)\,du = -\cos(u) + C \\
+  & \int \cos(u)\,du = \sen(u) + C \\
+  & \int \tg(u)\,du = \ln|\sec(u)| + C \\
+  & \int \cotg(u)\,du = \ln|\sen(u)| + C \\
+  & \int \sec(u)\,du = \ln|\sec(u)+\tg(u)| + C \\
+  & \int \cossec(u)\,du = -\ln|\cossec(u)+\cotg(u)| + C
 \end{align}
 \end{small}
 
@@ -2189,10 +2201,15 @@ Sejam $u=u(x)$ e $v=v(x)$ funções diferenciáveis em $x$. Segue que $du = u'(x
     \int udv = uv - \int vdu.
   \end{equation}
   Para tanto, escolhemos
-  \begin{align}
-    &u = \ln x \Rightarrow du = \frac{1}{x}\,dx\\
-    &dv = x\,dx \Rightarrow v = \int x\,dx = \frac{x^2}{2}.
-  \end{align}
+  \begin{gather}
+    u = \ln x\\
+    du = \frac{1}{x}\,dx
+  \end{gather}
+  e
+  \begin{gather}
+    dv = x\,dx\\
+    v = \frac{x^2}{2}
+  \end{gather}
   Segue que
   \begin{align}
     \int x\ln x\,dx &= \int udv\\
@@ -2204,14 +2221,13 @@ Sejam $u=u(x)$ e $v=v(x)$ funções diferenciáveis em $x$. Segue que $du = u'(x
   \end{align}
 
   \ifispython
-  Podemos computar esta integral, usando o seguinte comando do \sympy\footnote{Veja a Observação \ref{obs:cap_int_python}.}:
-\begin{verbatim}
->>> integrate(x*log(x),x)
- 2             2
-x · log(x)    x
----------- - ---
-     2        4
-\end{verbatim}
+  Com o {\python}+{\sympy}, computamos este integral com os seguintes comandos:
+  \begin{lstlisting}
+    >>> from sympy import *
+    >>> x = symbols('x')
+    >>> integrate(x*log(x))
+    x**2*log(x)/2 - x**2/4
+  \end{lstlisting}
   \fi
 \end{resol}
 
@@ -2222,30 +2238,98 @@ x · log(x)    x
   \end{equation}
 \end{exeresol}
 \begin{resol}
-  Vamos usar a fórmula de integração por partes para integrais definidas
+  Primeiramente, vamos calcular
   \begin{equation}
-    \int_a^b f(x)g'(x)\,dx = f(x)g(x)|_{a}^b - \int_a^b g(x)f'(x)\,dx.
+    \int xe^{-x}\,dx
   \end{equation}
-  Para tanto, escolhemos $f(x) = x$ e $g'(x) = e^x$, donde
-  \begin{equation}
-    f'(x) = 1,\quad\text{e}\quad g(x) = \int g'(x)\,dx = \int e^x\,dx = e^x + C.
-  \end{equation}
-  Escolhendo $C=0$ e usando a fórmula, temos
+  Por integração por partes, escolhemos
+  \begin{gather}
+    u = x\\
+    du = dx
+  \end{gather}
+  e
+  \begin{gather}
+    dv = e^x\,dx\\
+    v = e^x
+  \end{gather}
+  Segue que
   \begin{align}
-    \int_{-1}^1 xe^x\,dx &= \int_{-1}^1 f(x)g'(x)\,dx\\
-                         &= f(x)g(x)|_{-1}^1 - \int_{-1}^1 g(x)f'(x)\,dx\\
-                         &= xe^x|_{-1}^1 - \int_{-1}^1 e^x\,dx\\
-                         &= e+e^{-1}-[e^x]_{-1}^1\\
-                         &= e+e^{-1}-(e-e^{-1})\\
-                         &= 2e^{-1}.
+    \int xe^x\,dx &= uv - \int v\,du\\
+                  &= xe^x - \int e^x\,dx\\
+                  &= xe^x - e^x + C
   \end{align}
+
+  Então, aplicamos o Teorema Fundamental do Cálculo como segue
+  \begin{align}
+    \int_{-1}^1 xe^x\,dx &= \left. xe^x - e^x\right|_{-1}^1\\
+                         &= 1\cdot e^1 - e^1\\
+                         &- (-1\cdot e^{-1} - e^{-1})\\
+                         &= \frac{2}{e}
+  \end{align}
+  
   \ifispython
-  Para computarmos esta integral definida, podemos usar o seguinte comando do \sympy\footnote{Veja a Observação \ref{obs:cap_int_python}.}:
-\begin{verbatim}
->>> integrate(x*exp(x),(x,-1,1))
-   -1
-2·e
-\end{verbatim}
+  Com o {\python}+{sympy}, computamos
+  \begin{lstlisting}
+    >>> from sympy import *
+    >>> x = symbols('x')
+    >>> integrate(x*exp(x), (x, -1, 1))
+    2*exp(-1)
+  \end{lstlisting}
+  \fi
+\end{resol}
+
+\begin{exeresol}
+  Calcule
+  \begin{equation}
+    \int e^x\sen(x)\,dx.
+  \end{equation}
+\end{exeresol}
+\begin{resol}
+  Por integração por partes, escolhemos
+  \begin{gather}
+    u = e^x\\
+    du = e^x\,dx
+  \end{gather}
+  e
+  \begin{gather}
+    dv = \sen(x)\,dx\\
+    v = -\cos(x)
+  \end{gather}
+  Então, segue que
+  \begin{align}\label{eq:exeresol_int_excosx}
+    \int e^x\sen(x)\,dx &= uv - \int v\,du\\
+                        &= -e^x\cos(x) + {\color{blue}\int e^x\cos(x)\,dx}
+  \end{align}
+  Por sua vez, integramos por partes esta última, escolhendo
+  \begin{gather}
+    u = e^x\\
+    du = e^x\,dx
+  \end{gather}
+  e
+  \begin{gather}
+    dv = \cos(x)\,dx\\
+    v = \sen(x)
+  \end{gather}
+  Com isso, temos
+  \begin{align}
+    {\color{blue}\int e^x\cos(x)\,dx} &= uv - \int v\,du\\
+                                      &= e^x\sen(x) - \int e^x\sen(x)\,dx
+  \end{align}
+  Então, voltamos a \eqref{eq:exeresol_int_excosx} e obtemos
+  \begin{gather}
+    \int e^x\sen(x)\,dx = -e^x\cos(x) + {\color{blue}e^x\sen(x) - \int e^x\sen(x)\,dx}\\
+    2\int e^x\sen(x)\,dx = -e^x\cos(x) + e^x\sen(x)\\
+    \int e^x\sen(x)\,dx = \frac{1}{2}e^x\sen(x) - \frac{1}{2}e^x\cos(x) + C
+  \end{gather}
+
+  \ifispython
+  Com o {\python}+{\sympy}, computamos esta integral com os seguintes códigos
+  \begin{lstlisting}
+    >>> from sympy import *
+    >>> x = symbols('x')
+    >>> integrate(exp(x)*sin(x))
+    exp(x)*sin(x)/2 - exp(x)*cos(x)/2
+  \end{lstlisting}
   \fi
 \end{resol}
 
@@ -2258,13 +2342,25 @@ x · log(x)    x
 \begin{exer}
   Calcule
   \begin{enumerate}[a)]
-  \item $\displaystyle \int x\sen(x)\,dx$
-  \item $\displaystyle \int x\cos(x)\,dx$
-  \item $\displaystyle \int x^2\ln(x)\,dx$
+  \item $\displaystyle\int xe^{2x}\,dx$
+  \item $\displaystyle\int (x-1)e^x\,dx$
+  \item $\displaystyle\int x^2\ln(x)\,dx$
   \end{enumerate}
 \end{exer}
 \begin{resp}
-  a)~$\displaystyle \sen(x)-x\cos(x)+C$; b)~$\displaystyle \cos(x)+x\sen(x)+C$;  c)~$\displaystyle \frac{x^3\ln(x)}{3} - \frac{x^3}{9} + C$
+  a) $\frac{2x-1}{4}e^{2x} + C$; b) $xe^x + C$; c) $\frac{x^3}{3}\ln(x) - \frac{x^3}{9} + C$
+\end{resp}
+
+\begin{exer}
+  Calcule
+  \begin{enumerate}[a)]
+  \item $\displaystyle\int_0^1 xe^{2x}\,dx$
+  \item $\displaystyle\int_0^{\ln 2} (x+1)e^x\,dx$
+  \item $\displaystyle\int x^2\ln(x)\,dx$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a) $\frac{1}{4} + \frac{e^2}{4}$; b) $2\ln 2$; c) $\frac{1}{9} + \frac{2}{9}e^{3}$
 \end{resp}
 
 \begin{exer}
@@ -2275,6 +2371,27 @@ x · log(x)    x
 \end{exer}
 \begin{resp}
   $\displaystyle \frac{x\ln(x)}{\log_2(x)}-\frac{x}{\log_2(x)} + C$
+\end{resp}
+
+\begin{exer}
+  Calcule
+  \begin{equation}
+    \int_{-1}^1 x^2e^x\,dx.
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $-\frac{5}{e}+e$
+\end{resp}
+
+\begin{exer}
+  Calcule
+  \begin{enumerate}[a)]
+  \item $\displaystyle \int x\sen(x)\,dx$
+  \item $\displaystyle \int x\cos(x)\,dx$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a)~$\displaystyle \sen(x)-x\cos(x)+C$; b)~$\displaystyle \cos(x)+x\sen(x)+C$;
 \end{resp}
 
 \begin{exer}
@@ -2291,7 +2408,7 @@ x · log(x)    x
 \begin{exer}
   Calcule
   \begin{equation}
-    \int\cos(x)e^x\,dx.
+    \int e^x\cos(x)\,dx.
   \end{equation}
 \end{exer}
 \begin{resp}
@@ -2310,16 +2427,6 @@ x · log(x)    x
   a)~$1$; b)~$2$;  c)~$\displaystyle \frac{1}{9}+\frac{2e^3}{9}$
 \end{resp}
 
-\begin{exer}
-  Calcule
-  \begin{equation}
-    \int_{-1}^1 x^2e^x\,dx.
-  \end{equation}
-\end{exer}
-\begin{resp}
-  $-\frac{5}{e}+e$
-\end{resp}
-
 \begin{exer}\label{eq:int_sec3_x}
   Calcule
   \begin{equation}
@@ -2334,8 +2441,8 @@ x · log(x)    x
 
 Em muitos casos, integrais em $x$ envolvendo
 \begin{gather}
-  \sqrt{a^2 - x^2},
-  \sqrt{x^2 + a^2},
+  \sqrt{a^2 - x^2},\\
+  \sqrt{x^2 + a^2},\\
   \sqrt{x^2 - a^2},
 \end{gather}
 com $a>0$, podem ser calculadas por meio de substituições envolvendo funções trigonométricas.
@@ -2376,7 +2483,7 @@ uma vez que $\cos\theta \geq 0$ para todo $\theta\in [-\pi/2,\pi/2]$. Com isso, 
     \begin{align}
       \int \frac{1}{\sqrt{1 - x^2}}\,dx &= \int \frac{1}{\sqrt{1 - \sen^2(\theta)}}\cos(\theta)\,d\theta\\
                                         &= \int \frac{\cos(\theta)}{|\cos(\theta)|}\,d\theta\\
-                                        &= \int\,d\theta\\
+                                        &= \int d\theta\\
                                         &= \theta + C\\
                                         &= \arc\sen(x) + C
     \end{align}
