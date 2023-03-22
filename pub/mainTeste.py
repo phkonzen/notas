@@ -15,7 +15,7 @@ from teste import *
 # pastas temporárias
 odir = '.docs'
 os.system('rm -rvf '+odir)
-os.system('cp -rvf ../docs '+odir)
+# os.system('cp -rvf ../docs '+odir)
 
 srcdir = '.src'
 os.system('mkdir -p '+srcdir)
@@ -31,9 +31,9 @@ os.system('rm -rvf ../docs/Teste')
 ci = Teste(srcdir,odir)
 ci.build()
 
-# make sitemap.txt
-sm = SiteMap(odir)
-sm.build()
+# # make sitemap.txt
+# sm = SiteMap(odir)
+# sm.build()
 
 # publica a atualização
 os.system('rsync -av '+odir+'/* ../docs/')
