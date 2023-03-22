@@ -120,13 +120,13 @@ O primeiro está na direção do vetor normal a reta $\pmb{n} = (w_1, w_2)$ e o 
 \begin{equation}
   w_1x_1 + w_2x_2 + b = 0
 \end{equation}
-de forma que o ponto $(1,1)$ esteja no semiplano positivo $\tau^+$ e os demais pontos no semiplano negativo $\tau^-$. Consulte a Figura \ref{fig:}.
+de forma que o ponto $(1,1)$ esteja no semiplano positivo $\tau^+$ e os demais pontos no semiplano negativo $\tau^-$. Consulte a Figura \ref{fig:class_e}.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.7\textwidth]{./cap_perceptron/dados/fig_class_e/main}
   \caption{Interpretação geométrica do perceptron aplicado ao problema de classificação ralacionado à operação lógica $\land$ (e-lógico).}
-  \label{fig:}
+  \label{fig:class_e}
 \end{figure}
 
 \subsubsection{Algoritmo de treinamento: perceptron}
@@ -135,15 +135,15 @@ O algoritmo de treinamento perceptron permite calibrar os pesos de um neurônio 
 
 Seja dado um \emph{conjunto de treinamento} $\{\pmb{x}^{(s)},y^{(s)}\}_{s=1}^{n_s}$, onde $n_s$ é o número de amostras. O algoritmo consiste no seguinte:
 \begin{enumerate}
-\item Sete $\pmb{w} = \pmb{0}$, $b=0$.
-\item Para $e = 1,\dotsc, n_e$:
+\item $\pmb{w} \leftarrow\pmb{0}$, $b \leftarrow 0$.
+\item Para $e \leftarrow 1,\dotsc, n_e$:
   \begin{enumerate}
-  \item Para $s = 1,\dotsc, n_s$:
+  \item Para $s \leftarrow 1,\dotsc, n_s$:
     \begin{enumerate}
     \item Se $y^{(s)}\mathcal{N}\left(\pmb{x}^{(s)}\right) \leq 0$:
       \begin{enumerate}
-      \item $\pmb{w} = \pmb{w}+y^{(s)}\pmb{x}^{(s)}$
-      \item $b = b + y^{(s)}$
+      \item $\pmb{w} \leftarrow \pmb{w}+y^{(s)}\pmb{x}^{(s)}$
+      \item $b \leftarrow b + y^{(s)}$
       \end{enumerate}
     \end{enumerate}
   \end{enumerate}
@@ -164,7 +164,8 @@ Verifique!
 
 \subsection{Problema de regressão}
 
-Vamos treinar um perceptron para resolver um problema de regressão. Dados os pontos
+Vamos treinar um perceptron para resolver o problema de regressão linear para os seguintes dados
+
 \begin{center}
   \begin{tabular}{l|ll}
     s & $x^{(s)}$ & $y^{(s)}$\\\hline
@@ -195,19 +196,42 @@ Vamos denotar a \emph{função erro}\footnote{Em inglês, {\it loss function}.} 
                    &= \frac{1}{n_s}\sum_{s=1}^{n_s}\left(wx^{(s)}+b-y^{(s)}\right)^2
 \end{align}
 
-Observamos que \eqref{eq_percep:regr_prob} é equivalente a \href{https://notaspedrok.com.br/notas/MatematicaNumerica/cap_ajuste_sec_prob_lin.html}{problema linear de mínimos quadrados}, a solução é dada por\footnote{Consulte o Exercício \ref{exer_percep:sol_mq}.}
-\begin{gather}\label{eq_percep:sol_mq}
-  w = \frac{n_s\sum_{s=1}^{n_s}\left(x^{(s)}y^{(s)}\right)-\sum_{s=1}^{n_s}\left(x^{(s)}\right)\sum_{s=1}^{n_s}\left(y^{(s)}\right)}{n_s\sum_{s=1}^{n_s}\left(x^{(s)}\right)^2-\left(\sum_{s=1}^{n_s}x^{(s)}\right)^2}\\
-  b = \frac{\sum_{s=1}^{n_s}\left(y^{(s)}\right)\sum_{s=1}^{n_s}\left(x^{(s)}\right)^2-\sum_{s=1}^{n_s}\left(x^{(s)}\right)\sum_{s=1}^{n_s}\left(x^{(s)}y^{(s)}\right)}{n_s\sum_{s=1}^{n_s}\left(x^{(s)}\right)^2-\left(\sum_{s=1}^{n_s}x^{(s)}\right)^2}
-\end{gather}
+Observamos que \eqref{eq_percep:regr_prob} é equivalente a um problema linear de \href{https://notaspedrok.com.br/notas/MatematicaNumerica/cap_ajuste_sec_prob_lin.html}{mínimos quadrados}. A solução é obtida resolvendo-se a equação normal\footnote{Consulte o Exercício \ref{exer_percep:sol_mq}.}
+\begin{equation}\label{eq_percep:sol_mq}
+  M^TM\pmb{c} = M^T\pmb{y},
+\end{equation}
+onde $\pmb{c} = (w, p)$ é o vetor dos parâmetros a determinar e $M$ é a matriz $n_s\times 2$ dada por
+\begin{equation}
+  M =
+  \begin{bmatrix}
+    \pmb{x} & \pmb{1}
+  \end{bmatrix}
+\end{equation}
 
 \subsubsection{Implementação}
 
-\emconstrucao
+\ifispython
+Usando {\python}+{\pytorch}, podemos implementar nosso perceptron para o problema de regressão como segue
+
+\lstinputlisting{./cap_perceptron/dados/py_percep_mq/main.py}
+
+Verifique!
+\fi
 
 \subsubsection{Resultado}
 
-\emconstrucao
+Nosso perceptron corresponde ao modelo
+\begin{equation}
+  \mathcal{N}(x; (w,b)) = wx + b
+\end{equation}
+com os pesos treinados $w = 1.54$ e $b = 0.45$. Ele corresponde à reta que melhor se ajusta ao conjunto de dados de $\left\{x^{(s)}, y^{(s)}\right\}$. Consulte a Figura \ref{fig:percep_mq}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{./cap_perceptron/dados/fig_percep_mq/main}
+  \caption{Interpretação geométrica do perceptron aplicado ao problema de regressão linear.}
+  \label{fig:percep_mq}
+\end{figure}
 
 \subsection{Exercícios}
 
@@ -227,7 +251,51 @@ Observamos que \eqref{eq_percep:regr_prob} é equivalente a \href{https://notasp
 
 \emconstrucao
 
-\section{Método do gradiente descendente estocástico}
+\section{Algoritmo de Treinamento}
+
+Na seção anterior, desenvolvemos dois modelos de neurônios para problemas diferentes, um de classificação e outro de regressão. Em cada caso, utilizamos algoritmos de treinamento diferentes. Agora, vamos estudar algoritmos de treinamentos mais gerais\footnote{Aqui, vamos explorar apenas algoritmos de treinamento supervisionado.}, que podem ser aplicados a ambos os problemas.
+
+Ao longo da seção, vamos considerar o modelo de neurônio
+\begin{equation}
+  \mathcal{N}\left(\pmb{x}; (\pmb{w}, b)\right) = f(\pmb{w}\cdot\pmb{x} + b),
+\end{equation}
+com dada função de ativação $f:\mathbb{R}\to\mathbb{R}$, sendo os vetores de entrada $\pmb{x}$ e dos pesos $\pmb{w}$ de tamanho $n_{in}$. Fornecido um conjunto de treinamento $\left\{\left(\pmb{x}^{(s)}, y^{(s)}\right)\right\}_1^{n_s}$, com $n_s$ amostras, o objetivo é calcular os parâmetros $(\pmb{w}, b)$ que minimizam a função erro quadrático médio
+\begin{equation}
+  \varepsilon(\pmb{w}, b) := \frac{1}{n_s}\sum_{s=1}^{n_s}\left(\tilde{y}^{(s)} - y^{(s)}\right)^2,
+\end{equation}
+onde $\tilde{y}^{(s)} = \mathcal{N}\left(\pmb{x}^{(s)}; (\pmb{w}, b)\right)$ é o valor estimado pelo modelo para a $s$-ésima amostra. I.e., queremos resolver o seguinte problema de minimização
+\begin{equation}
+  \min_{(\pmb{w}, b)}\varepsilon(\pmb{w}, b)
+\end{equation}
+
+\subsection{Método do gradiente}
+
+O método do gradiente é um \href{https://notaspedrok.com.br/notas/MatematicaNumericaAvancada/cap_otimizacao_sec_minimi.html}{método de declive}. Aplicado ao nosso modelo de perceptron consiste no seguinte algoritmo:
+\begin{enumerate}
+\item $\pmb{w}, b$ aproximações iniciais.
+\item Para $e\leftarrow 1, \dotsc, n_e$:
+  \begin{enumerate}
+  \item $\displaystyle (\pmb{w}, b) \leftarrow (\pmb{w}, b) - l_r\frac{\p\varepsilon}{\p (\pmb{w}, b)}$
+  \end{enumerate}
+\end{enumerate}
+onde, $n_e$ é o \emph{número de épocas}, $l_r$ é uma dada \emph{taxa de aprendizagem}\footnote{Em inglês, {\it learning rate}.} e o gradiente é
+\begin{equation}
+  \frac{\p\varepsilon}{\p (\pmb{w}, b)} := \left(\frac{\p\varepsilon}{\p w_1}, \dotsc, \frac{\p\varepsilon}{\p w_{n_{in}}}, \frac{\p\varepsilon}{\p b}\right)
+\end{equation}
+
+O cálculo do gradiente para os pesos $\pmb{w}$ pode ser feito como segue
+\begin{align}
+  \frac{\p\varepsilon}{\p \pmb{w}} &= \frac{\p}{\p\pmb{w}}\left[\frac{1}{n_s}\sum_{s=1}^{n_s}\left(\tilde{y}^{(s)}-y^{(s)}\right)^2\right]\\
+                                   &= \frac{2}{n_s}\sum_{s=1}^{n_s}\left(\tilde{y}^{(s)}-y^{(s)}\right)\frac{\p \tilde{y}^{(s)}}{\p\pmb{w}}\\
+                                   &= \frac{2}{n_s}\sum_{s=1}^{n_s}\left(\tilde{y}^{(s)}-y^{(s)}\right)\frac{\p}{\p\pmb{w}}f\left(z^{(s)}\right)\\
+                                   &= \frac{2}{n_s}\sum_{s=1}^{n_s}\left(\tilde{y}^{(s)}-y^{(s)}\right)f'\left(z^{(s)}\right)\frac{\p z^{(s)}}{\p\pmb{w}}\\
+                                   &= \frac{2}{n_s}\sum_{s=1}^{n_s}\left(\tilde{y}^{(s)}-y^{(s)}\right)f'\left(z^{(s)}\right)\frac{\p}{\p\pmb{w}}\left(\pmb{w}\cdot\pmb{x}^{(s)} + b\right)\\
+                                   &= \frac{2}{n_s}\sum_{s=1}^{n_s}\left(\tilde{y}^{(s)}-y^{(s)}\right)f'\left(z^{(s)}\right)\pmb{x}^{(s)}
+\end{align}
+De forma análoga, obtemos
+\begin{equation}
+  \frac{\p\varepsilon}{\p b} = \frac{2}{n_s}\sum_{s=1}^{n_s}\left(\tilde{y}^{(s)}-y^{(s)}\right)f'\left(z^{(s)}\right)
+\end{equation}
 
 \emconstrucao
 
