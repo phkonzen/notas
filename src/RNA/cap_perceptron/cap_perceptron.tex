@@ -259,18 +259,62 @@ Ao longo da seção, vamos considerar o modelo de neurônio
 \begin{equation}
   \mathcal{N}\left(\pmb{x}; (\pmb{w}, b)\right) = f(\pmb{w}\cdot\pmb{x} + b),
 \end{equation}
-com dada função de ativação $f:\mathbb{R}\to\mathbb{R}$, sendo os vetores de entrada $\pmb{x}$ e dos pesos $\pmb{w}$ de tamanho $n_{in}$. Fornecido um conjunto de treinamento $\left\{\left(\pmb{x}^{(s)}, y^{(s)}\right)\right\}_1^{n_s}$, com $n_s$ amostras, o objetivo é calcular os parâmetros $(\pmb{w}, b)$ que minimizam a função erro quadrático médio
+com dada função de ativação $f:\mathbb{R}\to\mathbb{R}$, sendo os vetores de entrada $\pmb{x}$ e dos pesos $\pmb{w}$ de tamanho $n_{in}$. A pré-ativação do neurônio é denotada por
 \begin{equation}
-  \varepsilon(\pmb{w}, b) := \frac{1}{n_s}\sum_{s=1}^{n_s}\left(\tilde{y}^{(s)} - y^{(s)}\right)^2,
+  z := \pmb{w}\cdot\pmb{x} + b
 \end{equation}
-onde $\tilde{y}^{(s)} = \mathcal{N}\left(\pmb{x}^{(s)}; (\pmb{w}, b)\right)$ é o valor estimado pelo modelo para a $s$-ésima amostra. I.e., queremos resolver o seguinte problema de minimização
+
+Fornecido um conjunto de treinamento $\left\{\left(\pmb{x}^{(s)}, y^{(s)}\right)\right\}_1^{n_s}$, com $n_s$ amostras, o objetivo é calcular os parâmetros $(\pmb{w}, b)$ que minimizam a função erro quadrático médio
+\begin{align}\label{eq:percep_mse}
+  \varepsilon(\pmb{w}, b) &:= \frac{1}{n_s}\sum_{s=1}^{n_s}\left(\tilde{y}^{(s)} - y^{(s)}\right)^2\\
+                          &= \frac{1}{n_s}\sum_{s=1}^{n_s}\varepsilon^{(s)}
+\end{align}
+onde $\tilde{y}^{(s)} = \mathcal{N}\left(\pmb{x}^{(s)}; (\pmb{w}, b)\right)$ é o valor estimado pelo modelo para a $s$-ésima amostra e $\varepsilon^{(s)} := \left(\tilde{y}^{(s)} - y^{(s)}\right)^2$. I.e., queremos resolver o seguinte problema de otimização
 \begin{equation}
   \min_{(\pmb{w}, b)}\varepsilon(\pmb{w}, b)
 \end{equation}
 
-\subsection{Método do gradiente}
+Para resolver este problema de otimização, vamos empregar o Método do Gradiente Descendente. Como veremos na sequência, ele requer o cálculo de derivadas da função erro e da função de ativação. Por isso, antes de o estudarmos, vamos fazer uma implementação mais detalhada de nosso modelo, da função erro e da função de ativação. A ideia é termos um código mais adequado e que nos dê acesso fácil as derivadas necessárias para o algoritmo de treinamento.
 
-O método do gradiente é um \href{https://notaspedrok.com.br/notas/MatematicaNumericaAvancada/cap_otimizacao_sec_minimi.html}{método de declive}. Aplicado ao nosso modelo de perceptron consiste no seguinte algoritmo:
+\subsubsection{Função de Ativação}
+
+Por simplicidade, vamos assumir a função identidade como função de ativação, i.e. $f(z)=z$. A implementamos com o seguinte código:
+
+\ifispython
+\lstinputlisting[firstline=3, lastline=12]{./cap_perceptron/dados/py_gd/main.py}
+\fi
+
+Aqui, a classe \lstinline+IdentityFun+ implementa a função identidade com dois métodos. O método \lstinline+value+ retorna o valor da função para uma dada entrada $z$, i.e. computa $f(z)$. O método \lstinline+grad+ computa a derivada da função, i.e. $f'(z)$.
+
+\subsubsection{Unidade de Processamento}
+
+Nosso modelo consiste em apenas uma unidade de processamento do tipo perceptron. O seguinte código implementa-o como uma classe.
+
+\ifispython
+\lstinputlisting[firstline=14, lastline=33]{./cap_perceptron/dados/py_gd/main.py}
+\fi
+
+A classe contém o método \lstinline+forward+ que computa a saída do modelo para uma dada entrada $\pmb{x}$, i.e., calcula
+\begin{equation}
+  y = \mathcal{N}\left(\pmb{x}; (\pmb{w}, b)\right).
+\end{equation}
+
+\subsubsection{Função Erro}
+
+Nossa função erro\footnote{Em inglês, {\it loss function}.} é dada em \eqref{eq:percep_mse}. A implementamos como a seguinte classe.
+
+\ifispython
+\lstinputlisting[firstline=35, lastline=51]{./cap_perceptron/dados/py_gd/main.py}
+\fi
+
+Nela o método \lstinline+partial+ computa $\varepsilon^{(s)} = \left(\tilde{y}^{(s)}-y^{(s)}\right)^2$ e o método \lstinline+grad+ computa a seguinte derivada
+\begin{equation}
+  \frac{\p\varepsilon^{(s)}}{\p \tilde{y}^{(s)}} = 2\left(\tilde{y}^{(s)}-y^{(s)}\right)
+\end{equation}
+
+\subsection{Método do Gradiente Descendente}
+
+O Método do Gradiente Descendente\footnote{Em inglês, {\it Gradiente Descent, GD Method}.} (GD) é um \href{https://notaspedrok.com.br/notas/MatematicaNumericaAvancada/cap_otimizacao_sec_minimi.html}{método de declive}. Aplicado ao nosso modelo de perceptron consiste no seguinte algoritmo:
 \begin{enumerate}
 \item $\pmb{w}, b$ aproximações iniciais.
 \item Para $e\leftarrow 1, \dotsc, n_e$:
@@ -285,17 +329,24 @@ onde, $n_e$ é o \emph{número de épocas}, $l_r$ é uma dada \emph{taxa de apre
 
 O cálculo do gradiente para os pesos $\pmb{w}$ pode ser feito como segue
 \begin{align}
-  \frac{\p\varepsilon}{\p \pmb{w}} &= \frac{\p}{\p\pmb{w}}\left[\frac{1}{n_s}\sum_{s=1}^{n_s}\left(\tilde{y}^{(s)}-y^{(s)}\right)^2\right]\\
-                                   &= \frac{2}{n_s}\sum_{s=1}^{n_s}\left(\tilde{y}^{(s)}-y^{(s)}\right)\frac{\p \tilde{y}^{(s)}}{\p\pmb{w}}\\
-                                   &= \frac{2}{n_s}\sum_{s=1}^{n_s}\left(\tilde{y}^{(s)}-y^{(s)}\right)\frac{\p}{\p\pmb{w}}f\left(z^{(s)}\right)\\
-                                   &= \frac{2}{n_s}\sum_{s=1}^{n_s}\left(\tilde{y}^{(s)}-y^{(s)}\right)f'\left(z^{(s)}\right)\frac{\p z^{(s)}}{\p\pmb{w}}\\
-                                   &= \frac{2}{n_s}\sum_{s=1}^{n_s}\left(\tilde{y}^{(s)}-y^{(s)}\right)f'\left(z^{(s)}\right)\frac{\p}{\p\pmb{w}}\left(\pmb{w}\cdot\pmb{x}^{(s)} + b\right)\\
-                                   &= \frac{2}{n_s}\sum_{s=1}^{n_s}\left(\tilde{y}^{(s)}-y^{(s)}\right)f'\left(z^{(s)}\right)\pmb{x}^{(s)}
+  \frac{\p\varepsilon}{\p \pmb{w}} &= \frac{\p}{\p\pmb{w}}\left[\frac{1}{n_s}\sum_{s=1}^{n_s}\varepsilon^{(s)}\right]\\
+                                   &= \frac{1}{ns}\sum_{s=1}^{ns}\frac{\p\varepsilon^{(s)}}{\p\tilde{y}^{(s)}}\frac{\p\tilde{y}^{(s)}}{\p\pmb{w}}\\
+  {\color{blue}\frac{\p\varepsilon}{\p \pmb{w}}} &{\color{blue}= \frac{1}{ns}\sum_{s=1}^{ns}\frac{\p\varepsilon^{(s)}}{\p\tilde{y}^{(s)}}\frac{\p\tilde{y}^{(s)}}{\p z^{(s)}}\frac{\p z^{(s)}}{\p\pmb{w}}}\\
 \end{align}
-De forma análoga, obtemos
+Observando que
+\begin{gather}
+  \frac{\p\varepsilon^{(s)}}{\p\tilde{y}^{(s)}} = 2\left(\tilde{y}^{(s)} - y^{(s)}\right)\\
+  \frac{\p\tilde{y}^{(s)}}{\p z^{(s)}} = f'\left(z^{(s)}\right)\\
+  \frac{\p z^{(s)}}{\p\pmb{w}} = \pmb{x}^{(s)}
+\end{gather}
+obtemos
 \begin{equation}
-  \frac{\p\varepsilon}{\p b} = \frac{2}{n_s}\sum_{s=1}^{n_s}\left(\tilde{y}^{(s)}-y^{(s)}\right)f'\left(z^{(s)}\right)
+  \frac{\p\varepsilon}{\p \pmb{w}} = \frac{1}{n_s}\sum_{s=1}^{n_s}2\left(\tilde{y}^{(s)}-y^{(s)}\right)f'\left(z^{(s)}\right)\pmb{x}^{(s)}
 \end{equation}
+\begin{align}
+  {\color{blue}\frac{\p\varepsilon}{\p b}} &{\color{blue}= \frac{1}{ns}\sum_{s=1}^{ns}\frac{\p\varepsilon^{(s)}}{\p\tilde{y}^{(s)}}\frac{\p\tilde{y}^{(s)}}{\p z^{(s)}}\frac{\p z^{(s)}}{\p b}}\\
+  \frac{\p\varepsilon}{\p b} &= \frac{1}{n_s}\sum_{s=1}^{n_s}2\left(\tilde{y}^{(s)}-y^{(s)}\right)f'\left(z^{(s)}\right)\cdot 1
+\end{align}
 
 \emconstrucao
 
