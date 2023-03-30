@@ -157,14 +157,14 @@ class Index:
         body += '<!-- The slideshow -->'
         body += '<div class="carousel-inner">'
         
-        body += '<div class="carousel-item active">'
+        body += '<div class="carousel-item">'
         body += '<div class="spinner-grow spinner-grow-sm text-warning mb-1" role="status"></div>'
         body += '<a href="https://wp.ufpel.edu.br/ermacrs23/">XI ERMAC-RS 2023 - Submissão de trabalhos: 01-31/março</a>'
         body += '</div>'
 
-        body += '<div class="carousel-item">'
-        body += '<div class="spinner-grow spinner-grow-sm text-primary mb-1" role="status"></div>'
-        body += '<a href="https://www.ufrgs.br/ppgmap">PPGMAp - UFRGS: Mestrado e Doutorado</a>'
+        body += '<div class="carousel-item active">'
+        body += '<div class="spinner-grow spinner-grow-sm text-danger mb-1" role="status"></div>'
+        body += '<a href="https://www.ufrgs.br/ppgmap/?p=1422">PPGMAp - UFRGS: Processo Seletivo para Aluna(o) Especial</a>'
         body += '</div>'
 
         body += '<div class="carousel-item">'
