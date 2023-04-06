@@ -79,7 +79,18 @@ class Index:
         card += '</div>'
         card += '</div>'
         return card
-        
+
+    def add_anuncio(self, text, link, status):
+        obj = ""
+        obj += f'<div class="card border-{status}" role="alert" style="height: 4em">'
+        obj += f'<div class="card-body d-flex justify-content-center text-{status}">'
+        obj += f'<a href={link} class="stretched-link"></a>'
+        obj += f'<div class="spinner-grow spinner-grow-sm text-{status} m-1" role="status"></div>'
+        obj += text
+        obj += '</div>'
+        obj += '</div>'
+        return obj
+
 
     def add_body(self):
         body = '<body>'
@@ -152,30 +163,47 @@ class Index:
         #miolo
 
         # Área de anúncios
-        body += '<div id="demo" class="carousel slide" data-bs-ride="carousel" style="height: 3em;">'
+        body += '<div id="demo" class="carousel slide mt-2 mb-2" data-bs-ride="carousel" style="height: 4em;">'
         
         body += '<!-- The slideshow -->'
         body += '<div class="carousel-inner">'
         
-        body += '<div class="carousel-item">'
-        body += '<div class="spinner-grow spinner-grow-sm text-warning mb-1" role="status"></div>'
-        body += '<a href="https://wp.ufpel.edu.br/ermacrs23/">XI ERMAC-RS 2023 - Submissão de trabalhos: 01-31/março</a>'
-        body += '</div>'
-
         body += '<div class="carousel-item active">'
-        body += '<div class="spinner-grow spinner-grow-sm text-danger mb-1" role="status"></div>'
-        body += '<a href="https://www.ufrgs.br/ppgmap/?p=1422">PPGMAp - UFRGS: Processo Seletivo para Aluna(o) Especial</a>'
+        body += self.add_anuncio(text = 'XI ERMAC-RS 2023 - Submissão de trabalhos: até 15/Abr',
+                                 link = 'https://wp.ufpel.edu.br/ermacrs23/',
+                                 status = 'danger')
+        # body += '<div class="spinner-grow spinner-grow-sm text-danger mb-1" role="status"></div>'
+        # body += '<a href="https://wp.ufpel.edu.br/ermacrs23/"> <strong></strong></a>'
         body += '</div>'
 
         body += '<div class="carousel-item">'
-        body += '<div class="spinner-grow spinner-grow-sm text-primary mb-1" role="status"></div>'
-        body += '<a href="http://www.ufrgs.br/ime">IME - UFRGS: Instituto de Matemática e Estatística</a>'
+        body += self.add_anuncio(text = 'XLII CNMAC 2023 - Submissão de trabalhos: até 10/Abr',
+                                 link = 'http://www.cnmac.org.br/novo/',
+                                 status = 'danger')
+        # body += '<div class="spinner-grow spinner-grow-sm text-danger mb-1" role="status"></div>'
+        # body += '<a href="http://www.cnmac.org.br/novo/"> XLII CNMAC 2023 - Submissão de trabalhos: até 10/Abr</a>'
+        body += '</div>'
+
+        body += '<div class="carousel-item">'
+        body += self.add_anuncio(text = 'PPGMAp - UFRGS: Processo Seletivo para Aluna(o) Especial',
+                                 link = 'https://www.ufrgs.br/ppgmap/?p=1422',
+                                 status = 'danger')
+        # body += '<div class="spinner-grow spinner-grow-sm text-danger mb-1" role="status"></div>'
+        # body += '<a href="https://www.ufrgs.br/ppgmap/?p=1422"> PPGMAp - UFRGS: Processo Seletivo para Aluna(o) Especial</a>'
+        body += '</div>'
+
+        body += '<div class="carousel-item">'
+        body += self.add_anuncio(text = 'IME - UFRGS: Instituto de Matemática e Estatística',
+                                 link = 'http://www.ufrgs.br/ime',
+                                 status = 'primary')
+        # body += '<div class="spinner-grow spinner-grow-sm text-primary mb-1" role="status"></div>'
+        # body += '<a href="http://www.ufrgs.br/ime"> IME - UFRGS: Instituto de Matemática e Estatística</a>'
         body += '</div>'
   
         body += '</div>'
         body += '</div>'
 
-        body += '<h3 class="mt-1">Notas de Aula</h3>'
+        body += '<h3 class="">Notas de Aula</h3>'
         body += '<hr>'
 
         body += '<div class="row row-cols-auto justify-content-around">'
