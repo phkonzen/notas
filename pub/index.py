@@ -255,7 +255,17 @@ class Index:
                               text = "Métodos e técnicas de cálculo numérico",
                               badges = ["Octave"],
                               link = "MatematicaNumerica/main.html",
-                              color = "danger", status = "Atualizando")
+                              color = "danger", status = "Antigo")
+        body += '</div>'
+
+        # card: notas de aula de Matemática Numérica I
+        body += '<div class="col">'
+        body += self.new_card(header = "Notas de Aula",
+                              title = "Matemática Numérica I",
+                              text = "Introdução ao cálculo numérico na resolução de equações e sistemas de equações",
+                              badges = ["Python", "NumPy"],
+                              link = "MatematicaNumericaI/main.html",
+                              color = "warning", status = "Ativo")
         body += '</div>'
 
         # card: notas de aula de Matemática Numérica Avançada

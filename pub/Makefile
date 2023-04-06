@@ -19,6 +19,9 @@ CalculoI: mainCalculoI.py
 MatematicaNumerica: mainMatematicaNumerica.py
 	python3 mainMatematicaNumerica.py
 
+MatematicaNumericaI: mainMatematicaNumericaI.py
+	python3 mainMatematicaNumericaI.py
+
 MatematicaNumericaAvancada: mainMatematicaNumericaAvancada.py
 	python3 mainMatematicaNumericaAvancada.py
 

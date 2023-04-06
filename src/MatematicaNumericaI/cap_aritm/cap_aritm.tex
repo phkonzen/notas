@@ -3,59 +3,58 @@
 \chapter{Aritmética de Máquina}\label{cap_aritm}
 \thispagestyle{fancy}
 
-% \ifisoctave
-% No \verb+GNU Octave+, temos
-% \begin{verbatim}
-% >> 0.1+0.2==0.3
-% ans = 0
-% \end{verbatim}
-% \fi
+\ifispython
+\begin{lstlisting}
+  >>> 0.1 + 0.2 == 0.3
+  False
+\end{lstlisting}
+\fi
 
-\section{Sistema de numeração posicional}\label{cap_aritm_sec_sisnumpos}
+\section{Sistema de Numeração Posicional}\label{cap_aritm_sec_sisnumpos}
 
 Cotidianamente, usamos o sistema de numeração posicional na base decimal. Por exemplo, temos
 \begin{equation}
   123,5 = 1\times 10^2 + 2\times 10^1 + 3\times 10^0 + 5\times 10^{-1},
 \end{equation}
 onde o algarismo/dígito 1 está na posição 2 (posição das centenas), o dígito 2 está na posição 1 (posição das dezenas) e o dígito 3 está na posição 0 (posição das unidades). Mais geralmente, temos a representação decimal
-\begin{align}
-  \pm &d_n\ldots d_2d_1d_0,d_{-1}d_{-2}d_{-3}\ldots := \\
-  \pm &\left(d_n\times 10^n + \cdots + d_2\times 10^2 + d_1\times 10^1 + d_0\times 10^0\right. \\
-      &\left. + d_{-1}\times 10^{-1} + d_{-2}\times 10^{-2} + d_{-3}\times 10^{-3} + \cdots\right),
-\end{align}
-cujos os dígitos $d_i \in \{0, 1, 2, 3, 4, 5, 6, 7, 8, 9\}$, $i=n, \dotsc, 2, 1, 0, -1, -2, -3, \ldots$. Observamos que esta representação posicional pode ser imediatamente generalizada para outras bases numéricas.
+\begin{gather}
+  \pm d_n\ldots d_2d_1d_0,d_{-1}d_{-2}d_{-3}\ldots \\
+  := \pm \left(d_n\times 10^n + \cdots + d_2\times 10^2 + d_1\times 10^1 + d_0\times 10^0\right. \\
+      \left. + d_{-1}\times 10^{-1} + d_{-2}\times 10^{-2} + d_{-3}\times 10^{-3} + \cdots\right),
+\end{gather}
+cujos os dígitos $d_i \in \{0, 1, 2, 3, 4, 5, 6, 7, 8, 9\}$, $i=n, \dotsc, 2, 1, 0, -1, -2, -3, \ldots$. Observamos que esta representação posicional pode ser generalizada para outras bases numéricas.
 
 \begin{defn}\normalfont{(Representação posicional)}\label{defn:representacao_posicional}
-  Dada uma base $b\in\mathbb{N}\setminus \{0\}$, definimos a representação
-  \begin{align}
-    \pm &(d_n\ldots d_2d_1d_0,d_{-1}d_{-2}d_{-3}\ldots)_{b} := \\
-    \pm &\left(d_n\times b^n + \cdots + d_2\times b^2 + d_1\times b^1 + d_0\times b^0\right. \\
-      &\left. + d_{-1}\times b^{-1} + d_{-2}\times b^{-2} + d_{-3}\times b^{-3} + \cdots\right),
-  \end{align}
-onde os dígitos $d_i\in\{0, 1, \dotsc, b-1\}$\footnote{Para bases $b\geq 11$, usamos a representação dos dígitos maiores ou iguais a 10 por letras maiúsculas do alfabeto latino, i.e. $A=10$, $B=11$, $C=12$ e assim por diante.}, $i=n, \dotsc, 2, 1, 0, -1, -2, -3, \ldots$.
+  Dada uma base ${\color{blue}b}\in\mathbb{N}\setminus \{0\}$, definimos a representação
+  \begin{gather}
+    \pm (d_n\ldots d_2d_1d_0,d_{-1}d_{-2}d_{-3}\ldots)_{\color{blue}b} \\
+    := \pm \left(d_n\times b^n + \cdots + d_2\times b^2 + d_1\times b^1 + d_0\times b^0\right. \\
+      \left. + d_{-1}\times b^{-1} + d_{-2}\times b^{-2} + d_{-3}\times b^{-3} + \cdots\right),
+  \end{gather}
+onde os dígitos $d_i\in\{0, 1, \dotsc, {\color{blue}b}-1\}$\footnote{Para bases $b\geq 11$, usamos a representação dos dígitos maiores ou iguais a 10 por letras maiúsculas do alfabeto latino, i.e. $A=10$, $B=11$, $C=12$ e assim por diante.}, $i=n, \dotsc, 2, 1, 0, -1, -2, -3, \ldots$.
 \end{defn}
 
 \begin{ex}\normalfont{(Representação binária)}\label{ex:base_binaria}
   O número $(11010,101)_2$ está escrito na representação binária (base $b=2$). Da Definição~\ref{defn:representacao_posicional}, temos
-  \begin{align}
-    (\stackrel{4}{1}~\stackrel{3}{1}~\stackrel{2}{0}~\stackrel{1}{1}~\stackrel{0}{0},\stackrel{-1}{~\,1}~\stackrel{-2}{~\,0}~\stackrel{-3}{~\,1})_2 &= 1\times 2^4 + 1\times 2^3 + 0\times 2^2 + 1\times 2^1 + 0\times 2^0\\
-    &+ 1\times 2^{-1} + 0\times 2^{-2} + 1\times 2^{-3}\\
-    &= 26,625.
-  \end{align}
+  \begin{gather}
+    (\stackrel{4}{1}~\stackrel{3}{1}~\stackrel{2}{0}~\stackrel{1}{1}~\stackrel{0}{0},\stackrel{-1}{~\,1}~\stackrel{-2}{~\,0}~\stackrel{-3}{~\,1})_2\\
+    = 1\times 2^4 + 1\times 2^3 + 0\times 2^2 + 1\times 2^1 + 0\times 2^0\\
+    + 1\times 2^{-1} + 0\times 2^{-2} + 1\times 2^{-3}\\
+    = 26,625.
+  \end{gather}
 
-% \ifisoctave
-% Podemos fazer estas contas no \verb+GNU Octave+ da seguinte forma
-% \begin{verbatim}
-% >> 1*2^4+1*2^3+0*2^2+1*2^1+0*2^0+1*2^-1+0*2^-2+1*2^-3
-% ans =  26.625
-% \end{verbatim}
-% \fi
-
+  \ifispython
+  \begin{lstlisting}
+    >>> 1*2**4 + 1*2**3 + 0*2**2 + 1*2**1 + 0*2**0 + \
+    ... 1*2**-1 + 0*2**-2 + 1*2**-3
+    26.625
+  \end{lstlisting}
+  \fi
 \end{ex}
 
-\subsection{Mudança de base}
+\subsection{Mudança de Base}
 
-Um mesmo número pode ser representado em diferentes bases e, aqui, estudaremos como obter a representação de uma número em diferentes bases. A mudança de base de representação de um dado número pode ser feita de várias formas. De forma geral, se temos um número $x$ representado na base $b_1$ e queremos obter sua representação na base $b_2$, fazemos
+Um mesmo número pode ser representado em diferentes bases. A mudança de base da representação de um dado número pode ser feita de várias formas. De forma geral, se temos um número $x$ representado na base $b_1$ e queremos obter sua representação na base $b_2$, fazemos
 \begin{enumerate}
 \item Calculamos a representação do número $x$ na base decimal.
 \item Da calculada representação decimal, calculamos a representação de $x$ na base $b_2$.
@@ -68,111 +67,324 @@ Então, separamos sua parte inteira $I = d_nd_{n-1}d_{n-2}\ldots d_0$ e sua part
 
 \begin{ex}
   Obtenha a representação em base quartenária ($b=4$) do número $(11010,101)_2$.
-  \begin{itemize}
-  \item[1.] $b=2 \to b=10$. 
-A representação de $(11010,101)_2$ segue direto da Definição \ref{defn:representacao_posicional} (veja, o Exemplo~\ref{ex:base_binaria}). Ou seja, temos
-\begin{align}
-    (\stackrel{4}{1}~\stackrel{3}{1}~\stackrel{2}{0}~\stackrel{1}{1}~\stackrel{0}{0},\stackrel{-1}{~\,1}~\stackrel{-2}{~\,0}~\stackrel{-3}{~\,1})_2 &= 2^4 + 2^3 + 2^1 + 2^{-1} + 2^{-3} \\
-  &= 26,625.
-\end{align}
-  \end{itemize}
+  \begin{enumerate}[1.]
+  \item $b=2 \to 10$. 
+    A representação de $(11010,101)_2$ segue direto da Definição \ref{defn:representacao_posicional} (veja, o Exemplo~\ref{ex:base_binaria}). Ou seja, temos
+    \begin{gather}
+      (\stackrel{4}{1}~\stackrel{3}{1}~\stackrel{2}{0}~\stackrel{1}{1}~\stackrel{0}{0},\stackrel{-1}{~\,1}~\stackrel{-2}{~\,0}~\stackrel{-3}{~\,1})_2 \\
+      = 2^4 + 2^3 + 2^1 + 2^{-1} + 2^{-3} \\
+      = 26,625.
+    \end{gather}
+    \ifispython
+    \begin{lstlisting}
+      >>> 2**4 + 2**3 + 2 + 2**-1 + 2**-3
+      26.625
+    \end{lstlisting}
+    \fi
 
-% \ifisoctave
-% No \verb+GNU Octave+ podemos fazer a mudança para a base decimal com a função \verb+base2dec+:
-% \begin{verbatim}
-% >> I = base2dec("11010",2)
-% I =  26
-% >> F = base2dec("101",2)*2^-3
-% F =  0.62500
-% >> I+F
-% ans =  26.625
-% \end{verbatim}
-% \fi
+  \item $b=10 \to 4$.
+    Primeiramente, decompomos $26,625$ em sua parte inteira $I = 26$ e em sua parte fracionária $0,625$. Então, ao fazermos sucessivas divisões de $I$ por $b=4$, obtemos:
+    \begin{align}
+      I &= 26\\
+        &= 6\times 4 + 2\times 4^0\\
+        &= (1\times 4 + 2)\times 4 + 2\times 4^0\\
+        &= 1\times 4^2 + 2\times 4 + 2\times 4^0\\
+        &= (122)_4.
+    \end{align}
 
-\begin{itemize}
-\item[2.] $b=10 \to b=4$.
-\end{itemize}
-Primeiramente, decompomos $26,625$ em sua parte inteira $I = 26$ e em sua parte fracionária $0,625$. Então, ao fazermos sucessivas divisões de $I$ por $b=4$, obtemos:
-\begin{align}
-  I &= 26\\
-  &= 6\times 4 + 2\times 4^0\\
-  &= (1\times 4 + 2)\times 4 + 2\times 4^0\\
-  &= 1\times 4^2 + 2\times 4 + 2\times 4^0\\
-  &= (122)_4.
-\end{align}
-Agora, para a parte fracionária, usamos sucessivas multiplicações de $F$ por $b=4$, obtendo:
-\begin{align}
-  F &= 0,625\\
-  &= 2,5\times 4^{-1} = 2\times 4^{-1} + 0,5\times 4^{-1}\\
-  &= 2\times 4^{-1} + 2\times 4^{-1}\times 4^{-1}\\
-  &= 2\times 4^{-1} + 2\times 4^{-2}\\
-  &= (0,22)_{4}.
-\end{align}
-No \verb+GNU Octave+, podemos computar a representação de $F$ na base $b=4$ da seguinte forma:
-\begin{verbatim}
->> F=0.625
-F =  0.62500
->> d=fix(F*4),F=F*4-d
-d =  2
-F =  0.50000
->> d=fix(F*4),F=F*4-d
-d =  2
-F = 0
-\end{verbatim}
+    \ifispython
+    \begin{lstlisting}
+      I = int(26.625)
+      d_int = []
+      while (I != 0):
+        d_int.insert(0, I % 4)
+        I //= 4
+      print('(',*d_int,')_4',sep="")
+    \end{lstlisting}
+    \fi
+    
+    Agora, para a parte fracionária, usamos sucessivas multiplicações de $F$ por $b=4$, obtendo:
+    \begin{align}
+      F &= 0,625\\
+        &= 2,5\times 4^{-1} = 2\times 4^{-1} + 0,5\times 4^{-1}\\
+        &= 2\times 4^{-1} + 2\times 4^{-1}\times 4^{-1}\\
+        &= 2\times 4^{-1} + 2\times 4^{-2}\\
+        &= (0,22)_{4}.
+    \end{align}
 
-Por fim, dos passos 1. e 2., temos $(11010,101)_2 = (122,22)_4$.
+    \ifispython
+    \begin{lstlisting}
+      F = 26.625 % 1
+      d_fra = []
+      while (F != 0):
+        F *= 4
+        d_fra.append(int(F))
+        F %= 1
+      print('(0,',*d_fra,')_4',sep="")
+    \end{lstlisting}
+    \fi
+  \end{enumerate}
+
+  Por fim, dos passos 1. e 2., temos $(11010,101)_2 = (122,22)_4$.
+
+  \ifispython
+  \begin{lstlisting}
+    >>> print('(',*d_int,',',*d_fra,')_4', sep='')
+    (122,22)_4
+  \end{lstlisting}
+  \fi
 \end{ex}
 
-\subsection*{Exercícios}
+\subsection{Exercícios Resolvidos}
 
-\begin{exer}\label{exer:base2dec}
+\begin{exeresol}
+  Forneça a representação decimal dos seguintes números:
+  \begin{enumerate}[a)]
+  \item $(10101)_2$
+  \item $(0,4321)_5$
+  \item $(23,5)_8$
+  \item $(A2A)_{11}$
+  \item $(BEBE)_{16}$
+  \end{enumerate}
+\end{exeresol}
+\begin{resol}
+  \begin{enumerate}[a)]
+  \item $(\stackrel{4}{1}~\stackrel{3}{0}~\stackrel{2}{1}~\stackrel{1}{0}\stackrel{0}{1})_2$
+    \ifispython
+    \begin{lstlisting}
+      >>> 0b10101
+      21
+    \end{lstlisting}
+    \fi
+  \item $(\stackrel{0}{0},\stackrel{-1}{~\,4}~\stackrel{-2}{~\,3}~\stackrel{-3}{~\,2}~\stackrel{-4}{~\,1})_5$
+    \ifispython
+    \begin{lstlisting}
+      >>> 4*5**-1+3*5**-2+2*5**-3+5**-4
+      0.9376000000000001
+    \end{lstlisting}
+    \fi
+  \item $(\stackrel{1}{2}~\stackrel{0}{3},\stackrel{-1}{~\,5})_8$
+    \ifispython
+    \begin{lstlisting}
+      >>> 0o235 / 8**1
+      19.625
+    \end{lstlisting}
+    \fi    
+  \item $(\stackrel{2}{A}~\stackrel{1}{2}~\stackrel{0}{A})_{11}$
+    \ifispython
+    \begin{lstlisting}
+      >>> int('A2A', 11)
+      1242
+    \end{lstlisting}
+    \fi
+  \item $(\stackrel{3}{B}~\stackrel{2}{E}~\stackrel{1}{B}~\stackrel{0}{E})_{16}$
+    \ifispython
+    \begin{lstlisting}
+      >>> 0xBEBE
+      48830
+    \end{lstlisting}
+    \fi    
+  \end{enumerate}
+\end{resol}
+
+\begin{exeresol}
+  Forneça a representação na base indicada dos seguintes números decimais:
+  \begin{enumerate}[a)]
+  \item $203 \to$ base 2
+  \item $0,671875 \to$ base 2
+  \item $17,25 \to$ base 8
+  \item $3245,875 \to$ base 16
+  \end{enumerate}
+\end{exeresol}
+\begin{resol}
+  \begin{enumerate}[a)]
+  \item $203 \to$ base 2
+    \ifispython
+    Usando o método {\python} \lstinline+bin+, obtemos
+    \begin{lstlisting}
+      >>> bin(203)
+      '0b11001011'
+    \end{lstlisting}
+    ou seja, $203 = (11001011)_2$.
+    \fi
+  \item $0,671875 \to$ base 2.
+    \ifispython
+    Executando o código
+    \begin{lstlisting}
+      F = 0.671875
+      digs = []
+      while (F != 0):
+        F *= 2
+        digs.append(int(F))
+        F %= 1
+      print('(0,',*digs,')_2',sep="")      
+    \end{lstlisting}
+    obtemos que $0,671875 = (0,101011)_2$.
+    \fi
+  \item $17,25 \to$ base 8
+    Temos que
+    \begin{align}
+      17,25 &= 17 + 0,25\\
+            &= 16 + 1 + \frac{2}{8}\\
+            &= 2\cdot 8^1 + 1\cdot 8^0 + 2\cdot 8^{-1}\\
+            &= (21,2)_8
+    \end{align}
+  \item $3245,875 \to$ base 16
+    \ifispython
+    Executando o seguinte código
+    \begin{lstlisting}
+      # base
+      b = 16
+      # dígitos
+      digs = "0123456789ABCDEF"
+
+      # número
+      x = 3245.875
+
+      # parte inteira 
+      I = int(x)
+      di = []
+      while (I != 0):
+        di.insert(0, I % b)
+        I //= b
+
+      # parte fracionária
+      F = x % 1
+      df = []
+      while (F != 0):
+        F *= b
+        df.append(int(F))
+        F %= 1
+
+      print('(',*[digs[d] for d in di],\
+            ',',*[digs[d] for d in df],f')_{b}',sep="")      
+    \end{lstlisting}
+    obtemos $3245,875 = (CAD,E)_{16}$.      
+    \fi
+  \end{enumerate}
+\end{resol}
+
+\begin{exeresol}
+  Na base indicada, forneça a representação dos seguintes números:
+  \begin{enumerate}[a)]
+  \item $(1101)_2 \to$ base 8
+  \item $(1011,0101)_2 \to$ base 8
+  \end{enumerate}
+\end{exeresol}
+\begin{resol}
+  \begin{enumerate}[a)]
+  \item $(1101)_2 \to$ base 8
+    \ifispython
+    >>> oct(0b1101)
+    '0o15'
+    \fi
+    Ou seja, $(1101)_2 = (15)_8$.
+  \item $(1011,0101)_2 \to$ base 8
+    Primeiro, convertemos $(1011,0101)_2$ para decimal (base 10).
+    \ifispython
+    >>> 0b10110101 / 2**4
+    11.3125    
+    \fi
+    Logo, convertemos para a base octal (base 8) com o seguinte código:
+    \ifispython
+    \begin{lstlisting}
+      # base
+      b = 8
+
+      # número
+      x = 11.3125
+
+      # parte inteira 
+      I = int(x)
+      di = []
+      while (I != 0):
+        di.insert(0, I % b)
+        I //= b
+
+      # parte fracionária
+      F = x % 1
+      df = []
+      while (F != 0):
+        F *= b
+        df.append(int(F))
+        F %= 1
+
+      print('(',*di,',',*df,f')_{b}',sep="")      
+    \end{lstlisting}
+    Com este último, obtemos $(1011,0101)_2 = 11,3125 = (13,24)_8$
+    \fi
+  \end{enumerate}  
+\end{resol}
+
+\subsection{Exercícios}
+
+\begin{exer}
   Obtenha a representação decimal dos seguinte números:
   \begin{enumerate}[a)]
   \item $(101101,00101)_2$
   \item $(23,1)_4$
   \item $(DAAD)_{16}$
-  \item $(0,1)_3$
-  \item $(0,\overline{1})_4$
+  \item $(33,11)_8$
+  \item $(51)_3$
   \end{enumerate}
 \end{exer}
 \begin{resp}
-
-% \ifisoctave 
-% \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/exer_base2dec/exer_base2dec.m}{Código.}
-% \fi
-  a)~$45,15625$; b)~$11,25$; c)~$55981$; d)~$0,\overline{3}$; e)~$0,\overline{3}$
+  a)~$45,15625$; b)~$11,25$; c)~$55981$; d)~$27,140625$; e)~$1220$
 \end{resp}
 
-\begin{exer}\label{exer_dec2base}
+\begin{exer}
+  Obtenha a representação dos seguintes números decimais na base indicada:
+  \begin{enumerate}[a)]
+  \item $10$ na base 2.
+  \item $45,5$ na base 2.
+  \item $41$ na base octal.
+  \item $66,31640625$ na base hexadecimal.
+  \item $0,\overline{3}$ na base 3.
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a)~$(1010)_2$; b)~$(101101,1)_2$; c)~$(51)_8$; d) $(42,51)_{16}$; e) $(0,1)_3$
+\end{resp}
+
+\begin{exer}
   Obtenha a representação dos seguintes números na base indicada:
   \begin{enumerate}[a)]
-  \item $45,5$ na base $b=2$.
-  \item $0,3$ na base $b=4$.
+  \item $(101101,00101)_2$ na base 4.
+  \item $(23,1)_4$ na base 2.
+  \item $(2001)_{16}$ na base 8.
   \end{enumerate}
 \end{exer}
 \begin{resp}
-
-  % \ifisoctave 
-  % \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/exer_dec2base/exer_dec2base.m}{Código.} 
-  % \fi
-  a)~$(101101,1)_2$; b)~$(0,1\overline{03})_4$
+   a)~$(231,022)_4$; b)~$(1011,01)_2$; c)~$(20001)_8$
 \end{resp}
 
-\begin{exer}\label{exer_base2base}
+\begin{exer}
   Obtenha a representação dos seguintes números na base indicada:
   \begin{enumerate}[a)]
-  \item $(101101,00101)_2$ na base $b=4$.
-  \item $(23,1)_4$ na base $b=2$.
+  \item $(0,1)_3$ na base decimal.
+  \item $(0,\overline{1})_3$ na base decimal.
+  \item $0,\overline{3}$ na base octal.
   \end{enumerate}
 \end{exer}
 \begin{resp}
-  % \ifisoctave 
-  % \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/exer_base2base/exer_base2base.m}{Código.} 
-  % \fi
-  a)~$(231,022)_4$; b)~$(1011,01)_2$  
+  a)~$0,\overline{3}$; b)~$1.5$; c)~$(0,\overline{25})_8$;
 \end{resp}
 
-\section{Representação de números em máquina}\label{cap_artm_sec_repummaq}
+\begin{exer}
+  Obtenha a representação dos seguintes números na base indicada:
+  \begin{enumerate}[a)]
+  \item $0,3$ na base 4.
+  \item $0,3$ na base 9.
+  \item $(A8)_{16}$ na base 5.
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a)~$(0,1\overline{03})_4$; b)~$(0,\overline{27})$; c)~$(2,2)_5$
+\end{resp}
+
+% estou aqui
+
+\section{Representação de Números em Máquina}\label{cap_artm_sec_repummaq}
 
 Usualmente, números são manipulados em máquina através de suas representações em registros com $n$-{\it bits}. Ao longo desta seção, vamos representar um tal registro por
 \begin{equation}

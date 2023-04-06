@@ -1,0 +1,647 @@
+<!DOCTYPE html><html lang="pt">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>3.4 Fatoração LU‣ Capítulo 3 Métodos diretos para sistemas lineares ‣ Matemática Numérica I</title>
+<!--Generated on Thu Apr  6 16:22:41 2023 by LaTeXML (version 0.8.6) http://dlmf.nist.gov/LaTeXML/.-->
+<!--Document created on 6 de abril de 2023.-->
+
+<link rel="stylesheet" href="LaTeXML.css" type="text/css">
+<link rel="stylesheet" href="ltx-book.css" type="text/css">
+<link rel="stylesheet" href="ltx-listings.css" type="text/css">
+<link rel="stylesheet" href="ltx-ulem.css" type="text/css">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="main.css" type="text/css">
+<link rel="stylesheet" href="./fonts/cmun-serif.css" type="text/css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=MML_SVG" type="text/javascript"></script>
+<link rel="up" href="cap_sl_direto.html" title="Capítulo 3 Métodos diretos para sistemas lineares ‣ Matemática Numérica I">
+<link rel="up up" href="main.html" title="Matemática Numérica I">
+<link rel="start" href="main.html" title="Matemática Numérica I">
+<link rel="prev" href="cap_sl_direto_sec_egauss_pivo.html" title="3.3 Método de eliminação gaussiana com pivotamento parcial com escala ‣ Capítulo 3 Métodos diretos para sistemas lineares ‣ Matemática Numérica I">
+<link rel="next" href="cap_sl_iter.html" title="Capítulo 4 Métodos iterativos para sistemas lineares ‣ Matemática Numérica I">
+<link rel="section" href="cap_sl_direto_sec_egauss.html" title="3.1 Eliminação gaussiana ‣ Capítulo 3 Métodos diretos para sistemas lineares ‣ Matemática Numérica I">
+<link rel="section" href="cap_sl_direto_sec_norma_numcond.html" title="3.2 Norma e número de condicionamento ‣ Capítulo 3 Métodos diretos para sistemas lineares ‣ Matemática Numérica I">
+<link rel="section" href="cap_sl_direto_sec_egauss_pivo.html" title="3.3 Método de eliminação gaussiana com pivotamento parcial com escala ‣ Capítulo 3 Métodos diretos para sistemas lineares ‣ Matemática Numérica I">
+<link rel="chapter" href="licenca.html" title="Licença ‣ Matemática Numérica I">
+<link rel="chapter" href="prefacio.html" title="Prefácio ‣ Matemática Numérica I">
+<link rel="chapter" href="cap_aritm.html" title="Capítulo 1 Aritmética de Máquina ‣ Matemática Numérica I">
+<link rel="chapter" href="cap_eq1d.html" title="Capítulo 2 Equação com uma incógnita ‣ Matemática Numérica I">
+<link rel="chapter" href="cap_sl_direto.html" title="Capítulo 3 Métodos diretos para sistemas lineares ‣ Matemática Numérica I">
+<link rel="chapter" href="cap_sl_iter.html" title="Capítulo 4 Métodos iterativos para sistemas lineares ‣ Matemática Numérica I">
+<link rel="chapter" href="cap_snl.html" title="Capítulo 5 Sistema de equações não lineares ‣ Matemática Numérica I">
+<link rel="bibliography" href="bib.html" title="Referências ‣ Matemática Numérica I">
+<meta name="author" content="Pedro H A Konzen"/><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous"><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script><link href="../fontawesome/css/all.min.css" rel="stylesheet"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"><link rel="stylesheet" href="goodies.css" type="text/css"><!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WZM0C3FQ62"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-WZM0C3FQ62');
+</script>
+</head>
+<body><div class="container-fluid mb-0"><div class="row"><div class="col-xxl-1"></div><div class="col-xxl-10"><div id="colabAlert" class="alert alert-warning alert-dismissible sticky-top m-0 d-flex justify-content-between" role="alert" style="">
+  <!-- <p class="m-0 d-flex justify-content-between"> -->
+    <span><a href="../contato.html"><i class="fas fa-envelope"></i></a>  <strong> Colabore com <a href="../contato.html" class="link-primary">sugestões</a> ou avisos de <a href="../contato.html">erros</a>!</strong></span>  <span class="material-symbols-outlined m-0">screen_rotation</span>
+  <span><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></span>
+  <!-- </p> -->
+</div>
+<div class="container-fluid d-flex justify-content-center mt-2 mb-2 fixed-bottom">
+  <div id="generalAlert" class="alert alert-warning alert-dismissible" role="alert" style="max-width: 300rem;">
+    Ao navegar por este
+    <i>site
+    </i>, você concorda com a
+    <a href="https://notaspedrok.com.br/notas/politica.html">Política de Uso de Dados
+    </a>.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+    </button>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+      $("#generalAlert").hide();
+      if (document.referrer.lastIndexOf("notaspedrok.com.br") == -1) {
+          $("#generalAlert").fadeIn(1000);
+      }
+  });   
+</script>
+<!-- begin: navbar --><nav class="navbar navbar-dark bg-primary mb-1"><div class="container-fluid"><a class="navbar-brand" href="main.html">Notas de Aula<br/><small>Matemática Numérica I</small></a><button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button><div class="collapse navbar-collapse" id="navbarNav"><ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="../index.html"><i class="fas fa-home"></i> Início</a></li><li class="nav-item"><a class="nav-link active" href="main.html">Sumário</a></li><li class="nav-item"><a class="nav-link" href="main.pdf"><i class="fas fa-download" aria-hidden="true"></i> PDF</a></li><li class="nav=item"><a class="nav-link" href="https://colab.research.google.com/github/phkonzen/notas/blob/master/notas.ipynb">Google Colab</a></li><li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">Contato</a><div class="dropdown-menu" aria-labelledby="navbarDropdown"><a class="dropdown-item" href="../contato.html"><i class="fas fa-envelope"></i> Mensagem</a><a class="dropdown-item" href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i> notas.pedrok</a></div><!-- div class="dropdown-menu" aria-labelledby="navbarDropdown" --></li> <!-- li class="nav-item dropdown" --><li class="nav-item"><a class="nav-link" href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i> Repo</a></li><li class="nav-item"><a class="nav-link" href="../politica.html">Política de dados</a></li></ul></div><!-- /.navbar-collapse --></div><!-- /.container-fluid --></nav><!-- end: navbar --><p class="text-left mb-0"><a href="./contato.html"><i class="fas fa-envelope"></i></a> | <a href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i></a> | <a href="https://archive.org/details/notas-de-aula"><i class="fas fa-building-columns"></i></a> | <a href="https://www.youtube.com/channel/UCwutHKlKLgVj6IkFSUFBqoA"><i class="fab fa-youtube"></i></a> | <a href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i></a></p>
+<div class="ltx_page_main">
+<header class="ltx_page_header">
+<div>
+<a href="cap_sl_direto.html" title="Capítulo 3 Métodos diretos para sistemas lineares ‣ Matemática Numérica I" class="ltx_ref" rel="up"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">3 </span>Métodos diretos para sistemas lineares</span></a><a href="cap_sl_direto_sec_egauss_pivo.html" title="3.3 Método de eliminação gaussiana com pivotamento parcial com escala ‣ Capítulo 3 Métodos diretos para sistemas lineares ‣ Matemática Numérica I" class="ltx_ref" rel="prev"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">3.3 </span>Método de eliminação gaussiana com pivotamento parcial com escala</span></a><a href="cap_sl_iter.html" title="Capítulo 4 Métodos iterativos para sistemas lineares ‣ Matemática Numérica I" class="ltx_ref" rel="next"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">4 </span>Métodos iterativos para sistemas lineares</span></a>
+</div></header>
+<div class="ltx_page_content">
+<section class="ltx_section ltx_authors_1line" lang="pt">
+<h1 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">3.4 </span>Fatoração LU <small><a href="../contato.html"><i class="fas fa-envelope"></i></a></small></h1>
+
+<div id="p1" class="ltx_para">
+<p class="ltx_p">A fatoração LU é uma forma eficiente de se resolver sistemas lineares. Dado um sistema <math id="p1.m1" class="ltx_Math" alttext="Ax=b" display="inline"><mrow><mrow><mi>A</mi><mo>⁢</mo><mi>x</mi></mrow><mo>=</mo><mi>b</mi></mrow></math>, a ideia é de fatorar a matriz <math id="p1.m2" class="ltx_Math" alttext="A" display="inline"><mi>A</mi></math> como o produto de uma matriz triangular inferior<span id="Ch3.footnote1" class="ltx_note ltx_role_footnote"><sup class="ltx_note_mark">1</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">1</sup>
+              <span class="ltx_tag ltx_tag_note">1</span>
+              
+              
+              
+            Do inglês, <span class="ltx_text ltx_font_italic">low triangular matrix</span>.</span></span></span> <math id="p1.m3" class="ltx_Math" alttext="L" display="inline"><mi>L</mi></math> com uma matriz triangular superior<span id="Ch3.footnote2" class="ltx_note ltx_role_footnote"><sup class="ltx_note_mark">2</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">2</sup>
+              <span class="ltx_tag ltx_tag_note">2</span>
+              
+              
+              
+            Do inglês, <span class="ltx_text ltx_font_italic">upper triangular matrix</span>.</span></span></span> <math id="p1.m4" class="ltx_Math" alttext="U" display="inline"><mi>U</mi></math>, i.e.</p>
+<table id="Ch3.E175" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E175.m1" class="ltx_Math" alttext="A=LU." display="block"><mrow><mrow><mi>A</mi><mo>=</mo><mrow><mi>L</mi><mo>⁢</mo><mi>U</mi></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.175)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Com isso, o sistema <math id="p1.m5" class="ltx_Math" alttext="Ax=b" display="inline"><mrow><mrow><mi>A</mi><mo>⁢</mo><mi>x</mi></mrow><mo>=</mo><mi>b</mi></mrow></math> pode ser reescrito na forma
+</p>
+<table id="Ch3.E176" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E176.m1" class="ltx_Math" alttext="(LU)x=b\Leftrightarrow L(Ux)=b." display="block"><mrow><mrow><mrow><mrow><mrow><mo stretchy="false">(</mo><mrow><mi>L</mi><mo>⁢</mo><mi>U</mi></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mi>x</mi></mrow><mo>=</mo><mi>b</mi></mrow><mo>⇔</mo><mrow><mrow><mi>L</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>U</mi><mo>⁢</mo><mi>x</mi></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mi>b</mi></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.176)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Denotando, <math id="p1.m6" class="ltx_Math" alttext="Ux=y" display="inline"><mrow><mrow><mi>U</mi><mo>⁢</mo><mi>x</mi></mrow><mo>=</mo><mi>y</mi></mrow></math>, podemos resolver o seguinte sistema triangular</p>
+<table id="Ch3.E177" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E177.m1" class="ltx_Math" alttext="Ly=b." display="block"><mrow><mrow><mrow><mi>L</mi><mo>⁢</mo><mi>y</mi></mrow><mo>=</mo><mi>b</mi></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.177)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Tendo resolvido este sistema, a solução do sistema <math id="p1.m7" class="ltx_Math" alttext="Ax=b" display="inline"><mrow><mrow><mi>A</mi><mo>⁢</mo><mi>x</mi></mrow><mo>=</mo><mi>b</mi></mrow></math> pode, então, ser computada como a solução do seguinte sistema triangular</p>
+<table id="Ch3.E178" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E178.m1" class="ltx_Math" alttext="Ux=y." display="block"><mrow><mrow><mrow><mi>U</mi><mo>⁢</mo><mi>x</mi></mrow><mo>=</mo><mi>y</mi></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.178)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Ou seja, a decomposição LU nos permite resolver uma sistema pela resolução de dois sistemas triangulares.</p>
+</div>
+<div id="p2" class="ltx_para">
+<p class="ltx_p">O procedimento de decomposição LU é equivalente ao método de eliminação gaussiana. Consideremos uma matriz <math id="p2.m1" class="ltx_Math" alttext="A=[a_{ij}]_{i,j=1}^{n,n}" display="inline"><mrow><mi>A</mi><mo>=</mo><msubsup><mrow><mo stretchy="false">[</mo><msub><mi>a</mi><mrow><mi>i</mi><mo>⁢</mo><mi>j</mi></mrow></msub><mo stretchy="false">]</mo></mrow><mrow><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow><mo>=</mo><mn>1</mn></mrow><mrow><mi>n</mi><mo>,</mo><mi>n</mi></mrow></msubsup></mrow></math>, com <math id="p2.m2" class="ltx_Math" alttext="a_{1,1}\neq 0" display="inline"><mrow><msub><mi>a</mi><mn>1,1</mn></msub><mo>≠</mo><mn>0</mn></mrow></math>. Denotando esta matriz por <math id="p2.m3" class="ltx_Math" alttext="U^{(1)}=[u_{i,j}^{(1)}]_{i,j=1}^{n,n}=A" display="inline"><mrow><msup><mi>U</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><msubsup><mrow><mo stretchy="false">[</mo><msubsup><mi>u</mi><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup><mo stretchy="false">]</mo></mrow><mrow><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow><mo>=</mo><mn>1</mn></mrow><mrow><mi>n</mi><mo>,</mo><mi>n</mi></mrow></msubsup><mo>=</mo><mi>A</mi></mrow></math> e tomando <math id="p2.m4" class="ltx_Math" alttext="L^{(1)}=I_{n\times n}" display="inline"><mrow><msup><mi>L</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><msub><mi>I</mi><mrow><mi>n</mi><mo>×</mo><mi>n</mi></mrow></msub></mrow></math>, observamos que a eliminação abaixo do pivô <math id="p2.m5" class="ltx_Math" alttext="u_{1,1}^{(1)}" display="inline"><msubsup><mi>u</mi><mn>1,1</mn><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></math>, pode ser computada com as seguintes operações equivalentes por linha</p>
+<table id="Ch3.E179" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E179.m1" class="ltx_Math" alttext="U^{(1)}=\begin{bmatrix}u_{1,1}^{(1)}&amp;u_{1,2}^{(1)}&amp;u_{1,3}^{(1)}&amp;\ldots&amp;u_{1,n%
+}^{(1)}\\
+u_{2,1}^{(1)}&amp;u_{2,2}^{(1)}&amp;u_{2,3}^{(1)}&amp;\ldots&amp;u_{2,n}^{(1)}\\
+u_{3,1}^{(1)}&amp;u_{3,2}^{(1)}&amp;u_{3,3}^{(1)}&amp;\ldots&amp;u_{3,n}^{(1)}\\
+\vdots&amp;\vdots&amp;\vdots&amp;\ldots&amp;\vdots\\
+u_{n,1}^{(1)}&amp;u_{n,2}^{(1)}&amp;a_{n,3}^{(1)}&amp;\ldots&amp;u_{n,n}^{(1)}\end{bmatrix}%
+\begin{array}[]{l}U_{1}^{(2)}\leftarrow U_{1}^{(1)}\\
+U_{2}^{(2)}\leftarrow U_{2}^{(1)}-m_{2,1}U_{1}^{(1)}\\
+U_{3}^{(2)}\leftarrow U_{3}^{(1)}-m_{3,1}U_{1}^{(1)}\\
+\vdots\\
+U_{n}^{(2)}\leftarrow U_{n}^{(1)}-m_{n,1}U_{1}^{(1)}\end{array}" display="block"><mrow><msup><mi>U</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><mrow><mrow><mo>[</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd columnalign="center"><msubsup><mi>u</mi><mn>1,1</mn><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mn>1,2</mn><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mn>1,3</mn><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mrow><mn>1</mn><mo>,</mo><mi>n</mi></mrow><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd></mtr><mtr><mtd columnalign="center"><msubsup><mi>u</mi><mn>2,1</mn><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mn>2,2</mn><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mn>2,3</mn><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mrow><mn>2</mn><mo>,</mo><mi>n</mi></mrow><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd></mtr><mtr><mtd columnalign="center"><msubsup><mi>u</mi><mn>3,1</mn><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mn>3,2</mn><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mn>3,3</mn><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mrow><mn>3</mn><mo>,</mo><mi>n</mi></mrow><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd></mtr><mtr><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd></mtr><mtr><mtd columnalign="center"><msubsup><mi>u</mi><mrow><mi>n</mi><mo>⁢</mo><mn>,1</mn></mrow><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mrow><mi>n</mi><mo>⁢</mo><mn>,2</mn></mrow><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><msubsup><mi>a</mi><mrow><mi>n</mi><mo>⁢</mo><mn>,3</mn></mrow><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mrow><mi>n</mi><mo>,</mo><mi>n</mi></mrow><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd></mtr></mtable><mo>]</mo></mrow><mo>⁢</mo><mtable displaystyle="true" rowspacing="0pt"><mtr><mtd columnalign="left"><mrow><msubsup><mi>U</mi><mn>1</mn><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup><mo>←</mo><msubsup><mi>U</mi><mn>1</mn><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mrow></mtd></mtr><mtr><mtd columnalign="left"><mrow><msubsup><mi>U</mi><mn>2</mn><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup><mo>←</mo><mrow><msubsup><mi>U</mi><mn>2</mn><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup><mo>-</mo><mrow><msub><mi>m</mi><mn>2,1</mn></msub><mo>⁢</mo><msubsup><mi>U</mi><mn>1</mn><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mrow></mrow></mrow></mtd></mtr><mtr><mtd columnalign="left"><mrow><msubsup><mi>U</mi><mn>3</mn><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup><mo>←</mo><mrow><msubsup><mi>U</mi><mn>3</mn><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup><mo>-</mo><mrow><msub><mi>m</mi><mn>3,1</mn></msub><mo>⁢</mo><msubsup><mi>U</mi><mn>1</mn><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mrow></mrow></mrow></mtd></mtr><mtr><mtd columnalign="left"><mi mathvariant="normal">⋮</mi></mtd></mtr><mtr><mtd columnalign="left"><mrow><msubsup><mi>U</mi><mi>n</mi><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup><mo>←</mo><mrow><msubsup><mi>U</mi><mi>n</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup><mo>-</mo><mrow><msub><mi>m</mi><mrow><mi>n</mi><mo>⁢</mo><mn>,1</mn></mrow></msub><mo>⁢</mo><msubsup><mi>U</mi><mn>1</mn><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mrow></mrow></mrow></mtd></mtr></mtable></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.179)</span></td>
+</tr>
+</table>
+<p class="ltx_p">onde, <math id="p2.m6" class="ltx_Math" alttext="m_{i,1}=u_{i,1}^{(1)}/u_{1,1}^{(1)}" display="inline"><mrow><msub><mi>m</mi><mrow><mi>i</mi><mo>⁢</mo><mn>,1</mn></mrow></msub><mo>=</mo><mrow><msubsup><mi>u</mi><mrow><mi>i</mi><mo>⁢</mo><mn>,1</mn></mrow><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup><mo>/</mo><msubsup><mi>u</mi><mn>1,1</mn><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mrow></mrow></math>, <math id="p2.m7" class="ltx_Math" alttext="i=2,3,\dotsc,n" display="inline"><mrow><mi>i</mi><mo>=</mo><mrow><mn>2,3</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mi>n</mi></mrow></mrow></math>.</p>
+</div>
+<div id="p3" class="ltx_para">
+<p class="ltx_p">Destas computações, obtemos uma nova matriz da forma</p>
+<table id="Ch3.E180" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E180.m1" class="ltx_Math" alttext="U^{(2)}=\begin{bmatrix}u_{1,1}^{(2)}&amp;u_{1,2}^{(2)}&amp;u_{1,3}^{(2)}&amp;\ldots&amp;u_{1,n%
+}^{(2)}\\
+0&amp;u_{2,2}^{(2)}&amp;u_{2,3}^{(2)}&amp;\ldots&amp;u_{2,n}^{(2)}\\
+0&amp;u_{3,2}^{(2)}&amp;u_{3,3}^{(2)}&amp;\ldots&amp;u_{3,n}^{(2)}\\
+\vdots&amp;\vdots&amp;\vdots&amp;\ldots&amp;\vdots\\
+0&amp;u_{n,2}^{(2)}&amp;u_{n,3}^{(2)}&amp;\ldots&amp;u_{n,n}^{(2)}\end{bmatrix}" display="block"><mrow><msup><mi>U</mi><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><mrow><mo>[</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd columnalign="center"><msubsup><mi>u</mi><mn>1,1</mn><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mn>1,2</mn><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mn>1,3</mn><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mrow><mn>1</mn><mo>,</mo><mi>n</mi></mrow><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mn>2,2</mn><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mn>2,3</mn><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mrow><mn>2</mn><mo>,</mo><mi>n</mi></mrow><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mn>3,2</mn><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mn>3,3</mn><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mrow><mn>3</mn><mo>,</mo><mi>n</mi></mrow><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd></mtr><mtr><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mrow><mi>n</mi><mo>⁢</mo><mn>,2</mn></mrow><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mrow><mi>n</mi><mo>⁢</mo><mn>,3</mn></mrow><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mrow><mi>n</mi><mo>,</mo><mi>n</mi></mrow><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd></mtr></mtable><mo>]</mo></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.180)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Observemos, também, que denotando</p>
+<table id="Ch3.E181" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E181.m1" class="ltx_Math" alttext="L^{(2)}=\begin{bmatrix}1&amp;0&amp;0&amp;\ldots&amp;0\\
+m_{2,1}&amp;1&amp;0&amp;\ldots&amp;0\\
+m_{3,1}&amp;0&amp;1&amp;\ldots&amp;0\\
+\vdots&amp;\vdots&amp;\vdots&amp;\ldots&amp;\vdots\\
+m_{n,1}&amp;0&amp;0&amp;\ldots&amp;1\end{bmatrix}" display="block"><mrow><msup><mi>L</mi><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><mrow><mo>[</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><msub><mi>m</mi><mn>2,1</mn></msub></mtd><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><msub><mi>m</mi><mn>3,1</mn></msub></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd></mtr><mtr><mtd columnalign="center"><msub><mi>m</mi><mrow><mi>n</mi><mo>⁢</mo><mn>,1</mn></mrow></msub></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><mn>1</mn></mtd></mtr></mtable><mo>]</mo></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.181)</span></td>
+</tr>
+</table>
+<p class="ltx_p">temos</p>
+<table id="Ch3.E182" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E182.m1" class="ltx_Math" alttext="A=L^{(2)}U^{(2)}." display="block"><mrow><mrow><mi>A</mi><mo>=</mo><mrow><msup><mi>L</mi><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msup><mo>⁢</mo><msup><mi>U</mi><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msup></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.182)</span></td>
+</tr>
+</table>
+<p class="ltx_p">No caso de <math id="p3.m1" class="ltx_Math" alttext="u^{(2)}_{2,2}\neq 0" display="inline"><mrow><msubsup><mi>u</mi><mn>2,2</mn><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup><mo>≠</mo><mn>0</mn></mrow></math>, podemos continuar com o procedimento de eliminação gaussiana com as seguintes operações equivalentes por linha</p>
+<table id="Ch3.E183" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E183.m1" class="ltx_Math" alttext="U^{(2)}=\begin{bmatrix}u_{1,1}^{(2)}&amp;u_{1,2}^{(2)}&amp;u_{1,3}^{(2)}&amp;\ldots&amp;u_{1,n%
+}^{(2)}\\
+0&amp;u_{2,2}^{(2)}&amp;u_{2,3}^{(2)}&amp;\ldots&amp;u_{2,n}^{(2)}\\
+0&amp;u_{3,2}^{(2)}&amp;u_{3,3}^{(2)}&amp;\ldots&amp;u_{3,n}^{(2)}\\
+\vdots&amp;\vdots&amp;\vdots&amp;\ldots&amp;\vdots\\
+0&amp;u_{n,2}^{(2)}&amp;u_{n,3}^{(2)}&amp;\ldots&amp;u_{n,n}^{(2)}\end{bmatrix}\begin{array}[]%
+{l}U_{1}^{(3)}\leftarrow U_{1}^{(2)}\\
+U_{2}^{(3)}\leftarrow U_{2}^{(2)}\\
+U_{3}^{(3)}\leftarrow U_{3}^{(2)}-m_{3,2}U_{2}^{(2)}\\
+\vdots\\
+U_{n}^{(3)}\leftarrow U_{n}^{(2)}-m_{n,2}U_{2}^{(2)}\\
+\end{array}" display="block"><mrow><msup><mi>U</mi><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><mrow><mrow><mo>[</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd columnalign="center"><msubsup><mi>u</mi><mn>1,1</mn><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mn>1,2</mn><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mn>1,3</mn><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mrow><mn>1</mn><mo>,</mo><mi>n</mi></mrow><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mn>2,2</mn><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mn>2,3</mn><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mrow><mn>2</mn><mo>,</mo><mi>n</mi></mrow><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mn>3,2</mn><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mn>3,3</mn><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mrow><mn>3</mn><mo>,</mo><mi>n</mi></mrow><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd></mtr><mtr><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mrow><mi>n</mi><mo>⁢</mo><mn>,2</mn></mrow><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mrow><mi>n</mi><mo>⁢</mo><mn>,3</mn></mrow><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mrow><mi>n</mi><mo>,</mo><mi>n</mi></mrow><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd></mtr></mtable><mo>]</mo></mrow><mo>⁢</mo><mtable displaystyle="true" rowspacing="0pt"><mtr><mtd columnalign="left"><mrow><msubsup><mi>U</mi><mn>1</mn><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></msubsup><mo>←</mo><msubsup><mi>U</mi><mn>1</mn><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup></mrow></mtd></mtr><mtr><mtd columnalign="left"><mrow><msubsup><mi>U</mi><mn>2</mn><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></msubsup><mo>←</mo><msubsup><mi>U</mi><mn>2</mn><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup></mrow></mtd></mtr><mtr><mtd columnalign="left"><mrow><msubsup><mi>U</mi><mn>3</mn><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></msubsup><mo>←</mo><mrow><msubsup><mi>U</mi><mn>3</mn><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup><mo>-</mo><mrow><msub><mi>m</mi><mn>3,2</mn></msub><mo>⁢</mo><msubsup><mi>U</mi><mn>2</mn><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup></mrow></mrow></mrow></mtd></mtr><mtr><mtd columnalign="left"><mi mathvariant="normal">⋮</mi></mtd></mtr><mtr><mtd columnalign="left"><mrow><msubsup><mi>U</mi><mi>n</mi><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></msubsup><mo>←</mo><mrow><msubsup><mi>U</mi><mi>n</mi><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup><mo>-</mo><mrow><msub><mi>m</mi><mrow><mi>n</mi><mo>⁢</mo><mn>,2</mn></mrow></msub><mo>⁢</mo><msubsup><mi>U</mi><mn>2</mn><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup></mrow></mrow></mrow></mtd></mtr></mtable></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.183)</span></td>
+</tr>
+</table>
+<p class="ltx_p">onde, <math id="p3.m2" class="ltx_Math" alttext="m_{i,2}=u_{i,2}^{(2)}/u_{2,2}^{(2)}" display="inline"><mrow><msub><mi>m</mi><mrow><mi>i</mi><mo>⁢</mo><mn>,2</mn></mrow></msub><mo>=</mo><mrow><msubsup><mi>u</mi><mrow><mi>i</mi><mo>⁢</mo><mn>,2</mn></mrow><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup><mo>/</mo><msubsup><mi>u</mi><mn>2,2</mn><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup></mrow></mrow></math>, <math id="p3.m3" class="ltx_Math" alttext="i=3,4,\ldots,n" display="inline"><mrow><mi>i</mi><mo>=</mo><mrow><mn>3,4</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mi>n</mi></mrow></mrow></math>. Isto nos fornece
+o que nos fornece</p>
+<table id="Ch3.E184" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E184.m1" class="ltx_Math" alttext="U^{(3)}=\begin{bmatrix}u_{1,1}^{(3)}&amp;u_{1,2}^{(3)}&amp;u_{1,3}^{(3)}&amp;\ldots&amp;u_{1,n%
+}^{(3)}\\
+0&amp;u_{2,2}^{(3)}&amp;u_{2,3}^{(3)}&amp;\ldots&amp;u_{2,n}^{(3)}\\
+0&amp;0&amp;u_{3,3}^{(3)}&amp;\ldots&amp;u_{3,n}^{(3)}\\
+\vdots&amp;\vdots&amp;\vdots&amp;\ldots&amp;\vdots\\
+0&amp;0&amp;u_{n,3}^{(3)}&amp;\ldots&amp;u_{n,n}^{(3)}\end{bmatrix}." display="block"><mrow><mrow><msup><mi>U</mi><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><mrow><mo>[</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd columnalign="center"><msubsup><mi>u</mi><mn>1,1</mn><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mn>1,2</mn><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mn>1,3</mn><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mrow><mn>1</mn><mo>,</mo><mi>n</mi></mrow><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mn>2,2</mn><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mn>2,3</mn><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mrow><mn>2</mn><mo>,</mo><mi>n</mi></mrow><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mn>3,3</mn><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mrow><mn>3</mn><mo>,</mo><mi>n</mi></mrow><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd></mtr><mtr><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mrow><mi>n</mi><mo>⁢</mo><mn>,3</mn></mrow><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mrow><mi>n</mi><mo>,</mo><mi>n</mi></mrow><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd></mtr></mtable><mo>]</mo></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.184)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Além disso, denotando</p>
+<table id="Ch3.E185" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E185.m1" class="ltx_Math" alttext="L^{(3)}=\begin{bmatrix}1&amp;0&amp;0&amp;\ldots&amp;0\\
+m_{2,1}&amp;1&amp;0&amp;\ldots&amp;0\\
+m_{3,1}&amp;m_{3,2}&amp;1&amp;\ldots&amp;0\\
+\vdots&amp;\vdots&amp;\vdots&amp;\ldots&amp;\vdots\\
+m_{n,1}&amp;m_{n,2}&amp;0&amp;\ldots&amp;1\end{bmatrix}" display="block"><mrow><msup><mi>L</mi><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><mrow><mo>[</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><msub><mi>m</mi><mn>2,1</mn></msub></mtd><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><msub><mi>m</mi><mn>3,1</mn></msub></mtd><mtd columnalign="center"><msub><mi>m</mi><mn>3,2</mn></msub></mtd><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd></mtr><mtr><mtd columnalign="center"><msub><mi>m</mi><mrow><mi>n</mi><mo>⁢</mo><mn>,1</mn></mrow></msub></mtd><mtd columnalign="center"><msub><mi>m</mi><mrow><mi>n</mi><mo>⁢</mo><mn>,2</mn></mrow></msub></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><mn>1</mn></mtd></mtr></mtable><mo>]</mo></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.185)</span></td>
+</tr>
+</table>
+<p class="ltx_p">temos</p>
+<table id="Ch3.E186" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E186.m1" class="ltx_Math" alttext="A=L^{(3)}U^{(3)}." display="block"><mrow><mrow><mi>A</mi><mo>=</mo><mrow><msup><mi>L</mi><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></msup><mo>⁢</mo><msup><mi>U</mi><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></msup></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.186)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Continuando com este procedimento, ao final de <math id="p3.m4" class="ltx_Math" alttext="n-1" display="inline"><mrow><mi>n</mi><mo>-</mo><mn>1</mn></mrow></math> passos teremos obtido a decomposição</p>
+<table id="Ch3.E187" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E187.m1" class="ltx_Math" alttext="A=LU," display="block"><mrow><mrow><mi>A</mi><mo>=</mo><mrow><mi>L</mi><mo>⁢</mo><mi>U</mi></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.187)</span></td>
+</tr>
+</table>
+<p class="ltx_p">onde <math id="p3.m5" class="ltx_Math" alttext="L" display="inline"><mi>L</mi></math> é a matriz triangular inferior</p>
+<table id="Ch3.E188" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E188.m1" class="ltx_Math" alttext="L=L^{(n)}=\begin{bmatrix}1&amp;0&amp;0&amp;\ldots&amp;0\\
+m_{2,1}&amp;1&amp;0&amp;\ldots&amp;0\\
+m_{3,1}&amp;m_{3,2}&amp;1&amp;\ldots&amp;0\\
+\vdots&amp;\vdots&amp;\vdots&amp;\ldots&amp;\vdots\\
+m_{n,1}&amp;m_{n,2}&amp;m_{n,3}&amp;\ldots&amp;1\end{bmatrix}" display="block"><mrow><mi>L</mi><mo>=</mo><msup><mi>L</mi><mrow><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><mrow><mo>[</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><msub><mi>m</mi><mn>2,1</mn></msub></mtd><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><msub><mi>m</mi><mn>3,1</mn></msub></mtd><mtd columnalign="center"><msub><mi>m</mi><mn>3,2</mn></msub></mtd><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd></mtr><mtr><mtd columnalign="center"><msub><mi>m</mi><mrow><mi>n</mi><mo>⁢</mo><mn>,1</mn></mrow></msub></mtd><mtd columnalign="center"><msub><mi>m</mi><mrow><mi>n</mi><mo>⁢</mo><mn>,2</mn></mrow></msub></mtd><mtd columnalign="center"><msub><mi>m</mi><mrow><mi>n</mi><mo>⁢</mo><mn>,3</mn></mrow></msub></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><mn>1</mn></mtd></mtr></mtable><mo>]</mo></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.188)</span></td>
+</tr>
+</table>
+<p class="ltx_p">e <math id="p3.m6" class="ltx_Math" alttext="U" display="inline"><mi>U</mi></math> é a matriz triangular superior</p>
+<table id="Ch3.E189" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E189.m1" class="ltx_Math" alttext="U=U^{(n)}=\begin{bmatrix}u_{1,1}^{(n)}&amp;u_{1,2}^{(n)}&amp;u_{1,3}^{(n)}&amp;\ldots&amp;u_{1%
+,n}^{(n)}\\
+0&amp;u_{2,2}^{(n)}&amp;u_{2,3}^{(n)}&amp;\ldots&amp;u_{2,n}^{(n)}\\
+0&amp;0&amp;u_{3,3}^{(n)}&amp;\ldots&amp;u_{3,n}^{(n)}\\
+\vdots&amp;\vdots&amp;\vdots&amp;\ldots&amp;\vdots\\
+0&amp;0&amp;0&amp;\ldots&amp;u_{n,n}^{(n)}\end{bmatrix}." display="block"><mrow><mrow><mi>U</mi><mo>=</mo><msup><mi>U</mi><mrow><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><mrow><mo>[</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd columnalign="center"><msubsup><mi>u</mi><mn>1,1</mn><mrow><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mn>1,2</mn><mrow><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mn>1,3</mn><mrow><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mrow><mn>1</mn><mo>,</mo><mi>n</mi></mrow><mrow><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow></msubsup></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mn>2,2</mn><mrow><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mn>2,3</mn><mrow><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mrow><mn>2</mn><mo>,</mo><mi>n</mi></mrow><mrow><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow></msubsup></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mn>3,3</mn><mrow><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mrow><mn>3</mn><mo>,</mo><mi>n</mi></mrow><mrow><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow></msubsup></mtd></mtr><mtr><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mrow><mi>n</mi><mo>,</mo><mi>n</mi></mrow><mrow><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow></msubsup></mtd></mtr></mtable><mo>]</mo></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.189)</span></td>
+</tr>
+</table>
+</div>
+<div id="ex:lu" class="ltx_theorem ltx_theorem_ex">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Exemplo 3.4.1</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmex1.p1" class="ltx_para">
+<p class="ltx_p">Consideremos a seguinte matriz</p>
+<table id="Ch3.E190" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E190.m1" class="ltx_Math" alttext="A=\begin{bmatrix}-1&amp;2&amp;-2\\
+3&amp;-4&amp;1\\
+1&amp;-5&amp;3\end{bmatrix}." display="block"><mrow><mrow><mi>A</mi><mo>=</mo><mrow><mo>[</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd columnalign="center"><mrow><mo>-</mo><mn>1</mn></mrow></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>2</mn></mrow></mtd></mtr><mtr><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>4</mn></mrow></mtd><mtd columnalign="center"><mn>1</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>5</mn></mrow></mtd><mtd columnalign="center"><mn>3</mn></mtd></mtr></mtable><mo>]</mo></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.190)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Então, para obtermos sua decomposição <math id="Thmex1.p1.m1" class="ltx_Math" alttext="LU" display="inline"><mrow><mi>L</mi><mo>⁢</mo><mi>U</mi></mrow></math> começamos com</p>
+<table id="Ch3.E191" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E191.m1" class="ltx_Math" alttext="L^{(1)}=\begin{bmatrix}1&amp;0&amp;0\\
+0&amp;1&amp;0\\
+0&amp;0&amp;1\end{bmatrix},\leavevmode\nobreak\ U^{(1)}=\begin{bmatrix}-1&amp;2&amp;-2\\
+3&amp;-4&amp;1\\
+1&amp;-5&amp;3\end{bmatrix}" display="block"><mrow><mrow><msup><mi>L</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><mrow><mo>[</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>1</mn></mtd></mtr></mtable><mo>]</mo></mrow></mrow><mo rspace="7.5pt">,</mo><mrow><msup><mi>U</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><mrow><mo>[</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd columnalign="center"><mrow><mo>-</mo><mn>1</mn></mrow></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>2</mn></mrow></mtd></mtr><mtr><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>4</mn></mrow></mtd><mtd columnalign="center"><mn>1</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>5</mn></mrow></mtd><mtd columnalign="center"><mn>3</mn></mtd></mtr></mtable><mo>]</mo></mrow></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.191)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Então, observando que a eliminação abaixo do pivô <math id="Thmex1.p1.m2" class="ltx_Math" alttext="u_{1,1}=-1" display="inline"><mrow><msub><mi>u</mi><mn>1,1</mn></msub><mo>=</mo><mrow><mo>-</mo><mn>1</mn></mrow></mrow></math> pode ser feita com as seguintes operações equivalentes por linha <math id="Thmex1.p1.m3" class="ltx_Math" alttext="U_{2}^{(2)}\leftarrow U_{2}^{(1)}-(-3)U_{1}^{(1)}" display="inline"><mrow><msubsup><mi>U</mi><mn>2</mn><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup><mo>←</mo><mrow><msubsup><mi>U</mi><mn>2</mn><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup><mo>-</mo><mrow><mrow><mo stretchy="false">(</mo><mrow><mo>-</mo><mn>3</mn></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><msubsup><mi>U</mi><mn>1</mn><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mrow></mrow></mrow></math> e <math id="Thmex1.p1.m4" class="ltx_Math" alttext="U_{3}^{(2)}\leftarrow U_{3}^{(1)}-(-1)U_{3}^{(1)}" display="inline"><mrow><msubsup><mi>U</mi><mn>3</mn><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup><mo>←</mo><mrow><msubsup><mi>U</mi><mn>3</mn><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup><mo>-</mo><mrow><mrow><mo stretchy="false">(</mo><mrow><mo>-</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><msubsup><mi>U</mi><mn>3</mn><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mrow></mrow></mrow></math>, obtemos</p>
+<table id="Ch3.E192" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E192.m1" class="ltx_Math" alttext="L^{(2)}=\begin{bmatrix}1&amp;0&amp;0\\
+-3&amp;1&amp;0\\
+-1&amp;0&amp;1\end{bmatrix},\leavevmode\nobreak\ U^{(1)}=\begin{bmatrix}-1&amp;2&amp;-2\\
+0&amp;2&amp;-5\\
+0&amp;-3&amp;1\end{bmatrix}" display="block"><mrow><mrow><msup><mi>L</mi><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><mrow><mo>[</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mrow><mo>-</mo><mn>3</mn></mrow></mtd><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mrow><mo>-</mo><mn>1</mn></mrow></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>1</mn></mtd></mtr></mtable><mo>]</mo></mrow></mrow><mo rspace="7.5pt">,</mo><mrow><msup><mi>U</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><mrow><mo>[</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd columnalign="center"><mrow><mo>-</mo><mn>1</mn></mrow></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>2</mn></mrow></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>5</mn></mrow></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>3</mn></mrow></mtd><mtd columnalign="center"><mn>1</mn></mtd></mtr></mtable><mo>]</mo></mrow></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.192)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Agora, para eliminarmos abaixo do pivô <math id="Thmex1.p1.m5" class="ltx_Math" alttext="u_{2,2}=2" display="inline"><mrow><msub><mi>u</mi><mn>2,2</mn></msub><mo>=</mo><mn>2</mn></mrow></math>, usamos a operação <math id="Thmex1.p1.m6" class="ltx_Math" alttext="U_{3}^{(3)}\leftarrow U_{3}^{(2)}-(-3/2)U_{3}^{(2)}" display="inline"><mrow><msubsup><mi>U</mi><mn>3</mn><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></msubsup><mo>←</mo><mrow><msubsup><mi>U</mi><mn>3</mn><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup><mo>-</mo><mrow><mrow><mo stretchy="false">(</mo><mrow><mo>-</mo><mrow><mn>3</mn><mo>/</mo><mn>2</mn></mrow></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><msubsup><mi>U</mi><mn>3</mn><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msubsup></mrow></mrow></mrow></math>, donde temos</p>
+<table id="Ch3.E193" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E193.m1" class="ltx_Math" alttext="L^{(2)}=\begin{bmatrix}1&amp;0&amp;0\\
+-3&amp;1&amp;0\\
+-1&amp;-1,5&amp;1\end{bmatrix},\leavevmode\nobreak\ U^{(1)}=\begin{bmatrix}-1&amp;2&amp;-2\\
+0&amp;2&amp;-5\\
+0&amp;0&amp;-6,5\end{bmatrix}" display="block"><mrow><mrow><msup><mi>L</mi><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><mrow><mo>[</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mrow><mo>-</mo><mn>3</mn></mrow></mtd><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mrow><mo>-</mo><mn>1</mn></mrow></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>1,5</mn></mrow></mtd><mtd columnalign="center"><mn>1</mn></mtd></mtr></mtable><mo>]</mo></mrow></mrow><mo rspace="7.5pt">,</mo><mrow><msup><mi>U</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><mrow><mo>[</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd columnalign="center"><mrow><mo>-</mo><mn>1</mn></mrow></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>2</mn></mrow></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>5</mn></mrow></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>6,5</mn></mrow></mtd></mtr></mtable><mo>]</mo></mrow></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.193)</span></td>
+</tr>
+</table>
+<p class="ltx_p">o que completa a decomposição tomando <math id="Thmex1.p1.m7" class="ltx_Math" alttext="L=L^{(3)}" display="inline"><mrow><mi>L</mi><mo>=</mo><msup><mi>L</mi><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></msup></mrow></math> e <math id="Thmex1.p1.m8" class="ltx_Math" alttext="U=U^{(3)}" display="inline"><mrow><mi>U</mi><mo>=</mo><msup><mi>U</mi><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></msup></mrow></math>.</p>
+</div>
+</div>
+<div id="ex:lu" class="ltx_theorem ltx_theorem_ex">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Exemplo 3.4.2</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmex2.p1" class="ltx_para">
+<p class="ltx_p">Vamos resolver o seguinte sistema linear</p>
+<table id="Ch5.S2.EGx56" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="Ch3.E194"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch3.E194.m1" class="ltx_Math" alttext="\displaystyle-x_{1}+2x_{2}-2x_{3}" display="inline"><mrow><mrow><mrow><mo>-</mo><msub><mi>x</mi><mn>1</mn></msub></mrow><mo>+</mo><mrow><mn>2</mn><mo>⁢</mo><msub><mi>x</mi><mn>2</mn></msub></mrow></mrow><mo>-</mo><mrow><mn>2</mn><mo>⁢</mo><msub><mi>x</mi><mn>3</mn></msub></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E194.m2" class="ltx_Math" alttext="\displaystyle=6" display="inline"><mrow><mi></mi><mo>=</mo><mn>6</mn></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.194)</span></td>
+</tr></tbody>
+<tbody id="Ch3.E195"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch3.E195.m1" class="ltx_Math" alttext="\displaystyle 3x_{1}-4x_{2}+x_{3}" display="inline"><mrow><mrow><mrow><mn>3</mn><mo>⁢</mo><msub><mi>x</mi><mn>1</mn></msub></mrow><mo>-</mo><mrow><mn>4</mn><mo>⁢</mo><msub><mi>x</mi><mn>2</mn></msub></mrow></mrow><mo>+</mo><msub><mi>x</mi><mn>3</mn></msub></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E195.m2" class="ltx_Math" alttext="\displaystyle=-11" display="inline"><mrow><mi></mi><mo>=</mo><mrow><mo>-</mo><mn>11</mn></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.195)</span></td>
+</tr></tbody>
+<tbody id="Ch3.E196"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch3.E196.m1" class="ltx_Math" alttext="\displaystyle x_{1}-5x2+3x_{3}" display="inline"><mrow><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>-</mo><mrow><mn>5</mn><mo>⁢</mo><mi>x</mi><mo>⁢</mo><mn>2</mn></mrow></mrow><mo>+</mo><mrow><mn>3</mn><mo>⁢</mo><msub><mi>x</mi><mn>3</mn></msub></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E196.m2" class="ltx_Math" alttext="\displaystyle=-10." display="inline"><mrow><mrow><mi></mi><mo>=</mo><mrow><mo>-</mo><mn>10</mn></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.196)</span></td>
+</tr></tbody>
+</table>
+<p class="ltx_p">No exemplo anterior (Exemplo <a href="#ex:lu" title="Exemplo 3.4.2. ‣ 3.4 Fatoração LU ‣ Capítulo 3 Métodos diretos para sistemas lineares ‣ Matemática Numérica I" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.4.2</span></a>), vimos que a matriz de coeficientes <math id="Thmex2.p1.m1" class="ltx_Math" alttext="A" display="inline"><mi>A</mi></math> deste sistema admite a seguinte decomposição LU</p>
+<table id="Ch3.E197" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E197.m1" class="ltx_Math" alttext="\underbrace{\begin{bmatrix}-1&amp;2&amp;-2\\
+3&amp;-4&amp;1\\
+1&amp;-5&amp;3\end{bmatrix}}_{A}=\underbrace{\begin{bmatrix}1&amp;0&amp;0\\
+-3&amp;1&amp;0\\
+-1&amp;-1,5&amp;1\end{bmatrix}}_{L}\underbrace{\begin{bmatrix}-1&amp;2&amp;-2\\
+0&amp;2&amp;-5\\
+0&amp;0&amp;-6,5\end{bmatrix}}_{U}" display="block"><mrow><munder><munder accentunder="true"><mrow><mo movablelimits="false">[</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd columnalign="center"><mrow><mo movablelimits="false">-</mo><mn>1</mn></mrow></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mrow><mo movablelimits="false">-</mo><mn>2</mn></mrow></mtd></mtr><mtr><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mrow><mo movablelimits="false">-</mo><mn>4</mn></mrow></mtd><mtd columnalign="center"><mn>1</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mrow><mo movablelimits="false">-</mo><mn>5</mn></mrow></mtd><mtd columnalign="center"><mn>3</mn></mtd></mtr></mtable><mo movablelimits="false">]</mo></mrow><mo movablelimits="false">⏟</mo></munder><mi>A</mi></munder><mo>=</mo><mrow><munder><munder accentunder="true"><mrow><mo movablelimits="false">[</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mrow><mo movablelimits="false">-</mo><mn>3</mn></mrow></mtd><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mrow><mo movablelimits="false">-</mo><mn>1</mn></mrow></mtd><mtd columnalign="center"><mrow><mo movablelimits="false">-</mo><mn>1,5</mn></mrow></mtd><mtd columnalign="center"><mn>1</mn></mtd></mtr></mtable><mo movablelimits="false">]</mo></mrow><mo movablelimits="false">⏟</mo></munder><mi>L</mi></munder><mo>⁢</mo><munder><munder accentunder="true"><mrow><mo movablelimits="false">[</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd columnalign="center"><mrow><mo movablelimits="false">-</mo><mn>1</mn></mrow></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mrow><mo movablelimits="false">-</mo><mn>2</mn></mrow></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mrow><mo movablelimits="false">-</mo><mn>5</mn></mrow></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mrow><mo movablelimits="false">-</mo><mn>6,5</mn></mrow></mtd></mtr></mtable><mo movablelimits="false">]</mo></mrow><mo movablelimits="false">⏟</mo></munder><mi>U</mi></munder></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.197)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Daí, iniciamos resolvendo o seguinte sistema triangular inferior <math id="Thmex2.p1.m2" class="ltx_Math" alttext="Ly=b" display="inline"><mrow><mrow><mi>L</mi><mo>⁢</mo><mi>y</mi></mrow><mo>=</mo><mi>b</mi></mrow></math>, i.e.</p>
+<table id="Ch5.S2.EGx57" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="Ch3.E198"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E198.m1" class="ltx_Math" alttext="\displaystyle y_{1}=-10\Rightarrow y_{1}=6" display="inline"><mrow><msub><mi>y</mi><mn>1</mn></msub><mo>=</mo><mrow><mo>-</mo><mn>10</mn></mrow><mo>⇒</mo><msub><mi>y</mi><mn>1</mn></msub><mo>=</mo><mn>6</mn></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.198)</span></td>
+</tr></tbody>
+<tbody id="Ch3.E199"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E199.m1" class="ltx_Math" alttext="\displaystyle-3y_{1}+y_{2}=-11\Rightarrow y_{2}=7" display="inline"><mrow><mrow><mrow><mo>-</mo><mrow><mn>3</mn><mo>⁢</mo><msub><mi>y</mi><mn>1</mn></msub></mrow></mrow><mo>+</mo><msub><mi>y</mi><mn>2</mn></msub></mrow><mo>=</mo><mrow><mo>-</mo><mn>11</mn></mrow><mo>⇒</mo><msub><mi>y</mi><mn>2</mn></msub><mo>=</mo><mn>7</mn></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.199)</span></td>
+</tr></tbody>
+<tbody id="Ch3.E200"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E200.m1" class="ltx_Math" alttext="\displaystyle-y_{1}-1,5y_{2}+y_{3}=-10\Rightarrow y_{3}=6,5." display="inline"><mrow><mrow><mrow><mrow><mrow><mo>-</mo><msub><mi>y</mi><mn>1</mn></msub></mrow><mo>-</mo><mrow><mn>1,5</mn><mo>⁢</mo><msub><mi>y</mi><mn>2</mn></msub></mrow></mrow><mo>+</mo><msub><mi>y</mi><mn>3</mn></msub></mrow><mo>=</mo><mrow><mo>-</mo><mn>10</mn></mrow><mo>⇒</mo><msub><mi>y</mi><mn>3</mn></msub><mo>=</mo><mn>6,5</mn></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.200)</span></td>
+</tr></tbody>
+</table>
+<p class="ltx_p">Por fim, computamos a solução <math id="Thmex2.p1.m3" class="ltx_Math" alttext="x" display="inline"><mi>x</mi></math> resolvendo o sistema triangular superior <math id="Thmex2.p1.m4" class="ltx_Math" alttext="Ux=y" display="inline"><mrow><mrow><mi>U</mi><mo>⁢</mo><mi>x</mi></mrow><mo>=</mo><mi>y</mi></mrow></math>, i.e.</p>
+<table id="Ch5.S2.EGx58" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="Ch3.E201"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E201.m1" class="ltx_Math" alttext="\displaystyle-6,5x_{3}=6,5\Rightarrow x_{3}=-1," display="inline"><mrow><mrow><mrow><mo>-</mo><mrow><mn>6,5</mn><mo>⁢</mo><msub><mi>x</mi><mn>3</mn></msub></mrow></mrow><mo>=</mo><mn>6,5</mn><mo>⇒</mo><msub><mi>x</mi><mn>3</mn></msub><mo>=</mo><mrow><mo>-</mo><mn>1</mn></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.201)</span></td>
+</tr></tbody>
+<tbody id="Ch3.E202"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E202.m1" class="ltx_Math" alttext="\displaystyle 2x_{2}-5x_{3}=7\Rightarrow x_{2}=1" display="inline"><mrow><mrow><mrow><mn>2</mn><mo>⁢</mo><msub><mi>x</mi><mn>2</mn></msub></mrow><mo>-</mo><mrow><mn>5</mn><mo>⁢</mo><msub><mi>x</mi><mn>3</mn></msub></mrow></mrow><mo>=</mo><mn>7</mn><mo>⇒</mo><msub><mi>x</mi><mn>2</mn></msub><mo>=</mo><mn>1</mn></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.202)</span></td>
+</tr></tbody>
+<tbody id="Ch3.E203"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E203.m1" class="ltx_Math" alttext="\displaystyle-x_{1}+2x_{2}-2x_{3}=6\Rightarrow x_{1}=-2." display="inline"><mrow><mrow><mrow><mrow><mrow><mo>-</mo><msub><mi>x</mi><mn>1</mn></msub></mrow><mo>+</mo><mrow><mn>2</mn><mo>⁢</mo><msub><mi>x</mi><mn>2</mn></msub></mrow></mrow><mo>-</mo><mrow><mn>2</mn><mo>⁢</mo><msub><mi>x</mi><mn>3</mn></msub></mrow></mrow><mo>=</mo><mn>6</mn><mo>⇒</mo><msub><mi>x</mi><mn>1</mn></msub><mo>=</mo><mrow><mo>-</mo><mn>2</mn></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.203)</span></td>
+</tr></tbody>
+</table>
+</div>
+</div>
+<section id="SS1" class="ltx_subsection">
+<h2 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">3.4.1 </span>Fatoração LU com pivotamento parcial <small><a href="../contato.html"><i class="fas fa-envelope"></i></a></small></h2>
+
+<div id="SS1.p1" class="ltx_para">
+<p class="ltx_p">O algoritmo discutido acima não prevê a necessidade de permutações de linhas no processo de eliminação gaussiana. Isto pode ser corrigido com a utilização de matrizes de permutação.</p>
+</div>
+<div id="SS1.p2" class="ltx_para">
+<p class="ltx_p">Assim como na eliminação gaussiana com pivotamento parcial, na fatoração LU com pivotamento parcial o pivô fazemos permutações de linha na matriz de forma que o pivô seja sempre aquele de maior valor em módulo. Por exemplo, suponha que o elemento <math id="SS1.p2.m1" class="ltx_Math" alttext="a_{3,1}" display="inline"><msub><mi>a</mi><mn>3,1</mn></msub></math> seja o maior valor em módulo na primeira coluna da matriz <math id="SS1.p2.m2" class="ltx_Math" alttext="A=U^{(1)}" display="inline"><mrow><mi>A</mi><mo>=</mo><msup><mi>U</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msup></mrow></math> com</p>
+<table id="Ch3.E204" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E204.m1" class="ltx_Math" alttext="U^{(1)}=\begin{bmatrix}u_{1,1}^{(1)}&amp;u_{1,2}^{(1)}&amp;u_{1,3}^{(1)}&amp;\ldots&amp;u_{1,n%
+}^{(1)}\\
+u_{2,1}^{(1)}&amp;u_{2,2}^{(1)}&amp;u_{2,3}^{(1)}&amp;\ldots&amp;u_{2,n}^{(1)}\\
+\boldsymbol{u_{3,1}^{(1)}}&amp;u_{3,2}^{(1)}&amp;u_{3,3}^{(1)}&amp;\ldots&amp;u_{3,n}^{(1)}\\
+\vdots&amp;\vdots&amp;\vdots&amp;\ldots&amp;\vdots\\
+u_{n,1}^{(1)}&amp;u_{n,2}^{(1)}&amp;a_{n,3}^{(1)}&amp;\ldots&amp;u_{n,n}^{(1)}\end{bmatrix}." display="block"><mrow><mrow><msup><mi>U</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><mrow><mo>[</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd columnalign="center"><msubsup><mi>u</mi><mn>1,1</mn><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mn>1,2</mn><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mn>1,3</mn><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mrow><mn>1</mn><mo>,</mo><mi>n</mi></mrow><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd></mtr><mtr><mtd columnalign="center"><msubsup><mi>u</mi><mn>2,1</mn><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mn>2,2</mn><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mn>2,3</mn><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mrow><mn>2</mn><mo>,</mo><mi>n</mi></mrow><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd></mtr><mtr><mtd columnalign="center"><msubsup><mi>𝒖</mi><mn mathvariant="bold">3,1</mn><mrow><mo mathvariant="bold" stretchy="false">(</mo><mn>𝟏</mn><mo mathvariant="bold" stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mn>3,2</mn><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mn>3,3</mn><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mrow><mn>3</mn><mo>,</mo><mi>n</mi></mrow><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd></mtr><mtr><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd></mtr><mtr><mtd columnalign="center"><msubsup><mi>u</mi><mrow><mi>n</mi><mo>⁢</mo><mn>,1</mn></mrow><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mrow><mi>n</mi><mo>⁢</mo><mn>,2</mn></mrow><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><msubsup><mi>a</mi><mrow><mi>n</mi><mo>⁢</mo><mn>,3</mn></mrow><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><msubsup><mi>u</mi><mrow><mi>n</mi><mo>,</mo><mi>n</mi></mrow><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mtd></mtr></mtable><mo>]</mo></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.204)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Neste caso, o procedimento de eliminação na primeira coluna deve usar <math id="SS1.p2.m3" class="ltx_Math" alttext="u_{3,1}^{(1)}" display="inline"><msubsup><mi>u</mi><mn>3,1</mn><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></math> como pivô, o que requer a permutação entre as linhas <math id="SS1.p2.m4" class="ltx_Math" alttext="1" display="inline"><mn>1</mn></math> e <math id="SS1.p2.m5" class="ltx_Math" alttext="3" display="inline"><mn>3</mn></math> (<math id="SS1.p2.m6" class="ltx_Math" alttext="U_{1}^{(1)}\leftrightarrow U_{3}^{(1)}" display="inline"><mrow><msubsup><mi>U</mi><mn>1</mn><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup><mo>↔</mo><msubsup><mi>U</mi><mn>3</mn><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msubsup></mrow></math>). Isto pode ser feito utilizando-se da seguinte matriz de permutação</p>
+<table id="Ch3.E205" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E205.m1" class="ltx_Math" alttext="P=\begin{bmatrix}0&amp;0&amp;1&amp;\ldots&amp;0\\
+0&amp;1&amp;0&amp;\ldots&amp;0\\
+1&amp;0&amp;0&amp;\ldots&amp;0\\
+\vdots&amp;\vdots&amp;\vdots&amp;\ldots&amp;\vdots\\
+0&amp;0&amp;0&amp;\ldots&amp;1\end{bmatrix}." display="block"><mrow><mrow><mi>P</mi><mo>=</mo><mrow><mo>[</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mi mathvariant="normal">…</mi></mtd><mtd columnalign="center"><mn>1</mn></mtd></mtr></mtable><mo>]</mo></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.205)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Com essa, iniciamos o procedimento de decomposição LU com <math id="SS1.p2.m7" class="ltx_Math" alttext="PA=L^{(1)}U^{(1)}" display="inline"><mrow><mrow><mi>P</mi><mo>⁢</mo><mi>A</mi></mrow><mo>=</mo><mrow><msup><mi>L</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msup><mo>⁢</mo><msup><mi>U</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msup></mrow></mrow></math>, onde <math id="SS1.p2.m8" class="ltx_Math" alttext="L^{(1)}=I_{n\times n}" display="inline"><mrow><msup><mi>L</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><msub><mi>I</mi><mrow><mi>n</mi><mo>×</mo><mi>n</mi></mrow></msub></mrow></math> e <math id="SS1.p2.m9" class="ltx_Math" alttext="U^{(1)}=PA" display="inline"><mrow><msup><mi>U</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><mrow><mi>P</mi><mo>⁢</mo><mi>A</mi></mrow></mrow></math>. Caso sejam necessárias outras mudanças de linhas no decorrer do procedimento de decomposição, a matriz de permutação <math id="SS1.p2.m10" class="ltx_Math" alttext="P" display="inline"><mi>P</mi></math> deve ser atualizada apropriadamente.</p>
+</div>
+<div id="Thmex3" class="ltx_theorem ltx_theorem_ex">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Exemplo 3.4.3</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmex3.p1" class="ltx_para">
+<p class="ltx_p">Vamos fazer a decomposição LU com pivotamento parcial da seguinte matriz</p>
+<table id="Ch3.E206" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E206.m1" class="ltx_Math" alttext="A=\begin{bmatrix}-1&amp;2&amp;-2\\
+3&amp;-4&amp;1\\
+1&amp;-5&amp;3\end{bmatrix}" display="block"><mrow><mi>A</mi><mo>=</mo><mrow><mo>[</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd columnalign="center"><mrow><mo>-</mo><mn>1</mn></mrow></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>2</mn></mrow></mtd></mtr><mtr><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>4</mn></mrow></mtd><mtd columnalign="center"><mn>1</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>5</mn></mrow></mtd><mtd columnalign="center"><mn>3</mn></mtd></mtr></mtable><mo>]</mo></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.206)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Começamos, tomando</p>
+<table id="Ch3.E207" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E207.m1" class="ltx_Math" alttext="P^{(1)}=\begin{bmatrix}1&amp;0&amp;0\\
+0&amp;1&amp;0\\
+0&amp;0&amp;1\end{bmatrix},\quad L^{(1)}=\begin{bmatrix}1&amp;0&amp;0\\
+0&amp;1&amp;0\\
+0&amp;0&amp;1\end{bmatrix},\quad U^{(1)}=\begin{bmatrix}-1&amp;2&amp;-2\\
+3&amp;-4&amp;1\\
+1&amp;-5&amp;3\end{bmatrix}" display="block"><mrow><mrow><msup><mi>P</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><mrow><mo>[</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>1</mn></mtd></mtr></mtable><mo>]</mo></mrow></mrow><mo rspace="12.5pt">,</mo><mrow><mrow><msup><mi>L</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><mrow><mo>[</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>1</mn></mtd></mtr></mtable><mo>]</mo></mrow></mrow><mo rspace="12.5pt">,</mo><mrow><msup><mi>U</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><mrow><mo>[</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd columnalign="center"><mrow><mo>-</mo><mn>1</mn></mrow></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>2</mn></mrow></mtd></mtr><mtr><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>4</mn></mrow></mtd><mtd columnalign="center"><mn>1</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>5</mn></mrow></mtd><mtd columnalign="center"><mn>3</mn></mtd></mtr></mtable><mo>]</mo></mrow></mrow></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.207)</span></td>
+</tr>
+</table>
+<p class="ltx_p">O candidato a pivô é o elemento <math id="Thmex3.p1.m1" class="ltx_Math" alttext="u_{2,1}" display="inline"><msub><mi>u</mi><mn>2,1</mn></msub></math>. Então, fazemos as permutações de linhas <math id="Thmex3.p1.m2" class="ltx_Math" alttext="P_{1}\leftrightarrow P_{2}" display="inline"><mrow><msub><mi>P</mi><mn>1</mn></msub><mo>↔</mo><msub><mi>P</mi><mn>2</mn></msub></mrow></math> e <math id="Thmex3.p1.m3" class="ltx_Math" alttext="U_{1}\leftrightarrow U_{2}" display="inline"><mrow><msub><mi>U</mi><mn>1</mn></msub><mo>↔</mo><msub><mi>U</mi><mn>2</mn></msub></mrow></math> e, na sequência, as operações elementares por linhas <math id="Thmex3.p1.m4" class="ltx_Math" alttext="U_{2:3}\leftarrow U_{2:3}-m_{2:3,1}U_{1}" display="inline"><mrow><msub><mi>U</mi><mrow><mn>2</mn><mo>:</mo><mn>3</mn></mrow></msub><mo>←</mo><mrow><msub><mi>U</mi><mrow><mn>2</mn><mo>:</mo><mn>3</mn></mrow></msub><mo>-</mo><mrow><msub><mi>m</mi><mrow><mn>2</mn><mo>:</mo><mn>3,1</mn></mrow></msub><mo>⁢</mo><msub><mi>U</mi><mn>1</mn></msub></mrow></mrow></mrow></math>, donde obtemos</p>
+<table id="Ch5.S2.EGx59" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="Ch3.E211"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch3.E211.m1" class="ltx_Math" alttext="\displaystyle P^{(2)}" display="inline"><msup><mi>P</mi><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msup></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E211.m2" class="ltx_Math" alttext="\displaystyle=\begin{bmatrix}\hidden@noalign{}\hfil\textstyle 0&amp;1&amp;0\\
+\hidden@noalign{}\hfil\textstyle 1&amp;0&amp;0\\
+\hidden@noalign{}\hfil\textstyle 0&amp;0&amp;1\end{bmatrix}," display="inline"><mrow><mrow><mi></mi><mo>=</mo><mrow><mo>[</mo><mtable columnspacing="5pt" rowspacing="0pt"><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>1</mn></mtd></mtr></mtable><mo>]</mo></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.211)</span></td>
+</tr></tbody>
+<tbody id="Ch3.E218"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch3.E218.m1" class="ltx_Math" alttext="\displaystyle L^{(2)}" display="inline"><msup><mi>L</mi><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msup></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E218.m2" class="ltx_Math" alttext="\displaystyle=\begin{bmatrix}\hidden@noalign{}\hfil\textstyle 1&amp;0&amp;0\\
+\hidden@noalign{}\hfil\textstyle-0,\overline{3}&amp;1&amp;0\\
+\hidden@noalign{}\hfil\textstyle 0,\overline{3}&amp;0&amp;1\end{bmatrix},U^{(2)}=%
+\begin{bmatrix}\hidden@noalign{}\hfil\textstyle 3&amp;-4&amp;1\\
+\hidden@noalign{}\hfil\textstyle 0&amp;0,\overline{6}&amp;-1,\overline{6}\\
+\hidden@noalign{}\hfil\textstyle 0&amp;-3,\overline{6}&amp;2,\overline{6}\end{bmatrix}" display="inline"><mrow><mrow><mi></mi><mo>=</mo><mrow><mo>[</mo><mtable columnspacing="5pt" rowspacing="0pt"><mtr><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mrow><mrow><mo>-</mo><mn>0</mn></mrow><mo>,</mo><mover accent="true"><mn>3</mn><mo>¯</mo></mover></mrow></mtd><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mrow><mn>0</mn><mo>,</mo><mover accent="true"><mn>3</mn><mo>¯</mo></mover></mrow></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>1</mn></mtd></mtr></mtable><mo>]</mo></mrow></mrow><mo>,</mo><mrow><msup><mi>U</mi><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><mrow><mo>[</mo><mtable columnspacing="5pt" rowspacing="0pt"><mtr><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>4</mn></mrow></mtd><mtd columnalign="center"><mn>1</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mrow><mn>0</mn><mo>,</mo><mover accent="true"><mn>6</mn><mo>¯</mo></mover></mrow></mtd><mtd columnalign="center"><mrow><mrow><mo>-</mo><mn>1</mn></mrow><mo>,</mo><mover accent="true"><mn>6</mn><mo>¯</mo></mover></mrow></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mrow><mrow><mo>-</mo><mn>3</mn></mrow><mo>,</mo><mover accent="true"><mn>6</mn><mo>¯</mo></mover></mrow></mtd><mtd columnalign="center"><mrow><mn>2</mn><mo>,</mo><mover accent="true"><mn>6</mn><mo>¯</mo></mover></mrow></mtd></mtr></mtable><mo>]</mo></mrow></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.218)</span></td>
+</tr></tbody>
+</table>
+<p class="ltx_p">Agora, o candidato a pivô é o elemento <math id="Thmex3.p1.m5" class="ltx_Math" alttext="u_{3,2}" display="inline"><msub><mi>u</mi><mn>3,2</mn></msub></math>. Assim, fazemos as permutações de linhas <math id="Thmex3.p1.m6" class="ltx_Math" alttext="P_{2}\leftrightarrow P_{3}" display="inline"><mrow><msub><mi>P</mi><mn>2</mn></msub><mo>↔</mo><msub><mi>P</mi><mn>3</mn></msub></mrow></math>, <math id="Thmex3.p1.m7" class="ltx_Math" alttext="U_{2}\leftrightarrow U_{3}" display="inline"><mrow><msub><mi>U</mi><mn>2</mn></msub><mo>↔</mo><msub><mi>U</mi><mn>3</mn></msub></mrow></math> (análogo para os elementos da coluna 1 de <math id="Thmex3.p1.m8" class="ltx_Math" alttext="L" display="inline"><mi>L</mi></math>) e, então, a operação elementar por linha <math id="Thmex3.p1.m9" class="ltx_Math" alttext="U_{3}\leftarrow U_{3}-m_{3,2}U_{2}" display="inline"><mrow><msub><mi>U</mi><mn>3</mn></msub><mo>←</mo><mrow><msub><mi>U</mi><mn>3</mn></msub><mo>-</mo><mrow><msub><mi>m</mi><mn>3,2</mn></msub><mo>⁢</mo><msub><mi>U</mi><mn>2</mn></msub></mrow></mrow></mrow></math>. Com isso, obtemos</p>
+<table id="Ch5.S2.EGx60" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="Ch3.E222"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch3.E222.m1" class="ltx_Math" alttext="\displaystyle P^{(2)}" display="inline"><msup><mi>P</mi><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msup></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E222.m2" class="ltx_Math" alttext="\displaystyle=\begin{bmatrix}\hidden@noalign{}\hfil\textstyle 0&amp;1&amp;0\\
+\hidden@noalign{}\hfil\textstyle 0&amp;0&amp;1\\
+\hidden@noalign{}\hfil\textstyle 1&amp;0&amp;0\end{bmatrix}," display="inline"><mrow><mrow><mi></mi><mo>=</mo><mrow><mo>[</mo><mtable columnspacing="5pt" rowspacing="0pt"><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>1</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr></mtable><mo>]</mo></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.222)</span></td>
+</tr></tbody>
+<tbody id="Ch3.E229"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch3.E229.m1" class="ltx_Math" alttext="\displaystyle L^{(2)}" display="inline"><msup><mi>L</mi><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msup></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E229.m2" class="ltx_Math" alttext="\displaystyle=\begin{bmatrix}\hidden@noalign{}\hfil\textstyle 1&amp;0&amp;0\\
+\hidden@noalign{}\hfil\textstyle 0,\overline{3}&amp;1&amp;0\\
+\hidden@noalign{}\hfil\textstyle-0,\overline{3}&amp;-0,\overline{18}&amp;1\end{bmatrix%
+},U^{(2)}=\begin{bmatrix}\hidden@noalign{}\hfil\textstyle 3&amp;-4&amp;1\\
+\hidden@noalign{}\hfil\textstyle 0&amp;-3,\overline{6}&amp;2,\overline{6}\\
+\hidden@noalign{}\hfil\textstyle 0&amp;0&amp;-1,\overline{18}\end{bmatrix}" display="inline"><mrow><mrow><mi></mi><mo>=</mo><mrow><mo>[</mo><mtable columnspacing="5pt" rowspacing="0pt"><mtr><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mrow><mn>0</mn><mo>,</mo><mover accent="true"><mn>3</mn><mo>¯</mo></mover></mrow></mtd><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mrow><mrow><mo>-</mo><mn>0</mn></mrow><mo>,</mo><mover accent="true"><mn>3</mn><mo>¯</mo></mover></mrow></mtd><mtd columnalign="center"><mrow><mrow><mo>-</mo><mn>0</mn></mrow><mo>,</mo><mover accent="true"><mn>18</mn><mo>¯</mo></mover></mrow></mtd><mtd columnalign="center"><mn>1</mn></mtd></mtr></mtable><mo>]</mo></mrow></mrow><mo>,</mo><mrow><msup><mi>U</mi><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><mrow><mo>[</mo><mtable columnspacing="5pt" rowspacing="0pt"><mtr><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>4</mn></mrow></mtd><mtd columnalign="center"><mn>1</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mrow><mrow><mo>-</mo><mn>3</mn></mrow><mo>,</mo><mover accent="true"><mn>6</mn><mo>¯</mo></mover></mrow></mtd><mtd columnalign="center"><mrow><mn>2</mn><mo>,</mo><mover accent="true"><mn>6</mn><mo>¯</mo></mover></mrow></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mrow><mrow><mo>-</mo><mn>1</mn></mrow><mo>,</mo><mover accent="true"><mn>18</mn><mo>¯</mo></mover></mrow></mtd></mtr></mtable><mo>]</mo></mrow></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.229)</span></td>
+</tr></tbody>
+</table>
+<p class="ltx_p">Com isso, temos obtido a decomposição LU de <math id="Thmex3.p1.m10" class="ltx_Math" alttext="A" display="inline"><mi>A</mi></math> na forma</p>
+<table id="Ch3.E230" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E230.m1" class="ltx_Math" alttext="PA=LU," display="block"><mrow><mrow><mrow><mi>P</mi><mo>⁢</mo><mi>A</mi></mrow><mo>=</mo><mrow><mi>L</mi><mo>⁢</mo><mi>U</mi></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.230)</span></td>
+</tr>
+</table>
+<p class="ltx_p">com <math id="Thmex3.p1.m11" class="ltx_Math" alttext="P=P^{(3)}" display="inline"><mrow><mi>P</mi><mo>=</mo><msup><mi>P</mi><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></msup></mrow></math>, <math id="Thmex3.p1.m12" class="ltx_Math" alttext="L=L^{(3)}" display="inline"><mrow><mi>L</mi><mo>=</mo><msup><mi>L</mi><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></msup></mrow></math> e <math id="Thmex3.p1.m13" class="ltx_Math" alttext="U=U^{(3)}" display="inline"><mrow><mi>U</mi><mo>=</mo><msup><mi>U</mi><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></msup></mrow></math>.</p>
+</div>
+</div>
+</section>
+<section id="SSx1" class="ltx_subsection">
+<h2 class="ltx_title ltx_title_subsection">Exercícios <small><a href="../contato.html"><i class="fas fa-envelope"></i></a></small></h2>
+
+<div id="exer:lup_sol" class="ltx_theorem ltx_theorem_exer">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Exercício 3.4.1</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmexer1.p1" class="ltx_para">
+<p class="ltx_p">Resolva o sistema</p>
+<table id="Ch5.S2.EGx61" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="Ch3.E231"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch3.E231.m1" class="ltx_Math" alttext="\displaystyle-x_{1}+2x_{2}-2x_{3}" display="inline"><mrow><mrow><mrow><mo>-</mo><msub><mi>x</mi><mn>1</mn></msub></mrow><mo>+</mo><mrow><mn>2</mn><mo>⁢</mo><msub><mi>x</mi><mn>2</mn></msub></mrow></mrow><mo>-</mo><mrow><mn>2</mn><mo>⁢</mo><msub><mi>x</mi><mn>3</mn></msub></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E231.m2" class="ltx_Math" alttext="\displaystyle=-1" display="inline"><mrow><mi></mi><mo>=</mo><mrow><mo>-</mo><mn>1</mn></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.231)</span></td>
+</tr></tbody>
+<tbody id="Ch3.E232"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch3.E232.m1" class="ltx_Math" alttext="\displaystyle 3x_{1}-4x_{2}+x_{3}" display="inline"><mrow><mrow><mrow><mn>3</mn><mo>⁢</mo><msub><mi>x</mi><mn>1</mn></msub></mrow><mo>-</mo><mrow><mn>4</mn><mo>⁢</mo><msub><mi>x</mi><mn>2</mn></msub></mrow></mrow><mo>+</mo><msub><mi>x</mi><mn>3</mn></msub></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E232.m2" class="ltx_Math" alttext="\displaystyle=-4" display="inline"><mrow><mi></mi><mo>=</mo><mrow><mo>-</mo><mn>4</mn></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.232)</span></td>
+</tr></tbody>
+<tbody id="Ch3.E233"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch3.E233.m1" class="ltx_Math" alttext="\displaystyle-4x_{1}-5x_{2}+3x_{3}" display="inline"><mrow><mrow><mrow><mo>-</mo><mrow><mn>4</mn><mo>⁢</mo><msub><mi>x</mi><mn>1</mn></msub></mrow></mrow><mo>-</mo><mrow><mn>5</mn><mo>⁢</mo><msub><mi>x</mi><mn>2</mn></msub></mrow></mrow><mo>+</mo><mrow><mn>3</mn><mo>⁢</mo><msub><mi>x</mi><mn>3</mn></msub></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E233.m2" class="ltx_Math" alttext="\displaystyle=20" display="inline"><mrow><mi></mi><mo>=</mo><mn>20</mn></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.233)</span></td>
+</tr></tbody>
+</table>
+<p class="ltx_p">usando fatoração LU com pivotamento parcial.</p>
+</div>
+</div>
+<div class="d-grid gap-2 d-md-flex justify-content-md-end"><button class="btn btn-warning" type="button" data-bs-toggle="collapse" data-bs-target="#Thmrespx35">Resposta</button></div><div class="collapse" id="Thmrespx35">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Resp</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmrespx35.p1" class="ltx_para">
+<p class="ltx_p"><math id="Thmrespx35.p1.m1" class="ltx_Math" alttext="x_{1}=-3" display="inline"><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>=</mo><mrow><mo>-</mo><mn>3</mn></mrow></mrow></math>, <math id="Thmrespx35.p1.m2" class="ltx_Math" alttext="x_{2}=-1" display="inline"><mrow><msub><mi>x</mi><mn>2</mn></msub><mo>=</mo><mrow><mo>-</mo><mn>1</mn></mrow></mrow></math>, <math id="Thmrespx35.p1.m3" class="ltx_Math" alttext="x_{3}=1" display="inline"><mrow><msub><mi>x</mi><mn>3</mn></msub><mo>=</mo><mn>1</mn></mrow></math></p>
+</div>
+</div>
+</section>
+</section>
+</div>
+<footer class="ltx_page_footer">
+<div>
+<a href="cap_sl_direto_sec_egauss_pivo.html" title="3.3 Método de eliminação gaussiana com pivotamento parcial com escala ‣ Capítulo 3 Métodos diretos para sistemas lineares ‣ Matemática Numérica I" class="ltx_ref" rel="prev"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">3.3 </span>Método de eliminação gaussiana com pivotamento parcial com escala</span></a><a href="bib.html" title="Referências ‣ Matemática Numérica I" class="ltx_ref" rel="bibliography"><span class="ltx_text ltx_ref_title">Referências</span></a><a href="cap_sl_iter.html" title="Capítulo 4 Métodos iterativos para sistemas lineares ‣ Matemática Numérica I" class="ltx_ref" rel="next"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">4 </span>Métodos iterativos para sistemas lineares</span></a>
+</div>
+<div class="ltx_page_logo"><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />O texto acima está sob Licença <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR">Creative Commons Atribuição-CompartilhaIgual 4.0 Internacional</a>. Generated  on Thu Apr  6 16:22:41 2023 by <a href="http://dlmf.nist.gov/LaTeXML/">LaTeXML <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg==" alt="[LOGO]"></a>
+</div></footer>
+</div>
+<div class="card" id="rodape" style="">
+  <div class="card-footer text-left">
+    <a href="../contato.html"><i class="fas fa-envelope"></i></a> | <a href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i></a> | <a href="https://archive.org/details/notas-de-aula"><i class="fas fa-building-columns"></i></a> | <a href="https://www.youtube.com/channel/UCwutHKlKLgVj6IkFSUFBqoA"><i class="fab fa-youtube"></i></a> | <a href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i></a>
+  </div> <!-- div class="card" -->
+</div> <!-- div class="card-footer text-right" -->
+</div> <!-- div class=col-xxl-10 --></div> <!-- div class=row --></div> <!-- div class=container-fluid --></body>
+</html>

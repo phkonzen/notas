@@ -4,7 +4,7 @@ Constroi/atualiza o __site__
 das notas de aula.
 
 Autor: Pedro H A Konzen - 05/2018
-Modificado: 05/2022
+Modificado: 03/2023
 '''
 
 #pacotes do Python
@@ -20,6 +20,7 @@ from calculoi import *
 from ead import *
 from edo import *
 from matematicanumerica import *
+from matematicanumericai import *
 from matematicanumericaparalela import *
 from matematicanumericaavancada import *
 from metodoelementosfinitos import *
@@ -68,6 +69,7 @@ ci = CalculoI(srcdir,odir)
 ead = EaD(srcdir,odir)
 edo = EDO(srcdir,odir)
 mn = MatematicaNumerica(srcdir,odir)
+mni = MatematicaNumericaI(srcdir,odir)
 mnp = MatematicaNumericaParalela(srcdir,odir)
 mna = MatematicaNumericaAvancada(srcdir,odir)
 mef = MetodoElementosFinitos(srcdir,odir)
@@ -83,7 +85,19 @@ def build(id):
 #região paralelizada
 if __name__ == '__main__':
     p = Pool()
-    p.map(build,[ci,ead,edo,mn,mnp,mna,mef,pc,v,ga,minicalcpy,minipy])
+    p.map(build,[ci,
+                 ead,
+                 edo,
+                 mn,
+                 mni,
+                 mnp,
+                 mna,
+                 mef,
+                 pc,
+                 v,
+                 ga,
+                 minicalcpy,
+                 minipy])
 
 #cria o README.md do ../docs
 os.system('cp docs_readme.md '+odir+'/README.md')
