@@ -12,6 +12,10 @@
 
 \section{Sistema de Numeração Posicional}\label{cap_aritm_sec_sisnumpos}
 
+\begin{flushright}
+  [YouTube] | [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
+\end{flushright}
+
 Cotidianamente, usamos o sistema de numeração posicional na base decimal. Por exemplo, temos
 \begin{equation}
   123,5 = 1\times 10^2 + 2\times 10^1 + 3\times 10^0 + 5\times 10^{-1},
@@ -382,53 +386,53 @@ Então, separamos sua parte inteira $I = d_nd_{n-1}d_{n-2}\ldots d_0$ e sua part
   a)~$(0,1\overline{03})_4$; b)~$(0,\overline{27})$; c)~$(2,2)_5$
 \end{resp}
 
-% estou aqui
-
 \section{Representação de Números em Máquina}\label{cap_artm_sec_repummaq}
 
-Usualmente, números são manipulados em máquina através de suas representações em registros com $n$-{\it bits}. Ao longo desta seção, vamos representar um tal registro por
+\begin{flushright}
+  [YouTube] | [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
+\end{flushright}
+
+Usualmente, números são manipulados em máquina através de suas representações em registros com $n$-{\it bits}. Ao longo desta seção, vamos usar a seguinte notação
 \begin{equation}
-  [b_0 ~ b_1 ~ b_2 ~ \cdots ~ b_{n-1}],
+  [b_1 ~ b_2 ~ b_3 ~ \cdots ~ b_n],
 \end{equation}
-onde cada {\it bit} é $b_i=0, 1$, $i=0, 1, 2, \dotsc, n-1$.
+para representar um registro de $n$-{\it bits} $b_i\in\{0, 1\}$, $i=1, 2, \dotsc, n$.
 
 Na sequência, fazemos uma breve discussão sobre as formas comumente usadas para a manipulação de números em computadores.
 
 \subsection{Números inteiros}
 
-A representação de complemento de 2 é usualmente utilizada em computadores para a manipulação de números inteiros. Nesta representação, um registro de $n$-{\it bits}
+A representação de complemento de 2 é usualmente utilizada em computadores para a manipulação de números inteiros. Nesta representação, um registro de $n$~{\it bits}
 \begin{equation}
-  [b_0 ~ b_1 ~ b_2 ~ \cdots ~ b_{n-1}],
+  [b_1 ~ b_2 ~ b_3 ~ \cdots ~ b_n],
 \end{equation}
 representa o número inteiro
 \begin{equation}
-  x = -d_{n-1}2^{n-1} + (d_{n-2}\ldots d_2d_1d_0)_2.
+  x = -d_n2^{n-1} + (d_{n-1}~\ldots~d_2~d_1)_2.
 \end{equation}
 
 \begin{ex}
-  O registro de 8 {\it bits}
+  O registro de 8~{\it bits}\footnote{8~{\it bits} = 1~{\it byte} [B].}
   \begin{equation}
     [1 ~ 1 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0]
   \end{equation}
-representa o número
-\begin{align}
-  x &= -0\cdots 2^{7} + (0000011)_2\\
-  &= 2^1 + 2^0 = 3.
-\end{align}
-
-% \ifisoctave
-% No \verb+GNU Octave+, podemos usar:
-% \begin{verbatim}
-% >> bitunpack(int8(3))
-% ans =
-
-%    1   1   0   0   0   0   0   0
-
-% >> bitpack(logical([1 1 0 0 0 0 0 0]),'int8')
-% ans = 3
-% \end{verbatim}
-% \fi
+  representa o número
+  \begin{align}
+    x &= -d_8\cdot 2^7 + (d_7~d_6~\ldots~d_1)_2\\
+      &= -0\cdots 2^{7} + (\stackrel{6}{0}~\stackrel{5}{0}~\stackrel{4}{0}~\stackrel{3}{0}~\stackrel{2}{0}~\stackrel{1}{1}~\stackrel{0}{1})_2\\
+      &= 2^1 + 2^0 = 3.
+  \end{align}
+  
+  \ifispython
+  \begin{lstlisting}
+    >>> from numpy import packbits
+    >>> packbits([0,0,0,0,0,0,1,1])
+    array([3], dtype=uint8)
+  \end{lstlisting}
+  \fi
 \end{ex}
+
+% estou aqui
 
 Nesta representação de complemento de 2, o maior e o menor números inteiros que podem ser representados em um registro com $n$-{\it bits} são
 \begin{equation}
