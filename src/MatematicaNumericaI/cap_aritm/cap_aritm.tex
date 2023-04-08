@@ -402,13 +402,13 @@ Na sequência, fazemos uma breve discussão sobre as formas comumente usadas par
 
 \subsection{Números inteiros}
 
-A representação de complemento de 2 é usualmente utilizada em computadores para a manipulação de números inteiros. Nesta representação, um registro de $n$~{\it bits}
+O sistema de complemento de 2 é utilizado em computadores para a manipulação de números inteiros. Nesta representação, um registro de $n$~{\it bits}
 \begin{equation}
-  [b_1 ~ b_2 ~ b_3 ~ \cdots ~ b_n],
+  [d_1 ~ d_2 ~ d_3 ~ \cdots ~ d_n],
 \end{equation}
 representa o número inteiro
 \begin{equation}
-  x = -d_n2^{n-1} + (d_{n-1}~\ldots~d_2~d_1)_2.
+  x = (d_{n-1}~\ldots~d_2~d_1)_2 - d_n2^{n-1}.
 \end{equation}
 
 \begin{ex}
@@ -418,47 +418,75 @@ representa o número inteiro
   \end{equation}
   representa o número
   \begin{align}
-    x &= -d_8\cdot 2^7 + (d_7~d_6~\ldots~d_1)_2\\
+    x &= -d_8\cdot 2^{8-1} + (d_7~d_6~\ldots~d_1)_2\\
       &= -0\cdots 2^{7} + (\stackrel{6}{0}~\stackrel{5}{0}~\stackrel{4}{0}~\stackrel{3}{0}~\stackrel{2}{0}~\stackrel{1}{1}~\stackrel{0}{1})_2\\
       &= 2^1 + 2^0 = 3.
   \end{align}
   
   \ifispython
+  Podemos implementar um conversor de registro para número inteiro como segue
+  \begin{lstlisting}[caption=packbits8.py, label=py:packbits8]
+    def packBitsInt8(dd):
+    x = -dd[7] * 2**7
+    for i, d in enumerate(dd[:7]):
+        x += d * 2**(i)
+    return x
+  \end{lstlisting}
+  Esta função, converte uma lista de {\it bits} (registro) no inteiro corresponde ao sistema de complemento 2.
   \begin{lstlisting}
-    >>> from numpy import packbits
-    >>> packbits([0,0,0,0,0,0,1,1])
-    array([3], dtype=uint8)
+    >>> packBitsInt8([1,1,0,0,0,0,0,0])
+    3
   \end{lstlisting}
   \fi
 \end{ex}
 
-% estou aqui
-
-Nesta representação de complemento de 2, o maior e o menor números inteiros que podem ser representados em um registro com $n$-{\it bits} são
-\begin{equation}
-  [1 ~ 1 ~ 1 ~ \cdots ~ 1 ~ 0] ~ \text{e} ~ [1 ~ 0 ~ 0 ~ 0 ~ \cdots ~ 0],
-\end{equation}
+Na representação de complemento de 2 com $n$~{\it bits}, o menor e o maior números inteiros são obtidos com os registros
+\begin{gather}
+  -2^{n-1} \sim [0 ~ 0 ~ 0 ~ 0 ~ \cdots ~ 1],\\
+  2^{n-1}-1 \sim [1 ~ 1 ~ 1 ~ \cdots ~ 1 ~ 0],
+\end{gather}
 respectivamente. Já o zero é obtido com o registro
 \begin{equation}
-  [0 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0].
+  0 \sim [0 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0].
 \end{equation}
 
 \begin{ex}
-  Com um registro de $8$-{\it bits}, temos que o maior e o menor números inteiros representados em complemento de 2 são
-  \begin{align}
-    [1 ~ 1 ~ 1 ~ 1 ~ 1 ~ 1 ~ 1 ~ 0] \sim x &= -0\cdot 2^7 + (1111111)_2 = 127,\\
-    [0 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0 ~ 1] \sim x &= -1\cdot 2^7 + (1111111)_2 = -128,\\
-  \end{align}
-  respectivamente.  
-% \ifisoctave Confirmamos isso no \verb+GNU Octave+ com
-% \begin{verbatim}
-% >> intmax('int8')
-% ans = 127
-% >> intmin('int8')
-% ans = -128
-% \end{verbatim}
-%   \fi
+  Com um registro de $8$-{\it bits}, temos que o menor e o maior números inteiros que podem ser representados são
+  \begin{gather}
+    [0 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0 ~ 1] \\
+    \sim -2^{7} + (0000000)_2 = -128,
+  \end{gather}
+  e
+  \begin{gather}
+    [1 ~ 1 ~ 1 ~ 1 ~ 1 ~ 1 ~ 1 ~ 0] \\
+    \sim -0\cdot 2^7 + (1111111)_2 = 127,
+  \end{gather}
+  respectivamente.
+
+  \ifispython
+  Usando o Código \ref{py:packbits8}, temos
+  \begin{lstlisting}
+    >>> packBitsInt8([0,0,0,0,0,0,0,1])
+    -128
+    >>> packBitsInt8([1,1,1,1,1,1,1,0])
+    127
+    >>> packBitsInt8([0,0,0,0,0,0,0,0])
+    0
+  \end{lstlisting}
+  \fi
 \end{ex}
+
+\begin{obs}
+  \ifispython
+  No {\numpy}, o \lstinline+dtype=numpy.int8+ corresponde a inteiros de 8~{\it bits}.
+  \begin{lstlisting}
+    >>> import numpy as np
+    >>> np.array([-127, 0, 3, 128, 129], dtype=np.int8)
+    array([-127,    0,    3, -128, -127], dtype=int8)
+  \end{lstlisting}
+  Consulte a lista de tipos básicos do {\numpy} em \href{https://numpy.org/doc/stable/user/basics.types.html}{NumPy:Data types}.
+  \fi
+\end{obs}
 
 A adição de números inteiros na representação de complemento de 2 pode ser feita de maneira simples. Por exemplo, consideremos a soma $3 + 9$ usando registros de 8 {\it bits}. Temos
 \begin{align}
@@ -468,7 +496,7 @@ A adição de números inteiros na representação de complemento de 2 pode ser 
  12 &\sim [0 ~ 0 ~ 1 ~ 1 ~ 0 ~ 0 ~ 0 ~ 0]
 \end{align}
 
-Em representação de complemento de 2, a representação de um número negativo $-x$ pode ser obtida da representação de $x$, invertendo seus {\it bits} e somando 1. Por exemplo, a representação de $-3$ pode ser obtida da representação de $3$, como segue
+No sistema de complemento de 2, a representação de um número negativo $-x$ pode ser obtida da representação de $x$, invertendo seus {\it bits} e somando 1. Por exemplo, a representação de $-3$ pode ser obtida da representação de $3$, como segue
 \begin{equation}
   3 \sim [1 ~ 1 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0].
 \end{equation}
@@ -485,23 +513,11 @@ A subtração de números inteiros usando a representação de complemento de 2 
  -6 &\sim [0 ~ 1 ~ 0 ~ 1 ~ 1 ~ 1 ~ 1 ~ 1]
 \end{align}
 
-% \ifisoctave
-% \begin{obs}
-%   Por padrão, o \verb+GNU Octave+ usa a representação de complemento de 2 com 32 {\it bits} para números inteiros. Com isso, temos
-% \begin{verbatim}
-% >> intmin()
-% ans = -2147483648
-% >> intmax()
-% ans = 2147483647
-% \end{verbatim}
-% \end{obs}
-% \fi
-
 \subsection{Ponto flutuante}
 
-A manipulação de números decimais em computadores é comumente realizada usando a representação de ponto flutuante de 64-{\it bits}. Nesta, um dado registro de 64-{\it bits}
+A manipulação de números decimais em computadores é comumente realizada usando a representação de ponto flutuante de 64~{\it bits}. Nesta, um dado registro de 64~{\it bits}
 \begin{equation}
-  [m_{52} ~ m_{51} ~ m_{50} ~ \cdots ~ m_{1} ~ | ~ c_0 ~ c_1 ~ c_2 ~ \cdots ~ c_{10} ~ | ~ s]
+  [s ~ | ~ c_{10} ~ c_9 ~ \ldots ~ c_{0} ~ | ~ m_1 ~ m_2 ~ \ldots ~ m_{52}]
 \end{equation}
 representa o número
 \begin{equation}
@@ -514,13 +530,36 @@ onde $M$ é chamada de mantissa e $c$ da característica, as quais são definida
 \end{align}
 
 \begin{ex}
-  Por exemplo, na representação em ponto flutuante de 64-{\it bits}, temos que o registro
-  \begin{equation}
-    [0 ~ 0 ~ 0 ~ \cdots ~ 0 ~ 1 ~ 0 ~ 1 ~ | ~ 0 ~ 0 ~ 0 ~ \cdots ~ 0 ~ 1 ~ | ~ 1]
+  Por exemplo, na representação em ponto flutuante de 64~{\it bits}, temos que o registro
+  \begin{equation}\label{eq:regfloat64}
+    [1 ~ | ~ 1 ~ 0 ~ \ldots ~ 0 ~ 0 ~ | ~ 1 ~ 0 ~ 1 ~ 0 ~ 0 ~ \ldots ~ 0]
   \end{equation}
-representa o número $-3,25$.
+  representa o número $-3,25$.
+
+  \ifispython
+  A seguinte função faz a conversão  uma lista de 64~{\it bits} no número decimal corresponde ao sistema de ponto flutuante de 64~{\it bits}.
+  \begin{lstlisting}[caption=packBitsDouble.py, label=py:packBitsDouble]
+    def packBitsDouble(ld):
+    s = ld[0]
+    c = 0
+    for i, d in enumerate(ld[1:12]):
+        c += d * 2**(10-i)
+    m = 1.
+    for i, d in enumerate(ld[12:]):
+        m += d * 2**(-(i+1))
+    x = m * 2**(c - 1023)
+    return -x if s else x
+  \end{lstlisting}
+  Por exemplo, usando-a para o registro acima, obtemos
+  \begin{lstlisting}
+    >>> ld[0]=1; ld[1]=1; ld[12]=1; ld[13]=1
+    >>> packBitsDouble(ld)
+    -3.5
+  \end{lstlisting}
+  \fi
 \end{ex}
 
+% estou aqui
 \subsection{Erro de arredondamento}
 
 Dado um número real $x$, sua representação $fl(x)$ em ponto flutuante é dada pelo registro que representa o número mais próximo de $x$. Este procedimento é chamado de arredondamento por proximidade. Por exemplo, $x = 1,1$ é representado pelo registro
