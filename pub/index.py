@@ -63,7 +63,7 @@ class Index:
         card += f'<div class="card border-{color} mb-3" style="width: 20rem;">'
         card += f'<div class="card-header text-bg-{color} d-flex justify-content-between">{header} '
         if (status != ""):
-            card += f'<span class="badge bg-secondary">{status}</span>'
+            card += f'<span class="align-middle"><span class="badge rounded-pill text-bg-light">{status}</span></span>'
         card += '</div>'
         card += '<div class="card-body">'
         card += f'<h4 class="card-title">{title}</h4>'
@@ -265,7 +265,7 @@ class Index:
                               text = "Introdução ao cálculo numérico na resolução de equações e sistemas de equações",
                               badges = ["Python", "NumPy"],
                               link = "MatematicaNumericaI/main.html",
-                              color = "warning", status = "Ativo")
+                              color = "warning", status = "Novo")
         body += '</div>'
 
         # card: notas de aula de Matemática Numérica Avançada
