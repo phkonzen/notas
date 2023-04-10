@@ -425,7 +425,7 @@ representa o número inteiro
   
   \ifispython
   Podemos implementar um conversor de registro para número inteiro como segue
-  \begin{lstlisting}[caption=packbits8.py, label=py:packbits8]
+  \begin{lstlisting}[caption=packbits8.py, label=cod:packbits8]
     def packBitsInt8(dd):
     x = -dd[7] * 2**7
     for i, d in enumerate(dd[:7]):
@@ -464,7 +464,7 @@ respectivamente. Já o zero é obtido com o registro
   respectivamente.
 
   \ifispython
-  Usando o Código \ref{py:packbits8}, temos
+  Usando o Código \ref{cod:packbits8}, temos
   \begin{lstlisting}
     >>> packBitsInt8([0,0,0,0,0,0,0,1])
     -128
@@ -515,7 +515,7 @@ A subtração de números inteiros usando a representação de complemento de 2 
 
 \subsection{Ponto flutuante}
 
-A manipulação de números decimais em computadores é comumente realizada usando a representação de ponto flutuante de 64~{\it bits}. Nesta, um dado registro de 64~{\it bits}
+A manipulação de números decimais em computadores é comumente realizada usando a representação de ponto flutuante de 64~{\it bits}\footnote{Padrão IEEE 754.}. Nesta, um dado registro de 64~{\it bits}
 \begin{equation}
   [s ~ | ~ c_{10} ~ c_9 ~ \ldots ~ c_{0} ~ | ~ m_1 ~ m_2 ~ \ldots ~ m_{52}]
 \end{equation}
@@ -538,7 +538,7 @@ onde $M$ é chamada de mantissa e $c$ da característica, as quais são definida
 
   \ifispython
   A seguinte função faz a conversão  uma lista de 64~{\it bits} no número decimal corresponde ao sistema de ponto flutuante de 64~{\it bits}.
-  \begin{lstlisting}[caption=packBitsDouble.py, label=py:packBitsDouble]
+  \begin{lstlisting}[caption=packBitsDouble.py, label=cod:packBitsDouble]
     def packBitsDouble(ld):
     s = ld[0]
     c = 0
@@ -559,71 +559,301 @@ onde $M$ é chamada de mantissa e $c$ da característica, as quais são definida
   \fi
 \end{ex}
 
-% estou aqui
 \subsection{Erro de arredondamento}
 
-Dado um número real $x$, sua representação $fl(x)$ em ponto flutuante é dada pelo registro que representa o número mais próximo de $x$. Este procedimento é chamado de arredondamento por proximidade. Por exemplo, $x = 1,1$ é representado pelo registro
-\begin{small}
-  \begin{center}
-    [0101100110011001100110011001100110011001100110011000111111111100]
-  \end{center}
-\end{small}
-o qual é o número 
-\begin{small}
-  \begin{center}
-    $fl(x) = 1,100000000000000088817841970012523233890533447265625,$
-  \end{center}
-\end{small}
-sendo o erro de arredondamento $|x - fl(x)| \approx 8,9\times 10^{-17}$.
+Dado um número real $x$, sua representação $fl(x)$ em ponto flutuante é o registro que representa o número mais próximo de $x$. Este procedimento é chamado de arredondamento por proximidade.
 
-Observemos que o erro de arredondamento varia conforme o número dado, podendo ser zero no caso de $x = fl(x)$. Comumente, utiliza-se o \emph{épsilon de máquina}\index{épsilon de máquina} como uma aproximação deste erro. O épsilon de máquina é definido como a distância entre o número 1 e seu primeiro sucessor em ponto flutuante. Notemos que
+\ifispython
+A seguinte função obtém a representação em ponto flutuante de 64~{\it bits} de um dado número $x$\footnote{Esta função não é precisa e pode fornecer registros errados devido a erros de arredondamento. Uma alternativa melhor é apresentada na Observação \ref{obs:unpackBitsDouble}.}.
+\begin{lstlisting}[caption=unpackBitsDouble.py, label=cod:unpackBitsDouble]
+import numpy as np
+
+def unpackBitsDouble(x):
+    ld = 64*[0]
+    if ( x == 0):
+        return ld
+    elif (x < 0):
+        ld [0] = 1
+    x = np.fabs(x)
+    c = int(np.log2(x) + 1023)
+    m = x/2**(c - 1023)
+    for i in range(11):
+        ld [11 - i] = c % 2
+        c //= 2
+    m -= 1
+    for i in range(52):
+        m *= 2
+        ld [12+ i] = int(m)
+        m %= 1
+    return ld
+\end{lstlisting}
+\fi
+
+Por exemplo, $x = 1,1$ é representado pelo registro
+\ifispython
+\begin{lstlisting}
+  >>> ld = unpackBitsDouble(1.1)
+  >>> ld
+  [0, 0, 1, 1, 1, 1, 1, 1,
+   1, 1, 1, 1, 0, 0, 0, 1,
+   1, 0, 0, 1, 1, 0, 0, 1,
+   1, 0, 0, 1, 1, 0, 0, 1,
+   1, 0, 0, 1, 1, 0, 0, 1,
+   1, 0, 0, 1, 1, 0, 0, 1,
+   1, 0, 0, 1, 1, 0, 0, 1,
+   1, 0, 0, 1, 1, 0, 1, 0]
+\end{lstlisting}
+\fi
+que corresponde ao número
+\ifispython
+\begin{lstlisting}
+  >>> flx = packBitsDouble(ld)
+  >>> print(f'{flx:1.51f}')
+  1.10000000000000008881784197
+  0012523233890533447265625
+\end{lstlisting}
+\fi
+O erro de arredondamento é $|x - fl(x)| \approx 8,9\times 10^{-17}$.
+
+\ifispython
+\begin{obs}\label{obs:unpackBitsDouble}
+  O seguinte código é uma solução mais pythonica para obter-se o registro em ponto flutuante de 64~{\it bits} de $x = 1,1$.
+  \begin{lstlisting}
+    >>> ''.join(f'{c:08b}' for c in struct.pack('!d', 1.1))
+    '0011111111110001
+    1001100110011001
+    1001100110011001
+    1001100110011010'
+  \end{lstlisting}
+  Recomendamos consultar \cite{Lemire2021a} para mais informações sobre a conversão eficiente de números decimais em pontos flutuantes.
+\end{obs}
+\fi
+
+Observemos que o erro de arredondamento varia conforme o número dado, podendo ser zero no caso de $x = fl(x)$. Comumente, utiliza-se o \emph{épsilon de máquina}\index{épsilon de máquina} como uma aproximação desse erro. O épsilon de máquina é definido como a distância entre o número 1 e seu primeiro sucessor em ponto flutuante. Temos
+\ifispython
+\begin{lstlisting}
+  >>> ld = unpackBitsDouble(1)
+  >>> ld
+  [0, 0, 1, 1, 1, 1, 1, 1,
+  1, 1, 1, 1, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0]
+  >>> ld[63] = 1
+  >>> x = packBitsDouble(ld)
+  >>> x-1
+  2.220446049250313e-16
+\end{lstlisting}
+\fi
+Ou seja, o épsilon de máquina é
 \begin{equation}
-  1 = fl(1) \sim [0 ~ 0 ~ 0 ~ \cdots ~ 0 ~ | ~ 1 ~ 1 ~ 1 ~ \cdots ~ 1 ~ 0 ~ | ~ 0].
-\end{equation}
-Assim sendo, o primeiro sucessor de $fl(1)$ é
-\begin{equation}
-  fl(1)+\mathrm{eps} \sim [1 ~ 0 ~ 0 ~ \cdots ~ 0 ~ | ~ 1 ~ 1 ~ 1 ~ \cdots ~ 1 ~ 0 ~ | ~ 0]
-\end{equation}
-onde $\mathrm{eps}$ é o épsilon de máquina e
-\begin{equation}
-  \mathrm{eps} = 2^{-52} \approx 2,22\times 10^{-16}.
+  \mathrm{eps} := 2^{-52} \approx 2,22\times 10^{-16}.
 \end{equation}
 
-% \ifisoctave
-% No \verb+GNU Octave+, o $\mathrm{eps}$ está definido como constante:
-% \begin{verbatim}
-% >> eps
-% ans =    2.2204e-16
-% \end{verbatim}
-% \fi
+\ifispython
+\begin{obs}
+  O método \href{https://numpy.org/doc/stable/reference/generated/numpy.finfo.html}{\lstinline{numpy.finfo}} pode ser usado para obtermos várias informações sobre o sistema de números em ponto flutuante. Por exemplo, temos
+  \begin{lstlisting}
+    >>> import numpy as np
+    >>> finfo = np.finfo(np.double)
+    >>> finfo.eps
+    2.220446049250313e-16
+    >>> finfo.min
+    -1.7976931348623157e+308
+    >>> finfo.max
+    1.7976931348623157e+308
+  \end{lstlisting}
+\end{obs}
+\fi
 
 A aritmética em ponto flutuante requer arredondamentos sucessivos de números. Por exemplo, a computação da soma de dois números dados $x$ e $y$ é feita a partir de suas representações em ponto flutuante $fl(x)$ e $fl(y)$. Então, computa-se $z = fl(x)+fl(y)$ e o resultado é $fl(z)$. Observe, inclusive que $fl(x+y)$ pode ser diferente de $fl(fl(x)+fl(y))$. Por exemplo
+\ifispython
+\begin{lstlisting}
+  >>> 0.1 + 0.2 == 0.3
+  False
+\end{lstlisting}
+\fi
 
-% \ifisoctave
-% \begin{verbatim}
-% >> 0.1+0.2 == 0.3
-% ans = 0
-% \end{verbatim}
-% \fi
+\subsection{Exercícios Resolvidos}
 
-\subsection*{Exercício}
+\begin{exeresol}
+  No sistema de complemento 2 de 8~{\it bits}, forneça o registro que representa os seguintes números inteiros:
+  \begin{enumerate}[a)]
+  \item 1
+  \item -1
+  \item 15
+  \item -15
+  \end{enumerate}
+\end{exeresol}
+\begin{resol}
+  \ifispython
+  A seguinte função, obtém o registro de complemento 2 de 8-{\it bits} de um dado número inteiro x.
+  \begin{lstlisting}
+    def unpackBitsInt8(x):
+    ld = 8*[0]
+    if (x < 0):
+        ld[7] = 1
+        x += 2**(7)
+    for i in range(7):
+        ld[i] = x % 2
+        x //= 2
+    return ld
+  \end{lstlisting}
+  Usando-a, obtemos os seguintes resultados:
+  \begin{lstlisting}
+    >>> # a) 1
+    >>> unpackBitsInt8(1)
+    [1, 0, 0, 0, 0, 0, 0, 0]
+    >>> unpackBitsInt8(-1)
+    [1, 1, 1, 1, 1, 1, 1, 1]
+    >>> # c) 15
+    >>> unpackBitsInt8(15)
+    [1, 1, 1, 1, 0, 0, 0, 0]
+    >>> unpackBitsInt8(-15)
+    [1, 0, 0, 0, 1, 1, 1, 1]
+  \end{lstlisting}
+  \fi
+\end{resol}
+
+\begin{exeresol}
+  Qual é o número decimal positivo mais próximo de zero que pode ser representado como um ponto flutuante de 64-{\it bits}. Também, forneça seu registro.
+\end{exeresol}
+\begin{resol}
+  Um registro em ponto flutuante de 64-{\it bits} tem a forma
+  \begin{equation}
+    [s ~ | ~ c_{10} ~ c_9 ~ \ldots ~ c_{0} ~ | ~ m_1 ~ m_2 ~ \ldots ~ m_{52}]
+  \end{equation}
+  e representa o número
+  \begin{equation}
+    x = (-1)^s M\cdot 2^{c - 1023},
+  \end{equation}
+  onde $M$ é chamada de mantissa e $c$ da característica, as quais são definidas por
+  \begin{align}
+    M &:= (1,m_1m_2m_3\ldots m_{52})_2,\\
+    c &:= (c_{10}\ldots c_2c_1c_0)_2.
+  \end{align}
+  Tendo em vista que o registro nulo é reservado para o número decimal zero, temos que o número positivo mais próximo de zero é obtido com sinal $s=0$, a mantissa $M=1$ e a característica $c=1$, no que obtemos o decimal
+  \begin{align}
+    x &= 2^{-1022}\\
+      &\approx 2.2250738585072014e-308
+  \end{align}
+  Seu registro é
+  \begin{equation}
+    [0 ~ | ~ 0 ~ 0 ~ \ldots ~ 1 ~ | ~ 0 ~ 0 ~ \ldots ~ 0]
+  \end{equation}
+
+  \ifispython
+  O resultado pode ser verificado com os seguintes comandos:
+  \begin{lstlisting}
+    >>> import numpy as np
+    >>> import struct
+    >>> x = np.finfo(np.double).tiny; x
+    2.2250738585072014e-308
+    >>> ''.join(f'{c:08b}' \
+    ... for c in struct.pack('!d', x))
+    '0000000000010000
+    0000000000000000
+    0000000000000000
+    0000000000000000'
+  \end{lstlisting}
+  \fi
+\end{resol}
+
+\begin{exeresol}
+  Em aplicações que não necessitam de muita precisão, a representação de números decimais no sistema de ponto flutuante de 32~{\it bits} é mais eficiente (no sentido de velocidade de processamento computacional). Neste sistema, um registro de 32-{\it bits}
+  \begin{equation}
+    [s ~ | ~ c_7 ~ c_6 ~ \ldots ~ c_0 ~ | ~ m_1 ~ m_2 ~ \ldots ~ m_{23}]
+  \end{equation}
+  representa o número
+  \begin{equation}
+    x = (-1)^s\cdot M\cdot 2^{c-127}
+  \end{equation}
+  onde,
+  \begin{gather}
+    M = (1,m_1m_2\ldots m_{23})_2\\
+    c = (c_7c_6\ldots c_0)_2
+  \end{gather}
+  \begin{enumerate}[a)]
+  \item Forneça o registro do ponto flutuante de 32-{\it bits} que representa o número $42,5$.
+  \item Qual é o sucessor em ponto flutuante de 32-{\it bits} do número decimal 1. Forneça, também, o épsilon de máquina deste sistema.
+  \end{enumerate}
+\end{exeresol}
+\begin{resol}
+  \begin{enumerate}[a)]
+  \item O registro do ponto flutuante de 32-{\it bits} que representa o número $42,5$ pode ser computado com o seguinte código:
+    \ifispython
+    \begin{lstlisting}
+      x = 42.5
+      ld = 32*[0]
+      c = int(np.log2(x) + 127)
+      m = x/2**(c-127)
+      for i in range(8):
+        ld[8-i] = c % 2
+        c //= 2
+      m -= 1
+      for i in range(23):
+        m *= 2
+        ld[9+i] = int(m)
+        m %= 1
+    \end{lstlisting}
+    \begin{lstlisting}
+      >>> ld
+      [0, 1, 0, 0, 0, 0, 1, 0,
+      0, 0, 1, 0, 1, 0, 1, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0]
+    \end{lstlisting}
+
+    Alternativamente, pode-se obter o registro como segue:
+    \begin{lstlisting}
+      >>> ''.join(f'{c:08b}' \
+      ... for c in struct.pack('!f', 42.5))
+      '0100001000101010
+      0000000000000000'
+    \end{lstlisting}
+    \fi
+  \item No sistema de ponto flutuante de 32-{\it bits}, o sucessor de 1 tem o registro
+    \begin{equation}
+      [0 ~ | ~ 0 ~ 1 ~ 1 ~ \ldots ~ 1 ~ | ~ 0 ~ 0 ~ \ldots ~ 0 ~ 1]
+    \end{equation}
+    donde, sua mantissa é $m = 1 + 2^{-23}$, característica $c = 127$ e corresponde ao número decimal
+    \begin{gather}
+      x = (-1)^0\cdot (1 + 2^{-23})\cdot 2^{127-127}\\
+      x = 1 + 2^{-23}
+    \end{gather}
+    Portanto, o épsilon de máquina neste sistema é
+    \begin{align}
+      \mathrm{eps} &= x - 1\\
+                   &= 2^{-23}
+    \end{align}
+    \ifispython
+    \begin{lstlisting}
+      >>> np.float32(2**-23)
+      1.1920929e-07
+    \end{lstlisting}
+    \fi
+  \end{enumerate}
+\end{resol}
+
+\emconstrucao
+
+\subsection{Exercício}
 
 \begin{exer}
   Considerando a representação de complemento de 2 de números inteiros, obtenha os registros de $8$-{\it bits} dos seguintes números:
   \begin{enumerate}[a)]
-  \item $15$
-  \item $-15$
+  \item $17$
+  \item $-17$
   \item $32$
   \item $-32$
   \end{enumerate}
 \end{exer}
 \begin{resp}
-
-  % \ifisoctave 
-  %   \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/exer_int8/exer_int8.m}{Código.} 
-  %   \fi
-    a)~[11110000]; b)~[10001111]\\
-    c)~[00000100]; d)~[00000111]
+  a)~[10001000]; b)~[11110111]\\
+  c)~[00000100]; d)~[00000111]
 \end{resp}
 
 \begin{exer}
@@ -634,9 +864,6 @@ A aritmética em ponto flutuante requer arredondamentos sucessivos de números. 
   \end{enumerate}
 \end{exer}
 \begin{resp}
-    %  \ifisoctave 
-    % \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/exer_int16/exer_int16.m}{Código.} 
-    % \fi
     a)~[0000000000100000]; \\
     b)~[0000000000111111];
 \end{resp}
@@ -646,7 +873,7 @@ A aritmética em ponto flutuante requer arredondamentos sucessivos de números. 
   \begin{equation}
     [1 ~ 0 ~ b_2 ~ b_3 ~ b_4 ~ \cdots ~ b_{30} ~ 1],
   \end{equation}
-onde $b_i \in \{0, 1\}$, $i=2, 3, 4, \cdots, 15$.
+onde $b_i \in \{0, 1\}$, $i=2, 3, 4, \cdots, 30$.
 \end{exer}
 \begin{resp}
   $[10111~\ldots~11] \sim -3$
@@ -660,26 +887,53 @@ onde $b_i \in \{0, 1\}$, $i=2, 3, 4, \cdots, 15$.
   \end{enumerate}
 \end{exer}
 \begin{resp}
-    %  \ifisoctave 
-    % \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/exer_float64/exer_float64.m}{Código.} 
-    % \fi
-    a)~$[000\ldots 0 10|111\ldots 10|1]$;\\
-    b)~$[000\ldots 01|000\ldots 01|0]$
+    a)~$[1 ~ | ~ 0 ~ 1 ~ 1 ~ \ldots ~ 1 ~ | ~ 1 ~ 0 ~ 1 ~ 0 ~ 0 ~ \ldots ~ 0]$;\\
+    b)~$[0 ~ | ~ 1 ~ 0 ~ 0 ~ \ldots ~ 0 ~ | ~ 1 ~ 0 ~ 0 ~ \ldots ~ 0]$
 \end{resp}
 
 \begin{exer}
-  Considerando a representação em ponto flutuante de 64-{\it bits}, encontre o número que é representado pelos seguintes registros:
+  Assumindo o sistema de ponto flutuante de $32$-{\it bits}, obtenha o registro e o erro de arredondamento na representação dos seguintes números decimais:
   \begin{enumerate}[a)]
-  \item $[000\ldots 011|1000\ldots 01|0]$
-  \item $[111\ldots 1|111\ldots 1|1]$
+  \item $0,1$
+  \item $10,1$
+  \item $100,1$
   \end{enumerate}
 \end{exer}
 \begin{resp}
-    %  \ifisoctave 
-    % \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/exer_float2dec/exer_float2dec.m}{Código.} 
-    % \fi  
-    a)~7; b)~\verb+NaN+
+  \begin{enumerate}[a)]
+  \item % a)
+    \ifispython
+    \begin{lstlisting}
+      [0, 0, 1, 1, 1, 1, 0, 1,
+      1, 1, 0, 0, 1, 1, 0, 0,
+      1, 1, 0, 0, 1, 1, 0, 0,
+      1, 1, 0, 0, 1, 1, 0, 1]
+    \end{lstlisting}
+    $|0,1 - fl(0,1)| \approx 1,5e^{-9}$
+    \fi
+  \item % b)
+    \ifispython
+    \begin{lstlisting}
+      [0, 1, 0, 0, 0, 0, 0, 1,
+      0, 0, 1, 0, 0, 0, 0, 1,
+      1, 0, 0, 1, 1, 0, 0, 1,
+      1, 0, 0, 1, 1, 0, 1, 0]
+    \end{lstlisting}
+    $|10,1 - fl(10,1)| \approx 3,8e^{-7}$
+    \fi
+  \item % c)
+    \ifispython
+    \begin{lstlisting}
+      [0, 1, 0, 0, 0, 0, 1, 0,
+      1, 1, 0, 0, 1, 0, 0, 0,
+      0, 0, 1, 1, 0, 0, 1, 1,
+      0, 0, 1, 1, 0, 0, 1, 1]
+    \end{lstlisting}
+    $|100,1 - fl(100,1)| \approx 1,5e^{-6}$
+    \fi
+  \end{enumerate}
 \end{resp}
+
 
 \section{Notação científica}\label{cap_aritm_sec_notcient}
 
