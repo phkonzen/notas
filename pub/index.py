@@ -169,7 +169,7 @@ class Index:
         body += '<div class="carousel-inner">'
         
         body += '<div class="carousel-item active">'
-        body += self.add_anuncio(text = 'XI ERMAC-RS 2023 - Submissão de trabalhos: até 15/Abr',
+        body += self.add_anuncio(text = 'XI ERMAC-RS 2023 - Submissão de trabalhos: até 19/Abr',
                                  link = 'https://wp.ufpel.edu.br/ermacrs23/',
                                  status = 'danger')
         # body += '<div class="spinner-grow spinner-grow-sm text-danger mb-1" role="status"></div>'
@@ -177,27 +177,21 @@ class Index:
         body += '</div>'
 
         body += '<div class="carousel-item">'
-        body += self.add_anuncio(text = 'XLII CNMAC 2023 - Submissão de trabalhos: até 10/Abr',
-                                 link = 'http://www.cnmac.org.br/novo/',
-                                 status = 'danger')
-        # body += '<div class="spinner-grow spinner-grow-sm text-danger mb-1" role="status"></div>'
-        # body += '<a href="http://www.cnmac.org.br/novo/"> XLII CNMAC 2023 - Submissão de trabalhos: até 10/Abr</a>'
+        body += self.add_anuncio(text = 'PPGMAp - UFRGS: Seleção de Mestrado 2023/1',
+                                 link = 'https://www.ufrgs.br/ppgmap/?p=1438',
+                                 status = 'success')
         body += '</div>'
 
         body += '<div class="carousel-item">'
-        body += self.add_anuncio(text = 'PPGMAp - UFRGS: Processo Seletivo para Aluna(o) Especial',
-                                 link = 'https://www.ufrgs.br/ppgmap/?p=1422',
-                                 status = 'danger')
-        # body += '<div class="spinner-grow spinner-grow-sm text-danger mb-1" role="status"></div>'
-        # body += '<a href="https://www.ufrgs.br/ppgmap/?p=1422"> PPGMAp - UFRGS: Processo Seletivo para Aluna(o) Especial</a>'
+        body += self.add_anuncio(text = 'PPGMAp - UFRGS: Seleção de Doutorado 2023',
+                                 link = 'https://www.ufrgs.br/ppgmap/?p=1444',
+                                 status = 'success')
         body += '</div>'
 
         body += '<div class="carousel-item">'
         body += self.add_anuncio(text = 'IME - UFRGS: Instituto de Matemática e Estatística',
                                  link = 'http://www.ufrgs.br/ime',
                                  status = 'primary')
-        # body += '<div class="spinner-grow spinner-grow-sm text-primary mb-1" role="status"></div>'
-        # body += '<a href="http://www.ufrgs.br/ime"> IME - UFRGS: Instituto de Matemática e Estatística</a>'
         body += '</div>'
   
         body += '</div>'
