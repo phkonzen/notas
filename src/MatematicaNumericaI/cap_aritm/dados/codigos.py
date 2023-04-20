@@ -46,3 +46,8 @@ def packBitsFloat32(ld):
     x = m * 2**(c-127)
     return -x if ld[0] else x
     
+import math
+x = 0
+for n in range(9):
+    x += 1./math.factorial(n)
+print(math.fabs(math.e - x))
