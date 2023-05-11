@@ -16,6 +16,7 @@ from index import *
 from politica import *
 from sitemap import *
 # from analisematematicai import *
+from algoritmosprogramacaoi import *
 from calculoi import *
 from ead import *
 from edo import *
@@ -65,6 +66,7 @@ os.system('rm -rvf ../docs/*')
 #objs da cada nota
 
 #ami = AnaliseMatematicaI(srcdir,odir)
+api = AlgoritmosProgramacaoI(srcdir,odir)
 ci = CalculoI(srcdir,odir)
 ead = EaD(srcdir,odir)
 edo = EDO(srcdir,odir)
@@ -85,7 +87,8 @@ def build(id):
 #região paralelizada
 if __name__ == '__main__':
     p = Pool()
-    p.map(build,[ci,
+    p.map(build,[api,
+                 ci,
                  ead,
                  edo,
                  mn,

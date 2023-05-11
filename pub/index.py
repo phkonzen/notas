@@ -60,7 +60,7 @@ class Index:
 
     def new_card(self, header, title, text, badges, link, color, status=""):
         card = ""
-        card += f'<div class="card border-{color} mb-3" style="width: 20rem;">'
+        card += f'<div class="card border-{color} mb-3" style="width: 21rem;">'
         card += f'<div class="card-header text-bg-{color} d-flex justify-content-between">{header} '
         if (status != ""):
             card += f'<span class="align-middle"><span class="badge rounded-pill text-bg-light">{status}</span></span>'
@@ -168,18 +168,18 @@ class Index:
         body += '<!-- The slideshow -->'
         body += '<div class="carousel-inner">'
         
-        body += '<div class="carousel-item active">'
-        body += self.add_anuncio(text = 'XI ERMAC-RS 2023 - Submissão de trabalhos: até 19/Abr',
+        body += '<div class="carousel-item">'
+        body += self.add_anuncio(text = 'XI ERMAC-RS 2023 - Inscrições: até 25/Abr',
                                  link = 'https://wp.ufpel.edu.br/ermacrs23/',
                                  status = 'danger')
         # body += '<div class="spinner-grow spinner-grow-sm text-danger mb-1" role="status"></div>'
         # body += '<a href="https://wp.ufpel.edu.br/ermacrs23/"> <strong></strong></a>'
         body += '</div>'
 
-        body += '<div class="carousel-item">'
-        body += self.add_anuncio(text = 'PPGMAp - UFRGS: Seleção de Mestrado 2023/1',
+        body += '<div class="carousel-item active">'
+        body += self.add_anuncio(text = 'PPGMAp - UFRGS: Seleção de Mestrado 2023/1: 17-21/05',
                                  link = 'https://www.ufrgs.br/ppgmap/?p=1438',
-                                 status = 'success')
+                                 status = 'warning')
         body += '</div>'
 
         body += '<div class="carousel-item">'
@@ -202,6 +202,16 @@ class Index:
 
         body += '<div class="row row-cols-auto justify-content-around">'
         
+        # card: notas de aula de Algoritmos e Programação I
+        body += '<div class="col">'
+        body += self.new_card(header = "Notas de Aula",
+                              title = "Algoritmos e Programação I",
+                              text = "Introdução aos algoritmos de programação de computadores",
+                              badges = ["Python", "NumPy", "Matplotlib"],
+                              link = "AlgoritmosProgramacaoI/main.html",
+                              color = "warning", status = "Novo")
+        body += '</div>'
+
         # card: notas de aula de Cálculo I
         body += '<div class="col">'
         body += self.new_card(header = "Notas de Aula",
@@ -209,7 +219,7 @@ class Index:
                               text = "Cálculo diferencial e integral de funções de uma variável real",
                               badges = ["Python", "Sympy"],
                               link = "CalculoI/main.html",
-                              color = "warning", status = "Ativo")
+                              color = "primary", status = "")
         body += '</div>'
 
         # card: notas de aula de EaD
@@ -219,7 +229,7 @@ class Index:
                               text = "Introdução a equações a diferenças",
                               badges = ["Python", "Sympy"],
                               link = "EaD/main.html",
-                              color = "primary", status = "Estável")
+                              color = "primary", status = "")
         body += '</div> '
 
         # card: notas de aula de EDO
@@ -229,7 +239,7 @@ class Index:
                               text = "Introdução a equações diferenciais ordinárias",
                               badges = ["Python", "Sympy"],
                               link = "EDO/main.html",
-                              color = "primary", status = "Estável")
+                              color = "primary", status = "")
         body += '</div>'
 
         # card: Geometria analítica
@@ -239,7 +249,7 @@ class Index:
                               text = "Introdução a geometria analítica",
                               badges = [],
                               link = "GeometriaAnalitica/main.html",
-                              color = "primary", status = "Estável")
+                              color = "primary", status = "")
         body += '</div>'
 
         # card: notas de aula de Matemática numérica
@@ -269,7 +279,7 @@ class Index:
                               text = "Tópicos de métodos numéricos avançados",
                               badges = ["Python", "NumPy", "SciPy", "Matplotlib"],
                               link = "MatematicaNumericaAvancada/main.html",
-                              color = "warning", status = "Ativo")
+                              color = "primary", status = "")
         body += '</div>'
 
         # card: notas de aula de Matemática Numérica Paralela
@@ -279,7 +289,7 @@ class Index:
                               text = "Introdução à computação paralela a métodos numéricos",
                               badges = ["C/C++", "OpenMP", "OpenMPI"],
                               link = "MatematicaNumericaParalela/main.html",
-                              color = "primary", status = "Estável")
+                              color = "primary", status = "")
         body += '</div>'
 
         # card: Método de elementos finitos
@@ -289,7 +299,7 @@ class Index:
                               text = "Introdução ao método dos elementos finitos",
                               badges = ["Python", "FEniCS"],
                               link = "MetodoElementosFinitos/main.html",
-                              color = "primary", status = "Estável")
+                              color = "primary", status = "")
         body += '</div>'
 
         # card: Pré-Cálculo
@@ -299,7 +309,7 @@ class Index:
                               text = "Matemáticas essencial para um curso de cálculo",
                               badges = ["Python", "SymPy"],
                               link = "PreCalculo/main.html",
-                              color = "warning", status = "Ativo")
+                              color = "primary", status = "")
         body += '</div>'
 
         # card: Vetores
@@ -327,14 +337,14 @@ class Index:
                               text = "Introdução à Python para matemática",
                               badges = ["Python", "NumPy", "Matplotlib"],
                               link = "MiniPython/main.html",
-                              color = "primary", status = "Estável")
+                              color = "primary", status = "")
         body += '</div>'
 
         # card: Mini Cálculo com Python
         body += '<div class="col">'
 
         body += '<!-- card: Mini Cálculo com Python -->'
-        body += '<div class="card border-primary mb-3" style="width: 20rem;">'
+        body += '<div class="card border-primary mb-3" style="width: 21rem;">'
 
         body += '<div class="card-header bg-primary text-white">Minicurso <span class="badge bg-secondary">Python</span></div>'
 

@@ -7,14 +7,20 @@ Index: mainIndex.py
 Politica: mainPolitica.py
 	python3 mainPolitica.py
 
+AlgoritmosProgramacaoI: mainAlgoritmosProgramacaoI.py
+	python3 mainAlgoritmosProgramacaoI.py
+
+CalculoI: mainCalculoI.py
+	python3 mainCalculoI.py
+
 EaD: mainEaD.py
 	python3 mainEaD.py
 
 EDO: mainEDO.py
 	python3 mainEDO.py
 
-CalculoI: mainCalculoI.py
-	python3 mainCalculoI.py
+GeometriaAnalitica: mainGeometriaAnalitica.py
+	python3 mainGeometriaAnalitica.py
 
 MatematicaNumerica: mainMatematicaNumerica.py
 	python3 mainMatematicaNumerica.py
@@ -39,9 +45,6 @@ Teste: mainTeste.py
 
 Vetores: mainVetores.py
 	python3 mainVetores.py
-
-GeometriaAnalitica: mainGeometriaAnalitica.py
-	python3 mainGeometriaAnalitica.py
 
 MiniCalcPy: mainMiniCalcPy.py
 	python3 mainMiniCalcPy.py
