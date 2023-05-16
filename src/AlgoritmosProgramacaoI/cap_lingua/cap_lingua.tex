@@ -101,7 +101,7 @@ Nestas notas de aula, {\python} é a linguagem escolhida para estudarmos algorit
 
 Em geral, a execução de um programa compilado é mais rápida que a de um código interpretado. De forma simples, isso se deve ao fato de que nesse a interpretação é feita toda de uma vez e não precisa ser refeita na execução de cada linha de código, como no segundo caso. Por outro lado, a compilação de códigos-fonte grandes pode ser bastante demorada fazendo mais sentido quando ele é compilado uma vez e o programa-objeto executado várias vezes. Além disso, linguagens interpretadas podem usar bibliotecas de programas pré-compiladas. Com isso, pode-se alcançar um bom balanceamento entre tempo de desenvolvimento e de execução do código.
 
-O interpretador {\python} também pode ser usado para compilar o código para um arquivo \emph{bytecode}, este quando executado muito mais rápido do que o código-fonte em si, pois as interpretações necessárias já foram feitas. Mais adiante, vamos estudar isso de forma mais detalhada.
+O interpretador {\python} também pode ser usado para compilar o código para um arquivo \emph{bytecode}, este é executado muito mais rápido do que o código-fonte em si, pois as interpretações necessárias já foram feitas. Mais adiante, vamos estudar isso de forma mais detalhada.
 
 \begin{itemize}
 \item Linguagem de tipagem dinâmica
@@ -211,3 +211,176 @@ print(f'Número de Euler e = {m.e}')
 \begin{resp}
   Dica: use um notebook online {\colab}, {\kaggle} ou {\jupyter}.
 \end{resp}
+
+\section{Algoritmos e Programação}\label{cap_lingua_sec_algoprog}
+
+\emph{Programar} é criar um programa (um {\it software}) para ser executado em computador. Para isso, escreve-se um código em uma linguagem computacional (por exemplo, em {\python}), o qual é interpretado/compilado para gerar o programa final. Linguagens computacionais são técnicas, utilizam uma sintaxe simples, precisa e sem ambiguidades. Ou seja, para criarmos um programa com um determinado objetivo, precisamos escrever um código computacional técnico, que siga a sintaxe da linguagem escolhida e sem ambiguidades.
+
+Um \emph{algoritmo} pode ser definido uma sequencia ordenada e sem ambiguidade de passos para a resolução de um problema. Por exemplo, o cálculo da área de um triângulo de base e altura definida por ser feita com o seguinte algoritmo:
+\begin{enumerate}
+\item Informe o valor da base $b$.
+\item Informe o valor da base $h$.
+\item $\displaystyle a \leftarrow \frac{b\cdot h}{2}$.
+\item Imprima o valor de $a$.
+\end{enumerate}
+
+\emph{Algoritmos para a programação são pensados para serem facilmente transformados em códigos computacionais}. Por exemplo, o algoritmo acima pode ser escrito em {\python} como segue:
+\begin{lstlisting}
+b = float(input('Informe o valor da base.\n'))
+h = float(input('Informe o valor da altura.\n'))
+# cálculo da área
+a = b*h/2
+print(f'Área = {a}')
+\end{lstlisting}
+
+Para criar um programa para resolver um dado problema, começamos desenvolvendo um algoritmo para resolvê-lo, este algoritmo é implementado na linguagem computacional escolhida, a qual gera o programa final. Aqui, o passo mais difícil costuma ser o desenvolvimento do algoritmo. Precisamos pensar em como podemos resolver o problema de interesse em uma sequência de passos ordenada e sem ambiguidades para que possamos implementá-los em computador.
+
+Um algoritmo deve ter as seguintes propriedades:
+\begin{itemize}
+\item Cada passo deve estar bem definido, i.e. não pode conter ambiguidades.
+\item Cada passo deve contribuir de forma efetiva na solução do problema.
+\item Deve ter número finito de passos que podem ser computados em um tempo finito.
+\end{itemize}
+
+\begin{obs}
+  A primeira pessoa a publicar um algoritmo para programação foi Augusta Ada King\footnote{Augusta Ada King, 1815 - 1852, matemática e escritora inglesa. Fonte: \href{https://pt.wikipedia.org/wiki/Ada_Lovelace}{Wikipédia}.}. O algoritmo foi criado para computar os \href{https://pt.wikipedia.org/wiki/N\%C3\%BAmeros\_de\_Bernoulli}{números de Bernoulli}\footnote{Jacob Bernoulli, 1655-1705, matemático suíço. Fonte: \href{https://pt.wikipedia.org/wiki/Jakob_Bernoulli}{Wikipédia}.}.
+\end{obs}
+
+
+\subsection{Fluxograma}
+
+Fluxograma é uma representação gráfica de um algoritmo. Entre outras, usam-se as seguintes formas para representar tipos de ações a serem executadas:
+\begin{itemize}
+\item {\bf Terminal}: início ou final do algoritmo.
+  \begin{center}
+    \includegraphics{./cap_lingua/dados/fig_fluxograma/terminal}
+  \end{center}  
+\item {\bf Linha de fluxo}: direciona para a próxima execução.
+  \begin{center}
+    \includegraphics{./cap_lingua/dados/fig_fluxograma/linha}
+  \end{center}
+\item {\bf Entrada}: leitura de informação/dados.
+  \begin{center}
+    \includegraphics{./cap_lingua/dados/fig_fluxograma/entrada}
+  \end{center}  
+\item {\bf Processo}: ação a ser executada.
+  \begin{center}
+    \includegraphics{./cap_lingua/dados/fig_fluxograma/processo}
+  \end{center}
+\item {\bf Decisão}: ramificação do processamento baseada em uma condição.
+  \begin{center}
+    \includegraphics{./cap_lingua/dados/fig_fluxograma/decisao}
+  \end{center}
+\item {\bf Saída}: impressão de informação/dados.
+\end{itemize}
+
+\begin{ex}
+  O \href{https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Heron's_method}{método de Heron}\footnote{Heron de Alexandria, 10 - 80, matemático e inventor grego. Fonte: \href{https://pt.wikipedia.org/wiki/Heron\_de\_Alexandria}{Wikipédia}.} é um algoritmo para o cálculo aproximado da raiz quadrada de um dado número $x$, i.e. $\sqrt{x}$. Consiste na iteração
+  \begin{align}
+    s^{(0)} &= \text{approx. inicial},\\
+    s^{(i+1)} &= \frac{1}{2}\left(s^{(i)} + \frac{x}{s^{(i)}}\right),
+  \end{align}
+  para $i=0,1,2,\ldots,n$, onde $n$ é o número de iterações calculadas.
+
+  Na sequência, temos um algoritmo e seus fluxograma e código {\python} para computar a quarta aproximação de $\sqrt{x}$, assumindo $s^{(0)} = x/2$ como aproximação inicial.
+
+  \begin{itemize}
+  \item {\bf Algoritmo}
+    \begin{enumerate}
+    \item Entre o valor de $x$.
+    \item Se $x\geq 0$, faça:
+      \begin{enumerate}
+      \item $s \leftarrow x/2$
+      \item Para $i = 0,1,2,3$, faça:
+        \begin{enumerate}
+        \item $s \leftarrow (s + x/s)/2$.
+        \end{enumerate}
+      \item Imprime o valor de $s$.
+      \end{enumerate}
+    \item Senão, faça:
+      \begin{enumerate}
+      \item Imprime mensagem ``Não existe!''.
+      \end{enumerate}
+    \end{enumerate}
+
+  \item {\bf Fluxograma}
+
+    \begin{center}
+      \includegraphics{./cap_lingua/dados/fig_fluxograma/fig}
+    \end{center}
+
+  \item {\bf Código {\python}}
+
+\begin{lstlisting}[caption=metHeron.py,label=cap_lingua_sec_algoprog:cod:metHeron]
+x = float(input('Entre com o valor de x: '))
+if (x >= 0.):
+    s = x/2
+    for i in range(4):
+        s = (s + x/s)/2
+    print(f'Raiz aprox. de x = {s}')
+else:
+    print(f'Não existe!')
+\end{lstlisting}
+  \end{itemize}
+\end{ex}
+
+Algoritmos escritos em uma forma próxima de uma linguagem computacional são, também, chamados de \emph{pseudocódigos}. Na prática, pseudocódigos e fluxogramas são usados para apresentar uma forma mais geral e menos detalhada de um algoritmo. Usualmente, sua forma detalhada é escrita diretamente em uma linguagem computacional escolhida.
+
+\subsection{Exercícios}
+
+\begin{exer}
+  Escreva um algoritmo/pseudocódigo e um fluxograma correspondente para o calcular a média aritmética entre dois números $x$ e $y$ dados. Como desafio, tente escrever um código {\python} baseado em seu algoritmo.
+\end{exer}
+
+\begin{exer}
+  Escreva um algoritmo/pseudocódigo e um fluxograma correspondente para o calcular a área de um quadrado de lado $l$ dado. Como desafio, tente escrever um código {\python} baseado em seu algoritmo.
+\end{exer}
+
+\begin{exer}
+  Escreva um algoritmo/pseudocódigo e um fluxograma correspondente para o calcular a área de um retângulo de lados $a, b$ dados. Como desafio, tente escrever um código {\python} baseado em seu algoritmo.
+\end{exer}
+
+\begin{exer}
+  Escreva um algoritmo/pseudocódigo e um fluxograma correspondente para o calcular triângulo retângulo de hipotenusa $h$ e um dos lados $l$ dados. Como desafio, tente escrever um código {\python} baseado em seu algoritmo.
+\end{exer}
+
+\begin{exer}
+  Escreva um algoritmo/pseudocódigo e um fluxograma correspondente para o calcular o zero de uma função afim
+  \begin{equation}
+    f(x) = ax + b
+  \end{equation}
+  dados, os coeficientes $a$ e $b$. Como desafio, tente escrever um código {\python} baseado em seu algoritmo.
+\end{exer}
+
+\begin{exer}
+  Escreva um algoritmo/pseudocódigo e um fluxograma correspondente para o calcular as raízes reais de um polinômio quadráticos
+  \begin{equation}
+    p(x) = ax^2 + bx + c
+  \end{equation}
+  dados, os coeficientes $a$, $b$ e $c$. Como desafio, tente escrever um código {\python} baseado em seu algoritmo.
+\end{exer}
+
+\begin{exer}
+  A \href{https://pt.wikipedia.org/wiki/S\%C3\%A9rie\_harm\%C3\%B3nica\_(matem\%C3\%A1tica)}{Série Harmônica} é defina por
+  \begin{equation}
+    \sum_{k=1}^\infty\frac{1}{k} := \frac{1}{1} + \frac{1}{2} + \frac{1}{3} + \cdots
+  \end{equation}
+  Escreva um algoritmo/pseudocódigo e um fluxograma corresponde para calcular o valor da série harmônica truncada em $k=n$, com $n$ dado. Ou seja, dado $n$, o objetivo é calcular
+  \begin{equation}
+    \sum_{k=1}^n\frac{1}{k} := \frac{1}{1} + \frac{1}{2} + \cdots + \frac{1}{n}.
+  \end{equation}
+\end{exer}
+
+\begin{exer}
+  O \href{https://pt.wikipedia.org/wiki/E\_(constante\_matem\%C3\%A1tica)}{número de Euler}{\euler} pode ser definido pela série
+  \begin{align}
+    e &:= \sum_{k=0}^\infty\frac{1}{k!}\\
+      &= \frac{1}{0!} + \frac{1}{1!} + \frac{1}{2!} + \frac{1}{3!} + \frac{1}{4!} + \cdots
+  \end{align}
+  Escreva um algoritmo/pseudocódigo e um fluxograma corresponde para calcular o valor aproximado de $e$ dado pelo truncamento da série em $k=4$, i.e. o objetivo é de calcular
+  \begin{align}
+    e &\approx \sum_{k=0}^4\frac{1}{k!}\\
+      &= \frac{1}{0!} + \frac{1}{1!} + \frac{1}{2!} + \frac{1}{3!} + \frac{1}{4!}\\
+      &= \frac{1}{1} + \frac{1}{1} + \frac{1}{1\cdot 2} + \frac{1}{1\cdot 2\cdot 3} + \frac{1}{1\cdot 2\cdot 3\cdot 4}.
+  \end{align}
+\end{exer}
