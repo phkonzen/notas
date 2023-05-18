@@ -98,7 +98,7 @@ Do esboço de seu gráfico (Figura \ref{cap_eq1d_sec_bissec:fig:bis_intro}), obs
 
 \subsection{Análise de Convergência}
 
-Dada uma função contínua $f:[a, b]\to\mathbb{R}$ com $f(a)\cdot f(b) < 0$, temos que o Método da Bisseção é convergente.
+Dada uma função contínua $f:[a, b]\to\mathbb{R}$ com $f(a)\cdot f(b) < 0$, vamos mostrar que o Método da Bisseção é \emph{globalmente convergente} e tem \emph{ordem de convergência linear}.
 
 \subsubsection{Convergência e Precisão}
 
@@ -123,6 +123,10 @@ Dada uma função contínua $f:[a, b]\to\mathbb{R}$ com $f(a)\cdot f(b) < 0$, te
                                                      &= 0.
   \end{align}
 \end{dem}
+
+\begin{obs}\normalfont{(Globalmente Convergente.)}
+O teorema acima mostra que o Método da Bisseção é globalmente convergente, i.e. a convergência é garantida independentemente da distância da aproximação inicial $x^{(1)}$ da solução do problema.
+\end{obs}
 
 \begin{ex}\label{cap_eq1d_sec_bissec:ex:bis_convp}
   No Exemplo \ref{cap_eq1d_sec_bissec:ex:bis_exec} aplicamos o Método da Bisseção para a função
@@ -154,13 +158,6 @@ Observamos que os valores estão de acordo com a estimativa de convergência \re
 \end{ex}
 
 O Teorema~\ref{cap_eq1d_sec_bissec:teo:convp} nos garante a convergência do Método da Bisseção e uma estimativa de \emph{precisão} (Equação~\ref{cap_eq1d_sec_bissec:eq:estconvp}). \emph{O teorema não garante que o método converge para um zero da função objetivo, apenas garante que as aproximações convergem para algum valor no intervalo inicial dado.}
-
-\begin{obs}(\normalfont{Taxa de Convergência})
-  A estimativa de convergência \eqref{cap_eq1d_sec_bissec:eq:bis_est_trunc} também pode ser usada para mostrarmos que, assintoticamente, o Método da Bisseção tem a seguinte taxa de convergência linear
-  \begin{equation}
-    \left|x^{(k+1)} - x^{(k)}\right| \lesssim \frac{1}{2}\left|x^{(k)} - x^{(k-1)}\right|^{\pmb{1}}.
-  \end{equation}
-\end{obs}
 
 \subsubsection{Convergência e Exatidão}
 
@@ -218,6 +215,13 @@ onde, $x^* = x_1 = 3\pi/4$. Observamos que este resultado é consistente com a e
                    &= \frac{1}{2^{10}} = 1,0\E-3.
 \end{align}
 \end{ex}
+
+\begin{obs}(\normalfont{Ordem de Convergência Linear})
+  A estimativa de convergência \eqref{cap_eq1d_sec_bissec:eq:bis_est_trunc} também pode ser usada para mostrarmos que, assintoticamente, o Método da Bisseção tem a seguinte taxa de convergência linear
+  \begin{equation}
+    \left|x^{(k+1)} - x^{(k)}\right| \lesssim \frac{1}{2}\left|x^{(k)} - x^{(k-1)}\right|^{\pmb{1}}.
+  \end{equation}
+\end{obs}
 
 \subsection{Zeros de multiplicidade par}
 
@@ -298,17 +302,6 @@ para estimar o número mínimo de iterações $k_{conv}$ necessárias para se ob
 \end{resp}
 
 \begin{exer}
-  Use o Método da Bisseção para encontrar uma aproximação com precisão de $10^{-4}$ do zero de
-  \begin{equation}
-    f(x) = (-x^2+1,154x-0,332929)\cos(x) + x^2 - 1,154x + 0,332929
-  \end{equation}
-no intervalo $(0,55, ~0,65)$. Forneça a aproximação computada com $7$ dígitos significativos por arredondamento.
-\end{exer}
-\begin{resp}
-  $5,770508\times 10^{-1}$
-\end{resp}
-
-\begin{exer}
   Use o Método da Bisseção para computar a(s) solução(ões) das seguintes equações com precisão de 8 dígitos significativos.
   \begin{enumerate}[a)]
   \item $x = 2^{-x}$ para $0\leq x \leq 2$.
@@ -320,6 +313,17 @@ no intervalo $(0,55, ~0,65)$. Forneça a aproximação computada com $7$ dígito
 \end{resp}
 
 \begin{exer}
+  Use o Método da Bisseção para encontrar uma aproximação com precisão de $10^{-4}$ do zero de
+  \begin{equation}
+    f(x) = (-x^2+1,154x-0,332929)\cos(x) + x^2 - 1,154x + 0,332929
+  \end{equation}
+no intervalo $(0,55, ~0,65)$. Forneça a aproximação computada com $7$ dígitos significativos por arredondamento.
+\end{exer}
+\begin{resp}
+  $5,770508\times 10^{-1}$
+\end{resp}
+
+\begin{exer}
   Aplique o Método da Bisseção para encontrar o ponto crítico\footnote{Definimos que $x$ é ponto crítico de uma dada $f$, quando $f'(x) = 0$ ou $\nexists f'(x)$.} de
   \begin{equation}
     f(x) = (1-x^2)e^{-x^2}
@@ -327,24 +331,22 @@ no intervalo $(0,55, ~0,65)$. Forneça a aproximação computada com $7$ dígito
   no intervalo $(0, 2)$. Obtenha o resultado com precisão de $5$ dígitos significativos por arredondamento.
 \end{exer}
 
-%estou aqui
+\section{Método da Falsa Posição}\label{cap_eq1d_sec_falsapos}
 
-\section{Método da falsa posição}\label{cap_eq1d_sec_falsapos}\index{método da!falsa posição}
-
-O método da falsa posição é uma variação do Método da Bisseção. Dada uma função $f$ contínua, escolhemos um intervalo inicial $(a, b)$ tal que $f(a)\cdot f(b) < 0$ (i.e. $f$ tem sinais trocados nos pontos $a$ e $b$). Então, uma aproximação para o zero de $f$ neste intervalo é computada como o ponto de interseção da reta secante a $f$ pelos pontos $(a, f(a))$ e $(b, f(b))$, i.e.
+O Método da Falsa Posição é uma variação do Método da Bisseção. Dada uma função $f$ contínua, escolhemos um intervalo inicial $(a, b)$ tal que $f(a)\cdot f(b) < 0$ (i.e. $f$ tem sinais trocados nos pontos $a$ e $b$). Então, uma aproximação para o zero de $f$ neste intervalo é computada como o ponto de interseção da reta secante a $f$ pelos pontos $(a, f(a))$ e $(b, f(b))$, i.e.
 \begin{equation}
   x = a - \frac{b-a}{f(b)-f(a)}f(a).
 \end{equation}
-Veja a Figura \ref{fig:falsapos}.
+Veja a Figura \ref{cap_eq1d_sec_falsapos:fig:falsapos}.
 
-\begin{figure}[h!]
+\begin{figure}[H]
   \centering
-  \includegraphics[width=0.7\textwidth]{./cap_eq1d/dados/fig_falsapos/fig_falsapos}
-  \caption{Ilustração do método da falsa posição (veja no \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/fig_falsapos/fig_falsapos.ggb}{Geogebra}).}
-  \label{fig:falsapos}
+  \includegraphics[width=0.7\textwidth]{./cap_eq1d/dados/fig_falsapos/fig}
+  \caption{Ilustração do método da falsa posição.}
+  \label{cap_eq1d_sec_falsapos:fig:falsapos}
 \end{figure}
 
-Mais explicitamente, o método da falsa posição consiste no seguinte procedimento iterativo:
+Mais explicitamente, o método consiste no seguinte procedimento iterativo:
 \begin{enumerate}
 \item Determinar um intervalo $(a^{(1)}, b^{(1)})$ tal que $f(a^{(1)})\cdot f(b^{(1)}) < 0$.
 \item Para $k = 1, 2, 3, \cdots, N$:
@@ -356,16 +358,13 @@ Mais explicitamente, o método da falsa posição consiste no seguinte procedime
   \end{enumerate}
 \end{enumerate}
 
-\begin{ex}\label{ex:falsapos_exec}
+\begin{ex}
   Consideremos o problema de aproximar o zero de
 \begin{equation}
   f(x) = \sen^2\left(x+\frac{\pi}{4}\right) - x^3 + \frac{\pi}{4}x^2 + \frac{5\pi^2}{16}x + \frac{3\pi^3}{64}.
 \end{equation}
-no intervalo $(0, 3)$. A Tabela \ref{tab:falsapos_exec} mostra os resultados obtidos da aplicação do método da falsa posição com intervalo inicial $(a^{(1)}, b^{(1)}) = (2, 3)$. Aqui, o método foi iterado até a convergência com cinco dígitos significativos.
-
-\begin{table}[h!]
-  \centering
-  \caption{Resultados referentes ao Exemplo~\ref{ex:falsapos_exec}.}
+no intervalo $(0, 3)$. A seguinte Tabela \ref{cap_eq1d_sec_falsapos:tab:falsapos_exec} mostra os resultados obtidos da aplicação do Método da Falsa Posição com intervalo inicial $(a^{(1)}, b^{(1)}) = (2, 3)$. Aqui, o método foi iterado até a convergência com cinco dígitos significativos.
+\begin{center}
   \begin{tabular}{r|rr|r|c}
     k & $a^{(k)}$ & $b^{(k)}$ & $x^{(k)}$ & $f'(a^{(k)})\cdot f'(x^{(k)})$\\\hline
     1 & $2,0000$ & $3,0000$ & $2,2455$ & 1 \\
@@ -379,31 +378,98 @@ no intervalo $(0, 3)$. A Tabela \ref{tab:falsapos_exec} mostra os resultados obt
     9 & $2,3562$ & $3,0000$ & $2,3562$ & 1 \\
     10 & $2,3562$ & $3,0000$ & $2,3562$ & 1 \\\hline
   \end{tabular}
-  \label{tab:falsapos_exec}
-\end{table}
+\end{center}
 
-% \ifisoctave
-% A tabela \ref{tab:falsapos_exec} pode ser obtida no \verb+GNU Octave+ com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/ex_falsapos_exec/ex_falsapos_exec.m}{código}:
-% \verbatiminput{./cap_eq1d/dados/ex_falsapos_exec/ex_falsapos_exec.m}
-% \fi
+\begin{lstlisting}
+import numpy as np
+
+f = lambda x: np.sin(x+np.pi/4)**2 \
+    - x**3 + np.pi/4*x**2 + 5*np.pi**2/16*x \
+    + 3*np.pi**3/64
+
+a = 2.
+b = 3.
+for k in range(10):
+    x = a - (b-a)/(f(b)-f(a))*f(a)
+    print(f"{k+1}: {x:.4f}")
+
+    s = np.sign(f(a)*f(x))
+    if (s == -1):
+        b = x
+    elif (s == 1):
+        a = x
+    else:
+        break
+\end{lstlisting}
 \end{ex}
+
+\begin{obs}
+  O Método da Falsa Posição é \emph{globalmente convergente} e tem \emph{ordem de convergência linear} \cite[Seção 8.3]{Ralston2001a}.
+\end{obs}
 
 \subsection{Exercícios}
 
 \begin{exer}\label{exer:falsapos_1}
-  Use o método da falsa posição para aproximar um zero de $f(x)=x^3\sen(x)-\cos(x)$, aplicando como intervalo inicial $(a^{(1)}, b^{(1)}) = (0,5, ~1)$ e aproximação inicial
+  Use o método da falsa posição para aproximar um zero de
+  \begin{equation}
+    f(x)=x^3\sen(x)-\cos(x)
+  \end{equation}
+  aplicando, como intervalo inicial $(a^{(1)}, b^{(1)}) = (0,5, ~1)$ e aproximação inicial
   \begin{equation}
     x^{(1)} = a^{(1)} - \frac{b^{(1)}-a^{(1)}}{f(b^{(1)})-f(a^{(1)})}f(a^{(1)}).
   \end{equation}
-Faça, então, $4$ iterações deste método de forma a obter a aproximação $x^{(5)}$ e forneça-a com $7$ dígitos significativos por arredondamento.
+  Faça, então, $4$ iterações deste método de forma a obter a aproximação $x^{(5)}$ e forneça-a com $7$ dígitos significativos por arredondamento.
 \end{exer}
 \begin{resp}
-  %   \ifisoctave 
-  % \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/exer_falsapos_1/exer_falsapos_1.m}{Código.} 
-  % \fi
   $9,158079\times 10^{-1}$
 \end{resp}
 
+\begin{exer}
+  Use o Método da Falsa Posição para computar a(s) solução(ões) das seguintes equações com precisão de 8 dígitos significativos.
+  \begin{enumerate}[a)]
+  \item $x = 2^{-x}$ para $0\leq x \leq 2$.
+  \item $e^{-x^2} = 3x - x^2$ para $-1\leq x\leq 4$.
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a) $6.4118574\times 10^{-1}$; b) $3.3536470\times 10^{-1}$; $2.9999589$
+\end{resp}
+
+\begin{equation}
+  f(x) = \sen^2\left(x+\frac{\pi}{4}\right) - x^3 + \frac{\pi}{4}x^2 + \frac{5\pi^2}{16}x + \frac{3\pi^3}{64}.
+\end{equation}
+
+\begin{exer}
+  Use o Método da Falsa Posição para encontrar uma aproximação com precisão de $4$ dígitos significativos do zero de 
+  \begin{equation}
+    f(x) = (-x^2+1,154x-0,332929)\cos(x) + x^2 - 1,154x + 0,332929
+  \end{equation}
+  no intervalo $[-1, 0]$.
+\end{exer}
+\begin{resp}
+  $-7,861\times 10^{-1}$
+\end{resp}
+
+\begin{exer}
+  Use o Método da Falsa Posição para encontrar uma aproximação com precisão de $10^{-4}$ do zero de
+  \begin{equation}
+    f(x) = (-x^2+1,154x-0,332929)\cos(x) + x^2 - 1,154x + 0,332929
+  \end{equation}
+no intervalo $(0,55, ~0,65)$. Forneça a aproximação computada com $7$ dígitos significativos por arredondamento.
+\end{exer}
+\begin{resp}
+  $5,770508\times 10^{-1}$
+\end{resp}
+
+\begin{exer}
+  Aplique o Método da Falsa Posição para encontrar o ponto crítico\footnote{Definimos que $x$ é ponto crítico de uma dada $f$, quando $f'(x) = 0$ ou $\nexists f'(x)$.} de
+  \begin{equation}
+    f(x) = (1-x^2)e^{-x^2}
+  \end{equation}
+  no intervalo $(0, 2)$. Obtenha o resultado com precisão de $5$ dígitos significativos por arredondamento.
+\end{exer}
+
+% estou aqui
 \section{Iteração de ponto fixo}\label{cap_eq1d_pfixo}\index{iteração de!ponto fixo}
 
 O ponto fixo de uma função dada $g$ é o ponto $x$ tal que
