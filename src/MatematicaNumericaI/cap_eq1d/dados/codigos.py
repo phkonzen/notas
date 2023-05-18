@@ -6,6 +6,11 @@ import numpy as np
 
 f = lambda x: (-x**2+1.154*x-0.332929)*np.cos(x) + x**2 - 1.154*x + 0.332929
 
+xx = np.linspace(0.55, 0.65)
+yy = f(xx)
+plt.plot(xx, yy)
+plt.show()
+
 a = 0.55
 b = 0.65
 x0 = a - (b-a)/(f(b)-f(a))*f(a)
