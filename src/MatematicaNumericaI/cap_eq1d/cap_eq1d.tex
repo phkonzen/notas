@@ -96,7 +96,7 @@ Do esboço de seu gráfico (Figura \ref{cap_eq1d_sec_bissec:fig:bis_intro}), obs
 \end{lstlisting}
 \end{ex}
 
-\subsection{Análise de Convergência}
+\subsection{Análise Numérica}
 
 Dada uma função contínua $f:[a, b]\to\mathbb{R}$ com $f(a)\cdot f(b) < 0$, vamos mostrar que o Método da Bisseção é \emph{globalmente convergente} e tem \emph{ordem de convergência linear}.
 
@@ -409,7 +409,7 @@ for k in range(10):
 
 \subsection{Exercícios}
 
-\begin{exer}\label{exer:falsapos_1}
+\begin{exer}
   Use o método da falsa posição para aproximar um zero de
   \begin{equation}
     f(x)=x^3\sen(x)-\cos(x)
@@ -469,25 +469,24 @@ no intervalo $(0,55, ~0,65)$. Forneça a aproximação computada com $7$ dígito
   no intervalo $(0, 2)$. Obtenha o resultado com precisão de $5$ dígitos significativos por arredondamento.
 \end{exer}
 
-% estou aqui
-\section{Iteração de ponto fixo}\label{cap_eq1d_pfixo}\index{iteração de!ponto fixo}
+\section{Iteração de Ponto Fixo}\label{cap_eq1d_sec_pfixo}
 
-O ponto fixo de uma função dada $g$ é o ponto $x$ tal que
+Um \emph{ponto fixo de uma função} $g$ é um ponto $x$ tal que
 \begin{equation}
-  g(x) = x.
+  {\color{blue}g(x) = x}.
 \end{equation}
-Geometricamente, pontos fixos são interseções do gráfico da $g$ com a reta $y=x$, veja a Figura \ref{fig:pfixo}.
+Geometricamente, pontos fixos são interseções do gráfico da $g$ com a reta $y=x$, veja a Figura \ref{cap_eq1d_sec_pfixo:fig:pfixo}.
 
-\begin{figure}[h!]
+\begin{figure}[H]
   \centering
-  \includegraphics[width=0.8\textwidth]{./cap_eq1d/dados/fig_pfixo/fig_pfixo}
-  \caption{Exemplos de pontos fixos (veja no \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/fig_pfixo/fig_pfixo.ggb}{Geogebra}).}
-  \label{fig:pfixo}
+  \includegraphics[width=0.8\textwidth]{./cap_eq1d/dados/fig_pfixo/fig}
+  \caption{Exemplos de pontos fixos.}
+  \label{cap_eq1d_sec_pfixo:fig:pfixo}
 \end{figure}
 
 Observamos que toda equação de uma incógnita pode ser reescrita de forma equivalente como um problema de ponto fixo.
 
-\begin{ex}\label{ex:pfixo_intro}
+\begin{ex}\label{cap_eq1d_sec_pfixo:ex:pfixo_intro}
   Consideremos o problema de resolver
   \begin{equation}
     \sen^2\left(x+\frac{\pi}{4}\right) = x^3 - \frac{\pi}{4}x^2 - \frac{5\pi^2}{16}x - \frac{3\pi^3}{64}.
@@ -499,119 +498,149 @@ Podemos reescrevê-la como o problema de se obter os zeros da seguinte função
 Por sua vez, este problema é equivalente aos seguintes problemas de ponto fixo (entre outros):
 \begin{align}
   &a)~g_1(x) = \frac{16}{5\pi^2}\left[-\sen^2\left(x+\frac{\pi}{4}\right) + x^3 - \frac{\pi}{4}x^2 - \frac{3\pi^3}{64}\right] = x.\\
-  &b)~g_2(x) = \sqrt[3]{\sen^2\left(x+\frac{\pi}{4}\right) + \frac{\pi}{4}x^2 + \frac{5\pi^2}{16}x + \frac{3\pi^3}{64}}
+  &b)~g_2(x) = \sqrt[3]{\sen^2\left(x+\frac{\pi}{4}\right) + \frac{\pi}{4}x^2 + \frac{5\pi^2}{16}x + \frac{3\pi^3}{64}} = x
 \end{align}
-Na Figura \ref{fig:pfixo_intro} podemos observar que os zeros da $f$ (a saber, $x_1=3\pi/4\approx 2,3562$ e $x_2=x_3=-\pi/4\approx -0,78540$) coincidem com os pontos fixos das funções $g_1$ e $g_2$.
+Na Figura \ref{cap_eq1d_sec_pfixo:fig:ex_pfixo_intro} podemos observar que os zeros da $f$ (a saber, $x_1=3\pi/4\approx 2,3562$ e $x_2=x_3=-\pi/4\approx -0,78540$) coincidem com os pontos fixos das funções $g_1$ e $g_2$.
 
-\begin{figure}[h!]
+\begin{figure}[H]
   \centering
-  % \includegraphics[width=0.8\textwidth]{./cap_eq1d/dados/ex_pfixo_intro/fig_pfixo_intro}
-  \caption{Esboço da função $f$ do Exemplo~\ref{ex:pfixo_intro}.}
-  \label{fig:pfixo_intro}
+  \includegraphics[width=0.8\textwidth]{./cap_eq1d/dados/fig_ex_pfixo_intro/fig}
+  \caption{Esboço da função $f$, $g_1$ e $g_2$ do Exemplo~\ref{cap_eq1d_sec_pfixo:ex:pfixo_intro}.}
+  \label{cap_eq1d_sec_pfixo:fig:ex_pfixo_intro}
 \end{figure}
 \end{ex}
 
 Em muitos casos, é possível obter aproximações de um ponto fixo de uma dada função $g$ pela chamada \emph{iteração de ponto fixo}:
 \begin{align}
-  x^{(1)} &= \text{aprox. inicial}\\
-  x^{(k+1)} &= g(x^{(k)}),\quad k=1, 2, 3, \ldots
+  {\color{blue}x^{(1)}} &{\color{blue}= \text{aprox. inicial}},\\
+  {\color{blue}x^{(k+1)}} &{\color{blue}= g(x^{(k)})},
 \end{align}
+com $k=1,2,3,\ldots$.
 
-\begin{ex}\label{ex:pfixo_testes}
-  Observemos que para a função $g_1$ dada no Exemplo \ref{ex:pfixo_intro}, temos as seguintes iterações:
-  \begin{align}
-    x^{(1)} &= -0,70000,\\
-    x^{(2)} &= -0,70959,\\
-    x^{(3)} &= -0,71716,\\
-    &\vdots \\
-    x^{(100)} &= -0,77862,\\
-    &\vdots \\
-    x^{(1000)} &= -0,78466,\\    
-    &\vdots \\
-    x^{(20000)} &= -0,78536.
-  \end{align}
-Ou seja, neste caso as iterações de ponto fixo convergem (lentamente) para o ponto fixo $x=-\pi/4\approx -0,78540$.
-% \ifisoctave
-% Veja o \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/ex_pfixo_testes/ex_g1_t1.m}{código} no \verb+GNU Octave+.
-% \fi
+\begin{ex}
+  Vamos estudar as seguintes iterações de ponto fixo com as funções $g1$ e $g_2$ consideradas no Exemplo~\ref{cap_eq1d_sec_pfixo:ex:pfixo_intro}.
+  \begin{enumerate}[a)]
+  \item Função $g_1$ com $x^{(1)} = 0,7$.
+    \begin{align}
+      x^{(1)} &= -0,70000,\\
+      x^{(2)} &= g_1\left(x^{(1)}\right)\\
+              &= -0,70959,\\
+      x^{(3)} &= g_1\left(x^{(2)}\right)\\
+              &=-0,71716,\\
+              &\vdots \nonumber\\
+      x^{(100)} &= g_1\left(x^{(99)}\right)\\
+              &= -0,77862,\\
+              &\vdots \nonumber\\
+      x^{(1000)} &= g_1\left(x^{(999)}\right)\\
+              &= -0,78466,\\    
+              &\vdots \nonumber\\
+      x^{(20000)} &= g_1\left(x^{(19999)}\right)\\
+              &= -0,78536.
+    \end{align}
+    Neste caso as iterações de ponto fixo convergem (lentamente) para o ponto fixo $x=-\pi/4\approx -0,78540$.
 
-Agora, se usarmos a iteração de ponto fixo com esta mesma função para aproximar o ponto fixo $x=3\pi/4\approx 2,3562$, obtemos
-  \begin{align}
-    x^{(1)} &= 2,50000,\\
-    x^{(2)} &= 2,9966,\\
-    x^{(3)} &= 5,8509,\\
-    &\vdots \\
-    x^{(8)} &= 4,8921e\times 10^{121}.
-  \end{align}
-Donde observamos que as iterações divergem rapidamente.
-
-Entretanto, se usarmos a iteração de ponto fixo com a função $f_2$ dada no Exemplo \ref{ex:pfixo_intro}, obtemos
-  \begin{align}
-    x^{(1)} &= 2,50000,\\
-    x^{(2)} &= 2,4155,\\
-    x^{(3)} &= 2,3805,\\
-    &\vdots \\
-    x^{(10)} &= 2,3562.
-  \end{align}
-A qual, portanto, converge para o ponto fixo esperado.
+  \item Função $g1$ com $x^{(1)} = 2,5$.
+    
+    Este valor inicial está próximo do ponto fixo $x=3\pi/4\approx 2,3562$, entretanto as iterações de ponto fixo divergem:
+    \begin{align}
+      x^{(1)} &= 2,50000,\\
+      x^{(2)} &= g_1\left(x^{(1)}\right)\\
+              &= 2,9966,\\
+      x^{(3)} &= 5,8509,\\
+              &\vdots \nonumber\\
+      x^{(8)} &= 4,8921\times 10^{121}.
+    \end{align}
+    
+  \item Função $g_2$ com $x^{(1)} = 2,5$.
+    Neste caso, as iterações de ponto fixo convergem (rapidamente) para o ponto fixo próximo:
+    \begin{align}
+      x^{(1)} &= 2,50000,\\
+      x^{(2)} &= g_2\left(x^{(1)}\right)\\
+              &= 2,4155,\\
+      x^{(3)} &= 2,3805,\\
+              &\vdots \\
+      x^{(10)} &= 2,3562.
+    \end{align}    
+  \end{enumerate}
 \end{ex}
 
-Este último exemplo (Exemplo \ref{ex:pfixo_testes}) mostra que a iteração do ponto fixo nem sempre é convergente. Antes de vermos condições suficientes para a convergência, vejamos sua interpretação geométrica.
+Este último exemplo mostra que a iteração do ponto fixo nem sempre é convergente. Antes de vermos condições suficientes para a convergência, vejamos sua interpretação geométrica.
 
 \subsection{Interpretação geométrica}
 
-A Figura \ref{fig:pfixo_interp} apresenta o caso de uma iteração de ponto fixo convergente. As iterações iniciam-se no ponto $x^{(1)}$ e seguem para $x^{(2)} = g(x^{(1)})$ e $x^{(3)} = g(x^{(2)})$.
+A Figura \ref{cap_eq1d_sec_pfixo:fig:pfixo_interp} apresenta o caso de uma iteração de ponto fixo convergente. As iterações iniciam-se no ponto $x^{(1)}$ e seguem para $x^{(2)} = g(x^{(1)})$ e $x^{(3)} = g(x^{(2)})$.
 
-\begin{figure}[h!]
+\begin{figure}[H]
   \centering
-  \includegraphics[width=0.8\textwidth]{./cap_eq1d/dados/fig_pfixo_interp/fig_pfixo_interp}
+  \includegraphics[width=\textwidth]{./cap_eq1d/dados/fig_pfixo_interp/fig}
   \caption{Interpretação geométrica da iteração de ponto fixo.}
-  \label{fig:pfixo_interp}
+  \label{cap_eq1d_sec_pfixo:fig:pfixo_interp}
 \end{figure}
 
-\subsection{Análise de convergência}
+\subsection{Análise Numérica}
 
 O seguinte teorema nos fornece condições suficientes para a convergência das iterações de ponto fixo.
 
-\begin{teo}(\normalfont{Teorema do ponto fixo})\label{teo:pfixo}
-  Seja uma dada função $g$ continuamente diferenciável satisfazendo
+\begin{teo}(\normalfont{Teorema do Ponto Fixo})\label{cap_eq1d_sec_pfixo:teo:pfixo}
+  Seja $g$ função continuamente diferenciável satisfazendo ambas as seguintes condições
   \begin{enumerate}[a)]
-  \item $g([a, b]) \subset [a, b]$,
+  \item $g\left([a, b]\right) \subset [a, b]$,
   \item $|g'(x)|<K<1$ para todo $x\in [a, b]$.
   \end{enumerate}
-Então, $g$ tem um único ponto fixo $x^*\in [a, b]$ e as iterações $x^{(k+1)}=x^{(k)}$, $k=1, 2, 3, \ldots$, convergem para $x^*$, para qualquer escolha de $x^{(1)}\in [a, b]$.
+  Então, $g$ tem um único ponto fixo $x^*\in [a, b]$ e as iterações
+  \begin{equation}
+    x^{(k+1)}= g\left(x^{(k)}\right), k=1, 2, 3, \ldots,
+  \end{equation}
+  convergem para $x^*$, para qualquer escolha de $x^{(1)}\in [a, b]$.
 \end{teo}
 \begin{dem}
   Da hipótese b), temos que $g$ é uma contração com
   \begin{equation}
-    |g(x) - g(y)| < K\cdot |x - y|,~\forall x,y\in [a, b].
+    \left|g(x) - g(y)\right| < K\cdot |x - y|,
   \end{equation}
-Com isso, da hipótese a) e tomando $x^{(1)}\in [a, b]$, temos
-\begin{align}
-  |x^{(k+1)} - x^{(k)}| &= |g(x^{(k)}) - g(x^{(k-1)})|\\
-  &\leq K |x^{(k)} - x^{(k-1)}|\\
-  &\vdots \\
-  &\leq K^{k-1}|x^{(2)}-x^{(1)}|,
-\end{align}
-para todo $k=2, 3, \ldots$. Como $K<1$, temos $|x^{(k+1)}-x^{(k)}|\to 0$ quando $k\to\infty$ e, portanto, $x^{(k)}$ converge para algum $x^*\in [a, b]$.
-
-De fato, $x^*$ é ponto fixo de $g$, pois da continuidade da $g$, temos
-\begin{equation}
-  x^* = \lim_{k\to\infty} x^{(k+1)} = \lim_{k\to\infty} g(x^{(k)}) = g(x^*).
-\end{equation}
-
-Por fim, $x^*$ é único, pois assumindo a existência de outro ponto fixo $x^{**}\neq x^*$ teríamos
-\begin{equation}
-  |x^* - x^{**}| = |g(x^*) - g(x^{**})| < K|x^* - x^{**}|.
-\end{equation}
+  para quaisquer $x,y\in [a, b]$. Com isso, da hipótese a) e tomando $x^{(1)}\in [a, b]$, temos
+  \begin{align}
+    \left|x^{(k+1)} - x^{(k)}\right| &= \left|g(x^{(k)}) - g(x^{(k-1)})\right|\\
+                                     &\leq K \left|x^{(k)} - x^{(k-1)}\right|\\
+                                     &\vdots \nonumber\\
+                                     &\leq K^{k-1}\left|x^{(2)}-x^{(1)}\right|,
+  \end{align}
+  para $k=2, 3, \ldots$. Como $K<1$, temos $\left|x^{(k+1)}-x^{(k)}\right|\to 0$ quando $k\to\infty$ e, portanto, $x^{(k)}$ converge para algum $x^*\in [a, b]$.
+  
+  De fato, $x^*$ é ponto fixo de $g$, pois da continuidade da $g$, temos
+  \begin{align}
+    x^* &= \lim_{k\to\infty} x^{(k+1)}\\
+        &= \lim_{k\to\infty} g(x^{(k)}) = g(x^*).
+  \end{align}
+  
+  Por fim, $x^*$ é único, pois assumindo a existência de outro ponto fixo $x^{**}\neq x^*$ teríamos
+  \begin{align}
+    |x^* - x^{**}| &= |g(x^*) - g(x^{**})| \\
+                   &< K|x^* - x^{**}|\\
+                   &< |x^* - x^{**}|.
+  \end{align}
 \end{dem}
 
-Agora, dado um problema de encontrar um zero de uma dada função $f$, i.e. $f(x)=0$, podemos construir uma função $g$ para a iteração de ponto fixo associada da seguinte forma:
-\begin{align}
-  f(x) = 0 &\Leftrightarrow \underbrace{x - \alpha f(x)}_{g(x)} = x,
-\end{align}
-com $\alpha\in\mathbb{R}$ escolhido de forma a satisfazer as hipóteses do teorema do ponto fixo (Teorema \ref{teo:pfixo}).
+\begin{obs}(\normalfont{Ordem de Convergência})
+  A iteração de ponto fixo tem ordem de convergência linear
+  \begin{equation}
+    |x^{(k+1)} - x^{(k)}| < K|x^{(k)} - x^{(k-1)}|^{\pmb{1}},
+  \end{equation}
+onde $K > 0$ é a constante dada na hipótese $b)$ do Teorema do Ponto Fixo. Além disso, isso mostra que quanto menor o valor da constante $K$, mais rápida será a convergência das iterações de ponto fixo.
+\end{obs}
 
+
+\subsection{Zero de Funções}
+
+Dado um problema de encontrar um zero de uma função $f$ (i.e., resolver $f(x)=0$), podemos construir uma função $g$ com ponto fixo no zero de $f$ e aplicarmos a iteração de ponto fixo para computá-lo. Para tanto, observamos que
+\begin{gather}
+  {\color{blue}f(x) = 0} \\
+  \Leftrightarrow \\
+  \underbrace{{\color{blue}x - \alpha f(x)}}_{\color{blue}=: g(x)} = x,
+\end{gather}
+com $\alpha\in\mathbb{R}$ escolhido de forma a satisfazer as hipóteses do Teorema do Ponto Fixo (Teorema \ref{cap_eq1d_sec_pfixo:teo:pfixo}).
+
+% estou aqui
 \begin{ex}\label{ex:pfixo_exec}
   Retornamos ao problema de encontrar o zero da função
   \begin{equation}
@@ -651,14 +680,6 @@ Então, fazendo as iterações de ponto fixo com aproximação inicial $x^{(1)}=
 % \verbatiminput{./cap_eq1d/dados/ex_pfixo_exec/ex_pfixo_exec.m}
 % \fi
 \end{ex}
-
-\begin{obs}(\normalfont{Taxa de convergência})
-  A iteração de ponto fixo tem taxa de convergência linear
-  \begin{equation}
-    |x^{(k+1)} - x^{(k)}| < K|x^{(k)} - x^{(k-1)}|^{\pmb{1}},
-  \end{equation}
-onde $K > 0$ é a constante dada na hipótese $b)$ do teorema do ponto fixo (Teorema \ref{teo:pfixo}). Além disso, isso mostra que quanto menor o valor da constante $K$, mais rápida será a convergência das iterações de ponto fixo.
-\end{obs}
 
 \subsection*{Exercícios}
 
