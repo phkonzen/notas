@@ -1,10 +1,44 @@
+import matplotlib.pyplot as plt
 import numpy as np
 
-# f = lambda x: np.sin(x+np.pi/4)**2 \
-#     - x**3 + np.pi/4*x**2 + 5*np.pi**2/16*x \
-#     + 3*np.pi**3/64
+xx = np.linspace(-1.5, 1.5)
+plt.plot(xx, xx**2*np.exp(-xx**2))
+plt.plot(xx, xx)
+plt.show()
 
-f = lambda x: (-x**2+1.154*x-0.332929)*np.cos(x) + x**2 - 1.154*x + 0.332929
+import numpy as np
+
+# fun obj
+f = lambda x: np.sin(x+np.pi/4)**2 \
+    - x**3 + np.pi/4*x**2 + 5*np.pi**2/16*x \
+    + 3*np.pi**3/64
+
+fl = lambda x: 2*np.sin(x+np.pi/4)*np.cos(x+np.pi/4) \
+    -3*x**2 + np.pi/2*x + 5*np.pi**2/16
+
+# param
+alpha = 0.1
+# fun pto fixo
+g = lambda x: x - alpha*fl(x)
+
+xx = np.linspace(-1, 0)
+plt.plot(xx, xx)
+plt.plot(xx, g(xx))
+plt.plot([-np.pi/4], [g(-np.pi/4)], marker='o')
+plt.grid()
+plt.show()
+
+
+# aprox inicial
+x0 = -0.5
+print(f'\n{1}: {x0:.4f}')
+for k in range(9999):
+    x = g(x0)
+    nd = np.fabs(x-x0)
+    print(f'{k+2}: {x:.4f}, {nd:.1e}')
+    x0 = x
+
+
 
 xx = np.linspace(0.55, 0.65)
 yy = f(xx)
