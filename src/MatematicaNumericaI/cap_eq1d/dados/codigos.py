@@ -32,7 +32,7 @@ plt.show()
 # aprox inicial
 x0 = -0.5
 print(f'\n{1}: {x0:.4f}')
-for k in range(9999):
+for k in range(4):
     x = g(x0)
     nd = np.fabs(x-x0)
     print(f'{k+2}: {x:.4f}, {nd:.1e}')
@@ -69,3 +69,8 @@ for k in range(100):
 
     
 
+g = lambda x: 16/(5*np.pi**2)*(-np.sin(x+np.pi/4)**2 \
+                               + x**3 - np.pi/4*x**2 - 3*np.pi**2/64)
+x = 0.7
+print('\n{1}: {x:.5f}')
+for k in range(20000):
