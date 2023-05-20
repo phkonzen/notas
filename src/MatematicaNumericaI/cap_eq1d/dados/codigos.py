@@ -1,3 +1,24 @@
+import numpy as np
+
+# fun obj
+f = lambda x: np.sin(x+np.pi/4)**2 \
+    - x**3 + np.pi/4*x**2 + 5*np.pi**2/16*x \
+    + 3*np.pi**3/64
+
+# fun pto fixo
+alpha = -0.05
+g = lambda x: x - alpha*f(x)
+
+x0 = 2.6
+print(f'\n1: {x0:.4f}')
+for k in range(7):
+    x1 = g(x0)
+    x2 = g(x1)
+    x = x0 - (x1-x0)**2/(x2-2*x1+x0)
+    nd = np.fabs(x-x0)
+    print(f'\n{k+2}: {x:.4f}, {nd:.1e}')
+    x0 = x
+
 import matplotlib.pyplot as plt
 import numpy as np
 
