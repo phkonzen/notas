@@ -433,7 +433,7 @@ Cada dado manipulado em um programa é identificado por um \emph{nome}, chamado 
 
   \begin{figure}[H]
     \centering
-    \includegraphics{./cap_lingua/dados/fig_ex_reta/fig}
+    \includegraphics[width=\textwidth]{./cap_lingua/dados/fig_ex_reta/fig}
     \caption{Esboço da reta de equação $y = ax + b$, com $a=2$ e $b=-1$.}
     \label{cap_lingua_sec_dados:fig:ex_reta}
   \end{figure}
@@ -811,11 +811,86 @@ Vamos denotar \lstinline+fl(x)+ o número em ponto flutuante mais próximo do n�
 
 \subsubsection{Notação Científica}
 
-\emconstrucao
+A \hl{\emph{notação científica}} é a representação de um dado número na forma
+\begin{equation}
+  d_{n}\ldots d_2d_1d_0,d_{-1}d_{-2}d_{-3}\ldots \times 10^{E},
+\end{equation}
+onde $d_i$, $i=n, \ldots, 1, 0, -1, \ldots$, são algarismos da base 10. A parte à esquerda do sinal $\times$ é chamada de mantissa do número e $E$ é chamado de expoente (ou ordem de grandeza).
+
+\begin{ex}\label{cap_lingua_sec_numop:ex:notacao_cientifica}
+  O número $31,515$ pode ser representado em notação científica das seguintes formas
+  \begin{align}
+    31,415\times 10^0 &= 3,1415\times 10^{1} \\
+                      &= 314,15\times 10^{-1} \\
+                      &= 0,031415\times 10^{3},
+  \end{align}
+  entre outras tantas possibilidades.
+
+  \hl{Em {\python}, usa-se a letra {\lstinline+e+} para separar a mantissa do expoente na notação científica}. Por exemplo
+  \begin{lstlisting}
+    >>> # 31.415 X 10^0
+    >>> 31.415e0
+    31.515
+    >>> # 3.1415 X 10^1
+    >>> 3.1415e1
+    31.515
+    >>> # 314.15 X 10^-1
+    >>> 314.15e-1
+    31.515
+    >>> # 0.031415 X 10^3
+    >>> 0.031415e3
+    31.415
+  \end{lstlisting}
+\end{ex}
+
+No exemplo anterior (Exemplo~\ref{cap_lingua_sec_numop:ex:notacao_cientifica}), podemos observar que a representação em notação científica de um dado número não é única. Para contornar isto, introduzimos a \hl{\emph{notação científica normalizada}}, a qual tem a forma
+\begin{equation}
+  d_0,d_{-1}d_{-2}d_{-3}\ldots\times 10^{E},
+\end{equation}
+com $d_0 \neq 0$\footnote{No caso do número zero, temos $d_0=0$.}.
+
+\begin{ex}
+  O número $31,415$ representado em notação científica normalizada é $3,1415\times 10^{1}$.
+
+  Em {\python}, podemos usar o método \href{https://docs.python.org/3.8/library/string.html#formatspec}{\lstinline+format+} para imprimir um número em notação científica normalizada. Por exemplo, temos
+  \begin{lstlisting}
+    >>> x = 31.415
+    >>> print(f"{x:e}")
+    3.141500e+01
+  \end{lstlisting}
+\end{ex}
 
 \subsection{Números Complexos}
 
-\emconstrucao
+\hl{{\python} tem números complexos como um tipo básico da linguagem}. O número imaginário $i := \sqrt{-1}$ é representado por \lstinline+1j+. Temos
+\begin{lstlisting}
+>>> 1j**2
+(-1+0j)
+\end{lstlisting}
+Ou seja, $i^2 = -1 + 0i$. \hl{Aritmética de números completos está diretamente disponível na linguagem}.
+
+\begin{ex}
+  Estudamos os seguintes casos:
+  \begin{enumerate}[a)]
+  \item $-3i + 2i = -i$
+\begin{lstlisting}
+>>> -3j + 2j
+-1j
+\end{lstlisting}
+
+  \item $(2 - 3i) + (4 + i) = 6 -2i$
+\begin{lstlisting}
+>>> 2-3j + 4+1j
+(6-2j)
+\end{lstlisting}
+
+  \item $(2 - 3i)\cdot (4 + i) = 11 - 10i$
+\begin{lstlisting}
+>>> (2-3j)*(4+1j)
+(11-10j)
+\end{lstlisting}
+  \end{enumerate}
+\end{ex}
 
 \subsection{Exercícios}
 
@@ -907,4 +982,153 @@ print('x2 = ', x2)
   Dica: seu sistema operacional deve ter um gerenciador de tarefas, um \textit{software} que nos permite controlar a execução dos programas em execução. Este gerenciador muitas vezes também informa o estado de utilização da memória computacional. No \lstinline+Linux+, pode-se usar o programa \lstinline+top+ ou o \lstinline+htop+.
 \end{resp}
 
-\emconstrucao
+\begin{exer}
+  Escreva os seguintes números em notação científica normalizada e entre com eles em um terminal {\python}:
+  \begin{enumerate}[a)]
+  \item $700$
+  \item $0,07$
+  \item $2800000$
+  \item $0,000019$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a) $7\times 10^2$, \lstinline+>>> 7e2+; b) $7\times 10^{-2}$, \lstinline+7e-2+; c) $2,8\times 10^6$, \lstinline+2.8e6+; d) $1.9\times 10^{-5}$, \lstinline+1.9e-5+
+\end{resp}
+
+\begin{exer}
+  Escreva os seguintes números em notação decimal:
+  \begin{enumerate}
+  \item $2,8\times 10^{-3}$
+  \item $8,712\times 10^4$
+  \item $3,\hat{3}\times 10^{-1}$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a) $0.0028$; b) $87120$; c) $0,\hat{3}$
+\end{resp}
+
+\begin{exer}
+  Faça os seguintes cálculos e então verifique os resultados computando-os em {\python}:
+  \begin{enumerate}
+  \item $5\times 10^{3} 3\times 10^{2}$
+  \item $8,1\times 10^{-2} - 1\times 10^{-3}$
+  \item $\left(7\times 10^4\right)\cdot (2\times 10^{-2})$
+  \item $\left(7\times 10^{-4}\right)\div (2\times 10^{2})$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a) $5,3\times 10^3$;
+\begin{lstlisting}
+>>> x = 5e3 + 3e2
+>>> print(f'{x:e}')
+5.300000e+03
+\end{lstlisting}
+  
+  b) $8\times 10^{-2}$
+\begin{lstlisting}
+>>> x = 8.1e-2 - 1e-3
+>>> print(f'{x:e}')
+
+\end{lstlisting}
+
+  c) $1,4\times 10^{3}$
+
+\begin{lstlisting}
+>>> x = 7e4 * 2e-2
+>>> print(f'{x:e}')
+1.400000e+03
+\end{lstlisting}
+
+  d) $3,5\times 10^{-6}$
+
+\begin{lstlisting}
+>>> x = 7e-4 / 2e2
+>>> print(f'{x:e}')
+3.500000e-06
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  Faça os seguintes cálculos e verifique seus resultados computando-os em {\python}:
+  \begin{enumerate}
+  \item $(2-3i) + (2-i)$
+  \item $(1+2i) - (1-3i)$
+  \item $(2-3i) \cdot (-4+2i)$
+  \item $(1-i)^3$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a) $3+7i$
+\begin{lstlisting}
+>>> (1+8j) + (2-1j)
+(3+7j)
+\end{lstlisting}
+
+  b) $5i$
+\begin{lstlisting}
+>>> (1+2j) - (1-3j)
+5j
+\end{lstlisting}
+
+  c) $-2+16i$
+
+\begin{lstlisting}
+>>> (2-3j) * (-4+2j)
+(-2+16j)
+\end{lstlisting}
+
+  d) $-2-2i$
+\begin{lstlisting}
+>>> (1-1j)**3
+(-2-2j)
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  Desenvolva um código {\python} que computa a área de um quadrado de lado $l$ dado. Teste-o com $l=0,575$ e assegure que seu código forneça o resultado usando notação decimal.
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+lado = 0.575
+area = lado**2
+print(f'área = {area:f}')
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  Desenvolva um código {\python} que computa o comprimento da diagonal de um quadrado de lado $l$ dado. Teste-o com $l=2$ e assegure que seu código forneça o resultado em notação científica normalizada.
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+lado = 2
+diag = lado*2**(1/2)
+print(f'diagonal = {diag:e}')
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  Assumindo que $a_1\neq a_2$, desenvolva um código {\python} que compute o ponto $(x_{i}, y_i)$ que corresponde a interseção das retas de equações
+  \begin{gather}
+    y = a_1x + b_1\\
+    y = a_2x + b_2,
+  \end{gather}
+  para $a_1$, $a_2$, $b_1$ e $b_2$ parâmetros dados. Teste-o para o caso em que $a_1=1$, $a_2=-1$, $b_1=1$ e $b_2=-1$. Garanta que seu código forneça a solução usando notação científica normalizada.
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+# parametros
+a1 = 1
+a2 = -1
+b1 = 1
+b2 = -1
+# ponto x de interseção
+x_intercep = (b2-b1)/(a1-a2)
+# ponto y de interceção
+y_intercep = a1*x_intercep + b1
+# imprime o resultado
+print(f'x_i = {x_intercep:e}')
+print(f'y_i = {y_intercep:e}')
+\end{lstlisting}
+\end{resp}
+
+

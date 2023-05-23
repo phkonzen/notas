@@ -1,8 +1,12 @@
-a = 2
-b = -2
-c = -12
-delta = b**2 - 4*a*c
-x1 = (-b - delta**(1/2))/(2*a)
-print('x1 = ', x1)
-x2 = (-b + delta**(1/2))/(2*a)
-print('x2 = ', x2)
+# parametros
+a1 = 1
+a2 = -1
+b1 = 1
+b2 = -1
+# ponto x de interseção
+x_intercep = (b2-b1)/(a1-a2)
+# ponto y de interceção
+y_intercep = a1*x_intercep + b1
+# imprime o resultado
+print(f'x_i = {x_intercep:e}')
+print(f'y_i = {y_intercep:e}')
