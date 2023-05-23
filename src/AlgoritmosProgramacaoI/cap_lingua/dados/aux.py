@@ -1,14 +1,8 @@
-b = float(input('Informe o valor da base do triângulo.\n'))
-h = float(input('Informe o valor da altura do triângulo.\n'))
-# cálculo da área
-a = b*h/2
-print(f'Área = {a}')
-
-x = float(input('Entre com o valor de x: '))
-if (x >= 0.):
-    s = x/2
-    for i in range(4):
-        s = (s + x/s)/2
-    print(f'Raiz aprox. de x = {s}')
-else:
-    print(f'Não existe!')
+a = 2
+b = -2
+c = -12
+delta = b**2 - 4*a*c
+x1 = (-b - delta**(1/2))/(2*a)
+print('x1 = ', x1)
+x2 = (-b + delta**(1/2))/(2*a)
+print('x2 = ', x2)
