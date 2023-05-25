@@ -122,7 +122,7 @@ class Index:
         body += '<div class="collapse navbar-collapse" id="navbarNav">'
         body += '<ul class="navbar-nav">'
         body += '<li class="nav-item"><a class="nav-link active" href="index.html"><i class="fas fa-home"></i> Início</a></li>'
-        body += '<li class="nav=item"><a class="nav-link" href="https://colab.research.google.com/github/phkonzen/notas/blob/master/notas.ipynb">Google Colab</a></li>'
+        # body += '<li class="nav=item"><a class="nav-link" href="https://colab.research.google.com/github/phkonzen/notas/blob/master/notas.ipynb">Google Colab</a></li>'
         body += '<li class="nav-item dropdown">'
         body += '<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">'
         body += 'Contato'
