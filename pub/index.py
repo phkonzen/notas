@@ -167,27 +167,24 @@ class Index:
         
         body += '<!-- The slideshow -->'
         body += '<div class="carousel-inner">'
-        
-        body += '<div class="carousel-item">'
-        body += self.add_anuncio(text = 'XI ERMAC-RS 2023 - Inscrições: até 25/Abr',
+
+        # anúncio
+        body += '<div class="carousel-item active">'
+        body += self.add_anuncio(text = 'XI ERMAC-RS 2023 - Inscrições & Alojamento até 25/Abr',
                                  link = 'https://wp.ufpel.edu.br/ermacrs23/',
                                  status = 'danger')
-        # body += '<div class="spinner-grow spinner-grow-sm text-danger mb-1" role="status"></div>'
-        # body += '<a href="https://wp.ufpel.edu.br/ermacrs23/"> <strong></strong></a>'
         body += '</div>'
 
-        body += '<div class="carousel-item active">'
-        body += self.add_anuncio(text = 'PPGMAp - UFRGS: Seleção de Mestrado 2023/1: 17-21/05',
-                                 link = 'https://www.ufrgs.br/ppgmap/?p=1438',
-                                 status = 'warning')
-        body += '</div>'
 
+        # anúncio
         body += '<div class="carousel-item">'
         body += self.add_anuncio(text = 'PPGMAp - UFRGS: Seleção de Doutorado 2023',
                                  link = 'https://www.ufrgs.br/ppgmap/?p=1444',
                                  status = 'success')
         body += '</div>'
 
+
+        # anúncio
         body += '<div class="carousel-item">'
         body += self.add_anuncio(text = 'IME - UFRGS: Instituto de Matemática e Estatística',
                                  link = 'http://www.ufrgs.br/ime',
@@ -259,7 +256,7 @@ class Index:
                               text = "Métodos e técnicas de cálculo numérico",
                               badges = ["Octave"],
                               link = "MatematicaNumerica/main.html",
-                              color = "danger", status = "Antigo")
+                              color = "secondary", status = "Antigo")
         body += '</div>'
 
         # card: notas de aula de Matemática Numérica I
