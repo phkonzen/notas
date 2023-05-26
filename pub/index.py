@@ -169,18 +169,32 @@ class Index:
         body += '<div class="carousel-inner">'
 
         # anúncio
-        body += '<div class="carousel-item active">'
-        body += self.add_anuncio(text = 'XI ERMAC-RS 2023 - Inscrições & Alojamento até 25/Abr',
+        body += '<div class="carousel-item">'
+        body += self.add_anuncio(text = 'XI ERMAC-RS 2023 - Inscrições até 15/Jun',
                                  link = 'https://wp.ufpel.edu.br/ermacrs23/',
-                                 status = 'danger')
+                                 status = 'success')
+        body += '</div>'
+
+        # anúncio
+        body += '<div class="carousel-item">'
+        body += self.add_anuncio(text = 'XLII CNMAC 2023 - Inscrições até 22/Set',
+                                 link = 'http://www.cnmac.org.br',
+                                 status = 'success')
+        body += '</div>'
+
+        # anúncio
+        body += '<div class="carousel-item">'
+        body += self.add_anuncio(text = 'ENMC/ECTM 2023 - Submissões até 15/Ago',
+                                 link = 'https://enmc.ccam.uesc.br',
+                                 status = 'primary')
         body += '</div>'
 
 
         # anúncio
-        body += '<div class="carousel-item">'
-        body += self.add_anuncio(text = 'PPGMAp - UFRGS: Seleção de Doutorado 2023',
-                                 link = 'https://www.ufrgs.br/ppgmap/?p=1444',
-                                 status = 'success')
+        body += '<div class="carousel-item active">'
+        body += self.add_anuncio(text = 'PPGMAp - UFRGS: Mestrado & Doutorado',
+                                 link = 'https://www.ufrgs.br/ppgmap',
+                                 status = 'primary')
         body += '</div>'
 
 
