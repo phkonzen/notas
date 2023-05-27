@@ -1,3 +1,7 @@
+x = 3
+print('É par?')
+print(x % 2 == 0)
+
 # ponto
 x = 2
 y = 0.5
