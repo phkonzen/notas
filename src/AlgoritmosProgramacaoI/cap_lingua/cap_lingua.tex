@@ -653,27 +653,27 @@ Números são tipos de dados comumente manipulados \hl{em programas de computado
 
 As seguintes operações numéricas estão disponíveis na linguagem {\python}:
 \begin{itemize}
-\item \lstinline*+*\textbf{: adição}
+\item \lstinline*+* \emph{: adição}
 \begin{lstlisting}
 >>> 1 + 2
 3
 \end{lstlisting}
-\item \lstinline+-+\textbf{: subtração}
+\item \lstinline+-+ \emph{: subtração}
 \begin{lstlisting}
 >>> 1 - 2
 -1
 \end{lstlisting}
-\item \lstinline+*+\textbf{: multiplicação}
+\item \lstinline+*+ \emph{: multiplicação}
 \begin{lstlisting}
 >>> 2*3
 6
 \end{lstlisting}
-\item \lstinline+/+\textbf{: divisão}
+\item \lstinline+/+ \emph{: divisão}
 \begin{lstlisting}
 >>> 5/2
 2.5
 \end{lstlisting}
-\item \lstinline+//+\textbf{: divisão inteira}
+\item \lstinline+//+ \emph{: divisão inteira}
 \begin{lstlisting}
 >>> 5//2
 2
@@ -687,7 +687,7 @@ As seguintes operações numéricas estão disponíveis na linguagem {\python}:
 
 A precedência das operações deve ser observada em {\python}. \hl{Uma expressão é executada da esquerda para a direita, mas os operadores tem a seguinte precedência}\footnote{Consulte a lista completa de operadores e suas precedências em \href{https://docs.python.org/3/reference/expressions.html\#operator-precedence}{Python Docs: Expressions: Operator precedence}.}:
 \begin{enumerate}
-\item \lstinline*-x*\textbf{: oposto de $x$}
+\item \lstinline*-x* \emph{: oposto de $x$}
 \item \lstinline+**+
 \item \lstinline+*, /, //, %+
 \item \lstinline*+, -*
@@ -779,7 +779,7 @@ O uso de espaços entre os operandos,em geral, é arbitrário, mas conforme util
 \end{lstlisting}
 \end{obs}
 
-\subsection{Números Decimais}
+\subsection{Números Decimais}\label{cap_lingua_sec_numop:subsec:float}
 
 No {\python}, \hl{números decimais são alocados} pelo padrão \href{https://en.wikipedia.org/wiki/IEEE\_754}{IEEE 774} de aritmética \hl{em ponto flutuante}. Em geral, são usados $64~\textit{bits} = 8~\textit{bytes}$ para alocar um número decimal. Um ponto flutuante tem a forma
 \begin{equation}
@@ -1132,19 +1132,270 @@ print(f'y_i = {y_intercep:e}')
 \end{resp}
 
 
-\section{Dados Não-Numéricos}\label{cap_lingua_sec_dadosnnum}
+\section{Dados Booleanos}\label{cap_lingua_sec_bool}
+
+Em {\python}, \hl{os \emph{valores lógicos} são o {\lstinline+True+} (verdadeiro) e o {\lstinline+False+} (falso)}. Pertencem a uma subclasse dos números inteiros, com \lstinline+1+ correspondendo a \lstinline+True+ e \lstinline+0+ a \lstinline+False+. Em referência ao matemático George Boole{\boole}, estes dados são chamados de \emph{booleanos}.
+
+Normalmente, eles aparecem como resultado de expressões lógicas. Por exemplo:
+\begin{lstlisting}
+>>> 2/3 < 3/4
+True
+>>> 7/5 > 13/9
+False
+\end{lstlisting}
+
+\subsection{Operadores de Comparação}
+
+{\python} possui \hl{\emph{operadores de comparação}} que \hl{retornam valores lógicos}, são eles:
+\begin{itemize}
+\item \lstinline+<+ \emph{: menor que}
+
+\begin{lstlisting}
+>>> 2 < 3
+True
+\end{lstlisting}
+
+\item \lstinline+<+ \emph{: menor ou igual que}
+
+\begin{lstlisting}
+>>> 4 <= 2**2
+True
+\end{lstlisting}
+
+\item \lstinline+>+ \emph{: maior que}
+
+\begin{lstlisting}
+>>> 5 > 7
+False
+\end{lstlisting}
+
+\item \lstinline+>+ \emph{: maior ou igual que}
+
+\begin{lstlisting}
+>>> 2*5 >= 10
+True
+\end{lstlisting}
+
+\item \lstinline+==+ \emph{: igual a}
+
+\begin{lstlisting}
+>>> 9**2 == 81
+True
+\end{lstlisting}
+
+\item \lstinline+!=+ \emph{: diferente de}
+
+\begin{lstlisting}
+>>> 81 != 9**2
+False
+\end{lstlisting}
+\end{itemize}
+
+\begin{obs}
+  Os operadores de comparação \lstinline+<+, \lstinline+<=+, \lstinline+>+, \lstinline+>=+, \lstinline+==+, \lstinline+!=+ tem a mesma ordem de precedência e estão abaixo da precedência dos operadores numéricos básicos.
+\end{obs}
+
+\begin{ex}
+  A equação da circunferência de centro no ponto $(a, b)$ e raio $r$ é
+  \begin{equation}
+    (x-a)^2 + (y-b)^2 = r^2.
+  \end{equation}
+  Um ponto $(x, y)$ está no disco determinado pela circunferência, quando
+  \begin{equation}
+    (x-a)^2 + (y-b)^2 \leq r^2
+  \end{equation}
+  e está fora do disco, noutro caso.
+
+  O seguinte código verifica se o ponto dado $(x, y) = (1, 1)$ está no disco determinado pela circunferência de centro $(a, b) = (0, 0)$ e raio $r = 1$.
+
+  
+\begin{lstlisting}
+# ponto
+x = 1
+y = 1
+
+# centro circunferência
+a = 0
+b = 0
+# raio circunferência
+raio = 1
+
+# verifica se está no disco
+v = (x-a)**2 + (y-b)**2 <= raio**2
+
+# imprime resposta
+print('O ponto está no disco?', v)
+\end{lstlisting}
+\end{ex}
+
+\subsubsection{Comparação entre pontos flutuantes}
+
+\hl{Números decimais são arredondados para o número {\lstinline+float+} (ponto flutuante) mais próximo na máquina}\footnote{Consulte a Subseção~\ref{cap_lingua_sec_numop:subsec:float}.}. Com isso, a comparação direta entre pontos flutuantes não é recomendada, em geral. Por exemplo,
+\begin{lstlisting}
+>>> 0.1 + 0.2 == 0.3
+False
+\end{lstlisting}
+Inesperadamente, este resultado é esperado na aritmética de ponto flutuante! \lstinline+:)+
+
+O que ocorre acima, é que ao menos um dos números (na verdade todos) não tem representação exata como ponto flutuante. Isso faz com que a soma \lstinline*0.1 + 0.2* não seja exatamente computada igual a \lstinline+0.3+.
+
+O erro de arredondamento é de aproximadamente\footnote{Épsilon de máquina $\varepsilon \approx 2,22\times 10^{-16}$.} $10^{-16}$ para cada entrada. Conforme operamos sobre pontos flutuantes este erro pode crescer. Desta forma, \hl{o mais apropriado para comparar se dois pontos flutuantes são iguais (dentro do erro de arrendamento de máquina) é verificando se a distância entre eles é menor que uma precisão desejada}, por exemplo, $10^{-15}$. No caso acima, podemos usar\footnote{\lstinline+abs()+ é um método {\python} para computar o valor absoluto de um número. Consulte \href{https://docs.python.org/3/library/functions.html\#abs}{Python Docs:Built-in Functions}.}:
+\begin{lstlisting}
+>>> abs(x - 0.3) <= 1e-15
+True
+\end{lstlisting}
+
+\subsection{Operadores Lógicos}
+
+{\python} tem os operadores lógicos (ou \hl{\emph{operadores booleanos}}):
+\begin{itemize}
+\item \lstinline+and+ \emph{: e lógico}
+
+\begin{lstlisting}
+>>> 3 > 4 and 3 <= 4
+False
+\end{lstlisting}
+
+  \begin{table}[H]
+    \centering
+    \caption{Tabela verdade do \lstinline+and+.}
+    \begin{tabular}{ll|l}
+      \lstinline+A+ & \lstinline+B+ & \lstinline+A and B+\\\hline
+      \lstinline+True+ & \lstinline+True+ & \lstinline+True+\\
+      \lstinline+True+ & \lstinline+False+ & \lstinline+False+\\
+      \lstinline+False+ & \lstinline+True+ & \lstinline+False+\\
+      \lstinline+False+ & \lstinline+False+ & \lstinline+False+\\\hline
+    \end{tabular}
+  \end{table}
+
+\item \lstinline+or+ \emph{: ou lógico}
+
+\begin{lstlisting}
+>>> 3 > 4 or 3 <= 4
+True
+\end{lstlisting}
+
+  \begin{table}[H]
+    \centering
+    \caption{Tabela verdade do \lstinline+or+.}
+    \begin{tabular}{ll|l}
+      \lstinline+A+ & \lstinline+B+ & \lstinline+A or B+\\\hline
+      \lstinline+True+ & \lstinline+True+ & \lstinline+True+\\
+      \lstinline+True+ & \lstinline+False+ & \lstinline+True+\\
+      \lstinline+False+ & \lstinline+True+ & \lstinline+True+\\
+      \lstinline+False+ & \lstinline+False+ & \lstinline+False+\\\hline
+    \end{tabular}
+  \end{table}
+
+\item \lstinline+not+ \emph{: negação lógica}
+
+\begin{lstlisting}
+>>> not(3 < 2)
+True
+\end{lstlisting}
+
+  \begin{table}[H]
+    \centering
+    \caption{Tabela verdade do \lstinline+not+.}
+    \begin{tabular}{l|l}
+      \lstinline+A+ & \lstinline+not A+\\\hline
+      \lstinline+True+ & \lstinline+False+\\
+      \lstinline+False+ & \lstinline+True+\\\hline
+    \end{tabular}
+  \end{table}  
+\end{itemize}
+
+\begin{obs}\normalfont{(\hl{Ordem de precedência de operações}.)}
+  Os operadores booleanos tem a seguinte ordem de precedência:
+  \begin{enumerate}[1.]
+  \item \lstinline+not+
+  \item \lstinline+and+
+  \item \lstinline+or+
+  \end{enumerate}
+  São executados em ordem de precedência menor que os operadores de comparação.
+\end{obs}
+
+\begin{exer}
+  Sejam os discos determinados pelas circunferências
+  \begin{gather}
+    c_1: (x - a_1)^2 + (y + b_1)^2 = r_1^2,\\
+    c_2: (x - a_2)^2 + (y + b_2)^2 = r_2^2,
+  \end{gather}
+  onde $(a_1, b_1)$ e $(a_2, b_2)$ são seus centros e $r_1$ e $r_2$ seus raios, respectivamente.
+
+  Assumindo, que a circunferência $c_1$ tem
+  \begin{equation}
+    c_1: (a_1, b_1) = (0, 0), r_1 = 1
+  \end{equation}
+  e a circunferência $c_2$ tem
+  \begin{equation}
+    c_2: (a_2, b_2) = (1, 1), r_2 = 1,
+  \end{equation}
+  o seguinte código verifica se o ponto $(x, y) = \left(\frac{1}{2}, \frac{1}{2}\right)$ pertence a interseção dos discos determinados por $c_1$ e $c_2$.
+
+\begin{lstlisting}
+# circunferência c1
+a1 = 0
+b1 = 0
+r1 = 1
+
+# circunferência c2
+a2 = 1
+b2 = 1
+r2 = 1
+
+# ponto obj
+x = 0.5
+y = 0.5
+
+# está em c1?
+em_c1 = (x-a1)**2 + (y-b1)**2 <= r1**2
+
+# está em c2?
+em_c2 = (x-a2)**2 + (y-b2)**2 <= r2**2
+
+# está em c1 e c2?
+resp = em_c1 and em_c2
+print('O ponto está na interseção de c1 e c2?', resp)
+\end{lstlisting}
+\end{exer}
+
+
+\begin{obs}\normalfont{(\hl{Ou exclusivo}.)}\label{cap_lingua_sec_bool:obs:xor}
+  Presente em algumas linguagens, {\python} não tem um operador \lstinline+xor+ (ou exclusivo). A tabela verdade do ou exclusivo é
+  \begin{center}
+    \begin{tabular}[H]{ll|l}
+      \lstinline+A+ & \lstinline+B+ & \lstinline+A xor B+\\\hline
+      \lstinline+True+ & \lstinline+True+ & \lstinline+False+\\
+      \lstinline+True+ & \lstinline+False+ & \lstinline+True+\\
+      \lstinline+False+ & \lstinline+True+ & \lstinline+True+\\
+      \lstinline+False+ & \lstinline+False+ & \lstinline+False+\\\hline    
+    \end{tabular}
+  \end{center}
+  \hl{A operação {\lstinline+xor+} pode ser obtida através de expressões lógicas usando-se apenas os operadores {\lstinline+and+}, {\lstinline+or+} e {\lstinline+not+}}. Consulte o Exercício~\ref{cap_lingua_sec_bool:exer:xor}.
+\end{obs}
+\emconstrucao
+
+\subsection{Exercícios}
 
 \emconstrucao
 
-\subsubsection{Dados Booleanos}
-
+\begin{exer}\label{cap_lingua_sec_bool:exer:xor}
+  Sejam \lstinline+A+ e \lstinline+B+ valores booleanos dados. Escreva uma expressão lógica que emule a operação \lstinline+xor+ (ou exclusivo) usando apenas os operadores \lstinline+and+, \lstinline+or+ e \lstinline+not+. Dica: consulte a Observação~\ref{cap_lingua_sec_bool:obs:xor}.
+\end{exer}
+\begin{resp}
+  \lstinline+(A or B) and not(A and B)+
+\end{resp}
 \emconstrucao
 
-\subsubsection{Cadeia de Caracteres}
+\section{Cadeia de Caracteres}\label{cap_lingua_sec_string}
 
-\emconstrucao
-
-\subsubsection{Outros Dados}
+Dados em formato texto também são comumente manipulados em programação. \hl{Um texto é interpretado como uma cadeia de cadeia/sequência de caracteres, chamada de \emph{\textit{string}}}. Para entrarmos com uma letra, palavra ou texto (um \textit{string}), precisamos usar aspas (simples \lstinline+' '+ ou duplas \lstinline+" "+). Por exemplo,
+\begin{lstinline}
+  >>> s = 'Olá, mundo!'
+  >>> print(s)
+  Olá, mundo!
+\end{lstinline}
 
 \emconstrucao
 
