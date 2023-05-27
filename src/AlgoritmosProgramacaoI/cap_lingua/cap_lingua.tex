@@ -1315,7 +1315,7 @@ True
   São executados em ordem de precedência menor que os operadores de comparação.
 \end{obs}
 
-\begin{exer}
+\begin{ex}
   Sejam os discos determinados pelas circunferências
   \begin{gather}
     c_1: (x - a_1)^2 + (y + b_1)^2 = r_1^2,\\
@@ -1358,7 +1358,7 @@ em_c2 = (x-a2)**2 + (y-b2)**2 <= r2**2
 resp = em_c1 and em_c2
 print('O ponto está na interseção de c1 e c2?', resp)
 \end{lstlisting}
-\end{exer}
+\end{ex}
 
 
 \begin{obs}\normalfont{(\hl{Ou exclusivo}.)}\label{cap_lingua_sec_bool:obs:xor}
@@ -1374,11 +1374,90 @@ print('O ponto está na interseção de c1 e c2?', resp)
   \end{center}
   \hl{A operação {\lstinline+xor+} pode ser obtida através de expressões lógicas usando-se apenas os operadores {\lstinline+and+}, {\lstinline+or+} e {\lstinline+not+}}. Consulte o Exercício~\ref{cap_lingua_sec_bool:exer:xor}.
 \end{obs}
-\emconstrucao
 
 \subsection{Exercícios}
 
-\emconstrucao
+\begin{exer}
+  Compute as seguintes expressões:
+  \begin{enumerate}[a)]
+  \item $1 - 6 > -6$\\
+  \item $\frac{3}{2} < \frac{4}{3}$\\
+  \item $31,415\times 10^{-1} == 3.1415$\\
+  \item $\displaystyle 2,7128 \geq 2 + \frac{2}{3}$
+  \item $\displaystyle \frac{3}{2} + \frac{7}{8} \leq \frac{24 + 14}{16}$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a) \lstinline+1 - 6 > -6+ b) \lstinline+3/2 < 4/3+ c) \lstinline+31.415e-1 == 3.1415+ d) \lstinline+2.7128 >= 2 + 2/3+ e) \lstinline+3/2 + 7/8 <= (24 + 14)/16+
+\end{resp}
+
+\begin{exer}
+  Desenvolva um código que verifica se um número inteiro $x$ dado é par. Teste-o para diferentes valores de $x$.
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+x = 3
+print('É par?')
+print(x % 2 == 0)
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  Considere um quadrado de lado $l$ dado e uma circunferência de raio $r$ dado. Desenvolva um código que verifique se a área do quadrado é menor que a da circunferência. Teste o seu código para diferentes valores de $l$ e $r$.
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+# quadrado
+ladoQuad = 1
+areaQuad = ladoQuad**2
+
+# aprox pi
+pi = 3.14159
+
+# circunferência
+raioCirc = 1
+areaCirc = pi * raioCirc**2
+
+# verifica
+resp = areaQuad < areaCirc
+print('Área do quadrado é menor que da circunferência?')
+print(resp)
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  Considere o plano cartesiano $x-y$. Desenvolva um código que verifique se um ponto $(x, y)$ dado está entre a curvas $y = (x-1)^3$ e o eixo das abscissas\footnote{Eixo $x$.}. Verifique seu código para diferentes pontos $(x, y)$.
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+# ponto
+x = 2
+y = 0.5
+
+# y >= 0 e y <= f(x) ?
+resp1 = y >= 0 and y <= (x-1)**3
+# y >= f(x) e y <= 0 ?
+resp2 = y >= (x-1)**3 and y <= 0
+
+# conclusão
+print("O ponto está entre as curvas?")
+print(resp1 or resp2)
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  Sejam $A$ e $B$ valores booleanos. Verifique se as seguintes expressões são verdadeiras (V) ou falsas (F):
+  \begin{enumerate}[a)]
+  \item \lstinline+A or A == A+
+  \item \lstinline+A and not(A) == True+
+  \item \lstinline+A or (A and B) == A+
+  \item \lstinline+not(A and B) == not(A) or not(B)+
+  \item \lstinline+not(A or B) == not(A) or not(B)+
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a) V; b) F; c) V; d) V; e) F
+\end{resp}
 
 \begin{exer}\label{cap_lingua_sec_bool:exer:xor}
   Sejam \lstinline+A+ e \lstinline+B+ valores booleanos dados. Escreva uma expressão lógica que emule a operação \lstinline+xor+ (ou exclusivo) usando apenas os operadores \lstinline+and+, \lstinline+or+ e \lstinline+not+. Dica: consulte a Observação~\ref{cap_lingua_sec_bool:obs:xor}.
@@ -1386,16 +1465,15 @@ print('O ponto está na interseção de c1 e c2?', resp)
 \begin{resp}
   \lstinline+(A or B) and not(A and B)+
 \end{resp}
-\emconstrucao
 
 \section{Cadeia de Caracteres}\label{cap_lingua_sec_string}
 
-Dados em formato texto também são comumente manipulados em programação. \hl{Um texto é interpretado como uma cadeia de cadeia/sequência de caracteres, chamada de \emph{\textit{string}}}. Para entrarmos com uma letra, palavra ou texto (um \textit{string}), precisamos usar aspas (simples \lstinline+' '+ ou duplas \lstinline+" "+). Por exemplo,
-\begin{lstinline}
+Dados em formato texto também são comumente manipulados em programação. \hl{Um texto é interpretado como uma cadeia/sequência de caracteres, chamada de \emph{\textit{string}}}. Para entrarmos com uma letra, palavra ou texto (um \textit{string}), precisamos usar aspas (simples \lstinline+' '+ ou duplas \lstinline+" "+). Por exemplo,
+\begin{lstlisting}
   >>> s = 'Olá, mundo!'
   >>> print(s)
   Olá, mundo!
-\end{lstinline}
+\end{lstlisting}
 
 \emconstrucao
 

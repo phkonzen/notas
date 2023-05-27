@@ -1,3 +1,17 @@
+# ponto
+x = 2
+y = 0.5
+
+# y >= 0 e y <= f(x) ?
+resp1 = y >= 0 and y <= (x-1)**3
+# y >= f(x) e y <= 0 ?
+resp2 = y >= (x-1)**3 and y <= 0
+
+# conclusão
+print("O ponto está entre as curvas?")
+print(resp1 or resp2)
+
+
 # circunferência c1
 a1 = 0
 b1 = 0
