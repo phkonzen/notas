@@ -6,6 +6,10 @@ plt.rcParams.update({
      "font.family": "serif",
      "font.size": 14
      })
+plt.rc('text.latex',
+       preamble=r'\usepackage{amsmath}'
+       )
+
 
 f = lambda x: np.sin(x+np.pi/4)**2 \
     - x**3 + np.pi/4 * x**2 + 5*np.pi**2/16 * x + 3*np.pi**3/64
@@ -30,8 +34,8 @@ x1 = -np.pi/4
 ax.plot(x1, f(x1), marker='o', color='red')
 x2 = 3*np.pi/4
 
-ax.set_xticks([a, x1, 0, x2, b],
-              ["$-2$", "$-\\frac{\pi}{4}$", "$0$", "$\\frac{3\pi}{4}$", "$3$"])
+ax.set_xticks([a, x1, b, x2, 3],
+              ["$\\overset{\\overset{-2}{}}{}$", "$\\underset{-\\frac{\pi}{4}}{}$", "$0$", "$\\frac{3\pi}{4}$", "$3$"])
 
 ax.legend()
 fig.savefig('fig.pdf')
