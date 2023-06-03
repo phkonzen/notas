@@ -5,6 +5,23 @@ f = lambda x: np.sin(x+np.pi/4)**2 \
     - x**3 + np.pi/4*x**2 + 5*np.pi**2/16*x \
     + 3*np.pi**3/64
 
+fl = lambda x: 2*np.sin(x+np.pi/4)*np.cos(x+np.pi/4) \
+    -3*x**2 + np.pi/2*x + 5*np.pi**2/16
+
+f = lambda x: (x-1)*np.exp(-x**2)
+fl = lambda x: (2*x - 2*x**2 + 1)*np.exp(-x**2)
+
+# aprox. inicial
+x0 = 1.5
+print(f'0: {x0:.4e}')
+
+# iterações
+for k in range(4):
+    x = x0 - f(x0)/fl(x0)
+    print(f'{k+1}: {x:.4e}')
+    x0 = x
+    
+
 # fun pto fixo
 alpha = -0.05
 g = lambda x: x - alpha*f(x)
