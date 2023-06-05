@@ -370,7 +370,7 @@ else:
 \end{exer}
 
 \begin{exer}
-  A \href{https://pt.wikipedia.org/wiki/S\%C3\%A9rie\_harm\%C3\%B3nica\_(matem\%C3\%A1tica)}{Série Harmônica} é defina por
+  A \href{https://pt.wikipedia.org/wiki/S%C3%A9rie_harm%C3%B3nica_(matem%C3%A1tica)}{Série Harmônica} é defina por
   \begin{equation}
     \sum_{k=1}^\infty\frac{1}{k} := \frac{1}{1} + \frac{1}{2} + \frac{1}{3} + \cdots
   \end{equation}
@@ -381,7 +381,7 @@ else:
 \end{exer}
 
 \begin{exer}
-  O \href{https://pt.wikipedia.org/wiki/E\_(constante\_matem\%C3\%A1tica)}{número de Euler}{\euler} pode ser definido pela série
+  O \href{https://pt.wikipedia.org/wiki/E_(constante_matem%C3%A1tica)}{número de Euler}{\euler} pode ser definido pela série
   \begin{align}
     e &:= \sum_{k=0}^\infty\frac{1}{k!}\\
       &= \frac{1}{0!} + \frac{1}{1!} + \frac{1}{2!} + \frac{1}{3!} + \frac{1}{4!} + \cdots
@@ -762,7 +762,7 @@ O uso de espaços entre os operandos,em geral, é arbitrário, mas conforme util
 28
 >>> sys.getsizeof(10**9)
 28
->>> sys.getsizeof(10**100)
+>>> sys.getsizeof(10**10)
 32
 >>> sys.getsizeof(10**100) #googol
 72
@@ -785,7 +785,7 @@ No {\python}, \hl{números decimais são alocados} pelo padrão \href{https://en
 \begin{equation}
   x = \pm m\cdot 2^{c-1023},
 \end{equation}
-onde $m$ é chamada de mantissa (e é um número no intervalo $[1,2)$) e $c\in [0, 2047]$ é um número inteiro chamado de característica do ponto flutuante. A mantissa usa $53~\textit{bits}$, a característica $11~\text{bits}$ e $1~\textit{bit}$ é usado para o sinal do número.
+onde $m$ é chamada de mantissa (e é um número no intervalo $[1,2)$) e $c\in [0, 2047]$ é um número inteiro chamado de característica do ponto flutuante. A mantissa usa $52~\textit{bits}$, a característica $11~\text{bits}$ e $1~\textit{bit}$ é usado para o sinal do número.
 
 \begin{lstlisting}
 >>> import sys
@@ -818,7 +818,7 @@ A \hl{\emph{notação científica}} é a representação de um dado número na f
 onde $d_i$, $i=n, \ldots, 1, 0, -1, \ldots$, são algarismos da base 10. A parte à esquerda do sinal $\times$ é chamada de mantissa do número e $E$ é chamado de expoente (ou ordem de grandeza).
 
 \begin{ex}\label{cap_lingua_sec_numop:ex:notacao_cientifica}
-  O número $31,515$ pode ser representado em notação científica das seguintes formas
+  O número $31,415$ pode ser representado em notação científica das seguintes formas
   \begin{align}
     31,415\times 10^0 &= 3,1415\times 10^{1} \\
                       &= 314,15\times 10^{-1} \\
@@ -1481,12 +1481,18 @@ Uma \hl{\textit{string} é um conjunto \emph{indexado} e \emph{imutável} de car
 \begin{equation}
   \underset{0}{\texttt{O}}~\underset{1}{\texttt{l}}~\underset{2}{\texttt{á}}~\underset{3}{\texttt{,}}~\underset{4}{\texttt{\_}}~\underset{5}{\texttt{m}}~\underset{6}{\texttt{u}}~\underset{7}{\texttt{n}}~\underset{8}{\texttt{d}}~\underset{9}{\texttt{o}}~\underset{10}{\texttt{!}}
 \end{equation}
-Observamos que o espaço também um caractere. A referência a um caractere de uma dada \textit{string} é feito usando-se seu identificador seguido do índice da posição do caractere entre colchetes. Por exemplo,
+Observamos que o espaço também é um caractere. O tamanho da \textit{string} (número total de caracteres) pode ser obtido com o método \href{https://docs.python.org/3/library/functions.html?highlight=len#len}{Python \lstinline+len()+}, por exemplo
+\begin{lstlisting}
+>>> len(s)
+11
+\end{lstlisting}
+A referência a um caractere de uma dada \textit{string} é feito usando-se seu identificador seguido do índice de sua posição entre colchetes. Por exemplo,
 \begin{lstlisting}
 >>> s[6]
 'u'
 \end{lstlisting}
-Podemos, ainda, \hl{acessar fatias\footnote{Em inglês, \textit{slice}.} da sequência usando o operador {\lstinline+:+}}, por exemplo,
+
+Podemos, ainda, \hl{acessar fatias\footnote{Em inglês, \textit{slice}.} da sequência usando o operador {\lstinline+:+}}\footnote{\lstinline+x[start:stop:step]+, padrão \lstinline+start=0+, \lstinline+stop=len(x)+, \lstinline+step=1+.}, por exemplo,
 \begin{lstlisting}
 >>> s[:3]
 'Olá'
@@ -1500,6 +1506,11 @@ o que nos fornece a fatia de caracteres que inicia na posição $5$ e termina na
 \begin{lstlisting}
 >>> s[6:]
 'undo!'
+\end{lstlisting}
+Também, pode-se controlar o passo do fatiamento, por exemplo
+\begin{lstlisting}
+>>> 'laura'[::2]
+'lua'
 \end{lstlisting}
 
 Em {\python}, exitem diversas \hl{formas de escrever \textit{strings}}:
@@ -1536,9 +1547,36 @@ Em {\python}, exitem diversas \hl{formas de escrever \textit{strings}}:
 \end{lstlisting}
 \end{itemize}
 
+\textit{Strings} em {\python} usam o padrão \href{https://home.unicode.org/}{Unicode}, que nos permite manipular textos de forma muito próxima da linguagem natural. Alguns caracteres especiais úteis são:
+\begin{itemize}
+\item \hl{{\lstinline+'\\n'+} \textbf{: nova linha}}
+
+\begin{lstlisting}
+>>> print('Uma nova\nlinha')
+Uma nova
+linha
+\end{lstlisting}
+
+\item \hl{{\lstinline+'\\t'+} \textbf{: tabulação}}
+
+\begin{lstlisting}
+>>> print('Uma nova\n\t linha com tabulação')
+Uma nova
+ 	 linha com tabulação
+\end{lstlisting}
+\end{itemize}
+
+\begin{obs}\normalfont{\hl{(\textit{Raw string.})}}
+  Caso seja necessário imprimir os caracteres unicode especiais \lstinline+'\\n'+, \lstinline+'\\t'+, entre outros, pode-se usar \textit{raw strings}. Por exemplo,
+\begin{lstlisting}
+>>> print(r'Aqui, o \n não quebra a linha!')
+Aqui, o \n não quebra a linha!
+\end{lstlisting}
+\end{obs}
+
 \subsection{Formatação de \textit{strings}}\label{cap_lingua_sec_string:subsec:format}
 
-Em {\python}, \hl{\textit{strings} formatadas} são identificadas com a letra \lstinline+f+ no início. Elas \hl{aceitam o uso de identificadores} com valores predefinidos. Os identificadores são \hl{embutidos com} o uso de \hl{chaves} \lstinline+{}+. Por exemplo,
+Em {\python}, \hl{\textit{strings} formatadas} são identificadas com a letra \lstinline+f+ no início. Elas \hl{aceitam o uso de identificadores} com valores predefinidos. Os identificadores são \hl{embutidos com} o uso de \hl{chaves} \lstinline+{}+ (\textit{placeholder}). Por exemplo,
 \begin{lstlisting}
 >>> nome = 'Fulane'
 >>> f'Olá, {nome}!'
@@ -1570,8 +1608,142 @@ Há várias \hl{especificações de formatação} disponíveis\footnote{Consulte
 \end{lstlisting}  
 \end{itemize}
 
-\emconstrucao
+\subsection{Operações com \textit{strings}}
+
+Há uma grande variedade disponível de \hl{métodos para a manipulação de \textit{strings}} em {\python} (consulte \href{https://docs.python.org/3/library/stdtypes.html#string-methods}{Python Docs: String Methods}). Alguns operadores básicos são:
+\begin{itemize}
+\item \hl{{\lstinline*+*} \emph{: concatenação}}
+
+\begin{lstlisting}
+>>> s = 'Olá, mundo!'
+>>> s[:5] + 'Fulane!'
+'Olá, Fulane!'
+\end{lstlisting}
+
+\item \hl{{\lstinline+*+} \emph{: repetição}}
+
+\begin{lstlisting}
+>>> 'ha'*3
+'hahaha'
+\end{lstlisting}
+
+\item \hl{{\lstinline+in+} \emph{: pertence}}
+
+\begin{lstlisting}
+>>> 'mar' in 'amarelo'
+True
+\end{lstlisting}
+\end{itemize}
+
+\subsection{Entrada de dados}
+
+O método \href{https://docs.python.org/3/library/functions.html}{Python \lstinline+input()+} pode ser usado para a \hl{entrada de \textit{string}} via teclado. Por exemplo,
+\begin{lstlisting}
+>>> s = input('Digite seu nome.\n')
+Digite seu nome.
+Fulane
+>>> s
+'Fulane'
+\end{lstlisting}
+A instrução da linha 1 pede para que a variável \lstinline+s+ receba a \textit{string} a ser digitada pela(o) usuária(o). A \textit{string} entre parênteses é informativa, o comando \lstinline+input+, imprime esta mensagem e fica aguardado que uma nova \textit{string} seja digitada. Quando o usuário pressiona \lstinline+<ENTER>+, a \textit{string} digitada é alocada na variável \lstinline+s+.
+
+\subsubsection{Conversão de classes de dados}
+
+A \hl{conversão entre classes de dados} é possível e é feita por métodos próprios de cada classe. Por exemplo,
+\begin{lstlisting}
+>>> # int -> str
+>>> str(101)
+'101'
+>>> # str -> int
+>>> int('23')
+23
+>>> # int -> float
+>>> float(1)
+1.0
+>>> # float -> int
+>>> int(-2.9)
+-2
+\end{lstlisting}
+\hl{Atenção! Na conversão de {\lstinline+float+} para {\lstinline+int+}, fica-se apenas com a parte inteiro do número}.
+
+\begin{obs}
+  O método \href{https://docs.python.org/3/library/functions.html}{Python \lstinline+input()+} permite a entrada de \textit{strings}, que podem ser convertidas para outras classes de dados. Com isso, pode-se obter a entrada via teclado destes dados.
+\end{obs}
+
+\begin{ex}
+  O seguinte código, computa a área de um triângulo com base e altura fornecidas por usuária(o).
+\begin{lstlisting}
+# entrada de dados
+base = float(input('Entre com o valor da base:\n\t'))
+altura = float(input('Entre com o valor da altura:\n\t'))
+
+# cálculo da área
+area = base*altura/2
+
+# imprime a área
+print(f'Área do triangulo de ')
+print(f'\t base = {base:e}')
+print(f'\t altura = {altura:e}')
+print(f'é igual a {area:e}')
+\end{lstlisting}
+\end{ex}
 
 \subsection{Exercícios}
 
-\emconstrucao
+\begin{exer}
+  Aloque a palavra \textit{traitor} em uma variável $x$. Use de indexação por referência para:
+  \begin{enumerate}[a)]
+  \item Extrair a quarta letra da palavra.
+  \item Extrair a \textit{substring}\footnote{Uma subsequência contínua de caracteres de uma \textit{string}.} formada pelas quatro primeiras letras da palavra.
+  \item Extrair a \textit{string} formadas pelas segunda, quarta e sexta letras (nesta ordem) da palavra.
+  \item Extrair a \textit{string} formadas pelas penúltima e quarta letras (nesta ordem) da palavra.
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a) \lstinline+x[3]+; b) \lstinline+x[:4]+; c) \lstinline+x[1::2]+; d) \lstinline+[-2:2:-2]+
+\end{resp}
+
+\begin{exer}
+  Considere o seguinte código
+\begin{lstlisting}
+s = 'traitor'
+print(s[:3] + s[4:])
+\end{lstlisting}
+  Sem implementá-lo, o que é impresso?
+\end{exer}
+\begin{resp}
+  \lstinline+trator+
+\end{resp}
+
+\begin{exer}
+  Desenvolva um contador de letras de palavras. Ou seja, crie um código que forneça o número de letras de uma palavra fornecida por um(a) usuário(a).
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+s = input('Digite uma palavra:\n\t')
+print(f'A palavra {s} tem {len(s)} letras.')
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  Desenvolva um código que compute a área de um quadrado de lado fornecido pela(o) usuária(o). Assuma que o lado é dado em centímetros e a área deve ser impressa em metros, usando notação decimal com $2$ dígitos depois da vírgula.
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+lado = float(input('Digite o lado (em cm) do quadrado:\n\t'))
+area = lado**2/100**2
+print(f'O quadrado de lado {lado:e} cm tem área {area:.2f} m.')
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  Desenvolva um código que verifica se um número é divisível por outro. Ou seja, a(o) usuária entra com dois números inteiros e o código imprime verdadeiro (\lstinline+True+) ou (\lstinline+False+) conforme a divisibilidade de $x$ por $y$.
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+x = int(input('Digite um número inteiro:\n'))
+y = int(input('Digite outro número inteiro:\n'))
+print(f'{x} é divisível por {y}?')
+print(f'{x%y==0}')
+\end{lstlisting}
+\end{resp}

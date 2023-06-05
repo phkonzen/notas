@@ -1,3 +1,20 @@
+s = input('Digite uma palavra:\n\t')
+print(f'A palavra {s} tem {len(s)} letras.')
+
+
+# entrada de dados
+base = float(input('Entre com o valor da base:\n\t'))
+altura = float(input('Entre com o valor da altura:\n\t'))
+
+# cálculo da área
+area = base*altura/2
+
+# imprime a área
+print(f'Área do triangulo de ')
+print(f'\t base = {base:e}')
+print(f'\t altura = {altura:e}')
+print(f'é igual a {area:e}')
+
 x = 3
 print('É par?')
 print(x % 2 == 0)
