@@ -42,7 +42,7 @@ ax.set_aspect('equal')
 ax.grid()
 ax.legend(loc='lower left')
 ax.set_xticks([0.1, 0.5, x1, x2, x3, 1, 1.5],
-              ['', '$a$', '$x^{(1)}$', '$x^{(2)}$', '$x^{(3)}$', '', '$b$'])
+              ['', '$a$', '$x^{(0)}$', '$x^{(1)}$', '$x^{(2)}$', '', '$b$'])
 ax.set_yticks([0.1, 0.5, x1, x2, x3, 1, 1.5],
               ['', '$a$', '', '', '', '', '$b$'])
 fig.savefig('fig.pdf')
