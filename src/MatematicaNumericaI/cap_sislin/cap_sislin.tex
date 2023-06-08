@@ -3,637 +3,191 @@
 \chapter{Métodos para Sistemas Lineares}\label{cap_sislin}
 \thispagestyle{fancy}
 
-Neste capítulo, discutiremos sobre métodos diretos para a resolução de sistemas lineares de $n$-equações com $n$-incógnitas. Isto é, sistemas que podem ser escritos na seguinte forma algébrica
+Neste capítulo, discutimos sobre métodos diretos para a resolução de sistemas lineares de $n$-equações com $n$-incógnitas. Isto é, sistemas que podem ser escritos na seguinte \hl{\emph{forma algébrica}}
 \begin{align}
   a_{11}x_1 + a_{12}x_2 + \cdots + a_{1n}x_n &= b_1\\
   a_{21}x_1 + a_{22}x_2 + \cdots + a_{2n}x_n &= b_2\\
   &\vdots \\
   a_{n1}x_1 + a_{n2}x_2 + \cdots + a_{nn}x_n &= b_n.
 \end{align}
-
-\section{Eliminação gaussiana}\label{cap_sislin_sec_egauss}
-
-Um sistema linear
-\begin{align}
-  a_{11}x_1 + a_{12}x_2 + \cdots + a_{1n}x_n &= b_1 \label{eq:sl_fa_1}\\
-  a_{21}x_1 + a_{22}x_2 + \cdots + a_{2n}x_n &= b_2\\
-  &\vdots \\
-  a_{n1}x_1 + a_{n2}x_2 + \cdots + a_{nn}x_n &= b_n.\label{eq:sl_fa_n}
-\end{align}
-pode ser escrito na forma matricial
-\begin{equation}
-  A\pmb{x} = \pmb{b},
+Equivalentemente, o sistema pode ser escrito na \hl{\emph{forma matricial}}
+\begin{equation}\hleq
+  A\pmb{x} = b
 \end{equation}
-onde $A = [a_{ij}]_{i,j=1}^{n,n}$ é chamada de matriz dos coeficientes, $\pmb{x}=(x_1, x_2, \dotsc, x_n)$ é o vetor (coluna) das incógnitas e $\pmb{b}=(b_1, b_2, \dotsc, b_n)$ é o vetor (coluna) dos termos constantes.
-
-Outra forma matricial de representar o sistema \eqref{eq:sl_fa_1}-\eqref{eq:sl_fa_n} é pela chamada matriz estendida
-\begin{equation}
-  E = [A ~\pmb{b}].
-\end{equation}
-No caso, $E$ é a seguinte matriz $n \times (n+1)$
-\begin{equation}
-  E =
-  \begin{bmatrix}
-    a_{11} & a_{12} & \cdots & a_{1n} & b_1\\
-    a_{21} & a_{22} & \cdots & a_{2n} & b_2\\
-    \vdots & \vdots & \vdots & \vdots & \vdots\\
-    a_{n1} & a_{n2} & \cdots & a_{nn} & b_n
-  \end{bmatrix}
-\end{equation}
-
-O método de eliminação gaussiana consistem em realizar operações sobre as equações (sobre as linhas) do sistema \eqref{eq:sl_fa_1}-\eqref{eq:sl_fa_n} (da matriz estendida $E$) de forma a reescrevê-lo como um sistema triangular, ou diagonal. Para tanto, podemos utilizar as seguintes operações:
-\begin{enumerate}[1.]
-\item permutação entre as equações (linhas) ($E_i \leftrightarrow E_j$).
-\item multiplicação de uma equação (linha) por um escalar não nulo ($E_i \leftarrow \lambda E_i$).
-\item substituição de uma equação (linha) por ela somada com a multiplicação de uma outra por um escalar não nulo ($E_i \leftarrow E_i + \lambda E_j$).
-\end{enumerate}
-
-\begin{ex}\label{ex:egauss_exec}
-  O sistema linear
-  \begin{align}
-    -2x_1 - 3x_2 + 2x_3 + 3x_4 &= 10\label{eq:ex_egauss_exec_sl_1}\\
-    -4x_1 - 6x_2 + 6x_3 + 6x_4 &= 20\\
-    -2x_1 + 4x_3 + 6x_4 &= 10\\
-    4x_1 + 3x_2 - 8x_3 - 6x_4 &= -17\label{eq:ex_egauss_exec_sl_4}
-  \end{align}
-pode ser escrito na forma matricial $A\pmb{x}=\pmb{b}$, onde
+onde, $A = [a_{i,j}]_{i,j=1}^{n,n}$ é a \hl{\emph{matriz dos coeficientes}}
 \begin{equation}
   A =
   \begin{bmatrix}
-    -2 & -3 & 2 & 3\\
-    -4 & -6 & 6 & 6\\
-    -2 & 0 & 4 & 6 \\
-    4 & 3 & -8 & -6
+    a_{1,1} & a_{1,2} & \ldots & a_{1,n}\\
+    a_{2,1} & a_{2,2} & \ldots & a_{2,n}\\
+    \vdots & \vdots & \ddots & \vdots\\
+    a_{n,1} & a_{n,2} & \ldots & a_{n,n}\\
   \end{bmatrix},
 \end{equation}
-$\pmb{x} = (x_1, x_2, x_3, x_4)$ e $\pmb{b} = (10, 20, 10, -17)$. Sua matriz estendida é
+o \hl{\emph{vetor das incógnitas}} $\pmb{x} = (x_i)_{i=1}^n$ é
 \begin{equation}
-  E =
+  \pmb{x} =
   \begin{bmatrix}
-    -2 & -3 & 2 & 3 & 10\\
-    -4 & -6 & 6 & 6 & 20\\
-    -2 & 0 & 4 & 6 & 10\\
-    4 & 3 & -8 & -6 & -17
+    x_1\\
+    x_2\\
+    \vdots\\
+    x_n
   \end{bmatrix}
 \end{equation}
-Então, usando o método de eliminação gaussiana, temos
+e o \hl{\emph{vetor dos termos constantes}} $\pmb{b} = (b_i)_{i=1}^n$ é
+\begin{equation}
+  \pmb{b} =
+  \begin{bmatrix}
+    b_1\\
+    b_2\\
+    \vdots\\
+    b_n
+  \end{bmatrix}
+\end{equation}
+
+
+\section{Método da Decomposição LU}\label{cap_sislin_sec_lu}
+
+O Método da Decomposição LU é uma forma eficiente de se resolver sistemas lineares de pequeno porte. \hl{Dado um sistema $A\pmb{x} = b$, a ideia é decompor a matriz $A$ como o produto de uma \emph{matriz triangular inferior} $L$ (do inglês, \textit{low triangular matrix}) com uma \emph{matriz triangular superior} $U$ (do inglês, \textit{upper triangular matrix})}, i.e.
+\begin{equation}
+  \hleq A = LU.
+\end{equation}
+Com isso, o sistema pode ser reescrito na forma
+\begin{gather}
+  A\pmb{x} = b\\
+  (LU)\pmb{x} = b\\
+  L(U\pmb{x}) = b.
+\end{gather}
+Denotando,
+\begin{equation}
+  U\pmb{x} =: \emph{y}
+\end{equation}
+podemos resolver o seguinte sistema triangular
+\begin{equation}
+  L\pmb{y} = b.
+\end{equation}
+Tendo resolvido este sistema, a solução do sistema $A\pmb{x} = b$ pode, então, ser computada como a solução do sistema triangular
+\begin{equation}
+  U\pmb{x} = \pmb{y}.
+\end{equation}
+Ou seja, \hl{a decomposição LU nos permite resolver uma sistema pela resolução de dois sistemas triangulares}.
+
+\subsection{Sistemas Triangulares}
+
+Antes de estudarmos como podemos computar a decomposição LU de uma matriz, vamos discutir sobre a resolução de sistemas triangulares.
+
+\subsubsection{Sistema Triangular Inferior}
+
+\hl{Um \emph{sistema linear triangular inferior}} tem a forma algébrica
+\begin{equation}
+  \begin{matrix}
+    a_{1,1}x_1 &&&&&= b_1\\
+    a_{2,1}x_1 &+ a_{2,2}x_2 &&&&= b_2\\
+    \vdots &&&&& \vdots\\
+    a_{n-1,1}x_1 &+ a_{n-1,2}x_2 &+ \cdots &+ a_{n-1,n-1}x_{n-1} &&= b_{n-1}\\
+    a_{n,1}x_1 &+ a_{n,2}x_2 &+ \cdots &+ a_{n,n-1}x_{n-1} &+ a_{n,n}x_n &= b_n
+  \end{matrix}
+\end{equation}
+\hl{Pode ser diretamente resolvido de cima para baixo}, i.e.
 \begin{align}
-  E &=
-  \begin{bmatrix}
-    -2 & -3 & 2 & 3 & 10\\
-    -4 & -6 & 6 & 6 & 20\\
-    -2 & 0 & 4 & 6 & 10\\
-    4 & 3 & -8 & -6 & -17
-  \end{bmatrix}
-  \begin{matrix}
-  \\
-  E_2\leftarrow E_2 - (e_{21}/\pmb{e_{11}})E_1\\
-  \\
-  \\
-  \end{matrix}\\
-  &\sim 
-  \begin{bmatrix}
-    \pmb{-2} & -3 & 2 & 3 & 10\\
-    0 & 0 & 2 & 0 & 0\\
-    -2 & 0 & 4 & 6 & 10\\
-    4 & 3 & -8 & -6 & -17
-  \end{bmatrix}
-  \begin{matrix}
-  \\
-  \\
-  E_3\leftarrow E_3 - (e_{31}/\pmb{e_{11}})E_1\\
-  \\
-  \end{matrix}\\
-  &\sim 
-  \begin{bmatrix}
-    \pmb{-2} & -3 & 2 & 3 & 10\\
-    0 & 0 & 2 & 0 & 0\\
-    0 & 3 & 2 & 3 & 0\\
-    4 & 3 & -8 & -6 & -17
-  \end{bmatrix}
-  \begin{matrix}
-  \\
-  \\
-  \\
-  E_4\leftarrow E_4 - (e_{41}/\pmb{e_{11}})E_1\\
-  \end{matrix}\\  
-&\sim 
-  \begin{bmatrix}
-    \pmb{-2} & -3 & 2 & 3 & 10\\
-    0 & 0 & 2 & 0 & 0\\
-    0 & \pmb{3} & 2 & 3 & 0\\
-    0 & -3 & -4 & 0 & 3
-  \end{bmatrix}
-  \begin{matrix}
-  \\
-  E_2 \leftrightarrow E_3\\
-  \\
-  \\
-  \end{matrix}\\
-&\sim 
-  \begin{bmatrix}
-    \pmb{-2} & -3 & 2 & 3 & 10\\
-    0 & \pmb{3} & 2 & 3 & 0\\
-    0 & 0 & 2 & 0 & 0\\
-    0 & -3 & -4 & 0 & 3
-  \end{bmatrix}
-  \begin{matrix}
-  \\
-  \\
-  \\
-  E_4 \leftarrow E_4 - (e_{42}/\pmb{e_{22}})E_2\\
-  \end{matrix}\\
-&\sim 
-  \begin{bmatrix}
-    \pmb{-2} & -3 & 2 & 3 & 10\\
-    0 & 3 & 2 & 3 & 0\\
-    0 & 0 & \pmb{2} & 0 & 0\\
-    0 & 0 & -2 & 3 & 3
-  \end{bmatrix}
-  \begin{matrix}
-  \\
-  \\
-  \\
-  E_4 \leftarrow E_4 - (e_{43}/\pmb{e_{33}})E_3\\
-  \end{matrix}\\
-    &\sim 
-      \begin{bmatrix}
-        \pmb{-2} & -3 & 2 & 3 & 10\\
-        0 & \pmb{3} & 2 & 3 & 0\\
-        0 & 0 & \pmb{2} & 0 & 0\\
-        0 & 0 & 0 & \pmb{3} & 3
-      \end{bmatrix}
-\end{align}
-Esta última matriz estendida é chamada de \emph{matriz escalonada} do sistema. Desta, temos que \eqref{eq:ex_egauss_exec_sl_1}-\eqref{eq:ex_egauss_exec_sl_4} é equivalente ao seguinte sistema triangular
-\begin{align}
-  -2x_1 - 3x_2 + 2x_3 + 3x_4 &= 10\\
-  3x_2 + 2x_3 + 3x_4 &= 0\\
-  2x_3 &= 0\\
-  3x_4 &= 3.
-\end{align}
-Resolvendo da última equação para a primeira, temos
-\begin{align}
-  x_4 &= 1,\\
-  x_3 &= 0,\\
-  x_2 &= \frac{-2x_3 - 3x_4}{3} = -1,\\
-  x_1 &= \frac{10 + 3x_2 - 3x_3 - 3x_4}{-2} = -2.
+  x_1 &= \frac{b_1}{a_{1,1}}\\
+  x_2 &= \frac{b_{2} - a_{2,1}x_1}{a_{2,2}}\\
+      &\vdots\\
+  x_n &= \frac{b_n - a_{n,1}x_1 - a_{n,2}x_2 - \ldots - a_{n,n-1}x_{n-1}}{a_{n,n}}
 \end{align}
 
-% \ifisoctave
-% No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/ex_egauss_exec/ex_egauss_exec.m}{código}:
-% \verbatiminput{./cap_sl_direto/dados/ex_egauss_exec/ex_egauss_exec.m}
-% \fi
+\begin{ex}
+  Vamos resolver o sistema triangular inferior
+  \begin{equation}
+    \begin{matrix}
+      x_1 &&&= 2\\
+      -3x_1 &+ 2x_2 &&= -8\\
+      -x_1 &+ x_2 &- x_3 &= 0
+    \end{matrix}
+  \end{equation}
+  Na primeira equação, temos
+  \begin{equation}
+    x_1 = 2
+  \end{equation}
+  Então, da segunda equação do sistema
+  \begin{gather}
+    -3x_1 + 2x_2 = -8\\
+    x_2 = \frac{-8 + 3x_1}{2}\\
+    x_2 = \frac{-8 + 3\cdot 2}{2}\\
+    x_2 = -1
+  \end{gather}
+  E, por fim, da última equação
+  \begin{gather}
+    -x_1 + x_2 - x_3 = 0\\
+    x_3 = \frac{x_1 - x_2}{-1}\\
+    x_3 = \frac{2 - (-1)}{-1}\\
+    x_3 = 3
+  \end{gather}
+  Concluímos que a solução do sistema é $\pmb{x} = (2, -1, 3)$.
+
+\begin{lstlisting}
+# código sislin tria inf
+# em construção ...
+\end{lstlisting}
 \end{ex}
 
-\begin{obs}
-  Para a resolução de um sistema linear $n \times n$, o método de eliminação gaussiana demanda
-  \begin{equation}
-    \frac{n^3}{3} + n^2 - \frac{n}{3}
-  \end{equation}
-multiplicações/divisões e
+\subsubsection{Sistema Triangular Superior}
+
+\hl{Um \emph{sistema linear triangular superior}} tem a forma algébrica
 \begin{equation}
-  \frac{n^3}{3} + \frac{n^2}{2} - \frac{5n}{6}
+  \begin{matrix}
+    a_{1,1}x_1 &+ a_{1,2}x_2 &+ \cdots &+ a_{1,n}x_n &= b_1\\
+              &a_{2,2}x_2  &+ \cdots &+ a_{2,n}x_{n} &= b_2\\
+              &&& \vdots  &\vdots \\
+              &&& a_{n,n}x_n &= b_n
+  \end{matrix}
 \end{equation}
-adições/subtrações \cite{Burden2015a}.
-\end{obs}
-
-Com o mesmo custo computacional, podemos utilizar o método de eliminação gaussiana para transformar o sistema dado em um sistema diagonal.
-
-\begin{ex}\label{ex:egauss_reduzida}
-  Voltando ao exemplo anterior (Exemplo \ref{ex:egauss_exec}, vimos que a matriz estendida do sistema \eqref{eq:ex_egauss_exec_sl_1}-\eqref{eq:ex_egauss_exec_sl_4} é equivalente a
-  \begin{equation}
-    E \sim       
-    \begin{bmatrix}
-        -2 & -3 & 2 & 3 & 10\\
-        0 & 3 & 2 & 3 & 0\\
-        0 & 0 & 2 & 0 & 0\\
-        0 & 0 & 0 & 3 & 3
-      \end{bmatrix}.
-  \end{equation}
-Então, podemos continuar aplicando o método de eliminação gaussiana, agora de baixo para cima, até obtermos um sistema diagonal equivalente. Vejamos
+\hl{Pode ser diretamente resolvido de baixo para cima}, i.e.
 \begin{align}
-  E &\sim       
-      \begin{bmatrix}
-        -2 & -3 & 2 & 3 & 10\\
-        0 & 3 & 2 & 3 & 0\\
-        0 & 0 & 2 & 0 & 0\\
-        0 & 0 & 0 & \pmb{3} & 3
-      \end{bmatrix}
-      \begin{array}{l}
-      E_1 \leftarrow E_1 - (e_{14}/e_{44})E_4\\
-      E_2 \leftarrow E_2 - (e_{24}/e_{44})E_4\\
-      \\
-      \\
-    \end{array}\\
-    &\sim       
-      \begin{bmatrix}
-        -2 & -3 & 2 & 0 & 7\\
-        0 & 3 & 2 & 0 & -3\\
-        0 & 0 & \pmb{2} & 0 & 0\\
-        0 & 0 & 0 & 3 & 3
-      \end{bmatrix}
-      \begin{array}{l}
-      E_1 \leftarrow E_1 - (e_{13}/e_{33})E_3\\
-      E_2 \leftarrow E_2 - (e_{23}/e_{33})E_3\\
-      \\
-      \\
-    \end{array}\\
-    &\sim       
-      \begin{bmatrix}
-        -2 & -3 & 0 & 0 & 4\\
-        0 & \pmb{3} & 0 & 0 & -3\\
-        0 & 0 & 2 & 0 & 0\\
-        0 & 0 & 0 & 3 & 3
-      \end{bmatrix}
-      \begin{array}{l}
-      E_1 \leftarrow E_1 - (e_{12}/e_{22})E_2\\
-      \\
-      \\
-      \\
-    \end{array}\\
-    &\sim       
-      \begin{bmatrix}
-        \pmb{-2} & 0 & 0 & 0 & 4\\
-        0 & \pmb{3} & 0 & 0 & -3\\
-        0 & 0 & \pmb{2} & 0 & 0\\
-        0 & 0 & 0 & \pmb{3} & 3
-      \end{bmatrix}
-      \begin{array}{l}
-      E_1 \leftarrow E_1/e_{11}\\
-      E_2 \leftarrow E_2/e_{22}\\
-      E_3 \leftarrow E_3/e_{33}\\
-      E_4 \leftarrow E_4/e_{44}\\
-    \end{array}\\
-    &\sim       
-      \begin{bmatrix}
-        1 & 0 & 0 & 0 & -2\\
-        0 & 1 & 0 & 0 & -1\\
-        0 & 0 & 1 & 0 & 0\\
-        0 & 0 & 0 & 1 & 1
-      \end{bmatrix}
-  \end{align}
-Esta última matriz é chamada de matriz escalonada reduzida (por linhas) e a solução do sistema encontra-se em sua última coluna, i.e. $\pmb{x} = (-2, -1, 0, 1)$.
-
-% \ifisoctave
-% No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/ex_egauss_reduzida/ex_egauss_reduzida.m}{código}:
-% \verbatiminput{./cap_sl_direto/dados/ex_egauss_reduzida/ex_egauss_reduzida.m}
-% \fi
-\end{ex}
-
-\subsection*{Exercícios}
-
-\begin{exer}\label{exer:egauss_reduzida}
-  Use o método de eliminação gaussiana para obter a matriz escalonada reduzida do seguinte sistema
-  \begin{align}
-    -3x_1 + 2x_2 -5x_4 + x_5 &= -23\\
-    -x_2 -3x_3 &= 9\\
-    -2x_1 -x_2 + x_3 &= -1\\
-    2x_2 - 4x_3 + 3x_4 &= 8\\
-    x_1 - 3x_3 - x_5 &= 11
-  \end{align}
-\end{exer}
-\begin{resp}
-  %   \ifisoctave 
-  % \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/exer_egauss_reduzida/exer_egauss_reduzida.m}{Código.} 
-  % \fi
-  $$
-  \begin{bmatrix}
-    1 & 0 & 0 & 0 & 0 & 1\\
-    0 & 1 & 0 & 0 & 0 & -3\\
-    0 & 0 & 1 & 0 & 0 & -2\\
-    0 & 0 & 0 & 1 & 0 & 2\\
-    0 & 0 & 0 & 0 & 1 & -4\\
-  \end{bmatrix}
-  $$
-\end{resp}
-
-\begin{exer}\label{exer:egauss_arredondamento}
-  Use o método de eliminação gaussiana para obter a matriz escalonada reduzida do seguinte sistema
-  \begin{align}
-    -10^{-12}x_1 + 20x_2 - 3x_3 &= -1\\
-    2,001x_1 + 10^{-5}x_2 - x_3 &= -2\\
-    4x_1 - 2x_2 + x_3 &= 0,1
-  \end{align}
-\end{exer}
-\begin{resp}
-  % \ifisoctave 
-  % \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/exer_egauss_arredondamento/exer_egauss_arredondamento.m}{Código.} 
-  % \fi
-  $$
-  \begin{bmatrix}
-   1.0000 &  0.0000 &  0.0000 & -3.9435\E-1\\
-  -0.0000 &  1.0000 & -0.0000 & -2.3179\E-1\\
-   0.0000 &  0.0000 &  1.0000 &  1.2120\E+0
-  \end{bmatrix}
-  $$
-\end{resp}
-
-\section{Norma e número de condicionamento}\label{cap_sislin_sec_norma_numcond}
-
-Nesta seção, fazemos uma rápida discussão sobre normas de vetores e matrizes, bem como do número de condicionamento de uma matriz.
-
-\subsection{Norma $L^2$}
-
-A norma $L^2$ de um dado vetor $v = (v_1, v_2, \dotsc, v_n) \in \mathbb{R^n}$ é definida por
-\begin{equation}
-  \|v\| := \sqrt{v_1^2 + v_2^2 + \cdots + v_n^2}.
-\end{equation}
-
-\begin{prop}
-  Dados os vetores $u,v \in \mathbb{R^n}$ e um escalar $\lambda\in\mathbb{R}$, temos:
-  \begin{enumerate}[a)]
-  \item $\|v\| \geq 0$.
-  \item $\|v\| = 0 \Leftrightarrow v=0$.
-  \item $\|\lambda v\| = |\lambda|\cdot \|v\|$.
-  \item $\|u+v\| \leq \|u\| + \|v\|$ (desigualdade triangular).
-  \item $u\cdot v \leq \|u\|\cdot\|v\|$ (desigualdade de Cauchy-Schwarz).
-  \end{enumerate}
-\end{prop}
-
-\begin{ex}\label{ex:norma_vetor}
-  A norma $L^2$ do vetor $v = (1, -2, 3, -4)$ é
-  \begin{align}
-    \|v\| &= \sqrt{v_1^2 + v_2^2 + v_3^2 + v_4^2}\\
-    &= \sqrt{1^2 + (-2)^2 + 3^2 + (-4)^2}\\
-    &= 5,4772.
-  \end{align}
-
-% \ifisoctave
-% No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/ex_norma_vetor/ex_norma_vetor.m}{código}:
-% \verbatiminput{./cap_sl_direto/dados/ex_norma_vetor/ex_norma_vetor.m}
-% \fi
-\end{ex}
-
-
-A norma $L^2$ induzida de uma dada matriz real $A = [a_{ij}]_{i,j=1}^n$ é definida por
-\begin{equation}
-  \|A\| := \sup_{x\in\mathbb{R}^n, \|x\|=1} \|Ax\|.
-\end{equation}
-Pode-se mostrar que
-\begin{equation}
-  \|A\| = \sqrt{\lambda_{max}(A^TA)},
-\end{equation}
-onde $\lambda_{max}(A^TA) := \max\{|\lambda|;~\lambda\text{ é autovalor de }A^TA\}$.
-
-\begin{prop}
-  Dadas as matrizes reais $A, B$ $n\times n$, um vetor $v\in\mathbb{R}^2$ e um escalar $\lambda$, temos
-  \begin{enumerate}[a)]
-  \item $\|A\| \geq 0$.
-  \item $\|A\|=0 \Leftrightarrow A=0$.
-  \item $\|\lambda A\| = |\lambda|\cdot \|A\|$.
-  \item $\|A+B\| \leq \|A\| + \|B\|$ (desigualdade triangular).
-  \item $\|AB\| \leq \|A\|\|B\|$.
-  \item $\|Av\| \leq \|A\|\|v\|$.
-  \end{enumerate}
-\end{prop}
-
-\begin{ex}\label{ex:norma_matriz}
-  A matriz
-  \begin{equation}
-    A =
-    \begin{bmatrix}
-      1 & -1 & 2\\
-      -2 & \pi & 4\\
-      7 & -5 & \sqrt{2}
-    \end{bmatrix}
-  \end{equation}
-tem norma $L^2$
-\begin{equation}
-  \|A\| = 9,3909.
-\end{equation}
-
-% \ifisoctave
-% No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/ex_norma_matriz/ex_norma_matriz.m}{código}:
-% \verbatiminput{./cap_sl_direto/dados/ex_norma_matriz/ex_norma_matriz.m}
-% \fi
-\end{ex}
-
-\subsection{Número de condicionamento}
-
-O número de condicionamento de uma matriz é uma medida referente a propagação de erros que ocorre da sua aplicação. Mais especificamente, assumamos que seja dada uma matriz invertível $A = [a_{ij}]_{i,j=1}^{n,n}$, um vetor $x\in\mathbb{R}^n$ e uma perturbação $\delta_x\in\mathbb{R}^n$. Além disso, sejam
-\begin{align}
-  y &= Ax\\
-  y + \delta_y &= A(x+\delta_x).
+  x_n &= \frac{b_n}{a_{n,n}}\\
+  x_{n-1} &= \frac{b_{n-1} - a_{n-1,n}x_n}{a_{n-1,n-1}}\\
+      &\vdots\\
+  x_n &= \frac{b_1 - a_{1,1}x_1 - a_{1,2}x_2 - \ldots - a_{1,n-1}x_{n-1}}{a_{1,1}}
 \end{align}
-Ou seja, $\delta_y$ é a perturbação em $y$ propagada da aplicação de $A$ em $x$ com perturbação $\delta_x$.
 
-Agora, podemos estimar a razão entre os erros relativos $e_{rel}(y) := \|\delta_y\|/\|y\|$ e $e_{rel}(x) := \|\delta_x\|/\|x\|$ da seguinte forma 
-\begin{align}
-  \frac{\frac{\|y\|}{\|\delta_y\|}}{\frac{\|x\|}{\|\delta_x\|}} &= \frac{\|y\|}{\|\delta_y\|}\frac{\|\delta_x\|}{\|x\|}\\
-  &=\frac{\|Ax\|}{\|\delta_y\|}\frac{\|A^{-1}\delta_y\|}{\|x\|} \\
-  &\leq \frac{\|A\|\|x\|\|A^{-1}\|\|\delta_y\|}{\|\delta_y\|\|x\|}\\
-  &\leq \|A\|\|A^{-1}\|.
-\end{align}
-Logo, temos a seguinte estimativa de propagação de erro
-\begin{equation}
-  e_{rel}(y) \leq \|A\|\|A^{-1}\|e_{rel}(x).
-\end{equation}
-
-Isto nos motiva a definir o \emph{número de condicionamento} da matriz $A$ por
-\begin{equation}
-  \kappa(A) := \|A\|\|A^{-1}\|.
-\end{equation}
-
-\begin{obs}
-  A matriz identidade tem o menor número de condicionamento, o qual é
+\begin{ex}
+  Vamos resolver o sistema triangular superior
   \begin{equation}
-    \kappa(I) = 1.
+    \begin{matrix}
+      2x_1 &- x_2 &+ 2x_3 &= 7\\
+      & 2x_2 &- x_3 &= -3\\
+      &&3x_3 &= 3
+    \end{matrix}
   \end{equation}
-\end{obs}
+  Da última equação, temos
+  \begin{equation}
+    x_3 = \frac{3}{3}\\
+    x_3 = 1
+  \end{equation}
+  Então, da segunda equação do sistema, obtemos
+  \begin{gather}
+    2x_2 - x_3 = -3\\
+    x_2 = \frac{x_3 - 3}{2}\\
+    x_2 = \frac{1 - 3}{2}\\
+    x_2 = -1
+  \end{gather}
+  Por fim, da primeira equação
+  \begin{gather}
+    2x_1 - x_2 + 2x_3 = 7\\
+    x_1 = \frac{7 + x_2 - 2x_3}{2}\\
+    x_1 = \frac{7 - 1 - 2}{2}\\
+    x_1 = 2
+  \end{gather}
+  Concluímos que a solução do sistema é $\pmb{x} = (2, -1, 1)$.
 
-\begin{ex}\label{ex:kappa}
-  Um exemplo de uma matriz bem condicionada é
-  \begin{equation}
-    A =
-    \begin{bmatrix}
-      1 & -1 & 2\\
-      -2 & \pi & 4\\
-      7 & -5 & \sqrt{2}
-    \end{bmatrix},
-  \end{equation}
-  cujo número de condicionamento é $\kappa(A) = 13,997$.
-
-  Já, a matriz
-  \begin{equation}
-    B =
-    \begin{bmatrix}
-      1 & 0 & 0\\
-      0 & 0 & -2\\
-      10^{5} & 10^{-4} & 10^{5}
-    \end{bmatrix},    
-  \end{equation}
-  tem número de condicionamento
-  \begin{equation}
-    \kappa(B) = 1,5811\times 10^{14},
-  \end{equation}
-  o que indica que $B$ é uma matriz mal condicionada.
+\begin{lstlisting}
+# código sislin tria sup
+# em construção ...
+\end{lstlisting}
 \end{ex}
 
-\subsection*{Exercícios}
 
-\begin{exer}\label{exer:norma_numcond}
-  Considere o seguinte sistema linear
-  \begin{align}
-    10^{-12}x_1 + 20x_2 + 3x_3 &= -1,\\
-    2,001x_1 + 10^{-5}x_2 + - x_3 &= -2,\\
-    x_1 - 2x_2 - 0,1x_3 &= 0,1.
-  \end{align}
-  \begin{enumerate}[a)]
-  \item Compute a norma $L^2$ do vetor dos termos constantes deste sistema.
-  \item Compute a norma $L^2$ da matriz dos coeficientes deste sistema.
-  \item Compute o número de condicionamento da matriz dos coeficientes deste sistema.
-  \end{enumerate}
-\end{exer}
-\begin{resp}
-  % \ifisoctave 
-  % \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/exer_norma_numcond/exer_norma_numcond.m}{Código.} 
-  % \fi
-  a) $2,2383$; b) $2,0323\E+1$; c) $3,5128\E+1$
-\end{resp}
-
-
-\section{Método de eliminação gaussiana com pivotamento parcial com escala}\label{cap_sislin_sec_egauss_pivo}
-
-O método de eliminação gaussiana é suscetível a propagação dos erros de arredondamento, em particular, quando os pivôs são números próximos de zero. Isto pode ser mitigado com o chamado pivotamento parcial com escala. Nesta variação do método de eliminação gaussiana, o pivô é escolhido como sendo o candidato que é o maior em relação aos elementos em sua linha.
-
-Dado um sistema $Ax = b$ com $n$-equações e $n$-incógnitas, o método pode ser descrito pelo seguinte pseudo-código:
-\begin{enumerate}
- \item $E \leftarrow [A ~ b]$.
- \item Para $i=1, 2, \dotsc, n$, faça $s_i \leftarrow \max_{1\leq j \leq n}|e_{i,j}|$.
- \item Para $i=1, 2, \dotsc, n-1$:
-   \begin{enumerate}[3.1]
-   \item Compute $j$ tal que
-     \begin{equation}
-       \frac{e_{j,i}}{s_j} \geq \frac{e_{k,i}}{s_k},\quad\forall k=i, i+1, \dotsc, n.
-     \end{equation}
-     \item Permute as linhas $i$ e $j$, i.e. $E_i \leftrightarrow E_j$.
-     \item Para $j=i+1, i+2, \dotsc, n$:
-       \begin{enumerate}[3.3.1]
-       \item $E_j \leftarrow E_j - \frac{e_{ji}}{e_{ii}}E_i$.
-       \end{enumerate}
-   \end{enumerate}
- \item Para $i=n, n-1, \dotsc, 2$:   
-   \begin{enumerate}[4.1]
-     \item Para $j=i-1, i-2, \dotsc, 1$:
-       \begin{enumerate}[4.1.1]
-         \item $E_j \leftarrow E_j - \frac{e_{ji}}{e_{ii}}E_i$.
-       \end{enumerate}
-   \end{enumerate}
-\end{enumerate}
-
-\begin{ex}\label{ex:egauss_pivo}
-  Vamos empregar o método de eliminação gaussiana com pivotamento parcial com escala para resolvermos o seguinte sistema linear
-  \begin{align}
-    10^{-12}x_1 + 20x_2 + 3x_3 &= -1,\\
-    2,001x_1 + 10^{-5}x_2 - x_3 &= -2,\\
-    x_1 - 2x_2 - 0,1x_3 &= 0,1.
-  \end{align}
-  Para tanto, tomamos a matriz estendida
-  \begin{equation}
-    E =
-    \begin{bmatrix}
-      10^{-12} & 20 & 3 & -1\\
-      2,001 & 10^{-5} & -1 & -2\\
-      1 & -2 & -0,1 & 0,1
-    \end{bmatrix}
-  \end{equation}
-  e computamos os valores máximos em módulo dos elementos de cada linha da matriz $A$, i.e.
-  \begin{equation}
-    s = (20,~2,001,~2).
-  \end{equation}
-  Agora, observamos que $e_{2,1}$ é o maior pivô em escala, pois
-  \begin{equation}
-    \frac{e_{11}}{s_1} = 5\times 10^{-14}, \frac{e_{21}}{s_2} = 1, \frac{e_{31}}{s_3}=0,5.
-  \end{equation}
-  Então, fazemos a permutação entre as linhas $1$ e $2$, de forma a obtermos
-  \begin{equation}
-    E =
-    \begin{bmatrix}
-      2,001 & 10^{-5} & -1 & -2\\
-      10^{-12} & 20 & 3 & -1\\
-      1 & -2 & -0,1 & 0,1
-    \end{bmatrix}    
-  \end{equation}
-  Em seguida, eliminamos abaixo do pivô, e temos
-  \begin{equation}
-    E =
-    \begin{bmatrix}
-      2,001 & 10^{-5} & -1 & -2\\
-      0 & 20 & 3 & -1\\
-      0 & -2 & 3,9975\times 10^{-1} & 1,0995
-    \end{bmatrix}
-  \end{equation}
-  Daí, o novo pivô é escolhido como $e_{22}$, pois ambos candidatos tem o mesmo valor em escala
-  \begin{equation}
-    \frac{e_{2,2}}{s_2} = 1, \frac{e_{3,2}}{s_3} = 1.
-  \end{equation}
-  Logo, eliminamos abaixo do pivô para obtermos
-  \begin{equation}
-    E =
-    \begin{bmatrix}
-      2,001 & 10^{-5} & -1 & -2\\
-      0 & 20 & 3 & -1\\
-      0 & 0 & 6,9975\times 10^{-1} & 9,9950
-    \end{bmatrix}
-  \end{equation}
-  Procedendo a eliminação para cima, obtemos a matriz escalonada reduzida
-  \begin{equation}
-    E =
-    \begin{bmatrix}
-      1 & 0 & 0 & -2.8567\E-1\\
-      0 & 1 & 0 & -2.6425\E-1\\
-      0 & 0 & 1 & 1,4284\E+0
-    \end{bmatrix}
-  \end{equation}
-
-% \ifisoctave
-% No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/ex_egauss_pivo/ex_egauss_pivo.m}{código}:
-% \verbatiminput{./cap_sl_direto/dados/ex_egauss_pivo/ex_egauss_pivo.m}
-% \fi
-\end{ex}
-
-\subsection*{Exercícios}
-
-\begin{exer}\label{exer:egauss_pivo_exec}
-  Use o método de eliminação gaussiana com pivotamento parcial com escala para obter a matriz escalonada reduzida do seguinte sistema
-  \begin{align}
-    -2\times 10^{-12}x_1 + 10x_2 - 3\times 10^{-4}x_3 &= 2\\
-    10^5x_1 + 10^{-13}x_2 - x_3 &= -2\\
-    x_1 - 2x_2 + 3\times 10^{-7}x_3 &= 4
-  \end{align}
-\end{exer}
-\begin{resp}
-  % \ifisoctave 
-  % \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/exer_egauss_pivo_exec/exer_egauss_pivo_exec.m}{Código.} 
-  % \fi
-  $$
-  \begin{bmatrix}
-   1,0000 &  0,0000 &  0,0000 & 6,2588\E-1\\
-   0,0000 &  1,0000 &  0,0000 & -1,6777\E+0\\
-   0,0000 &  0,0000 &  1,0000 & 6,2589\E+4
-  \end{bmatrix}
-  $$
-\end{resp}
-
-\section{Fatoração LU}\label{cap_sislin_sec_lu}
-
-A fatoração LU é uma forma eficiente de se resolver sistemas lineares. Dado um sistema $Ax = b$, a ideia é de fatorar a matriz $A$ como o produto de uma matriz triangular inferior\footnote{Do inglês, {\it low triangular matrix}.} $L$ com uma matriz triangular superior\footnote{Do inglês, {\it upper triangular matrix}.} $U$, i.e.
-\begin{equation}
-  A = LU.
-\end{equation}
-Com isso, o sistema $Ax = b$ pode ser reescrito na forma
-\begin{equation}
-  (LU)x = b \Leftrightarrow L(Ux) = b.
-\end{equation}
-Denotando, $Ux = y$, podemos resolver o seguinte sistema triangular
-\begin{equation}
-  Ly = b.
-\end{equation}
-Tendo resolvido este sistema, a solução do sistema $Ax = b$ pode, então, ser computada como a solução do seguinte sistema triangular
-\begin{equation}
-  Ux = y.
-\end{equation}
-Ou seja, a decomposição LU nos permite resolver uma sistema pela resolução de dois sistemas triangulares.
+\subsection{Decomposição LU}
 
 O procedimento de decomposição LU é equivalente ao método de eliminação gaussiana. Consideremos uma matriz $A = [a_{ij}]_{i,j=1}^{n,n}$, com $a_{1,1}\neq 0$. Denotando esta matriz por $U^{(1)} = [u_{i,j}^{(1)}]_{i,j=1}^{n,n} = A$ e tomando $L^{(1)} = I_{n\times n}$, observamos que a eliminação abaixo do pivô $u_{1,1}^{(1)}$, pode ser computada com as seguintes operações equivalentes por linha
 \begin{equation}
@@ -837,7 +391,7 @@ o que completa a decomposição tomando $L = L^{(3)}$ e $U = U^{(3)}$.
   \end{equation}
   Daí, iniciamos resolvendo o seguinte sistema triangular inferior $Ly = b$, i.e.
   \begin{align}
-    &y_1 = -10 \Rightarrow y_1 = 6\\
+    &y_1 = 6 \Rightarrow y_1 = 6\\
     &-3y_1 + y_2 = -11 \Rightarrow y_2 = 7\\
     &-y_1 - 1,5y_2 + y_3 = -10 \Rightarrow y_3 = 6,5.
   \end{align}
@@ -982,6 +536,610 @@ Com essa, iniciamos o procedimento de decomposição LU com $PA = L^{(1)}U^{(1)}
   % \fi
   $x_1 = -3$, $x_2=-1$, $x_3 = 1$
 \end{resp}
+
+% \section{Eliminação gaussiana}\label{cap_sislin_sec_egauss}
+
+% Um sistema linear
+% \begin{align}
+%   a_{11}x_1 + a_{12}x_2 + \cdots + a_{1n}x_n &= b_1 \label{eq:sl_fa_1}\\
+%   a_{21}x_1 + a_{22}x_2 + \cdots + a_{2n}x_n &= b_2\\
+%   &\vdots \\
+%   a_{n1}x_1 + a_{n2}x_2 + \cdots + a_{nn}x_n &= b_n.\label{eq:sl_fa_n}
+% \end{align}
+% pode ser escrito na forma matricial
+% \begin{equation}
+%   A\pmb{x} = \pmb{b},
+% \end{equation}
+% onde $A = [a_{ij}]_{i,j=1}^{n,n}$ é chamada de matriz dos coeficientes, $\pmb{x}=(x_1, x_2, \dotsc, x_n)$ é o vetor (coluna) das incógnitas e $\pmb{b}=(b_1, b_2, \dotsc, b_n)$ é o vetor (coluna) dos termos constantes.
+
+% Outra forma matricial de representar o sistema \eqref{eq:sl_fa_1}-\eqref{eq:sl_fa_n} é pela chamada matriz estendida
+% \begin{equation}
+%   E = [A ~\pmb{b}].
+% \end{equation}
+% No caso, $E$ é a seguinte matriz $n \times (n+1)$
+% \begin{equation}
+%   E =
+%   \begin{bmatrix}
+%     a_{11} & a_{12} & \cdots & a_{1n} & b_1\\
+%     a_{21} & a_{22} & \cdots & a_{2n} & b_2\\
+%     \vdots & \vdots & \vdots & \vdots & \vdots\\
+%     a_{n1} & a_{n2} & \cdots & a_{nn} & b_n
+%   \end{bmatrix}
+% \end{equation}
+
+% O método de eliminação gaussiana consistem em realizar operações sobre as equações (sobre as linhas) do sistema \eqref{eq:sl_fa_1}-\eqref{eq:sl_fa_n} (da matriz estendida $E$) de forma a reescrevê-lo como um sistema triangular, ou diagonal. Para tanto, podemos utilizar as seguintes operações:
+% \begin{enumerate}[1.]
+% \item permutação entre as equações (linhas) ($E_i \leftrightarrow E_j$).
+% \item multiplicação de uma equação (linha) por um escalar não nulo ($E_i \leftarrow \lambda E_i$).
+% \item substituição de uma equação (linha) por ela somada com a multiplicação de uma outra por um escalar não nulo ($E_i \leftarrow E_i + \lambda E_j$).
+% \end{enumerate}
+
+% \begin{ex}\label{ex:egauss_exec}
+%   O sistema linear
+%   \begin{align}
+%     -2x_1 - 3x_2 + 2x_3 + 3x_4 &= 10\label{eq:ex_egauss_exec_sl_1}\\
+%     -4x_1 - 6x_2 + 6x_3 + 6x_4 &= 20\\
+%     -2x_1 + 4x_3 + 6x_4 &= 10\\
+%     4x_1 + 3x_2 - 8x_3 - 6x_4 &= -17\label{eq:ex_egauss_exec_sl_4}
+%   \end{align}
+% pode ser escrito na forma matricial $A\pmb{x}=\pmb{b}$, onde
+% \begin{equation}
+%   A =
+%   \begin{bmatrix}
+%     -2 & -3 & 2 & 3\\
+%     -4 & -6 & 6 & 6\\
+%     -2 & 0 & 4 & 6 \\
+%     4 & 3 & -8 & -6
+%   \end{bmatrix},
+% \end{equation}
+% $\pmb{x} = (x_1, x_2, x_3, x_4)$ e $\pmb{b} = (10, 20, 10, -17)$. Sua matriz estendida é
+% \begin{equation}
+%   E =
+%   \begin{bmatrix}
+%     -2 & -3 & 2 & 3 & 10\\
+%     -4 & -6 & 6 & 6 & 20\\
+%     -2 & 0 & 4 & 6 & 10\\
+%     4 & 3 & -8 & -6 & -17
+%   \end{bmatrix}
+% \end{equation}
+% Então, usando o método de eliminação gaussiana, temos
+% \begin{align}
+%   E &=
+%   \begin{bmatrix}
+%     -2 & -3 & 2 & 3 & 10\\
+%     -4 & -6 & 6 & 6 & 20\\
+%     -2 & 0 & 4 & 6 & 10\\
+%     4 & 3 & -8 & -6 & -17
+%   \end{bmatrix}
+%   \begin{matrix}
+%   \\
+%   E_2\leftarrow E_2 - (e_{21}/\pmb{e_{11}})E_1\\
+%   \\
+%   \\
+%   \end{matrix}\\
+%   &\sim 
+%   \begin{bmatrix}
+%     \pmb{-2} & -3 & 2 & 3 & 10\\
+%     0 & 0 & 2 & 0 & 0\\
+%     -2 & 0 & 4 & 6 & 10\\
+%     4 & 3 & -8 & -6 & -17
+%   \end{bmatrix}
+%   \begin{matrix}
+%   \\
+%   \\
+%   E_3\leftarrow E_3 - (e_{31}/\pmb{e_{11}})E_1\\
+%   \\
+%   \end{matrix}\\
+%   &\sim 
+%   \begin{bmatrix}
+%     \pmb{-2} & -3 & 2 & 3 & 10\\
+%     0 & 0 & 2 & 0 & 0\\
+%     0 & 3 & 2 & 3 & 0\\
+%     4 & 3 & -8 & -6 & -17
+%   \end{bmatrix}
+%   \begin{matrix}
+%   \\
+%   \\
+%   \\
+%   E_4\leftarrow E_4 - (e_{41}/\pmb{e_{11}})E_1\\
+%   \end{matrix}\\  
+% &\sim 
+%   \begin{bmatrix}
+%     \pmb{-2} & -3 & 2 & 3 & 10\\
+%     0 & 0 & 2 & 0 & 0\\
+%     0 & \pmb{3} & 2 & 3 & 0\\
+%     0 & -3 & -4 & 0 & 3
+%   \end{bmatrix}
+%   \begin{matrix}
+%   \\
+%   E_2 \leftrightarrow E_3\\
+%   \\
+%   \\
+%   \end{matrix}\\
+% &\sim 
+%   \begin{bmatrix}
+%     \pmb{-2} & -3 & 2 & 3 & 10\\
+%     0 & \pmb{3} & 2 & 3 & 0\\
+%     0 & 0 & 2 & 0 & 0\\
+%     0 & -3 & -4 & 0 & 3
+%   \end{bmatrix}
+%   \begin{matrix}
+%   \\
+%   \\
+%   \\
+%   E_4 \leftarrow E_4 - (e_{42}/\pmb{e_{22}})E_2\\
+%   \end{matrix}\\
+% &\sim 
+%   \begin{bmatrix}
+%     \pmb{-2} & -3 & 2 & 3 & 10\\
+%     0 & 3 & 2 & 3 & 0\\
+%     0 & 0 & \pmb{2} & 0 & 0\\
+%     0 & 0 & -2 & 3 & 3
+%   \end{bmatrix}
+%   \begin{matrix}
+%   \\
+%   \\
+%   \\
+%   E_4 \leftarrow E_4 - (e_{43}/\pmb{e_{33}})E_3\\
+%   \end{matrix}\\
+%     &\sim 
+%       \begin{bmatrix}
+%         \pmb{-2} & -3 & 2 & 3 & 10\\
+%         0 & \pmb{3} & 2 & 3 & 0\\
+%         0 & 0 & \pmb{2} & 0 & 0\\
+%         0 & 0 & 0 & \pmb{3} & 3
+%       \end{bmatrix}
+% \end{align}
+% Esta última matriz estendida é chamada de \emph{matriz escalonada} do sistema. Desta, temos que \eqref{eq:ex_egauss_exec_sl_1}-\eqref{eq:ex_egauss_exec_sl_4} é equivalente ao seguinte sistema triangular
+% \begin{align}
+%   -2x_1 - 3x_2 + 2x_3 + 3x_4 &= 10\\
+%   3x_2 + 2x_3 + 3x_4 &= 0\\
+%   2x_3 &= 0\\
+%   3x_4 &= 3.
+% \end{align}
+% Resolvendo da última equação para a primeira, temos
+% \begin{align}
+%   x_4 &= 1,\\
+%   x_3 &= 0,\\
+%   x_2 &= \frac{-2x_3 - 3x_4}{3} = -1,\\
+%   x_1 &= \frac{10 + 3x_2 - 3x_3 - 3x_4}{-2} = -2.
+% \end{align}
+
+% % \ifisoctave
+% % No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/ex_egauss_exec/ex_egauss_exec.m}{código}:
+% % \verbatiminput{./cap_sl_direto/dados/ex_egauss_exec/ex_egauss_exec.m}
+% % \fi
+% \end{ex}
+
+% \begin{obs}
+%   Para a resolução de um sistema linear $n \times n$, o método de eliminação gaussiana demanda
+%   \begin{equation}
+%     \frac{n^3}{3} + n^2 - \frac{n}{3}
+%   \end{equation}
+% multiplicações/divisões e
+% \begin{equation}
+%   \frac{n^3}{3} + \frac{n^2}{2} - \frac{5n}{6}
+% \end{equation}
+% adições/subtrações \cite{Burden2015a}.
+% \end{obs}
+
+% Com o mesmo custo computacional, podemos utilizar o método de eliminação gaussiana para transformar o sistema dado em um sistema diagonal.
+
+% \begin{ex}\label{ex:egauss_reduzida}
+%   Voltando ao exemplo anterior (Exemplo \ref{ex:egauss_exec}, vimos que a matriz estendida do sistema \eqref{eq:ex_egauss_exec_sl_1}-\eqref{eq:ex_egauss_exec_sl_4} é equivalente a
+%   \begin{equation}
+%     E \sim       
+%     \begin{bmatrix}
+%         -2 & -3 & 2 & 3 & 10\\
+%         0 & 3 & 2 & 3 & 0\\
+%         0 & 0 & 2 & 0 & 0\\
+%         0 & 0 & 0 & 3 & 3
+%       \end{bmatrix}.
+%   \end{equation}
+% Então, podemos continuar aplicando o método de eliminação gaussiana, agora de baixo para cima, até obtermos um sistema diagonal equivalente. Vejamos
+% \begin{align}
+%   E &\sim       
+%       \begin{bmatrix}
+%         -2 & -3 & 2 & 3 & 10\\
+%         0 & 3 & 2 & 3 & 0\\
+%         0 & 0 & 2 & 0 & 0\\
+%         0 & 0 & 0 & \pmb{3} & 3
+%       \end{bmatrix}
+%       \begin{array}{l}
+%       E_1 \leftarrow E_1 - (e_{14}/e_{44})E_4\\
+%       E_2 \leftarrow E_2 - (e_{24}/e_{44})E_4\\
+%       \\
+%       \\
+%     \end{array}\\
+%     &\sim       
+%       \begin{bmatrix}
+%         -2 & -3 & 2 & 0 & 7\\
+%         0 & 3 & 2 & 0 & -3\\
+%         0 & 0 & \pmb{2} & 0 & 0\\
+%         0 & 0 & 0 & 3 & 3
+%       \end{bmatrix}
+%       \begin{array}{l}
+%       E_1 \leftarrow E_1 - (e_{13}/e_{33})E_3\\
+%       E_2 \leftarrow E_2 - (e_{23}/e_{33})E_3\\
+%       \\
+%       \\
+%     \end{array}\\
+%     &\sim       
+%       \begin{bmatrix}
+%         -2 & -3 & 0 & 0 & 4\\
+%         0 & \pmb{3} & 0 & 0 & -3\\
+%         0 & 0 & 2 & 0 & 0\\
+%         0 & 0 & 0 & 3 & 3
+%       \end{bmatrix}
+%       \begin{array}{l}
+%       E_1 \leftarrow E_1 - (e_{12}/e_{22})E_2\\
+%       \\
+%       \\
+%       \\
+%     \end{array}\\
+%     &\sim       
+%       \begin{bmatrix}
+%         \pmb{-2} & 0 & 0 & 0 & 4\\
+%         0 & \pmb{3} & 0 & 0 & -3\\
+%         0 & 0 & \pmb{2} & 0 & 0\\
+%         0 & 0 & 0 & \pmb{3} & 3
+%       \end{bmatrix}
+%       \begin{array}{l}
+%       E_1 \leftarrow E_1/e_{11}\\
+%       E_2 \leftarrow E_2/e_{22}\\
+%       E_3 \leftarrow E_3/e_{33}\\
+%       E_4 \leftarrow E_4/e_{44}\\
+%     \end{array}\\
+%     &\sim       
+%       \begin{bmatrix}
+%         1 & 0 & 0 & 0 & -2\\
+%         0 & 1 & 0 & 0 & -1\\
+%         0 & 0 & 1 & 0 & 0\\
+%         0 & 0 & 0 & 1 & 1
+%       \end{bmatrix}
+%   \end{align}
+% Esta última matriz é chamada de matriz escalonada reduzida (por linhas) e a solução do sistema encontra-se em sua última coluna, i.e. $\pmb{x} = (-2, -1, 0, 1)$.
+
+% % \ifisoctave
+% % No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/ex_egauss_reduzida/ex_egauss_reduzida.m}{código}:
+% % \verbatiminput{./cap_sl_direto/dados/ex_egauss_reduzida/ex_egauss_reduzida.m}
+% % \fi
+% \end{ex}
+
+% \subsection*{Exercícios}
+
+% \begin{exer}\label{exer:egauss_reduzida}
+%   Use o método de eliminação gaussiana para obter a matriz escalonada reduzida do seguinte sistema
+%   \begin{align}
+%     -3x_1 + 2x_2 -5x_4 + x_5 &= -23\\
+%     -x_2 -3x_3 &= 9\\
+%     -2x_1 -x_2 + x_3 &= -1\\
+%     2x_2 - 4x_3 + 3x_4 &= 8\\
+%     x_1 - 3x_3 - x_5 &= 11
+%   \end{align}
+% \end{exer}
+% \begin{resp}
+%   %   \ifisoctave 
+%   % \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/exer_egauss_reduzida/exer_egauss_reduzida.m}{Código.} 
+%   % \fi
+%   $$
+%   \begin{bmatrix}
+%     1 & 0 & 0 & 0 & 0 & 1\\
+%     0 & 1 & 0 & 0 & 0 & -3\\
+%     0 & 0 & 1 & 0 & 0 & -2\\
+%     0 & 0 & 0 & 1 & 0 & 2\\
+%     0 & 0 & 0 & 0 & 1 & -4\\
+%   \end{bmatrix}
+%   $$
+% \end{resp}
+
+% \begin{exer}\label{exer:egauss_arredondamento}
+%   Use o método de eliminação gaussiana para obter a matriz escalonada reduzida do seguinte sistema
+%   \begin{align}
+%     -10^{-12}x_1 + 20x_2 - 3x_3 &= -1\\
+%     2,001x_1 + 10^{-5}x_2 - x_3 &= -2\\
+%     4x_1 - 2x_2 + x_3 &= 0,1
+%   \end{align}
+% \end{exer}
+% \begin{resp}
+%   % \ifisoctave 
+%   % \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/exer_egauss_arredondamento/exer_egauss_arredondamento.m}{Código.} 
+%   % \fi
+%   $$
+%   \begin{bmatrix}
+%    1.0000 &  0.0000 &  0.0000 & -3.9435\E-1\\
+%   -0.0000 &  1.0000 & -0.0000 & -2.3179\E-1\\
+%    0.0000 &  0.0000 &  1.0000 &  1.2120\E+0
+%   \end{bmatrix}
+%   $$
+% \end{resp}
+
+\section{Norma e número de condicionamento}\label{cap_sislin_sec_norma_numcond}
+
+Nesta seção, fazemos uma rápida discussão sobre normas de vetores e matrizes, bem como do número de condicionamento de uma matriz.
+
+\subsection{Norma $L^2$}
+
+A norma $L^2$ de um dado vetor $v = (v_1, v_2, \dotsc, v_n) \in \mathbb{R^n}$ é definida por
+\begin{equation}
+  \|v\| := \sqrt{v_1^2 + v_2^2 + \cdots + v_n^2}.
+\end{equation}
+
+\begin{prop}
+  Dados os vetores $u,v \in \mathbb{R^n}$ e um escalar $\lambda\in\mathbb{R}$, temos:
+  \begin{enumerate}[a)]
+  \item $\|v\| \geq 0$.
+  \item $\|v\| = 0 \Leftrightarrow v=0$.
+  \item $\|\lambda v\| = |\lambda|\cdot \|v\|$.
+  \item $\|u+v\| \leq \|u\| + \|v\|$ (desigualdade triangular).
+  \item $u\cdot v \leq \|u\|\cdot\|v\|$ (desigualdade de Cauchy-Schwarz).
+  \end{enumerate}
+\end{prop}
+
+\begin{ex}\label{ex:norma_vetor}
+  A norma $L^2$ do vetor $v = (1, -2, 3, -4)$ é
+  \begin{align}
+    \|v\| &= \sqrt{v_1^2 + v_2^2 + v_3^2 + v_4^2}\\
+    &= \sqrt{1^2 + (-2)^2 + 3^2 + (-4)^2}\\
+    &= 5,4772.
+  \end{align}
+
+% \ifisoctave
+% No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/ex_norma_vetor/ex_norma_vetor.m}{código}:
+% \verbatiminput{./cap_sl_direto/dados/ex_norma_vetor/ex_norma_vetor.m}
+% \fi
+\end{ex}
+
+
+A norma $L^2$ induzida de uma dada matriz real $A = [a_{ij}]_{i,j=1}^n$ é definida por
+\begin{equation}
+  \|A\| := \sup_{x\in\mathbb{R}^n, \|x\|=1} \|Ax\|.
+\end{equation}
+Pode-se mostrar que
+\begin{equation}
+  \|A\| = \sqrt{\lambda_{max}(A^TA)},
+\end{equation}
+onde $\lambda_{max}(A^TA) := \max\{|\lambda|;~\lambda\text{ é autovalor de }A^TA\}$.
+
+\begin{prop}
+  Dadas as matrizes reais $A, B$ $n\times n$, um vetor $v\in\mathbb{R}^2$ e um escalar $\lambda$, temos
+  \begin{enumerate}[a)]
+  \item $\|A\| \geq 0$.
+  \item $\|A\|=0 \Leftrightarrow A=0$.
+  \item $\|\lambda A\| = |\lambda|\cdot \|A\|$.
+  \item $\|A+B\| \leq \|A\| + \|B\|$ (desigualdade triangular).
+  \item $\|AB\| \leq \|A\|\|B\|$.
+  \item $\|Av\| \leq \|A\|\|v\|$.
+  \end{enumerate}
+\end{prop}
+
+\begin{ex}\label{ex:norma_matriz}
+  A matriz
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      1 & -1 & 2\\
+      -2 & \pi & 4\\
+      7 & -5 & \sqrt{2}
+    \end{bmatrix}
+  \end{equation}
+tem norma $L^2$
+\begin{equation}
+  \|A\| = 9,3909.
+\end{equation}
+
+% \ifisoctave
+% No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/ex_norma_matriz/ex_norma_matriz.m}{código}:
+% \verbatiminput{./cap_sl_direto/dados/ex_norma_matriz/ex_norma_matriz.m}
+% \fi
+\end{ex}
+
+\subsection{Número de condicionamento}
+
+O número de condicionamento de uma matriz é uma medida referente a propagação de erros que ocorre da sua aplicação. Mais especificamente, assumamos que seja dada uma matriz invertível $A = [a_{ij}]_{i,j=1}^{n,n}$, um vetor $x\in\mathbb{R}^n$ e uma perturbação $\delta_x\in\mathbb{R}^n$. Além disso, sejam
+\begin{align}
+  y &= Ax\\
+  y + \delta_y &= A(x+\delta_x).
+\end{align}
+Ou seja, $\delta_y$ é a perturbação em $y$ propagada da aplicação de $A$ em $x$ com perturbação $\delta_x$.
+
+Agora, podemos estimar a razão entre os erros relativos $e_{rel}(y) := \|\delta_y\|/\|y\|$ e $e_{rel}(x) := \|\delta_x\|/\|x\|$ da seguinte forma 
+\begin{align}
+  \frac{\frac{\|y\|}{\|\delta_y\|}}{\frac{\|x\|}{\|\delta_x\|}} &= \frac{\|y\|}{\|\delta_y\|}\frac{\|\delta_x\|}{\|x\|}\\
+  &=\frac{\|Ax\|}{\|\delta_y\|}\frac{\|A^{-1}\delta_y\|}{\|x\|} \\
+  &\leq \frac{\|A\|\|x\|\|A^{-1}\|\|\delta_y\|}{\|\delta_y\|\|x\|}\\
+  &\leq \|A\|\|A^{-1}\|.
+\end{align}
+Logo, temos a seguinte estimativa de propagação de erro
+\begin{equation}
+  e_{rel}(y) \leq \|A\|\|A^{-1}\|e_{rel}(x).
+\end{equation}
+
+Isto nos motiva a definir o \emph{número de condicionamento} da matriz $A$ por
+\begin{equation}
+  \kappa(A) := \|A\|\|A^{-1}\|.
+\end{equation}
+
+\begin{obs}
+  A matriz identidade tem o menor número de condicionamento, o qual é
+  \begin{equation}
+    \kappa(I) = 1.
+  \end{equation}
+\end{obs}
+
+\begin{ex}\label{ex:kappa}
+  Um exemplo de uma matriz bem condicionada é
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      1 & -1 & 2\\
+      -2 & \pi & 4\\
+      7 & -5 & \sqrt{2}
+    \end{bmatrix},
+  \end{equation}
+  cujo número de condicionamento é $\kappa(A) = 13,997$.
+
+  Já, a matriz
+  \begin{equation}
+    B =
+    \begin{bmatrix}
+      1 & 0 & 0\\
+      0 & 0 & -2\\
+      10^{5} & 10^{-4} & 10^{5}
+    \end{bmatrix},    
+  \end{equation}
+  tem número de condicionamento
+  \begin{equation}
+    \kappa(B) = 1,5811\times 10^{14},
+  \end{equation}
+  o que indica que $B$ é uma matriz mal condicionada.
+\end{ex}
+
+\subsection*{Exercícios}
+
+\begin{exer}\label{exer:norma_numcond}
+  Considere o seguinte sistema linear
+  \begin{align}
+    10^{-12}x_1 + 20x_2 + 3x_3 &= -1,\\
+    2,001x_1 + 10^{-5}x_2 + - x_3 &= -2,\\
+    x_1 - 2x_2 - 0,1x_3 &= 0,1.
+  \end{align}
+  \begin{enumerate}[a)]
+  \item Compute a norma $L^2$ do vetor dos termos constantes deste sistema.
+  \item Compute a norma $L^2$ da matriz dos coeficientes deste sistema.
+  \item Compute o número de condicionamento da matriz dos coeficientes deste sistema.
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  % \ifisoctave 
+  % \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/exer_norma_numcond/exer_norma_numcond.m}{Código.} 
+  % \fi
+  a) $2,2383$; b) $2,0323\E+1$; c) $3,5128\E+1$
+\end{resp}
+
+
+% \section{Método de eliminação gaussiana com pivotamento parcial com escala}\label{cap_sislin_sec_egauss_pivo}
+
+% O método de eliminação gaussiana é suscetível a propagação dos erros de arredondamento, em particular, quando os pivôs são números próximos de zero. Isto pode ser mitigado com o chamado pivotamento parcial com escala. Nesta variação do método de eliminação gaussiana, o pivô é escolhido como sendo o candidato que é o maior em relação aos elementos em sua linha.
+
+% Dado um sistema $Ax = b$ com $n$-equações e $n$-incógnitas, o método pode ser descrito pelo seguinte pseudo-código:
+% \begin{enumerate}
+%  \item $E \leftarrow [A ~ b]$.
+%  \item Para $i=1, 2, \dotsc, n$, faça $s_i \leftarrow \max_{1\leq j \leq n}|e_{i,j}|$.
+%  \item Para $i=1, 2, \dotsc, n-1$:
+%    \begin{enumerate}[3.1]
+%    \item Compute $j$ tal que
+%      \begin{equation}
+%        \frac{e_{j,i}}{s_j} \geq \frac{e_{k,i}}{s_k},\quad\forall k=i, i+1, \dotsc, n.
+%      \end{equation}
+%      \item Permute as linhas $i$ e $j$, i.e. $E_i \leftrightarrow E_j$.
+%      \item Para $j=i+1, i+2, \dotsc, n$:
+%        \begin{enumerate}[3.3.1]
+%        \item $E_j \leftarrow E_j - \frac{e_{ji}}{e_{ii}}E_i$.
+%        \end{enumerate}
+%    \end{enumerate}
+%  \item Para $i=n, n-1, \dotsc, 2$:   
+%    \begin{enumerate}[4.1]
+%      \item Para $j=i-1, i-2, \dotsc, 1$:
+%        \begin{enumerate}[4.1.1]
+%          \item $E_j \leftarrow E_j - \frac{e_{ji}}{e_{ii}}E_i$.
+%        \end{enumerate}
+%    \end{enumerate}
+% \end{enumerate}
+
+% \begin{ex}\label{ex:egauss_pivo}
+%   Vamos empregar o método de eliminação gaussiana com pivotamento parcial com escala para resolvermos o seguinte sistema linear
+%   \begin{align}
+%     10^{-12}x_1 + 20x_2 + 3x_3 &= -1,\\
+%     2,001x_1 + 10^{-5}x_2 - x_3 &= -2,\\
+%     x_1 - 2x_2 - 0,1x_3 &= 0,1.
+%   \end{align}
+%   Para tanto, tomamos a matriz estendida
+%   \begin{equation}
+%     E =
+%     \begin{bmatrix}
+%       10^{-12} & 20 & 3 & -1\\
+%       2,001 & 10^{-5} & -1 & -2\\
+%       1 & -2 & -0,1 & 0,1
+%     \end{bmatrix}
+%   \end{equation}
+%   e computamos os valores máximos em módulo dos elementos de cada linha da matriz $A$, i.e.
+%   \begin{equation}
+%     s = (20,~2,001,~2).
+%   \end{equation}
+%   Agora, observamos que $e_{2,1}$ é o maior pivô em escala, pois
+%   \begin{equation}
+%     \frac{e_{11}}{s_1} = 5\times 10^{-14}, \frac{e_{21}}{s_2} = 1, \frac{e_{31}}{s_3}=0,5.
+%   \end{equation}
+%   Então, fazemos a permutação entre as linhas $1$ e $2$, de forma a obtermos
+%   \begin{equation}
+%     E =
+%     \begin{bmatrix}
+%       2,001 & 10^{-5} & -1 & -2\\
+%       10^{-12} & 20 & 3 & -1\\
+%       1 & -2 & -0,1 & 0,1
+%     \end{bmatrix}    
+%   \end{equation}
+%   Em seguida, eliminamos abaixo do pivô, e temos
+%   \begin{equation}
+%     E =
+%     \begin{bmatrix}
+%       2,001 & 10^{-5} & -1 & -2\\
+%       0 & 20 & 3 & -1\\
+%       0 & -2 & 3,9975\times 10^{-1} & 1,0995
+%     \end{bmatrix}
+%   \end{equation}
+%   Daí, o novo pivô é escolhido como $e_{22}$, pois ambos candidatos tem o mesmo valor em escala
+%   \begin{equation}
+%     \frac{e_{2,2}}{s_2} = 1, \frac{e_{3,2}}{s_3} = 1.
+%   \end{equation}
+%   Logo, eliminamos abaixo do pivô para obtermos
+%   \begin{equation}
+%     E =
+%     \begin{bmatrix}
+%       2,001 & 10^{-5} & -1 & -2\\
+%       0 & 20 & 3 & -1\\
+%       0 & 0 & 6,9975\times 10^{-1} & 9,9950
+%     \end{bmatrix}
+%   \end{equation}
+%   Procedendo a eliminação para cima, obtemos a matriz escalonada reduzida
+%   \begin{equation}
+%     E =
+%     \begin{bmatrix}
+%       1 & 0 & 0 & -2.8567\E-1\\
+%       0 & 1 & 0 & -2.6425\E-1\\
+%       0 & 0 & 1 & 1,4284\E+0
+%     \end{bmatrix}
+%   \end{equation}
+
+% % \ifisoctave
+% % No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/ex_egauss_pivo/ex_egauss_pivo.m}{código}:
+% % \verbatiminput{./cap_sl_direto/dados/ex_egauss_pivo/ex_egauss_pivo.m}
+% % \fi
+% \end{ex}
+
+% \subsection*{Exercícios}
+
+% \begin{exer}\label{exer:egauss_pivo_exec}
+%   Use o método de eliminação gaussiana com pivotamento parcial com escala para obter a matriz escalonada reduzida do seguinte sistema
+%   \begin{align}
+%     -2\times 10^{-12}x_1 + 10x_2 - 3\times 10^{-4}x_3 &= 2\\
+%     10^5x_1 + 10^{-13}x_2 - x_3 &= -2\\
+%     x_1 - 2x_2 + 3\times 10^{-7}x_3 &= 4
+%   \end{align}
+% \end{exer}
+% \begin{resp}
+%   % \ifisoctave 
+%   % \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/exer_egauss_pivo_exec/exer_egauss_pivo_exec.m}{Código.} 
+%   % \fi
+%   $$
+%   \begin{bmatrix}
+%    1,0000 &  0,0000 &  0,0000 & 6,2588\E-1\\
+%    0,0000 &  1,0000 &  0,0000 & -1,6777\E+0\\
+%    0,0000 &  0,0000 &  1,0000 & 6,2589\E+4
+%   \end{bmatrix}
+%   $$
+% \end{resp}
 
 \section{Métodos de Jacobi e de Gauss-Seidel}\label{cap_sislin_sec_jgs}
 
