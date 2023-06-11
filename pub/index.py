@@ -143,20 +143,20 @@ class Index:
         # redes sociais
         body += '<p class="text-left mb-0"><a href="./contato.html"><i class="fas fa-envelope"></i></a> | <a href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i></a> | <a href="https://archive.org/details/notas-de-aula"><i class="fas fa-building-columns"></i></a> | <a href="https://www.youtube.com/channel/UCwutHKlKLgVj6IkFSUFBqoA"><i class="fab fa-youtube"></i></a> | <a href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i></a></p>'
 
-        # jumbotron
-        body += '<div class="myjumbotron">'
-        body += '<div class="jumbotron text-center">'
-        body += '<div class="row">'
-        body += '<div class="col-lg-3 col-md-2">'
-        body += '</div>'
-        body += '<div class="col-lg-6 col-md-8 ">'
-        body += '<h1 class="display-4 bg-white text-dark mb-0" style="opacity:75%;">Notas de Aula</h1>'
-        body += '<p class="lead bg-white text-dark mt-0" style="opacity:75%;">Pedro H A Konzen</p>'
-        body += '</div>'
-        body += '</div>'
-        body += '</div> <!-- div class="jumbotron text-center" -->'
-        body += '<p class="mb-0" style="text-align: right; font-size: x-small;">Imagem: <a href="https://flic.kr/p/4krYcm">Eli Duke</a></p>'
-        body += '</div> <!-- class="myjumbotron" -->'
+        # # jumbotron
+        # body += '<div class="myjumbotron">'
+        # body += '<div class="jumbotron text-center">'
+        # body += '<div class="row">'
+        # body += '<div class="col-lg-3 col-md-2">'
+        # body += '</div>'
+        # body += '<div class="col-lg-6 col-md-8 ">'
+        # body += '<h1 class="display-4 bg-white text-dark mb-0" style="opacity:75%;">Notas de Aula</h1>'
+        # body += '<p class="lead bg-white text-dark mt-0" style="opacity:75%;">Pedro H A Konzen</p>'
+        # body += '</div>'
+        # body += '</div>'
+        # body += '</div> <!-- div class="jumbotron text-center" -->'
+        # body += '<p class="mb-0" style="text-align: right; font-size: x-small;">Imagem: <a href="https://flic.kr/p/4krYcm">Eli Duke</a></p>'
+        # body += '</div> <!-- class="myjumbotron" -->'
 
         
         
@@ -169,10 +169,10 @@ class Index:
         body += '<div class="carousel-inner">'
 
         # anúncio
-        body += '<div class="carousel-item">'
+        body += '<div class="carousel-item active">'
         body += self.add_anuncio(text = 'XI ERMAC-RS 2023 - Inscrições até 15/Jun',
                                  link = 'https://wp.ufpel.edu.br/ermacrs23/',
-                                 status = 'success')
+                                 status = 'danger')
         body += '</div>'
 
         # anúncio
@@ -191,7 +191,7 @@ class Index:
 
 
         # anúncio
-        body += '<div class="carousel-item active">'
+        body += '<div class="carousel-item">'
         body += self.add_anuncio(text = 'PPGMAp - UFRGS: Mestrado & Doutorado',
                                  link = 'https://www.ufrgs.br/ppgmap',
                                  status = 'primary')
