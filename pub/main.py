@@ -22,6 +22,7 @@ from ead import *
 from edo import *
 from matematicanumerica import *
 from matematicanumericai import *
+from matematicanumericaii import *
 from matematicanumericaparalela import *
 from matematicanumericaavancada import *
 from metodoelementosfinitos import *
@@ -72,6 +73,7 @@ ead = EaD(srcdir,odir)
 edo = EDO(srcdir,odir)
 mn = MatematicaNumerica(srcdir,odir)
 mni = MatematicaNumericaI(srcdir,odir)
+mnii = MatematicaNumericaII(srcdir,odir)
 mnp = MatematicaNumericaParalela(srcdir,odir)
 mna = MatematicaNumericaAvancada(srcdir,odir)
 mef = MetodoElementosFinitos(srcdir,odir)
@@ -93,6 +95,7 @@ if __name__ == '__main__':
                  edo,
                  mn,
                  mni,
+                 mnii,
                  mnp,
                  mna,
                  mef,

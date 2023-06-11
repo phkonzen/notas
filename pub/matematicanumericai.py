@@ -20,6 +20,7 @@ class MatematicaNumericaI(Notas):
     def make_pdf(self):
         os.chdir(self.srcdir+'/MatematicaNumericaI')
         os.system('make clean')
+        # self.tags2pdf(self.srcdir+'/MatematicaNumericaI')
         os.system('make pdf')
         os.chdir('../..')
 

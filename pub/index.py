@@ -277,9 +277,19 @@ class Index:
         body += '<div class="col">'
         body += self.new_card(header = "Notas de Aula",
                               title = "Matemática Numérica I",
-                              text = "Introdução ao cálculo numérico na resolução de equações e sistemas de equações",
+                              text = "Introdução a métodos numéricos para resolução de equações e para aproximação de funções",
                               badges = ["Python", "NumPy"],
                               link = "MatematicaNumericaI/main.html",
+                              color = "warning", status = "Novo")
+        body += '</div>'
+
+        # card: notas de aula de Matemática Numérica II
+        body += '<div class="col">'
+        body += self.new_card(header = "Notas de Aula",
+                              title = "Matemática Numérica II",
+                              text = "Introdução a métodos numéricos para o cálculo de funções e resolução de equações diferenciais",
+                              badges = ["Python", "NumPy"],
+                              link = "MatematicaNumericaII/main.html",
                               color = "warning", status = "Novo")
         body += '</div>'
 

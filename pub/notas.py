@@ -14,6 +14,39 @@ class Notas:
     def __init__(self):
         raise ValueError("Você não devia estar aqui!!!")
 
+    # def tags2pdf(self, srcPath):
+    #     print(f'tags2pdf: affecting {srcPath}')
+    #     pages = []
+    #     for (dirpath, dirnames, filenames) in os.walk(srcPath):
+    #         pages.extend(filenames)
+    #         break
+
+    #     print(pages)
+        
+    #     for p in pages:
+    #         fn,ext = os.path.splitext(p)
+    #         if (ext == '.tex'):
+    #             print(f'tags2pdf: affecting {srcPath}/{p}')
+    #             #lê a página atual
+    #             f = open(srcPath+"/"+p,'r')
+    #             page = f.read()
+    #             f.close()
+
+    #             # tag:revisar
+    #             page = page.replace('[[tag:revisar]]',
+    #                                 '[Necessita revisão!]')
+
+    #             # tag:construcao
+    #             page = page.replace('[[tag:construcao]]',
+    #                                 '[Em construção ...]')
+                
+    #             #sobrescreve a página com as alterações
+    #             f = open(srcPath+"/"+p,'w')
+    #             f.write(page)
+    #             f.close()
+    #     raise ValueError('oi')
+
+
     def goodies(self,htmldir,titulo_notas,srcref):
 
         # adiciona goodies.css
@@ -182,13 +215,19 @@ class Notas:
                         if (pos != -1):
                             src_fname = fn[0:pos]
 
-                    
-
                     link_to_src = ' <small><a href="../contato.html">'
                     link_to_src += '<i class="fas fa-envelope"></i></a></small>'
 
                     page = page.replace('</h1>',link_to_src+'</h1>')
                     page = page.replace('</h2>',link_to_src+'</h2>')
+
+                    # tag:revisar
+                    page = page.replace('[[tag:revisar]]',
+                                        '<span class="badge text-bg-warning">Necessita revisar!</span>')
+
+                    # tag:contrucao
+                    page = page.replace('[[tag:construcao]]',
+                                        '<span class="badge text-bg-danger">Em construção ...</span>')
 
                     # mídia com YouTube
                     i1 = page.find('[YouTube]')
@@ -196,6 +235,7 @@ class Notas:
                         yurl = '#'
                         vurl = '#'
                         aurl = '#'
+                        
                         # YouTube URL
                         if (page[i1+9:i1+13] == '</a>'):
                             i2 = page.rindex('href="',0,i1)
