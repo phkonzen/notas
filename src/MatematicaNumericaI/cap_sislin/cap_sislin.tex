@@ -48,7 +48,7 @@ e o \hl{\emph{vetor dos termos constantes}} $\pmb{b} = (b_i)_{i=1}^n$ é
 
 \section{Método da Decomposição LU}\label{cap_sislin_sec_lu}
 
-O Método da Decomposição LU é uma forma eficiente de se resolver sistemas lineares de pequeno porte. \hl{Dado um sistema $A\pmb{x} = b$, a ideia é decompor a matriz $A$ como o produto de uma \emph{matriz triangular inferior} $L$ (do inglês, \textit{low triangular matrix}) com uma \emph{matriz triangular superior} $U$ (do inglês, \textit{upper triangular matrix})}, i.e.
+O Método da Decomposição LU é uma forma eficiente de se resolver sistemas lineares de pequeno porte. \hl{Dado um sistema $A\pmb{x} = b$, a ideia é decompor a matriz $A$ como o produto de uma \emph{matriz triangular inferior} $L$ (do inglês, \textit{lower triangular matrix}) com uma \emph{matriz triangular superior} $U$ (do inglês, \textit{upper triangular matrix})}, i.e.
 \begin{equation}
   \hleq A = LU.
 \end{equation}
@@ -125,10 +125,10 @@ Antes de estudarmos como podemos computar a decomposição LU de uma matriz, vam
   \end{gather}
   Concluímos que a solução do sistema é $\pmb{x} = (2, -1, 3)$.
 
-\begin{lstlisting}[caption=sysLinTriaLow.py, label=cap_sislin_sec_lu:cod:sysLinTriaLow]
+\begin{lstlisting}[caption=solL.py, label=cap_sislin_sec_lu:cod:solL]
 import numpy as np
 
-def sysLinTriaLow(A, b):
+def solL(A, b):
     n = b.size
     x = np.zeros_like(b)
     for i in range(n):
@@ -148,7 +148,7 @@ A = np.array([[1., 0., 0.],
 b = np.array([2., -8., 0.])
 
 # resol sys lin
-x = sysLinTriaLow(A, b)
+x = solL(A, b)
 print(x)
 \end{lstlisting}
 \end{ex}
@@ -182,10 +182,10 @@ print(x)
     \end{matrix}
   \end{equation}
   Da última equação, temos
-  \begin{equation}
+  \begin{gather}
     x_3 = \frac{3}{3}\\
     x_3 = 1
-  \end{equation}
+  \end{gather}
   Então, da segunda equação do sistema, obtemos
   \begin{gather}
     2x_2 - x_3 = -3\\
@@ -202,10 +202,10 @@ print(x)
   \end{gather}
   Concluímos que a solução do sistema é $\pmb{x} = (2, -1, 1)$.
 
-\begin{lstlisting}[caption=sysLinTriaUpper.py, label=cap_sislin_sec_lu:cod:sysLinTriaUpper]
+\begin{lstlisting}[caption=solU.py, label=cap_sislin_sec_lu:cod:solU]
 import numpy as np
 
-def sysLinTriaUpper(A, b):
+def solU(A, b):
     n = b.size
     x = np.zeros_like(b)
     for i in range(n-1,-1,-1):
@@ -225,13 +225,16 @@ A = np.array([[2., -1., 2.],
 b = np.array([7., -3., 3.])
 
 # sol sys lin
-x = sysLinTriaUpper(A, b)
+x = solU(A, b)
 print(x)
 \end{lstlisting}
 \end{ex}
 
-
 \subsection{Decomposição LU}
+
+\begin{flushleft}
+  [[tag:revisar]]
+\end{flushleft}
 
 O procedimento de decomposição LU é equivalente ao método de eliminação gaussiana. Consideremos uma matriz $A = [a_{ij}]_{i,j=1}^{n,n}$, com $a_{1,1}\neq 0$. Denotando esta matriz por $U^{(1)} = [u_{i,j}^{(1)}]_{i,j=1}^{n,n} = A$ e tomando $L^{(1)} = I_{n\times n}$, observamos que a eliminação abaixo do pivô $u_{1,1}^{(1)}$, pode ser computada com as seguintes operações equivalentes por linha
 \begin{equation}
@@ -452,7 +455,11 @@ o que completa a decomposição tomando $L = L^{(3)}$ e $U = U^{(3)}$.
 % \fi
 \end{ex}
 
-\subsection{Fatoração LU com pivotamento parcial}
+\subsection{Fatoração LU com Pivotamento Parcial}
+
+\begin{flushleft}
+  [[tag:revisar]]
+\end{flushleft}
 
 O algoritmo discutido acima não prevê a necessidade de permutações de linhas no processo de eliminação gaussiana. Isto pode ser corrigido com a utilização de matrizes de permutação.
 
@@ -564,6 +571,10 @@ Com essa, iniciamos o procedimento de decomposição LU com $PA = L^{(1)}U^{(1)}
 \end{ex}
 
 \subsection*{Exercícios}
+
+\begin{flushleft}
+  [[tag:construcao]]
+\end{flushleft}
 
 \begin{exer}\label{exer:lup_sol}
   Resolva o sistema
@@ -900,9 +911,17 @@ Com essa, iniciamos o procedimento de decomposição LU com $PA = L^{(1)}U^{(1)}
 
 \section{Norma e número de condicionamento}\label{cap_sislin_sec_norma_numcond}
 
+\begin{flushleft}
+  [[tag:revisar]]
+\end{flushleft}
+
 Nesta seção, fazemos uma rápida discussão sobre normas de vetores e matrizes, bem como do número de condicionamento de uma matriz.
 
 \subsection{Norma $L^2$}
+
+\begin{flushleft}
+  [[tag:revisar]]
+\end{flushleft}
 
 A norma $L^2$ de um dado vetor $v = (v_1, v_2, \dotsc, v_n) \in \mathbb{R^n}$ é definida por
 \begin{equation}
@@ -980,6 +999,10 @@ tem norma $L^2$
 
 \subsection{Número de condicionamento}
 
+\begin{flushleft}
+  [[tag:revisar]]
+\end{flushleft}
+
 O número de condicionamento de uma matriz é uma medida referente a propagação de erros que ocorre da sua aplicação. Mais especificamente, assumamos que seja dada uma matriz invertível $A = [a_{ij}]_{i,j=1}^{n,n}$, um vetor $x\in\mathbb{R}^n$ e uma perturbação $\delta_x\in\mathbb{R}^n$. Além disso, sejam
 \begin{align}
   y &= Ax\\
@@ -1039,7 +1062,11 @@ Isto nos motiva a definir o \emph{número de condicionamento} da matriz $A$ por
   o que indica que $B$ é uma matriz mal condicionada.
 \end{ex}
 
-\subsection*{Exercícios}
+\subsection{Exercícios}
+
+\begin{flushleft}
+  [[tag:construcao]]
+\end{flushleft}
 
 \begin{exer}\label{exer:norma_numcond}
   Considere o seguinte sistema linear
@@ -1187,9 +1214,17 @@ Isto nos motiva a definir o \emph{número de condicionamento} da matriz $A$ por
 
 \section{Métodos de Jacobi e de Gauss-Seidel}\label{cap_sislin_sec_jgs}
 
+\begin{flushleft}
+  [[tag:revisar]]
+\end{flushleft}
+
 Nesta seção, discutiremos os métodos de Jacobi\footnote{Carl Gustav Jacob Jacobi, 1804 - 1851, matemático alemão. Fonte: \href{https://en.wikipedia.org/wiki/Carl_Gustav_Jacob_Jacobi}{Wikipedia}.} e de Gauss-Seidel\footnote{Johann Carl Friedrich Gauss, 1777 - 1855, matemático alemão. Philipp Ludwig von Seidel, 1821 - 1896, matemático alemão. Fonte: \href{https://en.wikipedia.org/wiki/Philipp_Ludwig_von_Seidel}{Wikipedia}.} para a aproximação da solução de sistemas lineares.
 
 \subsection{Método de Jacobi}
+
+\begin{flushleft}
+  [[tag:revisar]]
+\end{flushleft}
 
 Dado um sistema $A\pmb{x} = \pmb{b}$ com $n$ equações e $n$ incógnitas, consideramos a seguinte decomposição da matriz $A = L + D + U$:
 \begin{align}
@@ -1358,6 +1393,10 @@ a qual não requer a computação da matriz $T_J$ e $\pmb{c}_J$.
 
 \subsection{Método de Gauss-Seidel}
 
+\begin{flushleft}
+  [[tag:revisar]]
+\end{flushleft}
+
 Como acima, começamos considerando um sistema linear $A\pmb{x} = \pmb{b}$ e a decomposição $A = L + D + U$, onde $L$ é a parte triangular inferior de $A$, $D$ é sua parte diagonal e $U$ sua parte triangular superior. Então, observamos que
 \begin{align}
   A\pmb{x} = \pmb{b} &\Leftrightarrow (L + D + U)\pmb{x} = \pmb{b}\\
@@ -1413,6 +1452,10 @@ Observamos, também, que a iteração \eqref{eq:iter_gs_mat} pode ser reescrita 
 \end{ex}
 
 \subsection{Análise de convergência}
+
+\begin{flushleft}
+  [[tag:revisar]]
+\end{flushleft}
 
 Observamos que ambos os métodos de Jacobi e de Gauss-Seidel consistem de iterações da forma
 \begin{equation}
@@ -1474,6 +1517,10 @@ então ambos os métodos de Jacobi e de Gauss-Seidel são convergentes.
 
 \subsection*{Exercícios}
 
+\begin{flushleft}
+  [[tag:revisar]]
+\end{flushleft}
+
 \begin{exer}\label{exer:jacobi_exec}
   Considere o seguinte sistema linear
   \begin{align}
@@ -1509,6 +1556,10 @@ então ambos os métodos de Jacobi e de Gauss-Seidel são convergentes.
 \end{resp}
 
 \section{Método do gradiente}\label{cap_sislin_sec_metg}
+
+\begin{flushleft}
+  [[tag:revisar]]
+\end{flushleft}
 
 Começamos observando que se $A$ é uma matriz $n\times n$ positiva definida\footnote{$A$ é simétrica e $x^TAx > 0$ para todo $x\neq 0$.}, temos que $\pmb{x}\in\mathbb{R}^n$ é solução de
 \begin{equation}\label{eq:metg_sislin}
@@ -1604,6 +1655,10 @@ onde $\pmb{r}^{(k)}$ é o resíduo da iterada $k$ dado por
 
 \subsection{Escolha do passo}
 
+\begin{flushleft}
+  [[tag:revisar]]
+\end{flushleft}
+
 Da iteração do método do gradiente, temos que a melhor escolha do passo $\alpha^{(k)}$ é tal que
 \begin{equation}
   f(\pmb{x}^{(k)}+\alpha^{(k)}\pmb{r}^{(k)}) = \min_{\alpha > 0} f(\pmb{x}^{(k)}+\alpha\pmb{r}^{(k)}).
@@ -1664,9 +1719,15 @@ donde
 
 \subsection*{Exercícios}
 
-\emconstrucao
+\begin{flushleft}
+  [[tag:construcao]]
+\end{flushleft}
 
 \section{Método do gradiente conjugado}\label{cap_sislin_sec_metgc}
+
+\begin{flushleft}
+  [[tag:revisar]]
+\end{flushleft}
 
 O método do gradiente conjugado é uma variação do método do gradiente (veja Seção \ref{cap_sislin_sec_metg}). Aqui, a solução de um dado sistema $A\pmb{x}=\pmb{b}$, com $A$ uma matriz positiva definida, é computada de forma iterativa por
 \begin{align}
@@ -1720,4 +1781,6 @@ para $k = 1, 2, \ldots$, e $\pmb{r}^{(k)} = A\pmb{x}^{(k)}-\pmb{b}$.
 
 \subsection*{Exercícios}
 
-\emconstrucao
+\begin{flushleft}
+  [[tag:construcao]]
+\end{flushleft}
