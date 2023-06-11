@@ -223,7 +223,7 @@ class Notas:
 
                     # tag:revisar
                     page = page.replace('[[tag:revisar]]',
-                                        '<span class="badge text-bg-warning">Necessita revisar!</span>')
+                                        '<span class="badge text-bg-warning">Necessita revisão!</span>')
 
                     # tag:contrucao
                     page = page.replace('[[tag:construcao]]',
