@@ -1,0 +1,333 @@
+<!DOCTYPE html><html lang="pt">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>4.3 Método adaptativo com controle de erro‣ Capítulo 4 Problema de valor inicial ‣ Matemática Numérica II</title>
+<!--Generated on Sun Jun 11 09:07:32 2023 by LaTeXML (version 0.8.6) http://dlmf.nist.gov/LaTeXML/.-->
+<!--Document created on 11 de junho de 2023.-->
+
+<link rel="stylesheet" href="LaTeXML.css" type="text/css">
+<link rel="stylesheet" href="ltx-book.css" type="text/css">
+<link rel="stylesheet" href="ltx-listings.css" type="text/css">
+<link rel="stylesheet" href="ltx-ulem.css" type="text/css">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="main.css" type="text/css">
+<link rel="stylesheet" href="./fonts/cmun-serif.css" type="text/css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=MML_SVG" type="text/javascript"></script>
+<link rel="up" href="cap_pvi.html" title="Capítulo 4 Problema de valor inicial ‣ Matemática Numérica II">
+<link rel="up up" href="main.html" title="Matemática Numérica II">
+<link rel="start" href="main.html" title="Matemática Numérica II">
+<link rel="prev" href="cap_pvi_sec_RK.html" title="4.2 Métodos de Runge-Kutta ‣ Capítulo 4 Problema de valor inicial ‣ Matemática Numérica II">
+<link rel="next" href="cap_pvi_sec_passo_mult.html" title="4.4 Métodos de passo múltiplo ‣ Capítulo 4 Problema de valor inicial ‣ Matemática Numérica II">
+<link rel="section" href="cap_pvi_sec_Euler.html" title="4.1 Método de Euler ‣ Capítulo 4 Problema de valor inicial ‣ Matemática Numérica II">
+<link rel="section" href="cap_pvi_sec_RK.html" title="4.2 Métodos de Runge-Kutta ‣ Capítulo 4 Problema de valor inicial ‣ Matemática Numérica II">
+<link rel="section" href="cap_pvi_sec_passo_mult.html" title="4.4 Métodos de passo múltiplo ‣ Capítulo 4 Problema de valor inicial ‣ Matemática Numérica II">
+<link rel="chapter" href="licenca.html" title="Licença ‣ Matemática Numérica II">
+<link rel="chapter" href="prefacio.html" title="Prefácio ‣ Matemática Numérica II">
+<link rel="chapter" href="cap_deriv.html" title="Capítulo 1 Derivação ‣ Matemática Numérica II">
+<link rel="chapter" href="cap_extrapl.html" title="Capítulo 2 Técnicas de extrapolação ‣ Matemática Numérica II">
+<link rel="chapter" href="cap_integr.html" title="Capítulo 3 Integração ‣ Matemática Numérica II">
+<link rel="chapter" href="cap_pvi.html" title="Capítulo 4 Problema de valor inicial ‣ Matemática Numérica II">
+<link rel="chapter" href="cap_pvc.html" title="Capítulo 5 Problema de valor de contorno ‣ Matemática Numérica II">
+<link rel="chapter" href="cap_edp.html" title="Capítulo 6 Equações Diferenciais Parciais ‣ Matemática Numérica II">
+<link rel="bibliography" href="bib.html" title="Referências ‣ Matemática Numérica II">
+<meta name="author" content="Pedro H A Konzen"/><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous"><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script><link href="../fontawesome/css/all.min.css" rel="stylesheet"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"><link rel="stylesheet" href="goodies.css" type="text/css"><!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WZM0C3FQ62"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-WZM0C3FQ62');
+</script>
+</head>
+<body><div class="container-fluid mb-0"><div class="row"><div class="col-xxl-1"></div><div class="col-xxl-10"><div id="colabAlert" class="alert alert-warning alert-dismissible sticky-top m-0 d-flex justify-content-between" role="alert" style="">
+  <!-- <p class="m-0 d-flex justify-content-between"> -->
+    <span><a href="../contato.html"><i class="fas fa-envelope"></i></a>  <strong> Colabore com <a href="../contato.html" class="link-primary">sugestões</a> ou avisos de <a href="../contato.html">erros</a>!</strong></span>  <span class="material-symbols-outlined m-0">screen_rotation</span>
+  <span><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></span>
+  <!-- </p> -->
+</div>
+<div class="container-fluid d-flex justify-content-center mt-2 mb-2 fixed-bottom">
+  <div id="generalAlert" class="alert alert-warning alert-dismissible" role="alert" style="max-width: 300rem;">
+    Ao navegar por este
+    <i>site
+    </i>, você concorda com a
+    <a href="https://notaspedrok.com.br/notas/politica.html">Política de Uso de Dados
+    </a>.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+    </button>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+      $("#generalAlert").hide();
+      if (document.referrer.lastIndexOf("notaspedrok.com.br") == -1) {
+          $("#generalAlert").fadeIn(1000);
+      }
+  });   
+</script>
+<!-- begin: navbar --><nav class="navbar navbar-dark bg-primary mb-1"><div class="container-fluid"><a class="navbar-brand" href="main.html">Notas de Aula<br/><small>Matemática Numérica II</small></a><button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button><div class="collapse navbar-collapse" id="navbarNav"><ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="../index.html"><i class="fas fa-home"></i> Início</a></li><li class="nav-item"><a class="nav-link active" href="main.html">Sumário</a></li><li class="nav-item"><a class="nav-link" href="main.pdf"><i class="fas fa-download" aria-hidden="true"></i> PDF</a></li><li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">Contato</a><div class="dropdown-menu" aria-labelledby="navbarDropdown"><a class="dropdown-item" href="../contato.html"><i class="fas fa-envelope"></i> Mensagem</a><a class="dropdown-item" href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i> notas.pedrok</a></div><!-- div class="dropdown-menu" aria-labelledby="navbarDropdown" --></li> <!-- li class="nav-item dropdown" --><li class="nav-item"><a class="nav-link" href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i> Repo</a></li><li class="nav-item"><a class="nav-link" href="../politica.html">Política de dados</a></li></ul></div><!-- /.navbar-collapse --></div><!-- /.container-fluid --></nav><!-- end: navbar --><p class="text-left mb-0"><a href="./contato.html"><i class="fas fa-envelope"></i></a> | <a href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i></a> | <a href="https://archive.org/details/notas-de-aula"><i class="fas fa-building-columns"></i></a> | <a href="https://www.youtube.com/channel/UCwutHKlKLgVj6IkFSUFBqoA"><i class="fab fa-youtube"></i></a> | <a href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i></a></p>
+<div class="ltx_page_main">
+<header class="ltx_page_header">
+<div>
+<a href="cap_pvi.html" title="Capítulo 4 Problema de valor inicial ‣ Matemática Numérica II" class="ltx_ref" rel="up"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">4 </span>Problema de valor inicial</span></a><a href="cap_pvi_sec_RK.html" title="4.2 Métodos de Runge-Kutta ‣ Capítulo 4 Problema de valor inicial ‣ Matemática Numérica II" class="ltx_ref" rel="prev"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">4.2 </span>Métodos de Runge-Kutta</span></a><a href="cap_pvi_sec_passo_mult.html" title="4.4 Métodos de passo múltiplo ‣ Capítulo 4 Problema de valor inicial ‣ Matemática Numérica II" class="ltx_ref" rel="next"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">4.4 </span>Métodos de passo múltiplo</span></a>
+</div></header>
+<div class="ltx_page_content">
+<section class="ltx_section ltx_authors_1line" lang="pt">
+<h1 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">4.3 </span>Método adaptativo com controle de erro <small><a href="../contato.html"><i class="fas fa-envelope"></i></a></small></h1>
+
+<div id="p1" class="ltx_para ltx_align_left">
+<p class="ltx_p"><span class="badge text-bg-warning">Necessita revisão!</span></p>
+</div>
+<div id="p2" class="ltx_para">
+<p class="ltx_p">Consideremos um problema de valor inicia</p>
+<table id="Ch6.S3.EGx89" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="Ch4.E72"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch4.E72.m1" class="ltx_Math" alttext="\displaystyle y^{\prime}(t)" display="inline"><mrow><msup><mi>y</mi><mo>′</mo></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch4.E72.m2" class="ltx_Math" alttext="\displaystyle=f(t,y(t)),\quad t&gt;t_{0}," display="inline"><mrow><mrow><mrow><mi></mi><mo>=</mo><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo>,</mo><mrow><mi>y</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow><mo rspace="12.5pt">,</mo><mrow><mi>t</mi><mo>&gt;</mo><msub><mi>t</mi><mn>0</mn></msub></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(4.72)</span></td>
+</tr></tbody>
+<tbody id="Ch4.E73"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch4.E73.m1" class="ltx_Math" alttext="\displaystyle y(t_{0})" display="inline"><mrow><mi>y</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>t</mi><mn>0</mn></msub><mo stretchy="false">)</mo></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch4.E73.m2" class="ltx_Math" alttext="\displaystyle=y_{0}." display="inline"><mrow><mrow><mi></mi><mo>=</mo><msub><mi>y</mi><mn>0</mn></msub></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(4.73)</span></td>
+</tr></tbody>
+</table>
+<p class="ltx_p">e um método de passo simples</p>
+<table id="Ch6.S3.EGx90" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="Ch4.E74"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch4.E74.m1" class="ltx_Math" alttext="\displaystyle y^{(1)}" display="inline"><msup><mi>y</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msup></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch4.E74.m2" class="ltx_Math" alttext="\displaystyle=y_{0}," display="inline"><mrow><mrow><mi></mi><mo>=</mo><msub><mi>y</mi><mn>0</mn></msub></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(4.74)</span></td>
+</tr></tbody>
+<tbody id="Ch4.E75"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch4.E75.m1" class="ltx_Math" alttext="\displaystyle y^{(i+1)}(h^{(i+1)})" display="inline"><mrow><msup><mi>y</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>h</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch4.E75.m2" class="ltx_Math" alttext="\displaystyle=y^{(i)}+h^{(i+1)}\Phi(t^{(i)},y^{(i)};h^{(i+1)})," display="inline"><mrow><mrow><mi></mi><mo>=</mo><mrow><msup><mi>y</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msup><mo>+</mo><mrow><msup><mi>h</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo>⁢</mo><mi mathvariant="normal">Φ</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>t</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msup><mo>,</mo><msup><mi>y</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msup><mo>;</mo><msup><mi>h</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(4.75)</span></td>
+</tr></tbody>
+</table>
+<p class="ltx_p">com <math id="p2.m1" class="ltx_Math" alttext="t^{(i)}=t_{0}+(i-1)h^{(i)}" display="inline"><mrow><msup><mi>t</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><mrow><msub><mi>t</mi><mn>0</mn></msub><mo>+</mo><mrow><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>-</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><msup><mi>h</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msup></mrow></mrow></mrow></math>. Nesta seção, discutiremos uma estimava para o maior valor de <math id="p2.m2" class="ltx_Math" alttext="h^{(i+1)}" display="inline"><msup><mi>h</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup></math> tal que o erro de discretização global <math id="p2.m3" class="ltx_Math" alttext="e(t^{(i+1)};h^{(i+1)})" display="inline"><mrow><mi>e</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>t</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo>;</mo><msup><mi>h</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow></math> seja controlado por uma dada tolerância <math id="p2.m4" class="ltx_Math" alttext="TOL" display="inline"><mrow><mi>T</mi><mo>⁢</mo><mi>O</mi><mo>⁢</mo><mi>L</mi></mrow></math>, i.e.</p>
+<table id="eq:pvi_erro_aux1" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch4.E76.m1" class="ltx_Math" alttext="|e(t^{(i+1)};h^{(i+1)})|:=|y^{(i+1)}(h^{(i+1)})-y(t^{(i+1)})|\approx TOL." display="block"><mrow><mrow><mrow><mo stretchy="false">|</mo><mrow><mi>e</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>t</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo>;</mo><msup><mi>h</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">|</mo></mrow><mo>:=</mo><mrow><mo stretchy="false">|</mo><mrow><mrow><msup><mi>y</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>h</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow><mo>-</mo><mrow><mi>y</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>t</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow></mrow><mo stretchy="false">|</mo></mrow><mo>≈</mo><mrow><mi>T</mi><mo>⁢</mo><mi>O</mi><mo>⁢</mo><mi>L</mi></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(4.76)</span></td>
+</tr>
+</table>
+</div>
+<div id="p3" class="ltx_para">
+<p class="ltx_p">Para um método de ordem <math id="p3.m1" class="ltx_Math" alttext="h^{p}" display="inline"><msup><mi>h</mi><mi>p</mi></msup></math>, pode-se mostrar que (veja, <cite class="ltx_cite ltx_citemacro_cite">[<a href="bib.html#bib3" title="Analysis of numerical methods" class="ltx_ref">2</a>, Cap. 7, Seç. 7.2]</cite>)</p>
+<table id="eq:pvi_erro_aux0" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch4.E77.m1" class="ltx_Math" alttext="y^{(i+1)}(h^{(i+1)})=y(t^{(i+1)})+e_{p}(t^{(i+1)})(h^{(i+1)})^{p}," display="block"><mrow><mrow><mrow><msup><mi>y</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>h</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mi>y</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>t</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><msub><mi>e</mi><mi>p</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>t</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow><mo>⁢</mo><msup><mrow><mo stretchy="false">(</mo><msup><mi>h</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow><mi>p</mi></msup></mrow></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(4.77)</span></td>
+</tr>
+</table>
+<p class="ltx_p">onde <math id="p3.m2" class="ltx_Math" alttext="e(t^{(i+1)})" display="inline"><mrow><mi>e</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>t</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow></math> é uma função apropriada. Então, assumindo que <math id="p3.m3" class="ltx_Math" alttext="e(t^{(i)};h^{(i)})=0" display="inline"><mrow><mrow><mi>e</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>t</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msup><mo>;</mo><msup><mi>h</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>0</mn></mrow></math>, temos</p>
+<table id="eq:pvi_erro_aux2" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch4.E78.m1" class="ltx_Math" alttext="e_{p}(t^{(i+1)})=h^{(i+1)}e_{p}^{\prime}(t^{(i)})" display="block"><mrow><mrow><msub><mi>e</mi><mi>p</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>t</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><msup><mi>h</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo>⁢</mo><msubsup><mi>e</mi><mi>p</mi><mo>′</mo></msubsup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>t</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(4.78)</span></td>
+</tr>
+</table>
+<p class="ltx_p">e, portanto, para termos (<a href="#eq:pvi_erro_aux1" title="(4.76) ‣ 4.3 Método adaptativo com controle de erro ‣ Capítulo 4 Problema de valor inicial ‣ Matemática Numérica II" class="ltx_ref"><span class="ltx_text ltx_ref_tag">4.76</span></a>) impomos que</p>
+<table id="eq:pvi_erro_aux4" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch4.E79.m1" class="ltx_Math" alttext="|(h^{(i+1)})^{p+1}e_{p}^{\prime}(t^{(i)})|=TOL." display="block"><mrow><mrow><mrow><mo stretchy="false">|</mo><mrow><msup><mrow><mo stretchy="false">(</mo><msup><mi>h</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow><mrow><mi>p</mi><mo>+</mo><mn>1</mn></mrow></msup><mo>⁢</mo><msubsup><mi>e</mi><mi>p</mi><mo>′</mo></msubsup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>t</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">|</mo></mrow><mo>=</mo><mrow><mi>T</mi><mo>⁢</mo><mi>O</mi><mo>⁢</mo><mi>L</mi></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(4.79)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Daí, se obtermos uma aproximação para <math id="p3.m4" class="ltx_Math" alttext="e_{p}^{\prime}(t^{(i)})" display="inline"><mrow><msubsup><mi>e</mi><mi>p</mi><mo>′</mo></msubsup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>t</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow></math> teremos uma aproximação para o passo <math id="p3.m5" class="ltx_Math" alttext="h^{(i+1)}" display="inline"><msup><mi>h</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup></math>.</p>
+</div>
+<div id="p4" class="ltx_para">
+<p class="ltx_p">Para estimarmos <math id="p4.m1" class="ltx_Math" alttext="e_{p}(t^{(i+1)})" display="inline"><mrow><msub><mi>e</mi><mi>p</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>t</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow></math>, observamos que de (<a href="#eq:pvi_erro_aux0" title="(4.77) ‣ 4.3 Método adaptativo com controle de erro ‣ Capítulo 4 Problema de valor inicial ‣ Matemática Numérica II" class="ltx_ref"><span class="ltx_text ltx_ref_tag">4.77</span></a>) temos</p>
+<table id="Ch4.E80" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch4.E80.m1" class="ltx_Math" alttext="y^{(i+1)}\left(\frac{h^{(i+1)}}{2}\right)=y(t^{(i+1)})+e_{p}(t^{(i+1)})\frac{(%
+h^{(i+1)})^{p}}{2^{p}}" display="block"><mrow><mrow><msup><mi>y</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo>⁢</mo><mrow><mo>(</mo><mfrac><msup><mi>h</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mn>2</mn></mfrac><mo>)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mi>y</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>t</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><msub><mi>e</mi><mi>p</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>t</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mfrac><msup><mrow><mo stretchy="false">(</mo><msup><mi>h</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow><mi>p</mi></msup><msup><mn>2</mn><mi>p</mi></msup></mfrac></mrow></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(4.80)</span></td>
+</tr>
+</table>
+<p class="ltx_p">e, então, subtraindo esta de (<a href="#eq:pvi_erro_aux0" title="(4.77) ‣ 4.3 Método adaptativo com controle de erro ‣ Capítulo 4 Problema de valor inicial ‣ Matemática Numérica II" class="ltx_ref"><span class="ltx_text ltx_ref_tag">4.77</span></a>) temos</p>
+<table id="Ch4.E81" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch4.E81.m1" class="ltx_Math" alttext="y^{(i+1)}(h^{(i+1)})-y^{(i+1)}\left(\frac{h^{(i+1)}}{2}\right)=e_{p}(t^{(i+1)}%
+)\left(\frac{h^{(i+1)}}{2}\right)^{p}(2^{p}-1)," display="block"><mrow><mrow><mrow><mrow><msup><mi>y</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>h</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow><mo>-</mo><mrow><msup><mi>y</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo>⁢</mo><mrow><mo>(</mo><mfrac><msup><mi>h</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mn>2</mn></mfrac><mo>)</mo></mrow></mrow></mrow><mo>=</mo><mrow><msub><mi>e</mi><mi>p</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>t</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow><mo>⁢</mo><msup><mrow><mo>(</mo><mfrac><msup><mi>h</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mn>2</mn></mfrac><mo>)</mo></mrow><mi>p</mi></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msup><mn>2</mn><mi>p</mi></msup><mo>-</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(4.81)</span></td>
+</tr>
+</table>
+<p class="ltx_p">donde</p>
+<table id="Ch4.E82" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch4.E82.m1" class="ltx_Math" alttext="e_{p}(t^{(i+1)})\left(\frac{h^{(i+1)}}{2}\right)^{p}=\frac{y^{(i+1)}(h^{(i+1)}%
+)-y^{(i+1)}\left(\frac{h^{(i+1)}}{2}\right)}{2^{p}-1}." display="block"><mrow><mrow><mrow><msub><mi>e</mi><mi>p</mi></msub><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>t</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow><mo>⁢</mo><msup><mrow><mo>(</mo><mfrac><msup><mi>h</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mn>2</mn></mfrac><mo>)</mo></mrow><mi>p</mi></msup></mrow><mo>=</mo><mfrac><mrow><mrow><msup><mi>y</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>h</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow><mo>-</mo><mrow><msup><mi>y</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo>⁢</mo><mrow><mo>(</mo><mfrac><msup><mi>h</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mn>2</mn></mfrac><mo>)</mo></mrow></mrow></mrow><mrow><msup><mn>2</mn><mi>p</mi></msup><mo>-</mo><mn>1</mn></mrow></mfrac></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(4.82)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Daí, de (<a href="#eq:pvi_erro_aux2" title="(4.78) ‣ 4.3 Método adaptativo com controle de erro ‣ Capítulo 4 Problema de valor inicial ‣ Matemática Numérica II" class="ltx_ref"><span class="ltx_text ltx_ref_tag">4.78</span></a>), obtemos</p>
+<table id="Ch4.E83" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch4.E83.m1" class="ltx_Math" alttext="e_{p}^{\prime}(t^{(i)})h^{(i+1)}\left(\frac{h^{(i+1)}}{2}\right)^{p}=\frac{y^{%
+(i+1)}(h^{(i+1)})-y^{(i+1)}\left(\frac{h^{(i+1)}}{2}\right)}{2^{p}-1}," display="block"><mrow><mrow><mrow><msubsup><mi>e</mi><mi>p</mi><mo>′</mo></msubsup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>t</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow><mo>⁢</mo><msup><mi>h</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo>⁢</mo><msup><mrow><mo>(</mo><mfrac><msup><mi>h</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mn>2</mn></mfrac><mo>)</mo></mrow><mi>p</mi></msup></mrow><mo>=</mo><mfrac><mrow><mrow><msup><mi>y</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>h</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow><mo>-</mo><mrow><msup><mi>y</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo>⁢</mo><mrow><mo>(</mo><mfrac><msup><mi>h</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mn>2</mn></mfrac><mo>)</mo></mrow></mrow></mrow><mrow><msup><mn>2</mn><mi>p</mi></msup><mo>-</mo><mn>1</mn></mrow></mfrac></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(4.83)</span></td>
+</tr>
+</table>
+<p class="ltx_p">o que nos fornece a seguinte aproximação de <math id="p4.m2" class="ltx_Math" alttext="e_{p}^{\prime}(t^{(i)})" display="inline"><mrow><msubsup><mi>e</mi><mi>p</mi><mo>′</mo></msubsup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>t</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow></math></p>
+<table id="Ch4.E84" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch4.E84.m1" class="ltx_Math" alttext="e_{p}^{\prime}(t^{(i)})=\frac{1}{(h^{(i+1)})^{p+1}}\frac{2^{p}}{2^{p}-1}\left[%
+y^{(i+1)}(h^{(i+1)})-y^{(i+1)}\left(\frac{h^{(i+1)}}{2}\right)\right]." display="block"><mrow><mrow><mrow><msubsup><mi>e</mi><mi>p</mi><mo>′</mo></msubsup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>t</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mfrac><mn>1</mn><msup><mrow><mo stretchy="false">(</mo><msup><mi>h</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow><mrow><mi>p</mi><mo>+</mo><mn>1</mn></mrow></msup></mfrac><mo>⁢</mo><mfrac><msup><mn>2</mn><mi>p</mi></msup><mrow><msup><mn>2</mn><mi>p</mi></msup><mo>-</mo><mn>1</mn></mrow></mfrac><mo>⁢</mo><mrow><mo>[</mo><mrow><mrow><msup><mi>y</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>h</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow><mo>-</mo><mrow><msup><mi>y</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo>⁢</mo><mrow><mo>(</mo><mfrac><msup><mi>h</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mn>2</mn></mfrac><mo>)</mo></mrow></mrow></mrow><mo>]</mo></mrow></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(4.84)</span></td>
+</tr>
+</table>
+</div>
+<div id="p5" class="ltx_para">
+<p class="ltx_p">Assim sendo, de (<a href="#eq:pvi_erro_aux4" title="(4.79) ‣ 4.3 Método adaptativo com controle de erro ‣ Capítulo 4 Problema de valor inicial ‣ Matemática Numérica II" class="ltx_ref"><span class="ltx_text ltx_ref_tag">4.79</span></a>) temos que o passo <math id="p5.m1" class="ltx_Math" alttext="h^{(i+1)}" display="inline"><msup><mi>h</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup></math> apropriado é tal que</p>
+<table id="eq:pvi_passo_est" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch4.E85.m1" class="ltx_Math" alttext="\frac{2^{p}}{2^{p}-1}\left|y^{(i+1)}(h^{(i+1)})-y^{(i+1)}\left(\frac{h^{(i+1)}%
+}{2}\right)\right|\approx TOL." display="block"><mrow><mrow><mrow><mfrac><msup><mn>2</mn><mi>p</mi></msup><mrow><msup><mn>2</mn><mi>p</mi></msup><mo>-</mo><mn>1</mn></mrow></mfrac><mo>⁢</mo><mrow><mo>|</mo><mrow><mrow><msup><mi>y</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>h</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow><mo>-</mo><mrow><msup><mi>y</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo>⁢</mo><mrow><mo>(</mo><mfrac><msup><mi>h</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mn>2</mn></mfrac><mo>)</mo></mrow></mrow></mrow><mo>|</mo></mrow></mrow><mo>≈</mo><mrow><mi>T</mi><mo>⁢</mo><mi>O</mi><mo>⁢</mo><mi>L</mi></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(4.85)</span></td>
+</tr>
+</table>
+</div>
+<div id="p6" class="ltx_para">
+<p class="ltx_p">Com base nesta estimativa podemos propor o seguinte método de passo adaptativo. Partindo de uma escolha arbitrária de <math id="p6.m1" class="ltx_Math" alttext="h" display="inline"><mi>h</mi></math>, computamos <math id="p6.m2" class="ltx_Math" alttext="y^{(i+1)}(h)" display="inline"><mrow><msup><mi>y</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>h</mi><mo stretchy="false">)</mo></mrow></mrow></math> e <math id="p6.m3" class="ltx_Math" alttext="y^{(i+1)}(h/2)" display="inline"><mrow><msup><mi>y</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mi>h</mi><mo>/</mo><mn>2</mn></mrow><mo stretchy="false">)</mo></mrow></mrow></math> de <math id="p6.m4" class="ltx_Math" alttext="y^{(i)}" display="inline"><msup><mi>y</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msup></math>. Então, enquanto</p>
+<table id="Ch4.E86" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch4.E86.m1" class="ltx_Math" alttext="\frac{2^{p}}{2^{p}-1}\left|y^{(i+1)}(h)-y^{(i+1)}\left(\frac{h}{2}\right)%
+\right|&gt;TOL," display="block"><mrow><mrow><mrow><mfrac><msup><mn>2</mn><mi>p</mi></msup><mrow><msup><mn>2</mn><mi>p</mi></msup><mo>-</mo><mn>1</mn></mrow></mfrac><mo>⁢</mo><mrow><mo>|</mo><mrow><mrow><msup><mi>y</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>h</mi><mo stretchy="false">)</mo></mrow></mrow><mo>-</mo><mrow><msup><mi>y</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo>⁢</mo><mrow><mo>(</mo><mfrac><mi>h</mi><mn>2</mn></mfrac><mo>)</mo></mrow></mrow></mrow><mo>|</mo></mrow></mrow><mo>&gt;</mo><mrow><mi>T</mi><mo>⁢</mo><mi>O</mi><mo>⁢</mo><mi>L</mi></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(4.86)</span></td>
+</tr>
+</table>
+<p class="ltx_p">tomamos sucessivas divisões de <math id="p6.m5" class="ltx_Math" alttext="h" display="inline"><mi>h</mi></math> por <math id="p6.m6" class="ltx_Math" alttext="2" display="inline"><mn>2</mn></math>, até satisfazermos (<a href="#eq:pvi_passo_est" title="(4.85) ‣ 4.3 Método adaptativo com controle de erro ‣ Capítulo 4 Problema de valor inicial ‣ Matemática Numérica II" class="ltx_ref"><span class="ltx_text ltx_ref_tag">4.85</span></a>). Obtido o <math id="p6.m7" class="ltx_Math" alttext="h" display="inline"><mi>h</mi></math> que satisfaz (<a href="#eq:pvi_passo_est" title="(4.85) ‣ 4.3 Método adaptativo com controle de erro ‣ Capítulo 4 Problema de valor inicial ‣ Matemática Numérica II" class="ltx_ref"><span class="ltx_text ltx_ref_tag">4.85</span></a>), temos computado <math id="p6.m8" class="ltx_Math" alttext="y^{(i+1)}" display="inline"><msup><mi>y</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup></math> com <math id="p6.m9" class="ltx_Math" alttext="h^{(i+1)}=h" display="inline"><mrow><msup><mi>h</mi><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><mi>h</mi></mrow></math>.</p>
+</div>
+<div id="ex:Euler_adap" class="ltx_theorem ltx_theorem_ex">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Exemplo 4.3.1</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmex1.p1" class="ltx_para">
+<p class="ltx_p">Consideremos o seguinte problema de valor inicial</p>
+<table id="Ch6.S3.EGx91" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="Ch4.E87"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch4.E87.m1" class="ltx_Math" alttext="\displaystyle y^{\prime}-y" display="inline"><mrow><msup><mi>y</mi><mo>′</mo></msup><mo>-</mo><mi>y</mi></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch4.E87.m2" class="ltx_Math" alttext="\displaystyle=\operatorname{sen}(t),t&gt;0" display="inline"><mrow><mrow><mi></mi><mo>=</mo><mrow><mi>sen</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow></mrow><mo>,</mo><mrow><mi>t</mi><mo>&gt;</mo><mn>0</mn></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(4.87)</span></td>
+</tr></tbody>
+<tbody id="Ch4.E88"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch4.E88.m1" class="ltx_Math" alttext="\displaystyle y(0)" display="inline"><mrow><mi>y</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch4.E88.m2" class="ltx_Math" alttext="\displaystyle=\frac{1}{2}." display="inline"><mrow><mrow><mi></mi><mo>=</mo><mstyle displaystyle="true"><mfrac><mn>1</mn><mn>2</mn></mfrac></mstyle></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(4.88)</span></td>
+</tr></tbody>
+</table>
+<p class="ltx_p">A Figura <a href="#fig:ex_Euler_adap" title="Figura 4.2 ‣ Exemplo 4.3.1. ‣ 4.3 Método adaptativo com controle de erro ‣ Capítulo 4 Problema de valor inicial ‣ Matemática Numérica II" class="ltx_ref"><span class="ltx_text ltx_ref_tag">4.2</span></a> mostra a comparação entre <math id="Thmex1.p1.m1" class="ltx_Math" alttext="y(t)" display="inline"><mrow><mi>y</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow></math> e a solução numérica obtida da aplicação do método de Euler com passo adaptativo. No método, utilizamos o passo inicial <math id="Thmex1.p1.m2" class="ltx_Math" alttext="h^{(1)}=0,1" display="inline"><mrow><msup><mi>h</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><mn>0,1</mn></mrow></math> e tolerância <math id="Thmex1.p1.m3" class="ltx_Math" alttext="TOL=10^{-4}" display="inline"><mrow><mrow><mi>T</mi><mo>⁢</mo><mi>O</mi><mo>⁢</mo><mi>L</mi></mrow><mo>=</mo><msup><mn>10</mn><mrow><mo>-</mo><mn>4</mn></mrow></msup></mrow></math>. Ao compararmos esta figura com a Figura (<a href="cap_pvi_sec_Euler.html#fig:ex_Euler_1" title="Figura 4.1 ‣ Exemplo 4.1.1. ‣ 4.1 Método de Euler ‣ Capítulo 4 Problema de valor inicial ‣ Matemática Numérica II" class="ltx_ref"><span class="ltx_text ltx_ref_tag">4.1</span></a>) fica evidente o controle do erro.</p>
+</div>
+<figure id="fig:ex_Euler_adap" class="ltx_figure"><img src="cap_pvi/dados/ex_Euler_adap/ex_Euler_adap.jpg" id="Ch4.F2.g1" class="ltx_graphics ltx_centering" width="432" height="325" alt="">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure"><span class="ltx_text" style="font-size:90%;">Figura 4.2</span>: </span><span class="ltx_text" style="font-size:90%;">Resultados referentes ao Exemplo <a href="#ex:Euler_adap" title="Exemplo 4.3.1. ‣ 4.3 Método adaptativo com controle de erro ‣ Capítulo 4 Problema de valor inicial ‣ Matemática Numérica II" class="ltx_ref"><span class="ltx_text ltx_ref_tag">4.3.1</span></a>.</span></figcaption>
+</figure>
+</div>
+<section id="SSx1" class="ltx_subsection">
+<h2 class="ltx_title ltx_title_subsection">Exercícios <small><a href="../contato.html"><i class="fas fa-envelope"></i></a></small></h2>
+
+<div id="SSx1.p1" class="ltx_para ltx_align_left">
+<p class="ltx_p"><span class="badge text-bg-warning">Necessita revisão!</span></p>
+</div>
+<div id="Thmexer1" class="ltx_theorem ltx_theorem_exer">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Exercício 4.3.1</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmexer1.p1" class="ltx_para">
+<p class="ltx_p">Considere o seguinte problema de valor inicial</p>
+<table id="Ch6.S3.EGx92" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="Ch4.E89"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch4.E89.m1" class="ltx_Math" alttext="\displaystyle y^{\prime}" display="inline"><msup><mi>y</mi><mo>′</mo></msup></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch4.E89.m2" class="ltx_Math" alttext="\displaystyle+e^{-y^{2}+1}=2,\quad t&gt;1," display="inline"><mrow><mrow><mrow><mrow><mo>+</mo><msup><mi>e</mi><mrow><mrow><mo>-</mo><msup><mi>y</mi><mn>2</mn></msup></mrow><mo>+</mo><mn>1</mn></mrow></msup></mrow><mo>=</mo><mn>2</mn></mrow><mo rspace="12.5pt">,</mo><mrow><mi>t</mi><mo>&gt;</mo><mn>1</mn></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(4.89)</span></td>
+</tr></tbody>
+<tbody id="Ch4.E90"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch4.E90.m1" class="ltx_Math" alttext="\displaystyle y(1)" display="inline"><mrow><mi>y</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch4.E90.m2" class="ltx_Math" alttext="\displaystyle=-1." display="inline"><mrow><mrow><mi></mi><mo>=</mo><mrow><mo>-</mo><mn>1</mn></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(4.90)</span></td>
+</tr></tbody>
+</table>
+<p class="ltx_p">Use o método de Euler com passo adaptativo para computar o valor aproximado de <math id="Thmexer1.p1.m1" class="ltx_Math" alttext="y(2)" display="inline"><mrow><mi>y</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></mrow></math>. Para tanto, utilize o passo inicial <math id="Thmexer1.p1.m2" class="ltx_Math" alttext="h=0,1" display="inline"><mrow><mi>h</mi><mo>=</mo><mn>0,1</mn></mrow></math> e a tolerância de <math id="Thmexer1.p1.m3" class="ltx_Math" alttext="TOL=10^{-4}" display="inline"><mrow><mrow><mi>T</mi><mo>⁢</mo><mi>O</mi><mo>⁢</mo><mi>L</mi></mrow><mo>=</mo><msup><mn>10</mn><mrow><mo>-</mo><mn>4</mn></mrow></msup></mrow></math>.</p>
+</div>
+</div>
+<div class="d-grid gap-2 d-md-flex justify-content-md-end"><button class="btn btn-warning" type="button" data-bs-toggle="collapse" data-bs-target="#Thmrespx27">Resposta</button></div><div class="collapse" id="Thmrespx27">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Resp</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmrespx27.p1" class="ltx_para">
+<p class="ltx_p"><math id="Thmrespx27.p1.m1" class="ltx_Math" alttext="-5.99240\mathrm{E}\!-\!1" display="inline"><mrow><mrow><mo>-</mo><mrow><mn>5.99240</mn><mo>⁢</mo><mpadded width="-1.7pt"><mi mathvariant="normal">E</mi></mpadded></mrow></mrow><mo rspace="0.8pt">-</mo><mn>1</mn></mrow></math></p>
+</div>
+</div>
+</section>
+</section>
+</div>
+<footer class="ltx_page_footer">
+<div>
+<a href="cap_pvi_sec_RK.html" title="4.2 Métodos de Runge-Kutta ‣ Capítulo 4 Problema de valor inicial ‣ Matemática Numérica II" class="ltx_ref" rel="prev"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">4.2 </span>Métodos de Runge-Kutta</span></a><a href="bib.html" title="Referências ‣ Matemática Numérica II" class="ltx_ref" rel="bibliography"><span class="ltx_text ltx_ref_title">Referências</span></a><a href="cap_pvi_sec_passo_mult.html" title="4.4 Métodos de passo múltiplo ‣ Capítulo 4 Problema de valor inicial ‣ Matemática Numérica II" class="ltx_ref" rel="next"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">4.4 </span>Métodos de passo múltiplo</span></a>
+</div>
+<div class="ltx_page_logo"><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />O texto acima está sob Licença <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR">Creative Commons Atribuição-CompartilhaIgual 4.0 Internacional</a>. Generated  on Sun Jun 11 09:07:32 2023 by <a href="http://dlmf.nist.gov/LaTeXML/">LaTeXML <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg==" alt="[LOGO]"></a>
+</div></footer>
+</div>
+<div class="card" id="rodape" style="">
+  <div class="card-footer text-left">
+    <a href="../contato.html"><i class="fas fa-envelope"></i></a> | <a href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i></a> | <a href="https://archive.org/details/notas-de-aula"><i class="fas fa-building-columns"></i></a> | <a href="https://www.youtube.com/channel/UCwutHKlKLgVj6IkFSUFBqoA"><i class="fab fa-youtube"></i></a> | <a href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i></a>
+  </div> <!-- div class="card" -->
+</div> <!-- div class="card-footer text-right" -->
+</div> <!-- div class=col-xxl-10 --></div> <!-- div class=row --></div> <!-- div class=container-fluid --></body>
+</html>
