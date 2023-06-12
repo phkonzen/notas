@@ -1,6 +1,6 @@
 import numpy as np
 
-def sysLinTriaLow(A, b):
+def solSisTriaInf(A, b):
     n = b.size
     x = np.zeros_like(b)
     for i in range(n):
@@ -19,7 +19,7 @@ A = np.array([[1., 0., 0.],
 # vet termos constantes
 b = np.array([2., -8., 0.])
 
-# resol sys lin
-x = sysLinTriaLow(A, b)
+# resol sis lin
+x = solSisTriaInf(A, b)
 print(x)
 

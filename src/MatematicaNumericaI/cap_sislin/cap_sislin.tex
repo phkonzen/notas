@@ -12,7 +12,7 @@ Neste capítulo, discutimos sobre métodos diretos para a resolução de sistema
 \end{align}
 Equivalentemente, o sistema pode ser escrito na \hl{\emph{forma matricial}}
 \begin{equation}\hleq
-  A\pmb{x} = b
+  A\pmb{x} = \pmb{b}
 \end{equation}
 onde, $A = [a_{i,j}]_{i,j=1}^{n,n}$ é a \hl{\emph{matriz dos coeficientes}}
 \begin{equation}
@@ -48,15 +48,15 @@ e o \hl{\emph{vetor dos termos constantes}} $\pmb{b} = (b_i)_{i=1}^n$ é
 
 \section{Método da Decomposição LU}\label{cap_sislin_sec_lu}
 
-O Método da Decomposição LU é uma forma eficiente de se resolver sistemas lineares de pequeno porte. \hl{Dado um sistema $A\pmb{x} = b$, a ideia é decompor a matriz $A$ como o produto de uma \emph{matriz triangular inferior} $L$ (do inglês, \textit{lower triangular matrix}) com uma \emph{matriz triangular superior} $U$ (do inglês, \textit{upper triangular matrix})}, i.e.
+O Método da Decomposição LU é uma forma eficiente de se resolver sistemas lineares de pequeno porte. \hl{Dado um sistema $A\pmb{x} = \pmb{b}$, a ideia é decompor a matriz $A$ como o produto de uma \emph{matriz triangular inferior} $L$ (do inglês, \textit{lower triangular matrix}) com uma \emph{matriz triangular superior} $U$ (do inglês, \textit{upper triangular matrix})}, i.e.
 \begin{equation}
   \hleq A = LU.
 \end{equation}
 Com isso, o sistema pode ser reescrito na forma
 \begin{gather}
-  A\pmb{x} = b\\
-  (LU)\pmb{x} = b\\
-  L(U\pmb{x}) = b.
+  A\pmb{x} = \pmb{b}\\
+  (LU)\pmb{x} = \pmb{b}\\
+  L(U\pmb{x}) = \pmb{b}.
 \end{gather}
 Denotando,
 \begin{equation}
@@ -64,9 +64,9 @@ Denotando,
 \end{equation}
 podemos resolver o seguinte sistema triangular
 \begin{equation}
-  L\pmb{y} = b.
+  L\pmb{y} = \pmb{b}.
 \end{equation}
-Tendo resolvido este sistema, a solução do sistema $A\pmb{x} = b$ pode, então, ser computada como a solução do sistema triangular
+Tendo resolvido este sistema, a solução do sistema $A\pmb{x} = \pmb{b}$ pode, então, ser computada como a solução do sistema triangular
 \begin{equation}
   U\pmb{x} = \pmb{y}.
 \end{equation}
@@ -125,10 +125,10 @@ Antes de estudarmos como podemos computar a decomposição LU de uma matriz, vam
   \end{gather}
   Concluímos que a solução do sistema é $\pmb{x} = (2, -1, 3)$.
 
-\begin{lstlisting}[caption=solL.py, label=cap_sislin_sec_lu:cod:solL]
+\begin{lstlisting}[caption=solSisTriaInf.py, label=cap_sislin_sec_lu:cod:solSisTriaInf]
 import numpy as np
 
-def solL(A, b):
+def solSisTriaInf(A, b):
     n = b.size
     x = np.zeros_like(b)
     for i in range(n):
@@ -147,11 +147,15 @@ A = np.array([[1., 0., 0.],
 # vet termos constantes
 b = np.array([2., -8., 0.])
 
-# resol sys lin
-x = solL(A, b)
+# resol sis lin
+x = solSisTriaInf(A, b)
 print(x)
 \end{lstlisting}
 \end{ex}
+
+\begin{obs}\normalfont{(\hl{Número de operações em ponto flutuante}.)}
+  A computação da solução de um sistema $n\times n$ triangular inferior requer $O(n^2)$ operações em ponto flutuante (multiplicações/divisões e adições/subtrações).
+\end{obs}
 
 \subsubsection{Sistema Triangular Superior}
 
@@ -202,10 +206,10 @@ print(x)
   \end{gather}
   Concluímos que a solução do sistema é $\pmb{x} = (2, -1, 1)$.
 
-\begin{lstlisting}[caption=solU.py, label=cap_sislin_sec_lu:cod:solU]
+\begin{lstlisting}[caption=solSisTriaSup.py, label=cap_sislin_sec_lu:cod:solSisTriaSup]
 import numpy as np
 
-def solU(A, b):
+def solSisTriaSup(A, b):
     n = b.size
     x = np.zeros_like(b)
     for i in range(n-1,-1,-1):
@@ -224,104 +228,104 @@ A = np.array([[2., -1., 2.],
 # vet termos constantes
 b = np.array([7., -3., 3.])
 
-# sol sys lin
-x = solU(A, b)
+# sol sis lin
+x = solSisTriaSup(A, b)
 print(x)
 \end{lstlisting}
 \end{ex}
 
+\begin{obs}\normalfont{(\hl{Número de operações em ponto flutuante}.)}
+  A computação da solução um sistema $n\times n$ triangular superior requer $O(n^2)$ operações em ponto flutuante (multiplicações/divisões e adições/subtrações).
+\end{obs}
+
 \subsection{Decomposição LU}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
+\hl{O procedimento da decomposição LU é equivalente ao método de eliminação gaussiana}. Consideramos uma matriz $A = [a_{ij}]_{i,j=1}^{n,n}$, com $a_{1,1}\neq 0$, e começamos denotando esta matriz por $U^{(0)} = [u_{i,j}^{(0)}]_{i,j=1}^{n,n} = A$ e tomando $L^{(0)} = I_{n\times n}$. A eliminação abaixo do pivô $u_{1,1}^{(0)}$, pode ser computada com as seguintes operações equivalentes por linha
+\begin{equation}
+  U^{(0)} = \begin{bmatrix}
+    u_{1,1}^{(0)} & u_{1,2}^{(0)} & u_{1,3}^{(0)} & \ldots & u_{1,n}^{(0)} \\
+    u_{2,1}^{(0)} & u_{2,2}^{(0)} & u_{2,3}^{(0)} & \ldots & u_{2,n}^{(0)} \\
+    u_{3,1}^{(0)} & u_{3,2}^{(0)} & u_{3,3}^{(0)} & \ldots & u_{3,n}^{(0)} \\
+    \vdots & \vdots & \vdots & \ldots & \vdots \\
+    u_{n,1}^{(0)} & u_{n,2}^{(0)} & a_{n,3}^{(0)} & \ldots & u_{n,n}^{(0)}
+  \end{bmatrix}
+  \begin{array}{l}
+    U_1^{(1)} \leftarrow U_1^{(0)}\\
+    U_2^{(1)} \leftarrow U_2^{(0)} - l_{2,1}^{(1)}U_1^{(0)}\\
+    U_3^{(1)} \leftarrow U_3^{(0)} - l_{3,1}^{(1)}U_1^{(0)}\\
+    \vdots\\
+    U_n^{(1)} \leftarrow U_n^{(0)} - l_{n,1}^{(1)}U_1^{(0)}
+  \end{array}
+\end{equation}
+onde, $l_{i,1}^{(1)}=u_{i,1}^{(0)}/u_{1,1}^{(0)}$, $i=2, 3, \dotsc, n$.
 
-O procedimento de decomposição LU é equivalente ao método de eliminação gaussiana. Consideremos uma matriz $A = [a_{ij}]_{i,j=1}^{n,n}$, com $a_{1,1}\neq 0$. Denotando esta matriz por $U^{(1)} = [u_{i,j}^{(1)}]_{i,j=1}^{n,n} = A$ e tomando $L^{(1)} = I_{n\times n}$, observamos que a eliminação abaixo do pivô $u_{1,1}^{(1)}$, pode ser computada com as seguintes operações equivalentes por linha
+Destas computações, obtemos uma nova matriz da forma
 \begin{equation}
   U^{(1)} = \begin{bmatrix}
     u_{1,1}^{(1)} & u_{1,2}^{(1)} & u_{1,3}^{(1)} & \ldots & u_{1,n}^{(1)} \\
-    u_{2,1}^{(1)} & u_{2,2}^{(1)} & u_{2,3}^{(1)} & \ldots & u_{2,n}^{(1)} \\
-    u_{3,1}^{(1)} & u_{3,2}^{(1)} & u_{3,3}^{(1)} & \ldots & u_{3,n}^{(1)} \\
+    0 & u_{2,2}^{(1)} & u_{2,3}^{(1)} & \ldots & u_{2,n}^{(1)} \\
+    0 & u_{3,2}^{(1)} & u_{3,3}^{(1)} & \ldots & u_{3,n}^{(1)} \\
     \vdots & \vdots & \vdots & \ldots & \vdots \\
-    u_{n,1}^{(1)} & u_{n,2}^{(1)} & a_{n,3}^{(1)} & \ldots & u_{n,n}^{(1)}
+    0 & u_{n,2}^{(1)} & u_{n,3}^{(1)} & \ldots & u_{n,n}^{(1)}
+  \end{bmatrix}  
+\end{equation}
+E, denotando
+\begin{equation}
+  L^{(1)} =
+  \begin{bmatrix}
+    1 & 0 & 0 & \ldots & 0\\
+    l_{2,1}^{(1)} & 1 & 0 & \ldots & 0\\
+    l_{3,1}^{(1)} & 0 & 1 & \ldots & 0\\
+    \vdots & \vdots & \vdots & \ldots & \vdots\\
+    l_{n,1}^{(1)} & 0 & 0 & \ldots & 1
   \end{bmatrix}
+\end{equation}
+temos
+\begin{equation}
+  A = L^{(1)}U^{(1)}.
+\end{equation}
+No caso de $u^{(1)}_{2,2}\neq 0$, podemos continuar com o procedimento de eliminação gaussiana com as seguintes operações equivalentes por linha
+\begin{equation}
+  U^{(1)} = \begin{bmatrix}
+    u_{1,1}^{(1)} & u_{1,2}^{(1)} & u_{1,3}^{(1)} & \ldots & u_{1,n}^{(1)} \\
+    0 & u_{2,2}^{(1)} & u_{2,3}^{(1)} & \ldots & u_{2,n}^{(1)} \\
+    0 & u_{3,2}^{(1)} & u_{3,3}^{(1)} & \ldots & u_{3,n}^{(1)} \\
+    \vdots & \vdots & \vdots & \ldots & \vdots \\
+    0 & u_{n,2}^{(1)} & u_{n,3}^{(1)} & \ldots & u_{n,n}^{(1)}
+  \end{bmatrix}  
   \begin{array}{l}
-    U_1^{(2)} \leftarrow U_1^{(1)}\\
-    U_2^{(2)} \leftarrow U_2^{(1)} - m_{2,1}U_1^{(1)}\\
-    U_3^{(2)} \leftarrow U_3^{(1)} - m_{3,1}U_1^{(1)}\\
+    U_1^{(2)}\leftarrow U_1^{(1)}\\
+    U_2^{(2)}\leftarrow U_2^{(1)}\\
+    U_3^{(2)} \leftarrow U_3^{(1)} - l_{3,2}^{(2)}U_2^{(1)}\\
     \vdots\\
-    U_n^{(2)} \leftarrow U_n^{(1)} - m_{n,1}U_1^{(1)}
+    U_n^{(2)} \leftarrow U_n^{(1)} - l_{n,2}^{(2)}U_2^{(1)}\\
   \end{array}
 \end{equation}
-onde, $m_{i,1}=u_{i,1}^{(1)}/u_{1,1}^{(1)}$, $i=2, 3, \dotsc, n$.
-
-Destas computações, obtemos uma nova matriz da forma
+onde, $l_{i,2}^{(2)} = u_{i,2}^{(1)}/u_{2,2}^{(1)}$, $i=3, 4, \ldots, n$. Isto nos fornece
+o que nos fornece
 \begin{equation}
   U^{(2)} = \begin{bmatrix}
     u_{1,1}^{(2)} & u_{1,2}^{(2)} & u_{1,3}^{(2)} & \ldots & u_{1,n}^{(2)} \\
     0 & u_{2,2}^{(2)} & u_{2,3}^{(2)} & \ldots & u_{2,n}^{(2)} \\
-    0 & u_{3,2}^{(2)} & u_{3,3}^{(2)} & \ldots & u_{3,n}^{(2)} \\
+    0 & 0 & u_{3,3}^{(2)} & \ldots & u_{3,n}^{(2)} \\
     \vdots & \vdots & \vdots & \ldots & \vdots \\
-    0 & u_{n,2}^{(2)} & u_{n,3}^{(2)} & \ldots & u_{n,n}^{(2)}
-  \end{bmatrix}  
+    0 & 0 & u_{n,3}^{(2)} & \ldots & u_{n,n}^{(2)}
+  \end{bmatrix}.
 \end{equation}
-Observemos, também, que denotando
+Além disso, denotando
 \begin{equation}
   L^{(2)} =
   \begin{bmatrix}
     1 & 0 & 0 & \ldots & 0\\
-    m_{2,1} & 1 & 0 & \ldots & 0\\
-    m_{3,1} & 0 & 1 & \ldots & 0\\
+    l_{2,1}^{(1)} & 1 & 0 & \ldots & 0\\
+    l_{3,1}^{(1)} & l_{3,2}^{(2)} & 1 & \ldots & 0\\
     \vdots & \vdots & \vdots & \ldots & \vdots\\
-    m_{n,1} & 0 & 0 & \ldots & 1
+    l_{n,1}^{(1)} & l_{n,2}^{(2)} & 0 & \ldots & 1
   \end{bmatrix}
 \end{equation}
 temos
 \begin{equation}
   A = L^{(2)}U^{(2)}.
-\end{equation}
-No caso de $u^{(2)}_{2,2}\neq 0$, podemos continuar com o procedimento de eliminação gaussiana com as seguintes operações equivalentes por linha
-\begin{equation}
-  U^{(2)} = \begin{bmatrix}
-    u_{1,1}^{(2)} & u_{1,2}^{(2)} & u_{1,3}^{(2)} & \ldots & u_{1,n}^{(2)} \\
-    0 & u_{2,2}^{(2)} & u_{2,3}^{(2)} & \ldots & u_{2,n}^{(2)} \\
-    0 & u_{3,2}^{(2)} & u_{3,3}^{(2)} & \ldots & u_{3,n}^{(2)} \\
-    \vdots & \vdots & \vdots & \ldots & \vdots \\
-    0 & u_{n,2}^{(2)} & u_{n,3}^{(2)} & \ldots & u_{n,n}^{(2)}
-  \end{bmatrix}  
-  \begin{array}{l}
-    U_1^{(3)}\leftarrow U_1^{(2)}\\
-    U_2^{(3)}\leftarrow U_2^{(2)}\\
-    U_3^{(3)} \leftarrow U_3^{(2)} - m_{3,2}U_2^{(2)}\\
-    \vdots\\
-    U_n^{(3)} \leftarrow U_n^{(2)} - m_{n,2}U_2^{(2)}\\
-  \end{array}
-\end{equation}
-onde, $m_{i,2} = u_{i,2}^{(2)}/u_{2,2}^{(2)}$, $i=3, 4, \ldots, n$. Isto nos fornece
-o que nos fornece
-\begin{equation}
-  U^{(3)} = \begin{bmatrix}
-    u_{1,1}^{(3)} & u_{1,2}^{(3)} & u_{1,3}^{(3)} & \ldots & u_{1,n}^{(3)} \\
-    0 & u_{2,2}^{(3)} & u_{2,3}^{(3)} & \ldots & u_{2,n}^{(3)} \\
-    0 & 0 & u_{3,3}^{(3)} & \ldots & u_{3,n}^{(3)} \\
-    \vdots & \vdots & \vdots & \ldots & \vdots \\
-    0 & 0 & u_{n,3}^{(3)} & \ldots & u_{n,n}^{(3)}
-  \end{bmatrix}.
-\end{equation}
-Além disso, denotando
-\begin{equation}
-  L^{(3)} =
-  \begin{bmatrix}
-    1 & 0 & 0 & \ldots & 0\\
-    m_{2,1} & 1 & 0 & \ldots & 0\\
-    m_{3,1} & m_{3,2} & 1 & \ldots & 0\\
-    \vdots & \vdots & \vdots & \ldots & \vdots\\
-    m_{n,1} & m_{n,2} & 0 & \ldots & 1
-  \end{bmatrix}
-\end{equation}
-temos
-\begin{equation}
-  A = L^{(3)}U^{(3)}.
 \end{equation}
 Continuando com este procedimento, ao final de $n-1$ passos teremos obtido a decomposição
 \begin{equation}
@@ -329,27 +333,27 @@ Continuando com este procedimento, ao final de $n-1$ passos teremos obtido a dec
 \end{equation}
 onde $L$ é a matriz triangular inferior
 \begin{equation}
-  L = L^{(n)} =   \begin{bmatrix}
+  L = L^{(n-1)} =   \begin{bmatrix}
     1 & 0 & 0 & \ldots & 0\\
-    m_{2,1} & 1 & 0 & \ldots & 0\\
-    m_{3,1} & m_{3,2} & 1 & \ldots & 0\\
+    l_{2,1}^{(1)} & 1 & 0 & \ldots & 0\\
+    l_{3,1}^{(1)} & l_{3,2}^{(2)} & 1 & \ldots & 0\\
     \vdots & \vdots & \vdots & \ldots & \vdots\\
-    m_{n,1} & m_{n,2} & m_{n,3} & \ldots & 1
+    l_{n,1}^{(1)} & l_{n,2}^{(2)} & l_{n,3}^{(3)} & \ldots & 1
   \end{bmatrix}
 \end{equation}
 e $U$ é a matriz triangular superior
 \begin{equation}
-  U = U^{(n)} = \begin{bmatrix}
-    u_{1,1}^{(n)} & u_{1,2}^{(n)} & u_{1,3}^{(n)} & \ldots & u_{1,n}^{(n)} \\
-    0 & u_{2,2}^{(n)} & u_{2,3}^{(n)} & \ldots & u_{2,n}^{(n)} \\
-    0 & 0 & u_{3,3}^{(n)} & \ldots & u_{3,n}^{(n)} \\
+  U = U^{(n-1)} = \begin{bmatrix}
+    u_{1,1}^{(0)} & u_{1,2}^{(0)} & u_{1,3}^{(0)} & \ldots & u_{1,n}^{(0)} \\
+    0 & u_{2,2}^{(1)} & u_{2,3}^{(1)} & \ldots & u_{2,n}^{(1)} \\
+    0 & 0 & u_{3,3}^{(2)} & \ldots & u_{3,n}^{(2)} \\
     \vdots & \vdots & \vdots & \ldots & \vdots \\
-    0 & 0 & 0 & \ldots & u_{n,n}^{(n)}
+    0 & 0 & 0 & \ldots & u_{n,n}^{(n-1)}
   \end{bmatrix}.
 \end{equation}
 
 \begin{ex}\label{ex:lu}
-  Consideremos a seguinte matriz
+  Consideramos a seguinte matriz
   \begin{equation}
     A =
     \begin{bmatrix}
@@ -358,58 +362,144 @@ e $U$ é a matriz triangular superior
       1 & -5 & 3
     \end{bmatrix}.
   \end{equation}
-  Então, para obtermos sua decomposição $LU$ começamos com
-  \begin{equation}
-    L^{(1)} =
+  Para obtermos sua decomposição $LU$ começamos com
+  \begin{align}
+    L^{(0)} &:=
     \begin{bmatrix}
       1 & 0 & 0\\
       0 & 1 & 0\\
       0 & 0 & 1
-    \end{bmatrix}, ~
-    U^{(1)} =
+    \end{bmatrix},\\
+    U^{(0)} &:=
+    \begin{bmatrix}
+      -1 & 2 & -2\\
+      3 & -4 & 1\\
+      1 & -5 & 3
+    \end{bmatrix}.
+  \end{align}
+  Então, observando que a eliminação abaixo do pivô $u_{1,1}=-1$ pode ser feita com as seguintes operações equivalentes por linha
+  \begin{equation}
+    U^{(0)} =
     \begin{bmatrix}
       -1 & 2 & -2\\
       3 & -4 & 1\\
       1 & -5 & 3
     \end{bmatrix}
+    \begin{array}{l}
+      U_1^{(1)}\leftarrow U_1^{(0)}\\
+      U_2^{1}\leftarrow U_2^{(0)} - \frac{3}{-1}U_1^{(0)}\\
+      U_3^{1}\leftarrow U_3^{(0)} - \frac{1}{-1}U_1^{(0)}
+    \end{array},
   \end{equation}
-  Então, observando que a eliminação abaixo do pivô $u_{1,1}=-1$ pode ser feita com as seguintes operações equivalentes por linha $U_2^{(2)} \leftarrow U_2^{(1)} - (-3)U_1^{(1)}$ e $U_3^{(2)} \leftarrow U_3^{(1)} - (-1)U_3^{(1)}$, obtemos
-  \begin{equation}
-    L^{(2)} =
+  temos
+  \begin{align}
+    L^{(1)} &:=
     \begin{bmatrix}
       1 & 0 & 0\\
       -3 & 1 & 0\\
       -1 & 0 & 1
-    \end{bmatrix}, ~
-    U^{(1)} =
+    \end{bmatrix},\\
+    U^{(1)} &:=
+    \begin{bmatrix}
+      -1 & 2 & -2\\
+      0 & 2 & -5\\
+      0 & -3 & 1
+    \end{bmatrix}.
+  \end{align}
+  Agora, para eliminarmos abaixo do pivô $u_{2,2}=2$, usamos as operações
+  \begin{equation}
+    U^{(1)} :=
     \begin{bmatrix}
       -1 & 2 & -2\\
       0 & 2 & -5\\
       0 & -3 & 1
     \end{bmatrix}
+    \begin{array}[]l
+      U_1^{(2)}\leftarrow U_1^{(1)} \\
+      U_2^{(2)}\leftarrow U_2^{(1)} \\
+      U_3^{(2)}\leftarrow U_3^{(1)} - \frac{-3}{2}U_2^{(1)}
+    \end{array},
   \end{equation}
-  Agora, para eliminarmos abaixo do pivô $u_{2,2}=2$, usamos a operação $U_3^{(3)} \leftarrow U_3^{(2)} - (-3/2)U_3^{(2)}$, donde temos
-  \begin{equation}
+  donde
+  \begin{align}
     L^{(2)} =
     \begin{bmatrix}
       1 & 0 & 0\\
       -3 & 1 & 0\\
       -1 & -1,5 & 1
-    \end{bmatrix}, ~
+    \end{bmatrix},\\
     U^{(1)} =
     \begin{bmatrix}
       -1 & 2 & -2\\
       0 & 2 & -5\\
       0 & 0 & -6,5
-    \end{bmatrix}
-  \end{equation}
-o que completa a decomposição tomando $L = L^{(3)}$ e $U = U^{(3)}$.
+    \end{bmatrix}.
+  \end{align}
+Isso completa a decomposição, sendo $L := L^{(3)}$ e $U := U^{(3)}$.
 
-% \ifisoctave
-% No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/ex_lu/ex_lu.m}{código}:
-% \verbatiminput{./cap_sl_direto/dados/ex_lu/ex_lu.m}
-% \fi
+\begin{lstlisting}[caption=lu.py, label='cap_sislin_sec_lu:cod:lu']
+import numpy as np
+
+def lu(A):
+    # num. de linhas
+    n = A.shape[0]
+
+    # inicialização
+    U = A.copy()
+    L = np.eye(n)
+
+    print(f'\n0')
+    print(f'L = \n{L}')
+    print(f'U = \n{U}')
+
+    # decomposição
+    for i in range(n-1):
+        for j in range(i+1,n):
+            L[j,i] = U[j,i]/U[i,i]
+            U[j,i:] -= L[j,i]*U[i,i:]
+
+        print(f'{i+1}:')
+        print(f'L = \n{L}')
+        print(f'U = \n{U}')
+
+    return L, U
+
+# matriz
+A = np.array([[-1., 2., -2.],
+              [3., -4., 1.],
+              [1., -5., 3.]])
+
+L, U = lu(A)
+\end{lstlisting}
 \end{ex}
+
+\begin{obs}\normalfont{(\hl{Número de operações em ponto flutuante}.)}
+  A decomposição LU de um sistema $n\times n$ requer $O(n^3)$ operações em ponto flutuante (multiplicações/divisões e adições/subtrações).
+\end{obs}
+
+
+\subsection{Resolução do Sistema com Decomposição LU}
+
+Consideramos o sistema linear
+\begin{equation}
+  A\pmb{x} = \pmb{b}.
+\end{equation}
+
+Para resolvê-lo com o \hl{Método LU}, fazemos
+\begin{enumerate}[1.]
+\item \hl{Computamos a decomposição LU}
+  \begin{equation}\hleq
+    A = LU.
+  \end{equation}
+\item \hl{Resolvemos o sistema triangular inferior}
+  \begin{equation}\hleq
+    L\pmb{y} = \pmb{b}.
+  \end{equation}
+\item \hl{Resolvemos o sistema triangular superior}
+  \begin{equation}\hleq
+    U\pmb{x} = \pmb{y}.
+  \end{equation}
+\end{enumerate}
 
 \begin{ex}\label{ex:lu}
   Vamos resolver o seguinte sistema linear
@@ -438,21 +528,41 @@ o que completa a decomposição tomando $L = L^{(3)}$ e $U = U^{(3)}$.
   \end{equation}
   Daí, iniciamos resolvendo o seguinte sistema triangular inferior $Ly = b$, i.e.
   \begin{align}
-    &y_1 = 6 \Rightarrow y_1 = 6\\
-    &-3y_1 + y_2 = -11 \Rightarrow y_2 = 7\\
-    &-y_1 - 1,5y_2 + y_3 = -10 \Rightarrow y_3 = 6,5.
+    &\hleq{y_1 = 6} \\
+    &-3y_1 + y_2 = -11 \\
+    &\qquad\Rightarrow \hleq{y_2 = 7}\\
+    &-y_1 - 1,5y_2 + y_3 = -10 \\
+    &\qquad\Rightarrow \hleq{y_3 = 6,5}.
   \end{align}
   Por fim, computamos a solução $x$ resolvendo o sistema triangular superior $Ux=y$, i.e.
   \begin{align}
-    &-6,5x_3 = 6,5 \Rightarrow x_3 = -1,\\
-    &2x_2 - 5x_3 = 7 \Rightarrow x_2 = 1\\
-    &-x_1 + 2x_2 - 2x_3 = 6 \Rightarrow x_1 = -2.
+    &-6,5x_3 = 6,5 \\
+    &\qquad \Rightarrow \hleq{x_3 = -1},\\
+    &2x_2 - 5x_3 = 7 \\
+    &\qquad \Rightarrow \hleq{x_2 = 1}\\
+    &-x_1 + 2x_2 - 2x_3 = 6 \\
+    &\qquad \Rightarrow \hleq{x_1 = -2}.
   \end{align}
 
-% \ifisoctave
-% No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/ex_lu/ex_lu.m}{código}:
-% \verbatiminput{./cap_sl_direto/dados/ex_lu_sol/ex_lu_sol.m}
-% \fi
+\begin{lstlisting}
+import numpy as np
+
+# mat coefs
+A = np.array([[-1., 2., -2.],
+              [3., -4., 1.],
+              [1., -5., 3.]])
+# vet termos const
+b = np.array([6., -11., -10.])
+
+# 1. LU
+L, U = lu(A)
+
+# 2. Ly = b
+y = solSisTriaInf(L, b)
+
+# 3. Ux = y
+x = solSisTriaSup(U, y)
+\end{lstlisting}
 \end{ex}
 
 \subsection{Fatoração LU com Pivotamento Parcial}

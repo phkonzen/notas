@@ -1,6 +1,6 @@
 import numpy as np
 
-def sysLinTriaUpper(A, b):
+def solSisTriaSup(A, b):
     n = b.size
     x = np.zeros_like(b)
     for i in range(n-1,-1,-1):
@@ -19,7 +19,7 @@ A = np.array([[2., -1., 2.],
 # vet termos constantes
 b = np.array([7., -3., 3.])
 
-# sol sys lin
-x = sysLinTriaUpper(A, b)
+# sol sis lin
+x = solSisTriaSup(A, b)
 print(x)
 
