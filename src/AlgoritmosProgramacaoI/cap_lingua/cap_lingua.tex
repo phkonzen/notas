@@ -1551,7 +1551,7 @@ Em {\python}, exitem diversas \hl{formas de escrever \textit{strings}}:
 
 \textit{Strings} em {\python} usam o padrão \href{https://home.unicode.org/}{Unicode}, que nos permite manipular textos de forma muito próxima da linguagem natural. Alguns caracteres especiais úteis são:
 \begin{itemize}
-\item \hl{{\lstinline+'\\n'+} \textbf{: nova linha}}
+\item \hl{{\lstinline+'\n'+} \textbf{: nova linha}}
 
 \begin{lstlisting}
 >>> print('Uma nova\nlinha')
@@ -1559,7 +1559,7 @@ Uma nova
 linha
 \end{lstlisting}
 
-\item \hl{{\lstinline+'\\t'+} \textbf{: tabulação}}
+\item \hl{{\lstinline+'\t'+} \textbf{: tabulação}}
 
 \begin{lstlisting}
 >>> print('Uma nova\n\t linha com tabulação')
@@ -1749,3 +1749,188 @@ print(f'{x} é divisível por {y}?')
 print(f'{x%y==0}')
 \end{lstlisting}
 \end{resp}
+
+\section{Coleção de Dados}\label{cap_lingua_sec_colecao}
+
+Objetos da classe de dados \lstinline+int+ e \lstinline+float+ permitem a alocação de um valor numérico por variável. Já, \lstinline+string+ é um coleção (sequência) de caracteres. Nesta seção, vamos estudar sobre classes de dados básicos que permitem a alocação de uma coleção de dados em uma única variável.
+
+\subsection{Conjuntos: \lstinline+set+}
+
+Em {\python}, \href{https://docs.python.org/3/tutorial/datastructures.html#sets}{\lstinline+set+} é uma classe de dados para a alocação de um conjunto de objetos. Assim como na matemática, um \hl{{\lstinline+set+} é uma coleção de itens não indexada, imutável e não admite itens duplicados}.
+
+A alocação de um \lstinline+set+ pode ser feita como no seguinte exemplo:
+\begin{lstlisting}
+  >>> a = {1, -3.7, 'amarelo'}
+  >>> type(a)
+  <class 'set'>
+  >>> a
+  {'amarelo', 1, -3.7}
+\end{lstlisting}
+Observamos que a \hl{ordem dos elementos é arbitrária}, uma vez que \lstinline+set+ é uma coleeção de itens não indexada.
+
+O método \href{https://docs.python.org/3/library/stdtypes.html#set}{\lstinline+set()+} também pode ser usado para criar um conjunto. Por exemplo, o conjunto vazio pode ser criado como segue:
+\begin{lstlisting}
+  >>> b = set()
+  >>> type(b)
+  <class 'set'>
+  >>> b
+  set()
+\end{lstlisting}
+
+O método \href{https://docs.python.org/3/library/functions.html#len}{\lstinline+len()+} pode ser usado para obtermos o tamanho (número de elementos) de um \lstinline+set+:
+\begin{lstlisting}
+  >>> len(a)
+  3
+  >>> len(b)
+  0
+\end{lstlisting}
+
+\subsubsection{Operadores de comparação}
+
+Os seguintes operadores de comparação estão disponíveis para \lstinline+set+s:
+\begin{itemize}
+\item \hl{{\lstinline+x in a+} \emph{: pertence}}
+
+  Verifica se $x\in a$.
+
+\begin{lstlisting}
+>>> a = {1, -3.7, 'amarelo'}
+>>> 1 in a
+True
+>>> 'mar' in a
+False
+\end{lstlisting}
+
+\item \hl{{\lstinline+a == b+} \emph{: igualdade}}
+
+  Verifica se $a = b$.
+
+\begin{lstlisting}
+>>> a == a
+True
+\end{lstlisting}
+
+\item \hl{{\lstinline+a != b+} \emph{: diferente}}
+
+  Verifica se $a \neq b$.
+
+\begin{lstlisting}
+>>> b = {'amarelo', -3.7}
+>>> a != b
+True
+\end{lstlisting}
+  
+\item \hl{{\lstinline+a <= b+} \emph{: contido em ou igual a (subconjunto)}}
+
+  Verifica se $a \subseteq b$.
+
+\begin{lstlisting}
+>>> b <= a
+True
+\end{lstlisting}
+
+\item \hl{{\lstinline+<+} \emph{: contido em e não igual a (subconjunto próprio)}}
+
+  Verifica se $(a\subset b)\land (a\neq b)$.
+
+\begin{lstlisting}
+>>> a < a
+False
+>>> b < a
+True
+\end{lstlisting}
+
+\item \hl{{\lstinline+>=+} \emph{: contém ou é igual a (subconjunto)}}
+
+\begin{lstlisting}
+>>> a >= b
+True
+\end{lstlisting}
+
+\item \hl{{\lstinline+>=+} \emph{: contém e não igual a (subconjunto próprio)}}
+
+\begin{lstlisting}
+>>> a > b
+True
+>>> b > b
+False
+\end{lstlisting}
+\end{itemize}
+
+\subsubsection{Operações com conjuntos}
+
+Em {\python}, as seguintes operações com conjuntos estão disponíveis:
+\begin{itemize}
+\item \hl{{\lstinline+a | b+} \emph{: união}}
+
+  Retorna o \lstinline+set+ equivalente a
+  \begin{equation}
+    a \cup b := \{x:~x\in a \lor x\in b\}
+  \end{equation}
+
+  
+\begin{lstlisting}
+>>> a = {1, -3.7, 'amarelo'}
+>>> b = {'mar', -5}
+>>> a | b
+{1, 'amarelo', 'mar', -5, -3.7}
+\end{lstlisting}
+
+\item \hl{{\lstinline+a & b+} \emph{: interseção}}
+  
+  Retorna o \lstinline+set+ equivalente a
+  \begin{equation}
+    a \cap b := \{x:~x\in a \land x\in b\}
+  \end{equation}
+
+\begin{lstlisting}
+>>> a = {1, -3.7, 'amarelo'}
+>>> b = {'mar', 1, -3.7, -5}
+>>> a & b
+{1, -3.7}
+\end{lstlisting}
+
+\item \hl{{\lstinline+-+} \emph{: diferença}}
+
+  Retorna o \lstinline+set+ equivalente a
+  \begin{equation}
+    a \setminus b := \{x:~x\in a \land x\not\in b\}
+  \end{equation}
+
+\begin{lstlisting}
+>>> a - b
+{'amarelo'}
+\end{lstlisting}
+
+\item \hl{{\lstinline+^+} \emph{: diferença simétrica}}
+
+  Retorna o \lstinline+set+ equivalente a
+  \begin{equation}
+    a \Delta b := (a\setminus b)\cup (b\setminus a)
+  \end{equation}
+
+  \begin{lstlisting}
+>>> a ^ b
+{'amarelo', 'mar', -5}
+\end{lstlisting}
+\end{itemize}
+
+
+
+
+
+\subsection{$N$-uplas: \lstinline+tuple+}
+
+[[tag:construcao]]
+
+\subsection{Listas: \lstinline+list+}
+
+[[tag:construcao]]
+
+\subsection{Dicionários: \lstinline+dict+}
+
+[[tag:construcao]]
+
+\subsection{Exercícios}
+
+[[tag:contrucao]]
