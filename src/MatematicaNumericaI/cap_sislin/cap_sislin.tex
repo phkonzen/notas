@@ -589,7 +589,7 @@ Neste caso, o procedimento de eliminação na primeira coluna deve usar $u_{3,1}
 \end{equation}
 Com essa, iniciamos o procedimento de decomposição LU com $PA = L^{(0)}U^{(0)}$, onde $L^{(0)} = I_{n\times n}$ e $U^{(0)} = PA$. Caso sejam necessárias outras mudanças de linhas no decorrer do procedimento de decomposição, a matriz de permutação $P$ deve ser atualizada apropriadamente.
 
-\begin{ex}
+\begin{ex}\label{cap_sislin_sec_lu:ex:lup}
   Vamos fazer a decomposição LU com pivotamento parcial da seguinte matriz
   \begin{equation}
     A = \begin{bmatrix}
@@ -731,31 +731,224 @@ P, L, U = lup(A)
 \end{ex}
 
 \begin{ex}
-  [[tag:construcao]]
+  Vamos computar a solução do seguinte sistema linear com o Método da Decomposição LU com Pivotamento Parcial.
+  \begin{align}
+    -x_1 + 2x_2 - 2x_3 &= 6\\
+    3x_1 - 4x_2 + x_3 &= -11\\
+    x_1 - 5x2 + 3x_3 &= -10.
+  \end{align}
+  No exemplo anterior (Exemplo \ref{cap_sislin_sec_lu:ex:lup}), vimos que a matriz de coeficientes $A$ deste sistema admite a seguinte decomposição LU
+  \begin{equation}
+    PA = LU
+  \end{equation}
+  com
+  \begin{align}
+    P &=
+    \begin{bmatrix}
+      0 & 1 & 0\\
+      0 & 0 & 1\\
+      1 & 0 & 0
+    \end{bmatrix},\\
+    L &=
+    \begin{bmatrix}
+      1 & 0 & 0\\
+      0,\overline{3} & 1 & 0\\
+      -0,\overline{3} & -0,\overline{18} & 1      
+    \end{bmatrix},\\
+    U &= 
+    \begin{bmatrix}
+      3 & -4 & 1\\
+      0 & -3,\overline{6} & 2,\overline{6}\\
+      0 & 0 & -1,\overline{18}
+    \end{bmatrix}
+  \end{align}
+  Multiplicando o sistema a esquerda pela matriz $P$, obtemos
+  \begin{gather}
+    PA\pmb{x} = P\pmb{b}\\
+    LU\pmb{x} = P\pmb{b}\\
+    L(U\pmb{x}) = P\pmb{b}
+  \end{gather}
+  Com isso, resolvemos
+  \begin{equation}
+    L\pmb{y} = P\pmb{b}
+  \end{equation}
+  donde obtemos
+  \begin{equation}
+    \pmb{y} = (-11, -6,\overline{3}, 1,\overline{18})
+  \end{equation}
+  Então, resolvemos
+  \begin{equation}
+    U\pmb{x} = y
+  \end{equation}
+  donde obtemos a solução
+  \begin{equation}
+    \pmb{x} = (-2, 1, -1).
+  \end{equation}
+  
+\begin{lstlisting}
+# matriz
+A = np.array([[-1., 2., -2.],
+              [3., -4., 1.],
+              [1., -5., 3.]])
+b = np.array([6,-11,-10])
 
-  Vamos computar a solução do sistema ... com o Método da Decomposição LU com Pivotamento Parcial.
+P, L, U = lup(A)
+
+y = solSisTriaInf(L, P@b)
+x = solSisTriaSup(U, y)
+\end{lstlisting}
 \end{ex}
 
 \subsection*{Exercícios}
 
-\begin{flushleft}
-  [[tag:construcao]]
-\end{flushleft}
+\begin{exer}
+  Seja a matriz
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      -1 & 2 & -2\\
+      3 & 4 & 1\\
+      -4 & -5 & 3
+    \end{bmatrix}
+  \end{equation}
+  \begin{enumerate}[a)]
+  \item Compute sua decomposição LU sem pivotamento parcial.
+  \item Compute sua decomposição LU com pivotamento parcial.
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a)
+  \begin{align}
+    L &=
+        \begin{bmatrix}
+          1 & 0 & 0\\
+          -3 & 1 & 0\\
+          4 & 0 & 1
+        \end{bmatrix}\\
+    U &=
+        \begin{bmatrix}
+          -1 & 2 & 2\\
+          0 & 10 & -5\\
+          0 & 0 & 4.5
+        \end{bmatrix}
+  \end{align}
+  b)
+  \begin{align}
+    P &=
+        \begin{bmatrix}
+          0 & 0 & 1\\
+          1 & 0 & 0\\
+          0 & 1 & 0
+        \end{bmatrix}\\
+    L &=
+        \begin{bmatrix}
+              0  & 0 & 0\\
+           0,25  & 1 & 0\\
+          -0,75  & 7,692\E-2 & 1
+        \end{bmatrix}\\
+    U &=
+        \begin{bmatrix}
+          -4 & -5 & 3\\
+          0 & 3.25 & -2.75\\
+          0 & 0 & 3.462
+        \end{bmatrix}
+  \end{align}  
+\end{resp}
 
 \begin{exer}\label{exer:lup_sol}
-  Resolva o sistema
+  Use o Método da Decomposição LU para resolver o sistema linear
   \begin{align}
     -x_1 + 2x_2 - 2x_3 &= -1\\
     3x_1 - 4x_2 + x_3 &= -4\\
     -4x_1 - 5x_2 + 3x_3 &= 20
   \end{align}
-  usando fatoração LU com pivotamento parcial.
+  usando  LU.
 \end{exer}
 \begin{resp}
-  % \ifisoctave 
-  % \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/exer_lup_sol/exer_lup_sol.m}{Código.} 
-  % \fi
   $x_1 = -3$, $x_2=-1$, $x_3 = 1$
+\end{resp}
+
+\begin{exer}
+  Compute a decomposição LU da matriz
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      -1 & 0 & -2 & 1\\
+      3 & 0 & 0 & -2\\
+      1 & -1 & 0 & -1\\
+      0 & 2 & -3 & 0
+    \end{bmatrix}.
+  \end{equation}
+\end{exer}
+\begin{resp}
+  \begin{align}
+    P &=
+        \begin{bmatrix}
+          0 & 1 & 0 & 0\\
+          0 & 0 & 0 & 1\\
+          1 & 0 & 0 & 0\\
+          0 & 0 & 1 & 0
+        \end{bmatrix}\\
+    L &=
+        \begin{bmatrix}
+          1 & 0 & 0 & 0\\
+          0 & 1 & 0 & 0\\
+          -0.\overline{3} & 0 & 1 & 0\\
+          0.\overline{3} & -0.5 & 0.75 & 1
+        \end{bmatrix}\\
+    U &=
+        \begin{bmatrix}
+          3 & 0 & 0  & -2\\
+          0 & 2 & -3 & 0\\
+          0 & 0 & -2 & 0.\overline{3}\\
+          0 & 0 & 0 & -0.58\overline{3}
+        \end{bmatrix}
+  \end{align}
+\end{resp}
+
+\begin{exer}
+  Use o Método da Decomposição LU para resolver o sistema linear
+  \begin{align}
+    -x_1 - 2x_3 + x_4 &= 1\\
+    3x_1 - 2x_4 &= -7\\
+    x_1 - x_2 - x_4 &= -3\\
+    2x_2 - 3x_3 &= -3
+  \end{align}
+\end{exer}
+\begin{resp}
+  $x = (-1, 0, 1, 2)$
+\end{resp}
+
+\begin{exer}
+  A matriz de Vandermonde{\vandermonde} é definida por
+  \begin{equation}
+    V(x_1,\ldots,x_n) =
+    \begin{bmatrix}
+      x_1^{n-1} & \cdots  & x_1^2 & x_1 & 1\\
+      x_2^{n-1} & \cdots  & x_2^2 & x_2 & 1\\
+      \vdots   &         & \vdots & \vdots & \vdots\\
+      x_n^{n-1} & \cdots  & x_n^2 & x_n & 1\\
+    \end{bmatrix}
+  \end{equation}
+  Compute a decomposição LU com pivotamento parcial das matrizes de Vandermonde.
+  \begin{enumerate}[a)]
+  \item $V(1,2,3)$\\
+  \item $V(-2,-1,0,1)$\\
+  \item $V(0,1, 0,25, 0,5, 0,75)$\\
+  \item $V(-0,1, 0,5, 1, 2, 10)$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  Dica: A matriz de Vandermonde pode ser alocada com o seguinte código:
+\begin{lstlisting}
+import numpy as np
+x = np.array([1.,2,3])
+n = x.size
+V = np.ones((n,n))
+for i in range(n-1):
+    V[:,i] = x**(n-1-i)
+print(V)
+\end{lstlisting}
 \end{resp}
 
 % \section{Eliminação gaussiana}\label{cap_sislin_sec_egauss}
