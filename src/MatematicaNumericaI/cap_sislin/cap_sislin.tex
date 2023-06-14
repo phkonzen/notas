@@ -45,7 +45,6 @@ e o \hl{\emph{vetor dos termos constantes}} $\pmb{b} = (b_i)_{i=1}^n$ é
   \end{bmatrix}
 \end{equation}
 
-
 \section{Método da Decomposição LU}\label{cap_sislin_sec_lu}
 
 O Método da Decomposição LU é uma forma eficiente de se resolver sistemas lineares de pequeno porte. \hl{Dado um sistema $A\pmb{x} = \pmb{b}$, a ideia é decompor a matriz $A$ como o produto de uma \emph{matriz triangular inferior} $L$ (do inglês, \textit{lower triangular matrix}) com uma \emph{matriz triangular superior} $U$ (do inglês, \textit{upper triangular matrix})}, i.e.
@@ -567,23 +566,17 @@ x = solSisTriaSup(U, y)
 
 \subsection{Fatoração LU com Pivotamento Parcial}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-O algoritmo discutido acima não prevê a necessidade de permutações de linhas no processo de eliminação gaussiana. Isto pode ser corrigido com a utilização de matrizes de permutação.
-
-Assim como na eliminação gaussiana com pivotamento parcial, na fatoração LU com pivotamento parcial o pivô fazemos permutações de linha na matriz de forma que o pivô seja sempre aquele de maior valor em módulo. Por exemplo, suponha que o elemento $a_{3,1}$ seja o maior valor em módulo na primeira coluna da matriz $A = U^{(1)}$ com
+O algoritmo estudando acima não é aplicável no caso de o pivô ser nulo, o que pode ser corrigido através de permutações de linhas. \hl{Na fatoração LU com pivotamento parcial fazemos permutações de linha na matriz de forma que o pivô seja sempre aquele de maior valor em módulo}. Por exemplo, suponha que o elemento $a_{3,1}$ seja o maior valor em módulo na primeira coluna da matriz $A = U^{(0)}$ com
 \begin{equation}
-  U^{(1)} = \begin{bmatrix}
-    u_{1,1}^{(1)} & u_{1,2}^{(1)} & u_{1,3}^{(1)} & \ldots & u_{1,n}^{(1)} \\
-    u_{2,1}^{(1)} & u_{2,2}^{(1)} & u_{2,3}^{(1)} & \ldots & u_{2,n}^{(1)} \\
-    \pmb{u_{3,1}^{(1)}} & u_{3,2}^{(1)} & u_{3,3}^{(1)} & \ldots & u_{3,n}^{(1)} \\
+  U^{(0)} = \begin{bmatrix}
+    u_{1,1}^{(0)} & u_{1,2}^{(0)} & u_{1,3}^{(0)} & \ldots & u_{1,n}^{(0)} \\
+    u_{2,1}^{(0)} & u_{2,2}^{(0)} & u_{2,3}^{(0)} & \ldots & u_{2,n}^{(0)} \\
+    \pmb{u_{3,1}^{(0)}} & u_{3,2}^{(0)} & u_{3,3}^{(0)} & \ldots & u_{3,n}^{(0)} \\
     \vdots & \vdots & \vdots & \ldots & \vdots \\
-    u_{n,1}^{(1)} & u_{n,2}^{(1)} & a_{n,3}^{(1)} & \ldots & u_{n,n}^{(1)}
+    u_{n,1}^{(0)} & u_{n,2}^{(0)} & a_{n,3}^{(0)} & \ldots & u_{n,n}^{(0)}
   \end{bmatrix}.
 \end{equation}
-Neste caso, o procedimento de eliminação na primeira coluna deve usar $u_{3,1}^{(1)}$ como pivô, o que requer a permutação entre as linhas $1$ e $3$ ($U_1^{(1)} \leftrightarrow U_3^{(1)}$). Isto pode ser feito utilizando-se da seguinte matriz de permutação
+Neste caso, o procedimento de eliminação na primeira coluna deve usar $u_{3,1}^{(0)}$ como pivô, o que requer a permutação entre as linhas $1$ e $3$ ($U_1^{(0)} \leftrightarrow U_3^{(0)}$). Isto pode ser feito utilizando-se da seguinte \emph{matriz de permutação}
 \begin{equation}
   P =
   \begin{bmatrix}
@@ -594,7 +587,7 @@ Neste caso, o procedimento de eliminação na primeira coluna deve usar $u_{3,1}
     0 & 0 & 0 & \ldots & 1
   \end{bmatrix}.
 \end{equation}
-Com essa, iniciamos o procedimento de decomposição LU com $PA = L^{(1)}U^{(1)}$, onde $L^{(1)} = I_{n\times n}$ e $U^{(1)} = PA$. Caso sejam necessárias outras mudanças de linhas no decorrer do procedimento de decomposição, a matriz de permutação $P$ deve ser atualizada apropriadamente.
+Com essa, iniciamos o procedimento de decomposição LU com $PA = L^{(0)}U^{(0)}$, onde $L^{(0)} = I_{n\times n}$ e $U^{(0)} = PA$. Caso sejam necessárias outras mudanças de linhas no decorrer do procedimento de decomposição, a matriz de permutação $P$ deve ser atualizada apropriadamente.
 
 \begin{ex}
   Vamos fazer a decomposição LU com pivotamento parcial da seguinte matriz
@@ -606,48 +599,66 @@ Com essa, iniciamos o procedimento de decomposição LU com $PA = L^{(1)}U^{(1)}
     \end{bmatrix}
   \end{equation}
   Começamos, tomando
-  \begin{equation}
-    P^{(1)} =
+  \begin{align}
+    P^{(0)} =
     \begin{bmatrix}
       1 & 0 & 0\\
       0 & 1 & 0\\
       0 & 0 & 1
-    \end{bmatrix},\quad
-    L^{(1)} =
+    \end{bmatrix},\\
+    L^{(0)} =
     \begin{bmatrix}
       1 & 0 & 0\\
       0 & 1 & 0\\
       0 & 0 & 1      
-    \end{bmatrix},\quad
-    U^{(1)} = 
+    \end{bmatrix},\\
+    U^{(0)} = 
     \begin{bmatrix}
       -1 & 2 & -2\\
       3 & -4 & 1\\
       1 & -5 & 3
     \end{bmatrix}
-  \end{equation}
-  O candidato a pivô é o elemento $u_{2,1}$. Então, fazemos as permutações de linhas $P_1\leftrightarrow P_2$ e $U_1\leftrightarrow U_2$ e, na sequência, as operações elementares por linhas $U_{2:3}\leftarrow U_{2:3}-m_{2:3,1}U_1$, donde obtemos
+  \end{align}
+  O candidato a pivô é o elemento $u^{(0)}_{2,1}$. Então, fazemos as permutações de linhas
   \begin{align}
-    P^{(2)} &=
+    P_1^{((0)} &\leftrightarrow P_2^{(0)},\\
+    U_1^{(0)} &\leftrightarrow U_2^{(0)}
+  \end{align}
+  e, na sequência, as operações elementares por linhas
+  \begin{equation}
+    U_{2:3}^{(1)}\leftarrow U_{2:3}^{(0)}-m^{(0)}_{2:3,1}U_1^{(0)},
+  \end{equation}
+  donde obtemos
+  \begin{align}
+    P^{(1)} &=
     \begin{bmatrix}
       0 & 1 & 0\\
       1 & 0 & 0\\
       0 & 0 & 1
     \end{bmatrix},\\
-    L^{(2)} &=
+    L^{(1)} &=
     \begin{bmatrix}
       1 & 0 & 0\\
       -0,\overline{3} & 1 & 0\\
       0,\overline{3} & 0 & 1      
-    \end{bmatrix},
-    U^{(2)} = 
+    \end{bmatrix},\\
+    U^{(1)} &= 
     \begin{bmatrix}
       3 & -4 & 1\\
       0 & 0,\overline{6} & -1,\overline{6}\\
       0 & -3,\overline{6} & 2,\overline{6}
     \end{bmatrix}
   \end{align}
-  Agora, o candidato a pivô é o elemento $u_{3,2}$. Assim, fazemos as permutações de linhas $P_2\leftrightarrow P_3$, $U_2 \leftrightarrow U_3$ (análogo para os elementos da coluna 1 de $L$) e, então, a operação elementar por linha $U_3\leftarrow U_3 - m_{3,2}U_2$. Com isso, obtemos
+  Agora, o candidato a pivô é o elemento $u^{(1)}_{3,2}$. Assim, fazemos as permutações de linhas
+  \begin{align}
+    P^{(1)}_2 &\leftrightarrow P^{(1)}_3, \\
+    U^{(1)}_2 &\leftrightarrow U^{(1)}_3
+  \end{align}
+  e análogo para os elementos da coluna 1 de $L$. Então, fazemos a operação elementar por linha
+  \begin{equation}
+    U^{(2)}_3 \leftarrow U^{(1)}_3 - m^{(1)}_{3,2}U^{(1)}_2
+  \end{equation}
+. Com isso, obtemos
   \begin{align}
     P^{(2)} &=
     \begin{bmatrix}
@@ -660,24 +671,69 @@ Com essa, iniciamos o procedimento de decomposição LU com $PA = L^{(1)}U^{(1)}
       1 & 0 & 0\\
       0,\overline{3} & 1 & 0\\
       -0,\overline{3} & -0,\overline{18} & 1      
-    \end{bmatrix},
-    U^{(2)} = 
+    \end{bmatrix},\\
+    U^{(2)} &= 
     \begin{bmatrix}
       3 & -4 & 1\\
       0 & -3,\overline{6} & 2,\overline{6}\\
       0 & 0 & -1,\overline{18}
     \end{bmatrix}
   \end{align}
-  Com isso, temos obtido a decomposição LU de $A$ na forma
+  Por fim, temos obtido a decomposição LU de $A$ na forma
   \begin{equation}
     PA = LU,
   \end{equation}
-  com $P=P^{(3)}$, $L=L^{(3)}$ e $U=U^{(3)}$.
+  com $P=P^{(2)}$, $L=L^{(2)}$ e $U=U^{(2)}$.
 
-% \ifisoctave
-% No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/ex_lup/ex_lup.m}{código}:
-% \verbatiminput{./cap_sl_direto/dados/ex_lup/ex_lup.m}
-% \fi
+\begin{lstlisting}[caption=lup.py, label=cap_sislin_sec_lu:cod:lup]
+import numpy as np
+
+def lup(A):
+    # num. de linhas
+    n = A.shape[0]
+
+    # inicialização
+    U = A.copy()
+    L = np.eye(n)
+    P = np.eye(n)
+
+    print(f'\n0')
+    print(f'P = \n{P}')
+    print(f'L = \n{L}')
+    print(f'U = \n{U}')
+
+    # decomposição
+    for i in range(n-1):
+        # permutação de linhas
+        p = i + np.argmax(np.fabs(U[i:,i]))
+        P[[i,p]] = P[[p,i]]
+        U[[i,p]] = U[[p,i]]
+        L[[i,p],:i] = L[[p,i],:i]
+        # eliminação gaussiana
+        for j in range(i+1,n):
+            L[j,i] = U[j,i]/U[i,i]
+            U[j,i:] -= L[j,i]*U[i,i:]
+
+        print(f'{i+1}:')
+        print(f'P = \n{P}')
+        print(f'L = \n{L}')
+        print(f'U = \n{U}')
+
+    return P, L, U
+
+# matriz
+A = np.array([[-1., 2., -2.],
+              [3., -4., 1.],
+              [1., -5., 3.]])
+
+P, L, U = lup(A)
+\end{lstlisting}
+\end{ex}
+
+\begin{ex}
+  [[tag:construcao]]
+
+  Vamos computar a solução do sistema ... com o Método da Decomposição LU com Pivotamento Parcial.
 \end{ex}
 
 \subsection*{Exercícios}
