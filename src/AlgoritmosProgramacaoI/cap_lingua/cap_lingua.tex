@@ -1756,7 +1756,7 @@ Objetos da classe de dados \lstinline+int+ e \lstinline+float+ permitem a aloca�
 
 \subsection{Conjuntos: \lstinline+set+}
 
-Em {\python}, \href{https://docs.python.org/3/tutorial/datastructures.html#sets}{\lstinline+set+} é uma classe de dados para a alocação de um conjunto de objetos. Assim como na matemática, um \hl{{\lstinline+set+} é uma coleção de itens não indexada, imutável e não admite itens duplicados}.
+Em {\python}, \href{https://docs.python.org/3/tutorial/datastructures.html#sets}{\lstinline+set+} é uma classe de dados para a alocação de um conjunto de objetos. Assim como na matemática, um \hl{{\lstinline+set+} é uma coleção de itens \emph{não indexada}, \emph{imutável} e \emph{não admite itens duplicados}}.
 
 A alocação de um \lstinline+set+ pode ser feita como no seguinte exemplo:
 \begin{lstlisting}
@@ -1785,7 +1785,7 @@ O método \href{https://docs.python.org/3/library/functions.html#len}{\lstinline
   0
 \end{lstlisting}
 
-\subsubsection{Operadores de comparação}
+\subsubsection{Operadores de comparação}\label{cap_lingua_sec_colecao:sssec:opcomp}
 
 Os seguintes operadores de comparação estão disponíveis para \lstinline+set+s:
 \begin{itemize}
@@ -1915,17 +1915,252 @@ Em {\python}, as seguintes operações com conjuntos estão disponíveis:
 \end{lstlisting}
 \end{itemize}
 
-
-
-
-
 \subsection{$N$-uplas: \lstinline+tuple+}
 
-[[tag:construcao]]
+Em \python, \hl{{\lstinline+tuple+} é uma \emph{sequência de objetos}, \emph{indexada} e \emph{imutável}}. São similares as $n$-uplas\footnote{Pares (duplas), triplas, quadruplas ordenadas, etc.} em matemática. A alocação é feita com uso de parênteses e os elementos separados por vírgula, por exemplo,
+\begin{lstlisting}
+>>> a = (1, -3.7, 'amarelo', -5)
+>>> type(a)
+<class 'tuple'>
+\end{lstlisting}
+
+\subsubsection{Indexação e fatiamento}
+
+O \hl{tamanho de um {\lstinline+tuple+} é sua quantidade de objetos e pode ser obtido com o método {\lstinline+len()+}}, por exemplo,
+\begin{lstlisting}
+>>> a = (1, -3.7, 'amarelo', -5, {-3,1})
+>>> len(a)
+5
+\end{lstlisting}
+Os \hl{itens são indexados} como segue
+\begin{equation}
+  (\underset{\underset{-5}{0}}{1}, \underset{\underset{-4}{1}}{-3.7}, \underset{\underset{-3}{2}}{\text{'amarelo'}}, \underset{\underset{-2}{3}}{-5}, \underset{\underset{-1}{4}}{\{-3, 1\}})
+\end{equation}
+A \hl{referência a um objeto} do \lstinline+tuple+ pode ser feita com
+\begin{lstlisting}
+>>> a[2]
+'amarelo'
+>>> a[-1]
+{1, -3}
+\end{lstlisting}
+
+Analogamente a \lstinline+string+s, \hl{pode-se fazer o fatiamento de {\lstinline+tuple+}s usando-se o operador {\lstinline+:+}}. Por exemplo,
+\begin{lstlisting}
+>>> a[:2]
+(1, -3.7)
+>>> a[1:5:2]
+(-3.7, -5)
+>>> a[::-1]
+({1, -3}, -5, 'amarelo', -3.7, 1)
+\end{lstlisting}
+
+\subsubsection{Operações com \lstinline+tuple+s}
+
+Os mesmos operadores de comparação para \lstinline+set+s estão disponíveis para \lstinline+tuple+s (consulte a Subseção \ref{cap_lingua_sec_colecao:sssec:opcomp}). Por exemplo,
+\begin{lstlisting}
+>>> -5 in a
+True
+>>> a[::-1] == a[-1:-6:-1]
+True
+>>> a != a[::-1]
+True
+>>> a[:2] < a
+True
+\end{lstlisting}
+
+\begin{obs}\normalfont{\hl{(Igualdade entre {\lstinline+tuple+}s.)}}
+  Dois \lstinline+tuple+s são iguais quando contém os mesmos elementos e na mesma ordem.
+\end{obs}
+
+Há, também, operadores para a concatenação e repetição:
+\begin{itemize}
+\item \hl{{\lstinline!+!} \emph{: concatenação}}
+
+\begin{lstlisting}
+>>> a = (1,2)
+>>> b = (3,4,5)
+>>> a+b
+(1, 2, 3, 4, 5)
+\end{lstlisting}
+
+\item \hl{{\lstinline!*!} \emph{: repetição}}
+
+\begin{lstlisting}
+>>> a*3
+(1, 2, 1, 2, 1, 2)
+\end{lstlisting}
+\end{itemize}
+
+\begin{obs}\normalfont{\hl{(Permutação de variáveis.)}}
+  Dizemos que um código é \emph{pythônico} quando explora a linguagem para escrevê-lo de forma sucinta e de fácil compreensão. Por exemplo, a permutação de variáveis é classicamente feita como segue
+\begin{lstlisting}
+>>> x = 1
+>>> y = 2
+>>> z = x
+>>> x = y
+>>> y = z
+>>> x, y
+(2, 1)
+\end{lstlisting}
+  Note que na última linha, um \lstinline+tuple+ foi criado. Ou seja, \hl{a criação de {\lstinline+tuple+}s não requer o uso de parênteses, basta colocar os objetos separados por vírgulas}. Podemos explorar isso e escrevermos o seguinte código pythônico para a permutação de variáveis:
+\begin{lstlisting}
+>>> x, y = y, x
+>>> x, y
+(1, 2)
+\end{lstlisting}
+\end{obs}
 
 \subsection{Listas: \lstinline+list+}
 
-[[tag:construcao]]
+Em {\python}, \href{https://docs.python.org/3/library/stdtypes.html#lists}{\lstinline+list+} é uma classe de objetos do tipo lista, é uma coleção de objetos indexada e mutável. Para a criação de uma lista, usamos colchetes \lstinline+[]+:
+\begin{lstlisting}
+>>> a = [1, -3.7, 'amarelo', -5, (-3,1)] 
+>>> type(a)
+<class 'list'>
+>>> a[2]
+'amarelo'
+>>> a[1::2]
+[-3.7, -5]
+\end{lstlisting}
+
+\begin{ex}\normalfont{\hl{(Vetores alocados como {\lstinline+lists+}.)}}
+  Sejam dados dois vetores
+  \begin{align}
+    v &= (v_1. v_2, v_3),\\
+    w &= (w_1, w_2, w_3).
+  \end{align}
+  O produto interno $v\cdot w$ é calculado por
+  \begin{equation}
+    v\cdot w := v_1w_1 + v_2w_2 + v_3w_3.
+  \end{equation}
+
+  O seguinte código, aloca os vetores
+  \begin{align}
+    v &= (-1, 2, 1),\\
+    w &= (3, -1, 4)
+  \end{align}
+  usando \lstinline+lists+, computa o produto interno $v\cdot w$ e imprime o resultado.
+
+\begin{lstlisting}
+v = [-1, 2, 1]
+w = [3, -1, 4]
+p = v[0]*w[0] \
+    + v[1]*w[1] \
+    + v[2]*w[2]
+print(f'v.w = {p}')
+\end{lstlisting}
+\end{ex}
+
+\begin{ex}\normalfont{\hl{(Matrizes e listas encadeadas.)}}
+  Consideramos a matriz
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      -1 & 1 \\
+      1 & 3 
+    \end{bmatrix}
+  \end{equation}
+  Podemos alocá-la por linhas pelo encadeamento de \lstinline+lists+, i.e.
+\begin{lstlisting}
+>>> A = [[-1,1],[1,3]]
+>>> A
+[[-1, 1], [1, 3]]
+\end{lstlisting}
+  Com isso, podemos obter a segunda linha da matriz com
+\begin{lstlisting}
+>>> A[1]
+[1, 3]
+\end{lstlisting}
+  Ou ainda, podemos obter o elemento da segunda linha  e primeira coluna com
+\begin{lstlisting}
+>>> A[1][0]
+1
+\end{lstlisting}
+\end{ex}
+
+\begin{obs}\normalfont{\hl{(Operadores.)}}
+  Os operadores envolvendo \lstinline+tuples+ são análogos para \lstinline+lists+. Por exemplo,
+\begin{lstlisting}
+>>> a = [1,2]
+>>> b = [3,4]
+>>> a + b
+[1, 2, 3, 4]
+>>> 2*a
+[1, 2, 1, 2]
+>>> a <= a
+True
+\end{lstlisting}
+\end{obs}
+
+\subsubsection{Modificações em \lstinline+list+s}
+
+\hl{{\lstinline+list+} é uma classe de objetos mutável}, i.e. permite que a coleção de objetos que a constituem seja alterada. Pode-se fazer a alteração de itens usando-se suas posições, por exemplo
+\begin{lstlisting}
+>>> a = [1, -3.7, 'amarelo', -5, (-3,1)] 
+>>> a[1] = 7.5
+>>> a
+[1, 7.5, 'amarelo', -5, (-3, 1)]
+>>> a[1:3] = ['mar', -2.47]
+>>> a
+[1, 'mar', -2.47, -5, (-3, 1)]
+>>> a[:2] = 7
+\end{lstlisting}
+
+Tem-se disponíveis os seguintes \hl{métodos para a modificação de {\lstinline+list+}s}:
+\begin{itemize}
+\item \hl{{\lstinline+del+} \emph{: deleta elemento(s)}}
+\begin{lstlisting}
+>>> del a[:2]
+>>> a
+[-2.47, -5, (-3, 1)]
+\end{lstlisting}
+
+\item \hl{{\lstinline+.insert(i, x)+} \emph{: inserção de elemento(s)}}
+\begin{lstlisting}
+>>> a.insert(1, 'azul')
+>>> a
+[-2.47, 'azul', -5, (-3, 1)]
+\end{lstlisting}
+
+\item \hl{{\lstinline+.append(x)+} \emph{: anexa um novo elemento}}
+\begin{lstlisting}
+>>> a.append([2,1])
+>>> a
+[-2.47, 'azul', -5, (-3, 1), [2, 1]]
+\end{lstlisting}
+
+\item \hl{{\lstinline+.extend(x)+} \emph{: estende com novos elementos dados}}
+\begin{lstlisting}
+>>> del a[-1]
+>>> a.extend([2,1])
+>>> a
+[-2.47, 'azul', -5, (-3, 1), 2, 1]
+>>> a += [3]
+>>> a
+[-2.47, 'azul', -5, (-3, 1), 2, 1, 3]
+\end{lstlisting}
+\end{itemize}
+
+\begin{obs}\normalfont{\hl{(Cópia de objetos.)}}
+  Em {\python}, dados têm um único identificador, por isso temos
+\begin{lstlisting}
+>>> a = [1,2,3]
+>>> b = a
+>>> b[1] = 4
+>>> a
+[1, 4, 3]
+\end{lstlisting}
+  \hl{Para fazermos uma cópia de uma {\lstinline+list+}, podemos usar o método {\lstinline+.copy()+}}. Com isso, temos
+\begin{lstlisting}
+>>> a = [1,2,3]
+>>> b = a.copy()
+>>> b[1] = 4
+>>> a
+[1, 2, 3]
+>>> b
+[1, 4, 3]
+\end{lstlisting}
+\end{obs}
 
 \subsection{Dicionários: \lstinline+dict+}
 
