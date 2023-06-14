@@ -5,7 +5,7 @@
 ########################################
 
 pdf: main.tex
-	rm main.out
+	rm -f main.out
 	cp config-book.knd config.knd
 	pdflatex main
 	bibtex main
