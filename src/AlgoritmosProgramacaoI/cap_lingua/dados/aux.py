@@ -1,3 +1,95 @@
+v = [-1, 0, 2]
+w = [3, 1, 2]
+# a)
+vpw = [v[0] + w[0],
+       v[1] + w[1],
+       v[2] + w[2]]
+print(f'a) v+w = {vpw}')
+# b)
+vmw = [v[0] - w[0],
+       v[1] - w[1],
+       v[2] - w[2]]
+print(f'b) v-w = {vmw}')
+# c)
+vdw = v[0]*w[0] + \
+      v[1]*w[1] + \
+      v[2]*w[2]
+print(f'c) v.w = {vdw}')
+# d)
+norm_v = (v[0]**2 + \
+         v[1]**2 + \
+         v[2]**2)**0.5
+print(f'd) ||v|| = {norm_v:.2f}')
+# e)
+norm_vmw = (vmw[0]**2 + \
+         vmw[1]**2 + \
+         vmw[2]**2)**0.5
+print(f'e) ||v-w|| = {norm_vmw:.2f}')
+
+
+
+
+
+a = [0,1]
+a.append(a[0]+a[1])
+a.append(a[1]+a[2])
+a.append(a[2]+a[3])
+a.append(a[3]+a[4])
+print(a)
+
+
+
+X = {-2,1,3}
+Y = {5,-1,2}
+XxY = {(-2,5), (-2,-1), (-2,2), \
+       (1,5), (1,-1), (1,2), \
+       (3,5), (3,-1), (3,2)}
+print(f'#(X x Y) = {len(XxY)}')
+
+A = {-3,-1,0,1,6,7}
+B = {-4,1,3,5,6,7}
+C = {-5,-3,1,2,3,5}
+# a)
+a = A & B
+print(f"a)\n A&B = {a}")
+# b)
+b = C | B
+print(f"b)\n A|B = {b}")
+# c)
+c = C - A
+print(f"c)\n C-A = {c}")
+# d)
+d = B & (A | C)
+print(f"d)\n B&(A|C) = {d}")
+
+
+# vértices do triangulo
+tria = {'A': (0,0), 'B': (1,0), 'C': (0,1)}
+# aresta AB
+tria['AB'] = ((tria['B'][0] - tria['A'][0])**2 \
+    + (tria['B'][1] - tria['A'][1])**2)**0.5
+# aresta BC
+tria['BC'] = ((tria['C'][0] - tria['B'][0])**2 \
+    + (tria['C'][1] - tria['B'][1])**2)**0.5
+# aresta AC
+tria['AC'] = ((tria['C'][0] - tria['A'][0])**2 \
+    + (tria['C'][1] - tria['A'][1])**2)**0.5
+# novo dicionário
+print(tria)
+
+
+A = [[-1,1,2],
+     [1,3,-1],
+     [2,0,-1]]
+
+v = [-1, 2, 1]
+w = [3, -1, 4]
+p = v[0]*w[0] \
+    + v[1]*w[1] \
+    + v[2]*w[2]
+print(f'v.w = {p}')
+
+
 s = input('Digite uma palavra:\n\t')
 print(f'A palavra {s} tem {len(s)} letras.')
 

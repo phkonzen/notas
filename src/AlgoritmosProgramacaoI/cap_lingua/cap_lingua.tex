@@ -2164,8 +2164,296 @@ Tem-se disponíveis os seguintes \hl{métodos para a modificação de {\lstinlin
 
 \subsection{Dicionários: \lstinline+dict+}
 
-[[tag:construcao]]
+Em {\python}, \hl{um dicionário {\lstinline+dict+} é uma coleção de objetos em que cada elemento está associado a uma \emph{chave}}. Como chave podemos usar qualquer dado imutável (\lstinline+int+, \lstinline+float+, \lstinline+str+, etc.). Criamos um \lstinline+dict+ ao alocarmos um conjunto de chaves:valores:
+\begin{lstlisting}
+>>> x = {'nome': 'Fulane', 'idade': 19}
+>>> x
+{'nome': 'Fulane', 'idade': 19}
+>>> y = {3: 'número inteiro', 3.14: 'pi', 2.71: 2}
+>>> y
+{3: 'número inteiro', 3.14: 'pi', 2.71: 2}
+>>> d = {}
+>>> type(d)
+<class 'dict'>
+\end{lstlisting}
+Observamos que \lstinline+{}+ cria um dicionário vazio. \hl{Acessamos um valor no {\lstinline+dict+} referenciando-se sua chave}, por exemplo
+\begin{lstlisting}
+>>> x['idade']
+19
+>>> y[3]
+'número inteiro'
+\end{lstlisting}
+Podemos obter a lista de chaves de um \lstinline+dict+ da seguinte forma
+\begin{lstlisting}
+>>> list(x)
+['nome', 'idade']
+>>> list(y)
+[3, 3.14, 2.71]
+\end{lstlisting}
+
+\begin{ex}\label{cap_lingua_sec_colecao:ex:tria0}
+Consideramos o triângulo de vértices $\{(0,0), (1,0), (0,1)\}$. Alocamos um dicionário contendo os vértices do triangulo
+\begin{lstlisting}
+>>> tria = {'A': (0,0), 'B': (1,0), 'C': (0,1)}
+>>> tria
+{'A': (0, 0), 'B': (1, 0), 'C': (0, 1)}
+\end{lstlisting}
+Para recuperarmos o valor do segundo vértice, por exemplo, digitamos
+\begin{lstlisting}
+>>> tria['B']
+(1, 0)
+\end{lstlisting}
+\end{ex}
+
+\hl{Em um {\lstinline+dict+}, valores podem ser modificados}, por exemplo,
+\begin{lstlisting}
+>>> x['nome'] = 'Fulana'
+>>> x
+{'nome': 'Fulana', 'idade': 19}
+\end{lstlisting}
+\hl{Podemos estender um {\lstinline+dict+} pela inserção de uma nova associação chave:valor}, por exemplo
+\begin{lstlisting}
+>>> x['altura'] = 171
+>>> x
+{'nome': 'Fulana', 'idade': 19, 'altura': 171}
+\end{lstlisting}
+
+\begin{ex}
+  No Exemplo \ref{cap_lingua_sec_colecao:ex:tria0}, alocamos o dicionário \lstinline+tria+ contendo os vértices de um dado triângulo. Aora, vamos computar o comprimento de cada uma de suas arestas e alocar o resultado no próprio \lstinline+dict+. A distância entre dois pontos $A = (a_1, a_2)$ e $B = (b_1, b_2)$ pode ser calculada por
+  \begin{equation}
+    d(A, b) := \sqrt{(b_1-a_1)^2 + (a_2-b_2)^2}
+  \end{equation}
+  Segue nosso código:
+\begin{lstlisting}
+# vértices do triangulo
+tria = {'A': (0,0), 'B': (1,0), 'C': (0,1)}
+# aresta AB
+tria['AB'] = ((tria['B'][0] - tria['A'][0])**2 \
+    + (tria['B'][1] - tria['A'][1])**2)**0.5
+# aresta BC
+tria['BC'] = ((tria['C'][0] - tria['B'][0])**2 \
+    + (tria['C'][1] - tria['B'][1])**2)**0.5
+# aresta AC
+tria['AC'] = ((tria['C'][0] - tria['A'][0])**2 \
+    + (tria['C'][1] - tria['A'][1])**2)**0.5
+# novo dicionário
+print(tria)
+\end{lstlisting}
+\end{ex}
 
 \subsection{Exercícios}
 
-[[tag:contrucao]]
+\begin{exer}
+  Crie um código que aloque os seguintes conjuntos
+  \begin{align}
+    A &= \{1,4,7\}\\
+    B &= \{1,3,4,5,7,8\}
+  \end{align}
+  e verifique as seguintes afirmações:
+  \begin{enumerate}[a)]
+  \item $A\supset B$
+  \item $A\subset B$
+  \item $B\not\supset A$
+  \item $A\subsetneq B$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+A = {1,4,7}
+B = {1,3,4,5,7,8}
+# a)
+a = A >= B
+print(f"a) A>=B: {a}")
+# b)
+b = A <= B
+print(f"b) A<=B: {b}")
+# c)
+c = not(A >= B)
+print(f"c) not(A>=B): {c}")
+# d)
+d = A < B
+print(f"d) A<B: {d}")
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  Crie um código que aloque os seguintes conjuntos
+  \begin{align}
+    A &= \{-3,-1,0,1,6,7\}\\
+    B &= \{-4,1,3,5,6,7\}\\
+    C &= \{-5,-3,1,2,3,5\}
+  \end{align}
+  e, então, compute as seguintes operações:
+  \begin{enumerate}[a)]
+  \item $A\cap B$\\
+  \item $C\cup B$\\
+  \item $C\setminus A$\\
+  \item $B\cap (A\cup C)$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+A = {-3,-1,0,1,6,7}
+B = {-4,1,3,5,6,7}
+C = {-5,-3,1,2,3,5}
+# a)
+a = A & B
+print(f"a)\n A&B = {a}")
+# b)
+b = C | B
+print(f"b)\n A|B = {b}")
+# c)
+c = C - A
+print(f"c)\n C-A = {c}")
+# d)
+d = B & (A | C)
+print(f"d)\n B&(A|C) = {d}")
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  O produto cartesiano{\descartes} de um conjunto $X$ com um conjunto $Y$ é o seguinte conjunto de pares ordenados
+  \begin{equation}
+    X\times Y := \{(x,y):~x\in X \land y\in Y\}.
+  \end{equation}
+  Crie um código que aloque os conjuntos
+  \begin{equation}
+    X = \{-2,1,3\},
+    Y = \{5,-1,2\}
+  \end{equation}
+  e $X\times Y$. Por fim, fornece a quantidade de elementos de $X\times Y$.
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+X = {-2,1,3}
+Y = {5,-1,2}
+XxY = {(-2,5), (-2,-1), (-2,2), \
+       (1,5), (1,-1), (1,2), \
+       (3,5), (3,-1), (3,2)}
+print(f'#(X x Y) = {len(XxY)}')
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  A sequência de Fibonacci{\fibonacci} $(f_n)_{n\in\mathcal{N}}$ é definida por
+  \begin{equation}
+    f_n := \left\{
+    \begin{array}{ll}
+      0 &, n=0,\\
+      1 &, n=1,\\
+      f_{n-2}+f_{n-1} &, n\geq 2
+    \end{array}
+  \right. 
+\end{equation}
+Crie um código que aloque os $6$ primeiros elementos da sequência em um \lstinline+list+ e imprima-o.
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+a = [0,1]
+a.append(a[0]+a[1])
+a.append(a[1]+a[2])
+a.append(a[2]+a[3])
+a.append(a[3]+a[4])
+print(a)
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  Crie um código que usa de \lstinline+lists+ para alocar os seguintes vetores
+  \begin{align}
+    \pmb{v} = (-1, 0, 2),\\
+    \pmb{w} = (3, 1, 2)
+  \end{align}
+  e computar:
+  \begin{enumerate}[a)]
+  \item $\pmb{v} + \pmb{w}$\\
+  \item $\pmb{v} - \pmb{w}$\\
+  \item $\pmb{v}\cdot \pmb{w}$\\
+  \item $\|\pmb{v}\|$\\
+  \item $\|\pmb{v} - \pmb{w}\|$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+v = [-1, 0, 2]
+w = [3, 1, 2]
+# a)
+vpw = [v[0] + w[0],
+       v[1] + w[1],
+       v[2] + w[2]]
+print(f'a) v+w = {vpw}')
+# b)
+vmw = [v[0] - w[0],
+       v[1] - w[1],
+       v[2] - w[2]]
+print(f'b) v-w = {vmw}')
+# c)
+vdw = v[0]*w[0] + \
+      v[1]*w[1] + \
+      v[2]*w[2]
+print(f'c) v.w = {vdw}')
+# d)
+norm_v = (v[0]**2 + \
+         v[1]**2 + \
+         v[2]**2)**0.5
+print(f'd) ||v|| = {norm_v:.2f}')
+# e)
+norm_vmw = (vmw[0]**2 + \
+         vmw[1]**2 + \
+         vmw[2]**2)**0.5
+print(f'e) ||v-w|| = {norm_vmw:.2f}')
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  Crie um código que usa de listas encadeadas para alocar a matriz
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      1 & -1\\
+      2 & 3
+    \end{bmatrix}
+  \end{equation}
+  e imprima o determinante de $A$, i.e.
+  \begin{equation}
+    |A| := a_{1,1}a_{2,2} - a_{1,2}a_{2,1}.
+  \end{equation}
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+A = [[1, -1],
+     [2, 3]]
+detA = A[0][0]*A[1][1] \
+     - A[0][1]*A[1][0]
+print(f'|A| = {detA}')
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  Crie um código que use de listas para alocar a matriz
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      1 & -1 & 2\\
+      2 & 0 & -3\\
+      3 & 1 & -2
+    \end{bmatrix}
+  \end{equation}
+  e o vetor
+  \begin{equation}
+    \pmb{x} = (-1, 2, 1).
+  \end{equation}
+  Na sequência, compute $A\pmb{x}$ e imprime o resultado.
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+A = [[1, -1, 2],
+     [2, 0, -3],
+     [3, 1, -2]]
+x = [-1, 2, 1]
+Ax = [A[0][0]*x[0] + A[0][1]*x[1] + A[0][2]*x[2],
+      A[1][0]*x[0] + A[1][1]*x[1] + A[0][1]*x[2],
+      A[2][0]*x[0] + A[2][1]*x[1] + A[0][2]*x[2]]
+print(f'Ax = {Ax}')
+\end{lstlisting}
+\end{resp}
