@@ -8,19 +8,11 @@ def lu(A):
     U = A.copy()
     L = np.eye(n)
 
-    print(f'\n0')
-    print(f'L = \n{L}')
-    print(f'U = \n{U}')
-
     # decomposição
     for i in range(n-1):
         for j in range(i+1,n):
             L[j,i] = U[j,i]/U[i,i]
             U[j,i:] -= L[j,i]*U[i,i:]
-
-        print(f'{i+1}:')
-        print(f'L = \n{L}')
-        print(f'U = \n{U}')
 
     return L, U
 

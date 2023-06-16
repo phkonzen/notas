@@ -9,11 +9,6 @@ def lup(A):
     L = np.eye(n)
     P = np.eye(n)
 
-    print(f'\n0')
-    print(f'P = \n{P}')
-    print(f'L = \n{L}')
-    print(f'U = \n{U}')
-
     # decomposição
     for i in range(n-1):
         # permutação de linhas
@@ -25,11 +20,6 @@ def lup(A):
         for j in range(i+1,n):
             L[j,i] = U[j,i]/U[i,i]
             U[j,i:] -= L[j,i]*U[i,i:]
-
-        print(f'{i+1}:')
-        print(f'P = \n{P}')
-        print(f'L = \n{L}')
-        print(f'U = \n{U}')
 
     return P, L, U
 
