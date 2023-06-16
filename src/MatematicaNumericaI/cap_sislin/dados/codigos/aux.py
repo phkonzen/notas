@@ -1,9 +1,18 @@
 import numpy as np
+import numpy.linalg as npla
+np.set_printoptions(precision=4)
+A = np.array([[-1., 2., -2.],
+              [3., 4., 1.],
+              [-4., -5., 3.]])
+Ainv = npla.inv(A)
+print(Ainv)
+
 u = np.array([1., -2., 3., -4.])
 v = np.array([-1., 2., 0., 1.])
-destria = np.dot(u,v) <= npla.norm(u) \
-    + npla.norm(v)
-print(f'\nu.v <= ||u||.||v||? {destria}')
+nupv = npla.norm(u+v)
+nupnv = npla.norm(u) + npla.norm(v)
+print('\nu.v <= ||u||.||v||?')
+print(nupv <= nupnv)
 
 import numpy as np
 import numpy.linalg as npla

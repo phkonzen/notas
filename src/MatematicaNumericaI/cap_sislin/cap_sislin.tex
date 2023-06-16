@@ -933,6 +933,55 @@ print(V)
 \end{lstlisting}
 \end{resp}
 
+\begin{exer}
+  Use o Método da Decomposição LU para computar a matriz inversa de cada uma das seguintes matrizes:
+  \begin{enumerate}[a)]
+  \item
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      -1 & 2 & -2\\
+      3 & 4 & 1\\
+      -4 & -5 & 3
+    \end{bmatrix}
+  \end{equation}
+\item
+  \begin{equation}
+    B =
+    \begin{bmatrix}
+      -1 & 0 & -2 & 1\\
+      3 & 0 & 0 & -2\\
+      1 & -1 & 0 & -1\\
+      0 & 2 & -3 & 0
+    \end{bmatrix}.
+  \end{equation}  
+\end{enumerate}
+\end{exer}
+\begin{resp}
+  Dica: $AA^{-1} = I$.
+  \begin{enumerate}[a)]
+  \item
+    \begin{equation}
+      A^{-1} =
+      \begin{bmatrix}
+        -0,3778 & -0,0889, & -0,2222\\
+         0,2889 & 0,2444  & 0,1111\\
+         -0,0222 & 0,2889 & 0,2222
+      \end{bmatrix}
+    \end{equation}
+  \item
+    \begin{equation}
+      B^{-1} =
+      \begin{bmatrix}
+        0,8571  & 1 & -1.1429 & -0.5714\\
+        -0,4286 & 0 & -0,4286 & 0,2857\\
+        -0,2857 & 0 & -0,2857 & -0,1429\\
+        1,2857 &  1. &-1,7143 & -0,8571
+      \end{bmatrix}
+    \end{equation}
+  \end{enumerate}
+\end{resp}
+
 
 \section{Norma e Número de Condicionamento}\label{cap_sislin_sec_ncond}
 
@@ -998,7 +1047,7 @@ print(f'\n||v|| = {norm_v}')
 \end{ex}
 
 
-\begin{prop}\normalfont{\hl{(Propriedades da Norma.)}}
+\begin{prop}\normalfont{\hl{(Propriedades da Norma para Vetores.)}}
   Dados os vetores $\pmb{u},\pmb{v} \in \mathbb{R}^n$ e um escalar $\lambda\in\mathbb{R}$, temos:
   \begin{enumerate}[a)]
   \item \hl{\emph{Positividade}}
@@ -1131,29 +1180,24 @@ print(nupv <= nupnv)
 
 \subsubsection{Norma de Matrizes}
 
-[[tag:revisar]]
-
-A norma $L^2$ induzida de uma dada matriz real $A = [a_{ij}]_{i,j=1}^n$ é definida por
-\begin{equation}
-  \|A\| := \sup_{x\in\mathbb{R}^n, \|x\|=1} \|Ax\|.
+\hl{A norma $L^2$ induzida de uma dada matriz} real $A = [a_{ij}]_{i,j=1}^n$ é definida por
+\begin{equation}\hleq
+  \|A\|_2 := \sup_{\pmb{x}\in\mathbb{R}^n, \|\pmb{x}\|=1} \|A\pmb{x}\|.
 \end{equation}
-Pode-se mostrar que
+Pode-se mostrar que\footnote{Consulte \cite[Section 1.3-3]{Ralston2001a} para informações sobre a demonstração.}
 \begin{equation}
-  \|A\| = \sqrt{\lambda_{max}(A^TA)},
+  \|A\|_2 = \sqrt{\lambda_{max}(A^TA)},
 \end{equation}
 onde $\lambda_{max}(A^TA) := \max\{|\lambda|;~\lambda\text{ é autovalor de }A^TA\}$.
 
-\begin{prop}
-  Dadas as matrizes reais $A, B$ $n\times n$, um vetor $v\in\mathbb{R}^2$ e um escalar $\lambda$, temos
-  \begin{enumerate}[a)]
-  \item $\|A\| \geq 0$.
-  \item $\|A\|=0 \Leftrightarrow A=0$.
-  \item $\|\lambda A\| = |\lambda|\cdot \|A\|$.
-  \item $\|A+B\| \leq \|A\| + \|B\|$ (desigualdade triangular).
-  \item $\|AB\| \leq \|A\|\|B\|$.
-  \item $\|Av\| \leq \|A\|\|v\|$.
-  \end{enumerate}
-\end{prop}
+Tendo em vista o grande custo computacional em se calcular a norma induzida, \hl{vamos trabalhar com a \emph{norma de Frobenius}} (ou norma Euclidiana{\euclides})
+\begin{equation}\hleq
+  \|A\| = \left(\sum_{i=1}^n\sum_{j=1}^n|a_{i,j}|^2\right)^{\frac{1}{2}}
+\end{equation}
+Esta é uma generalização da norma euclidiana para vetores e \hl{é equivalente a norma $L^2$ induzida}, i.e.
+\begin{equation}
+  \|A\|_2 \leq \|A\| \leq \sqrt{n}\|A\|_2.
+\end{equation}
 
 \begin{ex}\label{ex:norma_matriz}
   A matriz
@@ -1165,16 +1209,71 @@ onde $\lambda_{max}(A^TA) := \max\{|\lambda|;~\lambda\text{ é autovalor de }A^T
       7 & -5 & \sqrt{2}
     \end{bmatrix}
   \end{equation}
-tem norma $L^2$
-\begin{equation}
-  \|A\| = 9,3909.
-\end{equation}
-
-% \ifisoctave
-% No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/ex_norma_matriz/ex_norma_matriz.m}{código}:
-% \verbatiminput{./cap_sl_direto/dados/ex_norma_matriz/ex_norma_matriz.m}
-% \fi
+  tem norma
+  \begin{equation}
+    \|A\| = 10,5768\E+0.
+  \end{equation}
+\begin{lstlisting}
+import numpy as np
+import numpy.linalg as npla
+A = np.array([[1., -1., 2.],
+              [-2., np.pi, 4.],
+              [7., -5., np.sqrt(2)]])
+norm_A = npla.norm(A)
+print(norm_A)
+\end{lstlisting}
 \end{ex}
+
+
+\begin{prop}\normalfont{\hl{(Propriedades da Norma para Matrizes.)}}\label{cap_sislin_sec_ncond:prop:NormaMatriz}
+  Dadas as matrizes reais $A, B$ $n\times n$, um vetor $v\in\mathbb{R}^n$ e um escalar $\lambda$, temos
+  \begin{enumerate}[a)]
+  \item \hl{\emph{Positividade}}
+    \begin{align}
+      &\hleq\|A\| \geq 0\\
+      &\hleq\|A\| = 0 \Leftrightarrow A = \pmb{0}
+    \end{align}
+    
+  \item \hl{\emph{Multiplicação por escalar}}
+    \begin{equation}
+      \hleq\|\lambda A\| = |\lambda|\cdot \|A\|
+    \end{equation}
+    
+  \item \hl{\emph{Desigualdade triangular}}
+    \begin{equation}
+      \hleq\|A+B\| \leq \|A\| + \|B\|
+    \end{equation}
+
+  \item \hl{\emph{Sub-multiplicatividade}}
+    \begin{equation}
+      \hleq\|AB\| \leq \|A\|\|B\|
+    \end{equation}
+    
+  \item \hl{\emph{Norma da aplicação}}
+    \begin{equation}
+      \hleq\|Av\| \leq \|A\|\|v\|
+    \end{equation}
+  \end{enumerate}
+\end{prop}
+\begin{dem}
+  Consulte o Exercício \ref{cap_sislin_sec_ncond:exer:propNormaMatriz}.
+\end{dem}
+
+\begin{exer}
+  Vamos ver exemplos das propriedades d) e e) da norma de matriz.
+  \begin{enumerate}[a)]
+  \item Sub-multiplicatividade
+    \begin{align}
+      &\|I_n^2\| = \|I_n\| = \sqrt{n}\\
+      &\|I\|\cdot\|I\| = \|I\|^2 = n
+    \end{align}
+  \item Norma da aplicação
+    \begin{align}
+      &\|I_n\pmb{v}\| = \|\pmb{v}\|\\
+      &\|I_n\|\|v\| = \sqrt{n}\|\pmb{v}\|
+    \end{align}
+  \end{enumerate}
+\end{exer}
 
 \subsection{Número de condicionamento}
 
@@ -1278,6 +1377,13 @@ Isto nos motiva a definir o \emph{número de condicionamento} da matriz $A$ por
 \end{exer}
 \begin{resp}
   Dica: use a Desigualdade de Cauchy-Schwarz \eqref{cap_sislin_sec_ncond:eq:cauchy-schwarz}.
+\end{resp}
+
+\begin{exer}\label{cap_sislin_sec_ncond:exer:propNormaMatriz}
+  Mostre a Proposição \ref{cap_sislin_sec_ncond:prop:NormaMatriz}.
+\end{exer}
+\begin{resp}
+  Dica: use as propriedades da norma de vetores.
 \end{resp}
 
 
