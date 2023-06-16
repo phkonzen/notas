@@ -1281,63 +1281,70 @@ print(norm_A)
   [[tag:revisar]]
 \end{flushleft}
 
-O número de condicionamento de uma matriz é uma medida referente a propagação de erros que ocorre da sua aplicação. Mais especificamente, assumamos que seja dada uma matriz invertível $A = [a_{ij}]_{i,j=1}^{n,n}$, um vetor $x\in\mathbb{R}^n$ e uma perturbação $\delta_x\in\mathbb{R}^n$. Além disso, sejam
+\hl{O número de condicionamento de uma matriz é uma medida referente a propagação de erros que ocorre da sua aplicação}. Mais especificamente, assumamos que seja dada uma matriz invertível $A = [a_{ij}]_{i,j=1}^{n,n}$, um vetor $\pmb{x}\in\mathbb{R}^n$ e uma perturbação $\pmb{\delta_x}\in\mathbb{R}^n$. Além disso, sejam
 \begin{align}
-  y &= Ax\\
-  y + \delta_y &= A(x+\delta_x).
+  \pmb{y} &= A\pmb{x}\\
+  \pmb{y} + \pmb{\delta_y} &= A(\pmb{x}+\pmb{\delta_x}).
 \end{align}
-Ou seja, $\delta_y$ é a perturbação em $y$ propagada da aplicação de $A$ em $x$ com perturbação $\delta_x$.
+Ou seja, $\pmb{\delta_y}$ é a perturbação em $\pmb{y}$ propagada da aplicação de $A$ em $\pmb{x}$ com perturbação $\pmb{\delta_x}$.
 
-Agora, podemos estimar a razão entre os erros relativos $e_{rel}(y) := \|\delta_y\|/\|y\|$ e $e_{rel}(x) := \|\delta_x\|/\|x\|$ da seguinte forma 
+Agora, podemos estimar a razão entre os erros relativos
 \begin{align}
-  \frac{\frac{\|y\|}{\|\delta_y\|}}{\frac{\|x\|}{\|\delta_x\|}} &= \frac{\|y\|}{\|\delta_y\|}\frac{\|\delta_x\|}{\|x\|}\\
-  &=\frac{\|Ax\|}{\|\delta_y\|}\frac{\|A^{-1}\delta_y\|}{\|x\|} \\
-  &\leq \frac{\|A\|\|x\|\|A^{-1}\|\|\delta_y\|}{\|\delta_y\|\|x\|}\\
-  &\leq \|A\|\|A^{-1}\|.
+  & e_{rel}(\pmb{y}) := \|\pmb{\delta_y}\|/\|\pmb{y}\|\\
+  & e_{rel}(\pmb{x}) := \|\pmb{\delta_x}\|/\|\pmb{x}\|
 \end{align}
-Logo, temos a seguinte estimativa de propagação de erro
-\begin{equation}
-  e_{rel}(y) \leq \|A\|\|A^{-1}\|e_{rel}(x).
+da seguinte forma 
+\begin{align}
+  \frac{\|\pmb{y}\|/\|\pmb{\delta_y}\|}{\|\pmb{x}\|/\|\pmb{\delta_x}\|} &= \frac{\|\pmb{y}\|}{\|\pmb{\delta_y}\|}\frac{\|\pmb{\delta_x}\|}{\|\pmb{x}\|}\\
+  &=\frac{\|A\pmb{x}\|}{\|\pmb{\delta_y}\|}\frac{\|A^{-1}\pmb{\delta_y}\|}{\|\pmb{x}\|} \\
+  &\leq \frac{\|A\|\|\pmb{x}\|\|A^{-1}\|\|\pmb{\delta_y}\|}{\|\pmb{\delta_y}\|\|\pmb{x}\|}\\
+  &\leq \frac{\|A\|}{|A^{-1}\|}.
+\end{align}
+Logo, temos a seguinte \hl{estimativa de propagação de erro}
+\begin{equation}\hleq
+  e_{rel}(\pmb{y}) \leq \frac{\|A\|}{\|A^{-1}\|}e_{rel}(\pmb{x}).
 \end{equation}
 
-Isto nos motiva a definir o \emph{número de condicionamento} da matriz $A$ por
-\begin{equation}
-  \kappa(A) := \|A\|\|A^{-1}\|.
+Isto nos motiva a definir o \hl{\emph{número de condicionamento}} da matriz $A$ por
+\begin{equation}\hleq
+  \kappa(A) := \frac{\|A\|}{\|A^{-1}\|}.
 \end{equation}
 
-\begin{obs}
-  A matriz identidade tem o menor número de condicionamento, o qual é
-  \begin{equation}
-    \kappa(I) = 1.
-  \end{equation}
-\end{obs}
+A matriz identidade tem o menor número de condicionamento que é
+\begin{equation}
+  \kappa(I) = 1.
+\end{equation}
+temos que \hl{$\kappa(A) \geq 1$ e quanto maior, mais mal condicionada é a matriz}. Ou seja, quando maior $\kappa(A)$, maior é a propagação dos erros ao se computar $A\pmb{x}$.
 
+% estou aqui
 \begin{ex}\label{ex:kappa}
-  Um exemplo de uma matriz bem condicionada é
-  \begin{equation}
-    A =
-    \begin{bmatrix}
-      1 & -1 & 2\\
-      -2 & \pi & 4\\
-      7 & -5 & \sqrt{2}
-    \end{bmatrix},
-  \end{equation}
-  cujo número de condicionamento é $\kappa(A) = 13,997$.
-
-  Já, a matriz
-  \begin{equation}
-    B =
-    \begin{bmatrix}
-      1 & 0 & 0\\
-      0 & 0 & -2\\
-      10^{5} & 10^{-4} & 10^{5}
-    \end{bmatrix},    
-  \end{equation}
-  tem número de condicionamento
-  \begin{equation}
-    \kappa(B) = 1,5811\times 10^{14},
-  \end{equation}
-  o que indica que $B$ é uma matriz mal condicionada.
+  Estudamos os seguintes exemplos:
+  \begin{enumerate}[a)]
+  \item Matriz bem condicionada.
+    \begin{equation}
+      A =
+      \begin{bmatrix}
+        1 & -1 & 2\\
+        -2 & \pi & 4\\
+        7 & -5 & \sqrt{2}
+      \end{bmatrix},
+    \end{equation}
+    cujo número de condicionamento é $\kappa(A) = 13,997$.
+  \item Matriz mal condicionada.
+    \begin{equation}
+      B =
+      \begin{bmatrix}
+        1 & 0 & 0\\
+        0 & 0 & -2\\
+        10^{5} & 10^{-4} & 10^{5}
+      \end{bmatrix},    
+    \end{equation}
+    tem número de condicionamento
+    \begin{equation}
+      \kappa(B) = 1,5811\times 10^{14},
+    \end{equation}
+    o que indica que $B$ é uma matriz mal condicionada.    
+  \end{enumerate}
 \end{ex}
 
 \subsection{Exercícios}

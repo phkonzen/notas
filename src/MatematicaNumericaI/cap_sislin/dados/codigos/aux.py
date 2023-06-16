@@ -1,11 +1,15 @@
 import numpy as np
 import numpy.linalg as npla
-np.set_printoptions(precision=4)
-A = np.array([[-1., 2., -2.],
-              [3., 4., 1.],
-              [-4., -5., 3.]])
-Ainv = npla.inv(A)
-print(Ainv)
+A = np.array([[1., -1., 2.],
+              [-2., np.pi, 4.],
+              [7., -5., np.sqrt(2)]])
+B = np.array([[1., -1., 3.],
+              [-2., 1, 4.],
+              [7., -1., np.sqrt(2)]])
+norm_A = npla.norm(A)
+norm_B = npla.norm(A)
+print(npla.norm(A@B))
+print(norm_A * norm_B)
 
 u = np.array([1., -2., 3., -4.])
 v = np.array([-1., 2., 0., 1.])
