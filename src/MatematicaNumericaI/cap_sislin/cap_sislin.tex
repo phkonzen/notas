@@ -1139,7 +1139,7 @@ print(f'\n||v|| = {norm_v}')
   \end{enumerate}
 \end{dem}
 
-\begin{exer}
+\begin{ex}
   Vamos verificar a Desigualdade Triangular \eqref{cap_sislin_sec_ncond:eq:destria} para os vetores
   \begin{align}
     \pmb{u} &= (1, -2, 3, -4),\\
@@ -1176,7 +1176,7 @@ nupnv = npla.norm(u) + npla.norm(v)
 print('\nu.v <= ||u||.||v||?')
 print(nupv <= nupnv)
 \end{lstlisting}
-\end{exer}
+\end{ex}
 
 \subsubsection{Norma de Matrizes}
 
@@ -1259,7 +1259,7 @@ print(norm_A)
   Consulte o Exercício \ref{cap_sislin_sec_ncond:exer:propNormaMatriz}.
 \end{dem}
 
-\begin{exer}
+\begin{ex}
   Vamos ver exemplos das propriedades d) e e) da norma de matriz.
   \begin{enumerate}[a)]
   \item Sub-multiplicatividade
@@ -1273,7 +1273,7 @@ print(norm_A)
       &\|I_n\|\|v\| = \sqrt{n}\|\pmb{v}\|
     \end{align}
   \end{enumerate}
-\end{exer}
+\end{ex}
 
 \subsection{Número de condicionamento}
 
@@ -1298,16 +1298,16 @@ da seguinte forma
   \frac{\|\pmb{y}\|/\|\pmb{\delta_y}\|}{\|\pmb{x}\|/\|\pmb{\delta_x}\|} &= \frac{\|\pmb{y}\|}{\|\pmb{\delta_y}\|}\frac{\|\pmb{\delta_x}\|}{\|\pmb{x}\|}\\
   &=\frac{\|A\pmb{x}\|}{\|\pmb{\delta_y}\|}\frac{\|A^{-1}\pmb{\delta_y}\|}{\|\pmb{x}\|} \\
   &\leq \frac{\|A\|\|\pmb{x}\|\|A^{-1}\|\|\pmb{\delta_y}\|}{\|\pmb{\delta_y}\|\|\pmb{x}\|}\\
-  &\leq \frac{\|A\|}{|A^{-1}\|}.
+  &= \|A\||A^{-1}\|.
 \end{align}
 Logo, temos a seguinte \hl{estimativa de propagação de erro}
 \begin{equation}\hleq
-  e_{rel}(\pmb{y}) \leq \frac{\|A\|}{\|A^{-1}\|}e_{rel}(\pmb{x}).
+  e_{rel}(\pmb{y}) \leq \|A\|\|A^{-1}\|e_{rel}(\pmb{x}).
 \end{equation}
 
 Isto nos motiva a definir o \hl{\emph{número de condicionamento}} da matriz $A$ por
 \begin{equation}\hleq
-  \kappa(A) := \frac{\|A\|}{\|A^{-1}\|}.
+  \kappa(A) := \|A\|\|A^{-1}\|.
 \end{equation}
 
 A matriz identidade tem o menor número de condicionamento que é
@@ -1330,6 +1330,16 @@ temos que \hl{$\kappa(A) \geq 1$ e quanto maior, mais mal condicionada é a matr
       \end{bmatrix},
     \end{equation}
     cujo número de condicionamento é $\kappa(A) = 13,997$.
+\begin{lstlisting}
+import numpy as np
+import numpy.linalg as npla
+A = np.array([[1., -1., 2.],
+              [-2., np.pi, 4.],
+              [7., -5., np.sqrt(2)]])
+cond_A = npla.cond(A, 'fro')
+print(f'cond(A) = {cond_A}')
+\end{lstlisting}
+
   \item Matriz mal condicionada.
     \begin{equation}
       B =
@@ -1343,17 +1353,127 @@ temos que \hl{$\kappa(A) \geq 1$ e quanto maior, mais mal condicionada é a matr
     \begin{equation}
       \kappa(B) = 1,5811\times 10^{14},
     \end{equation}
-    o que indica que $B$ é uma matriz mal condicionada.    
+    o que indica que $B$ é uma matriz mal condicionada.
+\begin{lstlisting}
+import numpy as np
+import numpy.linalg as npla
+A = np.array([[1., 0., 0.],
+              [0., 0., -2.],
+              [1e5, 1e-4, 1e5]])
+cond_A = npla.cond(A, 'fro')
+print(f'cond(A) = {cond_A:.4e}')
+\end{lstlisting}
   \end{enumerate}
 \end{ex}
 
 \subsection{Exercícios}
 
-\begin{flushleft}
-  [[tag:construcao]]
-\end{flushleft}
+\begin{exer}
+  Compute a norma de cada um dos seguintes vetores:
+  \begin{enumerate}[a)]
+  \item $\displaystyle \pmb{u} = (1, 0, -1)$
+  \item $\displaystyle \pmb{v} = (1, -2, -1, 2)$
+  \item $\displaystyle \pmb{w} = (1, 0, -1, 2, -2)$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a) $\|u\| = \sqrt{2}$; b) $\|v\| = 3,1623\E+0$; c) $\|w\| = 3,1623\E+0$;
+\end{resp}
 
-\begin{exer}\label{exer:norma_numcond}
+\begin{exer}
+  Compute a norma de cada uma das seguintes matrizes:
+  \begin{enumerate}[a)]
+  \item
+    \begin{equation}
+      A =
+      \begin{bmatrix}
+        0 & 1\\
+        -1 & 0
+      \end{bmatrix}
+    \end{equation}
+  \item 
+    \begin{equation}
+      B =
+      \begin{bmatrix}
+        2 & 1 & -1\\
+        -1 & 0 & 2\\
+        3 & -2 & 0
+      \end{bmatrix}
+    \end{equation}
+  \item 
+    \begin{equation}
+      C =
+      \begin{bmatrix}
+        2 & 1 & -1 & 0\\
+        -1 & 0 & 2 & 0\\
+        3 & -2 & 0 & -1\\
+        0 & 1 & 0 & 2
+      \end{bmatrix}
+    \end{equation}
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a) $\|A\| = \sqrt{2}$; b) $\|B\| = 4,8990\E+0$; c) $\|C\| = 5,4772\E+0$
+\end{resp}
+
+\begin{exer}
+  Compute o número de condicionamento de cada uma das seguintes matrizes:
+  \begin{enumerate}[a)]
+  \item
+    \begin{equation}
+      A =
+      \begin{bmatrix}
+        0 & 1\\
+        -1 & 0
+      \end{bmatrix}
+    \end{equation}
+  \item 
+    \begin{equation}
+      B =
+      \begin{bmatrix}
+        2 & 1 & -1\\
+        -1 & 0 & 2\\
+        3 & -2 & 0
+      \end{bmatrix}
+    \end{equation}
+  \item 
+    \begin{equation}
+      C =
+      \begin{bmatrix}
+        2 & 1 & -1 & 0\\
+        -1 & 0 & 2 & 0\\
+        3 & -2 & 0 & -1\\
+        0 & 1 & 0 & 2
+      \end{bmatrix}
+    \end{equation}
+  \item
+    \begin{equation}
+      D =
+      \begin{bmatrix}
+        1\E+5 & 1\E-1 & 0 & 3\E-3\\
+        0 & -1\E-1 & 0 & -1\E-3\\
+        1\E+5 & 1\E-1 & 1\E-2 & 2\E-3\\
+        0 & -1\E-1 & 0 & 0
+      \end{bmatrix}
+    \end{equation}
+    \item
+      \begin{equation}
+        E =
+        \begin{bmatrix}
+          1 & 1\E-6 & 0 & 3\E-8 \\
+          -1\E-6 & -2\E-16 & -2\E-1 & 0\\
+          1\E+7 & 1\E+1 & 1 & 2\E-1 \\
+          0 & -1\E2 & 0 & 0
+      \end{bmatrix}
+    \end{equation}
+  \end{enumerate}
+  Qual das matriz acima é a mais mal condicionada? Justifique sua resposta.
+\end{exer}
+\begin{resp}
+  a) $\kappa(A) = 2$; b) $\kappa(B) = 4,6904\E+0$; c) $\kappa(C) = 6,6291\E+0$; d) $\kappa(D) = 4,6314\E+8$ e) $\kappa(E) = 1,0000\E+15$, a mais mal condicionada.
+\end{resp}
+
+\begin{exer}
   Considere o seguinte sistema linear
   \begin{align}
     10^{-12}x_1 + 20x_2 + 3x_3 &= -1,\\
@@ -1361,16 +1481,34 @@ temos que \hl{$\kappa(A) \geq 1$ e quanto maior, mais mal condicionada é a matr
     x_1 - 2x_2 - 0,1x_3 &= 0,1.
   \end{align}
   \begin{enumerate}[a)]
-  \item Compute a norma $L^2$ do vetor dos termos constantes deste sistema.
-  \item Compute a norma $L^2$ da matriz dos coeficientes deste sistema.
+  \item Compute a norma do vetor dos termos constantes deste sistema.
+  \item Compute a norma matriz dos coeficientes deste sistema.
   \item Compute o número de condicionamento da matriz dos coeficientes deste sistema.
   \end{enumerate}
 \end{exer}
 \begin{resp}
-  % \ifisoctave 
-  % \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/exer_norma_numcond/exer_norma_numcond.m}{Código.} 
-  % \fi
-  a) $2,2383$; b) $2,0323\E+1$; c) $3,5128\E+1$
+  a) $2,2383\E+0$; b) $2,0323\E+1$; c) $3,5128\E+1$
+\end{resp}
+
+\begin{exer}
+  Considere
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      1\E+8 & 1 & 2 & -1\\
+      1\E-2 & 1\E-1 & 0 & 1\E-3\\
+      0 & 1 & 1\E2 & 0\\
+      1\E-5 & 0 & 0 & 1\E-4
+    \end{bmatrix}
+  \end{equation}
+  \begin{enumerate}[a)]
+  \item Compute $\kappa(A)$.
+  \item Aloque a matriz diagonal $M$, cujos elementos da diagonal sejam iguais aos da matriz $A$.
+  \item Verifique que o número de condicionamento de $M^{-1}A$ é melhor que o de $A$.
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a) $\kappa(A) = 1,0\E+12$; b) \lstinline+M = np.diag(np.diag(A))+; c) $\kappa(M^{-1}A) = 4,0201\E+0$
 \end{resp}
 
 \subsubsection{Análise Numérica}

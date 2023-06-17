@@ -1,5 +1,12 @@
 import numpy as np
 import numpy.linalg as npla
+A = np.array([[1e8, 0, 0, 0],
+              [0, 1e-1, 0, 0],
+              [0, 0, 1e2, 0],
+              [0, 0, 0, 1e-4]])
+cond_A = npla.cond(A, 'fro')
+print(cond_A)
+
 A = np.array([[1., -1., 2.],
               [-2., np.pi, 4.],
               [7., -5., np.sqrt(2)]])
