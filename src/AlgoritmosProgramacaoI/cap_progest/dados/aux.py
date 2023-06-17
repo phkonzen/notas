@@ -1,3 +1,24 @@
+#início
+
+# repetição: for
+for n in {-3, -2, -1, 0, 1, 2, 3}:
+    res = (n%2 == 0)
+    print(f'{n} é par? ', res)
+    
+#término
+
+# bloco: entrada de dados
+base = float(input('Digite a base:\n'))
+altura = float(input('Digite a altura\n'))
+
+# bloco: computação da área
+area = base*altura/2
+
+# bloco: saída de dados
+print(f'Área = {area}')
+
+#fim
+
 v = [-1, 0, 2]
 w = [3, 1, 2]
 # a)
