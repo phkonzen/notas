@@ -1870,8 +1870,10 @@ def jacobi(A, b, x0, maxiter = 100,
     for k in range(maxiter):
         for i in  range(n):
             x[i] = b[i]
+            # x[i] -= np.dot(A[i,:i], x0[:i])
             for j in range(i):
                 x[i] -= A[i,j]*x0[j]
+            # x[i] -= np.dot(A[i,i+1:], x0[i+1:])
             for j in range(i+1,n):
                 x[i] -= A[i,j]*x0[j]
             x[i] /= A[i,i]
@@ -1883,7 +1885,7 @@ def jacobi(A, b, x0, maxiter = 100,
             break
         x0 = x
 
-    return x, info    
+    return x, info
 \end{lstlisting}
 A aplicação de Jacobi pode, então, ser feita como segue:
 \begin{lstlisting}
@@ -1901,62 +1903,102 @@ x, info = jacobi(A, b, x0)
 
 \subsection{Método de Gauss-Seidel}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
 Como acima, começamos considerando um sistema linear $A\pmb{x} = \pmb{b}$ e a decomposição $A = L + D + U$, onde $L$ é a parte triangular inferior de $A$, $D$ é sua parte diagonal e $U$ sua parte triangular superior. Então, observamos que
 \begin{align}
-  A\pmb{x} = \pmb{b} &\Leftrightarrow (L + D + U)\pmb{x} = \pmb{b}\\
-  &\Leftrightarrow (L+D)\pmb{x} = -U\pmb{x} + \pmb{b}\\
-  &\Leftrightarrow \pmb{x} = -(L+D)^{-1}U\pmb{x} + (L+D)^{-1}\pmb{b}.
+  A\pmb{x} &= \pmb{b}\\
+  (L + D + U)\pmb{x} &= \pmb{b}\\
+  (L+D)\pmb{x} &= -U\pmb{x} + \pmb{b}\\
+  \pmb{x} &= -(L+D)^{-1}U\pmb{x} + (L+D)^{-1}\pmb{b}.
 \end{align}
-Isto nos leva a iteração de Gauss-Seidel
-\begin{align}
-  \pmb{x}^{(1)} = \text{aprox. inicial},\\
-  \pmb{x}^{(k+1)} = T_G\pmb{x}^{(k)} + \pmb{c}_G,\label{eq:iter_gs_mat}
-\end{align}
-onde $T_G = -(L+D)^{-1}U$ é a chamada \emph{matriz de Gauss-Seidel}\index{matriz de!Gauss-Seidel} e $\pmb{c}_G = (L+D)^{-1}\pmb{b}$ é o chamado \emph{vetor de Gauss-Seidel}\index{vetor de!Gauss-Seidel}.
-
-Observamos, também, que a iteração \eqref{eq:iter_gs_mat} pode ser reescrita na seguinte forma algébrica
-\begin{equation}
-  x_i^{(k+1)} = \frac{{\displaystyle b_i - \sum_{j=1}^{i-1} a_{ij}x_j^{(k+1)} - \sum_{j=i+1}^{n} a_{ij}x_j^{(k)}}}{a_{ii}},~i=1, 2, \dotsc, n.
+Isto nos leva a \hl{\emph{forma matricial iteração de Gauss-Seidel}}
+\begin{equation}\label{cap_sislin_sec_jgs:eq:iter_gs_mat}\hleq
+  \begin{aligned}
+    \pmb{x}^{(1)} &= \text{aprox. inicial},\\
+    \pmb{x}^{(k+1)} &= T_G\pmb{x}^{(k)} + \pmb{c}_G,
+  \end{aligned}
 \end{equation}
+onde
+\begin{align}
+  T_G &= -(L+D)^{-1}U,\\
+  \pmb{c}_G &= (L+D)^{-1}\pmb{b},
+\end{align}
+são a matriz e o vetor de Gauss-Seidel.
+
+Equivalentemente e mais adequada para implementação computacional, temos a \hl{\emph{forma algébrica da iteração de Gauss-Seidel}}
+\begin{equation}\hleq
+  x_i^{(k+1)} = \frac{{b_i - \sum_{j=1}^{i-1} a_{ij}x_j^{(k+1)} - \sum_{j=i+1}^{n} a_{ij}x_j^{(k)}}}{a_{ii}},
+\end{equation}
+para $i=1, 2, \dotsc, n$.
 
 \begin{ex}\label{ex:gs_exec}
   Consideremos o sistema $A\pmb{x} = \pmb{b}$ com
-  \begin{equation}
-    A =
+  \begin{align}
+    A &=
     \begin{bmatrix}
       -4 & 2 & -1 \\
       -2 & 5 & 2 \\
        1 & -1 & -3
-    \end{bmatrix},\quad
-    \pmb{b} =
+    \end{bmatrix},\\
+    \pmb{b} &=
     \begin{bmatrix}
       -11\\ -7\\ 0
     \end{bmatrix}.
-  \end{equation}
-  Aplicando o método de Gauss-Seidel com aproximação inicial $\pmb{x}^{(1)} = (0, 0, 0)$ obtemos os resultados da Tabela \ref{tab:ex_gs_exec}.
+  \end{align}
+  Aplicando o método de Gauss-Seidel com aproximação inicial $\pmb{x}^{(1)} = (0, 0, 0)$ obtemos os resultados da Tabela \ref{cap_sislin_sec_jgs:tab:ex_gs_exec}.
 
-  \begin{table}[h!]
+  \begin{table}[H]
     \centering
+    \caption{Resultados referentes ao Exemplo \ref{cap_sislin_sec_jgs:ex:gs_exec}.}
     \begin{tabular}{l|cc}
       k & $\pmb{x}^{(k)}$ & $\|A\pmb{x}^{(k)}-\pmb{b}\|$\\\hline
-      1 & $(0,0,~0,0,~0,0)$ & $1,3\E+1$ \\
-      2 & $(2,8,~-0,3,~1,0)$ & $2,6\E+0$ \\
-      3 & $(2,3,~-0,9,~1,1)$ & $1,2\E+0$ \\
-      4 & $(2,0,~-1,0,~1,0)$ & $2,5\E-1$ \\
-      5 & $(2,0,~-1,0,~1,0)$ & $4,0\E-2$ \\\hline
+      $0$      & $(0, 0, 0)$           & $1,3\E+1$\\
+      $1$      & $(2,75, -0,3,  1,02)$ & $2,6\E+0$\\
+      $2$      & $(2,35, -0,87, 1,07)$ & $1,2\E+0$\\
+      $3$      & $(2,05, -1,01, 1,02)$ & $2,5\E-1$\\
+      $4$      & $(1,99, -1,01,  1)$   & $4,0\E-2$\\
+      $5$      & $(1,99, -1, 1)$       & $2,0\E-2$\\
+      $\vdots$ & $\vdots$              & $\vdots$\\
+      $13$     & $(2, -1,  1.)$        & $2,3\E-7$\\\hline
     \end{tabular}
-    \caption{Resultados referentes ao Exemplo \ref{ex:gs_exec}.}
-    \label{tab:ex_gs_exec}
+    \label{cap_sislin_sec_jgs:tab:ex_gs_exec}
   \end{table}
 
-% \ifisoctave
-% No \verb+GNU Octave+, podemos obter os resultados reportados na Tabela \ref{tab:ex_gs_exec} com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_iter/dados/ex_gs_exec/ex_gs_exec.m}{código}:
-% \verbatiminput{./cap_sl_iter/dados/ex_gs_exec/ex_gs_exec.m}
-% \fi
+\begin{lstlisting}
+import numpy as np
+import numpy.linalg as npla
+np.set_printoptions(precision=2)
+
+def jacobi(A, b, x0, maxiter = 100,
+           tol=4.9e-8, atol=4.9e-8):
+    
+    n = b.size
+    info = -1
+
+    x = np.empty_like(x0)
+    nres = npla.norm(A@x - b)
+    print(f'\n{0}: {x0}, {nres:.1e}')
+    
+    # iterações
+    for k in range(maxiter):
+        for i in  range(n):
+            x[i] = b[i]
+            # x[i] -= np.dot(A[i,:i], x[:i])
+            for j in range(i):
+                x[i] -= A[i,j]*x[j]
+            # x[i] -= np.dot(A[i,i+1:], x0[i+1:])
+            for j in range(i+1,n):
+                x[i] -= A[i,j]*x0[j]
+            x[i] /= A[i,i]
+        # critério de parada
+        nres = npla.norm(A@x - b)
+        print(f'{k+1}: {x}, {nres:.1e}')
+        if (nres <= max(tol*npla.norm(b), atol)):
+            info = 0
+            break
+        x0 = x
+
+    return x, info
+\end{lstlisting}
 \end{ex}
 
 \subsection{Análise de convergência}

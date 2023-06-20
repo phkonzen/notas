@@ -1,5 +1,6 @@
 import numpy as np
 import numpy.linalg as npla
+np.set_printoptions(precision=2)
 
 def jacobi(A, b, x0, maxiter = 100,
            tol=4.9e-8, atol=4.9e-8):
@@ -15,9 +16,9 @@ def jacobi(A, b, x0, maxiter = 100,
     for k in range(maxiter):
         for i in  range(n):
             x[i] = b[i]
-            # x[i] -= np.dot(A[i,:i], x0[:i])
+            # x[i] -= np.dot(A[i,:i], x[:i])
             for j in range(i):
-                x[i] -= A[i,j]*x0[j]
+                x[i] -= A[i,j]*x[j]
             # x[i] -= np.dot(A[i,i+1:], x0[i+1:])
             for j in range(i+1,n):
                 x[i] -= A[i,j]*x0[j]
@@ -30,8 +31,8 @@ def jacobi(A, b, x0, maxiter = 100,
             break
         x0 = x
 
-    return x, info
-
+    return x, info    
+                
 
 # sistema
 A = np.array([[-4., 2., -1.],
