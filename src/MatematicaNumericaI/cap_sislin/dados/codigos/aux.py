@@ -1,33 +1,19 @@
 import numpy as np
 import numpy.linalg as npla
-A = np.array([[1e8, 0, 0, 0],
-              [0, 1e-1, 0, 0],
-              [0, 0, 1e2, 0],
-              [0, 0, 0, 1e-4]])
-cond_A = npla.cond(A, 'fro')
-print(cond_A)
 
-A = np.array([[1., -1., 2.],
-              [-2., np.pi, 4.],
-              [7., -5., np.sqrt(2)]])
-B = np.array([[1., -1., 3.],
-              [-2., 1, 4.],
-              [7., -1., np.sqrt(2)]])
-norm_A = npla.norm(A)
-norm_B = npla.norm(A)
-print(npla.norm(A@B))
-print(norm_A * norm_B)
+# sistema
+A = np.array([[-4., 2., -1.],
+              [-2., 5., 2.],
+              [1., -1., -3.]])
+b = np.array([-11., -7., 0.])
 
-u = np.array([1., -2., 3., -4.])
-v = np.array([-1., 2., 0., 1.])
-nupv = npla.norm(u+v)
-nupnv = npla.norm(u) + npla.norm(v)
-print('\nu.v <= ||u||.||v||?')
-print(nupv <= nupnv)
+# A = L + D + U
+L = np.tril(A, -1)
+D = np.diag(np.diag(A))
+U = np.triu(A, 1)
 
-import numpy as np
-import numpy.linalg as npla
-v = np.array([-1., 2., 0., 1.])
-norm_v = npla.norm(v)
-print(f'\n||v|| = {norm_v}')
+# matriz de Jacobi
+T = npla.inv(D) @ (L + U)
+# vetor de Jacobi
+c = npla.inv(D) @ b
 

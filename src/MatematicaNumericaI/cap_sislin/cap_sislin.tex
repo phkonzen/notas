@@ -1657,19 +1657,22 @@ print(f'cond(A) = {cond_A:.4e}')
 
 \section{Métodos de Jacobi e de Gauss-Seidel}\label{cap_sislin_sec_jgs}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
+Nesta seção, estudamos os métodos iterativos de Jacobi{\jacobi} e de Gauss{\gauss}-Seidel{\seidel} para a aproximação da solução de sistemas lineares
+\begin{equation}
+  A\pmb{x} = \pmb{b},
+\end{equation}
+onde $A = [a_{i,j}]_{i,j=1}^{n,n}$, $n\geq 1$, é uma dada matriz dos coeficientes, $\pmb{x} = (x_1, x_2, \dotsc, x_n)$ é o vetor das incógnitas e $\pmb{b} = (b_1, b_2, \dotsc, b_n)$ é um dado vetor dos termos constantes.
 
-Nesta seção, discutiremos os métodos de Jacobi\footnote{Carl Gustav Jacob Jacobi, 1804 - 1851, matemático alemão. Fonte: \href{https://en.wikipedia.org/wiki/Carl_Gustav_Jacob_Jacobi}{Wikipedia}.} e de Gauss-Seidel\footnote{Johann Carl Friedrich Gauss, 1777 - 1855, matemático alemão. Philipp Ludwig von Seidel, 1821 - 1896, matemático alemão. Fonte: \href{https://en.wikipedia.org/wiki/Philipp_Ludwig_von_Seidel}{Wikipedia}.} para a aproximação da solução de sistemas lineares.
+\hl{Métodos iterativos para sistemas lineares têm a forma}
+\begin{align}
+  \pmb{x}^{(0)} = \text{aprox. inicial},\\
+  \hleq\pmb{x}^{(k+1)} = T\pmb{x}^{(k)} + \pmb{c},
+\end{align}
+onde $T = [t_{i,j}]_{i,j=1}^{n,n}$ é a \emph{matriz de iteração} e $\pmb{c} = (c_1, c_2, \dotsc, c_n)$ é o \emph{vetor de iteração}.
 
 \subsection{Método de Jacobi}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-Dado um sistema $A\pmb{x} = \pmb{b}$ com $n$ equações e $n$ incógnitas, consideramos a seguinte decomposição da matriz $A = L + D + U$:
+Consideramos a seguinte decomposição da matriz \hl{$A = L + D + U$}:
 \begin{align}
   A &=
   \begin{bmatrix}
@@ -1701,55 +1704,56 @@ Dado um sistema $A\pmb{x} = \pmb{b}$ com $n$ equações e $n$ incógnitas, consi
     0 & 0 & 0 & \ldots & a_{nn}\\
   \end{bmatrix}}_{U}.
 \end{align}
-Isto é, a matriz $A$ decomposta como a soma de sua parte triangular inferior $L$, de sua diagonal $D$ e de sua parte triangular superior $U$.
+Isto é, \hl{a matriz $A$ decomposta como a soma de sua parte triangular inferior $L$, de sua diagonal $D$ e de sua parte triangular superior $U$}.
 
-Desta forma, podemos reescrever o sistema $A\pmb{x}=b$ da seguinte forma:
+Desta forma, podemos reescrever o sistema como segue:
 \begin{align}
-  A\pmb{x} = \pmb{b} &\Leftrightarrow (L + D + U)\pmb{x} = \pmb{b}\\
-         &\Leftrightarrow D\pmb{x} = -(L+U)\pmb{x} + \pmb{b}\\
-         &\Leftrightarrow \pmb{x} = -D^{-1}(L+U)\pmb{x} + D^{-1}\pmb{b}.
+  A\pmb{x} &= \pmb{b}\\
+  (L + D + U)\pmb{x} &= \pmb{b}\\
+  (L + U)\pmb{x} + D\pmb{x} &= \pmb{b}\\
+  D\pmb{x} &= -(L+U)\pmb{x} + \pmb{b}\\
+  \pmb{x} &= -D^{-1}(L+U)\pmb{x} + D^{-1}\pmb{b}.
 \end{align}
-Ou seja, resolver o sistema $A\pmb{x} = \pmb{b}$ é equivalente a resolver o problema de ponto fixo
+Ou seja, \hl{resolver o sistema $A\pmb{x} = \pmb{b}$ é equivalente a resolver o problema de ponto fixo}
 \begin{equation}
-  \pmb{x} = T_J\pmb{x} + \pmb{c}_J,
+  \hleq\pmb{x} = T_J\pmb{x} + \pmb{c}_J,
 \end{equation}
-onde $T_J = -D^{-1}(L+U)$ é chamada de \emph{matriz de Jacobi}\index{matriz de!Jacobi} e $\pmb{c}_J = D^{-1}\pmb{b}$ é chamado de \emph{vetor de Jacobi}\index{vetor de!Jacobi}.
+onde \hl{$T_J = -D^{-1}(L+U)$ é chamada de \emph{matriz de Jacobi}} e \hl{$\pmb{c}_J = D^{-1}\pmb{b}$ é chamado de \emph{vetor de Jacobi}}.
 
-\begin{ex}\label{ex:jacobi_intro}
+\begin{ex}\label{cap_sislin_sec_jgs:ex:jacobi_intro}
   Consideremos o sistema linear $A\pmb{x} = \pmb{b}$ com
   \begin{equation}
-    A =
+    \begin{aligned}
+    A &=
     \begin{bmatrix}
       -4 & 2 & -1 \\
       -2 & 5 & 2 \\
        1 & -1 & -3
-    \end{bmatrix},\quad
-    \pmb{b} =
+    \end{bmatrix},\\
+    \pmb{b} &=
     \begin{bmatrix}
       -11\\ -7\\ 0
     \end{bmatrix}.
+  \end{aligned}
   \end{equation}
   Este sistema tem solução $\pmb{x} = (2, -1, 1)$. Neste caso, temos a decomposição $A = L + D + U$ com
-  \begin{equation}
-    L = \begin{bmatrix} 
+  \begin{align}
+    L &= \begin{bmatrix} 
       0 & 0 & 0 \\
       -2 & 0 & 0 \\
        1 & -1 & 0
-     \end{bmatrix},\quad
-    D = \begin{bmatrix}
+     \end{bmatrix},\\
+    D &= \begin{bmatrix}
       -4 & 0 & 0 \\
       0 & 5 & 0 \\
        0 & 0 & -3                  
-     \end{bmatrix}
-  \end{equation}
-  e
-  \begin{equation}
-    U = \begin{bmatrix}
+     \end{bmatrix},\\
+    U &= \begin{bmatrix}
       0 & 2 & -1 \\
       0 & 0 & 2 \\
-       0 & 0 & 0
+      0 & 0 & 0
     \end{bmatrix}.
-  \end{equation}
+  \end{align}
   Ainda, observamos que
   \begin{align}
     T_J\pmb{x} + \pmb{c}_J &= -D^{-1}(L+U)\pmb{x} + D^{-1}\pmb{b}\\
@@ -1774,64 +1778,125 @@ onde $T_J = -D^{-1}(L+U)$ é chamada de \emph{matriz de Jacobi}\index{matriz de!
         1             
       \end{bmatrix}}_{\pmb{x}}.
   \end{align}
-% \ifisoctave
-% No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_iter/dados/ex_jacobi_intro/ex_jacobi_intro.m}{código}:
-% \verbatiminput{./cap_sl_iter/dados/ex_jacobi_intro/ex_jacobi_intro.m}
-% \fi
+  conforme esperado.
+
+\begin{lstlisting}
+import numpy as np
+import numpy.linalg as npla
+
+# sistema
+A = np.array([[-4., 2., -1.],
+              [-2., 5., 2.],
+              [1., -1., -3.]])
+b = np.array([-11., -7., 0.])
+
+# A = L + D + U
+L = np.tril(A, -1)
+D = np.diag(np.diag(A))
+U = np.triu(A, 1)
+
+# matriz de Jacobi
+T = npla.inv(D) @ (L + U)
+# vetor de Jacobi
+c = npla.inv(D) @ b
+\end{lstlisting}
 \end{ex}
 
-Com o exposto acima, o \emph{método de Jacobi} consiste na seguinte iteração de ponto fixo
-\begin{align}
-  \pmb{x}^{(1)} &= \text{aprox. inicial},\\
-  \pmb{x}^{(k+1)} &= T_J\pmb{x}^{(k)} + \pmb{c}_J,\label{eq:iter_jacobi_mat}
-\end{align}
-onde $\pmb{x}^{(k)} = (x_1^{(k)}, x_2^{(k)}, \dotsc, x_n^{(k)})$ é a $k$-ésima aproximação (ou iterada) de Jacobi.
-
-A iteração \eqref{eq:iter_jacobi_mat} pode ser equivalentemente escrita na seguinte forma algébrica
-\begin{equation}
-  x_i^{(k+1)} = \frac{{\displaystyle b_i - \sum_{\overset{j=1}{j\neq i}}^n a_{ij}x_j^{(k)}}}{a_{ii}},~i=1, 2, \dotsc, n,
+A \hl{forma matricial das iterações de Jacobi} consiste em
+\begin{equation}\label{cap_sislin_sec_jgs:eq:iter_jacobi_mat}\hleq
+  \begin{aligned}
+  \pmb{x}^{(0)} &= \text{aprox. inicial},\\
+  \pmb{x}^{(k+1)} &= T_J\pmb{x}^{(k)} + \pmb{c}_J,
+\end{aligned}
 \end{equation}
-a qual não requer a computação da matriz $T_J$ e $\pmb{c}_J$.
+onde $\pmb{x}^{(k)} = (x_1^{(k)}, x_2^{(k)}, \dotsc, x_n^{(k)})$ é a $k$-ésima aproximação da solução do sistema, $k=0, 1, 2, \ldots$.
 
-\begin{ex}\label{ex:jacobi_exec}
+Equivalentemente, tem-se a \hl{forma algébrica das iterações de Jacobi}
+\begin{equation}\hleq
+  x_i^{(k+1)} = \frac{{b_i - \sum_{\overset{j=1}{j\neq i}}^n a_{ij}x_j^{(k)}}}{a_{ii}},
+\end{equation}
+com $i = 1, 2, \dotsc, n$. Por não requerer as computações da matriz $T_J$ e vetor $\pmb{c}_J$, esta é a forma mais usada em implementações computacionais.
+
+\begin{ex}\label{cap_sislin_sec_jgs:ex:jacobi_exec}
   Consideremos o sistema $A\pmb{x} = \pmb{b}$ com
   \begin{equation}
-    A =
+    \begin{aligned}
+    A &=
     \begin{bmatrix}
       -4 & 2 & -1 \\
       -2 & 5 & 2 \\
        1 & -1 & -3
-    \end{bmatrix},\quad
-    \pmb{b} =
+    \end{bmatrix},\\
+    \pmb{b} &=
     \begin{bmatrix}
       -11\\ -7\\ 0
     \end{bmatrix}.
+  \end{aligned}
   \end{equation}
-  Aplicando o método de Jacobi com aproximação inicial $\pmb{x}^{(1)} = (0, 0, 0)$ obtemos os resultados da Tabela \ref{tab:ex_jacobi_exec}.
+  Aplicando o método de Jacobi com aproximação inicial $\pmb{x}^{(1)} = (0, 0, 0)$ obtemos os resultados da Tabela \ref{cap_sislin_sec_jgs:tab:ex_jacobi_exec}.
 
   \begin{table}[h!]
     \centering
     \begin{tabular}{l|cc}
       k & $\pmb{x}^{(k)}$ & $\|A\pmb{x}^{(k)}-\pmb{b}\|$\\\hline
-      1 & $(0,0,~0,0,~0,0)$ & $1,3\E+1$\\
-      2 & $(2,8,~-1,4,~0,0)$ & $7,4\E+0$ \\
-      3 & $(2,0,~-0,3,~1,4)$ & $4,6\E+0$ \\
-      4 & $(2,3,~-1,1,~0,8)$ & $2,2\E+0$ \\
-      5 & $(2,0,~-0,8,~1,1)$ & $1,4\E+0$ \\
-      6 & $(2,1,~-1,1,~0,9)$ & $6,9\E-1$ \\
-      7 & $(2,0,~-0,9,~1,0)$ & $4,2\E-1$ \\
-      8 & $(2,0,~-1,0,~1,0)$ & $2,2\E-1$ \\
-      9 & $(2,0,~-1,0,~1,0)$ & $1,3\E-1$ \\
-      10 & $(2,0,~-1,0,~1,0)$ & $6,9\E-2$ \\\hline
+      $0$ & $(0,0, 0,0, 0,0)$ & $1,3\E+1$\\
+      $1$ & $(2,75, -1,4,  -0)$ & $7,4\E+0$\\
+      $2$ & $(2,05, -0,58,  0,88)$ & $1,9\E+0$\\
+      $3$ & $(2,24, -0,85,  1,03)$ & $7,7\E-1$\\
+      $4$ & $(2,06, -0,99,  1,02)$ & $2,5\E-1$\\
+      $5$ & $(2,   -1,01,  1)$ & $3,8\E-2$\\
+      $~\vdots$ & $\vdots$ & $\vdots$\\
+      $14$& $(2, -1,  1)$ & $2,8\E-07$\\\hline
     \end{tabular}
-    \caption{Resultados referentes ao Exemplo \ref{ex:jacobi_exec}.}
-    \label{tab:ex_jacobi_exec}
+    \caption{Resultados referentes ao Exemplo \ref{cap_sislin_sec_jgs:ex:jacobi_exec}.}
+    \label{cap_sislin_sec_jgs:tab:ex_jacobi_exec}
   \end{table}
 
-% \ifisoctave
-% No \verb+GNU Octave+, podemos obter os resultados reportados na Tabela \ref{tab:ex_jacobi_exec} com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_iter/dados/ex_jacobi_exec/ex_jacobi_exec.m}{código}:
-% \verbatiminput{./cap_sl_iter/dados/ex_jacobi_exec/ex_jacobi_exec.m}
-% \fi
+\begin{lstlisting}[caption=jacobi.py, label=cap_sislin_sec_jgs:cod:jacobi]
+import numpy as np
+import numpy.linalg as npla
+
+def jacobi(A, b, x0, maxiter = 100,
+           tol=4.9e-8, atol=4.9e-8):
+    
+    n = b.size
+    info = -1
+
+    x = np.empty_like(x0)
+    nres = npla.norm(A@x - b)
+    print(f'\n{0}: {x0}, {nres:.1e}')
+    
+    # iterações
+    for k in range(maxiter):
+        for i in  range(n):
+            x[i] = b[i]
+            for j in range(i):
+                x[i] -= A[i,j]*x0[j]
+            for j in range(i+1,n):
+                x[i] -= A[i,j]*x0[j]
+            x[i] /= A[i,i]
+        # critério de parada
+        nres = npla.norm(A@x - b)
+        print(f'{k+1}: {x}, {nres:.1e}')
+        if (nres <= max(tol*npla.norm(b), atol)):
+            info = 0
+            break
+        x0 = x
+
+    return x, info    
+\end{lstlisting}
+A aplicação de Jacobi pode, então, ser feita como segue:
+\begin{lstlisting}
+# sistema
+A = np.array([[-4., 2., -1.],
+              [-2., 5., 2.],
+              [1., -1., -3.]])
+
+b = np.array([-11., -7., 0.])
+
+x0 = np.zeros_like(b)
+x, info = jacobi(A, b, x0)
+\end{lstlisting}
 \end{ex}
 
 \subsection{Método de Gauss-Seidel}
