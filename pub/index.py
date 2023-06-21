@@ -169,24 +169,24 @@ class Index:
         body += '<div class="carousel-inner">'
 
         # anúncio
-        body += '<div class="carousel-item active">'
-        body += self.add_anuncio(text = 'XI ERMAC-RS 2023 - Inscrições até 15/Jun',
+        body += '<div class="carousel-item">'
+        body += self.add_anuncio(text = 'XI ERMAC-RS 2023 - 28-30/Jun',
                                  link = 'https://wp.ufpel.edu.br/ermacrs23/',
-                                 status = 'danger')
+                                 status = 'primary')
         body += '</div>'
 
         # anúncio
-        body += '<div class="carousel-item">'
-        body += self.add_anuncio(text = 'XLII CNMAC 2023 - Inscrições até 22/Set',
+        body += '<div class="carousel-item active">'
+        body += self.add_anuncio(text = 'XLII CNMAC 2023 - Inscrições até 28/Jun*',
                                  link = 'http://www.cnmac.org.br',
-                                 status = 'success')
+                                 status = 'danger')
         body += '</div>'
 
         # anúncio
         body += '<div class="carousel-item">'
         body += self.add_anuncio(text = 'ENMC/ECTM 2023 - Submissões até 15/Ago',
                                  link = 'https://enmc.ccam.uesc.br',
-                                 status = 'primary')
+                                 status = 'warning')
         body += '</div>'
 
 
