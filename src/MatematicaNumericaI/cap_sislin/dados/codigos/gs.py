@@ -2,8 +2,8 @@ import numpy as np
 import numpy.linalg as npla
 np.set_printoptions(precision=2)
 
-def jacobi(A, b, x0, maxiter = 100,
-           tol=4.9e-8, atol=4.9e-8):
+def gs(A, b, x0, maxiter = 100,
+       tol=4.9e-8, atol=4.9e-8):
     
     n = b.size
     info = -1
@@ -31,8 +31,8 @@ def jacobi(A, b, x0, maxiter = 100,
             break
         x0 = x
 
-    return x, info    
-                
+    return x, info
+
 
 # sistema
 A = np.array([[-4., 2., -1.],
@@ -42,7 +42,7 @@ A = np.array([[-4., 2., -1.],
 b = np.array([-11., -7., 0.])
 
 x0 = np.zeros_like(b)
-x, info = jacobi(A, b, x0)
+x, info = gs(A, b, x0)
 
 
 

@@ -1,19 +1,17 @@
 import numpy as np
 import numpy.linalg as npla
+np.set_printoptions(precision=None)
 
-# sistema
-A = np.array([[-4., 2., -1.],
-              [-2., 5., 2.],
-              [1., -1., -3.]])
-b = np.array([-11., -7., 0.])
+A = np.array([[-1., 2, -2],
+              [3, -4, 1.],
+              [1, -5., 3]])
+# x = np.array([0.  , 0.75, 1.  , 0.75, 0.  ])
+b = np.array([6., -11, -10])
 
-# A = L + D + U
-L = np.tril(A, -1)
-D = np.diag(np.diag(A))
-U = np.triu(A, 1)
+print('Jacobi')
+x0 = np.zeros_like(b)
+x, info = jacobi(A, b, x0)
 
-# matriz de Jacobi
-T = npla.inv(D) @ (L + U)
-# vetor de Jacobi
-c = npla.inv(D) @ b
-
+print('Gauss-Seidel')
+x0 = np.zeros_like(b)
+x, info = gs(A, b, x0)
