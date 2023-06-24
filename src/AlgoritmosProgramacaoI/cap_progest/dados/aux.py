@@ -1,3 +1,21 @@
+x = float(input('Digite um número não negativo para x:\n'))
+r = 1
+k = 0
+print(f'{k}: {r}')
+while (k < 5):
+    r = 0.5*(r + x/r)
+    k = k + 1
+    print(f'{k}: {r}')
+print(f'sqrt({x}) = {r}')
+
+
+n = int(input('Digite um número inteiro n:\n'))
+m = int(input('Digite um número inteiro m>n:\n'))
+soma = 0
+for i in range(n,m+1):
+    soma = soma + i
+print(f'n+...+m = {soma}')
+
 # entrada de dados
 x = float(input('Digite o valor de x:\n'))
 op = input('Digite uma das operações +, -, * ou /:\n')

@@ -146,9 +146,9 @@ while (n <= 3):
 
   \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{./cap_progest/dados/fig_fg_while/fig}
-    \caption{Fluxograma de uma estrutura de repetição do tipo \lstinline+while+.}
-    \label{cap_progest_sec_est:fig:fg_while}
+    \includegraphics[width=0.6\textwidth]{./cap_progest/dados/fig_fg_while_ex/fig}
+    \caption{Fluxograma da estrutura de repetição do tipo \lstinline+while+ para o Exemplo \ref{cap_progest_sec_est:ex:while}.}
+    \label{cap_progest_sec_est:fig:fg_while_ex}
   \end{figure}
 
   Observamos que, neste exemplo, \hl{o escopo da instrução {\lstinline+while+}} são as linhas 7-9, \hl{determinado indentação do código}.
@@ -764,16 +764,257 @@ else:
 
 \section{Instruções de Repetição}\label{cap_progest_sec_repete}
 
-[[tag:construcao]]
+\hl{Estruturas de repetição permitem a execução de um bloco de código várias vezes}. O número de vezes que o bloco é repetido pode depender de uma condição lógica (instrução \lstinline++while+) ou do número de itens de um objeto iterável (instrução \lstinline+for+).
 
 \subsection{Instrução \lstinline+while+}
 
-[[tag:construcao]]
+\hl{A instrução {\lstinline+while+} permite a repetição condicional de um bloco de código}. Em {\python}, sua sintaxe é
+\begin{lstlisting}
+bloco_anterior
+while condição:
+    bloco
+bloco_posterior
+\end{lstlisting}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{./cap_progest/dados/fig_fg_while/fig}
+  \caption{Fluxograma da estrutura de repetição \lstinline+while+.}
+  \label{fig:cap_progest_sec_repete:fig:fg_while}
+\end{figure}
+
+\begin{ex}\normalfont{\hl{(Somatório.)}}\label{cap_progest_ec_repete:ex:while_soma_num}
+  O seguinte código, computa o \href{https://pt.wikipedia.org/wiki/Somat%C3%B3rio}{somatório}
+  \begin{align}
+    s &= \sum_{i=1}^{n}i\\
+      &= 1 + 2 + 3 + \cdots + n.
+  \end{align}
+\begin{lstlisting}
+n = int(input('Digite um número natural n:\n'))
+
+soma = 0
+i = 1
+while (i <= n):
+    soma = soma + i
+    i = i + 1
+
+print(f'1 + ... + {n} = {soma}')
+\end{lstlisting}
+\end{ex}
+
+\begin{ex}\normalfont{\hl{(Aproximando a $\sqrt{x}$.)}}\label{cap_progest_sec_repete:ex:heron}
+  O \href{https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Heron's_method}{método de Heron}\footnote{Heron de Alexandria, 10 - 80, matemático e inventor grego. Fonte: \href{https://pt.wikipedia.org/wiki/Heron\_de\_Alexandria}{Wikipédia}.} é um algoritmo para o cálculo aproximado da raiz quadrada de um dado número $x$, i.e. $\sqrt{x}$. Consiste na iteração\footnote{Aqui, assumimos a aproximação inicial $s^{(0)} = 1$, mas qualquer outro número não negativo pode ser usado.}
+  \begin{align}
+    r^{(0)} &= 1,\\
+    r^{(k+1)} &= \frac{1}{2}\left(r^{(k)} + \frac{x}{r^{(k)}}\right),
+  \end{align}
+  para $k=0,1,2,\ldots,n-1$, onde $n$ é o número de iterações calculadas. Para $x\geq 0$ fornecido por usuária(o), o seguinte código computa a aproximação $r^{(5)}\approx \sqrt{x}$.
+\begin{lstlisting}
+x = float(input('Digite um número não negativo para x:\n'))
+r = 1
+k = 0
+print(f'{k}: {r}')
+while (k < 5):
+    r = 0.5*(r + x/r)
+    k = k + 1
+    print(f'{k}: {r}')
+print(f'sqrt({x}) = {r}')
+\end{lstlisting}
+\end{ex}
+
+\subsubsection{\lstinline+break+}
+
+\hl{A instrução {\lstinline+break+} permite interromper um bloco de repetição e sair dele no momento em que ela é alcançada}.
+
+\begin{ex}\label{cap_progest_sec_repete:ex:heron_break}
+  No Exemplo \ref{cap_progest_sec_repete:ex:heron}, podemos observar que as aproximações $s^{(k)}\approx \sqrt{x}$ vão se tornando muito próximas umas das outras conforme as iterações convergem. Dessa observação, faz sentido que interrompamos as computações no momento em que a $k+1$-ésima iterada satisfaça
+  \begin{equation}
+    \left|r^{(k+1)}-r^{(k)}\right| < \texttt{tol}
+  \end{equation}
+  para alguma tolerância \lstinline+tol+ desejada.
+\begin{lstlisting}
+max_iter = 50
+tol = 1e-15
+
+x = float(input('Digite um número não negativo para x:\n'))
+
+r0 = 1
+k = 0
+print(f'{k}: {r}')
+while (k < max_iter):
+    k = k + 1
+    r = 0.5*(r0 + x/r0)
+    print(f'{k}: {r}')
+    if (abs(r-r0) < tol):
+        break
+    r0 = r
+print(f'sqrt({x}) = {r}')
+\end{lstlisting}
+\end{ex}
 
 \subsection{Instrução \lstinline+for+}
+
+\hl{A instrução {\lstinline+for+} iteração de um bloco de código para todos os itens de um dado objeto}. Em {\python}, sua sintaxe é
+\begin{lstlisting}
+bloco_anterior
+for x in Iterável:
+    bloco
+bloco_posterior
+\end{lstlisting}
+Pode-se percorrer qualquer objeto iterável (\lstinline+set+, \lstinline+tuple+, \lstinline+list+, \lstinline+dict+, etc.). \hl{Em cada iteração, o índice {\lstinline+x+} toma um novo item do objeto. A repetição termina quando todos os itens do objeto tiverem sido escolhidos}. No caso de iteráveis ordenados (\lstinline+tuple+, \lstinline+list+, \lstinline+dict+, etc.), os itens são iterados na mesma ordem em que estão alocados no objeto.
+
+\begin{exer}
+  [[tag:construcao]]
+\end{exer}
 
 [[tag:construcao]]
 
 \subsection{Exercícios}
+
+\begin{exer}
+  Faça o fluxograma do código apresentado no Exemplo \ref{cap_progest_ec_repete:ex:while_soma_num}. Também, desenvolva uma versão melhorada do código, que verifica se o valor de $n$ digitado pela(o) usuária(o) é não negativa. Caso afirmativo, computa o somatório, noutro caso apenas imprime mensagem de que o $n$ deve ser não negativo.
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+n = int(input('Digite um número natural n:\n'))
+if (n >= 0):
+    soma = 0
+    i = 1
+    while (i <= n):
+        soma = soma + i
+        i = i + 1
+
+    print(f'1 + ... + {n} = {soma}')
+else:
+    print('ERRO: n deve ser não negativo.')
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  Considere o somatório entre dois números inteiros $n \leq m$
+  \begin{align}
+    s &= \sum_{i=n}^m i\\
+      &= n + (n+1) + (n+2) + \cdots + m
+  \end{align}
+  Com números informados pela(o) usuária(o), escreva duas versões de códigos para a computação desse somatório:
+  \begin{enumerate}[a)]
+  \item Usando a instrução \lstinline+while+.
+  \item Usando a instrução \lstinline+for+.
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a)
+\begin{lstlisting}
+n = int(input('Digite um número inteiro n:\n'))
+m = int(input('Digite um número inteiro m>n:\n'))
+soma = 0
+i = n
+while (i<=m):
+    soma = soma + i
+    i = i + 1
+print(f'n+...+m = {soma}')
+\end{lstlisting}
+  b)
+\begin{lstlisting}
+n = int(input('Digite um número inteiro n:\n'))
+m = int(input('Digite um número inteiro m>n:\n'))
+soma = 0
+for i in range(n,m+1):
+    soma = soma + i
+print(f'n+...+m = {soma}')
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  A \href{https://pt.wikipedia.org/wiki/S\%C3\%A9rie_harm\%C3\%B3nica_(matem\%C3\%A1tica)}{série harmônica} é
+  \begin{equation}
+    \sum_{k=1}^\infty \frac{1}{k} = 1 + \frac{1}{2} + \frac{1}{3} + \cdots + \frac{1}{n} + \cdots
+  \end{equation}
+  Com $n$ fornecido por usuária(o), crie códigos que computem o valor da soma harmônica
+  \begin{equation}
+    s = \sum_{k=1}^n \frac{1}{k} = 1 + \frac{1}{2} + \frac{1}{3} + \cdots + \frac{1}{n}.
+  \end{equation}
+  \begin{enumerate}[a)]
+  \item Use uma estrutura de repetição \lstinline+while+.
+  \item Use uma estrutura de repetição \lstinline+for+.
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a)
+\begin{lstlisting}
+n = int(input('Digite um número natural n:\n'))
+s = 0
+k = 1
+while (k <= n):
+    s = s + 1/k
+    k = k + 1
+print(s)
+\end{lstlisting}
+  b)
+\begin{lstlisting}
+n = int(input('Digite um número natural n:\n'))
+s = 0
+for k in range(n):
+    s = s + 1/(k+1)
+print(s)
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  O \href{https://pt.wikipedia.org/wiki/Fatorial}{fatorial} de um número natural é definido pelo \href{https://pt.wikipedia.org/wiki/Produt\%C3\%B3rio}{produtório}
+  \begin{align}
+    n! &:= \prod_{k=1}^{n}k\\
+       &= 1\cdot 2\cdot 3 \cdot (n-1)\cdot n
+  \end{align}
+  e $0! := 1$. Com $n$ informado por usuária(o), crie códigos para computar $n!$ usando:
+  \begin{enumerate}[a)]
+  \item uma estrutura de repetição \lstinline+while+.
+  \item uma estrutura de repetição \lstinline+for+.
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a)
+\begin{lstlisting}
+n = int(input('Digite um número natural n:\n'))
+fat = 1
+k = 1
+while (k < n):
+    k = k + 1
+    fat = fat * k
+print(f'{n}! = {fat}')
+\end{lstlisting}
+  b)
+\begin{lstlisting}
+n = int(input('Digite um número natural n:\n'))
+fat = 1
+for k in range(1,n+1):
+    fat = fat * k
+print(f'{n}! = {fat}')
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  O \href{https://pt.wikipedia.org/wiki/E_(constante_matem\%C3\%A1tica)}{número de Euler}{\euler} é tal que
+  \begin{align}
+    e &:= \sum_{k=0}^\infty \frac{1}{n!}\\
+      &= \frac{1}{0!} + \frac{1}{1!} + \frac{1}{2!} + \cdots + \frac{1}{n!} + \cdots
+  \end{align}
+  Com $n$ fornecido por usuária(o), desenvolva um código que computa a aproximação
+  \begin{equation}
+    e \approx e^{(n)} = \sum_{k=0}^n \frac{1}{n!}.
+  \end{equation}
+  Qual o número $n$ tal que $\left|e^{(n)} - e^{(n-1)}\right|<10^{-15}$?
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+n = int(input('Digite um número natural n:\n'))
+fat = 1
+e = 1
+for k in range(1,n+1):
+    fat = fat * k
+    e = e + 1/fat
+print(f'e = {e}')
+\end{lstlisting}
+\end{resp}
 
 [[tag:construcao]]
