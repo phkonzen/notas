@@ -783,7 +783,7 @@ bloco_posterior
   \label{fig:cap_progest_sec_repete:fig:fg_while}
 \end{figure}
 
-\begin{ex}\normalfont{\hl{(Somatório.)}}\label{cap_progest_ec_repete:ex:while_soma_num}
+\begin{ex}\normalfont{\hl{(Somatório com {\lstinline+while+}.)}}\label{cap_progest_ec_repete:ex:while_soma_num}
   O seguinte código, computa o \href{https://pt.wikipedia.org/wiki/Somat%C3%B3rio}{somatório}
   \begin{align}
     s &= \sum_{i=1}^{n}i\\
@@ -863,11 +863,85 @@ bloco_posterior
 \end{lstlisting}
 Pode-se percorrer qualquer objeto iterável (\lstinline+set+, \lstinline+tuple+, \lstinline+list+, \lstinline+dict+, etc.). \hl{Em cada iteração, o índice {\lstinline+x+} toma um novo item do objeto. A repetição termina quando todos os itens do objeto tiverem sido escolhidos}. No caso de iteráveis ordenados (\lstinline+tuple+, \lstinline+list+, \lstinline+dict+, etc.), os itens são iterados na mesma ordem em que estão alocados no objeto.
 
-\begin{exer}
-  [[tag:construcao]]
+\begin{exer}\label{cap_progest_sec_repete:ex:media_for}
+  O seguinte código, computa a média aritmética do conjunto de números
+  \begin{equation}
+    A = \{1, 3, 5, 7, 9\}.
+  \end{equation}
+\begin{lstlisting}
+soma = 0
+for x in {1,3,5,7,9}:
+    soma = soma + x
+media = soma/4
+print(f'média = {media}')
+\end{lstlisting}
 \end{exer}
 
-[[tag:construcao]]
+\subsubsection{range}
+
+\hl{A função {\lstinline+range([start], stop, [step])+}, retorna uma sequência iterável de números inteiros}, com início em \lstinline+start+ (padrão \lstinline+start=0+), passo \lstinline+step+ (padão \lstinline+step=1+) e limite em \lstinline+stop+.
+
+\begin{exer}
+  Estudamos os seguinte casos:
+  \begin{enumerate}[a)]
+  \item Imprime, em ordem crescente, os primeiros $11$ números naturais.
+\begin{lstlisting}
+for i in range(11):
+    print(i)
+\end{lstlisting}
+  \item Imprime, em ordem crescente, os números naturais contidos de $3$ a $13$, inclusive.
+\begin{lstlisting}
+for i in range(3,14):
+    print(i)
+\end{lstlisting}
+  \item Imprime, em ordem crescente, os números naturais ímpares contidos de $3$ a $13$, inclusive.
+\begin{lstlisting}
+for i in range(3,14,2):
+    print(i)
+\end{lstlisting}
+  \item Imprime, em ordem decrescente, os números naturais contidos de $3$ a $13$, inclusive.
+\begin{lstlisting}
+for i in range(13,2,-1):
+    print(i)
+\end{lstlisting}
+  \end{enumerate}
+\end{exer}
+
+\begin{ex}\normalfont{\hl{(Somatório com {\lstinline+for+}.)}}\label{cap_progest_ec_repete:ex:for_soma_num}
+  No Exemplo \ref{cap_progest_ec_repete:ex:while_soma_num}, computados
+  \begin{equation}
+    s = \sum_{i=1}^n i
+  \end{equation}
+  usando um laço \lstinline+while+. Aqui, apresentamos uma nova versão do código com a instrução \lstinline+for+.
+\begin{lstlisting}
+n = int(input('Digite um número natural n:\n'))
+soma = 0
+for i in range(1,n+1):
+    soma = soma + i
+print(f'1 + ... + {n} = {soma}')
+\end{lstlisting}
+\end{ex}
+
+\begin{ex}
+  No Exemplo \ref{cap_progest_sec_repete:ex:heron_break}, apresentamos um código para o cálculo aproximado de $\sqrt{x}$ pelo Método de Heron. Aqui, temos uma nova versão com a instrução \lstinline+for+ no lugar do laço \lstinline+while+.
+\begin{lstlisting}
+max_iter = 50
+tol = 1e-15
+
+x = float(input('Digite um número não negativo para x:\n'))
+
+r0 = 1
+k = 0
+print(f'{k}: {r}')
+for k in range(max_iter):
+    r = 0.5*(r0 + x/r0)
+    print(f'{k+1}: {r}')
+    if (abs(r-r0) < tol):
+        break
+    r0 = r
+print(f'sqrt({x}) = {r}')
+\end{lstlisting}
+\end{ex}
 
 \subsection{Exercícios}
 
@@ -888,6 +962,31 @@ if (n >= 0):
 else:
     print('ERRO: n deve ser não negativo.')
 \end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  Faça um fluxograma para o código apresentado no Exemplo \ref{cap_progest_sec_repete:ex:media_for}.
+\end{exer}
+\begin{resp}
+  Dica: consulte o fluxograma apresentado no Exemplo \ref{cap_progest_sec_est:ex:for}.
+\end{resp}
+
+\begin{exer}
+  Crie um objeto do tipo \lstinline+range+ para cada uma das seguintes sequências:
+  \begin{enumerate}
+  \item Sequência crescente de todos os números inteiros de $0$ até $99$, inclusive.
+  \item Sequência crescente de todos os números pares de $-5$ até $15$.
+  \item Sequência decrescente de todos os números de $100$ a $0$, inclusive.
+  \item Sequência decrescente de todos os números múltiplos de $3$ entre $17$ e $-3$.
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  \begin{enumerate}[a)]
+  \item \lstinline+range(100)+
+  \item \lstinline+range(-4,15,2)+
+  \item \lstinline+range(100,-1,-1)+
+  \item \lstinline+range(15,-4,-3)+
+  \end{enumerate}
 \end{resp}
 
 \begin{exer}
@@ -1017,4 +1116,6 @@ print(f'e = {e}')
 \end{lstlisting}
 \end{resp}
 
-[[tag:construcao]]
+\begin{exer}
+  Com $n\geq 1$ número natural fornecido por usuária(o), crie um código que verifique se $n$ é um \href{https://pt.wikipedia.org/wiki/N\%C3\%BAmero_primo}{número primo}.
+\end{exer}
