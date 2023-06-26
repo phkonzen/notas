@@ -4,7 +4,7 @@
 \thispagestyle{fancy}
 
 
-\section{Unidade de Processamento}
+\section{Unidade de Processamento}\label{cap_perceptron_sec_unit}
 
 A unidade básica de processamento (neurônio artificial) que exploramos nestas notas é baseado no \emph{perceptron} (consultemos a Fig. \ref{fig:perceptron}). Consiste na composição de uma \emph{função de ativação} $f:\mathbb{R}\to\mathbb{R}$ com a \emph{pré-ativação}
 \begin{align}
@@ -28,7 +28,7 @@ O treinamento (calibração) consiste em determinar os parâmetros $(\pmb{w}, b)
 Uma das vantagens deste modelo de neurônio é sua generalidade, i.e. pode ser aplicado a diferentes problemas. Na sequência, vamos aplicá-lo na resolução de um problema de classificação e noutro de regressão.
 
 
-\subsection{Um problema de classificação}
+\subsection{Um problema de classificação}\label{cap_perceptron_ssec_classic}
 
 Vamos desenvolver um perceptron que faça a operação $\land$ (e-lógico). I.e, receba como entrada dois valores lógicos $A_1$ e $A_2$ (V, verdadeiro ou F, falso) e forneça como saída o valor lógico $R = A_1 \land A_2$. Consultemos a seguinte tabela verdade:
 
@@ -81,7 +81,7 @@ Uma vez que nosso modelo recebe valores $\pmb{x}\in \{-1,1\}^2$ e retorna $y\in\
 
 Agora, nos falta treinar nosso neurônio para fornecer o valor de $y$ esperado para cada dada uma entrada $\pmb{x}$. Isso consiste em um método para escolhermos os parâmetros $(\pmb{w},b)$ que sejam adequados para esta tarefa. Vamos explorar mais sobre isso na sequência do texto e, aqui, apenas escolhemos
 \begin{gather}
-  \pmb{w} = (1, 1)\\
+  \pmb{w} = [1, 1]\\
   b = -1
 \end{gather}
 Com isso, nosso perceptron é
@@ -93,13 +93,7 @@ Verifique que ele satisfaz a tabela verdade acima!
 
 \subsubsection{Implementação}
 
-\ifispython
-Podemos implementar nosso perceptron usando {\python}+{\pytorch} como segue
-
-\lstinputlisting{./cap_perceptron/dados/py_e/main.py}
-
-Verifique! Aqui e nas seguintes implementações, utilizamos vários métodos para a manipulação de tensores \lstinline+torch.Tensor+). Consulte \href{https://pytorch.org/docs/stable/torch.html}{PyTorch Docs: torch} para mais informações sobre estes e muitos outros métodos disponíveis.
-\fi
+\lstinputlisting[caption=perceptron.py, label=cap_perceptron_sec_unit:cod:perceptron]{./cap_perceptron/dados/py_perceptron/main.py}
 
 \subsubsection{Interpretação geométrica}
 
@@ -150,19 +144,9 @@ Seja dado um \emph{conjunto de treinamento} $\{\pmb{x}^{(s)},y^{(s)}\}_{s=1}^{n_
 \end{enumerate}
 onde, $n_e$ é um dado número de épocas\footnote{Número de vezes que as amostrar serão percorridas para realizar a correção dos pesos.}.
 
-\ifispython
-Podemos implementar nosso algoritmo perceptron usando {\python}+{\pytorch} como segue
+\lstinputlisting[caption=perceptron\_train.py, label=cap_perceptron_sec_unit:cod:perceptron_train]{./cap_perceptron/dados/py_perceptron_train/main.py}
 
-\lstinputlisting{./cap_perceptron/dados/py_percep_e/main.py}
-
-Verifique!
-\fi
-
-\begin{teo}(Perceptron)
-  \emconstrucao
-\end{teo}
-
-\subsection{Problema de regressão}
+\subsection{Problema de regressão}\label{cap_perceptron_ssec_regr}
 
 Vamos treinar um perceptron para resolver o problema de regressão linear para os seguintes dados
 
@@ -210,13 +194,7 @@ onde $\pmb{c} = (w, p)$ é o vetor dos parâmetros a determinar e $M$ é a matri
 
 \subsubsection{Implementação}
 
-\ifispython
-Usando {\python}+{\pytorch}, podemos implementar nosso perceptron para o problema de regressão como segue
-
-\lstinputlisting{./cap_perceptron/dados/py_percep_mq/main.py}
-
-Verifique!
-\fi
+\lstinputlisting[caption=perceptron\_mq.py, label=cap_perceptron_sec_unit:cod:perceptron_mq]{./cap_perceptron/dados/py_perceptron_mq/main.py}
 
 \subsubsection{Resultado}
 
@@ -235,6 +213,8 @@ com os pesos treinados $w = 1.54$ e $b = 0.45$. Ele corresponde à reta que melh
 
 \subsection{Exercícios}
 
+[[tag:construcao]]
+
 \begin{exer}\label{exer:eqm_convexa}
   Assumindo o modelo de neurônio \eqref{eq:percep_regr}, mostre que \eqref{eq:eqm} é função convexa.
 \end{exer}
@@ -249,9 +229,7 @@ com os pesos treinados $w = 1.54$ e $b = 0.45$. Ele corresponde à reta que melh
   Dica: consulte a ligação \href{https://notaspedrok.com.br/notas/MatematicaNumerica/cap_ajuste_sec_prob_lin.html}{Notas de Aula: Matemática Numérica: 7.1 Problemas lineares}.
 \end{resp}
 
-\emconstrucao
-
-\section{Algoritmo de Treinamento}
+\section{Algoritmo de Treinamento}\label{cap_percepton_sec_train}
 
 Na seção anterior, desenvolvemos dois modelos de neurônios para problemas diferentes, um de classificação e outro de regressão. Em cada caso, utilizamos algoritmos de treinamento diferentes. Agora, vamos estudar algoritmos de treinamentos mais gerais\footnote{Aqui, vamos explorar apenas algoritmos de treinamento supervisionado.}, que podem ser aplicados a ambos os problemas.
 
@@ -274,43 +252,7 @@ onde $\tilde{y}^{(s)} = \mathcal{N}\left(\pmb{x}^{(s)}; (\pmb{w}, b)\right)$ é 
   \min_{(\pmb{w}, b)}\varepsilon(\pmb{w}, b)
 \end{equation}
 
-Para resolver este problema de otimização, vamos empregar o Método do Gradiente Descendente. Como veremos na sequência, ele requer o cálculo de derivadas da função erro e da função de ativação. Por isso, antes de o estudarmos, vamos fazer uma implementação mais detalhada de nosso modelo, da função erro e da função de ativação. A ideia é termos um código mais adequado e que nos dê acesso fácil as derivadas necessárias para o algoritmo de treinamento.
-
-\subsubsection{Função de Ativação}
-
-Por simplicidade, vamos assumir a função identidade como função de ativação, i.e. $f(z)=z$. A implementamos com o seguinte código:
-
-\ifispython
-\lstinputlisting[firstline=3, lastline=12]{./cap_perceptron/dados/py_gd/main.py}
-\fi
-
-Aqui, a classe \lstinline+IdentityFun+ implementa a função identidade com dois métodos. O método \lstinline+value+ retorna o valor da função para uma dada entrada $z$, i.e. computa $f(z)$. O método \lstinline+grad+ computa a derivada da função, i.e. $f'(z)$.
-
-\subsubsection{Unidade de Processamento}
-
-Nosso modelo consiste em apenas uma unidade de processamento do tipo perceptron. O seguinte código implementa-o como uma classe.
-
-\ifispython
-\lstinputlisting[firstline=14, lastline=33]{./cap_perceptron/dados/py_gd/main.py}
-\fi
-
-A classe contém o método \lstinline+forward+ que computa a saída do modelo para uma dada entrada $\pmb{x}$, i.e., calcula
-\begin{equation}
-  y = \mathcal{N}\left(\pmb{x}; (\pmb{w}, b)\right).
-\end{equation}
-
-\subsubsection{Função Erro}
-
-Nossa função erro\footnote{Em inglês, {\it loss function}.} é dada em \eqref{eq:percep_mse}. A implementamos como a seguinte classe.
-
-\ifispython
-\lstinputlisting[firstline=35, lastline=51]{./cap_perceptron/dados/py_gd/main.py}
-\fi
-
-Nela o método \lstinline+partial+ computa $\varepsilon^{(s)} = \left(\tilde{y}^{(s)}-y^{(s)}\right)^2$ e o método \lstinline+grad+ computa a seguinte derivada
-\begin{equation}
-  \frac{\p\varepsilon^{(s)}}{\p \tilde{y}^{(s)}} = 2\left(\tilde{y}^{(s)}-y^{(s)}\right)
-\end{equation}
+Para resolver este problema de otimização, vamos empregar o Método do Gradiente Descendente.
 
 \subsection{Método do Gradiente Descendente}
 
@@ -331,7 +273,7 @@ O cálculo do gradiente para os pesos $\pmb{w}$ pode ser feito como segue
 \begin{align}
   \frac{\p\varepsilon}{\p \pmb{w}} &= \frac{\p}{\p\pmb{w}}\left[\frac{1}{n_s}\sum_{s=1}^{n_s}\varepsilon^{(s)}\right]\\
                                    &= \frac{1}{ns}\sum_{s=1}^{ns}\frac{\p\varepsilon^{(s)}}{\p\tilde{y}^{(s)}}\frac{\p\tilde{y}^{(s)}}{\p\pmb{w}}\\
-  {\color{blue}\frac{\p\varepsilon}{\p \pmb{w}}} &{\color{blue}= \frac{1}{ns}\sum_{s=1}^{ns}\frac{\p\varepsilon^{(s)}}{\p\tilde{y}^{(s)}}\frac{\p\tilde{y}^{(s)}}{\p z^{(s)}}\frac{\p z^{(s)}}{\p\pmb{w}}}\\
+  {\color{blue}\frac{\p\varepsilon}{\p \pmb{w}}} &{\color{blue}= \frac{1}{ns}\sum_{s=1}^{ns}\frac{\p\varepsilon^{(s)}}{\p\tilde{y}^{(s)}}\frac{\p\tilde{y}^{(s)}}{\p z^{(s)}}\frac{\p z^{(s)}}{\p\pmb{w}}}
 \end{align}
 Observando que
 \begin{gather}
@@ -348,9 +290,53 @@ obtemos
   \frac{\p\varepsilon}{\p b} &= \frac{1}{n_s}\sum_{s=1}^{n_s}2\left(\tilde{y}^{(s)}-y^{(s)}\right)f'\left(z^{(s)}\right)\cdot 1
 \end{align}
 
-\emconstrucao
+\subsubsection{Aplicação: Problema de Classificação}
+
+Na Subseção \ref{cap_perceptron_ssec_classic}, treinamos um Perceptron para o problema de classificação do e-lógico. Usamos $f(x) = \sign(x)$ como função de ativação. Ocorre, que para o Método do Gradiente, esta função de ativação não é apropriada, pois $f'(x) \equiv 0$ para $x\neq 0$. Aqui, vamos usar
+\begin{equation}
+  f(x) = \tanh(x).
+\end{equation}
+
+\lstinputlisting[caption=perceptron\_gd.py, label=cap_perceptron_sec_train:cod:perceptron_gd]{./cap_perceptron/dados/py_perceptron_gd/main.py}
+
+\subsection{Método do Gradiente Estocástico}
+
+O Método do Gradiente Estocástico é um variação do método anterior. A ideia é atualizar os parâmetros do modelo com base no gradiente do erro de cada amostra. A estocasticidade é obtida da randomização com que as amostras são escolhidas a cada época. O algoritmos consiste no seguinte:
+\begin{enumerate}[1.]
+\item \pmb{w}, b aproximações inicial.
+\item Para $e\leftarrow 1,\dotsc, n_e$:
+  \begin{enumerate}[1.1.]
+  \item Para $s\leftarrow \texttt{random}(1,\dotsc, n_s)$:
+    \begin{equation}
+      (\pmb{w}, b) \leftarrow (\pmb{w}, b) - l_r\frac{\p\varepsilon^{(s)}}{\p(\pmb{w}, b)}
+    \end{equation}
+  \end{enumerate}
+\end{enumerate}
+
+\subsubsection{Aplicação: Problema de Classificação}
+
+\lstinputlisting[caption=perceptron\_sgd.py, label=cap_perceptron_sec_train:cod:perceptron_sgd]{./cap_perceptron/dados/py_perceptron_sgd/main.py}
+
 
 \subsection{Exercícios}
 
-\emconstrucao
+[[tag:construcao]]
+
+\begin{exer}
+  Calcule a derivada da função de ativação
+  \begin{equation}
+    f(x) = \tanh(x).
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $(\tanh x)' = 1 - \tanh^2 x$
+\end{resp}
+
+\begin{exer}\label{cap_perceptron_sec_train:exer:prob_regr}
+  Use o Método do Gradiente para treinar um Perceptron para o problema de classificação estudado na Subseção \ref{cap_perceptron_ssec_regr}.
+\end{exer}
+
+\begin{exer}
+  Refaça o Exercício \ref{cap_perceptron_sec_train:exer:prob_regr} usando o Método do Gradiente Estocástico como otimizador.
+\end{exer}
 
