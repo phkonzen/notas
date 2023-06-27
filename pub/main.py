@@ -27,6 +27,7 @@ from matematicanumericaparalela import *
 from matematicanumericaavancada import *
 from metodoelementosfinitos import *
 from precalculo import *
+from redesneuraisartificiais import *
 from vetores import *
 from geometriaanalitica import *
 from minicalcpy import *
@@ -78,6 +79,7 @@ mnp = MatematicaNumericaParalela(srcdir,odir)
 mna = MatematicaNumericaAvancada(srcdir,odir)
 mef = MetodoElementosFinitos(srcdir,odir)
 pc = PreCalculo(srcdir,odir)
+rna = RedesNeuraisArtificiais(srcdir,odir)
 v = Vetores(srcdir,odir)
 ga = GeometriaAnalitica(srcdir,odir)
 minicalcpy = MiniCalcPy(srcdir,odir)
@@ -100,6 +102,7 @@ if __name__ == '__main__':
                  mna,
                  mef,
                  pc,
+                 rna,
                  v,
                  ga,
                  minicalcpy,

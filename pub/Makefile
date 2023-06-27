@@ -43,6 +43,9 @@ MetodoElementosFinitos: mainMetodoElementosFinitos.py
 PreCalculo: mainPreCalculo.py
 	python3 mainPreCalculo.py
 
+RedesNeuraisArtificiais: mainRedesNeuraisArtificiais.py
+	python3 mainRedesNeuraisArtificiais.py
+
 Teste: mainTeste.py
 	python3 mainTeste.py
 

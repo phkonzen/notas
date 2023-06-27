@@ -333,6 +333,16 @@ class Index:
                               color = "primary", status = "")
         body += '</div>'
 
+        # card: Redes Neurais Artificiais
+        body += '<div class="col">'
+        body += self.new_card(header = "Notas de Aula",
+                              title = "Redes Neurais Artificiais",
+                              text = "Introdução às Redes Neurais Artificiais",
+                              badges = ["Python", "PyTorch"],
+                              link = "RedesNeuraisArtificiais/main.html",
+                              color = "warning", status = "Novo")
+        body += '</div>'
+
         # card: Vetores
         body += '<div class="col">'
         body += self.new_card(header = "Notas de Aula",
