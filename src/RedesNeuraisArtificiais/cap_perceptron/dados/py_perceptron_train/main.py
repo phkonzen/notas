@@ -40,13 +40,11 @@ nepochs = 100
 
 for epoch in range(nepochs):
 
-    # forward
-    y_est = model(X_train)
-
     # update
     not_updated = True
     for s in range(ns):
-        if (y_est[s]*y_train[s] <= 0.):
+        y_est = model(X_train[s:s+1,:])
+        if (y_est*y_train[s] <= 0.):
             with torch.no_grad():
                 W += y_train[s]*X_train[s,:]
                 b += y_train[s]
