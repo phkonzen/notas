@@ -35,7 +35,7 @@ class RedesNeuraisArtificiais(Notas):
         self.make_html()
         self.goodies(self.srcdir+'/RedesNeuraisArtificiais/html',\
                          'Redes Neurais Artificiais', 'RedesNeuraisArtificiais')
-        os.system('rm -rvf '+self.odir+'/RedesNeurausArtificiais')
+        os.system('rm -rvf '+self.odir+'/RedesNeuraisArtificiais')
         os.system('mv '+self.srcdir+'/RedesNeuraisArtificiais/html'\
                       +' '+self.odir+'/RedesNeuraisArtificiais')
 
