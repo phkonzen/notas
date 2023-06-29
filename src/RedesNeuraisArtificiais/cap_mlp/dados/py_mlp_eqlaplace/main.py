@@ -4,13 +4,13 @@ import matplotlib.pyplot as plt
 # modelo
 
 model = torch.nn.Sequential(
-    torch.nn.Linear(2,500),
+    torch.nn.Linear(2,200),
     torch.nn.Tanh(),
-    torch.nn.Linear(500,250),
+    torch.nn.Linear(200,200),
     torch.nn.Tanh(),
-    torch.nn.Linear(250,50),
+    torch.nn.Linear(200,25),
     torch.nn.Tanh(),
-    torch.nn.Linear(50,1)
+    torch.nn.Linear(25,1)
     )
 
 # treinamento
@@ -23,21 +23,21 @@ def exact(x):
     return y.reshape(-1,1)
 
 def rhs(x):
-    y = torch.pi**2*torch.sin(torch.pi*x[:,0])*torch.sin(torch.pi*x[:,1])
+    y = 2*torch.pi**2*torch.sin(torch.pi*x[:,0])*torch.sin(torch.pi*x[:,1])
     return y.reshape(-1,1)
 
 ## optimizador
 optim = torch.optim.SGD(model.parameters(),
-                        lr=1e-2, momentum=0.85)            
+                        lr=1e-3, momentum=0.9)            
 ## scheaduler
 scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optim,
                                                        factor = 0.6,
                                                        min_lr = 1e-6,)
 
 ## num de amostras pts internos
-n_in = 200
+n_in = 100
 ## num de amostras pts fronteira
-n_bound = 50
+n_bound = 25
 ## num max épocas
 nepochs = 5000
 ## tolerância
@@ -66,7 +66,7 @@ def loss_fun(X_in, X_bound, model=model):
         u_yy = torch.autograd.grad(u_y, x,
                                    create_graph = True,
                                    retain_graph = True)[0][0,1]
-        l_in = torch.add(l_in, (u_xx + u_yy + rhs(x))**2)
+        l_in = torch.add(l_in, (rhs(x) + u_xx + u_yy)**2)
     l_in /= n_in
             
 
@@ -79,7 +79,7 @@ def loss_fun(X_in, X_bound, model=model):
         l_bound = torch.add(l_bound, u**2)
     l_bound /= n_bound
 
-    return l_in + l_bound
+    return l_in + 10*l_bound
 
 
 # pts de fronteira
