@@ -1,57 +1,41 @@
 import torch
 import matplotlib.pyplot as plt
+import random
+import numpy as np
 
 # modelo
-
 model = torch.nn.Sequential(
-    torch.nn.Linear(2,200),
+    torch.nn.Linear(2,50),
     torch.nn.Tanh(),
-    torch.nn.Linear(200,200),
+    torch.nn.Linear(50,10),
     torch.nn.Tanh(),
-    torch.nn.Linear(200,25),
+    torch.nn.Linear(10,5),
     torch.nn.Tanh(),
-    torch.nn.Linear(25,1)
-    )
+    torch.nn.Linear(5,1)
+)
 
-# treinamento
-
-## fun obj
-a = -1.
-b = 1.
-def exact(x):
-    y = torch.sin(torch.pi*x[:,0])*torch.sin(torch.pi*x[:,1])
-    return y.reshape(-1,1)
-
-def rhs(x):
-    y = 2*torch.pi**2*torch.sin(torch.pi*x[:,0])*torch.sin(torch.pi*x[:,1])
-    return y.reshape(-1,1)
-
-## optimizador
+# SGD - (Stochastic) Gradient Descent
 optim = torch.optim.SGD(model.parameters(),
-                        lr=1e-3, momentum=0.9)            
-## scheaduler
-scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optim,
-                                                       factor = 0.6,
-                                                       min_lr = 1e-6,)
+                        lr = 1e-3,
+                        momentum = 0.9,
+                        dampening = 0.)
 
-## num de amostras pts internos
-n_in = 100
-## num de amostras pts fronteira
-n_bound = 25
-## num max épocas
-nepochs = 5000
-## tolerância
-tol = 1e-5
-## output freq
-eout = 100
+# Solução esperada
+def u(x, y):
+    return a*x*(1-x) - a*y*(1-y)
 
-def loss_fun(X_in, X_bound, model=model):
 
-    ## pontos internos
-    n_in = X_in.size(0)
-    l_in = 0.
-    for s in range(n_in):
-        x = X_in[s:s+1,:].detach()
+def laplace_loss(X, U, h2, n, uc=u, p=1.):
+    # num de amostras
+    nc = 2*n + 2*(n-2)
+    ni = n**2 - nc
+
+    # loss interno
+    lin = 0.
+    for i in range(1,n-1):
+      for j in range(1,n-1):
+        s = j + i*n
+        x = X[s:s+1,:].detach()
         x.requires_grad = True
         u = model(x)
         grad_u = torch.autograd.grad(u, x,
@@ -66,99 +50,114 @@ def loss_fun(X_in, X_bound, model=model):
         u_yy = torch.autograd.grad(u_y, x,
                                    create_graph = True,
                                    retain_graph = True)[0][0,1]
-        l_in = torch.add(l_in, (rhs(x) + u_xx + u_yy)**2)
-    l_in /= n_in
-            
+        lin = torch.add(lin, (u_xx + u_yy)**2)
+        # l = (U[s-n, 0] - 2 * U[s, 0] + U[s+n, 0])/h2 # x
+        # l += (U[s-1, 0] - 2 * U[s, 0] + U[s+1, 0])/h2 # y
+        # li += l**2
+    lin /= ni 
 
-    ## pontos de contorno
-    n_bound = X_bound.size(0)
-    l_bound = 0.
-    for s in range(n_bound):
-        x = X_bound[s:s+1,:]
-        u = model(x)
-        l_bound = torch.add(l_bound, u**2)
-    l_bound /= n_bound
+    # loss contorno
+    lc = 0.
+    # 0 <= x <= 1 e y == 0
+    for i in range(n):
+        s = i*n
+        x = M[s,0]
+        y = M[s,1]
+        lc += (U[s,0] - uc(x,y))**2
+    # 0 <= x <= 1 e y == 1
+    for i in range(n):
+        s = n-1 + i*n
+        x = M[s,0]
+        y = M[s,1]
+        lc += (U[s,0] - uc(x,y))**2
+    # 0 == x e 0 < y < 1
+    for j in range(1, n-1):
+        s = j
+        x = M[s,0]
+        y = M[s,1]
+        lc += (U[s,0] - uc(x,y))**2
+    # 1 == x e 0 < y < 1
+    for j in range(1, n-1):
+        s = j + n*(n-1)
+        x = M[s,0]
+        y = M[s,1]
+        lc += (U[s,0] - uc(x,y))**2
+    lc *= p/nc
+    
+    loss = lin + lc
+    return loss
 
-    return l_in + 10*l_bound
+    
+# dados do problema
 
+# collocation points
+a = 1
+n = 11
+ns = n**2
+h = 1./(n-1)
+h2 = h**2
 
-# pts de fronteira
-X_bound = torch.empty((4*n_bound, 2))
-# pts internos
-X_in = torch.empty((n_in, 2))
+# malha
+x = torch.linspace(0, 1, n)
+y = torch.linspace(0, 1, n)
 
-# épocas
+M = torch.empty((ns, 2))
+s = 0
+for i, xx in enumerate(x):
+  for j, yy in enumerate(y):
+    M[s,0] = xx
+    M[s,1] = yy
+    s += 1
+
+# gráfico
+X, Y = np.meshgrid(x, y)
+U_esp = u(X, Y)
+
+# training
+nepochs = 5001
+nout = 1000
+
 for epoch in range(nepochs):
 
-    # amostras: pts internos
-    for s in range(n_in):
-        X_in[s,:] = (a-b)*torch.rand(2) + b
-    # amostras: pst fronteira
-    s = 0
-    for i in range(n_bound):
-        # a <= x0 <= b, x1 = 0
-        X_bound[s,0] = (a-b)*torch.rand(1) + b
-        X_bound[s,1] = a
-        s += 1
+    # forward
+    U_est = model(M)
 
-        # x0 = b, a <= x1 <= b
-        X_bound[s,0] = b
-        X_bound[s,1] = (a-b)*torch.rand(1) + b
-        s += 1
+    # loss function
+    loss = laplace_loss(M, U_est, h2, n, u, p=10.)
 
-        # x0 = a, a <= x1 < b
-        X_bound[s,0] = a
-        X_bound[s,1] = (a-b)*torch.rand(1) + b
-        s += 1
-
-        # a <= x0 <= b, x1 = b
-        X_bound[s,0] = (a-b)*torch.rand(1) + b
-        X_bound[s,1] = b
-        s += 1
-            
-    # erro
-    loss = loss_fun(X_in, X_bound)
-
-    print(f'{epoch}: loss = {loss.item():.4e}, lr = {optim.param_groups[0]["lr"]:.2e}')
-    if ((epoch+1) % eout == 0):
+    print(f'{epoch+1}: loss = {loss.item():.4e}')
+    
+    # output current solution
+    if (epoch+1) % nout == 0:
         # verificação
         fig = plt.figure()
         ax = fig.add_subplot()
 
         ns = 50
-        x0 = torch.linspace(a, b, steps=ns)
-        x1 = torch.linspace(a, b, steps=ns)
-        X0, X1 = torch.meshgrid(x0, x1)
-        X = torch.cat((X0.reshape(-1,1),
-                       X1.reshape(-1,1)),
-                      dim=1)
-
-        y_esp = exact(X)
-        Y = y_esp.reshape((ns,ns))
-        c = ax.contour(X0, X1, Y, levels=10, colors='white')
+        x1 = torch.linspace(0., 1., ns)
+        x2 = torch.linspace(0., 1., ns)
+        X1, X2 = torch.meshgrid(x1, x2)
+        # exact
+        Z_esp = torch.empty_like(X1)
+        for i,x in enumerate(x1):
+            for j,y in enumerate(x2):
+                Z_esp[i,j] = u(x, y)
+        c = ax.contour(X1, X2, Z_esp, levels=10, colors='white')
         ax.clabel(c)
 
-        y_est = model(X)
-        Y = y_est.reshape((ns,ns))
-        cf = ax.contourf(X0, X1, Y.detach(), levels=10, cmap='coolwarm')
+        X_plot = torch.cat((X1.reshape(-1,1),
+                            X2.reshape(-1,1)), dim=1)
+        Z_est = model(X_plot)
+        Z_est = Z_est.reshape((ns,ns))
+        cf = ax.contourf(X1, X2, Z_est.detach(), levels=10, cmap='coolwarm')
         plt.colorbar(cf)
-
-        # amostras
-        ax.plot(X_in[:,0].detach(), X_in[:,1].detach(), ls='', marker='*', color='white')
-        ax.plot(X_bound[:,0].detach(), X_bound[:,1].detach(), ls='', marker='*', color='white')
         
         ax.grid()
         ax.set_xlabel('$x_1$')
         ax.set_ylabel('$x_2$')
-        plt.show()
-        
-
-    # critério de parada
-    if (loss.item() < tol):
-        break
+        plt.show()        
 
     # backward
     optim.zero_grad()
     loss.backward()
     optim.step()
-    scheduler.step(loss)
