@@ -25,20 +25,20 @@ def u(x, y):
     return a*x*(1-x) - a*y*(1-y)
 
 
-def laplace_loss(A, U, h2, n, uc=u, p=1.):
+def laplace_loss(X, U, h2, n, uc=u, p=1.):
     # num de amostras
     nc = 2*n + 2*(n-2)
     ni = n**2 - nc
 
     # loss interno
-    li = 0.
+    lin = 0.
     for i in range(1,n-1):
       for j in range(1,n-1):
         s = j + i*n
         l = (U[s-n, 0] - 2 * U[s, 0] + U[s+n, 0])/h2 # x
         l += (U[s-1, 0] - 2 * U[s, 0] + U[s+1, 0])/h2 # y
-        li += l**2
-    li /= ni 
+        lin += l**2
+    lin /= ni 
 
     # loss contorno
     lc = 0.
@@ -68,7 +68,7 @@ def laplace_loss(A, U, h2, n, uc=u, p=1.):
         lc += (U[s,0] - uc(x,y))**2
     lc *= p/nc
     
-    loss = li + lc
+    loss = lin + lc
     return loss
 
     
@@ -98,8 +98,9 @@ X, Y = np.meshgrid(x, y)
 U_esp = u(X, Y)
 
 # training
-nepochs = 5001
-nout = 1000
+nepochs = 10000
+nout_loss = 100
+nout_plot = 500
 
 for epoch in range(nepochs):
 
@@ -109,10 +110,11 @@ for epoch in range(nepochs):
     # loss function
     loss = laplace_loss(M, U_est, h2, n, u, p=10.)
 
-    print(f'{epoch+1}: loss = {loss.item():.4e}')
+    if ((epoch % nout_loss) == 0):
+        print(f'{epoch}: loss = {loss.item():.4e}')
     
     # output current solution
-    if (epoch+1) % nout == 0:
+    if ((epoch) % nout_plot == 0):
         # verificação
         fig = plt.figure()
         ax = fig.add_subplot()

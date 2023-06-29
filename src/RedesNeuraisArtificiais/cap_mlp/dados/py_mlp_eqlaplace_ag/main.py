@@ -114,8 +114,9 @@ X, Y = np.meshgrid(x, y)
 U_esp = u(X, Y)
 
 # training
-nepochs = 5001
-nout = 1000
+nepochs = 10000
+nout_loss = 100
+nout_plot = 500
 
 for epoch in range(nepochs):
 
@@ -125,10 +126,11 @@ for epoch in range(nepochs):
     # loss function
     loss = laplace_loss(M, U_est, h2, n, u, p=10.)
 
-    print(f'{epoch+1}: loss = {loss.item():.4e}')
+    if ((epoch % nout_loss) == 0):
+        print(f'{epoch}: loss = {loss.item():.4e}')
     
     # output current solution
-    if (epoch+1) % nout == 0:
+    if ((epoch) % nout_plot == 0):
         # verificação
         fig = plt.figure()
         ax = fig.add_subplot()
