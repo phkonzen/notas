@@ -1723,7 +1723,7 @@ Ou seja, \hl{resolver o sistema $A\pmb{x} = \pmb{b}$ é equivalente a resolver o
 onde \hl{$T_J = -D^{-1}(L+U)$ é chamada de \emph{matriz de Jacobi}} e \hl{$\pmb{c}_J = D^{-1}\pmb{b}$ é chamado de \emph{vetor de Jacobi}}.
 
 \begin{ex}\label{cap_sislin_sec_jgs:ex:jacobi_intro}
-  Consideremos o sistema linear $A\pmb{x} = \pmb{b}$ com
+  Consideramos o sistema linear $A\pmb{x} = \pmb{b}$ com
   \begin{equation}
     \begin{aligned}
     A &=
@@ -1820,7 +1820,7 @@ Equivalentemente, tem-se a \hl{forma algébrica das iterações de Jacobi}
 com $i = 1, 2, \dotsc, n$. Por não requerer as computações da matriz $T_J$ e vetor $\pmb{c}_J$, esta é a forma mais usada em implementações computacionais.
 
 \begin{ex}\label{cap_sislin_sec_jgs:ex:jacobi_exec}
-  Consideremos o sistema $A\pmb{x} = \pmb{b}$ com
+  Consideramos o sistema $A\pmb{x} = \pmb{b}$ com
   \begin{equation}
     \begin{aligned}
     A &=
@@ -1933,7 +1933,7 @@ Equivalentemente e mais adequada para implementação computacional, temos a \hl
 para $i=1, 2, \dotsc, n$.
 
 \begin{ex}\label{cap_sislin_sec_jgs:ex:gs_exec}
-  Consideremos o sistema $A\pmb{x} = \pmb{b}$ com
+  Consideramos o sistema $A\pmb{x} = \pmb{b}$ com
   \begin{align}
     A &=
     \begin{bmatrix}
@@ -2030,7 +2030,7 @@ onde $\pmb{x}$ é a solução de $\pmb{x} = T\pmb{x} + \pmb{c}$.
 \end{obs}
 
 \begin{ex}
-  Consideremos o sistema $A\pmb{x} = \pmb{b}$ com
+  Consideramos o sistema $A\pmb{x} = \pmb{b}$ com
   \begin{align}
     A &=
     \begin{bmatrix}
@@ -2247,7 +2247,7 @@ se $\nabla f(\pmb{x}^{(k)})\neq 0$.
   \centering
   \includegraphics[width=\textwidth]{./cap_sislin/dados/fig_mg/fig}
   \caption{Iterações do Método do Gradiente para sistemas lineares. Linha: $\|b-Ax\|$. Pontos: $\pmb{x}^{(k)}$.}
-  \label{fig:cap_sislin_sec_mg}
+  \label{cap_sislin_sec_metg:fig:cap_sislin_sec_mg}
 \end{figure}
 
 Do exposto acima, temos a \hl{\textbf{iteração do Método do Gradiente}}
@@ -2262,123 +2262,307 @@ com $k = 0, 1, 2, \ldots$, onde \hl{$\pmb{r}^{(k)}$ é o \emph{resíduo}}
   \pmb{r}^{(k)} = \pmb{b} - A\pmb{x}^{(k)}.
 \end{equation}
 
-\begin{ex}\label{ex:metg_pc}
-  [[tag:revisar]]
-  
-  Consideremos o sistema $Ax = b$ com
-  \begin{equation}
-    A =
+\begin{ex}\label{cap_sislin_sec_metg:ex:metg_pc}
+  Consideramos o sistema $Ax = b$ com
+  \begin{align}
+    A &=
     \begin{bmatrix}
       2 & -1 & 0 & 0\\
       -1 & 2 & -1 & 0\\
       0 & -1 & 2 & -1 \\
       0 & 0 & -1 & 2
-    \end{bmatrix},\quad
-    b =
+    \end{bmatrix},\\
+    b &=
     \begin{bmatrix}
       -3\\
       2\\
       2\\
       -3
     \end{bmatrix}.
-  \end{equation}
-  Na Tabela \ref{tab:metg_pc} temos os resultados do emprego do método do gradiente com $\pmb{x}^{(1)} = (0, 0, 0, 0)$ e com passo constante $\alpha^{(k)}\equiv 0,5$.
+  \end{align}
+  Na Tabela \ref{cap_sislin_sec_metg:tab:metg_pc} temos os resultados do emprego do método do gradiente com $\pmb{x}^{(1)} = (0, 0, 0, 0)$ e com passo constante $\alpha^{(k)}\equiv 0,5$.
 
   \begin{table}[H]
     \centering
-    \caption{Resultados referentes ao Exemplo \ref{ex:metg_pc}.}
-    \label{tab:metg_pc}
+    \caption{Resultados referentes ao Exemplo \ref{cap_sislin_sec_metg:ex:metg_pc}.}
+    \label{cap_sislin_sec_metg:tab:metg_pc}
     \begin{tabular}{l|c|c}
       k & $\pmb{x}^{(k)}$ & $\|A\pmb{x}^{(k)}-\pmb{b}\|$\\\hline
-      1 & $(0,0,~0,0,~0,0,~0,0)$ & $5,1\E+0$\\
-      2 & $(-1,5,~1,0,~1,0,~-1,5)$ & $1,6\E+0$\\
-      3 & $(-1,0,~0,8,~0,8,~-1,0)$ & $5,0\E-1$\\
-      4 & $(-1,1,~0,9,~0,9,~-1,1)$ & $1,8\E-1$\\
-      5 & $(-1,1,~0,9,~0,9,~-1,1)$ & $8,8\E-2$\\
-      6 & $(-1,1,~0,9,~0,9,~-1,1)$ & $6,2\E-2$\\
-      7 & $(-1,0,~0,9,~0,9,~-1,0)$ & $4,9\E-2$\\
-      8 & $(-1,0,~0,9,~0,9,~-1,0)$ & $4,0\E-2$\\
-      9 & $(-1,0,~0,9,~0,9,~-1,0)$ & $3,2\E-2$\\
-      10 & $(-1,0,~1,0,~1,0,~-1,0)$ & $2,6\E-2$\\
-      11 & $(-1,0,~1,0,~1,0,~-1,0)$ & $2,1\E-2$\\\hline
+      0 & $(0,0,~0,0,~0,0,~0,0)$ & $5,1\E+0$\\
+      1 & $(-1,5,~1,0,~1,0,~-1,5)$ & $1,6\E+0$\\
+      2 & $(-1,0,~0,8,~0,8,~-1,0)$ & $5,0\E-1$\\
+      3 & $(-1,1,~0,9,~0,9,~-1,1)$ & $1,8\E-1$\\
+      4 & $(-1,1,~0,9,~0,9,~-1,1)$ & $8,8\E-2$\\
+      5 & $(-1,1,~0,9,~0,9,~-1,1)$ & $6,2\E-2$\\
+      6 & $(-1,0,~0,9,~0,9,~-1,0)$ & $4,9\E-2$\\
+      7 & $(-1,0,~0,9,~0,9,~-1,0)$ & $4,0\E-2$\\
+      8 & $(-1,0,~0,9,~0,9,~-1,0)$ & $3,2\E-2$\\
+      9 & $(-1,0,~1,0,~1,0,~-1,0)$ & $2,6\E-2$\\
+      10 & $(-1,0,~1,0,~1,0,~-1,0)$ & $2,1\E-2$\\\hline
     \end{tabular}
   \end{table}
 
-% \ifisoctave
-% No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_iter/dados/ex_metg_pc/ex_metg_pc.m}{código}:
-% \verbatiminput{./cap_sl_iter/dados/ex_metg_pc/ex_metg_pc.m}
-% \fi
+\begin{lstlisting}[caption = mg.py, label=cap_sislin_sec_metg:cod:mg.py]
+import numpy as np
+import numpy.linalg as npla
+
+def mg(A, b, x0, alpha=1e-2,
+       maxiter=100, atol=1.49e-8, rtol=1.49e-8):
+    
+    n = b.size
+    x = x0.copy()
+    res = b - A@x
+    nres = npla.norm(res)
+    print(f'0: {x}, nres = {nres:.1e}')
+    info = -1
+    for k in range(maxiter):
+        x = x + alpha*res
+        
+        res = b - A@x
+        nres = npla.norm(res)
+
+        print(f'{k+1}: {x}, nres = {nres:.1e}')
+
+        if (nres <= max(atol, rtol*npla.norm(b))):
+            info = 0
+            break
+
+    return x, info
+            
+# matriz coefs
+A = np.array([[2., -1., 0., 0.],
+              [-1., 2., -1., 0.],
+              [0., -1., 2., -1.],
+              [0., 0., -1., 2.]])
+# vetor constante
+b = np.array([-3., 2., 2., -3.])
+
+# aprox. inicial
+x0 = np.zeros_like(b)
+
+x, info = mg(A, b, x0, alpha=0.5)
+\end{lstlisting}
 \end{ex}
 
 \subsection{Escolha do passo}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-Da iteração do método do gradiente, temos que a melhor escolha do passo $\alpha^{(k)}$ é tal que
-\begin{equation}
-  f(\pmb{x}^{(k)}+\alpha^{(k)}\pmb{r}^{(k)}) = \min_{\alpha > 0} f(\pmb{x}^{(k)}+\alpha\pmb{r}^{(k)}).
+Para a escolha do passo, podemos usar o \emph{Método da Pesquisa Linear}. A ideia é escolher o passo $\alpha^{(k)}$ tal que
+\begin{equation}\hleq
+  f\left(\pmb{x}^{(k)}+\alpha^{(k)}\pmb{r}^{(k)}\right) = \min_{\alpha > 0} f\left(\pmb{x}^{(k)}+\alpha\pmb{r}^{(k)}\right).
 \end{equation}
-Desta forma,
-\begin{align}
-  \frac{\dd}{\dd \alpha}f(\pmb{x}^{(k)}+\alpha \pmb{r}^{(k)}) = 0 &\Rightarrow \nabla f(\pmb{x}^{(k+1)})\cdot \pmb{r}^{(k)} = 0,\\
-  &\Rightarrow \left(A(\pmb{x}^{(k)}+\alpha^{(k)}\pmb{r}^{(k)})-b\right)\cdot\pmb{r}^{(k)} = 0,\\
-  &\Rightarrow (A\pmb{x}^{(k)}-\pmb{b})\cdot\pmb{r}^{(k)}+\alpha^{(k)}\pmb{r}^{(k)}\cdot A\pmb{r}^{(k)} = 0,
-\end{align}
+Observando que $f(\pmb{x}^{(k)}+\alpha\pmb{r}^{(k)})$ é função apenas de $\alpha$, temos que seu mínimo ocorre em seu ponto crítico, i.e.
+\begin{gather}
+  \frac{d}{d\alpha}f\left(\pmb{x}^{(k)}+\alpha \pmb{r}^{(k)}\right) = 0 \\
+  \nabla f\left(\pmb{x}^{(k+1)}\right)\cdot \frac{d}{d\alpha}\left(\pmb{x}^{(k)}+\alpha \pmb{r}^{(k)}\right) = 0 \\
+  \nabla f(\pmb{x}^{(k+1)})\cdot \pmb{r}^{(k)} = 0,\\
+  \left[A\left(\pmb{x}^{(k)}+\alpha^{(k)}\pmb{r}^{(k)}\right)-b\right]\cdot\pmb{r}^{(k)} = 0,\\
+ \left(A\pmb{x}^{(k)}-\pmb{b}\right)\cdot\pmb{r}^{(k)}+\alpha^{(k)}\pmb{r}^{(k)}\cdot A\pmb{r}^{(k)} = 0,
+\end{gather}
 donde
-\begin{equation}
-  \alpha^{(k)} = - \frac{\pmb{r}^{(k)}\cdot\pmb{r}^{(k)}}{\pmb{r}^{(k)}\cdot A\pmb{r}^{(k)}}.
+\begin{equation}\label{cap_sislin_sec_metg:eq:mg_pl}\hleq
+  \alpha^{(k)} = \frac{\pmb{r}^{(k)}\cdot\pmb{r}^{(k)}}{\pmb{r}^{(k)}\cdot A\pmb{r}^{(k)}}.
 \end{equation}
 
 \begin{ex}\label{ex:metg_alpha}
-  Consideremos o sistema $Ax = b$ com
-  \begin{equation}
-    A =
+  Consideramos o sistema $Ax = b$ com
+  \begin{align}
+    A &=
     \begin{bmatrix}
       2 & -1 & 0 & 0\\
       -1 & 2 & -1 & 0\\
       0 & -1 & 2 & -1 \\
       0 & 0 & -1 & 2
-    \end{bmatrix},\quad
-    b =
+    \end{bmatrix},\\
+    b &=
     \begin{bmatrix}
       -3\\
       2\\
       2\\
       -3
     \end{bmatrix}.
-  \end{equation}
-  Na Tabela \ref{tab:metg_alpha} temos os resultados do emprego do método do gradiente com $\pmb{x}^{(1)} = (0, 0, 0, 0)$ e com passo
-  \begin{equation}
-    \alpha^{(k)} = - \frac{\pmb{r}^{(k)}\cdot\pmb{r}^{(k)}}{\pmb{r}^{(k)}\cdot A\pmb{r}^{(k)}}.
-\end{equation}
+  \end{align}
+  Na Tabela \ref{cap_sislin_sec_metg:tab:metg_alpha} temos os resultados do emprego do método do gradiente com $\pmb{x}^{(1)} = (0, 0, 0, 0)$ e com passo escolhido conforme \eqref{cap_sislin_sec_metg:eq:mg_pl}.
 
-  \begin{table}H]
+  \begin{table}[H]
     \centering
-    \caption{Resultados referentes ao Exemplo \ref{ex:metg_alpha}.}
-    \label{tab:metg_alpha}
-    \begin{tabular}{l|c|c}
-      k & $\pmb{x}^{(k)}$ & $\|A\pmb{x}^{(k)}-\pmb{b}\|$\\\hline
-      1 & $(0,0,~0,0,~0,0,~0,0)$ & $5,1\E+0$\\
-      2 & $(-1,1,~0,8,~0,8,~-1,1)$ & $1,5\E-1$\\
-      3 & $(-1,0,~1,0,~1,0,~-1,0)$ & $3,0\E-2$\\
-      4 & $(-1,0,~1,0,~1,0,~-1,0)$ & $8,8\E-4$\\
-      5 & $(-1,0,~1,0,~1,0,~-1,0)$ & $1,8\E-4$\\\hline
+    \caption{Resultados referentes ao Exemplo \ref{cap_sislin_sec_metg:ex:metg_alpha}.}
+    \label{cap_sislin_sec_metg:tab:metg_alpha}
+    \begin{tabular}{l|c|cc}
+      k & $\pmb{x}^{(k)}$ & $\alpha^{(k)}$ & $\|A\pmb{x}^{(k)}-\pmb{b}\|$\\\hline
+      $0$ & $(0,0, 0,0, 0,0, 0,0)$ & $3,8\E-1$ & $5,1\E+0$ \\
+      $1$ & $(-1,1, 0,8, 0,8, -1.1)$ & $2,6\E+0$ & $1,5\E-1$ \\
+      $2$ & $(-1.0, 1,0, 1,0, -1.0)$ & $3,8\E-1$ & $3,0\E-2$ \\
+      $3$ & $(-1,0, 1,0, 1,0, -1,0)$ & $2,6\E+0$ & $8,8\E-4$ \\
+      $4$ & $(-1,0, 1,0, 1,0, -1,0)$ & $3,8\E+0$ & $1,8\E-4$ \\
+      $5$ & $(-1,0, 1,0, 1,0, -1,0)$ & $2,6\E+0$ & $5,2\E-6$ \\\hline
     \end{tabular}
   \end{table}
 
-% \ifisoctave
-% No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_iter/dados/ex_metg_alpha/ex_metg_alpha.m}{código}:
-% \verbatiminput{./cap_sl_iter/dados/ex_metg_alpha/ex_metg_alpha.m}
-% \fi
+\begin{lstlisting}
+import numpy as np
+import numpy.linalg as npla
+
+def mg_pl(A, b, x0,
+       maxiter=100, atol=1.49e-8, rtol=1.49e-8):
+    
+    n = b.size
+    x = x0.copy()
+    res = b - A@x
+    alpha = np.dot(res, res)/np.dot(res, A@res)
+    nres = npla.norm(res)
+    print(f'0: {x}, alpha = {alpha}, nres = {nres:.1e}')
+    info = -1
+    for k in range(maxiter):
+        x = x + alpha*res
+        
+        res = b - A@x
+        alpha = np.dot(res, res)/np.dot(res, A@res)
+        nres = npla.norm(res)
+
+        print(f'{k+1}: {x}, alpha = {alpha}, nres = {nres:.1e}')
+
+        if (nres <= max(atol, rtol*npla.norm(b))):
+            info = 0
+            break
+
+    return x, info
+            
+# matriz coefs
+A = np.array([[2., -1., 0., 0.],
+              [-1., 2., -1., 0.],
+              [0., -1., 2., -1.],
+              [0., 0., -1., 2.]])
+# vetor constante
+b = np.array([-3., 2., 2., -3.])
+
+# aprox. inicial
+x0 = np.zeros_like(b)
+
+x, info = mg_pl(A, b, x0)
+\end{lstlisting}
 \end{ex}
 
 \subsection*{Exercícios}
 
-\begin{flushleft}
-  [[tag:construcao]]
-\end{flushleft}
+\begin{exer}\label{cap_sislin_sec_metg:exer:mg0}
+  Considere o sistema linear $A\pmb{x} = \pmb{b}$ com
+  \begin{align}
+    A &=
+    \begin{bmatrix}
+      2 & -1 & 0 & 0\\
+      -1 & 2 & -1 & 0\\
+      0 & -1 & 2 & -1 \\
+      0 & 0 & -1 & 2
+    \end{bmatrix},\\
+    b &=
+    \begin{bmatrix}
+      5\\
+      -7\\
+      6\\
+      -1
+    \end{bmatrix}.
+  \end{align}
+  Por tentativa e erro, encontre um valor para $\alpha$ tal que o Método do Gradiente converge para solução do sistema em menos de $80$ iterações. Use
+  \begin{equation}
+    \pmb{x}^{(0)} = \pmb{0}
+  \end{equation}
+  como aproximação inicial e assuma o critério de parada
+  \begin{equation}
+    \|r\| \leq \max\{\texttt{tol}, \texttt{tol}\|\pmb{b}\|\},
+  \end{equation}
+  onde $\pmb{r}$ é o resíduo do sistema e $\texttt{tol} = 1,49\E-8$.
+\end{exer}
+\begin{resp}
+  $alpha = 4,9\E-1$, $\pmb{x} = \left(2,0, -1,0, 3,0, 1,0\right)$
+\end{resp}
+
+\begin{exer}\label{cap_sislin_sec_metg:exer:mg1}
+  Considere o sistema linear $A\pmb{x} = \pmb{b}$ com
+  \begin{align}
+    A &=
+    \begin{bmatrix}
+      2 & -1 & 1 & 0\\
+      -1 & 2 & -1 & 0\\
+      1 & -1 & 3 & -1 \\
+      0 & 0 & -1 & 2
+    \end{bmatrix},\\
+    b &=
+    \begin{bmatrix}
+      -8\\
+      9\\
+      -10\\
+      5
+    \end{bmatrix}.
+  \end{align}
+  Por tentativa e erro, encontre um valor para $\alpha$ tal que o Método do Gradiente converge para solução do sistema em menos de $50$ iterações. Use
+  \begin{equation}
+    \pmb{x}^{(0)} = \pmb{0}
+  \end{equation}
+  como aproximação inicial e assuma o critério de parada
+  \begin{equation}
+    \|r\| \leq \max\{\texttt{tol}, \texttt{tol}\|\pmb{b}\|\},
+  \end{equation}
+  onde $\pmb{r}$ é o resíduo do sistema e $\texttt{tol} = 1,49\E-8$.
+\end{exer}
+\begin{resp}
+  $alpha = 3,6\E-1$, $\pmb{x} = \left(-2,0, 3,0, -1,0, 2,0\right)$
+\end{resp}
+
+
+\begin{exer}
+  Considere o sistema linear dado no Exercício \ref{cap_sislin_sec_metg:exer:mg0}. Utilizando a mesma aproximação inicial e tolerância, aplique o Método do Gradiente com Pesquisa Linear. Quantas iterações são necessárias até a convergência e qual o valor médio de $\alpha^{(k)}$ utilizado durante as iterações?
+\end{exer}
+\begin{resp}
+  $75$, $\overline{\alpha} = 5,0\E-1$
+\end{resp}
+
+\begin{exer}
+  Considere o sistema linear dado no Exercício \ref{cap_sislin_sec_metg:exer:mg1}. Utilizando a mesma aproximação inicial e tolerância, aplique o Método do Gradiente com Pesquisa Linear. Quantas iterações são necessárias até a convergência e qual o valor médio de $\alpha^{(k)}$ utilizado durante as iterações?
+\end{exer}
+\begin{resp}
+  $35$, $\overline{\alpha} = 3,7\E-1$
+\end{resp}
+
+\begin{exer}
+  Considere o problema de Laplace
+  \begin{align}
+    -&u_{xx} = 2,\quad 0 < x < 1,\\
+     &u(0) = u(1) = 0.
+  \end{align}
+  A discretização pelo Método das Diferenças Finitas em uma malha uniforme $x_i = ih$, $i=0,1,\dotsc,n$, $h=1/(n-1)$, leva ao seguinte sistema linear
+  \begin{align}
+    &u_1 = 0\\
+    &-\frac{1}{h^2}u_{i-1} + \frac{2}{h^2}u_{i} - \frac{1}{h^2}u_{i+1} = 2,\\
+    &u_n = 0
+  \end{align}
+  onde $u_i \approx u(x_i)$. Com $u^{(0)} = \pmb{0}$, aplique o Método do Gradiente com Pesquisa Linear para computar a solução deste sistema quando $n=10, 20, 40, 80$. Quantas iterações são necessárias para obter-se a convergência do método com critério de convergência
+  \begin{equation}
+    \|r\| \leq \texttt{tol},
+  \end{equation}
+  onde, $\pmb{r} := \pmb{b} - A\pmb{x}$ é o resíduo e $\texttt{tol} = 1e-4$.
+\end{exer}
+\begin{resp}
+  \begin{tabular}{ll}
+    $n$ & $k$\\\hline
+    $10$ & $214$\\
+    $20$ & $918$\\
+    $40$ & $3840$\\
+    $80$ & $15910$
+  \end{tabular}
+\end{resp}
+
+
+
+\subsubsection{Análise Numérica}
+
+\begin{exer}
+  Sendo $f$ dada em \eqref{cap_sislin_sec_metg:eq:metg_minprob}, mostre que
+  \begin{equation}
+    \nabla f\left(\pmb{x}\right) = -\pmb{r},
+  \end{equation}
+  com, $\pmb{r} := b - A\pmb{x}$ o resíduo do sistema $A\pmb{x} = \pmb{b}$.
+\end{exer}
+
 
 \section{Método do gradiente conjugado}\label{cap_sislin_sec_metgc}
 
