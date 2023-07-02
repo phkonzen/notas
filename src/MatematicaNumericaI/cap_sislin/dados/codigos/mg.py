@@ -16,7 +16,7 @@ def mg(A, b, x0, alpha=1e-2,
         res = b - A@x
         nres = npla.norm(res)
 
-        print(f'{k}: {x}, nres = {nres:.1e}')
+        print(f'{k+1}: {x}, nres = {nres:.1e}')
 
         if (nres <= max(atol, rtol*npla.norm(b))):
             info = 0

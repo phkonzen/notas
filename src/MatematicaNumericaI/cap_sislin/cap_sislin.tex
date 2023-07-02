@@ -2468,7 +2468,7 @@ x, info = mg_pl(A, b, x0)
   \end{equation}
   como aproximação inicial e assuma o critério de parada
   \begin{equation}
-    \|r\| \leq \max\{\texttt{tol}, \texttt{tol}\|\pmb{b}\|\},
+    \|\pmb{r}\| \leq \max\{\texttt{tol}, \texttt{tol}\|\pmb{b}\|\},
   \end{equation}
   onde $\pmb{r}$ é o resíduo do sistema e $\texttt{tol} = 1,49\E-8$.
 \end{exer}
@@ -2500,7 +2500,7 @@ x, info = mg_pl(A, b, x0)
   \end{equation}
   como aproximação inicial e assuma o critério de parada
   \begin{equation}
-    \|r\| \leq \max\{\texttt{tol}, \texttt{tol}\|\pmb{b}\|\},
+    \|\pmb{r}\| \leq \max\{\texttt{tol}, \texttt{tol}\|\pmb{b}\|\},
   \end{equation}
   onde $\pmb{r}$ é o resíduo do sistema e $\texttt{tol} = 1,49\E-8$.
 \end{exer}
@@ -2537,7 +2537,7 @@ x, info = mg_pl(A, b, x0)
   \end{align}
   onde $u_i \approx u(x_i)$. Com $u^{(0)} = \pmb{0}$, aplique o Método do Gradiente com Pesquisa Linear para computar a solução deste sistema quando $n=10, 20, 40, 80$. Quantas iterações são necessárias para obter-se a convergência do método com critério de convergência
   \begin{equation}
-    \|r\| \leq \texttt{tol},
+    \|\pmb{r}\| \leq \texttt{tol},
   \end{equation}
   onde, $\pmb{r} := \pmb{b} - A\pmb{x}$ é o resíduo e $\texttt{tol} = 1e-4$.
 \end{exer}
@@ -2551,8 +2551,6 @@ x, info = mg_pl(A, b, x0)
   \end{tabular}
 \end{resp}
 
-
-
 \subsubsection{Análise Numérica}
 
 \begin{exer}
@@ -2564,67 +2562,256 @@ x, info = mg_pl(A, b, x0)
 \end{exer}
 
 
-\section{Método do gradiente conjugado}\label{cap_sislin_sec_metgc}
+\section{Método do Gradiente Conjugado}\label{cap_sislin_sec_metgc}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-O método do gradiente conjugado é uma variação do método do gradiente (veja Seção \ref{cap_sislin_sec_metg}). Aqui, a solução de um dado sistema $A\pmb{x}=\pmb{b}$, com $A$ uma matriz positiva definida, é computada de forma iterativa por
+\hl{O Método do Gradiente Conjugado é uma variação do Método do Gradiente} (consulte Seção \ref{cap_sislin_sec_metg}). Ambos são aplicáveis a sistemas lineares \hl{$A\pmb{x} = \pmb{b}$, $A$ matriz positiva definida}, e as iterações têm a forma
 \begin{align}
-  \pmb{x}^{(1)} &= \text{aprox. inicial},\\
-  \pmb{d}^{(1)} &= \pmb{r}^{(1)},\\
-  &\\
-  \pmb{x}^{(k+1)} &= \pmb{x}^{(k)} + \alpha_k\pmb{d}^{(k)},\\
-  \alpha^{(k)} &= -\frac{\pmb{r}^{(k)}\cdot \pmb{d}^{(k)}}{\pmb{d}^{(k)}\cdot A\pmb{d}^{(k)}},\\
-  \pmb{d}^{(k+1)} &= -\pmb{r}^{(k+1)}+\beta_k\pmb{d}^{(k)},\\
-  \beta^{(k)} &= \frac{\pmb{r}^{(k+1)}\cdot A\pmb{d}^{(k)}}{\pmb{d}^{(k)}\cdot A\pmb{d}^{(k)}},
+  \pmb{x}^{(0)} &= \text{aprox. inicial},\\
+  \pmb{x}^{(k+1)} &= \pmb{x}^{(k)} + \alpha^{(k)}\pmb{d}^{(k)}.
 \end{align}
-para $k = 1, 2, \ldots$, e $\pmb{r}^{(k)} = A\pmb{x}^{(k)}-\pmb{b}$.
+onde $\pmb{d}^{(k)}$ é o vetor direção na $k$-ésima iterada. No Método do Gradiente, o vetor direção é $\pmb{d}^{(k)} = \pmb{r}^{(k)}:= \pmb{b} - A\pmb{x}^{(k)}$. Aqui, as direções escolhidas são tomadas conjugadas duas-a-duas\footnote{São ortogonais em relação ao produto interno induzido por $A$, $<\pmb{u}, \pmb{v}>_A := \pmb{u}\cdot A\pmb{v}$.}. Isto nos leva a \hl{\emph{iteração do Método do Gradiente Conjugado}}:
+\begin{align}
+  \hleq\pmb{x}^{(0)} &\hleq = \text{aprox. inicial},\\
+  \hleq\pmb{d}^{(0)} &\hleq = \pmb{r}^{(0)},\\
+  &\nonumber\\
+  \hleq\alpha^{(k)} &\hleq = \frac{\pmb{r}^{(k)}\cdot \pmb{r}^{(k)}}{\pmb{d}^{(k)}\cdot A\pmb{d}^{(k)}},\\
+  \hleq\pmb{x}^{(k+1)} &\hleq = \pmb{x}^{(k)} + \alpha^{(k)}\pmb{d}^{(k)},\\
+  &\nonumber\\
+  \hleq\pmb{r}^{(k+1)} &\hleq = \pmb{r}^{(k)} - \alpha^{(k)}A\pmb{d}^{(k)},\\
+  \hleq\beta^{(k)} &\hleq = \frac{\pmb{r}^{(k+1)}\cdot \pmb{r}^{(k+1)}}{\pmb{r}^{(k)}\pmb{r}^{(k)}},\\
+  \hleq\pmb{d}^{(k+1)} &\hleq = \pmb{r}^{(k+1)}+\beta^{(k)}\pmb{d}^{(k)},\\
+\end{align}
+para $k = 0, 1, \ldots$, e $\pmb{r}^{(k)} := \pmb{b} - A\pmb{x}^{(k)}$.
 
-\begin{ex}\label{ex:metgc_exec}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{./cap_sislin/dados/fig_mgc/fig}
+  \caption{Iterações do Método do Gradiente Conjugado para sistemas lineares. Linha: $\|b-Ax\|$. Pontos: $\pmb{x}^{(k)}$.}
+  \label{cap_sislin_sec_metgc:fig:cap_sislin_sec_mgc}
+\end{figure}
+
+\begin{obs}\normalfont{\hl{(Convergência.)}}
+  A menos de erros de arredondamento, o Método do Gradiente Conjugado converge em no máximo $n$ passos para a solução do sistema $A\pmb{x} = \pmb{b}$, com $A$ matriz positiva definida $n\times n$.
+\end{obs}
+
+
+\begin{ex}\label{cap_sislin_sec_metgc:ex:metgc_exec}
   Consideremos o sistema $Ax = b$ com
-  \begin{equation}
-    A =
+  \begin{align}
+    A &=
     \begin{bmatrix}
       2 & -1 & 0 & 0\\
       -1 & 2 & -1 & 0\\
       0 & -1 & 2 & -1 \\
       0 & 0 & -1 & 2
-    \end{bmatrix},\quad
-    b =
+    \end{bmatrix},\\
+    b &=
     \begin{bmatrix}
       -3\\
       2\\
       2\\
       -3
     \end{bmatrix}.
-  \end{equation}
-  Na Tabela \ref{tab:metgc_exec} temos os resultados do emprego do método do gradiente conjugado com $\pmb{x}^{(1)} = (0, 0, 0, 0)$.
+  \end{align}
+  Na Tabela \ref{cap_sislin_sec_metgc:tab:metgc_exec} temos os resultados do emprego do método do gradiente conjugado com $\pmb{x}^{(0)} = (0, 0, 0, 0)$.
 
-  \begin{table}[h!]
+  \begin{table}[H]
     \centering
-    \caption{Resultados referentes ao Exemplo \ref{ex:metgc_exec}.}
-    \label{tab:metgc_exec}
+    \caption{Resultados referentes ao Exemplo \ref{cap_sislin_sec_metgc:ex:metgc_exec}.}
+    \label{cap_sislin_sec_metgc:tab:metgc_exec}
     \begin{tabular}{l|c|c}
-      k & $\pmb{x}^{(k)}$ & $\|A\pmb{x}^{(k)}-\pmb{b}\|$\\\hline
-      1 & $(0,~0,~0,~0)$ & $5.1\E+0$\\
-      2 & $(-1,1,~0,8,~0,8,~-1,1)$ & $1,5\E-1$\\
-      3 & $(-1,0,~1,0,~1,0,~-1,0)$ & $0,0\E+0$\\\hline
+      k & $\pmb{x}^{(k)}$ & $\|\pmb{b}-A\pmb{x}^{(k)}\|$\\\hline
+      1 & $(0,~0,~0,~0)$ & $5.1\E+00$\\
+      2 & $(-1,1,~0,8,~0,8,~-1,1)$ & $1,5\E-01$\\
+      3 & $(-1,0,~1,0,~1,0,~-1,0)$ & $2,0\E-15$\\\hline
     \end{tabular}
   \end{table}
 
-% \ifisoctave
-% No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_iter/dados/ex_metgc_exec/ex_metgc_exec.m}{código}:
-% \verbatiminput{./cap_sl_iter/dados/ex_metgc_exec/ex_metgc_exec.m}
-% \fi
+\begin{lstlisting}[caption=mgc.py, label=cap_sislin_sec_metgc:cod:mgc.py]
+import numpy as np
+import numpy.linalg as npla
+
+def mgc(A, b, x0,
+       maxiter=100, atol=1.49e-8, rtol=1.49e-8):
+    
+    n = b.size
+    x = x0.copy()
+    r = b - A@x
+    d = r.copy()
+    nr = npla.norm(r)
+    print(f'0: {x}, nr = {nr:.1e}')
+    info = -1
+    for k in range(maxiter):
+        rdr = np.dot(r, r)
+        Ad = A@d
+        alpha = rdr/np.dot(d,Ad)
+        x = x + alpha*d
+
+        r = r - alpha*Ad
+        beta = np.dot(r,r)/rdr
+        d = r + beta*d
+
+        nr = npla.norm(r)
+        print(f'{k+1}: {x}, nr = {nr:.1e}')
+
+        if (nr <= max(atol, rtol*npla.norm(b))):
+            info = 0
+            break
+
+    return x, info
+            
+# matriz coefs
+A = np.array([[2., -1., 0., 0.],
+              [-1., 2., -1., 0.],
+              [0., -1., 2., -1.],
+              [0., 0., -1., 2.]])
+# vetor constante
+b = np.array([-3., 2., 2., -3.])
+
+# aprox. inicial
+x0 = np.zeros_like(b)
+
+x, info = mgc(A, b, x0)
+\end{lstlisting}
 \end{ex}
 
 \subsection*{Exercícios}
 
-\begin{flushleft}
-  [[tag:construcao]]
-\end{flushleft}
+\begin{exer}
+  Considere o sistema linear $A\pmb{x} = \pmb{b}$ com
+  \begin{align}
+    A &=
+    \begin{bmatrix}
+      2 & -1\\
+      -1 & 2\\
+    \end{bmatrix},\\
+    b &=
+    \begin{bmatrix}
+      -7\\
+      8
+    \end{bmatrix}.
+  \end{align}
+  Use o Método do Gradiente Conjugado com $\pmb{x}^{(0)} = \pmb{0}$ para computar a solução com tolerância
+  \begin{equation}
+    \|\pmb{r}\| \leq \max\{\texttt{tol}, \texttt{tol}\|\pmb{b}\|\},
+  \end{equation}
+  onde $\pmb{r}$ é o resíduo do sistema e $\texttt{tol} = 1,49\E-8$. Quantas iterações são requeridas até a convergência?
+\end{exer}
+\begin{resp}
+  Iterações: 2, $\pmb{x} = (-2, 3)$.
+\end{resp}
+
+\begin{exer}
+  Considere o sistema linear $A\pmb{x} = \pmb{b}$ com
+  \begin{align}
+    A &=
+    \begin{bmatrix}
+      2 & -1 & 1\\
+      -1 & 3 & 1\\
+      1 & 1 & 4
+    \end{bmatrix},\\
+    b &=
+    \begin{bmatrix}
+      2\\
+      0\\
+      -1
+    \end{bmatrix}.
+  \end{align}
+  Use o Método do Gradiente Conjugado com $\pmb{x}^{(0)} = \pmb{0}$ para computar a solução com tolerância
+  \begin{equation}
+    \|\pmb{r}\| \leq \max\{\texttt{tol}, \texttt{tol}\|\pmb{b}\|\},
+  \end{equation}
+  onde $\pmb{r}$ é o resíduo do sistema e $\texttt{tol} = 1,49\E-8$. Quantas iterações são requeridas até a convergência?
+\end{exer}
+\begin{resp}
+  Iterações: 3, $\pmb{x} = (2, 0, -1)$.
+\end{resp}
+
+\begin{exer}
+  Considere o sistema linear $A\pmb{x} = \pmb{b}$ com
+  \begin{align}
+    A &=
+    \begin{bmatrix}
+      2 & -1 & 0 & 0\\
+      -1 & 2 & -1 & 0\\
+      0 & -1 & 2 & -1 \\
+      0 & 0 & -1 & 2
+    \end{bmatrix},\\
+    b &=
+    \begin{bmatrix}
+      5\\
+      -7\\
+      6\\
+      -1
+    \end{bmatrix}.
+  \end{align}
+  Use o Método do Gradiente Conjugado com $\pmb{x}^{(0)} = \pmb{0}$ para computar a solução com tolerância
+  \begin{equation}
+    \|\pmb{r}\| \leq \max\{\texttt{tol}, \texttt{tol}\|\pmb{b}\|\},
+  \end{equation}
+  onde $\pmb{r}$ é o resíduo do sistema e $\texttt{tol} = 1,49\E-8$.
+\end{exer}
+\begin{resp}
+  $\pmb{x} = \left(2,0, -1,0, 3,0, 1,0\right)$
+\end{resp}
+
+\begin{exer}
+  Considere o sistema linear $A\pmb{x} = \pmb{b}$ com
+  \begin{align}
+    A &=
+    \begin{bmatrix}
+      2 & -1 & 1 & 0\\
+      -1 & 2 & -1 & 0\\
+      1 & -1 & 3 & -1 \\
+      0 & 0 & -1 & 2
+    \end{bmatrix},\\
+    b &=
+    \begin{bmatrix}
+      -8\\
+      9\\
+      -10\\
+      5
+    \end{bmatrix}.
+  \end{align}
+  Use o Método do Gradiente Conjugado com $\pmb{x}^{(0)} = \pmb{0}$ para computar a solução com tolerância
+  \begin{equation}
+    \|\pmb{r}\| \leq \max\{\texttt{tol}, \texttt{tol}\|\pmb{b}\|\},
+  \end{equation}
+  onde $\pmb{r}$ é o resíduo do sistema e $\texttt{tol} = 1,49\E-8$.
+\end{exer}
+\begin{resp}
+  $\pmb{x} = \left(-2,0, 3,0, -1,0, 2,0\right)$
+\end{resp}
+
+\begin{exer}
+  Considere o problema de Laplace
+  \begin{align}
+    -&u_{xx} = 2,\quad 0 < x < 1,\\
+     &u(0) = u(1) = 0.
+  \end{align}
+  A discretização pelo Método das Diferenças Finitas em uma malha uniforme $x_i = ih$, $i=0,1,\dotsc,n$, $h=1/(n-1)$, leva ao seguinte sistema linear
+  \begin{align}
+    &u_1 = 0\\
+    &-\frac{1}{h^2}u_{i-1} + \frac{2}{h^2}u_{i} - \frac{1}{h^2}u_{i+1} = 2,\\
+    &u_n = 0
+  \end{align}
+  onde $u_i \approx u(x_i)$. Com $u^{(0)} = \pmb{0}$, aplique o Método do Gradiente Conjugado para computar a solução deste sistema quando $n=10, 20, 40, 80$. Quantas iterações são necessárias para obter-se a convergência do método com critério de convergência
+  \begin{equation}
+    \|\pmb{r}\| \leq \texttt{tol},
+  \end{equation}
+  onde, $\pmb{r} := \pmb{b} - A\pmb{x}$ é o resíduo e $\texttt{tol} = 1e-4$.
+\end{exer}
+\begin{resp}
+  \begin{tabular}{ll}
+    $n$ & $k$\\\hline
+    $10$ & $4$\\
+    $20$ & $9$\\
+    $40$ & $19$\\
+    $80$ & $39$\\
+    $160$ & $79$
+  \end{tabular}
+\end{resp}
+
 
 % \section{Eliminação gaussiana}\label{cap_sislin_sec_egauss}
 

@@ -53,32 +53,43 @@ def mg_pl(A, b, x0,
 
     print(sum(l)/len(l))
     return x, info
-            
-# matriz coefs
-n = 80
-h = 1./n
-A = np.zeros((n+1,n+1))
-b = np.zeros(n+1)
-A[0,0] = 1.
-for i in range(1,n):
-    A[i,i-1] = -1./h**2
-    A[i,i] = 2./h**2
-    A[i,i+1] = -1./h**2
-    b[i] = 2
-A[n,n] = 1.
 
-#print(npla.eig(A))
+A = np.array([[2., -1., 1.],
+              [-1., 3., 1.],
+              [1., 1., 4.]])
+print(npla.eig(A))
+x = np.array([2., 1., -1.])
+b = A@x
 
-#raise ValueError('oi')
+x0 = np.zeros(3)
+x, info = mgc(A, b, x0)
 
-# aprox. inicial
-x0 = np.zeros_like(b)
 
-#x, info = mg(A, b, x0, alpha=1e-4)
-x, info = mg_pl(A, b, x0,
-                maxiter=50000, atol=1e-4, rtol=0.)
+# # matriz coefs
+# n = 160
+# h = 1./n
+# A = np.zeros((n+1,n+1))
+# b = np.zeros(n+1)
+# A[0,0] = 1.
+# for i in range(1,n):
+#     A[i,i-1] = -1./h**2
+#     A[i,i] = 2./h**2
+#     A[i,i+1] = -1./h**2
+#     b[i] = 2
+# A[n,n] = 1.
 
-plt.close()
-plt.plot(np.linspace(0,1,n+1), x)
-plt.grid()
-plt.show()
+# #print(npla.eig(A))
+
+# #raise ValueError('oi')
+
+# # aprox. inicial
+# x0 = np.zeros_like(b)
+
+# #x, info = mg(A, b, x0, alpha=1e-4)
+# x, info = mgc(A, b, x0,
+#                 maxiter=50000, atol=1e-4, rtol=0.)
+
+# plt.close()
+# plt.plot(np.linspace(0,1,n+1), x)
+# plt.grid()
+# plt.show()
