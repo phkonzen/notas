@@ -28,7 +28,7 @@ def jacobi(A, b, x0, maxiter = 100,
         if (nres <= max(tol*npla.norm(b), atol)):
             info = 0
             break
-        x0 = x
+        x0 = x.copy()
 
     return x, info
 
