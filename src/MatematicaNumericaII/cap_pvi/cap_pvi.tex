@@ -15,7 +15,7 @@ onde $\pmb{y}:t\in\mathbb{R}\mapsto\pmb{y}(t)\in\mathbb{R}^n$ é a função inc�
 \section{Método de Euler}\label{cap_pvi_sec_euler}
 
 Dado um \emph{problema de valor inicial}
-\begin{subequations}\hleq
+\begin{subequations}\label{cap_pvi_sec_euler:eq:pvi}\hleq
   \begin{align}
     y'(t) &= f(t,y(t)),\quad t>t_0,\\
     y(t_0) &= y_0,
@@ -31,7 +31,7 @@ obtemos
   &\hleq y(t+h) \approx y(t) + hf(t,y(t)).\label{cap_pvi_sec_euler:eq:euler_aux1}
 \end{align}
 
-Isto nos motiva a \hl{\emph{iteração do Método de Euler}}
+Isto nos motiva a \hl{\emph{iteração do Método de Euler}}{\euler}
 \begin{subequations}\hleq
   \begin{align}
     y^{(0)} &= y_0,\\
@@ -103,156 +103,391 @@ def euler(f, t0, y0, h, n):
 
 \subsection{Análise Numérica}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-O método de Euler com passo $h$ aplicado ao problema de valor inicial \eqref{eq:Euler_pvi_1}-\eqref{eq:Euler_pvi_2}, pode ser escrito da seguinte forma
-\begin{align}
-  \tilde{y}(t^{(1)};h) &= y_0,\label{eq:MPS_1}\\
-  \tilde{y}(t^{(i+1)};h) &= \tilde{y}(t^{(i)};h) + h\Phi(t^{(i)},\tilde{y}(t^{(i)});h),\label{eq:MPS_2}
-\end{align}
-onde $\tilde{y}(t^{(i)})$ representa a aproximação da solução exata $y$ no tempo $t^{(i)}=t_0+(i-1)h$, $i=1, 2, \ldots$. Métodos que podem ser escritos desta forma, são chamados de métodos de passo simples (ou único). No caso específico do método de Euler, temos
-\begin{equation}
-  \Phi(t,y;h) := f(t,y(t)).
+O Método de Euler com passo $h$ aplicado ao problema de valor inicial \eqref{cap_pvi_sec_euler:eq:pvi}, pode ser escrito da seguinte forma
+\begin{subequations}\label{cap_pvi_sec_euler:eq:mps}\hleq
+  \begin{align}
+    \tilde{y}(t^{(0)}; h) &= y_0,\\
+    \tilde{y}(t^{(k+1)}; h) &= \tilde{y}(t^{(k)}; h) + h\Phi(t^{(k)}, \tilde{y}(t^{(k)}); h),
+  \end{align}
+\end{subequations}
+onde $\tilde{y}(t^{(k)})$ representa a aproximação da solução exata $y$ no tempo $t^{(k)}=t_0+ kh$, $k=0, 1, 2, \ldots$. Métodos que podem ser escritos dessa forma, são chamados de \hl{\emph{Métodos de Passo Simples}} (ou único). No caso específico do método de Euler, temos
+\begin{equation}\hleq
+  \Phi(t, y; h) := f(t, y(t)).
 \end{equation}
 
-Agora, considerando a solução exata $y(t)$ de \eqref{eq:Euler_pvi_1}-\eqref{eq:Euler_pvi_2}, introduzimos
-\begin{equation}
-  \Delta(t,y;h) := \left\{
+Agora, considerando a solução exata $y$ de \eqref{cap_pvi_sec_euler:eq:pvi}, introduzimos
+\begin{equation}\hleq
+  \Delta(t, y; h) := \left\{
     \begin{array}{ll}
-      \frac{y(t+h)-y(t)}{h} &, h\neq 0,\\
-      f(t,y(t)) &, h=0,
+      \displaystyle\frac{y(t+h)-y(t)}{h} &, h\neq 0,\\
+      f(t, y(t)) &, h=0,
     \end{array}\right.
 \end{equation}
 
-Com isso, vamos analisar o chamado \emph{erro de discretização local}
-\begin{equation}
-  \tau(t,y;h) := \Delta(t,y;h) - \Phi(t,y;h),
+Com isso, vamos analisar o chamado \hl{\emph{erro de discretização local}}
+\begin{equation}\hleq
+  \tau(t, y; h) := \Delta(t, y; h) - \Phi(t, y; h),
 \end{equation}
-a qual estabelece uma medida quantitativa com que a solução exata $y(t)$ no tempo $t+h$ satisfaz a iteração de Euler.
+que \hl{estabelece uma medida quantitativa com que a solução exata $y(t)$ no tempo $t+h$ satisfaz a iteração de Euler}.
 
-\begin{defn}\normalfont{(Consistência)}\label{defn:pvi_consistencia}
-  Um método de passo simples \eqref{eq:MPS_1}-\eqref{eq:MPS_2} é dito consistente quando
-  \begin{equation}
+\subsubsection{Consistência}
+
+\begin{defn}\normalfont{\hl{(Consistência.)}}\label{cap_pvi_sec_euler:defn:consistencia}
+  Um \hl{método} de passo simples é dito ser \hl{consistente} quando
+  \begin{equation}\hleq
     \lim_{h\to 0}\tau(t,y;h) = 0,
   \end{equation}
-ou, equivalentemente, quando
-\begin{equation}
-  \lim_{h\to 0} \Phi(t,y;h) = f(t,y).
-\end{equation}
+  ou, equivalentemente, quando
+  \begin{equation}
+    \lim_{h\to 0} \Phi(t, y; h) = f(t, y).
+  \end{equation}
 \end{defn}
 
-\begin{obs}
-  Da Definição~\ref{defn:pvi_consistencia}, temos que o método de Euler é consistente.
+\begin{obs}\normalfont{(Consistência do Método de Euler.)}
+  Da Definição~\ref{cap_pvi_sec_euler:defn:consistencia}, temos que o \hl{Método de Euler é consistente}. De fato, temos
+  \begin{align}
+    \lim_{h\to 0} \tau(t, y; h) &= \lim_{h\to 0} \left(\Delta(t, y; h) - \Phi(t, y; h)\right)\\
+                                &= \lim_{h\to 0} \left(\frac{y(t+h)-y(t)}{h} - f\left(t,y(t)\right)\right)\\
+                                &= y'(t) - f\left(t, y(t)\right) = 0.
+  \end{align}
 \end{obs}
 
-A \emph{ordem do erro de discretização local} de um método de passo simples \eqref{eq:MPS_1}-\eqref{eq:MPS_2} é dita ser $p$, quando
-\begin{equation}
-  \tau(t,y;h) = O(h^p).
+A \hl{\emph{ordem do erro de discretização local}} de um método de passo simples é dita ser $p$, quando
+\begin{equation}\hleq
+  \tau(t, y; h) = O(h^p),
 \end{equation}
+ou seja, quando
+\begin{equation}
+  \lim_{h\to 0} \frac{\tau(t, y; h)}{h^p} = C,
+\end{equation}
+para alguma constante $C$.
 
-Para determinarmos a ordem do método de Euler, tomamos a expansão em série de Taylor da solução exata $y(t)$ em torno de $t$, i.e.
-\begin{equation}
-  y(t+h) = y(t) + hy'(t) + \frac{h^2}{2}y''(t) + \frac{h^3}{6}y'''(t+\theta h), ~0<\theta<1.
+Para determinarmos a ordem do Método de Euler, tomamos a \hl{expansão em série de Taylor}{\taylor} da solução exata $y(t)$ em torno de $t$, i.e.
+\begin{equation}\label{cap_pvi_sec_euler:eq:taylor}
+  y(t+h) = y(t) + hy'(t) + \frac{h^2}{2}y''(t) + \frac{h^3}{6}y'''(t+\theta h),
 \end{equation}
-Como $y(t)=f(t,y(t))$ e assumindo a devida suavidade de $f$, temos
+para algum $0<\theta<1$.
+Como $y'(t)=f(t, y(t))$, temos
 \begin{align}
-  y''(t) &= \frac{d}{dt}f(t,y(t)) \\
-         &= f_t(t,y) + f_y(t,y)y'\\
-         &= f_t(t,y) + f_y(t,y)f(t,y).
+  y''(t) &= \frac{d}{dt}f(t, y(t)) \\
+         &= f_t(t, y) + f_y(t, y)y'\\
+         &= f_t(t, y) + f_y(t, y)f(t, y).
 \end{align}
-Então,
+Então, rearranjando os termos em \eqref{cap_pvi_sec_euler:eq:taylor}, obtemos
 \begin{equation}\label{eq:pvi_delta_aux}
-  \Delta(t,y;h) = f(t,y(t)) + \frac{h}{2}[f_t(t,y) + f_y(t,y)f(t,y)] + O(h^2).
+  \Delta(t, y; h) = f(t, y(t)) + \frac{h}{2}[f_t(t, y) + f_y(t, y)f(t, y)] + O(h^2).
 \end{equation}
 Portanto, para o método de Euler temos
 \begin{align}
-  \tau(t,y;h) &:= \Delta(t,y;h)-\Phi(t,y;h)\\
-              &= \frac{h}{2}[f_t(t,y) + f_y(t,y)f(t,y)] + O(h^2)\\
+  \tau(t, y; h) &:= \Delta(t, y; h)-\Phi(t, y; h)\\
+              &= \Delta(t, y; h) - f(t, y)\\
+              &= \frac{h}{2}[f_t(t, y) + f_y(t, y)f(t, y)] + O(h^2)\\
               &= O(h).
 \end{align}
-Isto mostra que o método de Euler é um método de ordem $1$.
+Isto mostra que o \hl{Método de Euler é de ordem $1$}.
 
-A análise acima trata apenas da consistência do método de Euler. Para analisarmos a convergência de métodos de passo simples, definimos o \emph{erro de discretização global}
-\begin{equation}
-  e(t;h_n) := \tilde{y}(t;h_n) - y(t),\quad h_n := \frac{t-t_0}{n}.
-\end{equation}
-E, com isso, dizemos que o método é \emph{convergente} quando
-\begin{equation}
-  \lim_{n\to \infty} e(t,h_n) = 0,
-\end{equation}
-bem como, dizemos que o método tem erro de discretização global de ordem $h^p$ quando $e(t,h_n) = O(h^p)$.
+\subsubsection{Convergência}
 
-\begin{obs}
-  Pode-se mostrar que, assumindo a devida suavidade de $f$, que a ordem do erro de discretização global de um método de passo simples é igual a sua ordem do erro de discretização local (veja, \cite[Cap. 7, Seç. 7.2]{Stoer1993a}). Portanto, o método de Euler é convergente e é de ordem $1$.
+A análise acima trata apenas da consistência do Método de Euler. Para analisarmos a \hl{convergência} de métodos de passo simples, definimos o \hl{\emph{erro de discretização global}}
+\begin{equation}\hleq
+  e(t; h_n) := \tilde{y}(t; h_n) - y(t),
+\end{equation}
+onde $\tilde{y}(t; h_n) \approx y(t)$ para $h_n := (t-t_0)/n$. Dizemos que o método é \hl{\emph{convergente}} quando
+\begin{equation}\hleq
+  \lim_{n\to \infty} e(t,h_n) = 0.
+\end{equation}
+Ainda, dizemos que o método tem \hl{erro de discretização global de ordem $p$} quando
+\begin{equation}\hleq
+  e(t,h_n) = O(h_n^p)
+\end{equation}
+para todo $t\in [t_0, t_f]$, $t_f > t_0$.
+
+\begin{lema}\normalfont{(\cite[Cap. 7, Seção 7.2]{Stoer1993a})}\label{cap_pvi_sec_euler:lema:aux}
+  Se a sequência $\left(\xi^{(k)}\right)_{k\in\mathbb{R}}$ satisfaz a estimativa
+  \begin{equation}
+    \left|\xi^{(k+1)}\right| \leq (1 + \delta)\left|\xi^{(k)}\right| + B,
+  \end{equation}
+  para dados $\delta > 0$ e $B\geq 0$, $k=0, 1, 2, \ldots$, então
+  \begin{equation}
+    \left|\xi^{(n)}\right| \leq e^{n\delta}\left|\xi^{(0)}\right| + \frac{e^{n\delta}-1}{\delta}B.
+  \end{equation}
+\end{lema}
+\begin{dem}
+  De forma iterativa, temos
+  \begin{align}
+    \left|\xi^{(1)}\right| &\leq (1 + \delta)\left|\xi^{(0)}\right| + B\\
+    \left|\xi^{(2)}\right| &\leq (1 + \delta)\left|\xi^{(1)}\right| + B\\
+                           &= (1+\delta)^2\left|\xi^{(0)}\right| + (1+\delta)B + B\\
+                           &\vdots\\
+    \left|\xi^{(k)}\right| &\leq (1 + \delta)^k\left|\xi^{(0)}\right| + B\sum_{k=0}^{k-1}(1+\delta)^k\\
+                           &= (1 + \delta)^k\left|\xi^{(0)}\right| + B\frac{(1+\delta)^k-1}{\delta}.
+  \end{align}
+  Observando que $0<1+\delta\leq e^{\delta}$ para $\delta>-1$, concluímos que
+  \begin{equation}
+    \left|\xi^{(k)}\right| \leq e^{k\delta}\left|\xi^{(0)}\right| + \frac{e^{k\delta}-1}{\delta}B.
+  \end{equation}
+\end{dem}
+
+\begin{teo}\normalfont{\hl{(Estimativa do Error Global.)}}\label{cap_pvi_sec_euler:teo:conv}
+  Considere o PVI \eqref{cap_pvi_sec_euler:eq:pvi}, para $t_0 = a$, $y_0\in\mathbb{R}$. Suponha que $f$ é Lipschitz contínua em $y$
+  \begin{equation}
+    |f(t, y) - f(t, z)| \leq L|y - z|,
+  \end{equation}
+  para todo $(t,y)\in [a, b]\times\mathbb{R}$ e que exista $M>0$ tal que
+  \begin{equation}
+    |y''(t)| \leq M,
+  \end{equation}
+  para todo $t\in [a, b]$. Então, as iteradas do Método de Euler $y^{(k)} \approx y\left(t^{(k)}\right)$, $t^{(k)} = t_0 + kh$, $h > (b-a)/n$, $k=0, 1, 2, \dotsc, n+1$, satisfazem a seguinte \hl{\emph{estimativa do erro de discretização global}}
+  \begin{equation}\label{cap_pvi_sec_euler:eq:est_errg}\hleq
+    \left|y^{(k)} - y\left(t^{(k)}\right)\right| \leq \frac{hM}{2L}\left[e^{L\left(t^{(k)}-t_0\right)}-1\right].
+  \end{equation}
+\end{teo}
+\begin{dem}
+  Para $k=0$ o resultado é imediato. Agora, usamos o polinômio de Taylor
+  \begin{equation}
+    y\left(t^{(k+1)}\right) = y\left(t^{(k)}\right) + hf\left(t^{(k)}, y\left(t^{(k)}\right)\right) + \frac{h^2}{2}y''\left(\xi^{(k)}\right),
+  \end{equation}
+  onde $t^{(k)} \leq \xi^{(k)} \leq t^{(k+1)}$, $k=0, 1, 2, \ldots, n$. Já, as iteradas de Euler são
+  \begin{equation}
+    y^{(k+1)} = y^{(k)} + hf\left(t^{(k)}, y^{(k)}\right).
+  \end{equation}
+  Subtraindo esses equações, obtemos
+  \begin{equation}
+    \begin{aligned}
+      y^{(k+1)} - y\left(t^{(k+1)}\right) &= y^{(k)} - y\left(t^{(k)}\right) \\
+      &+ h\left[f\left(t^{(k)}, y^{(k)}\right) - f\left(t^{(k)}, y\left(t^{(k)}\right)\right)\right] - \frac{h^2}{2}y''\left(\xi^{(k)}\right)
+    \end{aligned}
+  \end{equation}
+  Da hipótese de $f$ Lipschitz, temos
+  \begin{equation}
+    \begin{aligned}
+      \left|y^{(k+1)} - y\left(t^{(k+1)}\right)\right| &\leq \left|y^{(k)} - y\left(t^{(k)}\right)\right| \\
+      &+ hL\left|y^{(k)} - y\left(t^{(k)}\right)\right| + \frac{h^2}{2}\left|y''\left(\xi^{(k)}\right)\right|
+    \end{aligned}
+  \end{equation}
+  Ou, ainda,
+  \begin{equation}
+    \left|y^{(k+1)} - y\left(t^{(k+1)}\right)\right| \leq (1 + hL)\left|y^{(k+1)} - y\left(t^{(k+1)}\right)\right| + \frac{h^2M}{2}.
+  \end{equation}
+  Do Lema \ref{cap_pvi_sec_euler:lema:aux}, temos
+  \begin{equation}
+    \left|y^{(k+1)} - y\left(t^{(k+1)}\right)\right| \leq \frac{h^2M}{2}\frac{e^{khL}-1}{hL},
+  \end{equation}
+  donde segue a estimativa do erro global \eqref{cap_pvi_sec_euler:eq:est_errg}.
+\end{dem}
+
+% \begin{teo}\normalfont{(\hl{Convergência}.)}\label{cap_pvi_sec_euler:teo:conv}
+%   Considere o PVI \eqref{cap_pvi_sec_euler:eq:pvi}, para $t_0\in [a, b]$ e $y_0\in\mathbb{R}$. Seja $\Phi$ contínua em
+%   \begin{equation}
+%     G := \{(t, y, h): a\leq t\leq b, |y-y(t)|\leq\gamma, 0\leq|h|\leq h_0\},
+%   \end{equation}
+%   para $h_0>0$ e $\gamma>0$. Sejam também, $M, N$ constantes tais que
+%   \begin{equation}
+%     \left|\Phi(t, y; h) - \Phi(t, z; h)\right| \leq M|y - z|,
+%   \end{equation}
+%   para todas $(t, y; h), (t, z; h)\in G$. Se, ainda, para algum $p>0$ e para todo $t\in [a, b]$, $|h|\leq h_0$,
+%   \begin{equation}\hleq
+%     \left|\tau(t, y(t); h)\right| \leq N |h|^p,
+%   \end{equation}
+%   então existe $\overline{h}$, $0<\overline{h}<h_0$, tal que
+%   \begin{equation}\hleq
+%     |e(t; h_n)| \leq |h_n|^pN\frac{e^{M|t-t_0|}-1}{M},
+%   \end{equation}
+%   para todo $t\in [a, b]$ e para todo $h_n = (t-t_0)/n$, $n=1, 2, \ldots$, com $|h_n|\leq \overline{h}$.
+% \end{teo}
+% \begin{dem}
+%   Seja
+%   \begin{equation}
+%     \tilde{\Phi}(t, y; h) := \left\{
+%       \begin{array}{ll}
+%         \Phi(t, y; h) &, (t, y, h)\in G,\\
+%         \Phi(t, y(t)+\gamma; h) &, t\in [a, b], |h|\leq h_0, y\geq y(t)+\gamma,\\
+%         \Phi(t, y(t)-\gamma; h) &, t\in [a, b], |h|\leq h_0, y\leq y(t)-\gamma,
+%       \end{array}
+%     \right.
+%   \end{equation}
+%   A função $\tilde{\Phi}$ é contínua em
+%   \begin{equation}
+%     \tilde{G} := \{(t, y; h): t\in [a, b], y\in\mathbb{R}, |h|\geq h_0\}
+%   \end{equation}
+%   e satisfaz
+%   \begin{equation}\label{cap_pvi_sec_euler:eq:aux0}
+%     \left|\tilde{\Phi}(t, y; h) - \tilde{\Phi}(t, z; h)\right| \leq M|y - z|,
+%   \end{equation}
+%   para todas $(t, y; h), (t, z; h)\in \tilde{G}$. Ainda, como $\tilde{\Phi}(t, y(t); h) = \Phi(t, y(t); h)$, também temos que
+%   \begin{equation}\label{cap_pvi_sec_euler:eq:aux1}
+%     |\Delta(t, y(t); h) - \tilde{\Phi}(t, y(t); h)| \leq N |h|^p,
+%   \end{equation}
+%   para $t\in [a, b]$ e $|h|\leq h_0$.
+
+%   Sejam, $\tilde{y}^{(k)} := \tilde{y}\left(t^{(k)}; h\right)$, $t^{(k)} = t_0 + kh$, $\tilde{y}^{(0)} = y_0$:
+%   \begin{align}
+%     \tilde{y}^{(k+1)} = \tilde{y}^{(k)} + h\tilde{\Phi}\left(t^{(k)}, \tilde{y}^{(k)}; h\right),
+%     y\left(t^{(k+1)}\right) = y\left(t^{(k)}\right) + h\Delta\left(t^{(k)}, y\left(t^{(k)}\right); h\right).
+%   \end{align}
+%   Definindo $\tilde{e}^{(k)} := \tilde{y}^{(k)} - y\left(t^{(k)}\right)$, obtemos a fórmula de recorrência
+%   \begin{align}
+%     \tilde{e}^{(k+1)} &= \tilde{e}^{(k)} + h\left[\tilde{\Phi}\left(t^{(k)}, \tilde{y}^{(k)}; h\right) - \Delta\left(t^{(k)}, y\left(t^{(k)}\right); h\right)\right]\\
+%                       &= \tilde{e}^{(k)} + h\left[\tilde{\Phi}\left(t^{(k)}, \tilde{y}^{(k)}; h\right) - \tilde{\Phi}\left(t^{(k)}, y\left(t^{(k)}\right); h\right)\right]\\
+%                       &+ h\left[\tilde{\Phi}\left(t^{(k)}, y\left(t^{(k)}\right); h\right) - \Delta\left(t^{(k)}, y\left(t^{(k)}\right); h\right)\right].\label{cap_pvi_sec_euler:eq:aux2}
+%   \end{align}
+%   Agora, de \eqref{cap_pvi_sec_euler:eq:aux0} e \eqref{cap_pvi_sec_euler:eq:aux1}, temos
+%   \begin{align}
+%     &\left|\tilde{\Phi}\left(t^{(k)}, \tilde{y}^{(k)}; h\right) - \tilde{\Phi}\left(t^{(k)}, y\left(t^{(k)}\right); h\right)\right| \leq M\left|\tilde{e}^{(k)}\right|\\
+%     &\left|\Delta\left(t^{(k)}, y\left(t^{(k)}\right); h\right) - \tilde{\Phi}\left(t^{(k)}, y\left(t^{(k)}\right); h\right)\right| \leq N |h|^p
+%   \end{align}
+%   Portanto, de \eqref{cap_pvi_sec_euler:eq:aux2}, temos
+%   \begin{equation}
+%     \left|\tilde{e}^{(k+1)}\right| \leq \left(1 + |h|M\right)\left|\tilde{e}^{(k)}\right| + N |h|^{p+1}
+%   \end{equation}
+%   Então, do Lema \ref{cap_pvi_sec_euler:lema:aux}, temos
+%   \begin{equation}\label{cap_pvi_sec_euler:eq:aux3}
+%     \left|\tilde{e}^{(k)}\right| \leq N|h|^p\frac{e^{k|h|M}-1}{M}.
+%   \end{equation}
+%   Sejam, agora, $t\in [a, b]$, $t\neq t_0$ fixo e $h := h_n = (t-t_0)/n$, $n>0$. Então, $t^{(n)} = t_0 + nh = t$ e de \eqref{cap_pvi_sec_euler:eq:aux3} temos
+%   \begin{equation}
+%     \left|\tilde{e}\left(t, h_n\right)\right| \leq N|h_n|^p\frac{e^{M|t-t_0|}-1}{M},
+%   \end{equation}
+%   para todo $t\in [a, b]$, $|h_n|\leq h_0$. Uma vez que $|t-t_0|\leq |b-a|$ e $\gamma >0$, existe $\overline{h}$, $0<\overline{h}\leq h_0$, tal que $\left|\tilde{e}\left(t, h_n\right)\right| \leq \gamma$ para todo $t\in [a, b]$ e $|h_n|\leq \overline{h}$. Logo, para o método de passo simples \eqref{cap_pvi_sec_euler:eq:mps} gerado por $\Phi$, temos para $|h|\leq\overline{h}$ que
+%   \begin{align}
+%     &\tilde{y}^{(k)} = y^{(k)},\\
+%     &\tilde{e}^{(k)} = e^{(k)},\\
+%     &\tilde{\Phi}\left(t^{(k)}, \tilde{y}^{(k)}; h\right) = \Phi\left(t^{(k)}, \tilde{y}^{(k)}; h\right).
+%   \end{align}
+%   Concluímos que
+%   \begin{equation}
+%     \left|e\left(t, h_n\right)\right| \leq N|h_n|^p\frac{e^{M|t-t_0|}-1}{M},
+%   \end{equation}
+%   para todo $t\in [a, b]$ e $h_n = (t-t_0)/n$, $n=1, 2, \ldots$, com $|h_n|\leq \overline{h}$.
+% \end{dem}
+
+\begin{obs}\normalfont{\hl{(Convergência.)}}
+  Do Teorema \ref{cap_pvi_sec_euler:teo:conv}, \hl{a ordem do erro de discretização global de um método de passo simples é igual a sua ordem do erro de discretização local}. Portanto, o \hl{Método de Euler é convergente e é de ordem $1$}.
 \end{obs}
 
-\begin{ex}\label{ex:Euler_2}
+\begin{ex}\label{cap_pvi_sec_euler:ex:conv}
   Consideremos o seguinte problema de valor inicial
-  \begin{align}
-    y' - y &= \sen(t), t>0\label{eq:Euler_aux2}\\
-    y(0) &= \frac{1}{2}.
-  \end{align}
-  Na Tabela~\ref{tab:ex_Euler_2}, temos as aproximações $\tilde{y}(1)$ de $y(1)$ computadas pelo método de Euler com diferentes passos $h$.
+  \begin{subequations}
+    \begin{align}
+      &y' = y + 1, t>0\\
+      &y(0) = 0.
+    \end{align}
+\end{subequations}
+  Na Tabela~\ref{cap_pvi_sec_euler:tab:euler_conv}, temos as aproximações $\tilde{y}(1)$ de $y(1)$ computadas pelo Método de Euler com diferentes passos $h$. A solução analítica deste problema é $y(t) = e^{t}-1$.
  
   \begin{table}[h!]
     \centering
+    \caption{Resultados referentes ao Exemplo~\ref{cap_pvi_sec_euler:ex:conv}.}
     \begin{tabular}{l|cc}
       $h$ & $\tilde{y}(1)$ & $|\tilde{y}(1)-y(1)|$\\\hline
-      $10^{-1}$ & $1,85259$ & $1,7\E-01$ \\
-      $10^{-2}$ & $2,00853$ & $1,9\E-02$ \\
-      $10^{-3}$ & $2,02549$ & $1,9\E-03$ \\
-      $10^{-5}$ & $2,02735$ & $4,8\E-05$ \\
-      $10^{-7}$ & $2.02739$ & $1,9\E-07$ \\\hline
+      $10^{-1}$ & $1.59374$ & $1.2\E-1$ \\
+      $10^{-2}$ & $1.70481$ & $1.3\E-2$ \\
+      $10^{-3}$ & $1.71692$ & $1.4\E-3$ \\
+      $10^{-5}$ & $1.71827$ & $1.4\E-5$ \\
+      $10^{-7}$ & $1.71828$ & $1.4\E-7$ \\
+      $10^{-9}$ & $1.71828$ & $1.4\E-9$ \\\hline
     \end{tabular}
-    \caption{Resultados referentes ao Exemplo~\ref{ex:Euler_2}}
-    \label{tab:ex_Euler_2}
+    \label{cap_pvi_sec_euler:tab:euler_conv}
   \end{table}
-
-% \ifisoctave
-% Os resultados mostrados na Tabela~\ref{tab:ex_Euler_2} podem ser computados no \verb+GNU Octave+ com o auxílio do seguinte código:
-% \begin{verbatim}
-% f = @(t,y) y+sin(t);
-
-% h=1e-2;
-% n=round(1/h+1);
-% t=zeros(n,1);
-% y=zeros(n,1);
-
-% t(1)=0;
-% y(1)=0.5;
-
-% for i=1:n-1
-%   t(i+1) = t(i)+h;
-%   y(i+1)=y(i)+h*f(t(i),y(i));
-% endfor
-
-% ya = @(t) exp(t)-sin(t)/2-cos(t)/2;
-% printf("%1.5E %1.1E\n",y(n),abs(y(n)-ya(1)))
-% \end{verbatim}
-% \fi
 \end{ex}
+
+\subsubsection{Erros de Arredondamento}
+
+O Teorema \ref{cap_pvi_sec_euler:teo:conv} não leva em consideração os erros de arredondamento. Levando em conta esses erros, a iteração do método de Euler tem a forma
+\begin{subequations}\label{cap_pvi_sec_euler:eq:euler_errarr}
+  \begin{align}
+    &\tilde{y}^{(0)} = y_0 + \delta^{(k)},\\
+    &\tilde{y}^{(k+1)} = \tilde{y}^{(k)} + hf\left(t^{(k)}, \tilde{y}^{(k)}\right) + \delta^{(k+1)},
+  \end{align}
+\end{subequations}
+onde $\delta^{(k)}$ é o erro devido a arredondamentos na $k$-ésima iterada, $t^{(k)} = t_0 + hk$, $k=0, 1, 2, \dotsc, n$. Assumindo as hipóteses do Teorema \ref{cap_pvi_sec_euler:teo:conv}, podemos mostrar a seguinte estimativa de erro global
+\begin{equation}\label{cap_pvi_sec_euler:eq:euler_errarr_est}\hleq
+  \begin{aligned}
+    \left|\tilde{y}^{(k+1)} - y\left(t^{(k+1)}\right)\right| &\leq \frac{1}{L}\left(\frac{hM}{2} + \frac{\delta}{h}\right)\left[e^{L\left(t^{(k)}-t_0\right)}-1\right]\\
+    &+ |\delta_0|e^{L\left(t^{(k)}-t_0\right)},
+\end{aligned}
+\end{equation}
+para $\delta^{(k)} < \delta$, $k=0, 1, 2, \dotsc, n$.
 
 \subsection*{Exercícios}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
+\begin{exer}
+  O problema de valor inicial
+  \begin{subequations}
+    \begin{align}
+      &y' = \pi\left[\cos^2(\pi t) - \sen^2(\pi t)\right],\quad t>0\\
+      &y(0) = 0.
+    \end{align}
+  \end{subequations}
+  tem solução analítica $y(t) = \sen(\pi t)\cos(\pi t)$. Compute a aproximação $\tilde{y}(1) \approx y(1)$ pelo Método de Euler com passo $h=10^{-1}$ e forneça o erro $e(1, h) := \tilde{y}(1, h) - y(1)$.
+\end{exer}
+\begin{resp}
+  $\tilde{y}(1.5) = 3.14159\E-1$, $e(1, h) = 3.1E-01$
+\end{resp}
+
+\begin{exer}
+  Use o Método de Euler para computar a solução de
+  \begin{subequations}
+    \begin{align}
+      &y' = e^{2t} - 2y,\quad 0 < t\leq 1,\\
+      &y(0) = 0.
+    \end{align}
+  \end{subequations}
+  Escolha um passo $h$ adequado de forma que $y(1)$ seja computado com precisão de $5$ dígitos significativos.
+\end{exer}
+\begin{resp}
+  $h=10^{-6}$, $\tilde{y}(1) = 1.8134\E+0$
+\end{resp}
 
 \begin{exer}
   Considere o seguinte problema de valor inicial
-  \begin{align}
-    y' &+ e^{-y^2+1} = 2,\quad t>1,\\
-    y(1) &= -1.
-  \end{align}
-Use o método de Euler com passo $h=0,1$ para computar o valor aproximado de $y(2)$.
+  \begin{subequations}
+    \begin{align}
+      &y' + e^{-y^2+1} = 2,\quad t>1,\\
+      &y(1) = -1.
+    \end{align}
+\end{subequations}
+Use o método de Euler para computar o valor aproximado de $y(2)$ com precisão de $6$ dígitos significativos.
 \end{exer}
 \begin{resp}
-  % \ifisoctave 
-  % \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_pvi/dados/exer_Euler_pvi1/exer_Euler_pvi1.m}{Código.} 
-  % \fi
-  $-5,87722\E-1$
+  $-5.58858\E-1$
+\end{resp}
+
+\begin{exer}
+  Use o Método de Euler para computar a solução de
+  \begin{subequations}
+    \begin{align}
+      &y' = -30y,\quad 0 < t\leq 1,\\
+      &y(0) = \frac{1}{3}
+    \end{align}
+  \end{subequations}
+  A solução analítica é $y(t) = \frac{1}{3}e^{-30t}$. Compute a solução aproximação $\tilde{y}(1)$ e o erro $|\tilde{y}(1) - y(1)|$ usando o passo $h=10^{-1}$. O erro obtido está de acordo com a estimativa \eqref{cap_pvi_sec_euler:eq:est_errg}?
+\end{exer}
+\begin{resp}
+  $|\tilde{y}(1) - y(1)| = 3.4\E+2$. Dica: verifique as hipóteses do Teorema \ref{cap_pvi_sec_euler:teo:conv}.
+\end{resp}
+
+\subsubsection{Análise Numérica}
+
+\begin{exer}
+  Mostre que se $\delta>-1$, então $0 < 1+\delta \leq e^{\delta}$.
+\end{exer}
+\begin{resp}
+  Dica: use o polinômio de Taylor de grau 2 de $e^\delta$.
+\end{resp}
+
+\begin{exer}
+  Seja dado um PVI \eqref{cap_pvi_sec_euler:eq:pvi}, $t_0\leq t \leq t_f$. Sejam $\tilde{y}^{(k)}$, $k=0, 1, 2, \dotsc, n$, as aproximações computadas conforme em \eqref{cap_pvi_sec_euler:eq:euler_errarr}, com $\delta^{(k)} < \delta$. Assumindo as mesmas hipóteses do Teorema \ref{cap_pvi_sec_euler:teo:conv}, mostre a estimativa de erro global \eqref{cap_pvi_sec_euler:eq:euler_errarr_est}.
+\end{exer}
+\begin{resp}
+  Dica: estude a demonstração do Teorema \ref{cap_pvi_sec_euler:teo:conv}.
+\end{resp}
+
+\begin{exer}
+  Assumindo um erro de arredondamento máximo de $\delta > 0$, use \eqref{cap_pvi_sec_euler:eq:euler_errarr_est} para obter uma estimativa para a melhor escolha de $h$.
+\end{exer}
+\begin{resp}
+  $h = \sqrt{2\delta/M}$. Dica: Encontre o mínimo de $E(h) := M/2 + \delta/h^2$.
 \end{resp}
 
 
