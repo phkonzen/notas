@@ -1,108 +1,107 @@
 %Este trabalho está licenciado sob a Licença Atribuição-CompartilhaIgual 4.0 Internacional Creative Commons. Para visualizar uma cópia desta licença, visite http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR ou mande uma carta para Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
 
-\chapter{Problema de valor inicial}\label{cap_pvi}
+\chapter{Problema de Valor Inicial}\label{cap_pvi}
 \thispagestyle{fancy}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-Neste capítulo, discutimos sobre técnicas numéricas para aproximar a solução de equações diferenciais ordinárias com valor inicial, i.e. problemas da forma
-\begin{align}
-  y'(t) &= f(t,y(t)),\quad t>t_0,\\
-  y(t_0) &= y_0.
-\end{align}
-
-\section{Método de Euler}\label{cap_pvi_sec_Euler}
-
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-Dado um problema de valor inicial
-\begin{align}
-  y'(t) &= f(t,y(t)),\quad t>t_0,\label{eq:Euler_pvi_1}\\
-  y(t_0) &= y_0,\label{eq:Euler_pvi_2}
-\end{align}
-temos que $f(t,y)$ é a derivada da solução $y(t)$ no tempo $t$. Então, aproximando a derivada pela razão fundamental de passo $h>0$, obtemos
-\begin{align}
-  \frac{y(t+h)-y(t)}{h} &\approx f(t,y) \\
-  \Rightarrow y(t+h) &\approx y(t) + hf(t,y(t)).\label{eq:Euler_aux1}
-\end{align}
-Ou seja, se conhecermos a solução $y$ no tempo $t$, então \eqref{eq:Euler_aux1} nos fornece uma aproximação da solução $y$ no tempo $t+h$. Observemos que isto poder ser usado de forma iterativa. Da condição inicial $y(t_0)=y_0$, computamos uma aproximação de $y$ no tempo $t_0+h$. Usando esta no lugar de $y(t_0+h)$, \eqref{eq:Euler_aux1} com $t_0+h$ no lugar de $t$ nos fornece uma aproximação para $y(t_0+2h)$ e, assim, sucessivamente.
-
-Mais especificamente, denotando $y^{(i)}$ a aproximação de $y(t^{(i)})$ com $t^{(i)}=t_0+(i-1)h$, $i=1, 2, \dotsc, n$, o \emph{método de Euler} consiste na iteração
-\begin{align}
-  y^{(1)} &= y_0,\label{eq:iter_Euler_1}\\
-  y^{(i+1)} &= y^{(i)} + hf(t^{(i)},y^{(i)}),\label{eq:iter_Euler_2}
-\end{align}
-com $i=1, 2, \dotsc, n$. O número de iteradas $n$ e o tamanho do passo $h>0$, determinam os tempos discretos $t^{(i)}$ nos quais a solução $y$ será aproximada.
-
-\begin{ex}\label{ex:Euler_1}
-  Consideremos o seguinte problema de valor inicial
+Neste capítulo, discutimos sobre \hl{técnicas numéricas para aproximar a solução de Equações Diferenciais Ordinárias com valor inicial (condição inicial)}, i.e. problemas da forma
+\begin{subequations}\hleq
   \begin{align}
-    y' - y &= \sen(t), t>0\label{eq:Euler_aux2}\\
-    y(0) &= \frac{1}{2}.
+    \pmb{y}'(t) &= \pmb{f}(t,\pmb{y}(t)),\quad t>t_0,\\
+    \pmb{y}(t_0) &= \pmb{y}_0,
   \end{align}
-  A solução analítica deste é
+\end{subequations}
+onde $\pmb{y}:t\in\mathbb{R}\mapsto\pmb{y}(t)\in\mathbb{R}^n$ é a função incógnita com dadas $\pmb{f}:(t,\pmb{y})\in\mathbb{R}\times\mathbb{R}^n\mapsto\pmb{f}(t,\pmb{y})\in\mathbb{R}^n$ e $\pmb{y}_0\in\mathbb{R}^n$, $n\geq 1$.
+
+\section{Método de Euler}\label{cap_pvi_sec_euler}
+
+Dado um \emph{problema de valor inicial}
+\begin{subequations}\hleq
+  \begin{align}
+    y'(t) &= f(t,y(t)),\quad t>t_0,\\
+    y(t_0) &= y_0,
+  \end{align}
+\end{subequations}
+temos que $f(t,y)$ é a derivada da solução $y(t)$ no tempo $t$. Então, aproximando a derivada pela \emph{razão fundamental} de passo $h>0$
+\begin{equation}\hleq
+  y'(t) \approx \frac{y(t+h)-y(t)}{h},
+\end{equation}
+obtemos
+\begin{align}
+  &\frac{y(t+h)-y(t)}{h} \approx f(t,y) \\
+  &\hleq y(t+h) \approx y(t) + hf(t,y(t)).\label{cap_pvi_sec_euler:eq:euler_aux1}
+\end{align}
+
+Isto nos motiva a \hl{\emph{iteração do Método de Euler}}
+\begin{subequations}\hleq
+  \begin{align}
+    y^{(0)} &= y_0,\\
+    y^{(k+1)} &= y^{(k)} + hf(t^{(k)},y^{(k)}),
+  \end{align}
+\end{subequations}
+com $k=0, 1, 2, \dotsc, n$, $y^{(k)}\approx y\left(t^{(k)}\right)$, $t^{(k)} = t_0 + kh$ e \emph{passo} $h>0$.
+
+\begin{ex}\label{cap_pvi_sec_euler:ex:euler_ex0}
+  Consideramos o seguinte problema de valor inicial
+  \begin{subequations}
+    \begin{align}
+      y' - y &= \sen(t), t>0\\
+      y(0) &= \frac{1}{2}.
+    \end{align}
+  \end{subequations}
+  Sua solução analítica é
   \begin{equation}
     y(t) = e^t - \frac{1}{2}\sen(t) - \frac{1}{2}\cos(t).
   \end{equation}
-No tempo, $t_f=1$, temos $y(t_f)=e^{t_f} - \sen(1)/2 - \cos(1)/2 = 2,02740$. Agora, computarmos uma aproximação para este problema pelo método de Euler, reescrevemos \eqref{eq:Euler_aux2} na forma
-\begin{equation}
-  y' = y + \sen(t) =: f(t,y).
-\end{equation}
-Então, escolhendo $h=0,1$, a iteração do método de Euler \eqref{eq:iter_Euler_1}-\eqref{eq:iter_Euler_2} nos fornece
-o método de Euler com passo $h=0,1$
-\begin{align}
-  y^{(1)} &= 0,5\\
-  y^{(2)} &= y^{(1)} + hf(t^{(1)},y^{(1)})\nonumber\\
-  &= 0,5 + 0,1[0,5 + \sen(0)]\nonumber\\
-  &= 0,55\\
-  y^{(3)} &= y^{(2)} + hf(t^{(2)},y^{(2)})\nonumber\\
-  &= 0,55 + 0,1[0,55 + \sen(0,1)]\nonumber\\
-  &= 6,14983\E-01\\
-  &\,~\vdots\nonumber\\
-  y^{(11)} &= 1,85259
-\end{align}
-Na Figura~\ref{fig:ex_Euler_1}, temos os esboços das soluções analítica e numérica.
 
-\begin{figure}[h!]
+  Para computarmos a solução pelo Método de Euler, reescrevemos o problema da seguinte forma
+  \begin{subequations}
+    \begin{align}
+      &y' = y + \sen(t), t>0\\
+      &y(0) = \frac{1}{2},
+    \end{align}
+  \end{subequations}
+  donde identificamos $f(t,y) := y + \sen(t)$, $t_0=0$ e $y_0=1/2$.
+
+  \begin{table}[H]
+    \centering
+    \caption{Resultados obtidos para o problema do Exemplo \ref{cap_pvi_sec_euler:ex:euler_ex0} com $h=1\E-1$.}
+    \begin{tabular}{l|cc|c}
+      $k$ & $t^{(k)}$ &  $y^{(k)}$ & $y\left(t^{(k)}\right)$ \\\hline
+      $0$ & $0.0$ & $5.00\E-1$ & $5.00\E-1$\\
+      $1$ & $0.1$ & $5.50\E-1$ & $5.58\E-1$\\
+      $2$ & $0.2$ & $6.15\E-1$ & $6.32\E-1$\\
+      $3$ & $0.3$ & $6.96\E-1$ & $7.24\E-1$\\
+      $4$ & $0.4$ & $7.96\E-1$ & $8.37\E-1$\\
+      $5$ & $0.5$ & $9.14\E-1$ & $9.70\E-1$\\
+      $6$ & $0.6$ & $1.05\E+0$ & $1.13\E+0$\\
+      $7$ & $0.7$ & $1.22\E+0$ & $1.31\E+0$\\
+      $8$ & $0.8$ & $1.40\E+0$ & $1.52\E+0$\\
+      $9$ & $0.9$ & $1.61\E+0$ & $1.76\E+0$\\
+      $10$ & $1.0$ & $1.85\E+0$ & $2.03\E+0$\\\hline
+    \end{tabular}
+  \end{table}
+
+\begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{./cap_pvi/dados/ex_Euler_1/ex_Euler_1}
-  \caption{Esboço das soluções referente ao Exemplo~\ref{ex:Euler_1}.}
+  \includegraphics[width=\textwidth]{./cap_pvi/dados/fig_euler_ex0/fig}
+  \caption{Esboço das soluções numérica (pontos) e analítica (linha) para o problema do Exemplo~\ref{cap_pvi_sec_euler:ex:euler_ex0}.}
   \label{fig:ex_Euler_1}
 \end{figure}
-
-% \ifisoctave
-% As aproximações obtidas neste exemplo podem ser computadas no \verb+GNU Octave+ com o seguinte código:
-% \begin{verbatim}
-% f = @(t,y) y+sin(t);
-
-% h=0.1;
-% n=11;
-% t=zeros(n,1);
-% y=zeros(n,1);
-
-% t(1)=0;
-% y(1)=0.5;
-
-% for i=1:n-1
-%   t(i+1) = t(i)+h;
-%   y(i+1)=y(i)+h*f(t(i),y(i));
-% endfor
-
-% printf("%1.5E %1.5E\n",t(n),y(n))
-% tt=linspace(0,1);
-% ya = @(t) exp(t)-sin(t)/2-cos(t)/2;
-% plot(tt,ya(tt),'b-',...
-%      t,y,'r.-');grid
-% legend("analit.","Euler")
-% \end{verbatim}
-% \fi
 \end{ex}
 
-\subsection{Análise de consistência e convergência}
+\begin{lstlisting}[caption=euler.py, label=cap_pvi_sec_euler:cod:euler]
+def euler(f, t0, y0, h, n):
+    t = np.empty(n+1)
+    t[0] = t0
+    y = np.empty(n+1)
+    y[0] = y0
+    for k in range(n):
+        t[k+1] = t[k] + h
+        y[k+1] = y[k] + h*f(t[k], y[k])
+    return t, y
+\end{lstlisting}
+
+\subsection{Análise Numérica}
 
 \begin{flushleft}
   [[tag:revisar]]
