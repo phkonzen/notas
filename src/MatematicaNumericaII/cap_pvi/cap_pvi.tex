@@ -115,12 +115,14 @@ onde $\tilde{y}(t^{(k)})$ representa a aproximação da solução exata $y$ no t
   \Phi(t, y; h) := f(t, y(t)).
 \end{equation}
 
+\subsubsection{Consistência}
+
 Agora, considerando a solução exata $y$ de \eqref{cap_pvi_sec_euler:eq:pvi}, introduzimos
 \begin{equation}\hleq
   \Delta(t, y; h) := \left\{
     \begin{array}{ll}
       \displaystyle\frac{y(t+h)-y(t)}{h} &, h\neq 0,\\
-      f(t, y(t)) &, h=0,
+      f(t, y(t)) &, h=0.
     \end{array}\right.
 \end{equation}
 
@@ -128,9 +130,7 @@ Com isso, vamos analisar o chamado \hl{\emph{erro de discretização local}}
 \begin{equation}\hleq
   \tau(t, y; h) := \Delta(t, y; h) - \Phi(t, y; h),
 \end{equation}
-que \hl{estabelece uma medida quantitativa com que a solução exata $y(t)$ no tempo $t+h$ satisfaz a iteração de Euler}.
-
-\subsubsection{Consistência}
+que \hl{estabelece uma medida quantitativa com que a solução exata $y(t)$ no tempo $t+h$ satisfaz a iteração do método de passo simples}.
 
 \begin{defn}\normalfont{\hl{(Consistência.)}}\label{cap_pvi_sec_euler:defn:consistencia}
   Um \hl{método} de passo simples é dito ser \hl{consistente} quando
@@ -194,11 +194,11 @@ A análise acima trata apenas da consistência do Método de Euler. Para analisa
 \end{equation}
 onde $\tilde{y}(t; h_n) \approx y(t)$ para $h_n := (t-t_0)/n$. Dizemos que o método é \hl{\emph{convergente}} quando
 \begin{equation}\hleq
-  \lim_{n\to \infty} e(t,h_n) = 0.
+  \lim_{n\to \infty} e(t; h_n) = 0.
 \end{equation}
 Ainda, dizemos que o método tem \hl{erro de discretização global de ordem $p$} quando
 \begin{equation}\hleq
-  e(t,h_n) = O(h_n^p)
+  e(t; h_n) = O(h_n^p)
 \end{equation}
 para todo $t\in [t_0, t_f]$, $t_f > t_0$.
 
@@ -276,91 +276,6 @@ para todo $t\in [t_0, t_f]$, $t_f > t_0$.
   donde segue a estimativa do erro global \eqref{cap_pvi_sec_euler:eq:est_errg}.
 \end{dem}
 
-% \begin{teo}\normalfont{(\hl{Convergência}.)}\label{cap_pvi_sec_euler:teo:conv}
-%   Considere o PVI \eqref{cap_pvi_sec_euler:eq:pvi}, para $t_0\in [a, b]$ e $y_0\in\mathbb{R}$. Seja $\Phi$ contínua em
-%   \begin{equation}
-%     G := \{(t, y, h): a\leq t\leq b, |y-y(t)|\leq\gamma, 0\leq|h|\leq h_0\},
-%   \end{equation}
-%   para $h_0>0$ e $\gamma>0$. Sejam também, $M, N$ constantes tais que
-%   \begin{equation}
-%     \left|\Phi(t, y; h) - \Phi(t, z; h)\right| \leq M|y - z|,
-%   \end{equation}
-%   para todas $(t, y; h), (t, z; h)\in G$. Se, ainda, para algum $p>0$ e para todo $t\in [a, b]$, $|h|\leq h_0$,
-%   \begin{equation}\hleq
-%     \left|\tau(t, y(t); h)\right| \leq N |h|^p,
-%   \end{equation}
-%   então existe $\overline{h}$, $0<\overline{h}<h_0$, tal que
-%   \begin{equation}\hleq
-%     |e(t; h_n)| \leq |h_n|^pN\frac{e^{M|t-t_0|}-1}{M},
-%   \end{equation}
-%   para todo $t\in [a, b]$ e para todo $h_n = (t-t_0)/n$, $n=1, 2, \ldots$, com $|h_n|\leq \overline{h}$.
-% \end{teo}
-% \begin{dem}
-%   Seja
-%   \begin{equation}
-%     \tilde{\Phi}(t, y; h) := \left\{
-%       \begin{array}{ll}
-%         \Phi(t, y; h) &, (t, y, h)\in G,\\
-%         \Phi(t, y(t)+\gamma; h) &, t\in [a, b], |h|\leq h_0, y\geq y(t)+\gamma,\\
-%         \Phi(t, y(t)-\gamma; h) &, t\in [a, b], |h|\leq h_0, y\leq y(t)-\gamma,
-%       \end{array}
-%     \right.
-%   \end{equation}
-%   A função $\tilde{\Phi}$ é contínua em
-%   \begin{equation}
-%     \tilde{G} := \{(t, y; h): t\in [a, b], y\in\mathbb{R}, |h|\geq h_0\}
-%   \end{equation}
-%   e satisfaz
-%   \begin{equation}\label{cap_pvi_sec_euler:eq:aux0}
-%     \left|\tilde{\Phi}(t, y; h) - \tilde{\Phi}(t, z; h)\right| \leq M|y - z|,
-%   \end{equation}
-%   para todas $(t, y; h), (t, z; h)\in \tilde{G}$. Ainda, como $\tilde{\Phi}(t, y(t); h) = \Phi(t, y(t); h)$, também temos que
-%   \begin{equation}\label{cap_pvi_sec_euler:eq:aux1}
-%     |\Delta(t, y(t); h) - \tilde{\Phi}(t, y(t); h)| \leq N |h|^p,
-%   \end{equation}
-%   para $t\in [a, b]$ e $|h|\leq h_0$.
-
-%   Sejam, $\tilde{y}^{(k)} := \tilde{y}\left(t^{(k)}; h\right)$, $t^{(k)} = t_0 + kh$, $\tilde{y}^{(0)} = y_0$:
-%   \begin{align}
-%     \tilde{y}^{(k+1)} = \tilde{y}^{(k)} + h\tilde{\Phi}\left(t^{(k)}, \tilde{y}^{(k)}; h\right),
-%     y\left(t^{(k+1)}\right) = y\left(t^{(k)}\right) + h\Delta\left(t^{(k)}, y\left(t^{(k)}\right); h\right).
-%   \end{align}
-%   Definindo $\tilde{e}^{(k)} := \tilde{y}^{(k)} - y\left(t^{(k)}\right)$, obtemos a fórmula de recorrência
-%   \begin{align}
-%     \tilde{e}^{(k+1)} &= \tilde{e}^{(k)} + h\left[\tilde{\Phi}\left(t^{(k)}, \tilde{y}^{(k)}; h\right) - \Delta\left(t^{(k)}, y\left(t^{(k)}\right); h\right)\right]\\
-%                       &= \tilde{e}^{(k)} + h\left[\tilde{\Phi}\left(t^{(k)}, \tilde{y}^{(k)}; h\right) - \tilde{\Phi}\left(t^{(k)}, y\left(t^{(k)}\right); h\right)\right]\\
-%                       &+ h\left[\tilde{\Phi}\left(t^{(k)}, y\left(t^{(k)}\right); h\right) - \Delta\left(t^{(k)}, y\left(t^{(k)}\right); h\right)\right].\label{cap_pvi_sec_euler:eq:aux2}
-%   \end{align}
-%   Agora, de \eqref{cap_pvi_sec_euler:eq:aux0} e \eqref{cap_pvi_sec_euler:eq:aux1}, temos
-%   \begin{align}
-%     &\left|\tilde{\Phi}\left(t^{(k)}, \tilde{y}^{(k)}; h\right) - \tilde{\Phi}\left(t^{(k)}, y\left(t^{(k)}\right); h\right)\right| \leq M\left|\tilde{e}^{(k)}\right|\\
-%     &\left|\Delta\left(t^{(k)}, y\left(t^{(k)}\right); h\right) - \tilde{\Phi}\left(t^{(k)}, y\left(t^{(k)}\right); h\right)\right| \leq N |h|^p
-%   \end{align}
-%   Portanto, de \eqref{cap_pvi_sec_euler:eq:aux2}, temos
-%   \begin{equation}
-%     \left|\tilde{e}^{(k+1)}\right| \leq \left(1 + |h|M\right)\left|\tilde{e}^{(k)}\right| + N |h|^{p+1}
-%   \end{equation}
-%   Então, do Lema \ref{cap_pvi_sec_euler:lema:aux}, temos
-%   \begin{equation}\label{cap_pvi_sec_euler:eq:aux3}
-%     \left|\tilde{e}^{(k)}\right| \leq N|h|^p\frac{e^{k|h|M}-1}{M}.
-%   \end{equation}
-%   Sejam, agora, $t\in [a, b]$, $t\neq t_0$ fixo e $h := h_n = (t-t_0)/n$, $n>0$. Então, $t^{(n)} = t_0 + nh = t$ e de \eqref{cap_pvi_sec_euler:eq:aux3} temos
-%   \begin{equation}
-%     \left|\tilde{e}\left(t, h_n\right)\right| \leq N|h_n|^p\frac{e^{M|t-t_0|}-1}{M},
-%   \end{equation}
-%   para todo $t\in [a, b]$, $|h_n|\leq h_0$. Uma vez que $|t-t_0|\leq |b-a|$ e $\gamma >0$, existe $\overline{h}$, $0<\overline{h}\leq h_0$, tal que $\left|\tilde{e}\left(t, h_n\right)\right| \leq \gamma$ para todo $t\in [a, b]$ e $|h_n|\leq \overline{h}$. Logo, para o método de passo simples \eqref{cap_pvi_sec_euler:eq:mps} gerado por $\Phi$, temos para $|h|\leq\overline{h}$ que
-%   \begin{align}
-%     &\tilde{y}^{(k)} = y^{(k)},\\
-%     &\tilde{e}^{(k)} = e^{(k)},\\
-%     &\tilde{\Phi}\left(t^{(k)}, \tilde{y}^{(k)}; h\right) = \Phi\left(t^{(k)}, \tilde{y}^{(k)}; h\right).
-%   \end{align}
-%   Concluímos que
-%   \begin{equation}
-%     \left|e\left(t, h_n\right)\right| \leq N|h_n|^p\frac{e^{M|t-t_0|}-1}{M},
-%   \end{equation}
-%   para todo $t\in [a, b]$ e $h_n = (t-t_0)/n$, $n=1, 2, \ldots$, com $|h_n|\leq \overline{h}$.
-% \end{dem}
-
 \begin{obs}\normalfont{\hl{(Convergência.)}}
   Do Teorema \ref{cap_pvi_sec_euler:teo:conv}, \hl{a ordem do erro de discretização global de um método de passo simples é igual a sua ordem do erro de discretização local}. Portanto, o \hl{Método de Euler é convergente e é de ordem $1$}.
 \end{obs}
@@ -409,7 +324,7 @@ onde $\delta^{(k)}$ é o erro devido a arredondamentos na $k$-ésima iterada, $t
 \end{equation}
 para $\delta^{(k)} < \delta$, $k=0, 1, 2, \dotsc, n$.
 
-\subsection*{Exercícios}
+\subsection{Exercícios}
 
 \begin{exer}
   O problema de valor inicial
@@ -489,6 +404,221 @@ Use o método de Euler para computar o valor aproximado de $y(2)$ com precisão 
 \begin{resp}
   $h = \sqrt{2\delta/M}$. Dica: Encontre o mínimo de $E(h) := M/2 + \delta/h^2$.
 \end{resp}
+
+\section{Métodos de Taylor de Alta Ordem}\label{cap_pvi_sec_taylor}
+
+Métodos de Taylor{\taylor} são usados para computar a solução numérica de Problemas de Valor Inicial (PVI) da forma
+\begin{subequations}\label{cap_pvi_sec_taylor:eq:pvi}
+  \begin{align}
+    &y' = f(t, y),\quad t_0 < t \leq t_f,\\
+    &y(t_0) = y_0,
+  \end{align}
+\end{subequations}
+onde $y:[t_0, t_f]\mapsto \mathbb{R}$ é a função incógnita, dada $f:[t_0, t_f]\times\mathbb{R}\to\mathbb{R}$ e dado valor inicial $y_0\in\mathbb{R}$.
+
+Na Seção \ref{cap_pvi_sec_euler}, vimos que \hl{a ordem do erro de discretização local} do Método de Euler{\euler} \hl{é também a do erro de discretização global}. Este resultado é generalizado pelo Teorema \ref{cap_pvi_sec_taylor:teo:conv}, \hl{para todo o método de passo simples}
+\begin{subequations}\label{cap_pvi_sec_taylor:eq:iterps}
+  \begin{align}
+    &y^{(0)} = y_0,\\
+    &y^{(k+1)} = y^{(k)} + h\Phi\left(t^{(k)}, y^{(k)}\right),
+  \end{align}
+\end{subequations}
+onde $y^{(k)}\approx y\left(t^{(k)}\right)$, $t^{(k)} = t_0 + kh$, $h = (t_f-t_0)/n$, $k = 0, 1, 2, \dotsc, n$.
+
+Antes, lembramos que o \hl{\emph{erro de discretização local}} é definido por
+\begin{equation}\hleq
+  \tau(t, y; h) := \delta(t, y; h) - \Phi(t, y; h),
+\end{equation}
+onde
+\begin{equation}\hleq
+  \Delta(t, y; h) := \left\{
+    \begin{array}{ll}
+      \displaystyle\frac{y(t+h) - y(t)}{h} &, h\neq 0,\\
+      f\left(t, y(t)\right) &, h=0.
+    \end{array}
+  \right.
+\end{equation}
+
+Já, o \hl{\emph{erro de discretização global}} é definido por
+\begin{equation}\hleq
+  e(t; h_n) := \tilde{y}(t; h_n) - y(t),
+\end{equation}
+onde $\tilde{y}(t; h_n) \approx y(t)$ dada por \eqref{cap_pvi_sec_taylor:eq:iterps} para $h_n = (t-t_0)/n$.
+
+Com o objetivo de desenvolvermos métodos de alta ordem, podemos usar o polinômio de Taylor de ordem $m$ de $y=y(t)$
+\begin{equation}
+  \begin{aligned}
+    y\left(t^{(k+1)}\right) &= y\left(t^{(k)}\right) + hy'\left(t^{(k)}\right) + \frac{h^2}{2}y''\left(t^{(k)}\right)\\
+    &+ \cdots + \frac{h^m}{m!}\frac{d^m y}{d t^m}\left(t^{(k)}\right) + \frac{h^{m+1}}{(m+1)!}\frac{d^{m+1} y}{d t^{m+1}}\left(\xi^{(k)}\right),
+  \end{aligned}
+\end{equation}
+donde
+\begin{equation}
+  \begin{aligned}
+    y\left(t^{(k+1)}\right) &= y\left(t^{(k)}\right) + hf\left(t^{(k)}, y^{(k)}\right) + \frac{h^2}{2}f'\left(t^{(k)}, y^{(k)}\right) \\
+    &+ \cdots + \frac{h^m}{m!}\frac{d^{m-1} f}{d t^{m-1}}\left(t^{(k)}, y^{(k)}\right) + \frac{h^{m+1}}{(m+1)!}\frac{d^{m} f}{d t^{m}}\left(\xi^{(k)}, y\left(\xi^{(k)}\right)\right).
+  \end{aligned}
+\end{equation}
+
+Isto nos motiva a \hl{\emph{iteração do Método de Taylor de Ordem $m$}}:
+\begin{subequations}\hleq
+  \begin{align}
+    &y^{(0)} = y_0,\\
+    &y^{(k+1)} = y^{(k)} + hT^{(m)}\left(t^{(k)}, y^{(k)}\right),
+  \end{align}  
+\end{subequations}
+onde
+\begin{equation}\hleq
+  \begin{aligned}
+    T^{(m)}\left(t^{(k)}, y^{(k)}\right) &:= f\left(t^{(k)}, y^{(k)}\right) + \frac{h}{2}f'\left(t^{(k)}, y^{(k)}\right)\\
+    &+ \cdots + \frac{h^{m-1}}{m!}\frac{d^{m-1} f}{d t^{m-1}}\left(t^{(k)}, y^{(k)}\right)
+\end{aligned}
+\end{equation}
+
+\begin{ex}
+  Considere o PVI
+  \begin{subequations}
+    \begin{align}
+      &y' = y + \sen(t),\quad 0 < t \leq 1,\\
+      &y(0) = \frac{1}{2}.
+    \end{align}
+  \end{subequations}
+  Vamos usar o Método de Taylor de Ordem 2 para computar sua solução e comparar com a solução analítica
+  \begin{equation}
+    y(t) = e^t - \frac{1}{2}\sen(t) - \frac{1}{2}\cos(t).
+  \end{equation}
+
+  \begin{center}
+    \begin{tabular}[H]{ll}
+      $h$ & $\left|\tilde{y}(1) - y(1)\right|$\\\hline
+      $10^{-1}$ & $4.9\E-3$ \\
+      $10^{-2}$ & $5.2\E-5$ \\
+      $10^{-3}$ & $5.2\E-7$ \\
+      $10^{-4}$ & $5.2\E-9$ \\
+      $10^{-5}$ & $5.2\E-11$ \\\hline
+    \end{tabular}
+  \end{center}
+
+\begin{lstlisting}[caption=taylor.py, label=cap_pvi_sec_taylor:cod:taylor.py]
+import numpy as np
+
+def taylor(Phi, t0, y0, h, n):
+    t = t0
+    y = y0
+    for k in range(n):
+        y += h*Phi(t, y, h)
+        t += h
+    return t, y
+
+def f(t, y):
+    return y + np.sin(t)
+
+def fl(t, y):
+    return f(t, y) + np.cos(t)
+
+def Phi(t, y, h):
+    return f(t, y) + h/2*fl(t, y)
+
+# analítica
+def exata(t):
+    return np.exp(t) - 0.5*np.sin(t) - 0.5*np.cos(t)
+
+h = 1e-1
+n = round(1/h)
+t,y = taylor(Phi, 0., 0.5, h, n)
+\end{lstlisting}
+\end{ex}
+
+\subsection{Análise Numérica}
+
+\begin{teo}\normalfont{(\hl{Convergência}, \cite[Cap. 7, Seção 7.2]{Stoer1993a}.)}\label{cap_pvi_sec_taylor:teo:conv}
+  Considere o PVI \eqref{cap_pvi_sec_taylor:eq:pvi}, para $t_0\in [a, b]$ e $y_0\in\mathbb{R}$. Seja $\Phi$ contínua em
+  \begin{equation}
+    G := \{(t, y, h): a\leq t\leq b, |y-y(t)|\leq\gamma, 0\leq|h|\leq h_0\},
+  \end{equation}
+  para $h_0>0$ e $\gamma>0$. Sejam também, $M, N$ constantes tais que
+  \begin{equation}
+    \left|\Phi(t, y; h) - \Phi(t, z; h)\right| \leq M|y - z|,
+  \end{equation}
+  para todas $(t, y; h), (t, z; h)\in G$. Se, ainda, para algum $p>0$ e para todo $t\in [a, b]$, $|h|\leq h_0$, temos a \hl{\emph{estimativa do erro de discretização local}}
+  \begin{equation}\hleq
+    \left|\tau(t, y(t); h)\right| \leq N |h|^p,
+  \end{equation}
+  então existe $\overline{h}$, $0<\overline{h}<h_0$, tal que vale a seguinte \hl{\emph{estimativa do erro de discretização global}}
+  \begin{equation}\hleq
+    |e(t; h_n)| \leq |h_n|^pN\frac{e^{M|t-t_0|}-1}{M},
+  \end{equation}
+  para todo $t\in [a, b]$ e para todo $h_n = (t-t_0)/n$, $n=1, 2, \ldots$, com $|h_n|\leq \overline{h}$.
+\end{teo}
+\begin{dem}
+  Seja
+  \begin{equation}
+    \tilde{\Phi}(t, y; h) := \left\{
+      \begin{array}{ll}
+        \Phi(t, y; h) &, (t, y, h)\in G,\\
+        \Phi(t, y(t)+\gamma; h) &, t\in [a, b], |h|\leq h_0, y\geq y(t)+\gamma,\\
+        \Phi(t, y(t)-\gamma; h) &, t\in [a, b], |h|\leq h_0, y\leq y(t)-\gamma,
+      \end{array}
+    \right.
+  \end{equation}
+  A função $\tilde{\Phi}$ é contínua em
+  \begin{equation}
+    \tilde{G} := \{(t, y; h): t\in [a, b], y\in\mathbb{R}, |h|\geq h_0\}
+  \end{equation}
+  e satisfaz
+  \begin{equation}\label{cap_pvi_sec_taylor:eq:aux0}
+    \left|\tilde{\Phi}(t, y; h) - \tilde{\Phi}(t, z; h)\right| \leq M|y - z|,
+  \end{equation}
+  para todas $(t, y; h), (t, z; h)\in \tilde{G}$. Ainda, como $\tilde{\Phi}(t, y(t); h) = \Phi(t, y(t); h)$, também temos que
+  \begin{equation}\label{cap_pvi_sec_taylor:eq:aux1}
+    |\Delta(t, y(t); h) - \tilde{\Phi}(t, y(t); h)| \leq N |h|^p,
+  \end{equation}
+  para $t\in [a, b]$ e $|h|\leq h_0$.
+
+  Sejam, $\tilde{y}^{(k)} := \tilde{y}\left(t^{(k)}; h\right)$, $t^{(k)} = t_0 + kh$, $\tilde{y}^{(0)} = y_0$:
+  \begin{align}
+    \tilde{y}^{(k+1)} = \tilde{y}^{(k)} + h\tilde{\Phi}\left(t^{(k)}, \tilde{y}^{(k)}; h\right),
+    y\left(t^{(k+1)}\right) = y\left(t^{(k)}\right) + h\Delta\left(t^{(k)}, y\left(t^{(k)}\right); h\right).
+  \end{align}
+  Definindo $\tilde{e}^{(k)} := \tilde{y}^{(k)} - y\left(t^{(k)}\right)$, obtemos a fórmula de recorrência
+  \begin{align}
+    \tilde{e}^{(k+1)} &= \tilde{e}^{(k)} + h\left[\tilde{\Phi}\left(t^{(k)}, \tilde{y}^{(k)}; h\right) - \Delta\left(t^{(k)}, y\left(t^{(k)}\right); h\right)\right]\\
+                      &= \tilde{e}^{(k)} + h\left[\tilde{\Phi}\left(t^{(k)}, \tilde{y}^{(k)}; h\right) - \tilde{\Phi}\left(t^{(k)}, y\left(t^{(k)}\right); h\right)\right]\\
+                      &+ h\left[\tilde{\Phi}\left(t^{(k)}, y\left(t^{(k)}\right); h\right) - \Delta\left(t^{(k)}, y\left(t^{(k)}\right); h\right)\right].\label{cap_pvi_sec_taylor:eq:aux2}
+  \end{align}
+  Agora, de \eqref{cap_pvi_sec_taylor:eq:aux0} e \eqref{cap_pvi_sec_taylor:eq:aux1}, temos
+  \begin{align}
+    &\left|\tilde{\Phi}\left(t^{(k)}, \tilde{y}^{(k)}; h\right) - \tilde{\Phi}\left(t^{(k)}, y\left(t^{(k)}\right); h\right)\right| \leq M\left|\tilde{e}^{(k)}\right|\\
+    &\left|\Delta\left(t^{(k)}, y\left(t^{(k)}\right); h\right) - \tilde{\Phi}\left(t^{(k)}, y\left(t^{(k)}\right); h\right)\right| \leq N |h|^p
+  \end{align}
+  Portanto, de \eqref{cap_pvi_sec_taylor:eq:aux2}, temos
+  \begin{equation}
+    \left|\tilde{e}^{(k+1)}\right| \leq \left(1 + |h|M\right)\left|\tilde{e}^{(k)}\right| + N |h|^{p+1}
+  \end{equation}
+  Então, do Lema \ref{cap_pvi_sec_euler:lema:aux}, temos
+  \begin{equation}\label{cap_pvi_sec_taylor:eq:aux3}
+    \left|\tilde{e}^{(k)}\right| \leq N|h|^p\frac{e^{k|h|M}-1}{M}.
+  \end{equation}
+  Sejam, agora, $t\in [a, b]$, $t\neq t_0$ fixo e $h := h_n = (t-t_0)/n$, $n>0$. Então, $t^{(n)} = t_0 + nh = t$ e de \eqref{cap_pvi_sec_taylor:eq:aux3} temos
+  \begin{equation}
+    \left|\tilde{e}\left(t, h_n\right)\right| \leq N|h_n|^p\frac{e^{M|t-t_0|}-1}{M},
+  \end{equation}
+  para todo $t\in [a, b]$, $|h_n|\leq h_0$. Uma vez que $|t-t_0|\leq |b-a|$ e $\gamma >0$, existe $\overline{h}$, $0<\overline{h}\leq h_0$, tal que $\left|\tilde{e}\left(t, h_n\right)\right| \leq \gamma$ para todo $t\in [a, b]$ e $|h_n|\leq \overline{h}$. Logo, para o método de passo simples \eqref{cap_pvi_sec_taylor:eq:iterps} gerado por $\Phi$, temos para $|h|\leq\overline{h}$ que
+  \begin{align}
+    &\tilde{y}^{(k)} = y^{(k)},\\
+    &\tilde{e}^{(k)} = e^{(k)},\\
+    &\tilde{\Phi}\left(t^{(k)}, \tilde{y}^{(k)}; h\right) = \Phi\left(t^{(k)}, \tilde{y}^{(k)}; h\right).
+  \end{align}
+  Concluímos que
+  \begin{equation}
+    \left|e\left(t, h_n\right)\right| \leq N|h_n|^p\frac{e^{M|t-t_0|}-1}{M},
+  \end{equation}
+  para todo $t\in [a, b]$ e $h_n = (t-t_0)/n$, $n=1, 2, \ldots$, com $|h_n|\leq \overline{h}$.
+\end{dem}
+
+\subsection{Exercícios}
+
+[[tag:construcao]]
 
 
 \section{Métodos de Runge-Kutta}\label{cap_pvi_sec_RK}
@@ -742,7 +872,7 @@ $t^{(i)}=t_0+(i-1)h$ e $y^{(1)}=y_0$.
 % \fi
 \end{ex}
 
-\subsection*{Exercícios}
+\subsection{Exercícios}
 
 \begin{flushleft}
   [[tag:revisar]]
@@ -904,7 +1034,7 @@ tomamos sucessivas divisões de $h$ por $2$, até satisfazermos \eqref{eq:pvi_pa
 
 \end{ex}
 
-\subsection*{Exercícios}
+\subsection{Exercícios}
 
 \begin{flushleft}
   [[tag:revisar]]
@@ -1201,7 +1331,7 @@ com $t^{(i)} = t_0 + (i-1)h$.
 % \fi
 \end{ex}
 
-\subsection*{Exercícios}
+\subsection{Exercícios}
 
 \begin{flushleft}
   [[tag:revisar]]
