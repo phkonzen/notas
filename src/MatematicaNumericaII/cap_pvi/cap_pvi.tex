@@ -456,7 +456,8 @@ donde
 \begin{equation}
   \begin{aligned}
     y\left(t^{(k+1)}\right) &= y\left(t^{(k)}\right) + hf\left(t^{(k)}, y^{(k)}\right) + \frac{h^2}{2}f'\left(t^{(k)}, y^{(k)}\right) \\
-    &+ \cdots + \frac{h^m}{m!}\frac{d^{m-1} f}{d t^{m-1}}\left(t^{(k)}, y^{(k)}\right) + \frac{h^{m+1}}{(m+1)!}\frac{d^{m} f}{d t^{m}}\left(\xi^{(k)}, y\left(\xi^{(k)}\right)\right).
+    &+ \cdots + \frac{h^m}{m!}\frac{d^{m-1} f}{d t^{m-1}}\left(t^{(k)}, y^{(k)}\right) \\
+    & + \frac{h^{m+1}}{(m+1)!}\frac{d^{m} f}{d t^{m}}\left(\xi^{(k)}, y\left(\xi^{(k)}\right)\right).
   \end{aligned}
 \end{equation}
 
@@ -541,11 +542,11 @@ t,y = taylor(Phi, 0., 0.5, h, n)
     \left|\Phi(t, y; h) - \Phi(t, z; h)\right| \leq M|y - z|,
   \end{equation}
   para todas $(t, y; h), (t, z; h)\in G$. Se, ainda, para algum $p>0$ e para todo $t\in [a, b]$, $|h|\leq h_0$, temos a \hl{\emph{estimativa do erro de discretização local}}
-  \begin{equation}\hleq
+  \begin{equation}\label{cap_pvi_sec_taylor:eq:est_erro_local}\hleq
     \left|\tau(t, y(t); h)\right| \leq N |h|^p,
   \end{equation}
   então existe $\overline{h}$, $0<\overline{h}<h_0$, tal que vale a seguinte \hl{\emph{estimativa do erro de discretização global}}
-  \begin{equation}\hleq
+  \begin{equation}\label{cap_pvi_sec_taylor:eq:est_erro_global}\hleq
     |e(t; h_n)| \leq |h_n|^pN\frac{e^{M|t-t_0|}-1}{M},
   \end{equation}
   para todo $t\in [a, b]$ e para todo $h_n = (t-t_0)/n$, $n=1, 2, \ldots$, com $|h_n|\leq \overline{h}$.
@@ -618,7 +619,83 @@ t,y = taylor(Phi, 0., 0.5, h, n)
 
 \subsection{Exercícios}
 
-[[tag:construcao]]
+\begin{exer}
+  Use o Método de Taylor de $O(h^2)$ para computar a solução de
+  \begin{subequations}\label{cap_pvi_sec_taylor:eq:pvi_exer_0}
+    \begin{align}
+      &y' + \cos(t) = y,\quad 0 < t \leq 1,\\
+      &y(0) = \frac{1}{2}.
+    \end{align}
+  \end{subequations}
+  A solução analítica é $y(t) = \cos(t) - \sin(t)$. Faça testes numéricos com $h=10^{-1}$, $10^{-2}$, $10^{-3}$ e $10^{-4}$, observe os resultados obtidos e o erro $\varepsilon := |\tilde{y}(1) - y(1)|$, onde $\tilde{y}$ corresponde a solução numérica. O erro tem o comportamento esperado? Justifique sua resposta.
+\end{exer}
+\begin{resp}
+  \begin{tabular}{c|c|c}
+    $h$ & $\tilde{y}(1)$ & $\left|\tilde{y}(1)-y(1)\right|$\\\hline
+    $1\E-1$ & $-1.52293\E-1$ & $1.7\E-3$ \\
+    $1\E-2$ & $-1.50602\E-1$ & $1.8\E-5$ \\
+    $1\E-3$ & $-1.50585\E-1$ & $1.8\E-7$ \\
+    $1\E-4$ & $-1.50584\E-1$ & $1.8\E-9$ \\\hline
+  \end{tabular}
+\end{resp}
+
+\begin{exer}
+  Use o Método de Taylor $O(h^2)$ para computar a solução do PVI \eqref{cap_pvi_sec_taylor:eq:pvi_exer_0} com $h=10^{-1}$. Faça um esboço do gráfico do erro $e\left(t; h=10^{-1}\right) = \left|\tilde{y}(t) - y(t)\right|$ e verifique se ele tem a forma esperada conforme a estimativa do erro global \eqref{cap_pvi_sec_taylor:eq:est_erro_global}.
+\end{exer}
+\begin{resp}
+  Dica: o gráfico de $e\left(t; h=10^{-1}\right)$ tem a forma de uma função exponencial crescente.
+\end{resp}
+
+\begin{exer}
+  Use o Método de Taylor de $O(h^3)$ para computar a solução do PVI \eqref{cap_pvi_sec_taylor:eq:pvi_exer_0}. Escolha o passo $h$ de forma que a solução numérica tenha precisão de 6 dígitos significativos.
+\end{exer}
+\begin{resp}
+  $h=10^{-2}$, $\tilde{y}(1) = -1.50584\E-1$
+\end{resp}
+
+\begin{exer}
+  Considere o seguinte PVI
+  \begin{subequations}
+    \begin{align}
+      &y' = y^2 - ty,\quad 1 < t \leq 2,\\
+      &y(1) = -2.
+    \end{align}
+  \end{subequations}
+  Compute a solução com o Método de Taylor de $O\left(h^p\right)$ com passo $h = 10^{-1}$:
+  \begin{enumerate}[a)]
+  \item $p = 2$.
+  \item $p = 3$.
+  \item $p = 4$.
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  Dica: $y(2) = -2.10171\E-1$.
+\end{resp}
+
+\begin{exer}
+  Considere o seguinte PVI
+  \begin{subequations}
+    \begin{align}
+      &y' - t^2y = 0,\quad 1 < t \leq 3,\\
+      &y(1) = \frac{1}{2}.
+    \end{align}
+  \end{subequations}
+  Compute a solução com o Método de Taylor de $O\left(h^p\right)$ com passo $h = 10^{-1}$:
+  \begin{enumerate}[a)]
+  \item $p = 2$.
+  \item $p = 3$.
+  \item $p = 4$.
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  Dica: $y(2) = 2.90306\E+3$.
+\end{resp}
+
+\subsubsection{Análise Numérica}
+
+\begin{exer}
+  Considere o PVI \eqref{cap_pvi_sec_taylor:eq:pvi_exer_0}. Verifique que o Método de Taylor de $O(h^2)$ satisfaz as estimativas do erro local \eqref{cap_pvi_sec_taylor:eq:est_erro_local} e do erro global \eqref{cap_pvi_sec_taylor:eq:est_erro_global}. Forneça valor estimados para os parâmetros $N$ e $M$.
+\end{exer}
 
 
 \section{Métodos de Runge-Kutta}\label{cap_pvi_sec_RK}
