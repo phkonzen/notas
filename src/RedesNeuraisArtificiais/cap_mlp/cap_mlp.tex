@@ -164,9 +164,198 @@ y = model(X_train)
 print(f'y_est = {y}')
 \end{lstlisting}
 
-% \subsection{Exercícios}
+\subsection{Exercícios}
 
-% [[tag::construcao]]
+[[tag::construcao]]
+
+\section{Aplicação: Problema de Classificação Binário}\label{cap_mlp_sec_classbin}
+
+Vamos estudar uma aplicação de redes neurais artificiais em um problema de classificação binária não linear.
+
+\subsection{Dados}
+
+Vamos desenvolver uma rede do tipo Perceptron Multicamadas (MLP) para a classificação binária de pontos, com base nos seguintes dados.
+
+\begin{lstlisting}
+from sklearn.datasets import make_circles
+import matplotlib.pyplot as plt
+
+plt.rcParams.update({
+     "text.usetex": True,
+     "font.family": "serif",
+     "font.size": 14
+     })
+
+# data
+print('data')
+n_samples = 1000
+print(f'n_samples = {n_samples}')
+# X = points, y = labels
+X, y = make_circles(n_samples,
+                    noise=0.03, # add noise
+                    random_state=42) # random seed
+
+fig = plt.figure()
+ax = fig.add_subplot()
+ax.scatter(X[:,0], X[:,1], c=y, cmap=plt.cm.coolwarm)
+ax.grid()
+ax.set_xlabel('$x_1$')
+ax.set_ylabel('$x_2$')
+plt.show()
+\end{lstlisting}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./cap_mlp/dados/fig_classbin/fig}
+  \caption{Dados para a o problema de classificação binária não linear.}
+  \label{cap_mlp_sec_classbin:fig:dados}
+\end{figure}
+
+\subsection{Modelo}
+
+Vamos usar uma MLP de estrutura 2-10-1, com função de ativação
+\begin{equation}
+  \elu(x) = \left\{
+    \begin{array}{ll}
+      x &, x > 0\\
+      \alpha\left(e^x - 1\right) &, x \leq 0
+    \end{array}
+\right.
+\end{equation}
+na camada escondida e
+\begin{equation}
+  \sigmoid(x) = \frac{1}{1 + e^x}
+\end{equation}
+na saída da rede.
+
+Para o treinamento e teste, vamos randomicamente separar os dados em um conjunto de treinamento $\{\pmb{x}_{\text{train}}^{(k)}, y_{\text{train}}^{(k)}\}_{k=1}^{n_{\text{train}}}$ e um conjunto de teste $\{\pmb{x}_{\text{test}}^{(k)}, y_{\text{test}}^{(k)}\}_{k=1}^{n_{\text{test}}}$, com $y=0$ para os pontos azuis e $y=1$ para os pontos vermelhos.
+
+\subsection{Treinamento e Teste}
+
+\begin{lstlisting}[caption=mlp\_classbin.py, label=cap_mlp_sec_classbin:cod:classbin]
+import torch
+from sklearn.datasets import make_circles
+from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
+
+# data
+print('data')
+n_samples = 1000
+print(f'n_samples = {n_samples}')
+# X = points, y = labels
+X, y = make_circles(n_samples,
+                    noise=0.03, # add noise
+                    random_state=42) # random seed
+
+## numpy -> torch
+X = torch.from_numpy(X).type(torch.float)
+y = torch.from_numpy(y).type(torch.float).reshape(-1,1)
+
+## split into train and test datasets
+print('Data: train and test sets')
+X_train, X_test, y_train, y_test = train_test_split(X,
+                                                    y,
+                                                    test_size=0.2,
+                                                    random_state=42)
+print(f'n_train = {len(X_train)}')
+print(f'n_test = {len(X_test)}')
+plt.close()
+plt.scatter(X_train[:,0], X_train[:,1], c=y_train,
+            marker='o', cmap=plt.cm.coolwarm, alpha=0.3)
+plt.scatter(X_test[:,0], X_test[:,1], c=y_test,
+            marker='*', cmap=plt.cm.coolwarm)
+plt.show()
+
+# model
+model = torch.nn.Sequential(
+    torch.nn.Linear(2, 10),
+    torch.nn.ELU(),
+    torch.nn.Linear(10, 1),
+    torch.nn.Sigmoid()
+    )
+
+# loss fun
+loss_fun = torch.nn.BCELoss()
+
+# optimizer
+optimizer = torch.optim.SGD(model.parameters(),
+                            lr = 1e-1)
+
+# evaluation metric
+def accuracy_fun(y_pred, y_exp):
+    correct = torch.eq(y_pred, y_exp).sum().item()
+    acc = correct/len(y_exp) * 100
+    return acc
+
+# train
+n_epochs = 10000
+n_out = 100
+
+for epoch in range(n_epochs):
+    model.train()
+
+    y_pred = model(X_train)
+
+    loss = loss_fun(y_pred, y_train)
+
+    acc = accuracy_fun(torch.round(y_pred),
+                       y_train)
+
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
+
+    model.eval()
+
+    #testing
+    if ((epoch+1) % n_out == 0):
+        with torch.inference_mode():
+            y_pred_test = model(X_test)
+            loss_test = loss_fun(y_pred_test,
+                                 y_test)
+            acc_test = accuracy_fun(torch.round(y_pred_test),
+                                    y_test)
+
+        print(f'{epoch+1}: loss = {loss:.5e}, accuracy = {acc:.2f}%')
+        print(f'\ttest: loss = {loss:.5e}, accuracy = {acc:.2f}%\n')
+\end{lstlisting}
+
+\subsection{Verificação}
+
+Para a verificação, testamos o modelo em uma malha uniforme de $100\times 100$ pontos no domínio $[-1, 1]^2$. Consulte a Figure \ref{cap_mlp_sec_classbin:fig:result}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./cap_mlp/dados/fig_classbin_result/fig}
+  \caption{Verificação do modelo de classificação binária.}
+  \label{cap_mlp_sec_classbin:fig:result}
+\end{figure}
+
+
+\begin{lstlisting}
+# malha de pontos
+xx = torch.linspace(-1.1, 1.1, 100)
+Xg, Yg = torch.meshgrid(xx, xx)
+
+# valores estimados
+Zg = torch.empty_like(Xg)
+for i,xg in enumerate(xx):
+    for j,yg in enumerate(xx):
+        z = model(torch.tensor([[xg, yg]])).detach()
+        Zg[i, j] = torch.round(z)
+
+# visualização
+fig = plt.figure()
+ax = fig.add_subplot()
+ax.contourf(Xg, Yg, Zg, levels=2, cmap=plt.cm.coolwarm, alpha=0.5)
+ax.scatter(X[:,0], X[:,1], c=y, cmap=plt.cm.coolwarm)
+plt.show()
+\end{lstlisting}
+
+\subsection{Exercícios}
+
+[[tag:construcao]]
+
 
 \section{Aplicação: Aproximação de Funções}\label{cap_mlp_sec_apfun}
 
@@ -363,9 +552,9 @@ ax.set_ylabel('x_2')
 plt.show()
 \end{lstlisting}
 
-% \subsection{Exercícios}
+\subsection{Exercícios}
 
-% [[tag::construcao]]
+[[tag::construcao]]
 
 \section{Aplicação: Equação de Laplace}\label{cap_mlp_sec_eqlaplace}
 
@@ -704,6 +893,6 @@ for epoch in range(nepochs):
     optim.step()
 \end{lstlisting}
 
-% \subsection{Exercícios}
+\subsection{Exercícios}
 
-% [[tag::construcao]]
+[[tag::construcao]]
