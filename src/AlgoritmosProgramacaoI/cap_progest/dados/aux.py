@@ -1,3 +1,22 @@
+n = int(input('Digite um número natural n >= 1: '))
+
+s = 0
+for k in range(1, n+1):
+    s += (-1)**(k+1)/k
+    k += 1
+print(f'ln(2) aprrox. {s}')
+
+print('P = (x,y)')
+x = float(input('Digite o valor de x: '))
+y = float(input('Digite o valor de y: '))
+
+if (((x >= -1.) and (x <= 2)) and
+    (y >= x**2) and (y <= x+2)):
+    print(f'P = ({x}, {y}) está entre as curvas.')
+else:
+    print(f'P = ({x}, {y}) não está entre as curvas.')
+
+
 print('p(x) = (x-a)(bx^2 + cx + d)')
 # entrada de dados
 a = float(input('Digite o valor de a: '))
