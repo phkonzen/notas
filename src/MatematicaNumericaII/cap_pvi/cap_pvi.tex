@@ -426,8 +426,8 @@ Na Seção \ref{cap_pvi_sec_euler}, vimos que \hl{a ordem do erro de discretiza�
 onde $y^{(k)}\approx y\left(t^{(k)}\right)$, $t^{(k)} = t_0 + kh$, $h = (t_f-t_0)/n$, $k = 0, 1, 2, \dotsc, n$.
 
 Antes, lembramos que o \hl{\emph{erro de discretização local}} é definido por
-\begin{equation}\hleq
-  \tau(t, y; h) := \delta(t, y; h) - \Phi(t, y; h),
+\begin{equation}\label{cap_pvi_sec_taylor:eq:def_erro_local}\hleq
+  \tau(t, y; h) := \Delta(t, y; h) - \Phi(t, y; h),
 \end{equation}
 onde
 \begin{equation}\hleq
@@ -448,17 +448,25 @@ onde $\tilde{y}(t; h_n) \approx y(t)$ dada por \eqref{cap_pvi_sec_taylor:eq:iter
 Com o objetivo de desenvolvermos métodos de alta ordem, podemos usar o polinômio de Taylor de ordem $m$ de $y=y(t)$
 \begin{equation}
   \begin{aligned}
-    y\left(t^{(k+1)}\right) &= y\left(t^{(k)}\right) + hy'\left(t^{(k)}\right) + \frac{h^2}{2}y''\left(t^{(k)}\right)\\
-    &+ \cdots + \frac{h^m}{m!}\frac{d^m y}{d t^m}\left(t^{(k)}\right) + \frac{h^{m+1}}{(m+1)!}\frac{d^{m+1} y}{d t^{m+1}}\left(\xi^{(k)}\right),
+    y(t) &= y(t) + hy'(t) + \frac{h^2}{2}y''(t)\\
+    &+ \cdots + \frac{h^m}{m!}\frac{d^m y}{d t^m}(t) + \frac{h^{m+1}}{(m+1)!}\frac{d^{m+1} y}{d t^{m+1}}(\xi),
   \end{aligned}
 \end{equation}
 donde
-\begin{equation}
+\begin{equation}\label{cap_pvi_sec_taylor:eq:y_poli_taylor}
   \begin{aligned}
-    y\left(t^{(k+1)}\right) &= y\left(t^{(k)}\right) + hf\left(t^{(k)}, y^{(k)}\right) + \frac{h^2}{2}f'\left(t^{(k)}, y^{(k)}\right) \\
-    &+ \cdots + \frac{h^m}{m!}\frac{d^{m-1} f}{d t^{m-1}}\left(t^{(k)}, y^{(k)}\right) \\
-    & + \frac{h^{m+1}}{(m+1)!}\frac{d^{m} f}{d t^{m}}\left(\xi^{(k)}, y\left(\xi^{(k)}\right)\right).
+    y(t) &= y(t) + hf(t, y) + \frac{h^2}{2}f'(t, y) \\
+    &+ \cdots + \frac{h^m}{m!}\frac{d^{m-1} f}{d t^{m-1}}(t, y) \\
+    & + \frac{h^{m+1}}{(m+1)!}\frac{d^{m} f}{d t^{m}}\left(\xi, y(\xi)\right)
   \end{aligned}
+\end{equation}
+e, portanto
+\begin{equation}\label{cap_pvi_sec_taylor:eq:delta_taylor}
+  \begin{aligned}
+    \Delta(t, y; h) &= f(t, y) + \frac{h}{2}f'(t, y) \\
+    &+ \cdots + \frac{h^m}{m!}\frac{d^{m-1} f}{d t^{m-1}}(t, y) \\
+    & + \frac{h^{m+1}}{(m+1)!}\frac{d^{m} f}{d t^{m}}\left(\xi, y(\xi)\right)
+  \end{aligned}  
 \end{equation}
 
 Isto nos motiva a \hl{\emph{iteração do Método de Taylor de Ordem $m$}}:
@@ -698,282 +706,363 @@ t,y = taylor(Phi, 0., 0.5, h, n)
 \end{exer}
 
 
-\section{Métodos de Runge-Kutta}\label{cap_pvi_sec_RK}
+\section{Métodos de Runge-Kutta}\label{cap_pvi_sec_rk}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
+Seja um Problema de Valor Inicial (PVI) da forma
+\begin{subequations}\label{cap_pvi_sec_rk:eq:pvi}
+  \begin{align}
+    &y' = f(t, y),\quad t_0 < t \leq t_f,\\
+    &y(t_0) = y_0,
+  \end{align}
+\end{subequations}
+onde $y:[t_0, t_f]\mapsto \mathbb{R}$ é a função incógnita, dada $f:[t_0, t_f]\times\mathbb{R}\to\mathbb{R}$ e dado valor inicial $y_0\in\mathbb{R}$. Seguimos usando a notação $y^{(k)} \approx y\left(t^{(k)}\right)$, $t^{(k)} = t_0 + kh$, $k = 0, 1, 2, \dotsc, n$, $h = (t_f-t_0)/n$.
 
-Os métodos de Runge-Kutta de $s$-estágios são métodos de passo simples da seguinte forma
-\begin{equation}
-  y^{(i+1)} = y^{(i)} + h(c_1k_1 + \cdots + c_sk_s)
+Os \hl{métodos de Runge}{\runge}\hl{-Kutta}{\kutta}\hl{ de $s$-estágios são métodos de passo simples} da seguinte forma
+\begin{equation}\hleq
+  y^{(k+1)} = y^{(k)} + h\underbrace{\sum_{i=1}^s c_i\phi_i\left(t^{(k)}, y^{(k)}\right)}_{:= \Phi\left(t^{(k)}, y^{(k)}\right)},
 \end{equation}
 onde
-\begin{align}
-  k_1 &:= f(t^{(i)},y^{(i)}),\\
-  k_2 &:= f(t^{(i)}+\alpha_2h,y^{(i)}+h\beta_{21}k_1),\\
-  k_3 &:= f(t^{(i)}+\alpha_3h,y^{(i)}+h(\beta_{31}k_1+\beta_{32}k_2)),\\
-      &~~\vdots\\
-  k_s &:= f(t^{(i)}+\alpha_sh,y^{(i)}+h(\beta_{s1}k_1+\cdots+\beta_{s,s-1}k_{s-1})),
-\end{align}
-$t^{(i)}=t_0+(i-1)h$ e $y^{(1)}=y_0$.
+\begin{subequations}\hleq
+  \begin{align}
+    \phi_1 &:= f\left(t^{(k)}, y^{(k)}\right),\\
+    \phi_2 &:= f\left(t^{(k)}+\alpha_2h, y^{(k)}+h\beta_{2,1}\phi_1\right),\\
+    \phi_3 &:= f\left(t^{(k)}+\alpha_3h, y^{(k)}+h(\beta_{3,1}\phi_1+\beta_{3,2}\phi_2)\right),\\
+        &~~\vdots\nonumber\\
+    \phi_s &:= f\left(t^{(i)}+\alpha_sh,y^{(i)}+h\sum_{j=1}^{s-1}\beta_{s,j}\phi_j\right),
+  \end{align}
+\end{subequations}
+com os coeficientes $c_i, \alpha_i$, $i = 1, 2, \dotsc, s$ e $\beta_{i,j}$, $j = 1, 2, \dotsc, s-1$, escolhidos de forma a obtermos um método de passo simples com erro local da ordem desejada.
 
-Na sequência, discutimos alguns dos métodos de Runge-Kutta usualmente utilizados. Pode-se encontrar uma lista mais completa em~\cite[Cap. 8, Seç. 3.2]{Isaacson1994a}.
+Na sequência, discutimos alguns dos métodos de Runge-Kutta usualmente utilizados. Pode-se encontrar uma lista mais completa em~\cite[Cap. 8, Seção 3.2]{Isaacson1994a}.
 
 \subsection{Métodos de Runge-Kutta de ordem 2}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
+Precisamos apenas de \hl{$2$ estágios} para obtermos \hl{métodos de Runge-Kutta de ordem 2}. Tomamos a forma
+\begin{equation}\label{cap_pvi_sec_rk:eq:rk_2_aux}\hleq
+  y^{(k+1)} = y^{(k)} + h\underbrace{\left(c_1\phi_1 + c_2\phi_2\right)}_{:= \Phi\left(t^{(k)}, y^{(k)}\right)}
+\end{equation}
+com
+\begin{subequations}
+  \begin{align}
+    \phi_1\left(t^{(k)}, y^{(k)}\right) &:= f\left(t^{(k)}, y^{(k)}\right),\\
+    \phi_2\left(t^{(k)}, y^{(k)}\right) &:= f\left(t^{(k)}+\alpha_2h, y^{(k)}+h\beta_{2,1}f(t^{(k)},y^{(k)})\right).
+  \end{align}
+\end{subequations}
 
-Precisamos apenas de $2$ estágios para obtermos métodos de Runge-Kutta de ordem 2. Portanto, assumimos
+Nosso objetivo é de \hl{determinar os coeficientes $c_1$, $c_2$, $\alpha_2$, $\beta_{2,1}$ tais que o método {\eqref{cap_pvi_sec_rk:eq:rk_2_aux}} tenha erro de discretização local de $O(h^2)$}. Da definição do erro local \eqref{cap_pvi_sec_taylor:eq:def_erro_local}
+\begin{equation}
+  \tau(t, y; h) := \Delta(t, y; h) - \Phi(t, y; h),
+\end{equation}
+e por polinômio de Taylor de $y(t)$\footnote{Consulte \eqref{cap_pvi_sec_taylor:eq:delta_taylor} para mais detalhes sobre a expansão em polinômio de Taylor de $\Delta(t, y; h)$.}
 \begin{align}
-  y^{(i+1)} = y^{(i)} &+ h\left[c_1f(t^{(i)},y^{(i)}) \right.\nonumber\\
-  &\left. + c_2f(t^{(i)}+\alpha_2h,y^{(i)}+h\beta_{21}f(t^{(i)},y^{(i)}))\right].\label{eq:rk_2_aux}
+  \hleq{\Delta(t, y; h)} &= f(t, y(t)) + \frac{h}{2}\frac{d}{dt}f(t, y) + O(h^2)\\
+                  &\hleq{= f(t, y(t)) + \frac{h}{2}\left[f_t(t, y)\right.}\nonumber\\
+                  &\hleq{\left. + f_y(t, y)f(t, y)\right] + O(h^2)}\label{cap_pvi_sec_rk:eq:pvi_delta_aux2}.
 \end{align}
-Neste caso, o erro de discretização local é dado por
+De \eqref{cap_pvi_sec_rk:eq:rk_2_aux}, temos
 \begin{equation}
-  \tau(t,y;h) = \Delta(t,y;h) - \Phi(t,y;h),
+  \Phi(t, y; h) = c_1f(t, y) + c_2f\left(t+\alpha_2h, y+h\beta_{2,1}f(t,y)\right)
 \end{equation}
-onde, da equação~\eqref{eq:pvi_delta_aux} temos
-\begin{equation}\label{eq:pvi_delta_aux2}
-  \Delta(t,y;h) = f(t,y(t)) + \frac{h}{2}[f_t(t,y) + f_y(t,y)f(t,y)] + O(h^2)
+
+Agora, tomando a expansão por série de Taylor de $\Phi(t, y; h)$, temos
+\begin{equation}\label{cap_pvi_sec_rk:eq:pvi_phi_aux2}\hleq
+  \begin{aligned}
+    \Phi(t, y; h) &= (c_1+c_2)f(t,y) + c_2h[\alpha_2f_t(t,y)\\
+    &+\beta_{2,1}f_y(t,y)f(t,y)) + O(h^2).
+  \end{aligned}
 \end{equation}
-e de~\eqref{eq:rk_2_aux}
-\begin{equation}
-  \Phi(t,y;h) = c_1f(t,y) + c_2f(t+\alpha_2h,y+h\beta_{21}f(t,y))
-\end{equation}
-Agora, tomando a expansão de série de Taylor em torno de $t$ de $\Phi(t,y;h)$, temos
-\begin{align}\label{eq:pvi_phi_aux2}
-  \Phi(t,y;h) = (c_1+c_2)f(t,y) &+ c_2h[\alpha_2f_t(t,y) \nonumber\\
-  &+\beta_{21}f_y(t,y)f(t,y)) + O(h^2).
-\end{align}
-Então, por comparação de \eqref{eq:pvi_delta_aux2} e \eqref{eq:pvi_phi_aux2}, temos
+Então, por comparação de \eqref{cap_pvi_sec_rk:eq:pvi_delta_aux2} e \eqref{cap_pvi_sec_rk:eq:pvi_phi_aux2}, temos
 \begin{align}
   c_1&+c_2 = 1\\
   c_2&\alpha_2 = \frac{1}{2}\\
   c_2&\beta_{21} = \frac{1}{2}.
 \end{align}
-Assim sendo, temos mais de uma solução possível.
+Este sistema tem mais de uma solução possível.
 
-\subsubsection{Método do ponto médio}
+\subsubsection{Método do Ponto Médio}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-O método do ponto médio é um método de Runge-Kutta de ordem $2$ proveniente da escolha de coeficientes
+O \hl{Método do Ponto Médio é um método de Runge-Kutta de ordem $2$} proveniente da escolha de coeficientes
 \begin{equation}
-  c_1 = 0, \quad c_2 = 1, \quad \alpha_2 = \frac{1}{2},\quad \beta_{21}=\frac{1}{2}.
+  \begin{aligned}
+    c_1 = 0, \\
+    c_2 = 1, \\
+    \alpha_2 = \frac{1}{2},\\
+    \beta_{2,1}=\frac{1}{2}.
+\end{aligned}
 \end{equation}
-Logo, a iteração do método do ponto médio é
-\begin{align}
-  y^{(1)} &= y_0\\
-  y^{(i+1)} &= y^{(i)} + hf\left(t^{(i)}+\frac{h}{2},y^{(i)}+\frac{h}{2}f(t^{(i)},y^{(i)})\right).
-\end{align}
+Logo, a \hl{\emph{iteração do Método do Ponto Médio}} é
+\begin{equation}\hleq
+  \begin{aligned}
+    &y^{(0)} = y_0\\
+    &y^{(k+1)} = y^{(k)} + hf\left(t^{(k)}+\frac{h}{2}, y^{(k)}+\frac{h}{2}f(t^{(k)},y^{(k)})\right),
+  \end{aligned}
+\end{equation}
+com $k = 0, 1, 2, \dotsc, n$.
 
-\begin{ex}\label{ex:ponto_medio_1}
-  Consideremos o seguinte problema de valor inicial
-  \begin{align}
-    y' - y &= \sen(t), t>0\\
-    y(0) &= \frac{1}{2}.
-  \end{align}
-  Na Tabela~\ref{tab:ex_ponto_medio_1}, temos as aproximações $\tilde{y}(1)$ de $y(1)$ computadas pelo método do ponto médio com diferentes passos $h$.
+\begin{ex}\label{cap_pvi_sec_rk:ex:ponto_medio_1}
+  Consideramos o seguinte PVI
+  \begin{subequations}
+    \begin{align}
+      &y' - y = \sen(t), 0< t \leq 1,\\
+      &y(0) = \frac{1}{2}.
+    \end{align}
+\end{subequations}
+  Na Tabela~\ref{cap_pvi_sec_rk:tab:ex_ponto_medio_1}, temos as aproximações $\tilde{y}(1) \approx y(1)$ computadas pelo Método do Ponto Médio com diferentes passos $h$.
  
-  \begin{table}[h!]
+  \begin{table}[H]
     \centering
     \begin{tabular}{l|cc}
       $h$ & $\tilde{y}(1)$ & $|\tilde{y}(1)-y(1)|$\\\hline
-      $10^{-1}$ & $2,02175$ & $5,6\E-03$ \\
-      $10^{-2}$ & $2,02733$ & $6,0\E-05$ \\
-      $10^{-3}$ & $2,02739$ & $6,1\E-07$ \\
-      $10^{-4}$ & $2,02740$ & $6,1\E-09$ \\
-      $10^{-5}$ & $2,02737$ & $2,9\E-05$ \\\hline
+      $10^{-1}$ & $2.02175$ & $5.6\E-03$ \\
+      $10^{-2}$ & $2.02733$ & $6.0\E-05$ \\
+      $10^{-3}$ & $2.02739$ & $6.1\E-07$ \\
+      $10^{-4}$ & $2.02740$ & $6.1\E-09$ \\
+      $10^{-5}$ & $2.02740$ & $6.1\E-11$ \\
+      $10^{-6}$ & $2.02740$ & $1.9\E-12$ \\\hline
     \end{tabular}
-    \caption{Resultados referentes ao Exemplo~\ref{ex:ponto_medio_1}.}
-    \label{tab:ex_ponto_medio_1}
+    \caption{Resultados referentes ao Exemplo~\ref{cap_pvi_sec_rk:ex:ponto_medio_1}.}
+    \label{cap_pvi_sec_rk:tab:ex_ponto_medio_1}
   \end{table}
 
-% \ifisoctave
-% Os resultados mostrados na Tabela~\ref{tab:ex_ponto_medio_1} podem ser computados no \verb+GNU Octave+ com o auxílio do seguinte código:
-% \begin{verbatim}
-% f = @(t,y) y+sin(t);
+\begin{lstlisting}[caption=pm.py, label=cap_pvi_sec_rk:cod:pm]
+import numpy as np
 
-% h=1e-1;
-% n=round(1/h+1);
-% t=zeros(n,1);
-% y=zeros(n,1);
+def pm(f, t0, y0, h, n):
+    t = t0
+    y = y0
+    for k in range(n):
+        ya = y + h/2*f(t, y)
+        y += h*f(t+h/2, ya)
+        t += h
+    return t, y
 
-% t(1)=0;
-% y(1)=0.5;
+def f(t, y):
+    return y + np.sin(t)
 
-% for i=1:n-1
-%   t(i+1) = t(i)+h;
-%   y(i+1)=y(i)+h*f(t(i)+h/2,y(i)+h/2*f(t(i),y(i)));
-% endfor
+# analítica
+def exata(t):
+    return np.exp(t) - 0.5*np.sin(t) - 0.5*np.cos(t)
 
-% ya = @(t) exp(t)-sin(t)/2-cos(t)/2;
-% printf("%1.5E %1.1E\n",y(n),abs(y(n)-ya(1)))
-% \end{verbatim}
-% \fi
+h = 1e-1
+n = round(1./h)
+t,y = pm(f, 0., 0.5, h, n)
+print(f'{h:.1e}: {y:.5e} {np.abs(y-exata(1)):.1e}')
+\end{lstlisting}
 \end{ex}
 
-\subsubsection{Método de Euler modificado}
+\subsubsection{Método de Euler Modificado}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-O método de Euler modificado é um método de Runge-Kutta de ordem $2$ proveniente da escolha de coeficientes
+O \hl{Método de Euler Modificado é um método de Runge-Kutta de ordem $2$} proveniente da escolha de coeficientes
 \begin{equation}
-  c_1 = \frac{1}{2}, \quad c_2 = \frac{1}{2}, \quad \alpha_2 = 1,\quad \beta_{21}=1.
+  \begin{aligned}
+    c_1 = \frac{1}{2}, \\
+    c_2 = \frac{1}{2}, \\
+    \alpha_2 = 1,\\
+    \beta_{21}=1.
+\end{aligned}
 \end{equation}
-Logo, a iteração do método de Euler modificado é
-\begin{align}
-  y^{(1)} &= y_0\\
-  y^{(i+1)} &= y^{(i)} + \frac{h}{2}\left[f(t^{(i)},y^{(i)}) + f(t^{(i)}+h,y^{(i)}+hf(t^{(i)},y^{(i)})\right].
-\end{align}
-
-\begin{ex}\label{ex:Euler_modificado_1}
+Logo, a \hl{\emph{iteração do Método de Euler Modificado}} é
+\begin{equation}\hleq
+  \begin{aligned}
+    &y^{(0)} = y_0\\
+    &y^{(k+1)} = y^{(k)} + \frac{h}{2}\left[f\left(t^{(k)},y^{(k)}\right) \right.\\
+    &\qquad\qquad\qquad\left. + f\left(t^{(k)}+h, y^{(k)}+hf\left(t^{(k)},y^{(k)}\right)\right)\right].
+  \end{aligned}
+\end{equation}
+\begin{ex}\label{cap_pvi_sec_rk:ex:Euler_modificado_1}
   Consideremos o seguinte problema de valor inicial
-  \begin{align}
-    y' - y &= \sen(t), t>0\\
-    y(0) &= \frac{1}{2}.
-  \end{align}
-  Na Tabela~\ref{tab:ex_Euler_modificado_1}, temos as aproximações $\tilde{y}(1)$ de $y(1)$ computadas pelo método de Euler modificado com diferentes passos $h$.
+  \begin{subequations}
+    \begin{align}
+      &y' - y = \sen(t), t>0\\
+      &y(0) = \frac{1}{2}.
+    \end{align}
+\end{subequations}
+Na Tabela~\ref{cap_pvi_sec_rk:tab:ex_Euler_modificado_1}, temos as aproximações $\tilde{y}(1)$ de $y(1)$ computadas pelo método de Euler modificado com diferentes passos $h$.
  
-  \begin{table}[h!]
+  \begin{table}[H]
     \centering
     \begin{tabular}{l|cc}
       $h$ & $\tilde{y}(1)$ & $|\tilde{y}(1)-y(1)|$\\\hline
-      $10^{-1}$ & $2,02096$ & $6,4\E-03$ \\
-      $10^{-2}$ & $2,02733$ & $6,9\E-05$ \\
-      $10^{-3}$ & $2,02739$ & $6,9\E-07$ \\
-      $10^{-4}$ & $2,02740$ & $6,9\E-09$ \\
-      $10^{-5}$ & $2.02737$ & $2,9\E-05$ \\\hline
+      $10^{-1}$ & $2.02096$ & $6.4\E-03$ \\
+      $10^{-2}$ & $2.02733$ & $6.9\E-05$ \\
+      $10^{-3}$ & $2.02739$ & $6.9\E-07$ \\
+      $10^{-4}$ & $2.02740$ & $6.9\E-09$ \\
+      $10^{-5}$ & $2.02740$ & $6.9\E-11$ \\
+      $10^{-6}$ & $2.02740$ & $2.0\E-12$ \\\hline
     \end{tabular}
-    \caption{Resultados referentes ao Exemplo~\ref{ex:Euler_modificado_1}}
-    \label{tab:ex_Euler_modificado_1}
+    \caption{Resultados referentes ao Exemplo~\ref{cap_pvi_sec_rk:ex:Euler_modificado_1}}
+    \label{cap_pvi_sec_rk:tab:ex_Euler_modificado_1}
   \end{table}
 
-% \ifisoctave
-% Os resultados mostrados na Tabela~\ref{tab:ex_Euler_modificado_1} podem ser computados no \verb+GNU Octave+ com o auxílio do seguinte código:
-% \begin{verbatim}
-% f = @(t,y) y+sin(t);
+\begin{lstlisting}[caption=eulerm.py]
+import numpy as np
 
-% h=1e-1;
-% n=round(1/h+1);
-% t=zeros(n,1);
-% y=zeros(n,1);
+def eulerm(f, t0, y0, h, n):
+    t = t0
+    y = y0
+    for k in range(n):
+        ya = y + h*f(t, y)
+        y += h/2 * (f(t, y) \
+                    + f(t+h, ya))
+        t += h
+    return t, y
 
-% t(1)=0;
-% y(1)=0.5;
+def f(t, y):
+    return y + np.sin(t)
 
-% for i=1:n-1
-%   t(i+1) = t(i)+h;
-%   y(i+1)=y(i)+h*f(t(i),y(i));
-%   y(i+1)=y(i)+h/2*(f(t(i),y(i))+f(t(i+1),y(i+1)));
-% endfor
+# analítica
+def exata(t):
+    return np.exp(t) - 0.5*np.sin(t) - 0.5*np.cos(t)
 
-% ya = @(t) exp(t)-sin(t)/2-cos(t)/2;
-% printf("%1.5E %1.1E\n",y(n),abs(y(n)-ya(1)))
-% \end{verbatim}
-% \fi
+h = 1e-1
+n = round(1./h)
+t,y = eulerm(f, 0., 0.5, h, n)
+print(f'{h:.1e}: {y:.5e} {np.abs(y-exata(1)):.1e}')
+\end{lstlisting}
 \end{ex}
 
 \subsection{Método de Runge-Kutta de ordem $4$}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-Um dos métodos de Runge-Kutta mais empregados é o seguinte método de ordem $4$:
-\begin{equation}
-  y^{(i+1)} = y^{(i)} + \frac{h}{6}(k_1 + 2k_2 + 2k_3 + k_4),
+\hl{Um dos métodos de Runge-Kutta mais empregados é o} seguinte método \hl{de ordem $4$}:
+\begin{equation}\hleq
+  \begin{aligned}
+    &y^{(0)} = y_0,\\
+    &y^{(k+1)} = y^{(k)} + \frac{h}{6}(\phi_1 + 2\phi_2 + 2\phi_3 + \phi_4),
+  \end{aligned}
 \end{equation}
-onde
-\begin{align}
-  k_1 &:= f(t^{(i)},y^{(i)}),\\
-  k_2 &:= f(t^{(i)}+h/2,y^{(i)}+hk_1/2),\\
-  k_3 &:= f(t^{(i)}+h/2,y^{(i)}+hk_2/2),\\
-  k_4 &:= f(t^{(i)}+h,y^{(i)}+hk_3),
-\end{align}
-$t^{(i)}=t_0+(i-1)h$ e $y^{(1)}=y_0$.
-
-\begin{ex}\label{ex:RK4_1}
-  Consideremos o seguinte problema de valor inicial
+com
+\begin{subequations}\hleq
   \begin{align}
-    y' - y &= \sen(t), t>0\\
-    y(0) &= \frac{1}{2}.
+    \phi_1 &:= f\left(t^{(k)}, y^{(k)}\right),\\
+    \phi_2 &:= f\left(t^{(k)}+h/2, y^{(k)}+h\phi_1/2\right),\\
+    \phi_3 &:= f\left(t^{(k)}+h/2, y^{(k)}+h\phi_2/2\right),\\
+    \phi_4 &:= f\left(t^{(k)}+h, y^{(k)}+h\phi_3\right),
   \end{align}
-  Na Tabela~\ref{tab:ex_RK4_1}, temos as aproximações $\tilde{y}(1)$ de $y(1)$ computadas pelo método de Runge-Kutta de quarta ordem com diferentes passos $h$.
+\end{subequations}
+\begin{ex}\label{cap_pvi_sec_rk:ex:RK4_1}
+  Consideremos o seguinte PVI
+  \begin{subequations}
+    \begin{align}
+      &y' - y = \sen(t), t>0\\
+      &y(0) = \frac{1}{2}.
+    \end{align}
+  \end{subequations}
+  Na Tabela~\ref{cap_pvi_sec_rk:tab:ex_RK4_1}, temos as aproximações $\tilde{y}(1) \approx y(1)$ computadas pelo Método de Runge-Kutta de Quarta Ordem com diferentes passos $h$.
  
-  \begin{table}[h!]
+  \begin{table}[H]
     \centering
     \begin{tabular}{l|cc}
       $h$ & $\tilde{y}(1)$ & $|\tilde{y}(1)-y(1)|$\\\hline
-      $10^{-1}$ & $2,02739$ & $2,8\E-06$ \\
-      $10^{-2}$ & $2,02740$ & $3,1\E-10$ \\
-      $10^{-3}$ & $2,02740$ & $3,0\E-14$ \\
-      $10^{-4}$ & $2,02740$ & $4,4\E-14$ \\\hline
+      $10^{-1}$ & $2.02739$ & $2.8\E-06$ \\
+      $10^{-2}$ & $2.02740$ & $3.1\E-10$ \\
+      $10^{-3}$ & $2.02740$ & $3.0\E-14$ \\
+      $10^{-4}$ & $2.02740$ & $4.4\E-14$ \\\hline
     \end{tabular}
-    \caption{Resultados referentes ao Exemplo~\ref{ex:RK4_1}}
-    \label{tab:ex_RK4_1}
+    \caption{Resultados referentes ao Exemplo~\ref{cap_pvi_sec_rk:ex:RK4_1}}
+    \label{cap_pvi_sec_rk:tab:ex_RK4_1}
   \end{table}
-
-% \ifisoctave
-% Os resultados mostrados na Tabela~\ref{tab:ex_RK4_1} podem ser computados no \verb+GNU Octave+ com o auxílio do seguinte código:
-% \begin{verbatim}
-% f = @(t,y) y+sin(t);
-
-% h=1e-4;
-% n=round(1/h+1);
-% t=zeros(n,1);
-% y=zeros(n,1);
-
-% t(1)=0;
-% y(1)=0.5;
-
-% for i=1:n-1
-%   t(i+1) = t(i)+h;
-%   k1 = h*f(t(i),y(i));
-%   k2 = h*f(t(i)+h/2,y(i)+k1/2);
-%   k3 = h*f(t(i)+h/2,y(i)+k2/2);
-%   k4 = h*f(t(i)+h,y(i)+k3);
-%   y(i+1)=y(i)+(k1+2*k2+2*k3+k4)/6;
-% endfor
-
-% ya = @(t) exp(t)-sin(t)/2-cos(t)/2;
-% printf("%1.5E %1.1E\n",y(n),abs(y(n)-ya(1)))
-% \end{verbatim}
-% \fi
 \end{ex}
 
 \subsection{Exercícios}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
 \begin{exer}
   Considere o seguinte problema de valor inicial
   \begin{align}
-    y' &+ e^{-y^2+1} = 2,\quad t>1,\\
-    y(1) &= -1.
+    &y' + e^{-y^2+1} = 2, 1 < t \leq 2,\\
+    &y(1) = -1.
   \end{align}
 Use os seguintes métodos de Runge-Kutta com passo $h=0,1$ para computar o valor aproximado de $y(2)$:
 \begin{enumerate}[a)]
-\item método do ponto médio.
-\item método de Euler modificado.
-\item método de Runge-Kutta de ordem $4$.
+\item Método do Ponto Médio.
+\item Método de Euler Modificado.
+\item Método de Runge-Kutta de Quarta Ordem.
 \end{enumerate}
 \end{exer}
 \begin{resp}
-  % \ifisoctave 
-  % \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_pvi/dados/exer_RK_pvi1/exer_RK_pvi1.m}{Código.} 
-  % \fi
-  a)~$-6,00654\E-1$; b)~$-6,00703\E-1$; c)~$-5,99608\E-1$
+  a)~$-6.00654\E-1$; b)~$-6.00703\E-1$; c)~$-5.99608\E-1$
 \end{resp}
+
+\begin{exer}\eqref{cap_pvi_sec_taylor:eq:pvi_exer_0}
+  Considere o seguinte problema de valor inicial
+  \begin{subequations}
+    \begin{align}
+      &y' + \cos(t) = y,\quad 0 < t \leq 1,\\
+      &y(0) = \frac{1}{2}.
+    \end{align}
+  \end{subequations}
+  A solução analítica é $y(t) = \frac{1}{2}\cos(t) - \frac{1}{2}\sin(t)$. Faça testes numéricos com $h=10^{-1}$, $10^{-2}$, $10^{-3}$ e $10^{-4}$, observe os resultados obtidos e o erro $\varepsilon := |\tilde{y}(1) - y(1)|$, onde $\tilde{y}$ corresponde a solução numérica. Faça testes para:
+  \begin{enumerate}[a)]
+  \item Método do Ponto Médio.
+  \item Método de Euler Modificado.
+  \item Método de Runge-Kutta de Quarta Ordem.
+  \end{enumerate}
+  O erro tem o comportamento esperado? Justifique sua resposta.
+\end{exer}
+
+\begin{exer}
+  Considere os métodos de Runge-Kutta aplicados para computar a solução do PVI \eqref{cap_pvi_sec_taylor:eq:pvi_exer_0}. Para cada um, faça um esboço do gráfico do erro $e\left(t; h=10^{-1}\right) = \left|\tilde{y}(t) - y(t)\right|$ e verifique se ele tem a forma esperada conforme a estimativa do erro global \eqref{cap_pvi_sec_taylor:eq:est_erro_global}.
+\end{exer}
+\begin{resp}
+  Dica: o gráfico de $e\left(t; h=10^{-1}\right)$ tem a forma de uma função exponencial crescente para todos os métodos de R-K.
+\end{resp}
+
+\begin{exer}
+  Mostre que o \hl{\emph{Método de Kutta}} é $O(h^3)$. Sua iteração é definida por
+  \begin{equation}
+    \begin{aligned}
+      &y^{(0)} = y_0,\\
+      &y^{(k+1)} = y^{(k)} + \frac{h}{6}\left(\phi_1 + 4\phi_2 + \phi_3\right),
+    \end{aligned}
+  \end{equation}
+  com $k = 0, 1, 2, \dotsc, n$, onde
+  \begin{equation}
+    \begin{aligned}
+      \phi_1 &= f(t, y)\\
+      \phi_2 &= f(t + h/2, y + h\phi_1/2)\\
+      \phi_3 &= f(t + h, y - h\phi_1 + 2h\phi_2).
+    \end{aligned}
+  \end{equation}
+  Aplique-o para o PVI dado no Exercício \eqref{cap_pvi_sec_taylor:eq:pvi_exer_0} e verifique se o erro global satisfaz a ordem esperada.
+\end{exer}
+
+\begin{exer}
+  Considere o seguinte PVI
+  \begin{subequations}
+    \begin{align}
+      &y' = y^2 - ty,\quad 1 < t \leq 2,\\
+      &y(1) = -2.
+    \end{align}
+  \end{subequations}
+  Use os seguintes métodos de Runge-Kutta com passo $h=0.1$ para computar o valor aproximado de $y(2)$:
+  \begin{enumerate}[a)]
+  \item Método do Ponto Médio.
+  \item Método de Euler Modificado.
+  \item Método de Runge-Kutta de Quarta Ordem.
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  Dica: $y(2) = -2.10171\E-1$.
+\end{resp}
+
+\begin{exer}
+  Considere o seguinte PVI
+  \begin{subequations}
+    \begin{align}
+      &y' - t^2y = 0,\quad 1 < t \leq 3,\\
+      &y(1) = \frac{1}{2}.
+    \end{align}
+  \end{subequations}
+  Use os seguintes métodos de Runge-Kutta com passo $h=10^{-2}$ para computar o valor aproximado de $y(3)$:
+  \begin{enumerate}[a)]
+  \item Método do Ponto Médio.
+  \item Método de Euler Modificado.
+  \item Método de Runge-Kutta de Quarta Ordem.
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  Dica: $y(3) = 2.90306\E+3$.
+\end{resp}
+
 
 \section{Método adaptativo com controle de erro}\label{cap_pvi_met_adap}
 
