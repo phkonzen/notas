@@ -1,3 +1,4 @@
+import sympy as sym
 import numpy as np
 import numpy.linalg as npla
 
@@ -34,3 +35,8 @@ def J(x):
 x0 = np.array([-1.5, 1.5])
 x, info = newton(F, J, x0)
         
+x,y = sym.symbols('x,y')
+p = sym.plot_implicit(sym.Eq(x**2/4+y**2/9, 1), (x,-2,2), (y,-3,3), show=False)
+q = sym.plot_implicit(sym.Eq(x, y**2*sym.sqrt(x)), (x,-3,3), (y,-4,4), show=False)
+p.extend(q)
+p.show()
