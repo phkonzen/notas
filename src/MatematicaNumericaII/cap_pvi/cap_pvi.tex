@@ -110,7 +110,7 @@ O Método de Euler com passo $h$ aplicado ao problema de valor inicial \eqref{ca
     \tilde{y}(t^{(k+1)}; h) &= \tilde{y}(t^{(k)}; h) + h\Phi(t^{(k)}, \tilde{y}(t^{(k)}); h),
   \end{align}
 \end{subequations}
-onde $\tilde{y}(t^{(k)})$ representa a aproximação da solução exata $y$ no tempo $t^{(k)}=t_0+ kh$, $k=0, 1, 2, \ldots$. Métodos que podem ser escritos dessa forma, são chamados de \hl{\emph{Métodos de Passo Simples}} (ou único). No caso específico do método de Euler, temos
+onde $\tilde{y}(t^{(k)})$ representa a aproximação da solução exata $y$ no tempo $t^{(k)}=t_0+ kh$, $k=0, 1, 2, \ldots$. Métodos que podem ser escritos dessa forma, são chamados de \hl{\emph{Métodos de Passo Simples}} (ou único). No caso específico do Método de Euler, temos
 \begin{equation}\hleq
   \Phi(t, y; h) := f(t, y(t)).
 \end{equation}
@@ -177,7 +177,7 @@ Então, rearranjando os termos em \eqref{cap_pvi_sec_euler:eq:taylor}, obtemos
 \begin{equation}\label{eq:pvi_delta_aux}
   \Delta(t, y; h) = f(t, y(t)) + \frac{h}{2}[f_t(t, y) + f_y(t, y)f(t, y)] + O(h^2).
 \end{equation}
-Portanto, para o método de Euler temos
+Portanto, para o Método de Euler temos
 \begin{align}
   \tau(t, y; h) &:= \Delta(t, y; h)-\Phi(t, y; h)\\
               &= \Delta(t, y; h) - f(t, y)\\
@@ -281,7 +281,7 @@ para todo $t\in [t_0, t_f]$, $t_f > t_0$.
 \end{obs}
 
 \begin{ex}\label{cap_pvi_sec_euler:ex:conv}
-  Consideremos o seguinte problema de valor inicial
+  Consideramos o seguinte problema de valor inicial
   \begin{subequations}
     \begin{align}
       &y' = y + 1, t>0\\
@@ -308,7 +308,7 @@ para todo $t\in [t_0, t_f]$, $t_f > t_0$.
 
 \subsubsection{Erros de Arredondamento}
 
-O Teorema \ref{cap_pvi_sec_euler:teo:conv} não leva em consideração os erros de arredondamento. Levando em conta esses erros, a iteração do método de Euler tem a forma
+O Teorema \ref{cap_pvi_sec_euler:teo:conv} não leva em consideração os erros de arredondamento. Levando em conta esses erros, a iteração do Método de Euler tem a forma
 \begin{subequations}\label{cap_pvi_sec_euler:eq:euler_errarr}
   \begin{align}
     &\tilde{y}^{(0)} = y_0 + \delta^{(k)},\\
@@ -362,7 +362,7 @@ para $\delta^{(k)} < \delta$, $k=0, 1, 2, \dotsc, n$.
       &y(1) = -1.
     \end{align}
 \end{subequations}
-Use o método de Euler para computar o valor aproximado de $y(2)$ com precisão de $6$ dígitos significativos.
+Use o Método de Euler para computar o valor aproximado de $y(2)$ com precisão de $6$ dígitos significativos.
 \end{exer}
 \begin{resp}
   $-5.58858\E-1$
@@ -877,7 +877,7 @@ Logo, a \hl{\emph{iteração do Método de Euler Modificado}} é
       &y(0) = \frac{1}{2}.
     \end{align}
 \end{subequations}
-Na Tabela~\ref{cap_pvi_sec_rk:tab:ex_Euler_modificado_1}, temos as aproximações $\tilde{y}(1)$ de $y(1)$ computadas pelo método de Euler modificado com diferentes passos $h$.
+Na Tabela~\ref{cap_pvi_sec_rk:tab:ex_Euler_modificado_1}, temos as aproximações $\tilde{y}(1)$ de $y(1)$ computadas pelo Método de Euler modificado com diferentes passos $h$.
  
   \begin{table}[H]
     \centering
@@ -939,6 +939,7 @@ com
     \phi_4 &:= f\left(t^{(k)}+h, y^{(k)}+h\phi_3\right),
   \end{align}
 \end{subequations}
+
 \begin{ex}\label{cap_pvi_sec_rk:ex:RK4_1}
   Consideremos o seguinte PVI
   \begin{subequations}
@@ -1063,6 +1064,280 @@ Use os seguintes métodos de Runge-Kutta com passo $h=0,1$ para computar o valor
   Dica: $y(3) = 2.90306\E+3$.
 \end{resp}
 
+\section{Método de Euler Implícito}\label{cap_pvi_sec_eulerimp}
+
+Seja o Problema de Valor Inicial (PVI)
+\begin{subequations}\label{cap_pvi_sec_eulerimp:eq:pvi}\hleq
+  \begin{align}
+    &y' = f(t, y), t_0 < t \leq t_f,\\
+    &y(t_0) = y_0,
+  \end{align}
+\end{subequations}
+com dados $t_0, t_f\in\mathbb{R}$ e $y_0\in\mathbb{R}$, sendo a função $y = y(t)$ a incógnita.
+
+Consideramos a discretização no tempo $t^{(k)} := t_0 + hk$, $k = 0, 1, 2, \dotsc, n$, com passo $h := (t_f-t_0)/n$. De \eqref{cap_pvi_sec_eulerimp:eq:pvi} e do \href{https://pt.wikipedia.org/wiki/Teorema_fundamental_do_c%C3%A1lculo}{Teorema Fundamental do Cálculo} temos
+\begin{equation}
+  y\left(t^{(k+1)}\right) = y\left(t^{(k)}\right) + \int_{t^{(k)}}^{t^{(k+1)}} f(t, y)\,dt.
+\end{equation}
+A integral pode ser aproximada por
+\begin{equation}
+  \int_{t^{(k)}}^{t^{(k+1)}} f(t, y)\,dt \approx hf\left(t^{(k+1)}, y^{(k+1)}\right)
+\end{equation}
+donde obtemos
+\begin{equation}
+  y\left(t^{(k+1)}\right) \approx y\left(t^{(k)}\right) + hf\left(t^{(k+1)}, y^{(k+1)}\right).
+\end{equation}
+
+Isto nos motiva a \hl{\emph{iteração do Método de Euler Implícito}}{\euler}
+\begin{equation}\hleq
+  \begin{aligned}
+    &y^{(0)} = y_0,\\
+    &y^{(k+1)} = y^{(k)} + hf\left(t^{(k+1)}, y^{(k+1)}\right),
+  \end{aligned}
+\end{equation}
+sendo $y^{(k)} \approx y\left(t^{(k)}\right)$, $k = 0, 1, 2, \dotsc, n$.
+
+\begin{ex}\label{cap_pvi_sec_eulerimp:ex:estavel}
+  Consideremos o seguinte PVI
+  \begin{subequations}
+    \begin{align}
+      &y' - y = \sen(t), t>0\\
+      &y(0) = \frac{1}{2}.
+    \end{align}
+  \end{subequations}
+  Na Tabela~\ref{cap_pvi_sec_eulerimp:tab:ex_estavel}, temos as aproximações $\tilde{y}(1) \approx y(1)$ computadas pelo Método de Euler Implícito com diferentes passos $h$.
+ 
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{l|cc}
+      $h$ & $\tilde{y}(1)$ & $|\tilde{y}(1)-y(1)|$\\\hline
+      $10^{-1}$ & $2.23660$ & $2.1\E-1$ \\
+      $10^{-2}$ & $2.04660$ & $1.9\E-2$ \\
+      $10^{-3}$ & $2.02930$ & $1.9\E-3$ \\
+      $10^{-4}$ & $2.02759$ & $1.9\E-4$ \\
+      $10^{-5}$ & $2.02741$ & $1.9\E-5$ \\
+      $10^{-6}$ & $2.02740$ & $1.9\E-6$ \\\hline
+    \end{tabular}
+    \caption{Resultados referentes ao Exemplo~\ref{cap_pvi_sec_eulerimp:ex:estavel}}
+    \label{cap_pvi_sec_eulerimp:tab:ex_estavel}
+  \end{table}
+
+\begin{lstlisting}[caption = eulerImp.py]
+import numpy as np
+from scipy.optimize import fsolve
+
+def eulerimp(f, t0, y0, h, n):
+    t = t0
+    y = y0
+    for k in range(n):
+        y = fsolve(lambda x:
+                   x - y - h*f(t+h, x),
+                   x0 = y, xtol=1e-14)[0]
+        t += h
+    return t, y
+
+def f(t, y):
+    return y + np.sin(t)
+
+# analítica
+def exata(t):
+    return np.exp(t) - 0.5*np.sin(t) - 0.5*np.cos(t)
+
+h = 1e-1
+n = round(1./h)
+t,y = eulerimp(f, 0., 0.5, h, n)
+print(f'{h:.1e}: {y:.5e} {np.abs(y-exata(1)):.1e}')
+\end{lstlisting}
+\end{ex}
+
+\subsection{Análise Numérica}
+
+O \hl{Método de Euler Implícito é $O(h)$}. De fato, tomando o polinômio de Taylor
+\begin{equation}
+  y(t) = y(t+h) -hf\left(t+h, y(t+h)\right) + O(h^2),
+\end{equation}
+temos
+\begin{align}
+  \tau(t, y; h) &:= \Delta(t,y; h) - \Phi(t, y; h) \\
+                &= \underbrace{\frac{y(t+h) - y(t)}{h}}_{:= \Delta} - \underbrace{f(t+h, y(t+h); h)}_{:= \Phi}\\
+                &= O(h).
+\end{align}
+
+\subsubsection{Estabilidade}
+
+\hl{Um método de dito ser estável quando pequenas perturbações na condição inicial produzem pequenas alterações nas aproximações subsequentes, i.e. os resultados dependem continuamente dos dados iniciais}.
+
+\begin{ex}
+  Consideramos o seguinte PVI
+  \begin{subequations}
+    \begin{align}
+      &y' = -40y, 0 < t \leq 1,\\
+      &y(0) = \frac{1}{3}.
+    \end{align}
+  \end{subequations}
+  A solução exata é $y(t) = \frac{1}{5}e^{-40t}$. Na tabela abaixo, temos os resultados obtidos por computações com o Método de Euler (Explícito, $\tilde{y}_e$) e o Método de Euler Implícito ($\tilde{y}_i$) para $h = 10^{-1}$ e $10^{-2}$.
+
+  \begin{center}
+    \begin{tabular}{lcc}
+      h & $\left|\tilde{y}_e(1) - y(1)\right|$ & $\left|\tilde{y}_i(1) - y(1)\right|$ \\\hline
+      $10^{-1}$ & $2.0\E+04$ & $3.8\E-08$ \\
+      $10^{-2}$ & $1.4\E-18$ & $8.1\E-16$ \\\hline
+    \end{tabular}
+  \end{center}
+\end{ex}
+
+\subsubsection{Estabilidade do Euler Explícito}
+
+Consideramos o PVI
+\begin{subequations}\label{cap_pvi_sec_eulerimp:eq:pvi_estabilidade}
+  \begin{align}
+    y' = \lambda y, t > 0,\\
+    y(0) = y_0,
+  \end{align}
+\end{subequations}
+para dados $\lambda < 0$ e $y_0\in\mathbb{R}$.
+
+A iteração do \href{https://notaspedrok.com.br/notas/MatematicaNumericaII/cap_pvi_sec_euler.html}{Método de Euler Explícito} para este PVI consiste em
+\begin{equation}
+  \begin{aligned}
+    y^{(0)} = y_0,\\
+    y^{(k+1)} = y^{(k)} + h\lambda y^{(k)},
+  \end{aligned}
+\end{equation}
+donde temos
+\begin{equation}
+  y^{(k+1)} = (1 + h\lambda)^{k+1}y_0.
+\end{equation}
+Tendo em vista a solução exata $y(t) = y_0e^{\lambda t}$, temos que o erro global é
+\begin{align}
+  \left|y\left(t^{(k)}\right) - y^{(k)}\right| &= \left|y_0e^{\lambda hk} - y_0(1 + h\lambda)^k\right|\\
+                                               &= \left|\left(e^{\lambda h}\right)^k - (1 + h\lambda)^k\right||y_0|
+\end{align}
+e, portanto, a exatidão é determinada por quão bem $1 + h\lambda$ aproxima $e^{\lambda h}$. Observamos que, para qualquer $\lambda < 0$, $\left(e^{\lambda h}\right)^k\to 0$ quando $t\to\infty$. Por outro lado, para $y^{(k)}\to 0$, quando $t\to 0$, é necessário que $|1 + h\lambda| < 1$, i.e. o passo do Método de Euler fica restrito
+\begin{equation}
+  h < \frac{2}{|\lambda|}
+\end{equation}
+
+Supondo um erro de arredondamento $\delta_0$ (apenas) na condição inicial, as aproximações subsequentes do Método de Euler Explícito ficariam
+\begin{equation}
+  y^{(k+1)} = (1 + h\lambda)^{k+1}\left(y_0+\delta_0\right),
+\end{equation}
+donde temos que
+\begin{equation}
+  \delta^{(k)} = (1 + h\lambda)^{k}\delta_0
+\end{equation}
+é o valor propagado de $\delta_0$ na $k$-ésima iteração. Ou seja, quando $|1 + h\lambda| > 1$, temos que $\delta^{(k)}\to\infty$ quando $k\to\infty$ e o método é instável. Concluímos que o \hl{Método de Euler Explícito é estável para}
+\begin{equation}\label{cap_pvi_eulerimp:eq:condest}\hleq
+  h < \frac{2}{|\lambda|}.
+\end{equation}
+
+\subsubsection{Estabilidade do Euler Implícito}
+
+O \hl{Método de Euler Implícito é incondicionalmente estável}. Para o PVI \eqref{cap_pvi_sec_eulerimp:eq:pvi_estabilidade}, o método produz as aproximações
+\begin{equation}
+  y^{(k)} = \left(1 - h\lambda\right)^{-k}y_0.
+\end{equation}
+Aqui, para qualquer $\lambda<0$, temos que
+\begin{equation}
+  \left(1 - h\lambda\right)^{-k} \to 0,\quad k\to\infty,
+\end{equation}
+para qualquer escolha do passo $h>0$. Isto mostra a estabilidade incondicional do método. Também, o Exercício \ref{cap_pvi_sec:exer:exatidao} mostra que o método é convergente para o PVI \eqref{cap_pvi_sec_eulerimp:eq:pvi_estabilidade}.
+
+\subsection{Exercícios}
+
+\begin{exer}
+  Considere o seguinte problema de valor inicial
+  \begin{subequations}
+    \begin{align}
+      &y' = 50y + 50, 0 < t \leq 1,\\
+      &y(0) = 0,
+    \end{align}
+  \end{subequations}
+  com solução exata $y(t) = e^{50t} - 1$. Use o Método de Euler Implícito com $h = 10^{-1}$ para computar uma aproximação de $y(1)$. Então, verifique a ordem de convergência para diferentes passos $h = 10^{-1}, 10^{-2}, 10^{-3}$ e $10^{-4}$.
+\end{exer}
+\begin{resp}
+  Dica.
+  \begin{gather}
+    y^{(k+1)} = y^{(k)} + hf\left(t^{(k=1)}, y^{(k+1)}\right)\\
+    y^{(k+1)} = y^{(k)} + h \left(50y^{(k+1)} + 50\right)\\
+    y^{(k+1)} = \frac{y^{(k)} + 50h}{1 - 50h}.
+  \end{gather}
+\end{resp}
+
+\begin{exer}
+  Considere o seguinte problema de valor inicial
+  \begin{subequations}
+    \begin{align}
+      &y' = -50y + 50, 0 < t \leq 1,\\
+      &y(0) = 2,
+    \end{align}
+  \end{subequations}
+  com solução exata $y(t) = 1 + e^{-50t}$. Com $h = 10^{-1}$, compute a aproximação de $y(1)$ dada pelo
+  \begin{enumerate}[a)]
+  \item Método de Euler Explícito.
+  \item Método de Euler Implícito.
+  \end{enumerate}
+  Por que os resultados são tão diferentes entre os métodos? Escolha um passo $h$ em que ambos produzam resultados satisfatórios e justifique sua escolha.
+\end{exer}
+\begin{resp}
+  Dica: consulte a condição de estabilidade \eqref{cap_pvi_eulerimp:eq:condest}.
+\end{resp}
+
+\begin{exer}
+  Use o Método de Euler Implícito, com $h=10^{-1}$, para computar aproximações para a solução do PVI discutido no Exemplo \ref{cap_pvi_sec_euler:ex:euler_ex0}. Compare os resultados com aqueles apresentados com o Método de Euler Explícito.
+\end{exer}
+
+\begin{exer}
+  O problema de valor inicial
+  \begin{subequations}
+    \begin{align}
+      &y' = \pi\left[\cos^2(\pi t) - \sen^2(\pi t)\right],\quad t>0\\
+      &y(0) = 0.
+    \end{align}
+  \end{subequations}
+  tem solução analítica $y(t) = \sen(\pi t)\cos(\pi t)$. Compute a aproximação $\tilde{y}(1) \approx y(1)$ pelo Método de Euler Implícito com passo $h=10^{-1}$ e forneça o erro $\varepsilon := \left|\tilde{y}(1, h) - y(1)\right|$.
+\end{exer}
+\begin{resp}
+  $\tilde{y}(1.5) = 3.14159\E-1$, $\varepsilon = 3.1E-01$
+\end{resp}
+
+\begin{exer}
+  Use o Método de Euler Implícito para computar a solução de
+  \begin{subequations}
+    \begin{align}
+      &y' = e^{2t} - 2y,\quad 0 < t\leq 1,\\
+      &y(0) = 0.
+    \end{align}
+  \end{subequations}
+  Escolha um passo $h$ adequado de forma que $y(1)$ seja computado com precisão de $5$ dígitos significativos.
+\end{exer}
+
+\begin{exer}
+  Considere o seguinte problema de valor inicial
+  \begin{subequations}
+    \begin{align}
+      &y' + e^{-y^2+1} = 2,\quad t>1,\\
+      &y(1) = -1.
+    \end{align}
+\end{subequations}
+Use o Método de Euler Implícito para computar o valor aproximado de $y(2)$ com precisão de $6$ dígitos significativos.
+\end{exer}
+
+
+\subsubsection{Análise Numérica}
+
+\begin{exer}
+  Mostre que o Método de Euler Implícito é convergente para a solução exata do PVI \eqref{cap_pvi_sec_eulerimp:eq:pvi_estabilidade}  para qualquer $\lambda <0$.
+\end{exer}
+\begin{resp}
+  \begin{align}
+    y\left(t^{(k)}\right) &= y_0e^{\lambda t^{(k)}}\\
+                          &= y_0\lim_{h\to 0^+} \left(1 - h\lambda\right)^{-t^{(k)}/h}\\
+                          &= y_0 \lim_{h\to 0^+} \left(1 - h\lambda\right)^{-k}\\
+                          &= \lim_{h\to 0^+} y^{(k)}.
+  \end{align}
+\end{resp}
+
 
 \section{Método adaptativo com controle de erro}\label{cap_pvi_met_adap}
 
@@ -1137,7 +1412,7 @@ tomamos sucessivas divisões de $h$ por $2$, até satisfazermos \eqref{eq:pvi_pa
     y' - y &= \sen(t), t>0\\
     y(0) &= \frac{1}{2}.
   \end{align}
-  A Figura~\ref{fig:ex_Euler_adap} mostra a comparação entre $y(t)$ e a solução numérica obtida da aplicação do método de Euler com passo adaptativo. No método, utilizamos o passo inicial $h^{(1)}=0,1$ e tolerância $TOL=10^{-4}$. Ao compararmos esta figura com a Figura~\eqref{fig:ex_Euler_1} fica evidente o controle do erro.
+  A Figura~\ref{fig:ex_Euler_adap} mostra a comparação entre $y(t)$ e a solução numérica obtida da aplicação do Método de Euler com passo adaptativo. No método, utilizamos o passo inicial $h^{(1)}=0,1$ e tolerância $TOL=10^{-4}$. Ao compararmos esta figura com a Figura~\eqref{fig:ex_Euler_1} fica evidente o controle do erro.
 
   \begin{figure}[h!]
     \centering
@@ -1212,7 +1487,7 @@ tomamos sucessivas divisões de $h$ por $2$, até satisfazermos \eqref{eq:pvi_pa
     y' &+ e^{-y^2+1} = 2,\quad t>1,\\
     y(1) &= -1.
   \end{align}
-Use o método de Euler com passo adaptativo para computar o valor aproximado de $y(2)$. Para tanto, utilize o passo inicial $h=0,1$ e a tolerância de $TOL=10^{-4}$.
+Use o Método de Euler com passo adaptativo para computar o valor aproximado de $y(2)$. Para tanto, utilize o passo inicial $h=0,1$ e a tolerância de $TOL=10^{-4}$.
 \end{exer}
 \begin{resp}
   % \ifisoctave 
@@ -1509,7 +1784,7 @@ com $t^{(i)} = t_0 + (i-1)h$.
     y' &+ e^{-y^2+1} = 2,\quad t>1,\\
     y(1) &= -1.
   \end{align}
-Inicializando pelo método de Euler, use os seguintes métodos de passo múltiplo com $h=0,1$ para computar o valor aproximado de $y(2)$:
+Inicializando pelo Método de Euler, use os seguintes métodos de passo múltiplo com $h=0,1$ para computar o valor aproximado de $y(2)$:
 \begin{enumerate}[a)]
 \item método de Adams-Bashforth de ordem $2$.
 \item método de Adams-Bashforth de ordem $3$.
