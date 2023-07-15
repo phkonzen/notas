@@ -60,12 +60,42 @@ class Notas:
         text += '}'
         text += '}'
 
+        text += '.ltx_title {'
+        text += 'border-style: solid;'
+        text += 'border-width: 0px 0px 1px 0px;'
+        text += 'border-color: blueviolet;'
+        text += '}'
+
+        text += '.ltx_title_theorem {'
+        text += 'border-style: dotted;'
+        text += 'border-width: 0px 0px 2px 0px;'
+        text += 'border-color: red;'
+        text += '}'
+
+        text += '.ltx_theorem {'
+        text += 'border-style: dotted;'
+        text += 'border-width: 0px 0px 2px 0px;'
+        text += 'border-color: blue;'      
+        text += '}'
+
+        text += '.ltx_proof {'
+        text += 'border-style: dotted;'
+        text += 'border-width: 0px 0px 2px 0px;'
+        text += 'border-color: blue;'      
+        text += '}'
+
+        text += '.ltx_lstlisting {'
+        text += 'border-style: dotted;'
+        text += 'border-width: 2px 0px;'
+        text += 'border-color: green;'        
+        text += '}'
+
         text += '.ltx_lst_numbers_left .ltx_listingline .ltx_tag {'
         text += 'margin-left: 0em;'
         text += 'text-align: right;'
         text += 'position: relative;'
         text += '}'
-        
+
         # text += '.navbar {'
         # text += 'height: auto;'
         # text += 'padding: 5px;'
