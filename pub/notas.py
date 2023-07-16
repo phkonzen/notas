@@ -96,10 +96,22 @@ class Notas:
         text += 'position: relative;'
         text += '}'
 
-        # text += '.navbar {'
-        # text += 'height: auto;'
-        # text += 'padding: 5px;'
-        # text += '}'
+        text += '.ltx_graphics {'
+        text += 'max-width: 100%;'
+        text += 'height: auto;'
+        text += '}'
+
+        text += '.ltx_eqn_center_padleft {'
+        text += 'display: inherit;'
+        text += '}'
+
+        text += '.ltx_eqn_center_padright {'
+        text += 'width: 2em;'
+        text += '}'
+
+        text += '.ltx_tabular {'
+        text += 'max-widtth: 100vw;'
+        text += '}'
 
         f.write(text)
         f.close()
