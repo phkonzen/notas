@@ -14,7 +14,7 @@ onde $\pmb{y}:t\in\mathbb{R}\mapsto\pmb{y}(t)\in\mathbb{R}^n$ é a função inc�
 
 \section{Método de Euler}\label{cap_pvi_sec_euler}
 
-Dado um \emph{problema de valor inicial}
+Dado um \emph{Problema de Valor Inicial} (PVI)
 \begin{subequations}\label{cap_pvi_sec_euler:eq:pvi}\hleq
   \begin{align}
     y'(t) &= f(t,y(t)),\quad t>t_0,\\
@@ -1339,6 +1339,276 @@ Use o Método de Euler Implícito para computar o valor aproximado de $y(2)$ com
 \end{resp}
 
 
+
+\section{Métodos de Passo Múltiplo}\label{cap_pvi_sec_passo_mult}
+
+Seja um \emph{Problema de Valor Inicial} (PVI)
+\begin{subequations}\hleq
+  \begin{align}
+    y'(t) &= f(t,y(t)),\quad t_0 < t \leq t_f,\\
+    y(t_0) &= y_0.
+  \end{align}
+\end{subequations}
+
+Assumimos uma discretização uniforme no tempo $t^{(k)} = t_0 + kh$, com tamanho de passo $h = (t_f-t_0)/n$. Do \href{https://notaspedrok.com.br/notas/CalculoI/cap_int_sec_propint.html}{Teorema Fundamental do Cálculo}, temos
+\begin{equation}\hleq
+  y\left(t^{(k+i)}\right) = y\left(t^{(k-j)}\right) + \int_{t^{(k-j)}}^{t^{(k+i)}} f(s,y(s))\,ds.
+\end{equation}
+\hl{A ideia é aproximar a integral por uma quadratura de Newton}{\newton}\hl{-Cotes}{\cotes}. Das regras\footnote{Consulte as \href{https://notaspedrok.com.br/notas/MatematicaNumericaII/cap_integr_sec_NC.html}{Notas de Aula: Matemática Numérica II: Integração: Regras de Newton-Cotes}.}, temos
+\begin{equation}\label{cap_pvi_sec_passo_mult:eq:tfc}
+  \int_{t^{(k-j)}}^{t^{k+i}} f(s,y(s))\,ds \approx \sum_{l=1}^{m} f\left(s^{(l)},y(s^{(l)})\right)w^{(l)},
+\end{equation}
+onde $s^{(l)}$ são os nodos e $w^{(l)}$ os pesos da quadratura, $l = 1, 2, \dotsc, m$.
+
+\subsection{Métodos de Adams-Bashforth}
+
+\hl{Métodos de Adams-Bashforth são métodos explícitos de passo múltiplo} obtidos ao escolhermos $j=0$ e $i=1$ em \eqref{cap_pvi_sec_passo_mult:eq:tfc}, i.e.
+\begin{equation}
+  y\left(t^{(k+1)}\right) = y\left(t^{(k)}\right) + \int_{t^{(k)}}^{t^{(k+1)}} f(s,y(s))\,ds.
+\end{equation}
+Aplicando as regras de Newton-Cotes, escolhemos os nodos de quadratura $s_l = t^{(k-l+1)}$, $l = 1, 2, \dotsc, m$, e, então
+\begin{equation}
+  \int_{t^{(k)}}^{t^{k+1}} f(x,y(x))\,dx \approx \sum_{l=1}^{m} f\left(s_l,y(s_l)\right)w_l,
+\end{equation}
+e
+\begin{equation}
+  w_l = \int_{t^{(k)}}^{t^{(k+1)}} \prod_{\overset{p=1}{p\neq l}}^m \frac{s-s^{(p)}}{s^{(l)}-x^{(p)}}\,ds.
+\end{equation}
+Agora, fazendo a mudança de variável $u=\left(s - t^{(k)}\right)/h$, obtemos
+\begin{equation}
+  w_l = h\int_{0}^{1} \prod_{\overset{p=1}{p\neq l}}^m \frac{u+p-1}{p-l}\,du
+\end{equation}
+Donde, obtemos o seguinte esquema numérico
+\begin{equation}\label{cap_pvi_sec_passo_mult:eq:mult_passo_iter}
+  y^{(k+1)} = y^{(k)} + h\sum_{l=1}^m w_{l}f(t^{(k-l+1)},y^{(k-l+1)}),
+\end{equation}
+onde
+\begin{equation}
+  w_l = \int_{0}^{1} \prod_{\overset{p=1}{p\neq l}}^m \frac{s+p-1}{p-l}\,ds.\label{cap_pvi_sec_passo_mult:eq:mult_passo_pesos}
+\end{equation}
+
+\begin{obs}\normalfont{\hl{(Ordem de Truncamento.)}}
+  A ordem de truncamento de um \hl{Método de Adams-Bashforth de $m$-passos é $O(h^m)$} \cite{Burden2016a}.
+\end{obs}
+
+\subsubsection{Método de Adams-Bashforth de Ordem 2}
+
+Tomando $m=2$ em \eqref{cap_pvi_sec_passo_mult:eq:mult_passo_pesos}, temos
+\begin{equation}
+  c_1 = \int_0^1 s+1\,ds = \frac{3}{2}
+\end{equation}
+e
+\begin{equation}
+  c_2 = \int_0^1 -s\,ds = -\frac{1}{2}.
+\end{equation}
+Então, de \eqref{cap_pvi_sec_passo_mult:eq:mult_passo_iter} temos a \hl{iteração do \emph{método de Adams-Bashforth de $2$ passos}}:
+\begin{equation}\hleq
+  \begin{aligned}
+    &y^{(0)} = y_0,\\
+    &y^{(k+1)} = y^{(k)} + \frac{h}{2}\left[3f(t^{(k)},y^{(k)}) - f(t^{(k-1)},y^{(k-1)})\right],
+  \end{aligned}
+\end{equation}
+com $t^{(k)} = t_0 + kh$, $h = (t_f - t_0)/n$, $k = 0, 1, 2, \dotsc, n$.
+
+\begin{ex}\label{cap_pvi_sec_passo_mult:ex:AB2}
+  Consideramos o seguinte PVI
+  \begin{subequations}
+    \begin{align}
+      &y' - y = \sen(t), t>0\\
+      &y(0) = \frac{1}{2}.
+    \end{align}
+  \end{subequations}
+  Na Tabela~\ref{cap_pvi_sec_passo_mult:tab:ex_AB2}, temos as aproximações $\tilde{y}(1)$ de $y(1)$ computadas pelo Método de Adams-Bashforth de $2$ passos. Como este método é de ordem $2$, escolhemos inicializá-lo pelo método do ponto médio, de forma a mantermos a consistência.
+ 
+  \begin{table}[H]
+    \centering
+    \caption{Resultados referentes ao Exemplo~\ref{cap_pvi_sec_passo_mult:ex:AB2}}
+    \begin{tabular}{l|cc}
+      $h$ & $\tilde{y}(1)$ & $|\tilde{y}(1)-y(1)|$\\\hline
+      $10^{-1}$ & $2.01582$ & $1.2\E-02$ \\
+      $10^{-2}$ & $2.02727$ & $1.3\E-04$ \\
+      $10^{-3}$ & $2.02739$ & $1.3\E-06$ \\
+      $10^{-4}$ & $2.02740$ & $1.3\E-08$ \\
+      $10^{-5}$ & $2.02740$ & $1.3\E-10$ \\\hline
+    \end{tabular}
+    \label{cap_pvi_sec_passo_mult:tab:ex_AB2}
+  \end{table}
+
+\begin{lstlisting}[caption=abs2.py]
+import numpy as np
+
+def ab2(f, t0, y0, h, n):
+
+    # inicialização
+    y1 = y0 + h/2*f(t0, y0)
+    y1 = y0 + h*f(t0+h/2, y1)
+    t1 = t0 + h
+
+    # iterações
+    for k in range(1,n):
+        y = y1 + h/2*(3*f(t1, y1) \
+                  - f(t0, y0))
+        t = t1 + h
+        
+        t0 = t1
+        y0 = y1
+        
+        t1 = t
+        y1 = y
+        
+    return t, y
+
+def f(t, y):
+    return y + np.sin(t)
+
+# analítica
+def exata(t):
+    return np.exp(t) - 0.5*np.sin(t) - 0.5*np.cos(t)
+
+h = 1e-1
+n = round(1./h)
+t,y = ab2(f, 0., 0.5, h, n)
+print(f'{h:.1e}: {y:.5e} {np.abs(y-exata(1)):.1e}')
+\end{lstlisting}
+\end{ex}
+
+\subsubsection{Método de Adams-Bashforth de Ordem 4}
+
+Tomando $m=4$ em \eqref{cap_pvi_sec_passo_mult:eq:mult_passo_pesos} obtemos, de \eqref{cap_pvi_sec_passo_mult:eq:mult_passo_iter}, a \hl{iteração do \emph{método de Adams-Bashforth de $4$ passos}}
+\begin{equation}\hleq
+  \begin{aligned}
+    y^{(1)} &= y_0,\\
+    y^{(i+1)} &= y^{(i)} + \frac{h}{24}\left[55f(t^{(i)},y^{(i)}) \right.\\
+    &\qquad\qquad\left. - 59f(t^{(i-1)},y^{(i-1)}) + 37f(t^{(i-2)},y^{(i-2)}) \right. \\
+    &\qquad\qquad\left. -9f(t^{(i-3)},y^{(i-3)})\right],
+  \end{aligned}
+\end{equation}
+
+\begin{ex}\label{cap_pvi_sec_passo_mult:ex:AB4}
+  Consideremos o seguinte problema de valor inicial
+  \begin{align}
+    y' - y &= \sen(t), t>0\\
+    y(0) &= \frac{1}{2}.
+  \end{align}
+  Na Tabela~\ref{cap_pvi_sec_passo_mult:tab:ex_AB4}, temos as aproximações $\tilde{y}(1)$ de $y(1)$ computadas pelo método de Adams-Bashforth de $4$ passos. Como este método é de ordem $3$, escolhemos inicializá-lo pelo método de Runge-Kutta de ordem $4$, de forma a mantermos a consistência.
+ 
+  \begin{table}[H]
+    \centering
+    \caption{Resultados referentes ao Exemplo~\ref{cap_pvi_sec_passo_mult:ex:AB4}}
+    \begin{tabular}{l|cc}
+      $h$ & $\tilde{y}(1)$ & $|\tilde{y}(1)-y(1)|$\\\hline
+      $10^{-1}$ & $2.02735$ & $5.0\E-05$ \\
+      $10^{-2}$ & $2.02740$ & $7.7\E-09$ \\
+      $10^{-3}$ & $2.02740$ & $7.9\E-13$ \\\hline
+   \end{tabular}
+    \label{cap_pvi_sec_passo_mult:tab:ex_AB4}
+  \end{table}
+
+\begin{lstlisting}[caption=ab4.py]
+import numpy as np
+
+def ab4(f, t0, y0, h, n):
+
+    t = np.empty(5)
+    t[0] = t0
+    y = np.empty(5)
+    y[0] = y0
+    
+    # inicialização
+    for k in range(3):
+        phi1 = f(t[k], y[k])
+        phi2 = f(t[k]+h/2, y[k] + h*phi1/2)
+        phi3 = f(t[k]+h/2, y[k] + h*phi2/2)
+        phi4 = f(t[k]+h, y[k] + h*phi3)
+
+        y[k+1] = y[k] + h/6 \
+            * (phi1 + 2*phi2 + 2*phi3 + phi4)
+        t[k+1] = t[k] + h
+
+    # iterações
+    for k in range(3,n):
+        y[4] = y[3] + h/24*(55*f(t[3], y[3]) \
+                            - 59*f(t[2], y[2]) \
+                            + 37*f(t[1], y[1]) \
+                            - 9*f(t[0], y[0]))
+        t[4] = t[3] + h
+        
+        t[:4] = t[1:]
+        y[:4] = y[1:]
+        
+    return t[4], y[4]
+
+def f(t, y):
+    return y + np.sin(t)
+
+# analítica
+def exata(t):
+    return np.exp(t) - 0.5*np.sin(t) - 0.5*np.cos(t)
+
+h = 1e-3
+n = round(1./h)
+t,y = ab4(f, 0., 0.5, h, n)
+print(f'{h:.1e}: {y:.5e} {np.abs(y-exata(1)):.1e}')
+\end{lstlisting}
+\end{ex}
+
+\subsection{Métodos de Adams-Moulton}
+
+[[tag:construcao]]
+
+\subsubsection{Método de Admans-Moulton de Ordem 4}
+
+[[tag:construcao]]
+
+\subsection{Método Preditor-Corretor}
+
+[[tag::construcao]]
+
+\subsection{Exercícios}
+
+\begin{flushleft}
+  [[tag:revisar]]
+\end{flushleft}
+
+\begin{exer}
+  Considere o seguinte problema de valor inicial
+  \begin{align}
+    y' &+ e^{-y^2+1} = 2,\quad t>1,\\
+    y(1) &= -1.
+  \end{align}
+Inicializando pelo Método de Euler, use os seguintes métodos de passo múltiplo com $h=0,1$ para computar o valor aproximado de $y(2)$:
+\begin{enumerate}[a)]
+\item método de Adams-Bashforth de ordem $2$.
+\item método de Adams-Bashforth de ordem $3$.
+\item método de Adams-Bashforth de ordem $4$.
+\end{enumerate}
+\end{exer}
+\begin{resp}
+  a)~$-6.00696\E-1$; b)~$-5.96694\E-1$; c)~$-5.96161\E-1$
+\end{resp}
+
+\begin{exer}
+  Desenvolva o Método de Adams-Bashforth de ordem 3. Para tando, assuma $m=3$ em \eqref{cap_pvi_sec_passo_mult:eq:mult_passo_pesos} para obter as iterações
+  \begin{equation}
+    \begin{aligned}
+      &y^{(0)} = y_0,\\
+      &y^{(k+1)} = y^{(k)} + \frac{h}{12}\left[23f(t^{(k)},y^{(k)}) \right.\\
+      &\qquad\qquad\left. - 16f(t^{(k-1)},y^{(k-1)}) + 5f(t^{(k-2)},y^{(k-2)})\right],
+    \end{aligned}
+  \end{equation}
+  Escolha um método adequado para inicializá-lo e implemente-o para computar a solução aproximada de $y(1)$ para o PVI
+  \begin{subequations}
+    \begin{align}
+      &y' - y = \sen(t), 0 < t \leq 1,\\
+      &y(0) = \frac{1}{2}.
+    \end{align}
+  \end{subequations}
+\end{exer}
+\begin{resp}
+  Dica: use um Método de R-K com $O(h^P)$, $p\geq 3$, como inicializador.
+\end{resp}
+
+
 \section{Método adaptativo com controle de erro}\label{cap_pvi_met_adap}
 
 \begin{flushleft}
@@ -1494,306 +1764,4 @@ Use o Método de Euler com passo adaptativo para computar o valor aproximado de 
   % \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_pvi/dados/exer_Euler_adap/exer_Euler_adap.m}{Código.} 
   % \fi
   $-5.99240\E-1$
-\end{resp}
-
-
-\section{Métodos de passo múltiplo}\label{cap_pvi_sec_passo_mult}
-
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-Dado um problema de valor inicial
-\begin{align}
-  y'(t) &= f(t,y(t)),\quad t>t_0,\\
-  y(t_0) &= y_0.
-\end{align}
-temos
-\begin{equation}
-  y(t) = y(t_0) + \int_{t_0}^t f(s,y(s))\,ds.
-\end{equation}
-De forma mais geral, consideramos uma partição uniforme no tempo $\{t_0=t^{(1)} < t^{(2)} < \cdots < t^{(i)} < \cdots < t^{(n)}=t_f\}$, onde $t_f$ é um determinado tempo para o qual queremos computar uma aproximação para $y(t_f)$. Também, denotamos o passo no tempo por $h=(t_f-t_0)/n$. Com isso, a solução $y(t)$ satisfaz
-\begin{equation}
-  y\left(t^{(i+k)}\right) = y\left(t^{(i-j)}\right) + \int_{t^{(i-j)}}^{t^{(i+k)}} f(s,y(s))\,ds.
-\end{equation}
-A ideia é, então, aproximar a integral acima por uma quadratura numérica.
-
-Seguindo as regras de Newton-Cotes (veja, Cap.~\ref{cap_integr} Seç.~\ref{cap_integr_sec_NC}), escolhemos os nodos da quadratura como $x_l = t^{(i-l+1)}$, $l = 1, 2, \dotsc, m$, e, então
-\begin{equation}
-  \int_{t^{(i-j)}}^{t^{i+k}} f(x,y(x))\,dx \approx \sum_{l=1}^{m} f\left(x_l,y(x_l)\right)w_l,
-\end{equation}
-e
-\begin{equation}
-  w_l = \int_{t^{(i-j)}}^{t^{(i+k)}} \prod_{\overset{p=1}{p\neq l}}^m \frac{x-x_p}{x_l-x_p}\,dx.
-\end{equation}
-Agora, fazendo a mudança de variável $u=(x-t^{(i)})/h$, obtemos
-\begin{equation}
-  w_l = h\int_{-j}^{k} \prod_{\overset{p=1}{p\neq l}}^m \frac{u+p-1}{-l+p}\,du
-\end{equation}
-Assim sendo, temos o seguinte esquema numérico
-\begin{equation}
-  y^{(i+k)} = y^{(i-j)} + h\sum_{l=1}^m c_{l}f(t^{(i-l+1)},y^{(i-l+1)}),\label{eq:mult_passo_iter}
-\end{equation}
-onde
-\begin{equation}
-  c_l = \int_{-j}^{k} \prod_{\overset{p=1}{p\neq l}}^m \frac{s+p-1}{-l+p}\,ds.\label{eq:mult_passo_pesos}
-\end{equation}
-
-Diferentes escolhas de $j$, $k$ e $m$ não fornecem diferentes métodos. Observamos, ainda, que a ordem de um tal método de passo múltiplo é determinada pela ordem de truncamento da quadratura numérica usada (veja, por exemplo, \cite[Cap. 5, Seç. 5.6]{Burden2015a}).
-
-\subsection{Métodos de Adams-Bashforth}\index{método de Adams-Bashforth}
-
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-Métodos de Adams-Bashforth são métodos de passo múltiplo obtidos ao escolhermos $j=0$ e $k=1$ no esquema numérico~\eqref{eq:mult_passo_iter}. Com isso, ao escolhermos $m$ obtemos um método de ordem $O(h^{m})$~\cite[Cap. 5, Seç. 5.6]{Burden2015a}.
-
-\subsubsection{Método de Adams-Bashforth de ordem 2}
-
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-Tomando $m=2$ em \eqref{eq:mult_passo_pesos}, temos
-\begin{equation}
-  c_1 = \int_0^1 s+1\,ds = \frac{3}{2}
-\end{equation}
-e
-\begin{equation}
-  c_2 = \int_0^1 -s\,ds = -\frac{1}{2}.
-\end{equation}
-Então, de \eqref{eq:mult_passo_iter} temos a iteração do \emph{método de Adams-Bashforth de $2$ passos}:
-\begin{align}
-  y^{(1)} &= y_0,\\
-  y^{(i+1)} &= y^{(i)} + \frac{h}{2}\left[3f(t^{(i)},y^{(i)}) - f(t^{(i-1)},y^{(i-1)})\right],
-\end{align}
-com $t^{(i)} = t_0 + (i-1)h$.
-
-\begin{ex}\label{ex:AB2}
-  Consideremos o seguinte problema de valor inicial
-  \begin{align}
-    y' - y &= \sen(t), t>0\\
-    y(0) &= \frac{1}{2}.
-  \end{align}
-  Na Tabela~\ref{tab:ex_AB2}, temos as aproximações $\tilde{y}(1)$ de $y(1)$ computadas pelo método de Adams-Bashforth de $2$ passos. Como este método é de ordem $2$, escolhemos inicializá-lo pelo método do ponto médio, de forma a mantermos a consistência.
- 
-  \begin{table}[h!]
-    \centering
-    \begin{tabular}{l|cc}
-      $h$ & $\tilde{y}(1)$ & $|\tilde{y}(1)-y(1)|$\\\hline
-      $10^{-1}$ & $2,01582$ & $1,2\E-02$ \\
-      $10^{-2}$ & $2,02727$ & $1,3\E-04$ \\
-      $10^{-3}$ & $2,02739$ & $1,3\E-06$ \\
-      $10^{-4}$ & $2,02740$ & $1,3\E-08$ \\
-      $10^{-5}$ & $2,02740$ & $1,3\E-10$ \\\hline
-    \end{tabular}
-    \caption{Resultados referentes ao Exemplo~\ref{ex:AB2}}
-    \label{tab:ex_AB2}
-  \end{table}
-
-% \ifisoctave
-% Os resultados mostrados na Tabela~\ref{tab:ex_AB2} podem ser computados no \verb+GNU Octave+ com o auxílio do seguinte código:
-% \begin{verbatim}
-% f = @(t,y) y+sin(t);
-
-% h=1e-1;
-% n=round(1/h+1);
-% t=zeros(n,1);
-% y=zeros(n,1);
-
-% #c.i.
-% t(1)=0;
-% y(1)=0.5;
-
-% #inicializacao
-% t(2)=t(1)+h;
-% y(2)=y(1)+h*f(t(1)+h/2,y(1)+h/2*f(t(1),y(1)));
-
-% #iteracoes
-% for i=2:n-1
-%   t(i+1) = t(i)+h;
-%   y(i+1)=y(i) + ...
-%         h/2*(3*f(t(i),y(i))-f(t(i-1),y(i-1)));
-% endfor
-
-% ya = @(t) exp(t)-sin(t)/2-cos(t)/2;
-% printf("%f %1.5E %1.1E\n",t(n),y(n),abs(y(n)-ya(1)))
-% \end{verbatim}
-% \fi
-\end{ex}
-
-\subsubsection{Método de Adams-Bashforth de ordem 3}
-
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-Tomando $m=3$ em \eqref{eq:mult_passo_pesos} obtemos, de \eqref{eq:mult_passo_iter}, a iteração do \emph{método de Adams-Bashforth de $3$ passos}:
-\begin{align}
-  y^{(1)} &= y_0,\\
-  y^{(i+1)} &= y^{(i)} + \frac{h}{12}\left[23f(t^{(i)},y^{(i)}) \right.\nonumber\\
-              &\left. - 16f(t^{(i-1)},y^{(i-1)}) + 5f(t^{(i-2)},y^{(i-2)})\right],
-\end{align}
-com $t^{(i)} = t_0 + (i-1)h$.
-
-\begin{ex}\label{ex:AB3}
-  Consideremos o seguinte problema de valor inicial
-  \begin{align}
-    y' - y &= \sen(t), t>0\\
-    y(0) &= \frac{1}{2}.
-  \end{align}
-  Na Tabela~\ref{tab:ex_AB3}, temos as aproximações $\tilde{y}(1)$ de $y(1)$ computadas pelo método de Adams-Bashforth de $3$ passos. Como este método é de ordem $3$, escolhemos inicializá-lo pelo método de Runge-Kutta de ordem $4$, de forma a garantirmos a consistência.
- 
-  \begin{table}[h!]
-    \centering
-    \begin{tabular}{l|cc}
-      $h$ & $\tilde{y}(1)$ & $|\tilde{y}(1)-y(1)|$\\\hline
-      $10^{-1}$ & $2,02696$ & $4,3\E-04$ \\
-      $10^{-2}$ & $2,02739$ & $5,9\E-07$ \\
-      $10^{-3}$ & $2,02740$ & $6,1\E-10$ \\
-      $10^{-4}$ & $2,02740$ & $6,6\E-13$ \\\hline
-   \end{tabular}
-    \caption{Resultados referentes ao Exemplo~\ref{ex:AB3}}
-    \label{tab:ex_AB3}
-  \end{table}
-
-% \ifisoctave
-% Os resultados mostrados na Tabela~\ref{tab:ex_AB3} podem ser computados no \verb+GNU Octave+ com o auxílio do seguinte código:
-% \begin{verbatim}
-% f = @(t,y) y+sin(t);
-
-% h=1e-1;
-% n=round(1/h+1);
-% t=zeros(n,1);
-% y=zeros(n,1);
-
-% #c.i.
-% t(1)=0;
-% y(1)=0.5;
-
-% #inicializacao
-% for i=1:2
-%   t(i+1)=t(i)+h;
-%   k1=h*f(t(i),y(i));
-%   k2=h*f(t(i)+h/2,y(i)+k1/2);
-%   k3=h*f(t(i)+h/2,y(i)+k2/2);
-%   k4=h*f(t(i)+h,y(i)+k3);
-%   y(i+1)=y(i)+(k1+2*k2+2*k3+k4)/6;
-% endfor
-
-% #iteracoes
-% for i=3:n-1
-%   t(i+1) = t(i)+h;
-%   y(i+1)=y(i) + ...
-%         h/12*(23*f(t(i),y(i)) ...
-%         -16*f(t(i-1),y(i-1)) ...
-%         +5*f(t(i-2),y(i-2)));
-% endfor
-
-% ya = @(t) exp(t)-sin(t)/2-cos(t)/2;
-% printf("%f %1.5E %1.1E\n",t(n),y(n),abs(y(n)-ya(1)))
-% \end{verbatim}
-% \fi
-\end{ex}
-
-\subsubsection{Método de Adams-Bashforth de ordem 4}
-
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-Tomando $m=4$ em \eqref{eq:mult_passo_pesos} obtemos, de \eqref{eq:mult_passo_iter}, a iteração do \emph{método de Adams-Bashforth de $4$ passos}:
-\begin{align}
-  y^{(1)} &= y_0,\\
-  y^{(i+1)} &= y^{(i)} + \frac{h}{24}\left[55f(t^{(i)},y^{(i)}) \right.\nonumber\\
-              &\left. - 59f(t^{(i-1)},y^{(i-1)}) + 37f(t^{(i-2)},y^{(i-2)}) \right. \nonumber \\
-          &\left. -9f(t^{(i-3)},y^{(i-3)})\right],
-\end{align}
-com $t^{(i)} = t_0 + (i-1)h$.
-
-\begin{ex}\label{ex:AB4}
-  Consideremos o seguinte problema de valor inicial
-  \begin{align}
-    y' - y &= \sen(t), t>0\\
-    y(0) &= \frac{1}{2}.
-  \end{align}
-  Na Tabela~\ref{tab:ex_AB4}, temos as aproximações $\tilde{y}(1)$ de $y(1)$ computadas pelo método de Adams-Bashforth de $4$ passos. Como este método é de ordem $3$, escolhemos inicializá-lo pelo método de Runge-Kutta de ordem $4$, de forma a mantermos a consistência.
- 
-  \begin{table}[h!]
-    \centering
-    \begin{tabular}{l|cc}
-      $h$ & $\tilde{y}(1)$ & $|\tilde{y}(1)-y(1)|$\\\hline
-      $10^{-1}$ & $2,02735$ & $5,0\E-05$ \\
-      $10^{-2}$ & $2,02740$ & $7,7\E-09$ \\
-      $10^{-3}$ & $2,02740$ & $7,9\E-13$ \\\hline
-   \end{tabular}
-    \caption{Resultados referentes ao Exemplo~\ref{ex:AB4}}
-    \label{tab:ex_AB4}
-  \end{table}
-
-% \ifisoctave
-% Os resultados mostrados na Tabela~\ref{tab:ex_AB4} podem ser computados no \verb+GNU Octave+ com o auxílio do seguinte código:
-% \begin{verbatim}
-% f = @(t,y) y+sin(t);
-
-% h=1e-1;
-% n=round(1/h+1);
-% t=zeros(n,1);
-% y=zeros(n,1);
-
-% #c.i.
-% t(1)=0;
-% y(1)=0.5;
-
-% #inicializacao
-% for i=1:3
-%   t(i+1)=t(i)+h;
-%   k1=h*f(t(i),y(i));
-%   k2=h*f(t(i)+h/2,y(i)+k1/2);
-%   k3=h*f(t(i)+h/2,y(i)+k2/2);
-%   k4=h*f(t(i)+h,y(i)+k3);
-%   y(i+1)=y(i)+(k1+2*k2+2*k3+k4)/6;
-% endfor
-
-% #iteracoes
-% for i=4:n-1
-%   t(i+1) = t(i)+h;
-%   y(i+1)=y(i) + ...
-%         h/24*(55*f(t(i),y(i)) ...
-%         -59*f(t(i-1),y(i-1)) ...
-%         +37*f(t(i-2),y(i-2)) ...
-%         -9*f(t(i-3),y(i-3)));
-% endfor
-
-% ya = @(t) exp(t)-sin(t)/2-cos(t)/2;
-% printf("%f %1.5E %1.1E\n",t(n),y(n),abs(y(n)-ya(1)))
-% \end{verbatim}
-% \fi
-\end{ex}
-
-\subsection{Exercícios}
-
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-\begin{exer}
-  Considere o seguinte problema de valor inicial
-  \begin{align}
-    y' &+ e^{-y^2+1} = 2,\quad t>1,\\
-    y(1) &= -1.
-  \end{align}
-Inicializando pelo Método de Euler, use os seguintes métodos de passo múltiplo com $h=0,1$ para computar o valor aproximado de $y(2)$:
-\begin{enumerate}[a)]
-\item método de Adams-Bashforth de ordem $2$.
-\item método de Adams-Bashforth de ordem $3$.
-\item método de Adams-Bashforth de ordem $4$.
-\end{enumerate}
-\end{exer}
-\begin{resp}
-  % \ifisoctave 
-  % \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_pvi/dados/exer_AB_pvi1/exer_AB_pvi1.m}{Código.} 
-  % \fi
-  a)~$-6,00696\E-1$; b)~$-5,96694\E-1$; c)~$-5,96161\E-1$
 \end{resp}
