@@ -1,0 +1,2 @@
+import aux
+print(x)
