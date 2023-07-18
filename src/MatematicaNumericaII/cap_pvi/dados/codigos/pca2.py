@@ -37,7 +37,7 @@ def f(t, y):
 def exata(t):
     return np.exp(t) - 0.5*np.sin(t) - 0.5*np.cos(t)
 
-h = 1e-3
+h = 1e-1
 n = round(1./h)
 t,y = pca2(f, 0., 0.5, h, n)
 print(f'{h:.1e}: {y:.5e} {np.abs(y-exata(1)):.1e}')
