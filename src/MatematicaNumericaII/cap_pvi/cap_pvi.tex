@@ -791,7 +791,7 @@ O \hl{Método do Ponto Médio é um método de Runge-Kutta de ordem $2$} proveni
 \end{aligned}
 \end{equation}
 Logo, a \hl{\emph{iteração do Método do Ponto Médio}} é
-\begin{equation}\hleq
+\begin{equation}\label{cap_pvi_sec_rk:eq:iter_pm}\hleq
   \begin{aligned}
     &y^{(0)} = y_0\\
     &y^{(k+1)} = y^{(k)} + hf\left(t^{(k)}+\frac{h}{2}, y^{(k)}+\frac{h}{2}f(t^{(k)},y^{(k)})\right),
@@ -924,7 +924,7 @@ print(f'{h:.1e}: {y:.5e} {np.abs(y-exata(1)):.1e}')
 \subsection{Método de Runge-Kutta de ordem $4$}
 
 \hl{Um dos métodos de Runge-Kutta mais empregados é o} seguinte método \hl{de ordem $4$}:
-\begin{equation}\hleq
+\begin{equation}\label{cap_pvi_sec_rk:eq:iter_rk4}\hleq
   \begin{aligned}
     &y^{(0)} = y_0,\\
     &y^{(k+1)} = y^{(k)} + \frac{h}{6}(\phi_1 + 2\phi_2 + 2\phi_3 + \phi_4),
@@ -1342,7 +1342,7 @@ Use o Método de Euler Implícito para computar o valor aproximado de $y(2)$ com
 
 \section{Métodos de Passo Múltiplo}\label{cap_pvi_sec_passo_mult}
 
-Seja um \emph{Problema de Valor Inicial} (PVI)
+Seja um Problema de Valor Inicial (PVI)
 \begin{subequations}\hleq
   \begin{align}
     y'(t) &= f(t,y(t)),\quad t_0 < t \leq t_f,\\
@@ -1351,18 +1351,18 @@ Seja um \emph{Problema de Valor Inicial} (PVI)
 \end{subequations}
 
 Assumimos uma discretização uniforme no tempo $t^{(k)} = t_0 + kh$, com tamanho de passo $h = (t_f-t_0)/n$. Do \href{https://notaspedrok.com.br/notas/CalculoI/cap_int_sec_propint.html}{Teorema Fundamental do Cálculo}, temos
-\begin{equation}\hleq
+\begin{equation}\label{cap_pvi_sec_passo_mult:eq:tfc}\hleq
   y\left(t^{(k+i)}\right) = y\left(t^{(k-j)}\right) + \int_{t^{(k-j)}}^{t^{(k+i)}} f(s,y(s))\,ds.
 \end{equation}
 \hl{A ideia é aproximar a integral por uma quadratura de Newton}{\newton}\hl{-Cotes}{\cotes}. Das regras\footnote{Consulte as \href{https://notaspedrok.com.br/notas/MatematicaNumericaII/cap_integr_sec_NC.html}{Notas de Aula: Matemática Numérica II: Integração: Regras de Newton-Cotes}.}, temos
-\begin{equation}\label{cap_pvi_sec_passo_mult:eq:tfc}
+\begin{equation}\label{cap_pvi_sec_passo_mult:eq:quad}
   \int_{t^{(k-j)}}^{t^{k+i}} f(s,y(s))\,ds \approx \sum_{l=1}^{m} f\left(s^{(l)},y(s^{(l)})\right)w^{(l)},
 \end{equation}
 onde $s^{(l)}$ são os nodos e $w^{(l)}$ os pesos da quadratura, $l = 1, 2, \dotsc, m$.
 
 \subsection{Métodos de Adams-Bashforth}
 
-\hl{Métodos de Adams-Bashforth são métodos explícitos de passo múltiplo} obtidos ao escolhermos $j=0$ e $i=1$ em \eqref{cap_pvi_sec_passo_mult:eq:tfc}, i.e.
+\hl{Métodos de Adams-Bashforth são métodos explícitos de passo múltiplo} obtidos ao escolhermos $j=0$ e $i=1$ em \eqref{cap_pvi_sec_passo_mult:eq:quad}, i.e.
 \begin{equation}
   y\left(t^{(k+1)}\right) = y\left(t^{(k)}\right) + \int_{t^{(k)}}^{t^{(k+1)}} f(s,y(s))\,ds.
 \end{equation}
@@ -1402,9 +1402,10 @@ e
   c_2 = \int_0^1 -s\,ds = -\frac{1}{2}.
 \end{equation}
 Então, de \eqref{cap_pvi_sec_passo_mult:eq:mult_passo_iter} temos a \hl{iteração do \emph{método de Adams-Bashforth de $2$ passos}}:
-\begin{equation}\hleq
+\begin{equation}\label{cap_pvi_sec_passo_mult:eq:iter_ab2}\hleq
   \begin{aligned}
     &y^{(0)} = y_0,\\
+    &y^{(1)} = \tilde{y}_1,\\
     &y^{(k+1)} = y^{(k)} + \frac{h}{2}\left[3f(t^{(k)},y^{(k)}) - f(t^{(k-1)},y^{(k-1)})\right],
   \end{aligned}
 \end{equation}
@@ -1477,10 +1478,12 @@ print(f'{h:.1e}: {y:.5e} {np.abs(y-exata(1)):.1e}')
 Tomando $m=4$ em \eqref{cap_pvi_sec_passo_mult:eq:mult_passo_pesos} obtemos, de \eqref{cap_pvi_sec_passo_mult:eq:mult_passo_iter}, a \hl{iteração do \emph{método de Adams-Bashforth de $4$ passos}}
 \begin{equation}\hleq
   \begin{aligned}
-    y^{(1)} &= y_0,\\
-    y^{(i+1)} &= y^{(i)} + \frac{h}{24}\left[55f(t^{(i)},y^{(i)}) \right.\\
-    &\qquad\qquad\left. - 59f(t^{(i-1)},y^{(i-1)}) + 37f(t^{(i-2)},y^{(i-2)}) \right. \\
-    &\qquad\qquad\left. -9f(t^{(i-3)},y^{(i-3)})\right],
+    &y^{(0)} = y_0,\\
+    &y^{(1)} = \tilde{y}_1,\\
+    &y^{(2)} = \tilde{y}_2,\\
+    &y^{(k+1)} = y^{(k)} + \frac{h}{24}\left[55f(t^{(k)},y^{(k)}) \right.\\
+    &\qquad\qquad\left. - 59f(t^{(k-1)},y^{(k-1)}) + 37f(t^{(k-2)},y^{(k-2)}) \right. \\
+    &\qquad\qquad\left. -9f(t^{(k-3)},y^{(k-3)})\right],
   \end{aligned}
 \end{equation}
 
@@ -1554,37 +1557,167 @@ print(f'{h:.1e}: {y:.5e} {np.abs(y-exata(1)):.1e}')
 
 \subsection{Métodos de Adams-Moulton}
 
-[[tag:construcao]]
+\hl{Métodos de Adams-Moulton são esquemas implícitos} obtidos tomando-se $i=1$, $j=0$ em \eqref{cap_pvi_sec_passo_mult:eq:tfc} e incluindo-se $t^{(k+1)}$ como nodo da quadratura em \eqref{cap_pvi_sec_passo_mult:eq:quad}.
 
-\subsubsection{Método de Admans-Moulton de Ordem 4}
+\subsubsection{Método de Admans-Moulton de 2 Passos}
 
-[[tag:construcao]]
+A \hl{iteração do \emph{de Admans-Moulton de 2 Passos (A-B-2)}}\footnote{Consulte o Exercício \ref{cap_pvi_sec_passo_mult:exer:am2}} é
+\begin{equation}\hleq\label{cap_pvi_sec_passo_mult:eq:iter_am2}
+  \begin{aligned}
+    &y^{(0)} = y_0,\\
+    &y^{(1)} = \tilde{y}_1,\\
+    &y^{(k+1)} = y^{(k)} + \frac{h}{12}\left[5f\left(t^{(k+1)}, y\left(t^{(k+1)}\right)\right)\right.\\
+    &\qquad\qquad\qquad\qquad + 8f\left(t^{(k)}, y\left(t^{(k)}\right)\right) \\
+    &\qquad\qquad\qquad\qquad\left.  - f\left(t^{(k-1)}, y\left(t^{(k-1)}\right)\right)\right]
+  \end{aligned}
+\end{equation}
 
-\subsection{Método Preditor-Corretor}
+\begin{obs}\normalfont{(Estimativa do Erro Local.)}
+  O método A-B-2 tem \hl{erro de truncamento local da $O(h^3)$}.
+\end{obs}
 
-[[tag::construcao]]
+
+A inicialização do método A-B-2 requer a computação de $y^{(1)}$ por algum método de passo simples. Manter a consistência é um desafio e uma alternativa é a utilização de um esquema preditor-corretor.
+
+\subsubsection{Método Preditor-Corretor}
+
+\hl{Um \emph{Método Preditor-Corretor} consistem em acoplar um método explícito com um implícito}. A cada passo no tempo $t^{(k)}$, o \hl{método explícito (\emph{preditor})} é usado para computar uma primeira aproximação $\tilde{y}^{(k)}\approx y\left(t^{(k)}\right)$ e, o \hl{método implícito (\emph{corretor})} é usado para computar $y^{(k)}$, usando $\tilde{y}^{(k)}$ no esquema.
+
+\begin{ex}\label{cap_pvi_sec_passo_mult:ex:am2_pc}
+  Consideremos o seguinte PVI
+  \begin{subequations}
+    \begin{align}
+      &y' - y = \sen(t), 0 < t \leq 1,\\
+      &y(0) = \frac{1}{2}.
+    \end{align}
+  \end{subequations}
+  Na Tabela~\ref{cap_pvi_sec_passo_mult:tab:ex_am2_pc}, temos as aproximações $\tilde{y}(1)$ de $y(1)$ computadas pelo Método Preditor-Corretor de Adams de $2$ passos\footnote{Com erro de truncamento local de $O(h^2)$.}. Para a inicialização, usamos o Método do Ponto Médio \ref{cap_pvi_sec_rk:eq:iter_pm}, como preditor o Método de Adams-Bashforth de 2 passos \eqref{cap_pvi_sec_passo_mult:eq:iter_ab2} e como corretor o Método de Adams-Moulton \eqref{cap_pvi_sec_passo_mult:eq:iter_am2}.
+ 
+  \begin{table}[H]
+    \centering
+    \caption{Resultados referentes ao Exemplo~\ref{cap_pvi_sec_passo_mult:ex:am2_pc}.}
+    \begin{tabular}{l|cc}
+      $h$ & $\tilde{y}(1)$ & $|\tilde{y}(1)-y(1)|$\\\hline
+      $10^{-1}$ & $2.02638$ & $1.0\E-03$ \\
+      $10^{-2}$ & $2.02739$ & $1.1\E-06$ \\
+      $10^{-3}$ & $2.02740$ & $1.2\E-09$ \\\hline
+   \end{tabular}
+    \label{cap_pvi_sec_passo_mult:tab:ex_am2_pc}
+  \end{table}
+
+\begin{lstlisting}[caption = pca2.py]
+import numpy as np
+
+def pca2(f, t0, y0, h, n):
+
+    t = np.empty(3)
+    t[0] = t0
+    y = np.empty(3)
+    y[0] = y0
+
+    # inicialização (PM 2)
+    y[1] = y[0] + h/2*f(t[0], y[0])
+    y[1] = y[0] + h*f(t[0]+h/2, y[1])
+    t[1] = t[0] + h
+
+    
+    # iterações
+    for k in range(1,n):
+        
+        # preditor (AB 2)
+        y[2] = y[1] + h/2*(3*f(t[1],y[1]) \
+                             - f(t[0], y[0]))
+        t[2] = t[1] + h
+        # corretor (AM 2)
+        y[2] = y[1] + h/12*(5*f(t[2],y[2]) \
+                              + 8*f(t[1], y[1]) \
+                              - f(t[0], y[0]))
+        
+        t[:2] = t[1:]
+        y[:2] = y[1:]
+        
+    return t[2], y[2]
+
+def f(t, y):
+    return y + np.sin(t)
+
+# analítica
+def exata(t):
+    return np.exp(t) - 0.5*np.sin(t) - 0.5*np.cos(t)
+
+h = 1e-1
+n = round(1./h)
+t,y = pca2(f, 0., 0.5, h, n)
+print(f'{h:.1e}: {y:.5e} {np.abs(y-exata(1)):.1e}')
+\end{lstlisting}
+\end{ex}
+
+\subsubsection{Método de Adams-Moulton de 4 Passos}
+
+\hl{O Método de Adams-Moulton de 4 Passos é um método implícito com erro de truncamento local de $O(h^5)$}. Sua iteração consiste em
+\begin{equation}\label{cap_pvi_sec_passo_mult:eq:iter_am4}\hleq
+  \begin{aligned}
+    &y^{(0)} = y_0,\\
+    &y^{(1)} = \tilde{y}_1,\\
+    &y^{(2)} = \tilde{y}_2,\\
+    &y^{(3)} = \tilde{y}_3,\\
+    &y^{(k+1)} = y^{(k)} + \frac{h}{720}\left[251f\left(t^{(k+1)},y^{(k+1)}\right) \right.\\
+    &\qquad\qquad\left. + 646f\left(t^{(k)},y^{(k)}\right) - 264f\left(t^{(k-1)},y^{(k-1)}\right) \right. \\
+    &\qquad\qquad\left. + 106f\left(t^{(k-2)},y^{(k-2)}\right) - 19f\left(t^{(k-3)},y^{(k-3)}\right)\right].
+  \end{aligned}
+\end{equation}
+
+\begin{ex}
+  Consideramos o seguinte PVI
+  \begin{subequations}
+    \begin{align}
+      &y' - y = \sen(t), 0 < t \leq 1,\\
+      &y(0) = \frac{1}{2}.
+    \end{align}
+  \end{subequations}
+  Podemos computar uma aproximação para $y(1)$ usando um esquema preditor-corretor com: inicialização pelo Método RK-4 \ref{cap_pvi_sec_rk:eq:iter_rk4}, preditor o Método de Adams-Bashforth de 4 passos \eqref{cap_pvi_sec_passo_mult:eq:iter_ab4} e como corretor o Método de Adams-Moulton \eqref{cap_pvi_sec_passo_mult:eq:iter_am4}. Isto nos fornece um método com erro de truncamento local mínimo de $O(h^4)$. Consulte o Exercício \ref{cap_pvi_sec_passo_mult:exer:pca4}.
+\end{ex}
 
 \subsection{Exercícios}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
 \begin{exer}
   Considere o seguinte problema de valor inicial
-  \begin{align}
-    y' &+ e^{-y^2+1} = 2,\quad t>1,\\
-    y(1) &= -1.
-  \end{align}
-Inicializando pelo Método de Euler, use os seguintes métodos de passo múltiplo com $h=0,1$ para computar o valor aproximado de $y(2)$:
-\begin{enumerate}[a)]
-\item método de Adams-Bashforth de ordem $2$.
-\item método de Adams-Bashforth de ordem $3$.
-\item método de Adams-Bashforth de ordem $4$.
-\end{enumerate}
+  \begin{subequations}
+    \begin{align}
+      &y' + e^{-y^2+1} = 2,\quad t>1,\\
+      &y(1) = -1.
+    \end{align}
+  \end{subequations}
+  Inicializando pelo Método de Euler, use os seguintes métodos de passo múltiplo com $h=0,1$ para computar o valor aproximado de $y(2)$:
+  \begin{enumerate}[a)]
+  \item método de Adams-Bashforth de ordem $2$.
+  \item método de Adams-Bashforth de ordem $3$.
+  \item método de Adams-Bashforth de ordem $4$.
+  \end{enumerate}
 \end{exer}
 \begin{resp}
   a)~$-6.00696\E-1$; b)~$-5.96694\E-1$; c)~$-5.96161\E-1$
+\end{resp}
+
+\begin{exer}\eqref{cap_pvi_sec_taylor:eq:pvi_exer_0}
+  Considere o PVI
+  \begin{subequations}
+    \begin{align}
+      &y' + \cos(t) = y,\quad 0 < t \leq 1,\\
+      &y(0) = \frac{1}{2}.
+    \end{align}
+  \end{subequations}
+  Usando um método de inicialização adequado, aplique os seguintes métodos para computar aproximações para $y(1)$:
+  \begin{enumerate}[a)]
+  \item Método de Adams-Bashforth de 2 Passos.
+  \item Método de Adams-Bashforth de 4 Passos.
+  \end{enumerate}
+  Em cada caso, verifique se seus resultados satisfazem a ordem esperada do erro de truncamento local.
+\end{exer}
+\begin{resp}
+  Dica: solução analítica é $y(t) = \frac{1}{2}\cos(t) - \frac{1}{2}\sin(t)$.
+  
+  a) Inicialização pelo Método do Ponto Médio, $\tau = O(h^2)$; b) Inicialização pelo Método de RK-4, $\tau = O(h^4)$.
 \end{resp}
 
 \begin{exer}
@@ -1608,6 +1741,43 @@ Inicializando pelo Método de Euler, use os seguintes métodos de passo múltipl
   Dica: use um Método de R-K com $O(h^P)$, $p\geq 3$, como inicializador.
 \end{resp}
 
+\begin{exer}\label{cap_pvi_sec_passo_mult:exer:pca4}
+  Considere o PVI
+  \begin{subequations}
+    \begin{align}
+      &y' - y = \sen(t), 0 < t \leq 1,\\
+      &y(0) = \frac{1}{2}.
+    \end{align}
+  \end{subequations}
+  Compute aproximações para $y(1)$ usando um esquema preditor-corretor com: inicialização pelo Método RK-4 \ref{cap_pvi_sec_rk:eq:iter_rk4}, preditor o Método de Adams-Bashforth de 4 passos \eqref{cap_pvi_sec_passo_mult:eq:iter_ab4} e como corretor o Método de Adams-Moulton \eqref{cap_pvi_sec_passo_mult:eq:iter_am4}. Verifique que isso nos fornece um método com erro de truncamento local mínimo de $O(h^4)$.
+\end{exer}
+\begin{resp}
+  Dica: solução analítica é $y(t) = e^t - \frac{1}{2}\sen(t) - \frac{1}{2}\cos(t)$.
+\end{resp}
+
+\begin{exer}
+  O Método de Adams-Moulton de 3 passos (AM-3) é um método implícito com erro de truncamento local de $O(h^4)$. Sua iteração consiste em
+  \begin{equation}
+    \begin{aligned}
+      &y^{(0)} = y_0,\\
+      &y^{(1)} = \tilde{y}_1,\\
+      &y^{(2)} = \tilde{y}_2,\\
+      &y^{(k+1)} = y^{(k)} + \frac{h}{24}\left[9f\left(t^{(k+1)},y^{(k+1)}\right) \right.\\
+    &\qquad\qquad\left. + 19f\left(t^{(k)},y^{(k)}\right) - 5f\left(t^{(k-1)},y^{(k-1)}\right) \right. \\
+    &\qquad\qquad\left. + f\left(t^{(k-2)},y^{(k-2)}\right)\right].      
+  \end{aligned}
+  \end{equation}
+  Refaça o Exercício \ref{cap_pvi_sec_passo_mult:exer:pca4} substituindo o método corretor pelo AM-3. Verifique se suas computações satisfazem o espero erro de truncamento local.
+\end{exer}
+\begin{resp}
+  Dica: $\tau = O(h^4)$.
+\end{resp}
+
+\subsubsection{Análise Numérica}
+
+\begin{exer}\label{cap_pvi_sec_passo_mult:exer:am2}
+  Mostre o desenvolvimento do Método de Adams-Moulton de 2 passos \eqref{cap_pvi_sec_passo_mult:eq:iter_am2}.
+\end{exer}
 
 \section{Método adaptativo com controle de erro}\label{cap_pvi_met_adap}
 
