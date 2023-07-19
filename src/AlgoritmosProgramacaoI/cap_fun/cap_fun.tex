@@ -266,3 +266,242 @@ print(f'x2 = {x2}')
 \begin{resp}
   Dica: O módulo \lstinline+random+ fornece a função \href{https://docs.python.org/3/library/random.html?highlight=random#random.randint}{\lstinline+random.randint(a, b)+} que retorna um inteiro $a \leq x \leq b$.
 \end{resp}
+
+\section{Definindo Funções}\label{cap_fun_sec_def}
+
+Em {\python}, criamos ou \hl{definimos uma função com a instrução {\lstinline+def+}}, com a seguinte sintaxe
+\begin{lstlisting}
+def foo(x):
+   bloco
+\end{lstlisting}
+Aqui, \lstinline+foo+ é o nome da função, \lstinline+x+ é o parâmetro (variável) de entrada e \lstinline+bloco+ é o bloco de programação que a função executa ao ser chamada. Uma função pode ter mais parâmetros ou não ter parâmetro de entrada.
+
+\begin{ex}\label{cap_fun_sec_def:ex:areaCirc}
+  O seguinte código, define a função \lstinline+areaCirc+ que computa e imprime a área de uma circunferência de raio $r$.
+\begin{lstlisting}
+import math as m
+
+def areaCirc(r):
+    area = m.pi * r**2
+    print(f'área = {area}')
+\end{lstlisting}
+  Uma vez definida, a função pode ser chamada em qualquer parte do código. Por exemplo, vamos continuar o código de forma que a(o) usuária(o) informe os raios de duas circunferências e o código compute e imprima o valor das áreas de cada circunferência.
+\begin{lstlisting}
+import math as m
+
+# def fun
+def areaCirc(r):
+    area = m.pi * r**2
+    print(f'área = {area}')
+    
+# entrada de dados
+raio1 = float(input('Digite o raio da 1. circ.:\n'))
+raio2 = float(input('Digite o raio da 2. circ.:\n'))
+
+print(f'Circunferência de raio = {raio1}')
+areaCirc(raio1)
+
+print(f'Circunferência de raio = {raio2}')
+areaCirc(raio2)
+\end{lstlisting}
+\end{ex}
+
+\begin{obs}\normalfont{(\hl{{\lstinline+docstring+}}.)}
+  {\python} recomenda a utilização do sistema de documentação \lstinline+docstring+. Na definição de funções, um pequeno comentário sobre sua funcionalidade, seguido da descrição sobre seus parâmetros podem ser feito usando \lstinline+'''+, logo abaixo da instrução \lstinline+def+. Por exemplo,
+\begin{lstlisting}
+import math as m
+
+# def fun
+def areaCirc(r):
+    '''
+    Computa e imprime a área de uma
+    circunferência.
+
+    Entrada
+    -------
+    r : float
+    Raio da circunferência.
+    '''
+    area = m.pi * r**2
+    print(f'área = {area}')
+\end{lstlisting}
+  Com isso, podemos usar a função \lstinline+help+ para obter a documentação da função \lstinline+areaCirc+.
+\begin{lstlisting}
+>>> help(areaCirc)
+\end{lstlisting}
+  Verifique!
+\end{obs}
+
+Uma função pode ser definida sem parâmetro de entrada.
+
+\begin{ex}
+  O seguinte código, implementa uma função que imprime um número randômico par entre $0$ e $100$ (incluídos).
+\begin{lstlisting}
+import random
+
+def randPar100():
+    '''
+    Imprime um número randômico
+    par entre 0 e 100 (incluídos).
+    '''
+    n = random.randint(0, 99)
+    if (n % 2 == 0):
+        print(n)
+    else:
+        print(n+1)
+\end{lstlisting}
+  Para chamá-la, usamos
+\begin{lstlisting}
+>>> randPar100()
+\end{lstlisting}
+  Verifique!
+\end{ex}
+
+\subsection{Funções com Saída de Dados}
+
+Além de parâmetros de entrada, \hl{uma função pode ter saída de dados}, i.e. pode retornar dados para o programa. Para isso, usamos a instrução \lstinline+return+ que interrompe a execução da função e retorna ao programa principal. Quando o \lstinline+return+ é seguido de um objeto, a função tem como saída o valor desse objeto.
+
+\begin{ex}
+  Vamos atualizar a versão de nosso código do Exemplo \ref{cap_fun_sec_def:ex:areaCirc}. Aqui, em vez de imprimir, a função \lstinline+areaCirc(r)+ tem como saída o valor computado da área da circunferência de raio \lstinline+r+
+\begin{lstlisting}
+import math as m
+
+# def fun
+def areaCirc(r):
+    area = m.pi * r**2
+    return area
+    
+# entrada de dados
+raio1 = float(input('Digite o raio da 1. circ.:\n'))
+raio2 = float(input('Digite o raio da 2. circ.:\n'))
+
+print(f'Circunferência de raio = {raio1}')
+area1 = areaCirc(raio1)
+print(f'\tárea = {area1}')
+
+print(f'Circunferência de raio = {raio2}')
+area2 = areaCirc(raio2)
+print(f'\tárea = {area2}')
+\end{lstlisting}
+\end{ex}
+
+Funções podem retornar objetos de qualquer classe de dados. Quando queremos retornar mais de um objeto por vez, usualmente usamos um \lstinline+tuple+ como variável de saída.
+
+\begin{ex}
+  O seguinte código, cria uma função para a computação das raízes de um polinômio de grau 2
+  \begin{equation}
+    p(x) = ax^2 + bx + c.
+  \end{equation}
+\begin{lstlisting}
+import math as m
+
+def raizes(a, b, c):
+    '''
+    Computa as raízes de
+    p(x) = ax^2 + bx + c
+
+    Entrada
+    -------
+    a : float
+    Coeficiente do termo quadrático.
+    Atenção! Deve ser diferente de zero.
+
+    b : float 
+    Coeficiente do termo linear.
+
+    c: float
+    Coeficiente do termo constante.
+
+    Saída
+    -----
+    x1 : float
+    Uma raíz do polinômio.
+
+    x2 : float
+    Outra raíz do polinômio.
+    Atenção! No caso de raiz dupla,
+    x1 == x2.
+    '''
+
+    # auxiliares
+    _2a = 2*a
+    _b2a = -b/_2a
+
+    # discriminante
+    delta = b**2 - 4*a*c
+
+    # raízes
+    if (delta > 0):
+        x1 = _b2a + m.sqrt(delta)/_2a
+        x2 = _b2a - m.sqrt(delta)/_2a
+        return x1, x2
+    elif (delta < 0):
+        img = m.sqrt(-delta)/_2a
+        x1 = _b2a + img*1j
+        return x1, x1.conjugate()
+    else:
+        return _b2a, _b2a
+\end{lstlisting}
+  Verifique!
+\end{ex}
+
+\subsection{Capturando Exceções}
+
+[[tag:construcao]]
+
+\subsection{Criando um Módulo}
+
+[[tag:construcao]]
+
+\subsection{Exercícios}
+
+\begin{exer}
+  Defina uma função que retorna um número randômico ímpar entre $1$ e $51$ (incluídos). Use-a para escrever um código em que:
+  \begin{enumerate}[1.]
+  \item A(o) usuária(o) informa um número inteiro $n\geq 1$.
+  \item Cria-se uma lista de $n$ números randômicos ímpares entre $1$ e $51$ (incluídos).
+  \item Computa-se e imprime-se a média dos $n$ números.
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+import random
+
+def randImpar(m=51):
+    '''
+    Retorna um número randômico
+    ímpar entre 1 e m (incluídos).
+
+    Entrada
+    -------
+    m : int
+    Maior inteiro ímpar que pode ser 
+    gerado. Padrão: m = 51.
+
+    Saída
+    -----
+    n : int
+    Número randômico ímpar.
+    '''
+    n = random.randint(0, m-1)
+    if (n % 2 != 0):
+        return n
+    else:
+        return n+1
+
+# entrada de dados
+n = int(input('Digite o tamanho da lista:\n'))
+
+# gera a lista
+lista = [0]*n
+for i in range(n):
+    lista[i] = randImpar()
+
+# calcula a média
+soma = sum(lista)
+media = soma/len(lista)
+
+# imprime o resultados
+print(f'média = {media}')
+\end{lstlisting}
+\end{resp}
