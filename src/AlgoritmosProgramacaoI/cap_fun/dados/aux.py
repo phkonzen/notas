@@ -1,3 +1,18 @@
+import retangulo as rect
+
+a = float(input('Lado a: '))
+b = float(input('Lado b: '))
+
+diag = rect.diagonal(a, b)
+print(f'diagonal = {diag}')
+
+perim = rect.perimetro(a, b)
+print(f'perímetro = {perim}')
+
+area = rect.area(a, b)
+print(f'área = {area}')
+
+
 import math as m
 
 def raizFunAfim(a, b):
