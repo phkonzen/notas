@@ -392,7 +392,7 @@ Funções podem retornar objetos de qualquer classe de dados. Quando queremos re
   \begin{equation}
     p(x) = ax^2 + bx + c.
   \end{equation}
-\begin{lstlisting}
+\begin{lstlisting}[caption=raizes\_v1.py, label=cap_progest_sec_def:cod:raizes_v1]
 import math as m
 
 def raizes(a, b, c):
@@ -447,13 +447,208 @@ def raizes(a, b, c):
 
 \subsection{Capturando Exceções}
 
-[[tag:construcao]]
+\hl{Exceções são classes de erros encontrados durante a execução de um código}. Ao encontrar uma exceção, a execução do código {\python} é imediatamente interrompida e uma mensagem é impressa indicando a classe do erro e a linha do código em ocorreu. Por exemplo, ao chamarmos \lstinline+raizes(0, 1, 2)+ definida no Código \ref{cap_progest_sec_def:cod:raizes_v1}, obtemos uma exceção da classe \lstinline+ZeroDivisionError+.
+\begin{lstlisting}
+>>> raizes(0,1,2)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "/home/pkonzen/GitHub/notas/src/AlgoritmosProgramacaoI/cap_fun/dados/aux.py", line 33, in raizes
+    _b2a = -b/_2a
+ZeroDivisionError: division by zero
+\end{lstlisting}
+
+Podemos controlar as exceções com a instrução \lstinline+try-except+. Sua sintaxe é
+\begin{lstlisting}
+try:
+    comando1
+except:
+    comando2
+\end{lstlisting}
+Ou seja, o código tenta executar o \lstinline+comando1+, caso ele gere uma exceção, o \lstinline+comando2+ é executado. A lista de exceções predefinidas na linguagem pode ser consultada em
+\begin{center}
+  \url{https://docs.python.org/3/library/exceptions.html}
+\end{center}
+
+\begin{ex}
+  No Código \ref{cap_progest_sec_def:cod:raizes_v1}, podemos evitar e avisar a(o) usuária(o) da divisão por zero no caso de $a=0$.
+\begin{lstlisting}[caption=raizes\_v2.py]
+import math as m
+
+def raizes(a, b, c):
+    '''
+    Computa as raízes de
+    p(x) = ax^2 + bx + c
+
+    Entrada
+    -------
+    a : float
+    Coeficiente do termo quadrático.
+    Atenção! Deve ser diferente de zero.
+
+    b : float 
+    Coeficiente do termo linear.
+
+    c: float
+    Coeficiente do termo constante.
+
+    Saída
+    -----
+    x1 : float
+    Uma raíz do polinômio.
+
+    x2 : float
+    Outra raíz do polinômio.
+    Atenção! No caso de raiz dupla,
+    x1 == x2.
+    '''
+
+    # auxiliares
+    _2a = 2*a
+
+    try:
+        _b2a = -b/_2a
+    except ZeroDivisionError:
+        raise ZeroDivisionError('a deve ser != 0.')
+
+    # discriminante
+    delta = b**2 - 4*a*c
+
+    # raízes
+    if (delta > 0):
+        x1 = _b2a + m.sqrt(delta)/_2a
+        x2 = _b2a - m.sqrt(delta)/_2a
+        return x1, x2
+    elif (delta < 0):
+        img = m.sqrt(-delta)/_2a
+        x1 = _b2a + img*1j
+        return x1, x1.conjugate()
+    else:
+        return _b2a, _b2a
+\end{lstlisting}
+\end{ex}
+
+\begin{obs}
+  Nos casos gerais, pode-se utilizar a seguinte sintaxe:
+\begin{lstlisting}
+try:
+    comando1
+expect:
+    raise Exception('msg')
+\end{lstlisting}
+\end{obs}
 
 \subsection{Criando um Módulo}
 
-[[tag:construcao]]
+Para criar um módulo em {\python}, basta escrever um código \lstinline+foo.py+ com as funções e constantes que quisermos. Depois, podemos importá-lo em outro código com a instrução \lstinline+import+.
+
+\begin{ex}
+  Considere um retângulo de lados $a$ e $b$. Na sequência, temos um módulo com algumas funções.
+\begin{lstlisting}[caption=retangulo.py]
+'''
+Módulo com funcionalidades sobre
+retângulos.
+'''
+
+import math as m
+
+def perimetro(a, b):
+    '''
+    Perímetro de um retângulo de 
+    lados a e b.
+
+    Entrada
+    -------
+    a : float
+    Comprimento de um dos lados.
+
+    b : float
+    Comprimento de outro dos lados.
+
+    Saída
+    -----
+    p : float
+    Perímetro do retângulo.
+    '''
+
+    p = a + b
+    return p
+
+def area(a, b):
+    '''
+    Área de um retângulo de 
+    lados a e b.
+
+    Entrada
+    -------
+    a : float
+    Comprimento de um dos lados.
+
+    b : float
+    Comprimento de outro dos lados.
+
+    Saída
+    -----
+    area : float
+    Área do retângulo.
+    '''
+
+    area = a*b
+    return area
+
+def diagonal(a, b):
+    '''
+    Comprimento da diagonal de
+    um retângulo de lados a e b.
+
+    Entrada
+    -------
+    a : float
+    Comprimento de um dos lados.
+
+    b : float
+    Comprimento de outro dos lados.
+
+    Saída
+    -----
+    diag : float
+    Diagonal do retângulo.
+    '''
+
+    diag = m.sqrt(a**2 + b**2)
+    return diag
+\end{lstlisting}
+
+  Agora, usamos nosso módulo \lstinline+perimetro.py+ em um outro código que fornece informações sobre o retângulo de lados $a$ e $b$ informados por usuária(o).
+
+\begin{lstlisting}
+import retangulo as rect
+
+a = float(input('Lado a: '))
+b = float(input('Lado b: '))
+
+diag = rect.diagonal(a, b)
+print(f'diagonal = {diag}')
+
+perim = rect.perimetro(a, b)
+print(f'perímetro = {perim}')
+
+area = rect.area(a, b)
+print(f'área = {area}')
+\end{lstlisting}
+\end{ex}
 
 \subsection{Exercícios}
+
+\begin{exer}
+  Defina uma função que recebe os catetos $a$ e $b$ de um triângulo retângulo e retorne o valor de sua hipotenusa. Use-a para escrever um código em que a(o) usuária(o) informa os catetos e obtenha o valor da hipotenusa.
+\end{exer}
+
+\begin{exer}
+  Defina uma função que recebe os lados $a$, $b$ e $c$ de um triângulo qualquer e retorne o valor de sua área. Use-a para escrever um código em que a(o) usuária(o) informa os lados do triângulo e obtenha o valor da área.  
+\end{exer}
+\begin{resp}
+  Dica: Use o \href{Teorema de Heron}{https://pt.wikipedia.org/wiki/Teorema\_de\_Her\%C3\%A3o}.
+\end{resp}
 
 \begin{exer}
   Defina uma função que retorna um número randômico ímpar entre $1$ e $51$ (incluídos). Use-a para escrever um código em que:
@@ -505,3 +700,73 @@ media = soma/len(lista)
 print(f'média = {media}')
 \end{lstlisting}
 \end{resp}
+
+\begin{exer}
+  Desenvolva um código para computar a raiz de uma função afim
+  \begin{equation}
+    f(x) = ax + b,
+  \end{equation}
+  com coeficientes $a$ e $b$ informados por usuária(o). Use instruções \lstinline+try-except+ para monitorar as exceções em que a usuária informe números inválidos ou $a=0$.
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+import math as m
+
+def raizFunAfim(a, b):
+    '''
+    Computa a raiz de
+    f(x) = ax + b
+
+    Entrada
+    -------
+    a : float
+    Coeficiente angular.
+
+    b : float
+    Coeficiente linear.
+
+    Saída
+    -----
+    x : float
+    Raiz de f(x).
+    '''
+    
+    try:
+        x = -b/a
+    except ZeroDivisionError:
+        raise ZeroDivisionError('coef. angular deve ser != 0.')
+
+    return x
+
+# entrada de dados
+try:
+    a = float(input('Coef. angular: '))
+except ValueError:
+    raise ValueError('Número inválido.')
+
+try:
+    b = float(input('Coef. linear: '))
+except ValueError:
+    raise ValueError('Número inválido.')
+
+# raiz
+raiz = raizFunAfim(a, b)
+
+# imprime
+print(f'raiz = {raiz}')
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  Considere polinômios de segundo grau
+  \begin{equation}
+    p(x) = ax^2 + bx + c.
+  \end{equation}
+  Desenvolva um módulo com as seguintes funções:
+  \begin{enumerate}[a)]
+  \item \lstinline+intercepta_y()+: função que retorna o ponto de interseção do gráfico de $y = p(x)$ com o eixo das ordenadas\footnote{Eixo $y$.}.
+  \item \lstinline+raizes()+: função que retorna as raízes de $p$.
+  \item \lstinline+vertice()+: função que retorna o vértice do gráfico de $y=p(x)$.
+  \end{enumerate}
+  Então, use seu módulo em um código em que a(o) usuária(o) informa os coeficientes $a$, $b$ e $c$ e obtém informações sobre as raízes, o ponto de interseção com o eixo $y$ e o vértice de $p$. 
+\end{exer}

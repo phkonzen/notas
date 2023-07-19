@@ -1,5 +1,51 @@
 import math as m
 
+def raizFunAfim(a, b):
+    '''
+    Computa a raiz de
+    f(x) = ax + b
+
+    Entrada
+    -------
+    a : float
+    Coeficiente angular.
+
+    b : float
+    Coeficiente linear.
+
+    Saída
+    -----
+    x : float
+    Raiz de f(x).
+    '''
+    
+    try:
+        x = -b/a
+    except ZeroDivisionError:
+        raise ZeroDivisionError('coef. angular deve ser != 0.')
+
+    return x
+
+# entrada de dados
+try:
+    a = float(input('Coef. angular: '))
+except ValueError:
+    raise ValueError('Número inválido.')
+
+try:
+    b = float(input('Coef. linear: '))
+except ValueError:
+    raise ValueError('Número inválido.')
+
+# raiz
+raiz = raizFunAfim(a, b)
+
+# imprime
+print(f'raiz = {raiz}')
+
+    
+    
+
 def raizes(a, b, c):
     '''
     Computa as raízes de
@@ -30,7 +76,11 @@ def raizes(a, b, c):
 
     # auxiliares
     _2a = 2*a
-    _b2a = -b/_2a
+
+    try:
+        _b2a = -b/_2a
+    except:
+        raise Exception('número inválido')
 
     # discriminante
     delta = b**2 - 4*a*c
@@ -46,62 +96,4 @@ def raizes(a, b, c):
         return x1, x1.conjugate()
     else:
         return _b2a, _b2a
-    
-
-# def fun
-def areaCirc(r):
-    area = m.pi * r**2
-    return area
-    
-# entrada de dados
-raio1 = float(input('Digite o raio da 1. circ.:\n'))
-raio2 = float(input('Digite o raio da 2. circ.:\n'))
-
-print(f'Circunferência de raio = {raio1}')
-area1 = areaCirc(raio1)
-print(f'\tárea = {area1}')
-
-print(f'Circunferência de raio = {raio2}')
-area2 = areaCirc(raio2)
-print(f'\tárea = {area2}')
-
-
-import random
-
-def randImpar(m=51):
-    '''
-    Retorna um número randômico
-    ímpar entre 1 e m (incluídos).
-
-    Entrada
-    -------
-    m : int
-    Maior inteiro ímpar que pode ser 
-    gerado. Padrão: m = 51.
-
-    Saída
-    -----
-    n : int
-    Número randômico ímpar.
-    '''
-    n = random.randint(0, m-1)
-    if (n % 2 != 0):
-        return n
-    else:
-        return n+1
-
-# entrada de dados
-n = int(input('Digite o tamanho da lista:\n'))
-
-# gera a lista
-lista = [0]*n
-for i in range(n):
-    lista[i] = randImpar()
-
-# calcula a média
-soma = sum(lista)
-media = soma/len(lista)
-
-# imprime o resultados
-print(f'média = {media}')
 
