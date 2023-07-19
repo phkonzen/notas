@@ -3,47 +3,46 @@
 \chapter{Interpolação}\label{cap_interp}
 \thispagestyle{fancy}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-Neste capítulo, discutiremos sobre a resolução de problemas de interpolação da forma: dados uma família de $n$ funções reais $\mathcal{F} = \{f_1(x), f_2(x), \ldots, f_n(x)\}$ e um conjunto de $n$ pontos $\{(x_i, y_i)\}_{i=1}^n$, com $x_i\neq x_j$ se $i\neq j$, encontrar
-\begin{equation}
+Neste capítulo, estudamos a \hl{resolução de problemas de interpolação} da forma: dados uma família de $n$ funções reais
+\begin{equation}\hleq
+  \mathcal{F} = \{f_1(x), f_2(x), \dotsc, f_n(x)\}
+\end{equation}
+e um conjunto de $n$ pontos $\{(x_i, y_i)\}_{i=1}^n$, com $x_i\neq x_j$ se $i\neq j$, encontrar a \emph{função interpoladora}
+\begin{equation}\hleq
   f(x) = c_1f_1(x) + c_2f_2(x) + \cdots + c_nf_n(x),
 \end{equation}
 tal que
-\begin{equation}
+\begin{equation}\hleq
   y_i = f(x_i),\quad i=1, 2, \ldots, n.
 \end{equation}
 
 \section{Interpolação polinomial}\label{cap_interp_sec_interpoli}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-Dado um conjunto de $n$ pontos $\{(x_i, y_i)\}_{i=1}^n$, o problema de interpolação consiste em encontrar o polinômio de grau $n-1$
-\begin{equation}\label{eq:interpoli_poli}
+\hl{Dado um conjunto de $n$ pontos $\{(x_i, y_i)\}_{i=1}^n$, o problema de interpolação consiste em encontrar o polinômio\footnote{Chamado de \emph{polinômio interpolador}.} de grau $n-1$}
+\begin{equation}\label{cap_interp_sec_interpoli:eq:interpoli_poli}\hleq
   p(x) = p_1x^{n-1} + p_2x^{n-2} + \cdots + p_{n-1}x + p_n
 \end{equation}
 tal que
-\begin{equation}\label{eq:interpoli_conds}
-  y_i = p(x_i),\quad i=1, 2, \ldots, n.
+\begin{equation}\label{cap_interp_sec_interpoli:eq:interpoli_conds}\hleq
+  y_i = p(x_i),
 \end{equation}
+para todo $i=1, 2, \dotsc, n$.
 
-Das condições \eqref{eq:interpoli_poli}, temos
-\begin{align}\label{eq:interpoli_sis}
-  p_1x_1^{n-1} + p_2x_1^{n-2} + \cdots + p_{n-1}x_1 + p_n &= y_1 \\
-  p_1x_2^{n-1} + p_2x_2^{n-2} + \cdots + p_{n-1}x_2 + p_n &= y_2 \\
-  &\vdots \\
-  p_1x_n^{n-1} + p_2x_n^{n-2} + \cdots + p_{n-1}x_n + p_n &= y_n.
-\end{align}
-Isto é, os coeficientes do polinômio interpolador \eqref{eq:interpoli_poli} satisfazem o seguinte sistema linear
+Das condições \eqref{cap_interp_sec_interpoli:eq:interpoli_poli}, temos
 \begin{equation}
+  \begin{aligned}\label{cap_interp_sec_interpoli:eq:interpoli_sis}
+    p_1x_1^{n-1} + p_2x_1^{n-2} + \cdots + p_{n-1}x_1 + p_n &= y_1 \\
+    p_1x_2^{n-1} + p_2x_2^{n-2} + \cdots + p_{n-1}x_2 + p_n &= y_2 \\
+    &\vdots \\
+    p_1x_n^{n-1} + p_2x_n^{n-2} + \cdots + p_{n-1}x_n + p_n &= y_n.
+  \end{aligned}
+\end{equation}
+Isto é, \hl{os coeficientes do \emph{polinômio interpolador} {\eqref{cap_interp_sec_interpoli:eq:interpoli_poli}} satisfazem o sistema linear}
+\begin{equation}\hleq
   A\pmb{p} = \pmb{y},
 \end{equation}
-onde $A$ é a matriz de Vandermonde\footnote{Alexandre-Théophile Vandermonde, 1735 - 1796, matemático francês. Fonte: \href{https://en.wikipedia.org/wiki/Alexandre-Th\%C3\%A9ophile_Vandermonde}{Wikipedia}.}
-\begin{equation}
+onde $A$ é a \emph{matriz de Vandermonde}{\vandermonde}
+\begin{equation}\hleq
   A =
   \begin{bmatrix}
     x_1^{n-1} & x_1^{n-2} & \ldots & x_1 & 1 \\
@@ -52,10 +51,10 @@ onde $A$ é a matriz de Vandermonde\footnote{Alexandre-Théophile Vandermonde, 1
     x_n^{n-1} & x_n^{n-2} & \ldots & x_n & 1
   \end{bmatrix},
 \end{equation}
-$\pmb{p} = (p_1, p_2, \ldots, p_n)$ é o vetor das incógnitas e $\pmb{y} = (y_1, y_2, \ldots, y_n)$ é o vetor dos termos constantes.
+$\pmb{p} = (p_1, p_2, \ldots, p_n)$ é o \emph{vetor das incógnitas} e $\pmb{y} = (y_1, y_2, \ldots, y_n)$ é o \emph{vetor dos termos constantes}.
 
-\begin{ex}\label{ex:interpoli_intro}
-  Consideremos o problema de encontrar o polinômio interpolador do conjunto de pontos $\{(-1,~-1), (0,~1), (1,~1/2)\}$. Como temos 3 pontos, o polinômio tem grau 2 e pode ser escrito na forma
+\begin{ex}\label{cap_interp_sec_interpoli:ex:interpoli_intro}
+  Consideramos o problema de encontrar o polinômio interpolador do conjunto de pontos $\{(-1,~-1), (0,~1), (1,~1/2)\}$. Como temos 3 pontos, o polinômio tem grau 2 e pode ser escrito na forma
   \begin{equation}
     p(x) = p_1x^2 + p_2x + p_3.
   \end{equation}
@@ -72,35 +71,82 @@ $\pmb{p} = (p_1, p_2, \ldots, p_n)$ é o vetor das incógnitas e $\pmb{y} = (y_1
   \begin{equation}
     p(x) = -1,25x^2 + 0,75x + 1.
   \end{equation}
-A Figura \ref{fig:interpoli_intro} mostra os esboços do polinômio interpolador $p(x)$ e  dos pontos dados.
+A Figura \ref{cap_interp_sec_interpoli:fig:interpoli_intro} mostra os esboços do polinômio interpolador $p(x)$ e  dos pontos dados.
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.7\textwidth]{./cap_interp/dados/ex_interpoli_intro/fig_interpoli_intro}
-  \caption{Esboços dos pontos e do polinômio interpolador referente ao Exemplo \ref{ex:interpoli_intro}.}
-  \label{fig:interpoli_intro}
+  \includegraphics[width=0.7\textwidth]{./cap_interp/dados/fig_poliInterp/fig}
+  \caption{Esboço do polinômio interpolador referente ao Exemplo \ref{cap_interp_sec_interpoli:ex:interpoli_intro}.}
+  \label{cap_interp_sec_interpoli:fig:interpoli_intro}
 \end{figure}
 
-\ifisoctave
-No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_interp/dados/ex_interpoli_intro/ex_interpoli_intro.m}{código}:
-\verbatiminput{./cap_interp/dados/ex_interpoli_intro/ex_interpoli_intro.m}
-\fi
+\begin{lstlisting}[caption=poliInterp.py]
+import numpy as np
+import numpy.linalg as npla
+
+def poliInterp(x, y):
+    # num. pts
+    n = x.size
+    # Vandermonde
+    A = np.empty((n,n))
+    for j in range(n):
+        A[:,j] = x**(n-1-j)
+    # coefs
+    p = npla.solve(A, y)
+    return p
+
+# exemplo
+x = np.array([-1., 0, 1])
+y = np.array([-1., 1, 1/2])
+
+# poli interp
+p = poliInterp(x, y)
+
+# verificação
+print(np.polyval(p, x))
+\end{lstlisting}
 \end{ex}
 
-\subsection*{Exercícios}
+\subsection{Exercícios}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-\begin{exer}\label{exer:interpoli_intro1}
-  Obtenha o polinômio interpolador do conjunto de pontos $\{(-1,~-1), (0,~1), (1,~1/2), (2,~1)\}$.
+\begin{exer}
+  Obtenha o polinômio interpolador do conjunto de pontos $\{(-1, -1), (-0.5, 1), (1, 2)\}$.
 \end{exer}
 \begin{resp}
-\ifisoctave
-\href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_interp/dados/exer_interpoli_intro1/exer_interpoli_intro1.m}{Código}.
-\fi
-$0,58\bar{3}x^2 - 1,25x + 0,1\bar{6} + 1$.  
+  $-1,\bar{6}x^2 + 1.5x + 2.1\bar{6}$
+\end{resp}
+
+\begin{exer}
+  Obtenha o polinômio interpolador do conjunto de pontos $\{(-1, -1), (0, 1), (1, 1/2), (2, 1)\}$.
+\end{exer}
+\begin{resp}
+  $0,58\bar{3}x^3 - 1,25x^2 + 0,1\bar{6}x + 1$. 
+\end{resp}
+
+\begin{exer}
+  Obtenha o polinômio interpolador do conjunto de pontos $\{(-1,~-1), (0,~1), (1,~1/2), (2,~1), (2.5, 1)\}$.
+\end{exer}
+\begin{resp}
+  $-0.26190476x^4  1.10714286x^3 -0.98809524x^2 -0.35714286x  1$.  
+\end{resp}
+
+\begin{exer}
+  Considere a matriz de Vandermonde $V = [\pmb{x}^{n-j}]_{j=1}^{n}$, com $\pmb{x} = (x_1, x_2, \dotsc, x_n)$, sendo $x_i = (i-1)h$, $h=0.1$ e $i = 1, 2, \dotsc, n$. Compute o número de condicionamento de $V$ para $n=5, 10, 100$. De que forma os resultados obtidos impactam no problema de interpolação polinomial?
+\end{exer}
+\begin{resp}
+  \begin{tabular}{ll}
+    $n$ & $\kappa(V)$\\\hline
+    $5$ & $1.03\E+4$\\
+    $10$ & $2.57\E+7$\\
+    $100$ & $9.11\E+109$\\\hline
+  \end{tabular}
+\end{resp}
+
+\begin{exer}
+  Aproxime a função $f(x) = \cos(x)$ por um polinômio interpolador $p$ no intervalo $[0, \pi]$. Escolhas pontos nesse intervalo de forma a obter $p$ que aproxime $f$ com boa precisão gráfica.
+\end{exer}
+\begin{resp}
+  Dica: use os pontos $x_i = (i-1)\frac{\pi}{4}$, $i=1,2,3,4$.
 \end{resp}
 
 \section{Interpolação de Lagrange}\label{cap_interp_sec_lagrange}
