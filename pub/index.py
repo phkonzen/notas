@@ -169,7 +169,7 @@ class Index:
         body += '<div class="carousel-inner">'
 
         # anúncio
-        body += '<div class="carousel-item active">'
+        body += '<div class="carousel-item">'
         body += self.add_anuncio(text = 'XLII CNMAC 2023 - Inscrições até 28/Jul*',
                                  link = 'http://www.cnmac.org.br',
                                  status = 'danger')
@@ -184,10 +184,10 @@ class Index:
 
 
         # anúncio
-        body += '<div class="carousel-item">'
-        body += self.add_anuncio(text = 'PPGMAp - UFRGS: Mestrado & Doutorado',
+        body += '<div class="carousel-item active">'
+        body += self.add_anuncio(text = 'PPGMAp - UFRGS: Seleção Mestrado 2023/2',
                                  link = 'https://www.ufrgs.br/ppgmap',
-                                 status = 'primary')
+                                 status = 'warning')
         body += '</div>'
 
 
