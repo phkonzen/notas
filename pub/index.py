@@ -82,10 +82,12 @@ class Index:
 
     def add_anuncio(self, text, link, status):
         obj = ""
-        obj += f'<div class="card border-{status}" role="alert" style="height: 4em">'
-        obj += f'<div class="card-body d-flex justify-content-center text-{status}">'
+        # obj += f'<div class="card border-{status} d-flex justify-content-center" role="alert" style="height: 4em">'
+        obj += f'<div class="card bg-light border-{status} d-flex justify-content-center" role="alert" style="height: 4em">'
+        # obj += f'<div class="card-text text-{status} d-flex align-self-center">'
+        obj += f'<div class="card-text text-{status} d-flex align-self-center">'
         obj += f'<a href={link} class="stretched-link"></a>'
-        obj += f'<div class="spinner-grow spinner-grow-sm text-{status} m-1" role="status"></div>'
+        obj += f'<div class="spinner-grow spinner-grow-sm m-1" role="status"></div>'
         obj += text
         obj += '</div>'
         obj += '</div>'
