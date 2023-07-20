@@ -44,7 +44,7 @@ com $k=0, 1, 2, \dotsc, n$, $y^{(k)}\approx y\left(t^{(k)}\right)$, $t^{(k)} = t
   Consideramos o seguinte problema de valor inicial
   \begin{subequations}
     \begin{align}
-      y' - y &= \sen(t), t>0\\
+      y' - y &= \sen(t), 0 < t < 1,\\
       y(0) &= \frac{1}{2}.
     \end{align}
   \end{subequations}
@@ -56,7 +56,7 @@ com $k=0, 1, 2, \dotsc, n$, $y^{(k)}\approx y\left(t^{(k)}\right)$, $t^{(k)} = t
   Para computarmos a solução pelo Método de Euler, reescrevemos o problema da seguinte forma
   \begin{subequations}
     \begin{align}
-      &y' = y + \sen(t), t>0\\
+      &y' = y + \sen(t), 0 < t < 1,\\
       &y(0) = \frac{1}{2},
     \end{align}
   \end{subequations}
@@ -284,7 +284,7 @@ para todo $t\in [t_0, t_f]$, $t_f > t_0$.
   Consideramos o seguinte problema de valor inicial
   \begin{subequations}
     \begin{align}
-      &y' = y + 1, t>0\\
+      &y' = y + 1, 0 < t < 1,\\
       &y(0) = 0.
     \end{align}
 \end{subequations}
@@ -323,6 +323,194 @@ onde $\delta^{(k)}$ é o erro devido a arredondamentos na $k$-ésima iterada, $t
 \end{aligned}
 \end{equation}
 para $\delta^{(k)} < \delta$, $k=0, 1, 2, \dotsc, n$.
+
+\subsection{Sistemas de Equações}
+
+Seja um \hl{sistema de EDOs\footnote{Equações Diferenciais Ordinárias} com valor iniciais}
+\begin{subequations}\label{cap_pvi_sec_euler:eq:sistem}
+  \begin{align}
+    \pmb{y}' = \pmb{f}(t, \pmb{y}), t_0 < t \leq t_f,\\
+    \pmb{y}(t_0) = \pmb{y}_0,
+  \end{align}
+\end{subequations}
+com dada $\pmb{f}:(t, \pmb{y})\in [t_0, t_f]\times\mathbb{R}^m\mapsto \mathbb{R}^m$, dados valores iniciais $\pmb{y}_0\in\mathbb{R}^m$ e incógnita $\pmb{y}:t\in [t_0, t_f]\mapsto \mathbb{R}^m$, $n\geq 1$.
+
+Do ponto de vista algorítmico, a \hl{iteração do Método de Euler} é diretamente estendida \hl{para sistemas}:
+\begin{equation}
+  \begin{aligned}
+    &\pmb{y}^{(0)} = \pmb{y}_0,\\
+    &\pmb{y}^{(k+1)} = \pmb{y}^{(k)} + h\pmb{f}\left(t^{(k)}, \pmb{y}^{(k)}\right),
+  \end{aligned}
+\end{equation}
+para $\pmb{y}^{(k)}\approx \pmb{y}\left(t^{(k)}\right)$, $t^{(k)} = t_0 + kh$, $h = (t_f-t_0)/n$, $k = 0, 1, 2, \dotsc, n$.
+
+\begin{ex}\label{cap_pvi_sec_euler:ex:sis}
+  Consideramos o sistema de EDOs
+  \begin{subequations}
+    \begin{align}
+      &y_1' = -y_1 + y_2 + e^{-t} - \sen(t) + \cos(t),\\
+      &y_2' = 2y_1 + 3y_2 - 6e^{t} - 2\cos(t),
+    \end{align}
+  \end{subequations}
+  para $0 < t \leq 1$ com condições iniciais
+  \begin{subequations}
+    \begin{align}
+      &y_1(0) = 0,\\
+      &y_2(0) = 3.
+    \end{align}
+  \end{subequations}
+  Este sistema tem solução analítica
+  \begin{subequations}
+    \begin{align}
+      &y_1(t) = e^t - 2e^{-t} + \cos(t),\\
+      &y_2(t) = 2e^t + e^{-t}.
+    \end{align}
+  \end{subequations}
+  
+  Podemos reescrevê-lo na forma vetorial
+  \begin{subequations}
+    \begin{align}
+      &\underbrace{\begin{bmatrix}
+        y_1'\\
+        y_2'
+      \end{bmatrix}}_{\pmb{y'}(t)} =
+      \underbrace{\begin{bmatrix}
+        -y_1 + y_2 + e^{-t} - \sen(t) + \cos(t)\\
+        2y_1 + 3y_2 - 6e^{t} - 2\cos(t)
+      \end{bmatrix}}_{\pmb{f}(t, \pmb{y})}, 0 < t \leq t_f\\
+      &\underbrace{\begin{bmatrix}
+        y_1(0)\\
+        y_2(0)
+      \end{bmatrix}}_{\pmb{y}(0)} =
+      \underbrace{\begin{bmatrix}
+        0\\
+        3
+      \end{bmatrix}}_{\pmb{y}_0}
+    \end{align}
+  \end{subequations}
+
+  Usando o Método de Euler com $h=10^{-2}$ obtemos as soluções mostradas na figura abaixo.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./cap_pvi/dados/fig_euler_sis/fig}
+    \caption{Soluçoes numérica (linha pontilhada) \textit{versus} analítica (linha contínua) para o PVI do Exemplo \ref{cap_pvi_sec_euler:ex:sis}.}
+    \label{cap_pvi_sec_euler:fig:sis}
+  \end{figure}
+
+\begin{lstlisting}
+import numpy as np
+
+def euler(f, t0, y0, h, n):
+    t = np.empty(n+1)
+    m = y0.size
+    y = np.empty((n+1, m))
+
+    t[0] = t0
+    y[0] = y0
+
+    for k in range(n):
+        t[k+1] = t[k] + h
+        y[k+1] = y[k] + h*f(t[k], y[k])
+    return t, y
+
+def f(t, y):
+    v = np.array([-y[0] + y[1] \
+                  - np.exp(-t) \
+                  + np.cos(t) \
+                  - np.sin(t), \
+                  2*y[0] + 3*y[1]
+                  - 6*np.exp(t)
+                  - 2*np.cos(t)])
+    return v
+
+
+h = 1e-2
+n = round(1./h)
+t0 = 0.
+y0 = np.array([0., 3.])
+t,y = euler(f, t0, y0, h, n)
+\end{lstlisting}
+\end{ex}
+
+\subsection{Equações de Ordem Superior}
+
+Seja dado o PVI de ordem $m$
+\begin{subequations}\label{cap_pvi_euler:eq:pvi_ordem_sup}
+  \begin{align}
+    &\frac{d^m y}{dt^m} = f\left(t, y, \frac{d y}{dt}, \dotsc, \frac{d^{m-1} y}{dt^{m-1}}\right),\\
+    &y(t_0) = y_0, \left.\frac{d y}{d t}\right|_{t=0} = y'_0, \dotsc, \left.\frac{d^{(m-1)} y}{d t^{(m-1)}}\right|_{t=0} = y^{(m-1)}_0,
+  \end{align}
+\end{subequations}
+para $t_0 \leq t \leq t_f$.
+
+Para resolvê-lo com o Método de Euler, a ideia é reescrevê-lo como um sistema de EDOs de primeira ordem com condições iniciais. Isso pode ser feito com a mudança de variáveis
+\begin{align}
+  &u_1 = y,\\
+  &u_2 = \frac{d y}{d t},\\
+  &u_3 = \frac{d^2 y}{d t^2},\\
+  &\qquad\vdots\\
+  &u_m = \frac{d^{m-1} y}{d t^{m-1}}.
+\end{align}
+
+Com isso e do PVI \eqref{cap_pvi_euler:eq:pvi_ordem_sup}, obtemos o sistema de EDOs de primeira ordem
+\begin{subequations}
+  \begin{align}
+    &u'_1 = u_2,\\
+    &u'_2 = u_3,\\
+    &u'_3 = u_4,\\
+    &\qquad\vdots\\
+    &u'_{m} = f(t, u_1, u_2, \dotsc, u_{m}),
+  \end{align}
+\end{subequations}
+para $t_0 < t \leq t_f$ e com condições inicias
+\begin{subequations}
+  \begin{align}
+    &u_1(t_0) = y_0,\\
+    &u_2(t_0) = y'_0,\\
+    &u_3(t_0) = y''_0,\\
+    &\qquad\vdots\\
+    &u_{m}(t_0) = y^{(m-1)}_0.
+  \end{align}
+\end{subequations}
+
+\begin{ex}\label{cap_pvi_sec_euler:ex:pvi_ordemsup}
+  Consideramos o seguinte PVI de ordem superior
+  \begin{subequations}
+    \begin{align}
+      &y'' - ty' + y = (2 + t)e^{-t} - t\cos(t), 0 < t \leq 1,\\
+      &y(0) = 1, y'(0) = 0.
+    \end{align}
+  \end{subequations}
+  Sua solução analítica é
+  \begin{equation}
+    y(t) = \sen(t) + e^{-t}.
+  \end{equation}
+
+  Para reescrevê-lo como uma sistema de EDOs de primeira ordem, tomamos as mudanças de variáveis $u_1 = y$ e $u_2 = y'$. Com isso, obtemos
+  \begin{subequations}
+    \begin{align}
+      &u'_1 = u_2,\\
+      &u_2' = tu_2 - u_1 + (2+t)e^{-t},
+    \end{align}
+  \end{subequations}
+  para $0 < t \leq t_f$ e com condições iniciais
+  \begin{subequations}
+    \begin{align}
+      &u_1(0) = 1,\\
+      &u_2(0) = 0.
+    \end{align}
+  \end{subequations}
+
+  Com passo $h=10^{-2}$, o Método de Euler aplicado a este sistema fornece a solução do PVI mostrada na figura abaixo.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./cap_pvi/dados/fig_euler_ordemsup/fig}
+    \caption{Solução numérica \textit{versus} analítica computadas para o PVI do Exemplo \ref{cap_pvi_sec_euler:ex:pvi_ordemsup}.}
+    \label{cap_pvi_sec_euler:fig:pvi_ordemsup}
+  \end{figure}
+\end{ex}
 
 \subsection{Exercícios}
 
@@ -381,6 +569,29 @@ Use o Método de Euler para computar o valor aproximado de $y(2)$ com precisão 
 \begin{resp}
   $|\tilde{y}(1) - y(1)| = 3.4\E+2$. Dica: verifique as hipóteses do Teorema \ref{cap_pvi_sec_euler:teo:conv}.
 \end{resp}
+
+\begin{exer}
+  Para o sistema de EDOs do Exemplo \ref{cap_pvi_sec_euler:ex:sis}, verifique a ordem de convergência do Método de Euler computando o erro $\varepsilon = \|\tilde{\pmb{y}}(1) - \pmb{y}(1)\|$ com diferentes tamanhos de passos $h = 10^{-1}, 10^{-2}, \dotsc, 10^{-6}$. 
+\end{exer}
+\begin{resp}
+  \begin{tabular}{l|c|l}
+    $h$ & $\tilde{\pmb{y}}(1)$ & $\|\tilde{\pmb{y}}(1) - \pmb{y}(1)\|$ \\\hline
+    $10^{-1}$ & $(2.387, 5.077)$ & $7.4\E-1$ \\
+    $10^{-2}$ & $(2.500, 5.693)$ & $1.1\E-1$ \\
+    $10^{-3}$ & $(2.520, 5.793)$ & $1.2\E-2$ \\
+    $10^{-4}$ & $(2.523, 5.803)$ & $1.2\E-3$ \\
+    $10^{-5}$ & $(2.523, 5.804)$ & $1.2\E-4$ \\
+    $10^{-6}$ & $(2.523, 5.804)$ & $1.2\E-5$ \\\hline
+  \end{tabular}
+\end{resp}
+
+\begin{exer}
+  Para o PVI de segunda ordem dado no Exemplo \ref{cap_pvi_sec_euler:ex:pvi_ordemsup}, tente computar a solução para tempos finais $t_f = 2, 3, \dotsc, 5$. Faça uma comparação gráfica entre as soluções numérica e analítica. O que ocorre ao aumentarmos o tempo final? Justifique sua resposta.
+\end{exer}
+\begin{resp}
+  Dica: O PVI do Exemplo \ref{cap_pvi_sec_euler:ex:pvi_ordemsup} é um problema rígido.
+\end{resp}
+
 
 \subsubsection{Análise Numérica}
 
