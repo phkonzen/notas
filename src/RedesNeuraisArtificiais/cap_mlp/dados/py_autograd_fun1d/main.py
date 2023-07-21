@@ -65,7 +65,7 @@ xx = torch.linspace(a, b,
                     steps=50).reshape(-1,1)
 # y' = cos(x)
 dy_esp = torch.pi*torch.cos(torch.pi*xx)
-ax.plot(xx, dy_esp, label="$f'(x) = \cos(x)$")
+ax.plot(xx, dy_esp, label="$f'(x) = \\pi\cos(\\pi x)$")
 
 # model autograd
 dy_est = torch.empty_like(xx)

@@ -760,11 +760,11 @@ for epoch in range(nepochs):
   \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{./cap_mlp/dados/fig_autograd_fun1d/fig}
-    \caption{Comparação da autograd da MLP com a derivada exata $f'(x)=\cos(x)$ para o Exemplo \ref{cap_mlp_sec_autograd:ex:fun1d}.}
+    \caption{Comparação da autograd da MLP com a derivada exata $f'(x)=\pi\cos(\pi x)$ para o Exemplo \ref{cap_mlp_sec_autograd:ex:fun1d}.}
     \label{cap_mlp_sec_autograd:fig:fun1d}
   \end{figure}
 
-  Uma vez treinada, nossa MLP é uma aproximadora da função seno, i.e. $\tilde{y} \approx \sen(x)$. Usando de autograd podemos computar $\tilde{y}' \approx \cos(x)$. O código abaixo, computa $d\tilde{y}/dx$ a partir da rede e produz o gráfico da figura acima.
+  Uma vez treinada, nossa MLP é uma aproximadora da função seno, i.e. $\tilde{y} \approx \sen(\pi x)$. Usando de autograd podemos computar $\tilde{y}' \approx \pi\cos(\pi x)$. O código abaixo, computa $d\tilde{y}/dx$ a partir da rede e produz o gráfico da figura acima.
 
 \begin{lstlisting}
 # verificação
@@ -775,7 +775,7 @@ xx = torch.linspace(a, b,
                     steps=50).reshape(-1,1)
 # y' = cos(x)
 dy_esp = torch.pi*torch.cos(torch.pi*xx)
-ax.plot(xx, dy_esp, label="$f'(x) = \cos(x)$")
+ax.plot(xx, dy_esp, label="$f'(x) = \\pi\cos(\\pi x)$")
 
 # model autograd
 dy_est = torch.empty_like(xx)
@@ -788,8 +788,8 @@ ax.plot(xx, dy_est, label='$d\\tilde{y}/dx$')
 
 ax.legend()
 ax.grid()
-ax.set_xlabel('x')
-ax.set_ylabel('y')
+ax.set_xlabel('$x$')
+ax.set_ylabel('$y$')
 plt.show()
 \end{lstlisting}
 \end{ex}
