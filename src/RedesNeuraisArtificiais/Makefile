@@ -6,6 +6,7 @@
 
 pdf: main.tex
 	cp config-book.knd config.knd
+	rm -f main.out
 	pdflatex main
 #	bibtex main
 	makeindex main

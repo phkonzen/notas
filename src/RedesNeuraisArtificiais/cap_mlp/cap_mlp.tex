@@ -15,9 +15,9 @@
 \end{figure}
 
 \hl{Denotamos uma MLP de $n$ camadas por}
-\begin{align}\hleq
+\begin{equation}\hleq
   \pmb{y} = \mathcal{N}\left(\pmb{x}; \left(W^{(l)}, \pmb{b}^{(l)}, f^{(l)}\right)_{l=1}^{n}\right),
-\end{align}
+\end{equation}
 onde $\left(W^{(l)}, \pmb{b}^{(l)}, f^{(l)}\right)$ é a tripa de \emph{pesos}, \emph{\textit{biases}} e \emph{função de ativação} da $l$-ésima camada da rede, $l=1, 2, \dotsc, n$.
 
 \hl{A saída da rede é calculada por iteradas composições das camadas}, i.e.
@@ -26,7 +26,7 @@ onde $\left(W^{(l)}, \pmb{b}^{(l)}, f^{(l)}\right)$ é a tripa de \emph{pesos}, 
 \end{equation}
 para $l= 1, 2, \dotsc, n$, denotando $\pmb{a}^{(0)} := \pmb{x}$ e $\pmb{a}^{(n)} := \pmb{y}$.
 
-\subsection{Treinamento}
+\subsection{Treinamento}\label{cap_mlp_sec_modelo:ssec:treinamento}
 
 Fornecido um \emph{conjunto de treinamento} $\{\pmb{x}^{(s)}, \pmb{y}^{(s)}\}_{s=1}^{n_s}$, com $n_s$ amostras, \hl{o treinamento da rede consiste em resolver o problema de minimização}
 \begin{equation}\hleq
@@ -555,6 +555,248 @@ plt.show()
 \subsection{Exercícios}
 
 [[tag::construcao]]
+
+\section{Diferenciação Automática}\label{cap_mlp_sec_autograd}
+
+Uma RNA é uma composição de funções definidas por parâmetros (pesos e \textit{biases}). O treinamento de uma RNA ocorre em duas etapas\footnote{Para mais detalhes, consulte a Subseção \ref{cap_mlp_sec_modelo:ssec:treinamento}.}:
+\begin{enumerate}[1.]
+\item \hl{\emph{Propagação (\textit{forward})}}: os dados de entrada são propagados para todas as funções da rede, produzindo a saída estimada.
+\item \hl{\emph{Retropropagação (\textit{backward})}}: a computação do gradiente do erro\footnote{Medida da diferença entre o valor estimado e o valor esperado.} em relação aos parâmetros da rede é realizado coletando as derivadas (gradientes) das funções da rede. Pela regra da cadeia, essa coleta é feita a partir da camada de saída em direção a camada de entrada da rede.
+\end{enumerate}
+
+A \hl{Diferenciação Automática (\emph{Autograd}, do inglês, \textit{Automatic Gradient}) consiste na computação de derivadas a partir da regra da cadeia em uma estrutura computacional composta de funções elementares}. Esse é o caso \hl{em RNAs, a computação do gradiente da saída da rede em relação a sua entrada pode ser feita de forma similar à computação do gradiente do erro em relação aos seus parâmetros}.
+
+\subsection{Autograd Perceptron}
+
+Para um Perceptron\footnote{Consulte o Capítulo \ref{cap_perceptron} para mais informações sobre o Perceptron.}
+\begin{subequations}
+  \begin{align}
+    \tilde{y} &= \mathcal{N}\left(\pmb{x}, (\pmb{w}, b)\right)\\
+              &= f\underbrace{(\pmb{w}\cdot\pmb{x} + b)}_{z}
+  \end{align}
+\end{subequations}
+temos que o gradiente da saída $y$ em relação à entrada $\pmb{x}$ pode ser computada como segue
+\begin{subequations}
+  \begin{align}
+    \frac{\p \tilde{y}}{\p\pmb{x}} &= \frac{\p f}{\p z}\frac{\p z}{\p\pmb{x}}\\
+                                   &= f'(z)\pmb{w}
+  \end{align}
+\end{subequations}
+
+\begin{ex}
+  Vamos treinar um Perceptron com função de ativação $f(z) = z$
+  \begin{subequations}
+    \begin{align}
+      \tilde{y} &= \mathcal{N}(x; (w,b))\\
+                &= wx + b
+    \end{align}
+  \end{subequations}
+  que se ajusta ao conjunto de pontos\footnote{Consulte o Exercício \ref{cap_perceptron_sec_train:exer:ajuste}.}
+  \begin{center}
+    \begin{tabular}{l|ll}
+      s & $x^{(s)}$ & $y^{(s)}$\\\hline
+      1 & 0.5 & 1.2\\
+      2 & 1.0 & 2.1\\
+      3 & 1.5 & 2.6\\
+      4 & 2.0 & 3.6\\\hline
+    \end{tabular}
+  \end{center}
+  Uma vez treinado com função erro MSE\footnote{MSE, Erro Quadrático Médio.}, espera-se que o Perceptron corresponda a reta de mínimos quadrados\footnote{Para mais informações sobre essa aplicação, consulte a Subseção \ref{cap_perceptron_sec_unit:ssec:regr}.}
+  \begin{equation}
+    y = 1.54x + 0.45
+  \end{equation}
+  Portanto, espera-se que
+  \begin{equation}
+    \frac{\p \tilde{y}}{\p x} = 1.54.
+  \end{equation}
+
+\begin{lstlisting}[caption=autograd\_percep.py]
+import torch
+
+# modelo
+model = torch.nn.Linear(1,1)
+
+# treinamento
+
+## optimizador
+optim = torch.optim.SGD(model.parameters(),
+                        lr=1e-1)
+
+## função erro
+loss_fun = torch.nn.MSELoss()
+
+## dados de treinamento
+X_train = torch.tensor([[0.5],
+                        [1.0],
+                        [1.5],
+                        [2.0]])
+y_train = torch.tensor([[1.2],
+                        [2.1],
+                        [2.6],
+                        [3.6]])
+
+## num max épocas
+nepochs = 5000
+nstop = 10
+
+cstop = 0
+loss_min = torch.finfo().max
+for epoch in range(nepochs):
+
+    # forward
+    y_est = model(X_train)
+
+    # erro
+    loss = loss_fun(y_est, y_train)
+
+    # critério de parada
+    if (loss.item() >= loss_min):
+        cstop += 1
+    else:
+        loss_min = loss.item()
+        cstop = 0
+
+    print(f'{epoch}: {loss.item():.4e}, '\
+          + f'cstop = {cstop}/{nstop}')
+
+    if (cstop == nstop):
+        break
+
+    # backward
+    optim.zero_grad()
+    loss.backward()
+    optim.step()
+
+
+# verificação
+print(f'w = {model.weight}')
+print(f'b = {model.bias}')
+
+# autograd dy/dx
+
+## forward
+x = torch.tensor([[1.]],
+                 requires_grad=True)
+y = model(x)
+
+## backward
+y.backward()
+dydx = x.grad
+print(f'dy/dx = {dydx}')
+\end{lstlisting}
+\end{ex}
+
+\subsection{Autograd MLP}
+
+Os conceitos de diferenciação automática (\emph{autograd}) são diretamente estendidos para redes do tipo Perceptron Multicamadas (MLP, do inglês, \textit{Multilayer Perceptron}). No seguinte exemplo, exploramos o fato de MLPs serem aproximadoras universais e avaliamos a derivada de uma MLP na aproximação de uma função.
+
+\begin{ex}\label{cap_mlp_sec_autograd:ex:fun1d}
+  Vamos criar uma MLP
+  \begin{equation}
+    \tilde{y} = \mathcal{N}\left(x; \left(W^{(l)}, \pmb{b}^{(l)}, f^{(l)}\right)_{l=1}^{n}\right),
+  \end{equation}
+  que aproxima a função $y = \sen(\pi x)$ para $x\in [-1, 1]$
+  
+\begin{lstlisting}[caption=autograd\_fun1d.py]
+import torch
+import matplotlib.pyplot as plt
+
+# modelo
+
+model = torch.nn.Sequential(
+    torch.nn.Linear(1,50),
+    torch.nn.Tanh(),
+    torch.nn.Linear(50,25),
+    torch.nn.Tanh(),
+    torch.nn.Linear(25,1)
+    )
+
+# treinamento
+
+## fun obj
+fobj = lambda x: torch.sin(torch.pi*x)
+a = -1.
+b = 1.
+
+## optimizador
+optim = torch.optim.SGD(model.parameters(),
+                        lr=1e-1, momentum=0.9)
+
+## função erro
+loss_fun = torch.nn.MSELoss()
+
+## num de amostras por época
+ns = 100
+## num max épocas
+nepochs = 10000
+## tolerância
+tol = 1e-5
+
+for epoch in range(nepochs):
+
+    # amostras
+    X_train = (a - b) * torch.rand((ns,1)) + b
+    y_train = fobj(X_train)
+    
+    # forward
+    y_est = model(X_train)
+
+    # erro
+    loss = loss_fun(y_est, y_train)
+
+    lr = optim.param_groups[-1]['lr']
+    print(f'{epoch}: loss = {loss.item():.4e}, lr = {lr:.4e}')
+
+    # critério de parada
+    if ((loss.item() < tol) or (lr <= 1e-7)):
+        break
+
+    # backward
+    optim.zero_grad()
+    loss.backward()
+    optim.step()
+\end{lstlisting}
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./cap_mlp/dados/fig_autograd_fun1d/fig}
+    \caption{Comparação da autograd da MLP com a derivada exata $f'(x)=\cos(x)$ para o Exemplo \ref{cap_mlp_sec_autograd:ex:fun1d}.}
+    \label{cap_mlp_sec_autograd:fig:fun1d}
+  \end{figure}
+
+  Uma vez treinada, nossa MLP é uma aproximadora da função seno, i.e. $\tilde{y} \approx \sen(x)$. Usando de autograd podemos computar $\tilde{y}' \approx \cos(x)$. O código abaixo, computa $d\tilde{y}/dx$ a partir da rede e produz o gráfico da figura acima.
+
+\begin{lstlisting}
+# verificação
+fig = plt.figure()
+ax = fig.add_subplot()
+
+xx = torch.linspace(a, b,
+                    steps=50).reshape(-1,1)
+# y' = cos(x)
+dy_esp = torch.pi*torch.cos(torch.pi*xx)
+ax.plot(xx, dy_esp, label="$f'(x) = \cos(x)$")
+
+# model autograd
+dy_est = torch.empty_like(xx)
+for i,x in enumerate(xx):
+    x.requires_grad = True
+    y = model(x)
+    y.backward()
+    dy_est[i] = x.grad
+ax.plot(xx, dy_est, label='$d\\tilde{y}/dx$')
+
+ax.legend()
+ax.grid()
+ax.set_xlabel('x')
+ax.set_ylabel('y')
+plt.show()
+\end{lstlisting}
+\end{ex}
+
+\subsection{Exercícios}
+
+[[tag:construcao]]
 
 \section{Aplicação: Equação de Laplace}\label{cap_mlp_sec_eqlaplace}
 
