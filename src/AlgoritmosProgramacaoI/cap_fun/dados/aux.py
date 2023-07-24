@@ -1,114 +1,105 @@
-import retangulo as rect
+def inDisk(a=0, b=0, r=1, *pts):
+    for pt in pts:
+        if ((pt[0]-a)**2 + (pt[1]-b)**2 <= r**2):
+            print(f'({pt[0]}, {pt[1]}) pertence ao disco.')
+        else:
+            print(f'({pt[0]}, {pt[1]}) não pertence ao disco.')
 
-a = float(input('Lado a: '))
-b = float(input('Lado b: '))
 
-diag = rect.diagonal(a, b)
-print(f'diagonal = {diag}')
+def EhPrimo(n):
+    info = True
+    for i in range(2,n//2+1):
+        if (n % i == 0):
+            info = False
+            break
+    return info
 
-perim = rect.perimetro(a, b)
-print(f'perímetro = {perim}')
+def primos(n=1, m=29):
+    lista = []
+    for x in range(n, m+1):
+        if EhPrimo(x):
+            lista.append(x)
+    return lista
 
-area = rect.area(a, b)
-print(f'área = {area}')
+import math as m
+
+def raizPoli1(a, b):
+    '''
+    ax + b = 0
+    '''
+    return {-b/a}
+
+def raizPoli2(a, b, c):
+    '''
+    ax^2 + bx + c = 0
+    '''
+    delta = b**2 - 4*a*c
+    x1 = (-b - m.sqrt(delta))/(2*a)
+    x2 = (-b + m.sqrt(delta))/(2*a)
+    return {x1, x2}
+
+def raizPoli12(**coefs):
+    if (len(coefs) == 2):
+        return raizPoli1(coefs['a'], coefs['b'])
+    elif (len(coefs) == 3):
+        return raizPoli2(coefs['a'], coefs['b'], coefs['c'])
+    else:
+        raise Exception('Polinômio inválido.')
+
+print('x - 2 = 0')
+print(f'x = {raizPoli12(a=1, b=-2)}')
+
+print('2x^2 - 3x + 1 = 0')
+print(f'x = {raizPoli12(a=2, b=-3, c=1)}')
+
+
+
+
+def fun(x, y):
+    print(f'x = {x}')
+    print(f'y = {y}')
+
+    
+def progAritm(a0, r, n=5):
+    return [a0 + i*r for i in range(n+1)]
+print(progAritm(1, 2))
+
+y = 1
+def fun(x=y):
+    y = 2
+    print(x)
+fun()
+
+def bigollo(n=5):
+    fibo = [1]*n
+    for i in range(2,n):
+        fibo[i] = sum(fibo[i-2:i])
+    return fibo
+
+print(bigollo())
+
+def fun(x, x0=0):
+    glo x
+    x = x - 1
+
+x = 3
+y = fun()
+print(f'x = {x}')
+
 
 
 import math as m
 
-def raizFunAfim(a, b):
-    '''
-    Computa a raiz de
-    f(x) = ax + b
+def fun(n):
+    print('Na função:')
+    print(f'\tn = {n}, id = {id(n)}')
+    n = n + 1
+    print(f'\tn = {n}, id = {id(n)}')
+    return n
 
-    Entrada
-    -------
-    a : float
-    Coeficiente angular.
+n = 1
+print(f'n = {n}, id = {id(n)}')
 
-    b : float
-    Coeficiente linear.
-
-    Saída
-    -----
-    x : float
-    Raiz de f(x).
-    '''
-    
-    try:
-        x = -b/a
-    except ZeroDivisionError:
-        raise ZeroDivisionError('coef. angular deve ser != 0.')
-
-    return x
-
-# entrada de dados
-try:
-    a = float(input('Coef. angular: '))
-except ValueError:
-    raise ValueError('Número inválido.')
-
-try:
-    b = float(input('Coef. linear: '))
-except ValueError:
-    raise ValueError('Número inválido.')
-
-# raiz
-raiz = raizFunAfim(a, b)
-
-# imprime
-print(f'raiz = {raiz}')
-
-    
-    
-
-def raizes(a, b, c):
-    '''
-    Computa as raízes de
-    p(x) = ax^2 + bx + c
-
-    Entrada
-    -------
-    a : float
-    Coeficiente do termo quadrático.
-    Atenção! Deve ser diferente de zero.
-
-    b : float 
-    Coeficiente do termo linear.
-
-    c: float
-    Coeficiente do termo constante.
-
-    Saída
-    -----
-    x1 : float
-    Uma raíz do polinômio.
-
-    x2 : float
-    Outra raíz do polinômio.
-    Atenção! No caso de raiz dupla,
-    x1 == x2.
-    '''
-
-    # auxiliares
-    _2a = 2*a
-
-    try:
-        _b2a = -b/_2a
-    except:
-        raise Exception('número inválido')
-
-    # discriminante
-    delta = b**2 - 4*a*c
-
-    # raízes
-    if (delta > 0):
-        x1 = _b2a + m.sqrt(delta)/_2a
-        x2 = _b2a - m.sqrt(delta)/_2a
-        return x1, x2
-    elif (delta < 0):
-        img = m.sqrt(-delta)/_2a
-        x1 = _b2a + img*1j
-        return x1, x1.conjugate()
-    else:
-        return _b2a, _b2a
-
+m = fun(n)
+print(f'n = {n}, id = {id(n)}')
+print(f'm = {m}, id = {id(m)}')

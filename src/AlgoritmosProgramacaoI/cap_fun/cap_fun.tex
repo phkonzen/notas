@@ -770,3 +770,313 @@ print(f'raiz = {raiz}')
   \end{enumerate}
   Então, use seu módulo em um código em que a(o) usuária(o) informa os coeficientes $a$, $b$ e $c$ e obtém informações sobre as raízes, o ponto de interseção com o eixo $y$ e o vértice de $p$. 
 \end{exer}
+
+\section{Passagem de Parâmetros}
+
+\emph{Uma função pode ter parâmetros de entada}, são as \emph{varáveis} de entrada que são \emph{usadas para que ela receba dados no momento em que é chamada}. Esta estrutura de passar dados para uma função é chamado de passagem de parâmetros. Os parâmetros de entrada são alocados como novas variáveis no chamamento da função e ficam livres ao término de sua execução.
+
+\begin{ex}
+  Consideramos o seguinte código:
+\begin{lstlisting}
+import math as m
+
+def fun(n):
+    print('Na função:')
+    print(f'\tn = {n}, id = {id(n)}')
+    n = n + 1
+    print(f'\tn = {n}, id = {id(n)}')
+    return n
+
+n = 1
+print(f'n = {n}, id = {id(n)}')
+
+m = fun(n)
+print(f'n = {n}, id = {id(n)}')
+print(f'm = {m}, id = {id(m)}')
+\end{lstlisting}
+  Na linha 10, o identificador \lstinline+n+ é criado com valor 1. Na linha 13, a função \lstinline+fun+ é chamada, um novo identificador \lstinline+n+ é criado apontando para o mesmo valor. No escopo da função (linhas 4-8), apenas este novo \lstinline+n+ é afetado. Ao término da função, este é liberado e o programa principal segue com o identificador \lstinline+n+ original.
+\end{ex}
+
+\subsection{Variáveis Globais e Locais}
+
+\hl{Variáveis globais são aquelas que podem ser acessadas por subprogramas} (como funções) e \hl{locais são aquelas que existem somente dentro do escopo de um subprograma}.
+
+\subsubsection{Variáveis Locais}
+
+\hl{Variáveis criadas dentro do escopo de uma função} (incluindo-se os parâmetros de entrada) \hl{são locais}, i.e. só existem durante a execução da função.
+
+\begin{ex}
+  Consideramos o seguinte código:
+\begin{lstlisting}
+def fun(x):
+    y = 2*x - 1
+    return y
+
+z = fun(2)
+
+try:
+    print(f'id(y) = {id(y)}')
+except:
+    print(f'y não está definida.')
+\end{lstlisting}
+  Ao executarmos, imprime-se a mensagem ``y não está definida''. Isto ocorre, pois \lstinline+y+ é variável local na função \lstinline+fun+, é criada e liberada durante sua execução.
+\end{ex}
+
+\subsubsection{Variáveis Globais}
+
+\hl{Variáveis definidas no programa principal são globais}, i.e. podem ser acessadas\footnote{Em modo somente leitura.} no escopo de funções, mesmo que não sejam passadas por parâmetros.
+
+\begin{ex}
+  Consideramos o seguinte código:
+\begin{lstlisting}
+x = 3
+
+def fun():
+    y = 2*x - 1
+    return y
+
+y = fun()
+print(f'x = {x}, y = {y}')
+\end{lstlisting}
+  A variável \lstinline+x+ é global, i.e. é acessível na função \lstinline+fun+. Execute o código e verifique o valor impresso.
+\end{ex}
+
+\hl{A instrução {\lstinline+global+} permite que variáveis globais possam ser modificadas dentro do escopo de funções}.
+
+\begin{ex}
+  Consideramos o seguinte código:
+\begin{lstlisting}
+def fun():
+    global x
+    x = x - 1
+    y = 2*x - 1
+    return y
+
+x = 3
+y = fun()
+print(f'x = {x}, y = {y}')
+\end{lstlisting}
+\end{ex}
+
+\subsection{Parâmetros com Valor Padrão}
+
+\hl{Funções podem ter parâmetros com valor padrão}, i.e. no caso que a função ser chamada sem esses parâmetros, eles assumem o valor predefinido na declaração da função.
+
+\begin{ex}
+  O seguinte código, imprime uma lista com a Sequência de Fibonacci{\fibonacci}. Por padrão, apenas os cinco primeiros números da sequência são retornados pela função declarada.
+\begin{lstlisting}
+def bigollo(n=5):
+    fibo = [1]*n
+    for i in range(2,n):
+        fibo[i] = sum(fibo[i-2:i])
+    return fibo
+
+print(bigollo())
+\end{lstlisting}
+\end{ex}
+
+\subsection{Vários Parâmteros}
+
+\hl{Uma função pode ter vários parâmetros de entrada}. A ordem em que os parâmetros são definidos na função devem ser seguidos na passagem de valores. Por exemplo, consideramos a função
+\begin{lstlisting}
+def fun(x, y):
+    print(f'x = {x}')
+    print(f'y = {y}')
+\end{lstlisting}
+Ao chamá-la, devemos passar os valores dos parâmetros \lstinline+x+ e \lstinline+y+ na mesma ordem em que aparecem na definição da função. Por exemplo,
+\begin{lstlisting}
+>>> fun(1,2)
+x = 1
+y = 2
+\end{lstlisting}
+Podemos superar esta restrição, passando os parâmetros de forma explícita. Por exemplo,
+\begin{lstlisting}
+>>> fun(y=2, x=1)
+x = 1
+y = 2
+\end{lstlisting}
+
+\subsection{Parâmetros Arbitrários}
+
+hl{Uma função pode ter uma quantidade arbitrária de parâmetros}.
+
+\subsubsection{\lstinline+Tuple+ como Parâmetro Arbitrário}
+
+Usa-se a seguinte sintaxe para passar \hl{parâmetros arbitrários com {\lstinline+tuples+}}:
+\begin{lstlisting}
+def fun(*args):
+    pass
+\end{lstlisting}
+
+\begin{ex}
+  Os seguinte código implementa funções para a computação de raízes (reais) de polinômios de até grau 1 e de grau 2.
+\begin{lstlisting}
+import math as m
+
+def raizPoli1(a, b):
+    '''
+    ax + b = 0
+    '''
+    return {-b/a}
+
+def raizPoli2(a, b, c):
+    '''
+    ax^2 + bx + c = 0
+    '''
+    delta = b**2 - 4*a*c
+    x1 = (-b - m.sqrt(delta))/(2*a)
+    x2 = (-b + m.sqrt(delta))/(2*a)
+    return {x1, x2}
+
+def raizPoli12(*coefs):
+    if (len(coefs) == 2):
+        return raizPoli1(coefs[0], coefs[1])
+    elif (len(coefs) == 3):
+        return raizPoli2(coefs[0], coefs[1], coefs[2])
+    else:
+        raise Exception('Polinômio inválido.')
+
+print('x - 2 = 0')
+print(f'x = {raizPoli12(1,-2)}')
+
+print('2x^2 - 3x + 1 = 0')
+print(f'x = {raizPoli12(2, -3, 1)}')
+\end{lstlisting}
+\end{ex}
+
+\subsubsection{Dicionários como Parâmetros Arbitrários}
+
+Usa-se a seguinte sintaxe para passar \hl{parâmetros arbitrários com {\lstinline+dicts+}}:
+\begin{lstlisting}
+def fun(**kwargs):
+    pass
+\end{lstlisting}
+
+
+\begin{ex}
+  Os seguinte código implementa funções para a computação de raízes (reais) de polinômios de até grau 1 e de grau 2.
+\begin{lstlisting}
+import math as m
+
+def raizPoli1(a, b):
+    '''
+    ax + b = 0
+    '''
+    return {-b/a}
+
+def raizPoli2(a, b, c):
+    '''
+    ax^2 + bx + c = 0
+    '''
+    delta = b**2 - 4*a*c
+    x1 = (-b - m.sqrt(delta))/(2*a)
+    x2 = (-b + m.sqrt(delta))/(2*a)
+    return {x1, x2}
+
+def raizPoli12(**coefs):
+    if (len(coefs) == 2):
+        return raizPoli1(coefs['a'], coefs['b'])
+    elif (len(coefs) == 3):
+        return raizPoli2(coefs['a'], coefs['b'], coefs['c'])
+    else:
+        raise Exception('Polinômio inválido.')
+
+print('x - 2 = 0')
+print(f'x = {raizPoli12(a=1, b=-2)}')
+
+print('2x^2 - 3x + 1 = 0')
+print(f'x = {raizPoli12(a=2, b=-3, c=1)}')
+\end{lstlisting}
+\end{ex}
+
+\subsection{Exercícios}
+
+\begin{exer}
+  Considere o seguinte código:
+\begin{lstlisting}
+x = 1
+def fun(x):
+    print(x)
+fun(2)
+\end{lstlisting}
+  Sem executá-lo, diga qual seria o valor impresso no caso do código ser rodado. Justifique sua resposta.
+\end{exer}
+\begin{resp}
+  2
+\end{resp}
+
+\begin{exer}
+  Considere o seguinte código:
+\begin{lstlisting}
+def fun(x):
+    global x
+    x = x - 1
+\end{lstlisting}
+  Ao executá-lo, {\python} gera um erro de sintaxe. Qual é esse erro e por quê ele ocorre?
+\end{exer}
+\begin{resp}
+  Como parâmetro, \lstinline+x+ é variável local, mas está definida como global dentro do escopo da função. Isto causa uma ambiguidade que não é permitida em programas de computadores.
+\end{resp}
+
+\begin{exer}
+  Considere o seguinte código:
+\begin{lstlisting}
+y = 1
+def fun(x=y):
+    y = 2
+    print(x)
+fun()
+\end{lstlisting}
+  Sem executá-lo, diga qual seria o valor impresso no caso de o código ser rodado. Justifique sua resposta.
+\end{exer}
+\begin{resp}
+  1
+\end{resp}
+
+\begin{exer}
+  Defina uma função {\python} que retorna uma lista com os termos da \href{https://pt.wikipedia.org/wiki/Progress\%C3\%A3o_aritm\%C3\%A9tica}{Progressão Aritmética (P.A.)} $a_i = a_{i-1} + r$, $i = 0, 1, 2, \dotsc, n$. Como parâmetros de entrada, tenha $a_0$ (termo inicial), $r$ (razão da P.A.) e, por padrão, $n = 5$ (número de termos a serem computados).
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+def progAritm(a0, r, n=5):
+    return [a0 + i*r for i in range(n+1)]
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  Desenvolva uma função que retorna a lista de números primos entre $n$ e $m$, $m\geq n$. Caso $n$ ou $m$ não sejam fornecidos, a função deve usar $n=1$ e $m=29$ como padrão.
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+def EhPrimo(n):
+    info = True
+    for i in range(2,n//2+1):
+        if (n % i == 0):
+            info = False
+            break
+    return info
+
+def primos(n=1, m=29):
+    lista = []
+    for x in range(n, m+1):
+        if EhPrimo(x):
+            lista.append(x)
+    return lista
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  Desenvolva uma função que verifica se um ponto pertence a um dado disco
+  \begin{equation}
+    (x-a)^2 + (y-b)^2 \leq r^2.
+  \end{equation}
+  Crie-a de forma que ela possa receber uma quantidade arbitrária de pontos para serem verificados. Os parâmetros do disco não sejam informados, ela deve usar, como padrão, o disco unitário com centro na origem.
+\end{exer}
+\begin{resp}
+def inDisk(*pts, a=0, b=0, r=1):
+    for pt in pts:
+        if ((pt[0]-a)**2 + (pt[1]-b)**2 <= r**2):
+            print(f'({pt[0]}, {pt[1]}) pertence ao disco.')
+        else:
+            print(f'({pt[0]}, {pt[1]}) não pertence ao disco.')
+\end{resp}
