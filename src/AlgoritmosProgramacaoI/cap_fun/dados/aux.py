@@ -1,4 +1,4 @@
-def inDisk(a=0, b=0, r=1, *pts):
+def inDisk(*pts, a=0, b=0, r=1):
     for pt in pts:
         if ((pt[0]-a)**2 + (pt[1]-b)**2 <= r**2):
             print(f'({pt[0]}, {pt[1]}) pertence ao disco.')

@@ -306,68 +306,83 @@ $0,54x^3 - 0,15x^2 + 1,3x + 1$.
   Dica: use os pontos $x_i = (i-1)\frac{\pi}{4}$, $i=1,2,3,4$.
 \end{resp}
 
-\section{Diferenças divididas de Newton}\label{cap_interp_difdiv}
+\section{Diferenças Divididas de Newton}\label{cap_interp_sec_difdiv}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-Dado um conjunto de pontos $\{(x_i, y_i)\}_{i=1}^n$, o método das diferenças divididas de Newton\footnote{Carl Gustav Jacob Jacobi, 1804 - 1851, matemático alemão. Fonte: \href{https://en.wikipedia.org/wiki/Carl_Gustav_Jacob_Jacobi}{Wikipedia}.} busca determinar o polinômio interpolar deste conjunto de pontos na forma
-\begin{align}
-  p(x) &= a_1 + a_2(x-x_1) + a_3(x-x_1)(x-x_2)\\
-       &+ \cdots + a_{n}(x-x_1)\cdot \cdots \cdot (x-x_{n-1}).
-\end{align}
-
+Dado um conjunto de pontos $\{(x_i, y_i)\}_{i=1}^n$, o \hl{\emph{Método das Diferenças Divididas de Newton}}{\newton} busca determinar o \hl{polinômio interpolador da forma}
+\begin{equation}\hleq
+  \begin{aligned}
+    p(x) &= a_1 + a_2(x-x_1) \\
+    &+ a_3(x-x_1)(x-x_2)\\
+    &+ \cdots + a_{n}(x-x_1) \cdots (x-x_{n-1}).
+  \end{aligned}
+\end{equation}
 Por uma abordagem direta, temos que $p(x_i)=y_i$, $i=1, 2, \dotsc, n$, o que nos leva ao seguinte sistema triangular inferior
-\begin{align}
-  a_1 &= y_1, \\
-  a_1 + a_2(x_2-x_1) &= y_2, \\
-  a_1 + a_2(x_3-x_1) + a_3(x_3-x_1)(x_3-x_2) &= y_3, \\
-  &\vdots\\
-  a_1 + a_2(x_n-x_1) + \cdots + a_{n}(x_n-x_1)\cdot\cdots\cdot(x_n-x_{n-1}) &= y_n.
-\end{align}
+\begin{subequations}
+  \begin{align}
+    a_1 &= y_1, \\
+    a_1 + a_2(x_2-x_1) &= y_2, \\
+    a_1 + a_2(x_3-x_1) + a_3(x_3-x_1)(x_3-x_2) &= y_3, \\
+        &\vdots\\
+    a_1 + a_2(x_n-x_1) + \cdots + a_{n}(x_n-x_1)\cdot\cdots\cdot(x_n-x_{n-1}) &= y_n.
+  \end{align}
+\end{subequations}
 Entretanto, existe uma forma mais eficiente de se determinar os coeficientes $a_i$, $i=1, 2, \dotsc, n$.
 
 Denotemos por $p[x_j, x_{j+1}, \dotsc, x_{k}](x)$ o polinômio interpolador do conjunto de pontos $\{(x_i, y_i)\}_{i=j}^k$. Então, temos a seguinte recursão
-\begin{equation} \label{eq:interp_parc1}
-  p[x_j] = y_j,\quad j=1, 2, \dotsc, n,
+\begin{equation}\label{cap_interp_sec_difdiv:eq:interp_parc1}\hleq
+  p[x_j] = y_j,
 \end{equation}
-e
-\begin{align}
-  &p[x_j, x_{j+1}, \ldots, x_k](x) \nonumber\\
-  &= \frac{(x-x_j)p[x_{j+1},\dotsc,x_k](x)-(x-x_k)p[x_j,\dotsc,x_{k-1}](x)}{x_k-x_j},\label{eq:interp_parc2}
-\end{align}
-para todo $n\geq k > j \geq 1$. De fato, \eqref{eq:interp_parc1} é trivial. Agora, denotando por $r(x)$ o lado direito da equação \eqref{eq:interp_parc2}, vemos que $r(x)$ tem grau menor ou igual a $k-j$, o mesmo de $p[x_j, x_{j+1}, \ldots, x_k](x)$. Desta forma, para mostrar \eqref{eq:interp_parc2}, basta verificarmos que $r(x)$ interpola o conjunto de pontos $\{(x_i, y_i)\}_{i=j}^k$. O que de fato ocorre:
-\begin{align}
-  r(x_j) &= \frac{-(x_j-x_k)y_j}{x_k-x_j} = y_j,\\
-  r(x_{l}) &= \frac{(x_l-x_j)y_l-(x_l-x_k)y_l}{x_k-x_j}=y_l,~l=j+1,\dotsc,k-1,\\
-  r(x_k) &= \frac{(x_k-x_j)y_k}{x_k-x_j}=y_k.
-\end{align}
-Logo, pela unicidade do polinômio interpolador, temos demonstrado \eqref{eq:interp_parc2}.
+para $j=1, 2, \dotsc, n$ e
+\begin{equation}\label{cap_interp_sec_difdiv:eq:interp_parc2}\hleq
+  \begin{aligned}
+    &p[x_j, x_{j+1}, \ldots, x_k](x)\\
+    &\quad = \frac{(x-x_j)p[x_{j+1},\dotsc,x_k](x)-(x-x_k)p[x_j,\dotsc,x_{k-1}](x)}{x_k-x_j},
+  \end{aligned}
+\end{equation}
+para todo $n\geq k > j \geq 1$.
 
-Observando que o polinômio interpolador $p(x)$ é igual a $p[x_1,\dotsc,x_n](x)$, temos que \eqref{eq:interp_parc1}-\eqref{eq:interp_parc2} nos fornece uma forma de computar $p(x)$ recursivamente\footnote{De fato, o método de Neville consistem em computar $p(x)$ por esta recursão.}. Além disso, observemos que $p[x_j,\dotsc,x_{k-1}](x)$ e $p[x_j,\dotsc,x_k]$ diferem por um polinômio de grau $k-j$ com zeros $x_j$, $x_{j+1}$, ..., $x_{k-1}$. Logo, temos
-\begin{align}
-  p[x_j,\dotsc,x_k](x) &= p[x_j,\dotsc,x_{k-1}](x) \nonumber \\
-                       &+ f[x_j,\dotsc,x_k](x-x_j)\cdot\cdots\cdot(x-x_{k-1}),
-\end{align}
-onde $f[x_j,\dotsc,x_k]$ são coeficientes a determinar. Ainda, tomando $p[x_i]=f[x_i]$, temos
-\begin{align}
-  p[x_j,\dotsc,x_k](x) &= f[x_j] + f[x_j,x_{j+1}](x-x_j) \nonumber \\
-                       &+ f[x_j,\dotsc,x_k](x-x_j)\cdot\cdots\cdot(x-x_{k-1}).
-\end{align}
-Por fim, a recursão \eqref{eq:interp_parc1}-\eqref{eq:interp_parc2} nos mostra que as diferenças divididas Newton podem ser obtidas de
-\begin{align}
-  &f[x_j] = y_j,\quad j=1,2,\dotsc,n,\label{eq:interp_difdiv1}\\
-  &f[x_j,\dotsc,x_k] = \frac{f[x_{j+1},\dotsc,x_k]-f[x_j,\dotsc,x_{k-1}]}{x_k-x_j},\label{eq:interp_difdiv2}
-\end{align}
-para todo $n\geq k>j\geq 1$. E, temos o polinômio interpolador do conjunto de pontos $\{(x_i,y_i)\}_{i=1}^n$ dado por
-\begin{align}\label{eq:interpoli_Newton}
-  p[x_1,\dotsc,x_n](x) &= f[x_1] + f[x_1,x_2](x-x_1) \nonumber \\
-                       &+\cdots + f[x_1,\dotsc,x_n](x-x_1)\cdot\cdots\cdot(x-x_n).  
-\end{align}
+De fato, \eqref{cap_interp_sec_difdiv:eq:interp_parc1} é trivial. Agora, denotando por $r(x)$ o lado direito da equação \eqref{cap_interp_sec_difdiv:eq:interp_parc2}, vemos que $r(x)$ tem grau menor ou igual a $k-j$, o mesmo de $p[x_j, x_{j+1}, \ldots, x_k](x)$. Desta forma, para mostrar \eqref{cap_interp_sec_difdiv:eq:interp_parc2}, basta verificarmos que $r(x)$ interpola o conjunto de pontos $\{(x_i, y_i)\}_{i=j}^k$. O que de fato ocorre
+\begin{subequations}
+  \begin{align}
+    &r(x_j) = \frac{-(x_j-x_k)y_j}{x_k-x_j} = y_j,\\
+    &r(x_{l}) = \frac{(x_l-x_j)y_l-(x_l-x_k)y_l}{x_k-x_j}=y_l,\nonumber\\
+    &\qquad\qquad\qquad\qquad l=j+1,\dotsc,k-1,\\
+    &r(x_k) = \frac{(x_k-x_j)y_k}{x_k-x_j}=y_k.
+  \end{align}
+\end{subequations}
+Logo, pela unicidade do polinômio interpolador\footnote{Consulte o Exercício \ref{cap_interp_sec_difdiv:exer:pinterp_unico}}, temos demonstrado \eqref{cap_interp_sec_difdiv:eq:interp_parc2}.
+
+Observando que o polinômio interpolador $p(x)$ é igual a $p[x_1,\dotsc,x_n](x)$, temos que \eqref{cap_interp_sec_difdiv:eq:interp_parc1}-\eqref{cap_interp_sec_difdiv:eq:interp_parc2} nos fornece uma forma de computar $p(x)$ de forma recursiva. Além disso, observemos que $p[x_j, \dotsc, x_{k-1}](x)$ e $p[x_j, \dotsc, x_k]$ diferem por um polinômio de grau $k-j$ com zeros $x_j$, $x_{j+1}$, ..., $x_{k-1}$. Logo, temos
+\begin{equation}
+  \begin{aligned}
+    &p[x_j,\dotsc,x_k](x) = p[x_j,\dotsc,x_{k-1}](x) \\
+    &\qquad + f[x_j,\dotsc,x_k](x-x_j)\cdots(x-x_{k-1}),
+  \end{aligned}
+\end{equation}
+onde $f[x_j, \dotsc, x_k]$ são coeficientes a determinar. Ainda, tomando $p[x_i] = f[x_i]$, temos
+\begin{equation}
+  \begin{aligned}
+    &p[x_j,\dotsc,x_k](x) = f[x_j] + f[x_j,x_{j+1}](x-x_j)\\
+    &\qquad + f[x_j,\dotsc,x_k](x-x_j)\cdots(x-x_{k-1}).
+  \end{aligned}
+\end{equation}
+Por fim, a recursão \eqref{cap_interp_sec_difdiv:eq:interp_parc1}-\eqref{cap_interp_sec_difdiv:eq:interp_parc2} nos mostra que as \hl{Diferenças Divididas Newton podem ser obtidas de}
+\begin{subequations}\label{cap_interp_sec_difdiv:eq:interp_difdiv}\hleq
+  \begin{align}
+    &f[x_j] = y_j,\quad j=1,2,\dotsc,n,\\
+    &f[x_j,\dotsc,x_k] = \frac{f[x_{j+1},\dotsc,x_k]-f[x_j,\dotsc,x_{k-1}]}{x_k-x_j},
+  \end{align}
+\end{subequations}
+para todo $n\geq k > j \geq 1$. E, temos \hl{o polinômio interpolador} do conjunto de pontos $\{(x_i,y_i)\}_{i=1}^n$ dado por
+\begin{equation}\label{cap_interp_sec_difdiv:eq:interpoli_Newton}\hleq
+  \begin{aligned}
+    &p[x_1,\dotsc,x_n](x) = f[x_1] + f[x_1,x_2](x-x_1) \\
+    &\qquad + \cdots + f[x_1,\dotsc,x_n](x-x_1)\cdots(x-x_n).  
+  \end{aligned}
+\end{equation}
 
 \begin{obs}
-  A recursão \eqref{eq:interp_difdiv1}-\eqref{eq:interp_difdiv2} pode ser adequadamente organizada em uma matriz da forma
+  A recursão \eqref{cap_interp_sec_difdiv:eq:interp_difdiv} pode ser adequadamente organizada em uma matriz da forma
   \begin{equation}
     \begin{bmatrix}
       \pmb{f[x_1]} & 0 & 0 & \ldots & 0 \\
@@ -377,28 +392,37 @@ para todo $n\geq k>j\geq 1$. E, temos o polinômio interpolador do conjunto de p
       f[x_n] & f[x_{n-1},x_{n}] & f[x_{n-2},x_{n-1},x_n] & \ldots & \pmb{f[x_1,x_2,\dotsc,x_n]}
     \end{bmatrix}
   \end{equation}
-onde os elementos da diagonal correspondem aos coeficientes do polinômio interpolador na forma \eqref{eq:interpoli_Newton}.
+onde \hl{os elementos da diagonal correspondem aos coeficientes do polinômio interpolador na forma {\eqref{cap_interp_sec_difdiv:eq:interpoli_Newton}}}.
 \end{obs}
 
 
 \begin{ex}
-  Consideremos o problema de encontrar o polinômio interpolador do conjunto de pontos $\{(-1,~-1), (0,~1), (1,~1/2)\}$. Usando o método das diferenças divididas de Newton, escrevemos o polinômio na forma
+  Consideramos o problema de encontrar o polinômio interpolador do conjunto de pontos $\{(-1, -1), (0, 1), (1, 1/2)\}$. Usando o Método das Diferenças Divididas de Newton, escrevemos o polinômio na forma
   \begin{equation}
     p(x) = f[x_1] + f[x_1,x_2](x-x_1) + f[x_1,x_2,x_3](x-x_1)(x-x_2).
   \end{equation}
-  Então, computamos seus coeficientes pela recursão \eqref{eq:interp_difdiv1}-\eqref{eq:interp_difdiv2}. Ou seja, temos
-  \begin{equation}
-    f[x_1]=-1,~f[x_2]=1,~f[x_3]=1/2.
-  \end{equation}
-  Daí, segue
-  \begin{align}
-    f[x_1,x_2] &= \frac{f[x_2]-f[x_1]}{x_2-x_1} = 2\\
-    f[x_2,x_3] &= \frac{f[x_3]-f[x_2]}{x_3-x_2} = -\frac{1}{2}\\
+  Então, computamos seus coeficientes pela recursão \eqref{cap_interp_sec_difdiv:eq:interp_difdiv}. Ou seja, temos
+  \begin{subequations}
+    \begin{align}
+      &f[x_1] = -1,\\
+      &f[x_2] = 1,\\
+      &f[x_3] = 1/2.
   \end{align}
-  e, então,
-  \begin{equation}
-    f[x_1,x_2,x_3] = \frac{f[x_2,x_3]-f[x_1,x_2]}{x_3-x_1}=-1,25.
-  \end{equation}
+  \end{subequations}
+  Daí, segue
+  \begin{subequations}
+    \begin{align}
+      &f[x_1,x_2] = \frac{f[x_2]-f[x_1]}{x_2-x_1} = 2\\
+      &f[x_2,x_3] = \frac{f[x_3]-f[x_2]}{x_3-x_2} = -\frac{1}{2}\\
+    \end{align}
+  \end{subequations}
+  e, por fim, que
+  \begin{subequations}
+    \begin{align}
+      &f[x_1,x_2,x_3] = \frac{f[x_2,x_3]-f[x_1,x_2]}{x_3-x_1}\\
+      &\qquad\quad = -1,25.
+    \end{align}
+  \end{subequations}
   Logo, o polinômio interpolador é
   \begin{equation}
     p(x) = 0,5 + 2(x+1) - 1,25(x+1)(x-1),
@@ -408,27 +432,70 @@ onde os elementos da diagonal correspondem aos coeficientes do polinômio interp
     p(x) = -1,25x^2 + 0,75x + 1.
   \end{equation}
 
-\ifisoctave
-No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_interp/dados/ex_interpoli_difdiv/ex_interpoli_difdiv.m}{código}:
-\verbatiminput{./cap_interp/dados/ex_interpoli_difdiv/ex_interpoli_difdiv.m}
-\fi
+\begin{lstlisting}
+import numpy as np
+
+def interpDDF(x, y):
+    n = x.size
+    M = np.empty((n,n))
+    M[:,0] = y
+    for j in range(1,n):
+        for i in range(j,n):
+            M[i,j] = (M[i,j-1] - M[i-1,j-1]) \
+                / (x[i]-x[i-j])
+    return np.diag(M)
+
+def poliDDF(x, p, xpts):
+    n = p.size
+    pval = p[0]
+    aux = 1.
+    for i in range(1,n):
+        aux *= (x-x[i-1])
+        pval += p[i]*aux
+    return pval
+
+xpts = np.array([-1., 0, 1])
+ypts = np.array([-1., 1, 1/2])
+p = interpDDF(xpts, ypts)
+print(poliDDF(xpts, p, xpts))
+\end{lstlisting}
 \end{ex}
 
 \subsection*{Exercícios}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
+\begin{exer}
+  Use o Método das Diferenças Divididas de Newton para obter o polinômio interpolador do conjunto de pontos $\{(-1, -1), (-0.5, 1), (1, 2)\}$.
+\end{exer}
+\begin{resp}
+  $-1,\bar{6}x^2 + 1.5x + 2.1\bar{6}$
+\end{resp}
 
-\begin{exer}\label{exer_interpoli_difdiv1}
+\begin{exer}
+  Use o Método das Diferenças Divididas de Newton para obter o polinômio interpolador do conjunto de pontos $\{(-1, -1), (0, 1), (1, 1/2), (2, 1)\}$.
+\end{exer}
+\begin{resp}
+  $0,58\bar{3}x^3 - 1,25x^2 + 0,1\bar{6}x + 1$. 
+\end{resp}
+
+\begin{exer}
+  Use o Método das Diferenças Divididas de Newton para obter o polinômio interpolador do conjunto de pontos $\{(-1, -1), (0, 1), (1, 1/2), (2, 1), (2.5, 1)\}$.
+\end{exer}
+\begin{resp}
+  $-0.26190476x^4  1.10714286x^3 -0.98809524x^2 -0.35714286x  1$.  
+\end{resp}
+
+\begin{exer}
   Use o método das diferenças divididas de Newton para encontrar o polinômio interpolador que aproxima a função $f(x)=e^{x}$ pelos pontos $x_1=0$, $x_2=1$, $x_3=1,5$ e $x_4=2$.
 \end{exer}
 \begin{resp}
-\ifisoctave
-\href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_interp/dados/exer_interpoli_dfidiv1/exer_interpoli_difdiv1.m}{Código}.
-\fi
-$0,54x^3 - 0,15x^2 + 1,3x + 1$.
+$p(x) = 0,54x^3 - 0,15x^2 + 1,3x + 1$.
 \end{resp}
+
+\subsubsection{Análise Numérica}
+
+\begin{exer}\label{cap_interp_sec_difdiv:exer:pinterp_unico}
+  Dado um conjunto de pontos distintos $\{(x_i, y_i)\}_{i=1}^n$, mostre que é único o polinômio interpolador do conjunto.
+\end{exer}
 
 
 \section{Spline cúbico}\label{cap_interp_splines}
