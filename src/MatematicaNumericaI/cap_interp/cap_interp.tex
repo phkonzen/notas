@@ -300,7 +300,7 @@ $0,54x^3 - 0,15x^2 + 1,3x + 1$.
 \end{resp}
 
 \begin{exer}
-  Use a técnica de Lagrange para aproximar a função $f(x) = \cos(x)$ por um polinômio interpolador $p$ no intervalo $[0, \pi]$. Escolhas pontos nesse intervalo de forma a obter $p$ que aproxime $f$ com boa precisão gráfica.
+  Use a técnica de Lagrange para aproximar a função $f(x) = \cos(x)$ por um polinômio interpolador $p$ no intervalo $[0, \pi]$. Escolha pontos de forma a obter $p$ que aproxime $f$ com boa precisão gráfica.
 \end{exer}
 \begin{resp}
   Dica: use os pontos $x_i = (i-1)\frac{\pi}{4}$, $i=1,2,3,4$.
@@ -461,7 +461,7 @@ print(poliDDF(xpts, p, xpts))
 \end{lstlisting}
 \end{ex}
 
-\subsection*{Exercícios}
+\subsection{Exercícios}
 
 \begin{exer}
   Use o Método das Diferenças Divididas de Newton para obter o polinômio interpolador do conjunto de pontos $\{(-1, -1), (-0.5, 1), (1, 2)\}$.
@@ -498,14 +498,10 @@ $p(x) = 0,54x^3 - 0,15x^2 + 1,3x + 1$.
 \end{exer}
 
 
-\section{Spline cúbico}\label{cap_interp_splines}
+\section{Spline Cúbico}\label{cap_interp_sec_splines}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-Dado um conjunto de pontos $\{(x_i,y_i)\}_{i=1}^n$, um spline cúbico é uma função duas vezes continuamente diferenciável da forma
-\begin{equation}
+\hl{Dado um conjunto de pontos $\{(x_i,y_i)\}_{i=1}^n$, um \emph{spline cúbico} é uma função duas vezes continuamente diferenciável da forma}
+\begin{equation}\hleq
   \begin{small}
     s(x)\!=\!\left\{
       \begin{array}{ll}
@@ -519,71 +515,150 @@ Dado um conjunto de pontos $\{(x_i,y_i)\}_{i=1}^n$, um spline cúbico é uma fun
 \end{equation}
 que satisfaz as seguintes propriedades
 \begin{enumerate}
-\item $s(x_i) = y_i$ para $i=1, 2, \dotsc, n$,
-\item $s_j(x_j) = s_{j+1}(x_j)$ para todo $j=1,2,\dotsc,n-2$,
-\item $s_j'(x_j) = s_{j+1}'(x_j)$ para todo $j=1,2,\dotsc,n-2$,  
-\item $s_j''(x_j) = s_{j+1}''(x_j)$ para todo $j=1,2,\dotsc,n-2$.
+\item \hl{$s(x_i) = y_i$} para $i=1, 2, \dotsc, n$,
+\item \hl{$s_j(x_j) = s_{j+1}(x_j)$} para todo $j=1,2,\dotsc,n-2$,
+\item \hl{$s_j'(x_j) = s_{j+1}'(x_j)$} para todo $j=1,2,\dotsc,n-2$,  
+\item \hl{$s_j''(x_j) = s_{j+1}''(x_j)$} para todo $j=1,2,\dotsc,n-2$.
 \end{enumerate}
 
-Observemos que o spline tem $4(n-1)$ coeficientes a determinar, enquanto que as condições acima nos fornecem $4n-6$ equações. Assim sendo, nota-se a determinação de um spline requer ainda 2 condições. Conforme a escolha destas condições, diferentes splines cúbicos são computados.
+Observemos que o spline tem $4(n-1)$ coeficientes a determinar, enquanto que as condições acima nos fornecem $4n-6$ equações. Assim sendo, notamos que a determinação de \hl{um spline requer ainda 2 condições de fechamento}. Conforme a escolha destas condições, diferentes splines cúbicos são computados.
 
-\subsection{Spline {\it Not-a-knot}}
+\subsection{Spline {\it Not-a-Knot}}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
+\hl{A condição \textit{not-a-knot} exige que o spline cúbico tenha derivada terceira contínua nos pontos $x_2$ e $x_{n-1}$}, i.e.
+\begin{subequations}\hleq
+  \begin{align}
+    &s_1'''(x_2) = s_2'''(x_2),\\
+    &s_{n-2}'''(x_{n-1}) = s_{n-1}'''(x_{n-1}).
+  \end{align}
+\end{subequations}
 
-A condição {\it not-a-knot} exige que o spline cúbico tenha derivada terceira contínua nos pontos $x_2$ e $x_{n-1}$, i.e.
-\begin{equation}
-  s_1'''(x_2) = s_2'''(x_2)\quad\text{e}\quad s_{n-2}'''(x_{n-1}) = s_{n-1}'''(x_{n-1}).
-\end{equation}
+\begin{ex}\label{cap_interp_sec_splines:ex:interp_spline_nak}
+  Consideremos o problema de aproximar a função $f(x)=\sen(x)$ pelo spline cúbico {\it not-a-knot} com pontos $x_1=0$, $x_2=\pi/6$, $x_3=\pi/3$ e $x_4=\pi/2$. Na Figura \ref{cap_interp_sec_splines:fig:interp_spline_nak} temos os esboços de $f$ e do spline cúbico computado. O spline computado é aproximadamente
+  \begin{equation}
+    s(x) = \small\left\{\begin{array}{ll}
+                          -0.11x^3 - 0.11x^2 - 0.11x &, 0\leq x < \frac{\pi}{6}\\
+                          -0.07(x-\frac{\pi}{6})^3 - 0.24(x-\frac{\pi}{6})^2 - 0.42(x-\frac{\pi}{6}) + \frac{1}{2} &, \frac{\pi}{6} \leq x < \frac{\pi}{3},\\
+                          1.02(x-\frac{\pi}{3})^3 + 0.86(x-\frac{\pi}{3})^2 + 0.51(x-\frac{\pi}{3}) + \frac{\sqrt{3}}{2} &, \frac{\pi}{3} \leq x < \frac{\pi}{2}x
+                                                                                                                     
+    \end{array}\right.
+  \end{equation}
 
-\begin{ex}\label{ex:interp_spline_nak}
-  Consideremos o problema de aproximar a função $f(x)=\sen(x)$ pelo spline cúbico {\it not-a-knot} com pontos suporte $x_1=0$, $x_2=\pi/3$, $x_3=\pi/6$ e $x_4=\pi/2$. Na Figura \ref{fig:interp_spline_nak} temos os esboços de $f$ e do spline cúbico computado.
-
-  \begin{figure}[h!]
+  \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{./cap_interp/dados/ex_interp_spline_nak/fig_interp_spline_nak}
-    \caption{Esboço dos gráficos da função $f(x)=\sen(x)$ e do spline cúbico computado no Exemplo \ref{ex:interp_spline_nak}.}
-    \label{fig:interp_spline_nak}
+    \includegraphics[width=0.8\textwidth]{./cap_interp/dados/fig_CSNotAKnot/fig}
+    \caption{Esboço dos gráficos da função $f(x)=\sen(x)$ e do spline cúbico computado no Exemplo \ref{cap_interp_sec_splines:ex:interp_spline_nak}.}
+    \label{cap_interp_sec_splines:fig:interp_spline_nak}
   \end{figure}
 
-\ifisoctave
-No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_interp/dados/ex_interp_spline_nak/ex_interp_spline_nak.m}{código}:
-\verbatiminput{./cap_interp/dados/ex_interp_spline_nak/ex_interp_spline_nak.m}
-\fi
+\begin{lstlisting}[caption=splineNotAKnot.py]
+import numpy as np
+from scipy.interpolate import CubicSpline
+
+# dados
+f = lambda x: np.sin(x)
+xx = np.array([0.,
+              np.pi/6,
+              np.pi/3,
+              np.pi/2])
+yy = f(xx)
+
+# spline
+cs = CubicSpline(xx, yy)
+
+# coefs
+print(cs.c)
+\end{lstlisting}
 \end{ex}
 
-\subsection{Spline fixado}
+\subsection{Spline Fixado}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-Os splines cúbicos fixados são obtidos com as condições de fronteira
-\begin{equation}
-  s'(x_1)=y_1',\quad\text{e}\quad s'(x_n)=y_n',
-\end{equation}
+Os \hl{splines cúbicos fixados são obtidos impondo os valores das derivadas na fronteira}, i.e.
+\begin{subequations}\hleq
+  \begin{align}
+    &s'(x_1)=y_1',\\
+    &s'(x_n)=y_n',
+  \end{align}
+\end{subequations}
 onde $y_1'$ e $y_n'$ são escalares dados. Quando usamos splines para aproximarmos uma dada função $f$, usualmente, escolhemos $y_1'=f'(x_1)$ e $y_n'=f'(x_n)$.
 
-\begin{ex}\label{ex:interp_spline_fixado}
-  Consideremos o problema de aproximar a função $f(x)=\sen(x)$ pelo spline cúbico fixado com pontos suporte $x_1=0$, $x_2=\pi/3$, $x_3=\pi/6$ e $x_4=\pi/2$. Na Figura \ref{fig:interp_spline_fixado} temos os esboços de $f$ e do spline cúbico computado.
+\begin{ex}\label{cap_interp_sec_splines:ex:interp_spline_fixado}
+  Consideremos o problema de aproximar a função $f(x)=\sen(x)$ pelo spline cúbico fixado com pontos $x_1=0$, $x_2=\pi/6$, $x_3=\pi/3$ e $x_4=\pi/2$. Na Figura \ref{cap_interp_sec_splines:fig:interp_spline_fixado} temos os esboços de $f$ e do spline cúbico computado
+  \begin{equation}
+    s(x) = \small\left\{
+      \begin{array}{ll}
+        -0.16x^3 - 0.12x^2 - 0.04x &, 0\leq x < \frac{\pi}{6}\\
+        -0.001(x-\frac{\pi}{6})^3 - 0.26(x-\frac{\pi}{6})^2 - 0.44(x-\frac{\pi}{6}) + \frac{1}{2} &, \frac{\pi}{6} \leq x < \frac{\pi}{3},\\
+        0.0(x-\frac{\pi}{3})^3 + 0.5(x-\frac{\pi}{3})^2 + 0.87(x-\frac{\pi}{3}) + \frac{\sqrt{3}}{2} &, \frac{\pi}{3} \leq x < \frac{\pi}{2}x
+      \end{array}
+\right.
+  \end{equation}
 
-  \begin{figure}[h!]
+  \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{./cap_interp/dados/ex_interp_spline_fixado/fig_interp_spline_fixado}
-    \caption{Esboço dos gráficos da função $f(x)=\sen(x)$ e do spline cúbico computado no Exemplo \ref{ex:interp_spline_fixado}.}
-    \label{fig:interp_spline_fixado}
+    \includegraphics[width=0.8\textwidth]{./cap_interp/dados/fig_CSFixado/fig}
+    \caption{Esboço dos gráficos da função $f(x)=\sen(x)$ e do spline cúbico fixado computado no Exemplo \ref{cap_interp_sec_splines:ex:interp_spline_fixado}.}
+    \label{cap_interp_sec_splines:fig:interp_spline_fixado}
   \end{figure}
 
-\ifisoctave
-No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_interp/dados/ex_interp_spline_fixado/ex_interp_spline_fixado.m}{código}:
-\verbatiminput{./cap_interp/dados/ex_interp_spline_fixado/ex_interp_spline_fixado.m}
-\fi
+\begin{lstlisting}
+import numpy as np
+from scipy.interpolate import CubicSpline
+
+# dados
+f = lambda x: np.sin(x)
+xx = np.array([0.,
+              np.pi/6,
+              np.pi/3,
+              np.pi/2])
+yy = f(xx)
+
+# spline
+cs = CubicSpline(xx, yy,
+                 bc_type=((1, 1.),
+                          (1, 0.)))
+
+# coefs
+print(cs.c)
+\end{lstlisting}
 \end{ex}
 
-\subsection*{Exercícios}
+\subsection{Exercícios}
 
-\begin{flushleft}
-  [[tag:construcao]]
-\end{flushleft}
+\begin{exer}
+  Dado o conjunto de pontos $\{(-1, -1), (-0.5, 1), (1, 2)\}$, obtenha o spline cúbico associado com condição de controno:
+  \begin{enumerate}[a)]
+  \item Not-a-Knot.
+  \item Fixado.
+  \end{enumerate}
+\end{exer}
+
+\begin{exer}
+  Dado o conjunto de pontos $\{(-1, -1), (0, 1), (1, 1/2), (2, 1)\}$, obtenha o spline cúbico associado com condição de controno:
+  \begin{enumerate}[a)]
+  \item Not-a-Knot.
+  \item Fixado.
+  \end{enumerate}
+\end{exer}
+
+\begin{exer}
+  Dado o conjunto de pontos $\{(-1,~-1), (0,~1), (1,~1/2), (2,~1), (2.5, 1)\}$, obtenha o spline cúbico associado com condição de controno:
+  \begin{enumerate}[a)]
+  \item Not-a-Knot.
+  \item Fixado.
+  \end{enumerate}
+\end{exer}
+
+\begin{exer}
+  Aproxime a função $f(x)=e^{x}$ por um spline cúbico que passa pelos pontos $x_1=0$, $x_2=1$, $x_3=1,5$ e $x_4=2$.
+\end{exer}
+\begin{resp}
+  Dica: use um spline fixado.
+\end{resp}
+
+\begin{exer}
+  Considere o problema de aproximar a função $f(x) = \cos(x)$ por um spline cúbico $s = s(x)$ no intervalo $[0, \pi]$. Escolha os pontos e a condição de fronteira de forma a obter $s$ que aproxime $f$ com boa precisão gráfica.
+\end{exer}
+\begin{resp}
+  Dica: use um spline fixado.
+\end{resp}
