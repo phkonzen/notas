@@ -1,49 +1,42 @@
 %Este trabalho está licenciado sob a Licença Atribuição-CompartilhaIgual 4.0 Internacional Creative Commons. Para visualizar uma cópia desta licença, visite http://creativecommons.org/licenses/by-sa/4.0/ ou mande uma carta para Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
 
-\chapter{Aproximação por mínimos quadrados}\label{cap_ajuste}
+\chapter{Aproximação por Mínimos Quadrados}\label{cap_ajuste}
 \thispagestyle{fancy}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
+\section{Problemas Lineares}\label{cap_ajuste_sec_prob_lin}
 
-\section{Problemas lineares}\label{cap_ajuste_sec_prob_lin}
-
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-Dado um conjunto de $n$ pontos $\{(x_i,y_i)\}_{i=1}^n$, $x_i\neq x_j$ para $i\neq j$, e uma família de $m \leq n$ funções $\{f_i(x)\}_{i=1}^m$, o problema linear de aproximação por mínimos quadrados consiste em determinar os $m$ coeficientes $\{c_i\}_{i=1}^m$ tal que a função
-\begin{align}    
-  f(x;c) &= \sum_{j=1}^m c_jf_j(x) \\
-         &= c_1f_1(x) + c_2f_2(x) + c_3f_3(x) + \cdots + c_mf_m(x)
-\end{align}
-aproxime o conjunto de pontos dados no sentido de mínimos quadrados, i.e. o vetor dos coeficientes $c = (c_1, c_2, \dotsc, c_m)$ é solução do seguinte problema linear de minimização
-\begin{equation}
-  \min_{c} \left\{E:= \sum_{i=1}^n (y_i - f(x_i;c))^2\right\}.
+Dado um conjunto de $n$ pontos $\{(x_i,y_i)\}_{i=1}^n$, $x_i\neq x_j$ para $i\neq j$, e uma família de $m \leq n$ funções $\{f_i(x)\}_{i=1}^m$, \hl{o problema linear de \emph{aproximação por mínimos quadrados} consiste em determinar os $m$ coeficientes $\{c_i\}_{i=1}^m$ tal que a função}
+\begin{subequations}\hleq
+  \begin{align}    
+    f(x; \pmb{c}) &= \sum_{j=1}^m c_jf_j(x) \\
+    &= c_1f_1(x) + c_2f_2(x) + c_3f_3(x) \nonumber\\
+    &\quad + \cdots + c_mf_m(x)
+  \end{align}
+\end{subequations}
+\hl{aproxime o dado conjunto de pontos no sentido de mínimos quadrados}, i.e. o \emph{vetor dos coeficientes} $\pmb{c} = (c_1, c_2, \dotsc, c_m)$ é solução do seguinte problema linear de minimização
+\begin{equation}\hleq
+  \min_{\pmb{c}} \left\{E:= \sum_{i=1}^n \left|y_i - f(x_i; \pmb{c})\right|^2\right\}.
 \end{equation}
 
-A fim de trabalharmos com uma notação mais compacta, definimos o resíduo $r(c) = (r_1(c), r_2(c), \dotsc, r_n(c))$, onde $r_i(c) := y_i - f(x_i)$ e $c = (c_1, c_2, \dotsc, c_m)$. Com esta notação, o problema de mínimos quadrados se resume a resolver
-\begin{equation}\label{eq:pmq}
-  \min_{c} \{E := \|r(c)\|_2^2\}.
+A fim de trabalharmos com uma notação mais compacta, definimos o \emph{resíduo} $\pmb{r}(\pmb{c}) = (r_1(\pmb{c}), r_2(\pmb{c}), \dotsc, r_n(\pmb{c}))$, onde $r_i(\pmb{c}) := y_i - f(x_i; \pmb{c})$. Com esta notação, \hl{o \emph{problema de mínimos quadrados}} se resume a resolver
+\begin{equation}\label{cap_ajuste_sec_prob_lin:eq:pmq}\hleq
+  \min_{\emph{c}} \{E := \left\|r(\pmb{c})\right\|_2^2\}.
 \end{equation}
 
-\subsection{Método das equações normais}
+\subsection{Método das Equações Normais}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-A fim de resolver o problema de mínimos quadrados~\eqref{eq:pmq}, observamos que o erro quadrático
-\begin{align}
-  E &= \|r(c)\|_2^2 \\
-    &= \sum_{i=1}^n r_i(c)^2 \\
-    &= \sum_{i=1}^n \left(y_i - f(x_i;c)\right)^2 \\
-    &= \sum_{i=1}^n \left(y_i - \sum_{j=1}^m c_jf_j(x_i)\right)^2 \\
-    &= \|y - Ac\|_2^2,
+A fim de \hl{resolver o problema de mínimos quadrados} \eqref{cap_ajuste_sec_prob_lin:eq:pmq}, observamos que o \emph{erro quadrático}
+\begin{subequations}
+  \begin{align}
+    E &:= \left\|\pmb{r}(\pmb{c})\right\|_2^2 \\
+      &= \sum_{i=1}^n r_i^2(\pmb{c}) \\
+      &= \sum_{i=1}^n \left(y_i - f(x_i; \pmb{c})\right)^2 \\
+      &= \sum_{i=1}^n \left(y_i - \sum_{j=1}^m c_jf_j(x_i)\right)^2 \\
+    \hleq{E} &\hleq{= \|\pmb{y} - A\pmb{c}\|_2^2},
 \end{align}
-onde $y = (y_1, y_2, \dotsc, y_n)$ e
-\begin{equation}
+\end{subequations}
+onde $\pmb{y} := (y_1, y_2, \dotsc, y_n)$ e
+\begin{equation}\hleq
   A :=
   \begin{bmatrix}
     f_1(x_1) & f_2(x_1) & \cdots & f_m(x_1) \\
@@ -53,45 +46,36 @@ onde $y = (y_1, y_2, \dotsc, y_n)$ e
   \end{bmatrix}.
 \end{equation}
 
-Os parâmetros $c_j$ que minimizam o erro $E$ são solução do seguinte sistema de equações
+\hl{Os parâmetros $c_j$ que minimizam o erro $E$ são solução do seguinte sistema de equações}
 \begin{equation}
   \frac{\p E}{\p c_j} = 2\sum_{i=0}^n r_i(c)\frac{\p}{\p c_j}r_i(c) = 0,
 \end{equation}
 onde $j=1, 2, \dotsc, m$. Ou, em uma notação mais apropriada,
 \begin{align}
-  \nabla_c E = 0 &\Leftrightarrow A^Tr(c) = 0\\
-  &\Leftrightarrow A^T(y - Ac) = 0\\
-  &\Leftrightarrow A^TAc = A^Ty.
+  &\nabla_{\pmb{c}} E = 0\\
+  &A^T\pmb{r}(\pmb{c}) = 0\\
+  &A^T(\pmb{y} - A\pmb{c}) = 0\\
+  &A^TA\pmb{c} = A^T\pmb{y}.
 \end{align}
-
-Portanto, o problema linear de mínimos quadrados se resume em resolver as chamadas \emph{equações normais}\index{equações normais}
-\begin{equation}\label{eq:equacoes_normais}
-  A^TAc= A^Ty.
+Portanto, \hl{o problema linear de mínimos quadrados se resume em resolver as} chamadas \hl{\emph{equações normais}}
+\begin{equation}\label{cap_ajuste_sec_prob_lin:eq:equacoes_normais}\hleq
+  A^TA\pmb{c}= A^T\pmb{y}.
 \end{equation}
-
-Logo, o problema linear de mínimos quadrados~\eqref{eq:pmq} reduz-se a resolver o sistema linear \eqref{eq:equacoes_normais} para $c$. Isto nos leva a questão de verificar se $A^TA$ é invertível. De sorte, da disciplina de álgebra linear temos o seguinte teorema.
-
-\begin{teo}
-  A matriz $A^TA$ é positiva definida se, e somente se, as colunas de $A$ são linearmente independentes (i.e. $\text{posto}(A)=n$).
-\end{teo}
-\begin{dem}
-  Se as colunas de $A$ são linearmente independentes, então $x\neq 0$ implica $Ax\neq 0$ e, equivalentemente, $x^TA^T\neq 0$. Portanto, $x\neq 0$ implica $x^TA^TAx = \|Ax\|_2^2 > 0$, o que mostra que $A^TA$ é positiva definida.
-
-  Suponhamos, agora, que as colunas de $A$ não são linearmente independentes. Então, existe $x_0\neq 0$ tal que $Ax_0 = 0$. Mas, então, $x_0^TA^TAx_0=0$, o que mostra que $A^TA$ não é positiva definida. 
-\end{dem}
-
-Este teorema nos fornece uma condição suficiente para a existência (e unicidade) de solução do problema linear de mínimos quadrados. Mais especificamente, se as colunas da matriz $A$ são linearmente independentes, então os coeficientes da função $f(x)$ que melhor ajustam os pontos dados são
+Concluímos a solução é dada por
 \begin{equation}
-  c = (A^TA)^{-1}A^Ty.
+  \pmb{c} = (A^TA)^{-1}A^T\pmb{y},
 \end{equation}
+quando $A^TA$ é inversível.
 
-\begin{ex}\normalfont{(Ajuste de polinômios)}\label{ex:ajuste_de_polinomios}
+\begin{ex}\normalfont{(\hl{Ajuste de polinômios}.)}\label{cap_ajuste_sec_prob_lin:ex:ajuste_de_polinomios}
   Considere o problema de ajustar o conjunto de pontos
   \begin{center}
-    \begin{tabular}{l|rrrr}
-      $i$ & $1$ & $2$ & $3$ & $4$ \\\hline
-      $x_i$ & $-1$ & $0$ & $1$ & $1,5$\\
-      $y_i$ & $1,2$ & $-0,1$ & $0,7$ & $2,4$\\\hline
+    \begin{tabular}{lrr}
+      $i$ & $x_i$ & $y_i$\\\hline
+      $1$ & $-1.0$ &  $1.2$\\
+      $2$ &  $0.0$ & $-0.1$\\
+      $3$ &  $1.0$ &  $0.7$\\
+      $4$ &  $1.5$ &  $2.4$\\\hline
     \end{tabular}
   \end{center}
   por um polinômio quadrático da forma
@@ -100,19 +84,18 @@ Este teorema nos fornece uma condição suficiente para a existência (e unicida
   \end{equation}
   no sentido de mínimos quadrados.  
 
-  \begin{figure}[h]
+  \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{cap_ajuste/dados/ex_mq_poli/ex_mq_poli}
-    \caption{Esboço do polinômio ajustado no Exemplo~\ref{ex:ajuste_de_polinomios}.}
-    \label{fig:ex_mq_poli}
+    \includegraphics[width=0.8\textwidth]{cap_ajuste/dados/fig_mqPoli/fig}
+    \caption{Esboço do polinômio ajustado no Exemplo~\ref{cap_ajuste_sec_prob_lin:ex:ajuste_de_polinomios}.}
+    \label{cap_ajuste_sec_prob_lin:fig:ex_mq_poli}
   \end{figure}
   
-  
   Neste caso, a família de funções do problema de mínimos quadrados é $f_1(x) = x^2$, $f_2(x) = x$ e $f_3(x) = 1$. Assim sendo, os coeficientes $p = (p_1, p_2, p_3)$ são solução do seguinte sistema linear
-  \begin{equation}\label{eq:aux3_md}
-    A^TAp = A^Ty,
+  \begin{equation}\label{cap_ajuste_sec_prob_lin:eq:aux3_md}
+    A^TA\pmb{p} = A^T\pmb{y},
   \end{equation}
-  onde $y = (y_1, y_2, y_3)$ e
+  onde $\pmb{y} = (y_1, y_2, y_3)$ e
   \begin{equation}
     A :=
     \begin{bmatrix}
@@ -122,37 +105,45 @@ Este teorema nos fornece uma condição suficiente para a existência (e unicida
       x_4^2 & x_4 & 1
     \end{bmatrix}.
   \end{equation}
-  Emfim, resolvendo as equações normais~\eqref{eq:aux3_md}, obtemos
+  Emfim, resolvendo as equações normais~\eqref{cap_ajuste_sec_prob_lin:eq:aux3_md}, obtemos
   \begin{equation}
-    p(x) = 1,25x^2 -0,188x - 0,203.
+    p(x) = 1.25x^2 -0.188x - 0.203.
   \end{equation}
-  A Figura~\ref{fig:ex_mq_poli} mostra um esboço dos pontos (em vermelho) e do polinômio ajustado (em azul).
-  
-%   \ifisoctave
-%   Os coeficientes e um esboço do polinômio ajustado podem ser obtidos no \verb+GNU Octave+ com o seguinte código:
-% \begin{verbatim}
-% #pontos
-% x = [-1 0 1 1.5]';
-% y = [1.2, -0.1, 0.7, 2.4]';
+  A Figura~\ref{cap_ajuste_sec_prob_lin:fig:ex_mq_poli} mostra um esboço dos pontos e do polinômio ajustado.
 
-% #resol. as eqs. normais
-% A = [x.^2 x.^1 x.^0];
-% p = inv(A'*A)*A'*y
+\begin{lstlisting}[caption=mqPoli.py]
+import numpy as np
+import numpy.linalg as npla
 
-% #esboco do pol. ajustado
-% xx = linspace(-1.25,1.75);
-% plot(x,y,'ro',...
-%      xx,polyval(p,xx));grid
-% \end{verbatim}
-%   \fi
-  
+# dados
+xx = np.array([-1.0,
+              0.0,
+              1.0,
+              1.5])
+yy = np.array([1.2,
+               -0.1,
+               0.7,
+               2.4])
+
+# matriz
+m = 3
+n = xx.size
+A = np.empty((n,m))
+A[:,0] = xx**2
+A[:,1] = xx
+A[:,2] = np.ones_like(xx)
+
+# sol de mq
+p = npla.solve(A.T@A, A.T@yy)
+print(p)
+\end{lstlisting}  
 \end{ex}
 
 
-\begin{ex}\normalfont{(Ajuste de curvas)}\label{ex:ajuste_de_curvas}
-  Consideremos o mesmo conjunto de pontos do exemplo anterior (Exemplo~\ref{ex:ajuste_de_polinomios}). Aqui, vamos ajustar uma curva da forma
+\begin{ex}\normalfont{(\hl{Ajuste de curvas}.)}\label{cap_ajuste_sec_prob_lin:ex:ajuste_de_curvas}
+  Consideremos o mesmo conjunto de pontos do exemplo anterior (Exemplo~\ref{cap_ajuste_sec_prob_lin:ex:ajuste_de_polinomios}). Aqui, vamos ajustar uma curva da forma
   \begin{equation}
-    f(x) = c_1\sen(x) + c_2\cos(x) + c_3
+    f(x; \pmb{c}) = c_1\sen(x) + c_2\cos(x) + c_3
   \end{equation}
 no sentido de mínimos quadrados. Para tanto, formamos a matriz
 \begin{equation}
@@ -164,56 +155,66 @@ no sentido de mínimos quadrados. Para tanto, formamos a matriz
     \sen(x_4) & \cos(x_4) & 1
   \end{bmatrix}
 \end{equation}
-  e, então, resolvemos as equações normais $A^TAc = A^Ty$ para o vetor de coeficientes $c=(c_1, c_2)$. Fazendo isso, obtemos $c_1=-0,198$, $c_2=-2,906$ e $c_3=2,662$. A Figura~\ref{fig:ex_ajuste_de_curvas} mostra um esboço da curva ajustada (linha azul) aos pontos dados (círculos vermelhos).
+  e, então, resolvemos as equações normais $A^TA\pmb{c} = A^T\pmb{y}$ para o vetor de coeficientes $\pmb{c} = (c_1, c_2)$. Fazendo isso, obtemos $c_1=-0,198$, $c_2=-2,906$ e $c_3=2,662$. A Figura~\ref{cap_ajuste_sec_prob_lin:fig:ex_ajuste_de_curvas} mostra um esboço da curva ajustada aos pontos dados.
 
   \begin{figure}[h]
     \centering
-    \includegraphics[width=\textwidth]{cap_ajuste/dados/ex_mq_curvas/ex_mq_curvas}
-    \caption{Esboço da curva ajustada no Exemplo~\ref{ex:ajuste_de_curvas}.}
-    \label{fig:ex_ajuste_de_curvas}
+    \includegraphics[width=0.8\textwidth]{cap_ajuste/dados/fig_mqCurva/fig}
+    \caption{Esboço da curva ajustada no Exemplo~\ref{cap_ajuste_sec_prob_lin:ex:ajuste_de_curvas}.}
+    \label{cap_ajuste_sec_prob_lin:fig:ex_ajuste_de_curvas}
   \end{figure}
 
-% \ifisoctave
-% Os coeficientes e um esboço do polinômio ajustado podem ser obtidos no \verb+GNU Octave+ com o seguinte código:
-% \begin{verbatim}
-% #pontos
-% x = [-1 0 1 1.5]';
-% y = [1.2, -0.1, 0.7, 2.4]';
+\begin{lstlisting}[caption=mqCurva.py]
+# dados
+xx = np.array([-1.0,
+              0.0,
+              1.0,
+              1.5])
+yy = np.array([1.2,
+               -0.1,
+               0.7,
+               2.4])
 
-% #resol. as eqs. normais
-% A = [sin(x) cos(x) ones(4,1)];
-% c = inv(A'*A)*A'*y
+# matriz
+m = 3
+n = xx.size
+A = np.empty((n,m))
+A[:,0] = np.sin(xx)
+A[:,1] = np.cos(xx)
+A[:,2] = np.ones_like(xx)
 
-% #curva ajustada
-% f = @(x) c(1)*sin(x) + c(2)*cos(x) + c(3)
+# sol de mq
+c = npla.solve(A.T@A, A.T@yy)
 
-% #esboco da fun. ajustada
-% xx = linspace(-1.25,1.75);
-% plot(x,y,'ro',...
-%      xx,f(xx));grid
-% \end{verbatim}
-% \fi
-
+def f(x, c=c):
+    y = c[0]*np.sin(x) \
+        + c[1]*np.cos(x) \
+        + c[2]
+    return y
+\end{lstlisting}
 \end{ex}
 
-\begin{ex}\normalfont{(Um problema não linear)}\label{ex:mq_nlin0}
-  Consideremos o problema de ajustar, no sentido de mínimos quadrados, à função
+\begin{ex}\normalfont{(\hl{Um problema não linear}.)}\label{cap_ajuste_sec_prob_lin:ex:mq_nlin0}
+  Consideremos o problema de ajustar, no sentido de mínimos quadrados, a função
   \begin{equation}
-    f(x) = c_1e^{c_2x}
+    f(x; \pmb{c}) = c_1e^{c_2x}
   \end{equation}
-ao seguinte conjunto de pontos
-\begin{center}
-  \begin{tabular}{l|rrrr}
-    $i$ & $1$ & $2$ & $3$ & $4$ \\\hline
-    $x_i$ & $-1$ & $0$ & $1$ & $1,5$\\
-    $y_i$ & $8,0$ & $1,5$ & $0,2$ & $0,1$\\\hline
-  \end{tabular}
-\end{center}
+  ao seguinte conjunto de pontos
+  \begin{center}
+    \begin{tabular}{lrr}
+      $i$ & $x_i$ & $y_i$\\\hline
+      $1$ & $-1.0$ & $8.0$\\
+      $2$ &  $0.0$ & $1.5$\\
+      $3$ &  $1.0$ & $0.2$\\
+      $4$ &  $1.5$ & $0.1$\\\hline            
+    \end{tabular}
+  \end{center}
 
 Aqui, temos um problema não linear de mínimos quadrados que pode ser transformado em um problema linear fazendo-se
 \begin{align}
-  y = c_1e^{c_2x} &\Rightarrow \ln y = \ln c_1e^{c_2x}\\
-                  &\Rightarrow \ln y = \ln c_1 + c_2x.
+  &y = c_1e^{c_2x}\\
+  &\ln y = \ln c_1e^{c_2x}\\
+  &\ln y = \ln c_1 + c_2x.
 \end{align}
 Isto é, denotando $d_1 := \ln c_1$ e $d_2 := c_2$, o problema se resume a ajustar uma reta $r(x) = d_1 + d_2x$ ao conjunto de pontos $\{(x_i, \ln y_i)\}_{i=1}^4$. 
 
@@ -227,46 +228,42 @@ Para resolver o problema transformado, formamos a matriz
     1 & x_4
   \end{bmatrix}
 \end{equation}
-e, então, resolvemos as equações normais $A^TAd = A^T\ln y$, com $\ln y = (\ln y_1, \ln y_2, \ln y_3, \ln y_4)$, donde obtemos $d_1=0,315$ e $d_2=-1,792$. Das definições de $d_1$ e $d_2$, temos $c_2 = d_2 = -1,792$ e $c_1 = e^{d_1} = 1,371$. A Figura~\ref{fig:ex_mq_nlin0} mostra um esboço da curva $f(x) = c_1e^{c_2x}$ ajustada (linha azul) aos pontos dados (círculos vermelhos).
+e, então, resolvemos as equações normais $A^TA\pmb{d} = A^T\ln\pmb{y}$, com $\ln\pmb{y} = (\ln y_1, \ln y_2, \ln y_3, \ln y_4)$, donde obtemos $d_1 = 0.315$ e $d_2 = -1.792$. Das definições de $d_1$ e $d_2$, temos
+\begin{align}
+  &c_2 = d_2 = -1.792\\
+  &c_1 = e^{d_1} = 1.371.
+\end{align}
+A Figura~\ref{cap_ajuste_sec_prob_lin:fig:ex_mq_nlin0} mostra um esboço da curva $f(x; \pmb{c}) = c_1e^{c_2x}$ ajustada aos pontos dados.
 
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{cap_ajuste/dados/ex_mq_nlin0/ex_mq_nlin0}
-  \caption{Esboço da curva ajustada no Exemplo~\ref{ex:mq_nlin0}.}
-  \label{fig:ex_mq_nlin0}
+  \includegraphics[width=0.8\textwidth]{cap_ajuste/dados/fig_mqUmPNLin/fig}
+  \caption{Esboço da curva ajustada no Exemplo~\ref{cap_ajuste_sec_prob_lin:ex:mq_nlin0}.}
+  \label{cap_ajuste_sec_prob_lin:fig:ex_mq_nlin0}
 \end{figure}
-
-% \ifisoctave
-% O ajuste e um esboço da função ajustada podem ser feitos no \verb+GNU Octave+ com o seguinte código:
-% \begin{verbatim}
-% #pontos
-% x = [-1 0 1 1.5]';
-% y = [8.0 1.5 0.2 0.1]';
-
-% #resol. as eqs. normais
-% A = [ones(4,1) x];
-% d = inv(A'*A)*A'*log(y)
-
-% #fun. ajustada
-% c = [exp(d(1)); d(2)]
-% f = @(x) c(1)*exp(c(2)*x);
-
-% #esboco da fun. ajustada
-% xx = linspace(-1.1,1.6);
-% plot(x,y,'ro','linewidth',1.5,...
-%      xx,f(xx),'b-','linewidth',1.5);grid
-% \end{verbatim}
-% \fi
-
 \end{ex}
+
+\subsection{Análise Numérica}
+
+O problema linear de mínimos quadrados~\eqref{cap_ajuste_sec_prob_lin:eq:pmq} reduz-se a resolver o sistema linear \eqref{cap_ajuste_sec_prob_lin:eq:equacoes_normais} para $\pmb{c}$. Isto nos leva a questão de verificar se $A^TA$ é invertível.
+
+\begin{teo}
+  A matriz $A^TA$ é positiva definida se, e somente se, as colunas de $A$ são linearmente independentes.
+\end{teo}
+\begin{dem}
+  Se as colunas de $A$ são linearmente independentes, então $x\neq 0$ implica $Ax\neq 0$ e, equivalentemente, $x^TA^T\neq 0$. Portanto, $x\neq 0$ implica $x^TA^TAx = \|Ax\|_2^2 > 0$, o que mostra que $A^TA$ é positiva definida.
+
+  Suponhamos, agora, que as colunas de $A$ não são linearmente independentes. Então, existe $x_0\neq 0$ tal que $Ax_0 = 0$. Mas, então, $x_0^TA^TAx_0=0$, o que mostra que $A^TA$ não é positiva definida. 
+\end{dem}
+
+Este teorema nos fornece uma condição suficiente para a existência (e unicidade) de solução do problema linear de mínimos quadrados. Mais especificamente, se as colunas da matriz $A$ são linearmente independentes, então os coeficientes da função $f(x)$ que melhor ajustam os pontos dados são
+\begin{equation}
+  c = (A^TA)^{-1}A^Ty.
+\end{equation}
 
 \subsection*{Exercícios}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-\begin{exer}\label{exer:mq_reta}
+\begin{exer}
   Determine a reta $y = c_1x + c_2$ que melhor se ajusta, no sentido de mínimos quadrados, aos pontos
   \begin{center}
     \begin{tabular}{l|ccccc}
@@ -278,13 +275,10 @@ e, então, resolvemos as equações normais $A^TAd = A^T\ln y$, com $\ln y = (\l
 Por fim, compute a norma $L^2$ do resíduo, i.e. $\|r(c)\|_2 = \|y - (c_1x - c_2)\|_2$ para os pontos dados.
 \end{exer}
 \begin{resp}
-  % \ifisoctave 
-  % \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_ajuste/dados/exer_mq_reta/exer_mq_reta.m}{Código.} 
-  % \fi
-  $c_1 = -1,3259$, $c_2 = 8,66071\E-2$, $\|r(c)\|_2 = 1,01390$.
+  $c_1 = -1.3259$, $c_2 = 8.66071\E-2$, $\|r(c)\|_2 = 1.01390$.
 \end{resp}
 
-\begin{exer}\label{exer:mq_poli}
+\begin{exer}
   Determine o polinômio $y = c_1x^3 + c_2x^2 + c_3x + c_4$ que melhor se ajusta, no sentido de mínimos quadrados, aos pontos
   \begin{center}
     \begin{tabular}{l|ccccc}
@@ -296,13 +290,10 @@ Por fim, compute a norma $L^2$ do resíduo, i.e. $\|r(c)\|_2 = \|y - (c_1x - c_2
 Por fim, compute a norma $L^2$ do resíduo, i.e. $\|r(c)\|_2$.
 \end{exer}
 \begin{resp}
-  % \ifisoctave 
-  % \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_ajuste/dados/exer_mq_poli/exer_mq_poli.m}{Código.} 
-  % \fi
-  $c_1 = -4,50361\E-1$, $c_2 = -2,78350\E-1$, $c_3 = 1,46291$, $c_4 = 2,09648$, $\|r(c)\|_2 = 5,71346$
+  $c_1 = -4.50361\E-1$, $c_2 = -2.78350\E-1$, $c_3 = 1.46291$, $c_4 = 2.09648$, $\|r(c)\|_2 = 5.71346$
 \end{resp}
 
-\begin{exer}\label{exer:mq_curva}
+\begin{exer}
   Determine a curva $y = c_1\sen x + c_2\cos x + c_3$ que melhor se ajusta, no sentido de mínimos quadrados, aos pontos
   \begin{center}
     \begin{tabular}{l|ccccc}
@@ -314,13 +305,10 @@ Por fim, compute a norma $L^2$ do resíduo, i.e. $\|r(c)\|_2$.
 Por fim, compute a norma $L^2$ do resíduo, i.e. $\|r(c)\|_2$.
 \end{exer}
 \begin{resp}
-  % \ifisoctave 
-  % \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_ajuste/dados/exer_mq_curva/exer_mq_curva.m}{Código.} 
-  % \fi
-  $c_1 = -2,76842$, $c_2 = -7,17935\E-1$, $c_3 = 1,37014\E-1$, $\|r(c)\|_2 = 2,48880\E+1$
+  $c_1 = -2.76842$, $c_2 = -7.17935\E-1$, $c_3 = 1.37014\E-1$, $\|r(c)\|_2 = 2.48880\E+1$
 \end{resp}
 
-\begin{exer}\label{exer:mq_nlin0}
+\begin{exer}
   Use a transformação $z = \ln y$ para ajustar, no sentido de mínimos quadrados, a curva $y = c_1e^{c_2(x-c_3)^2}$ aos pontos
   \begin{center}
     \begin{tabular}{l|cccccc}
@@ -331,10 +319,7 @@ Por fim, compute a norma $L^2$ do resíduo, i.e. $\|r(c)\|_2$.
   \end{center}
 \end{exer}
 \begin{resp}
-  % \ifisoctave 
-  % \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_ajuste/dados/exer_mq_nlin0/exer_mq_nlin0.m}{Código.} 
-  % \fi
-  $c_1 = 2,10131\E+0$, $c_2 = -9,73859\E-1$, $c_3 = 1.25521\E+0$
+  $c_1 = 2.10131\E+0$, $c_2 = -9.73859\E-1$, $c_3 = 1.25521\E+0$
 \end{resp}
    
 \section{Problemas não lineares}\label{cap_ajuste_sec_prob_nlin}
