@@ -1,0 +1,138 @@
+% Este trabalho está licenciado sob a Licença Atribuição-CompartilhaIgual 4.0 Internacional Creative Commons. Para visualizar uma cópia desta licença, visite http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR ou mande uma carta para Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+
+\chapter{Arranjos e Matrizes}\label{cap_arr}
+\thispagestyle{fancy}
+
+\hl{Um arranjo é uma coleção de objetos} (todos de um mesmo tipo) \hl{em que os elementos são organizados por eixos}. É a estrutura de dados mais utilizada para a alocação de vetores e matrizes, fundamentais na computação matricial.
+
+\section{Arranjos}\label{cap_arr_sec_arr}
+
+\hl{Um arranjo (em inglês, \textit{array}) é uma coleção de objetos (todos do mesmo tipo) em que os elementos são organizados por eixos}. Nesta seção, vamos nos restringir a \hl{\emph{arranjos unidimensionais}} (de apenas um eixo). Esta é a estrutura computacionais usualmente utilizada \hl{para a alocação de vetores}.
+
+\hl{{\numpy} é uma biblioteca {\python} que fornece suporte para a alocação e manipulação de arranjos}. Usualmente, a biblioteca é importada como segue
+\begin{lstlisting}
+import numpy as np
+\end{lstlisting}
+Na sequência, vamos assumir que o {\numpy} já está importado como acima.
+
+\subsection{Alocação de Arranjos}
+
+Na linguagem, a \hl{alocação de um arranjo} pode ser feita com o método \hl{{\href{https://numpy.org/doc/stable/reference/generated/numpy.array.html}{\lstinline+np.array(list)+}}}. Como parâmetro de entrada, recebe uma \lstinline+list+ contendo os elementos do arranjo. Por exemplo,
+\begin{lstlisting}
+>>> v = np.array([-2, 1, 3])
+>>> v
+array([-2,  1,  3])
+>>> type(v)
+<class 'numpy.ndarray'>
+\end{lstlisting}
+aloca o arranho de números inteiros \lstinline+v+. Embora arranjos não sejam vetores, \hl{a modelagem computacional de vetores usualmente é feita utilizando-se {\lstinline+arrays+}}. Por exemplo, em um código {\python}, o vetor
+\begin{equation}
+  \pmb{v} = (-2, 1, 3)
+\end{equation}
+pode ser alocado usando-se o \lstinline+array+ \lstinline+v+ acima.
+
+O \hl{tipo dos dados} de um \lstinline+array+ é definido na sua criação. Pode ser feita de forma automática ou explícita pela propriedade \hl{{\href{https://numpy.org/doc/stable/reference/arrays.dtypes.html}{\lstinline+dtype+}}}. Por exemplo,
+\begin{lstlisting}
+>>> v = np.array([-2, 1, 3])
+>>> v.dtype
+dtype('int64')
+>>> v = np.array([-2., 1, 3])
+>>> v.dtype
+dtype('float64')
+>>> v = np.array([-2, 1, 3], dtype='float')
+>>> v.dtype
+dtype('float64')
+\end{lstlisting}
+
+\begin{ex}
+  Aloque o vetor
+  \begin{equation}
+    \pmb{v} = (\pi, 1, e)
+  \end{equation}
+  como um \lstinline+array+ do {\numpy}.
+\begin{lstlisting}
+>>> import numpy as np
+>>> v = np.array([np.pi, 1, np.e])
+>>> v
+array([3.14159265, 1.        , 2.71828183])
+\end{lstlisting}
+\end{ex}
+
+O {\numpy} conta com métodos úteis para a \hl{\emph{inicialização} de {\lstinline+arrays+}}:
+\begin{itemize}
+\item \hl{{\lstinline+np.zeros()+}} : arranjo de elementos nulos.
+\begin{lstlisting}
+>>> np.zeros(3)
+array([0., 0., 0.])
+\end{lstlisting}
+\item \hl{{\lstinline+np.ones()+}} : arranjo de elementos iguais a um.
+\begin{lstlisting}
+>>> np.ones(2, dtype='int')
+array([1, 1])
+\end{lstlisting}
+\item \hl{{\lstinline+np.empty()+}} : arranjo de elementos não predefinidos.
+\begin{lstlisting}
+>>> np.empty(3)
+array([4.64404327e-310, 0.00000000e+000, 6.93315702e-310])
+\end{lstlisting}
+\item \hl{{\lstinline+np.linspace(start, stop, num=50)+}} : arranjo de elementos uniformemente espaçados.
+\begin{lstlisting}
+>>> np.linspace(0, 1, 5)
+array([0.  , 0.25, 0.5 , 0.75, 1.  ])
+\end{lstlisting}
+\end{itemize}
+
+\subsection{Indexação e Fatiamento}
+
+[[tag:construcao]]
+
+\subsection{Operações e Funções Elemento-a-Elemento}
+
+No {\numpy}, temos os \hl{operadores aritméticos elemento-a-elemento} (em ordem de precedência)
+\begin{itemize}
+\item \hl{{\lstinline!**!}}
+\begin{lstlisting}
+>>> v = np.array([-2., 1, 3])
+>>> w = np.array([1., -1, 2])
+>>> v ** w
+array([-2.,  1.,  9.])
+\end{lstlisting}
+\item \hl{{\lstinline!*!}, {\lstinline!/!}, {\lstinline!//!}}, \lstinline!%!
+\begin{lstlisting}
+>>> v * w
+array([-2., -1.,  6.])
+>>> v / w
+array([-2. , -1. ,  1.5])
+>>> v // w
+array([-2., -1.,  1.])
+>>> v % w
+array([ 0., -0.,  1.])
+\end{lstlisting}
+\item \hl{{\lstinline!+!}, {\lstinline!-!}}
+\begin{lstlisting}
+>>> v + w
+array([-1.,  0.,  5.])
+>>> v - w
+array([-3.,  2.,  1.])
+\end{lstlisting}
+\end{itemize}
+
+O {\numpy} também conta com várias funções matemáticas predefinidas, consulte
+\begin{center}
+  \url{https://numpy.org/doc/stable/reference/routines.math.html}
+\end{center}
+A aplicação dessas funções correm elemento-a-elemento do \lstinline+array+ de entrada.
+
+\begin{ex}\normalfont{(\hl{Função Vetorial}.)}
+  
+  [[tag::construcao]]
+
+\end{ex}
+
+\subsection{Vetores e Operações}
+
+[[tag:construcao]]
+
+\subsection{Exercícios}
+
+[[tag:construcao]]
