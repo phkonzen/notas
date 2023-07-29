@@ -13,7 +13,6 @@ for l in range(len(hidden)-1):
                       torch.nn.Linear(hidden[l], hidden[l+1])))
     layerList.append((f'activation_{l+1}', activation))
 layerList.append((f'layer_{len(hidden)}', torch.nn.Linear(hidden[-1], 1)))
-#layerList.append((f'activation_{len(hidden)}', torch.nn.Sigmoid()))
 layerDict = OrderedDict(layerList)
 model = torch.nn.Sequential(OrderedDict(layerDict))
 
@@ -35,15 +34,19 @@ T,X = torch.meshgrid(tt, xx, indexing='ij')
 tt = tt.reshape(-1,1)
 xx = xx.reshape(-1,1)
 
+# t = 0
 Sic = torch.hstack((torch.zeros_like(xx), xx))
 Uic = sin(pi*xx)
 
+# x = -1
 Sbc0 = torch.hstack((tt[1:,:], -1.*torch.ones_like(tt[1:,:])))
 Ubc0 = torch.zeros_like(tt[1:,:])
 
+# x = 1
 Sbc1 = torch.hstack((tt[1:,:], 1.*torch.ones_like(tt[1:,:])))
 Ubc1 = torch.zeros_like(tt[1:,:])
 
+# pts internos
 tin = tt[1:,:]
 xin = xx[1:-1,:]
 Sin = torch.empty((nt*(nx-1), 2))
@@ -59,6 +62,7 @@ tin = torch.tensor(Sin[:,0:1], requires_grad=True)
 xin = torch.tensor(Sin[:,1:2], requires_grad=True)
 Sin = torch.hstack((tin,xin))
 
+# training
 nepochs = 50001
 tol = 1e-4
 nout = 100

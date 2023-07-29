@@ -42,7 +42,7 @@ def calor(c0, c1, tf=1., nt=10000, nx=10, nout=1000):
     return uout, xx
 
 
-# u, xx = calor(0.0, 0.0)
+# u, xx = calor(0.1, 1.0)
 # for k in range(u.shape[0]):
 #     plt.plot(xx, u[k,:])
 # plt.grid()
