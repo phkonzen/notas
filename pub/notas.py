@@ -84,6 +84,12 @@ class Notas:
         text += 'border-color: blue;'      
         text += '}'
 
+        text += '.ltx_title_proof {'
+        text += 'border-style: dotted;'
+        text += 'border-width: 0px 0px 2px 0px;'
+        text += 'border-color: red;'      
+        text += '}'
+
         text += '.ltx_listing {'
         text += 'border-style: dotted;'
         text += 'border-width: 2px 0px;'
