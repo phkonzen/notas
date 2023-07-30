@@ -82,11 +82,92 @@ array([0.  , 0.25, 0.5 , 0.75, 1.  ])
 \end{lstlisting}
 \end{itemize}
 
-\subsection{Indexação e Fatiamento}
+\subsection{Indexação e Fatiamento}\label{cap_arr_sec_arr:ssec:islice}
 
-[[tag:construcao]]
+\hl{Um {\lstinline+array+} é uma coleção de objetos mutável, ordenada e indexada}. Indexação e fatiamento podem ser feitos da mesma forma que para \lstinline+tuples+ e \lstinline+lists+. Por exemplo,
+\begin{lstlisting}
+>>> v = np.array([-1, 1, 2, 0, 3])
+>>> v[0]
+-1
+>>> v[-1]
+3
+>>> v[1:4]
+array([1, 2, 0])
+>>> v[::-1]
+array([ 3,  0,  2,  1, -1])
+>>> v[3] = 4
+>>> v
+array([-1,  1,  2,  4,  3])
+\end{lstlisting}
 
-\subsection{Operações e Funções Elemento-a-Elemento}
+\subsection{Reordenamento dos Elementos}
+
+Em programação, o reordenamento (em inglês, \textit{sorting}) de elementos de uma sequência ordenada de números (\lstinline+array+, \lstinline+tuple+, \lstinline+list+, etc.) consiste em alterar a sequência de forma que os elementos sejam organizados do menor para o mair valor. Na sequência, vamos estudar alguns métodos para isso.
+
+\subsubsection{Método Bolha}
+
+Dado um \lstinline+array+\footnote{Ou, um \lstinline+tuple+, \lstinline+list+, etc..}, o método bolha consiste em percorrer o arranjo e permutar dois elementos consecutivos de forma que o segundo seja sempre maior que o primeiro. Uma vez que percorrermos o arranjo, teremos garantido que o maior valor estará na última posição do arranjo e os demais elementos ainda poderão estar desordenados. Então, percorremos o arranjo novamente, permutando elementos dois-a-dois conforme a ordem desejada, o que trará o segundo maior elemento para a penúltima posição. Ou seja, para um arranjo com $n$ elementos, temos garantido o reordenamento de todos os elementos após $n-1$ repetições desse algoritmo.
+
+\begin{ex}
+  Na sequência, implementamos o Método Bolha para o reordenamento de arranjos e aplicamos para
+  \begin{equation}
+    \pmb{v} = (-1, 1, 0, 4, 3).
+  \end{equation}
+  
+\begin{lstlisting}[caption=bubbleSort\_v1.py]
+import numpy as np
+
+def bubbleSort(arr):
+    arr = arr.copy()
+    n = len(arr)
+    for k in range(n-1):
+        for i in range(n-1):
+            if (arr[i] > arr[i+1]):
+                arr[i], arr[i+1] = arr[i+1], arr[i]
+    return arr
+
+v = np.array([-1,1,0,4,3])
+w = bubbleSort(v)
+print(w)
+\end{lstlisting}
+\end{ex}
+
+\begin{obs}
+  Em geral, para um arranjo de $n$ elementos, o Método Bolha requer $n-1$ repetições para completar o ordenamento. Entretanto, dependendo do caso, o ordenamento dos elementos pode terminar em menos passos.
+\end{obs}
+
+\begin{ex}
+  Na sequência, implementamos uma nova versão do Método Bolha para o reordenamento de arranjos. Esta versão verifica se há elementos fora de ordem e, caso não haja, interrompe o algoritmo. Como exemplo, aplicamos para
+  \begin{equation}
+    \pmb{v} = (-1, 1, 0, 4, 3).
+  \end{equation}
+  
+\begin{lstlisting}[caption=bubbleSort\_v2.py]
+import numpy as np
+
+def bubbleSort(arr):
+    arr = arr.copy()
+    n = len(arr)
+    for k in range(n-1):
+        noUpdated = True
+        for i in range(n-1):
+            if (arr[i] > arr[i+1]):
+                arr[i], arr[i+1] = arr[i+1], arr[i]
+                noUpdated = False
+        if (noUpdated):
+            break
+    return arr
+
+v = np.array([-1,1,0,4,3])
+w = bubbleSort(v)
+\end{lstlisting}
+\end{ex}
+
+\begin{obs}\normalfont{(\hl{Métodos de Ordenamento}.)}
+  Existem vários métodos para o ordenamento de uma sequência. O Método Bolha é um dos mais simples, mas também, em geral, menos eficiente. O {\numpy} tem disponível a função \hl{{\href{https://numpy.org/doc/stable/reference/generated/numpy.sort.html}{\lstinline+np.sort(arr)+}}} para o reordenamento de elementos. Também bastante útil, é a função \hl{{\href{https://numpy.org/doc/stable/reference/generated/numpy.argsort.html\#numpy.argsort}{\lstinline+np.argsort(arr)+}}}, que retorna os índices que reordenam os elementos.
+\end{obs}
+
+\subsection{Operações Elemento-a-Elemento}
 
 No {\numpy}, temos os \hl{operadores aritméticos elemento-a-elemento} (em ordem de precedência)
 \begin{itemize}
@@ -117,6 +198,189 @@ array([-3.,  2.,  1.])
 \end{lstlisting}
 \end{itemize}
 
+\begin{ex}
+  Vamos usar \lstinline+arrays+ para alocar os vetores
+  \begin{align}
+    \pmb{v} = (1., 0, -2),\\
+    \pmb{w} = (2., -1, 3).
+  \end{align}
+  Então, computamos o produto interno
+  \begin{subequations}
+    \begin{align}
+      \pmb{v}\cdot\pmb{w} &:= v_1w_1 + v_2w_2 + v_3w_3\\
+                          &= 1\cdot 2 + 0\cdot(-1) + (-2)\cdot 3\\
+                          &= -4.
+    \end{align}
+  \end{subequations}
+\begin{lstlisting}
+import numpy as np
+# vetores
+v = np.array([1., 0, -2])
+w = np.array([2., -1, 3])
+# produto interno
+vdw = np.sum(v*w)
+\end{lstlisting}
+\end{ex}
+
+\begin{obs}\normalfont{(\hl{Concatenação de Arranjos}.)}
+  No {\numpy}, a concatenação de arranjos pode ser feita com a função \hl{{\href{https://numpy.org/doc/stable/reference/generated/numpy.concatenate.html}{np.concatenate()}}}. Por exemplo,
+\begin{lstlisting}
+>>> v = np.array([1,2])
+>>> w = np.array([3,4])
+>>> np.concatenate((v,w))
+array([1, 2, 3, 4])
+\end{lstlisting}
+\end{obs}
+
+\subsection{Exercícios}
+
+\begin{exer}
+  Aloque os seguintes vetores como \lstinline+array+ do {\numpy}:
+  \begin{enumerate}[a)]
+  \item $\displaystyle\pmb{a} = (0, -2, 4)$
+  \item $\displaystyle\pmb{b} = (0.1, -2.7, 4.5)$
+  \item $\displaystyle\pmb{c} = (e, \ln(2), \pi)$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+>>> import numpy as np
+>>> a = np.array([0, -2, 4])
+>>> b = np.array([0.1, -2.7, 4.5])
+>>> c = np.array([np.e, np.log(2), np.pi])
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  Considere o seguinte \lstinline+array+
+\begin{lstlisting}
+>>> v = np.array([4, -1, 1, -2, 3]).
+\end{lstlisting}
+  Sem implementar, escreva os arranjos derivados:
+  \begin{enumerate}[a)]
+  \item \lstinline+v[1]+
+  \item \lstinline+v[1:4]+
+  \item \lstinline+v[:3]+
+  \item \lstinline+v[1:]+
+  \item \lstinline+v[1:4:2]+
+  \item \lstinline+v[-2:-5:-1]+
+  \item \lstinline+v[::-2]+
+  \end{enumerate}
+  Então, verifique seus resultados implementando-os.
+\end{exer}
+\begin{resp}
+  Dica: consulte a Subseção \ref{cap_arr_sec_arr:ssec:islice}. 
+\end{resp}
+
+\begin{exer}
+  Desenvolva uma função \lstinline+argBubbleSort(arr)+, i.e. uma função que retorna os índices que reordenam os elementos do arranjo \lstinline+arr+ em ordem crescente. Teste seu código para o ordenamento de diversos arranjos e compare os resultados com a aplicação da função \lstinline+np.argsort(arr)+.
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+import numpy as np
+
+def argBubbleSort(arr):
+    n = len(arr)
+    ind = np.arange(n)
+    for k in range(n-1):
+        noUpdated = True
+        for i in range(n-1):
+            if (arr[ind[i]] > arr[ind[i+1]]):
+                ind[i], ind[i+1] = ind[i+1], ind[i]
+                noUpdated = False
+        if (noUpdated):
+            break
+    return ind
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  Desenvolva um Método Bolha para o reordenamento dos elementos de um dado arranjo em ordem decrescente. Teste seu código para o reordenamento de diversos arranjos. Como pode-se usar a função \lstinline+np.sort(arr)+ para obter os mesmos resultados?
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+import numpy as np
+
+def emOrdem(x, y):
+    return x < y
+
+def bubbleSort(arr, emOrdem=emOrdem):
+    arr = arr.copy()
+    n = len(arr)
+    for k in range(n-1):
+        noUpdated = True
+        for i in range(n-1):
+            if not(emOrdem(arr[i], arr[i+1])):
+                arr[i], arr[i+1] = arr[i+1], arr[i]
+                noUpdated = False
+        if (noUpdated):
+            break
+    return arr
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  Desenvolva uma função \lstinline+argBubbleSort(arr, emOrdem)+, i.e. uma função que retorna os índices que reordenam os elementos do arranjo \lstinline+arr+ na ordem definida pela função \lstinline+emOrdem+. Teste seu código para o ordenamento de diversos arranjos, tanto em ordem crescente como em ordem decrescente. Como pode-se obter os mesmos resultados usando-se a função \lstinline+np.sort(arr)+?
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+import numpy as np
+
+def argBubbleSort(arr, emOrdem=emOrdem):
+    n = len(arr)
+    ind = np.arange(n)
+    for k in range(n-1):
+        noUpdated = True
+        for i in range(n-1):
+            if not(emOrdem(arr[ind[i]], arr[ind[i+1]])):
+                ind[i], ind[i+1] = ind[i+1], ind[i]
+                noUpdated = False
+        if (noUpdated):
+            break
+    return ind
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  Crie uma função \lstinline+media(arr)+ que returna o valor médio do arranjo de números \lstinline+arr+. Teste seu código para diferentes arranjos e compare os resultados com o da função \lstinline+np.mean(arr)+.
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+import numpy as np
+
+def media(arr):
+    return np.sum(arr)/len(arr)
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  Desenvolva uma função que retorna o ângulo entre dois vetores $\pmb{v}$ e $\pmb{w}$ dados.
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+import numpy as np
+
+def dot(v, w):
+    return np.sum(v*w)
+
+def angulo(v, w):
+    # norma de v
+    norm_v = np.sqrt(dot(v,v))
+    # norma de w
+    norm_w = np.sqrt(dot(w,w))
+    # cos(theta)
+    cosTheta = dot(v,w)/(norm_v*norm_w)
+    # theta
+    theta = np.acos(cosTheta)
+    return theta
+\end{lstlisting}
+\end{resp}
+
+
+\section{Vetores e Arranjos}
+
+[[tag:construcao]]
+
 O {\numpy} também conta com várias funções matemáticas predefinidas, consulte
 \begin{center}
   \url{https://numpy.org/doc/stable/reference/routines.math.html}
@@ -128,10 +392,6 @@ A aplicação dessas funções correm elemento-a-elemento do \lstinline+array+ d
   [[tag::construcao]]
 
 \end{ex}
-
-\subsection{Vetores e Operações}
-
-[[tag:construcao]]
 
 \subsection{Exercícios}
 
