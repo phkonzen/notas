@@ -1,191 +1,188 @@
-%Este trabalho está licenciado sob a Licença Atribuição-CompartilhaIgual 4.0 Internacional Creative Commons. Para visualizar uma cópia desta licença, visite http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR ou mande uma carta para Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+% Este trabalho está licenciado sob a Licença Atribuição-CompartilhaIgual 4.0 Internacional Creative Commons. Para visualizar uma cópia desta licença, visite http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR ou mande uma carta para Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
 
 \chapter{Derivação}\label{cap_deriv}
 \thispagestyle{fancy}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
+Neste capítulo, estudamos os métodos fundamentais de derivação numérica de funções.
 
-Neste capítulo, discutimos os métodos fundamentais de derivação numérica de funções.
+\section{Derivadas de Primeira Ordem}\label{cap_deriv_sec_df}
 
-\section{Derivadas de primeira ordem}\label{cap_deriv_sec_df}
-
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-A derivada de uma função $f$ num ponto $x$ é, por definição,
-\begin{equation}
-  f'(x) = \lim_{h\to 0} \frac{f(x+h) - f(x)}{h}.
+\hl{A derivada de uma função $f$ num ponto $x$} é, por definição,
+\begin{equation}\hleq
+  f'(x) := \lim_{h\to 0} \frac{f(x+h) - f(x)}{h}.
 \end{equation}
-Assim sendo e assumindo $h>0$\footnote{Para fixar notação, assumiremos $h>0$ ao longo deste capítulo.} próximo de zero, temos que $f'(x)$ pode ser aproximada pela razão fundamental, i.e.
-\begin{equation}\label{eq_razao_fundamental}
-  f'(x) \approx \underbrace{\frac{f(x+h) - f(x)}{h}}_{D_hf(x)}.
-\end{equation}
-Analisando a Figura~\ref{fig:intro_deriv} vemos que, geometricamente, isto é análogo a aproximar a declividade da reta tangente ao gráfico da função $f$ no ponto $(x,f(x))$ pela declividade da reta secante ao gráfico da função $f$ pelos pontos $(x,f(x))$ e $(x+h,f(x+h))$.
+Assim sendo e assumindo $h>0$\footnote{Para fixar notação, assumiremos $h>0$ ao longo deste capítulo.} próximo de zero, temos que \hl{$f'(x)$ pode ser aproximada pela \emph{fórmula de diferenças finitas}}
+\begin{subequations}\label{cap_deriv_sec_df:eq:fdf}\hleq
+  \begin{align}
+    f'(x) &\approx \frac{f(x+h) - f(x)}{h}\\
+          &=: D_hf(x).
+  \end{align}
+\end{subequations}
+Geometricamente, isto é análogo a aproximar a declividade da reta tangente ao gráfico da função $f$ no ponto $(x, f(x))$ pela declividade da reta secante ao gráfico da função $f$ pelos pontos $(x, f(x))$ e $(x+h, f(x+h))$ (consulte a Figura~\ref{cap_deriv_sec_df:fig:intro_deriv}).
 
-\begin{figure}[hp]
+\begin{figure}[H]
   \centering
-  \includegraphics[width=0.7\textwidth]{cap_deriv/dados/fig_intro_deriv/fig_intro_deriv}
-  \caption{Interpretação geométrica da aproximação da derivada pela razão fundamental. Veja no \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_deriv/dados/fig_intro_deriv/fig_intro_deriv.ggb}{Geogebra}.}
-  \label{fig:intro_deriv}
+  \includegraphics[width=0.8\textwidth]{cap_deriv/dados/fig_intro_deriv/fig}
+  \caption{Interpretação geométrica da aproximação da derivada pela razão fundamental.}
+  \label{cap_deriv_sec_df:fig:intro_deriv}
 \end{figure}
 
-\begin{ex}\label{ex_intro_deriv}
-  A derivada de $f(x) = \sen(x)$ no ponto $\pi/3$ é $f'(\pi/3) = \cos(\pi/3)=0,5$. Agora, usando a aproximação pela razão fundamental~\eqref{eq_razao_fundamental}, temos
-  \begin{align}
-    f'\left(\frac{\pi}{3}\right) \approx D_hf(x) &= \frac{f\left(\frac{\pi}{3}+h\right)-f\left(\frac{\pi}{3}\right)}{h}\\
-          &= \frac{\sen\left(\frac{\pi}{3}\right)-\sen\left(\frac{\pi}{3}\right)}{h}. 
-  \end{align}
-Na Tabela~\ref{tab:ex_intro_deriv} temos os valores desta aproximação para diferentes escolhas da passo $h$.
+\begin{ex}\label{cap_deriv_sec_df:ex_intro_deriv}
+  A derivada de $f(x) = \sen(x)$ no ponto $\pi/3$ é $f'(\pi/3) = \cos(\pi/3)=0.5$. Agora, usando a aproximação pela fórmula de diferenças finitas~\eqref{cap_deriv_sec_df:eq:fdf}, temos
+  \begin{subequations}
+    \begin{align}
+      f'\left(\frac{\pi}{3}\right) &\approx D_hf\left(\frac{\pi}{3}\right) \\
+                                   &= \frac{f\left(\frac{\pi}{3}+h\right)-f\left(\frac{\pi}{3}\right)}{h}\\
+                                   &= \frac{\sen\left(\frac{\pi}{3}+h\right)-\sen\left(\frac{\pi}{3}\right)}{h}. 
+    \end{align}
+\end{subequations}
+Na Tabela~\ref{cap_deriv_sec_df:tab:ex_intro_deriv} temos os valores desta aproximação para diferentes escolhas da passo $h$.
 
-\begin{table}[hp]
+\begin{table}[H]
   \centering
+  \caption{Valores aproximados da derivada de $f(x)=\sen(x)$ no ponto $x=\pi/3$ usado a fórmula de diferenças finitas \eqref{cap_deriv_sec_df:eq:fdf}.}
   \begin{tabular}{l|c}
     $h$ & $Df(\pi/3)$ \\ \hline
-    $10^{-1}$ & $4,55902\E-1$ \\
-    $10^{-2}$ & $4,95662\E-1$ \\
-    $10^{-3}$ & $4,99567\E-1$ \\
-    $10^{-5}$ & $4,99996\E-1$ \\
+    $10^{-1}$ & $4.55902\E-1$ \\
+    $10^{-2}$ & $4.95662\E-1$ \\
+    $10^{-3}$ & $4.99567\E-1$ \\
+    $10^{-5}$ & $4.99996\E-1$ \\
+    $10^{-7}$ & $5.00000\E-1$ \\
     $10^{-10}$ & $5.00000\E-1$ \\\hline
   \end{tabular}
-  \caption{Valores aproximados da derivada de $f(x)=\sen(x)$ no ponto $x=\pi/6$ usado a expressão~\eqref{eq_razao_fundamental}.}
-  \label{tab:ex_intro_deriv}
+  \label{cap_deriv_sec_df:tab:ex_intro_deriv}
 \end{table}
 
-No \verb+GNU Octave+, podemos fazer estes cálculos com o seguinte código:
-\begin{verbatim}
-f = @(x) sin(x);
-Df = @(x,h) (f(x+h)-f(x))/h;
-x=pi/3;
-h=1e-1;
-printf('%1.5e\n',Df(x,h))
-\end{verbatim}
+\begin{lstlisting}
+import numpy as np
+
+def dfdx(f, x, h=1e-7):
+    df = (f(x+h) - f(x))/h
+    return df
+
+f = lambda x: np.sin(x)
+x = np.pi/3
+h = 1e-7
+dfdx = dfdx(f, x, h)
+\end{lstlisting}
 \end{ex}
 
-A aproximação~\eqref{eq_razao_fundamental} é uma \emph{fórmula de diferenças finitas}\index{fórmula de diferenças finitas}. Existem várias aproximações deste tipo que podem ser derivadas. Além disso, tais derivações nos permitem estimar o erro na utilização de tais fórmulas para a aproximação de derivadas. Na sequência, discutiremos o desenvolvimento de fórmulas de diferenças finitas usando polinômios de Taylor.
+\subsection{Diferenças Finitas por Polinômio de Taylor}
 
-\subsection{Desenvolvimento por polinômio de Taylor}
+Vamos estudar o desenvolvimento de \emph{fórmulas de diferenças finitas} via polinômios de Taylor.
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-Aqui, discutimos a obtenção de fórmulas de diferenças finitas via polinômio de Taylor.
-
-\subsubsection{Diferenças finitas progressiva de ordem $h$}
-
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
+\subsubsection{Fórmula de Diferenças Finitas Progressiva de Ordem $h$}
 
 A aproximação por polinômio de Taylor de grau 1 de uma dada função $f$ em torno no ponto $x$ é
-\begin{equation}\label{eq:poli_Taylor_grau_1}
+\begin{equation}\label{cap_deriv_sec_df:eq:poli_Taylor_grau_1}
   f(x+h) = f(x) + hf'(x) + O(h^2).
 \end{equation}
-Agora, isolando $f'(x)$, obtemos
+Isolando $f'(x)$, obtemos
 \begin{equation}
   f'(x) = \frac{f(x+h) - f(x)}{h} + O(h).
 \end{equation}
-Isto nos fornece a chamada fórmula de diferenças finitas progressiva de ordem $h$\index{fórmula de diferenças finitas!progressiva de ordem $h$}
-\begin{equation}\label{eq:dfp_h}
+Isto nos fornece a chamada \hl{\emph{fórmula de diferenças finitas progressiva de ordem $h$}}
+\begin{equation}\label{cap_deriv_sec_df:eq:dfp_h}\hleq
   D_{+,h}f(x) := \frac{f(x+h) - f(x)}{h}.
 \end{equation}
-Observemos que a ordem da fórmula se refere a ordem do \emph{erro de truncamento}\index{erro de!truncamento} com respeito ao passo $h$.
+Observemos que \hl{a ordem da fórmula se refere a do \emph{erro de truncamento} com respeito ao passo $h$}.
 
-\begin{ex}\label{ex:dfp_h}
+\begin{ex}\label{cap_deriv_sec_df:ex:dfp_h}
   Consideremos o problema de aproximar a derivada da função $f(x) = \sen(x)$ no ponto $\pi/3$. Usando a fórmula de diferenças finitas progressiva de ordem $h$ obtemos
-  \begin{align}
-    f'\left(\frac{\pi}{3}\right) \approx D_{+,h}f(x) &= \frac{f\left(\frac{\pi}{3}+h\right)-f\left(\frac{\pi}{3}\right)}{h}\\
-          &= \frac{\sen\left(\frac{\pi}{3}+h\right)-\sen\left(\frac{\pi}{3}\right)}{h}. 
-  \end{align}
-Na Tabela~\ref{tab:ex_dfp_h} temos os valores desta aproximação para diferentes escolhas de $h$, bem como, o erro absoluto da aproximação de $f'(\pi/3)$ por $D_{+,h}f(\pi/3)$.
+  \begin{subequations}
+    \begin{align}
+      f'\left(\frac{\pi}{3}\right) &\approx D_{+,h}f(x)\\
+      &= \frac{f\left(\frac{\pi}{3}+h\right)-f\left(\frac{\pi}{3}\right)}{h}\\
+      &= \frac{\sen\left(\frac{\pi}{3}+h\right)-\sen\left(\frac{\pi}{3}\right)}{h}. 
+    \end{align}
+\end{subequations}
+Na Tabela~\ref{cap_deriv_sec_df:tab:ex_dfp_h} temos os valores desta aproximação para diferentes escolhas de $h$, bem como, o erro absoluto da aproximação de $f'(\pi/3)$ por $D_{+,h}f(\pi/3)$.
 
 \begin{table}[h!]
   \centering
-  \caption{Resultados referente ao Exemplo~\ref{ex:dfp_h}.}
+  \caption{Resultados referente ao Exemplo~\ref{cap_deriv_sec_df:ex:dfp_h}.}
   \begin{tabular}{l|c|c}
     $h$ & $D_{+,h}f(\pi/3)$ & $|f'(\pi/3)-D_{+,h}f(\pi/3)|$\\ \hline
-    $10^{-1}$ & $4,55902\E-1$ & $4,4\E-2$ \\
-    $10^{-2}$ & $4,95662\E-1$ & $4,3\E-3$ \\
-    $10^{-3}$ & $4,99567\E-1$ & $4,3\E-4$ \\
-    $10^{-5}$ & $4,99996\E-1$ & $4,3\E-6$ \\
-    $10^{-10}$ & $5.00000\E-1$ & $4,1\E-8$ \\\hline
+    $10^{-1}$ & $4.55902\E-1$ & $4.4\E-2$ \\
+    $10^{-2}$ & $4.95662\E-1$ & $4.3\E-3$ \\
+    $10^{-3}$ & $4.99567\E-1$ & $4.3\E-4$ \\
+    $10^{-5}$ & $4.99996\E-1$ & $4.3\E-6$ \\
+    $10^{-10}$ & $5.00000\E-1$ & $4.1\E-8$ \\\hline
   \end{tabular}
-  \label{tab:ex_dfp_h}
+  \label{cap_deriv_sec_df:tab:ex_dfp_h}
 \end{table}
 
-No \verb+GNU Octave+, podemos fazer estes cálculos com o seguinte código:
-\begin{verbatim}
-f = @(x) sin(x);
-Df = @(x,h) (f(x+h)-f(x))/h;
-x=pi/3;
-h=1e-1;
-printf('%1.5e %1.1e\n',Df(x,h),abs(cos(x)-Df(x,h)))
-\end{verbatim}
+\begin{lstlisting}[caption=dfp\_h.py]
+import numpy as np
+
+def dfp_h(f, x, h=1e-7):
+    df = (f(x+h) - f(x))/h
+    return df
+
+f = lambda x: np.sin(x)
+x = np.pi/3
+h = 1e-1
+dfdx = dfp_h(f, x, h)
+\end{lstlisting}
 \end{ex}
 
-\begin{obs}
-  No exemplo acima (Exemplo~\ref{ex:dfp_h}), podemos observar que o erro absoluto na aproximação de $f'(x)$ por $D_{+,h}f(x)$ decresce conforme a ordem do erro de truncamento para valores moderados de $h$ (veja, Tabela~\ref{tab:ex_dfp_h}). Agora, para valores de $h$ muito pequenos (por exemplo, $h=10^{-10}$), o erro $|f'(x)-D_{+,h}f(x)|$ não segue mais a tendência de decaimento na mesma do de truncamento. Isto se deve a dominância dos erros de arredondamento para valores muito pequenos de $h$. 
-
-  Para mais informações sobre o comportamento do erro de arredondamento em fórmulas de diferenças finitas, veja, por exemplo, \href{https://www.ufrgs.br/reamat/CalculoNumerico/livro-oct/dn-diferencas_finitas.html}{REAMAT - Cálculo Numérico - Versão GNU Octave - Diferenças Finitas - Erro de arredondamento}.
+\begin{obs}\normalfont{(\hl{Erro de Truncamento}.)}
+  No Exemplo \ref{cap_deriv_sec_df:ex:dfp_h}, podemos observar que o erro absoluto na aproximação de $f'(x)$ por $D_{+,h}f(x)$ decresce conforme a ordem do erro de truncamento para valores moderados de $h$ (consulte a Tabela~\ref{cap_deriv_sec_df:tab:ex_dfp_h}). Agora, para valores de $h$ muito pequenos (por exemplo, $h=10^{-10}$), o erro $|f'(x)-D_{+,h}f(x)|$ não segue mais a tendência de decaimento na mesma ordem do de truncamento. Isto se deve a dominância dos erros de arredondamento para valores muito pequenos de $h$.
 \end{obs}
 
-\subsubsection{Diferenças finitas regressiva de ordem $h$}
+\subsubsection{Fórmula de Diferenças Finitas Regressiva de Ordem $h$}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-Substituindo $h$ por $-h$ na equação~\eqref{eq:poli_Taylor_grau_1}, obtemos
+Substituindo $h$ por $-h$ no polinômio de Taylor de grau 1 \eqref{cap_deriv_sec_df:eq:poli_Taylor_grau_1}, temos
 \begin{equation}
   f(x-h) = f(x) - hf'(x) + O(h^2),
 \end{equation}
-donde obtemos a fórmula de diferenças finitas regressiva de ordem $h$\index{fórmula de diferenças finitas!regressiva de ordem $h$}
-\begin{equation}\label{eq:dfr_h}
-  D_{-,h}f(x) = \frac{f(x) - f(x-h)}{h}.
+donde obtemos a \hl{\emph{fórmula de diferenças finitas regressiva de ordem $h$}}
+\begin{equation}\label{cap_deriv_sec_df:eq:dfr_h}\hleq
+  D_{-,h}f(x) := \frac{f(x) - f(x-h)}{h}.
 \end{equation}
 
-\begin{ex}\label{ex:dfr_h}
+\begin{ex}\label{cap_deriv_sec_df:ex:dfr_h}
   Consideremos o problema de aproximar a derivada da função $f(x) = \sen(x)$ no ponto $\pi/3$. Usando a fórmula de diferenças finitas regressiva de ordem $h$ obtemos
-  \begin{align}
-    f'\left(\frac{\pi}{3}\right) \approx D_{-,h}f(x) &= \frac{f\left(\frac{\pi}{3}\right)-f\left(\frac{\pi}{3}-h\right)}{h}\\
-          &= \frac{\sen\left(\frac{\pi}{3}\right)-\sen\left(\frac{\pi}{3}-h\right)}{h}. 
-  \end{align}
-Na Tabela~\ref{tab:ex_dfr_h} temos os valores desta aproximação para diferentes escolhas de $h$, bem como, o erro absoluto da aproximação de $f'(\pi/3)$ por $D_{-,h}f(\pi/3)$.
+  \begin{subequations}
+    \begin{align}
+      f'\left(\frac{\pi}{3}\right) &\approx D_{-,h}f(x) \\
+                                   &= \frac{f\left(\frac{\pi}{3}\right)-f\left(\frac{\pi}{3}-h\right)}{h}\\
+                                   &= \frac{\sen\left(\frac{\pi}{3}\right)-\sen\left(\frac{\pi}{3}-h\right)}{h}. 
+    \end{align}
+  \end{subequations}
+Na Tabela~\ref{cap_deriv_sec_df:tab:ex_dfr_h} temos os valores desta aproximação para diferentes escolhas de $h$, bem como, o erro absoluto da aproximação de $f'(\pi/3)$ por $D_{-,h}f(\pi/3)$.
 
 \begin{table}[h!]
   \centering
-  \caption{Resultados referente ao Exemplo~\ref{ex:dfr_h}.}
+  \caption{Resultados referente ao Exemplo~\ref{cap_deriv_sec_df:ex:dfr_h}.}
   \begin{tabular}{l|c|c}
     $h$ & $D_{-,h}f(\pi/3)$ & $|f'(\pi/3)-D_{-,h}f(\pi/3)|$\\ \hline
-    $10^{-1}$ & $5,42432\E-1$ & $4,2\E-2$ \\
-    $10^{-2}$ & $5,04322\E-1$ & $4,3\E-3$ \\
-    $10^{-3}$ & $5,00433\E-1$ & $4,3\E-4$ \\
-    $10^{-5}$ & $5,00004\E-1$ & $4,3\E-6$ \\
-    $10^{-10}$ & $5.00000\E-1$ & $4,1\E-8$ \\\hline
+    $10^{-1}$ & $5.42432\E-1$ & $4.2\E-2$ \\
+    $10^{-2}$ & $5.04322\E-1$ & $4.3\E-3$ \\
+    $10^{-3}$ & $5.00433\E-1$ & $4.3\E-4$ \\
+    $10^{-5}$ & $5.00004\E-1$ & $4.3\E-6$ \\
+    $10^{-10}$ & $5.00000\E-1$ & $4.1\E-8$ \\\hline
   \end{tabular}
-  \label{tab:ex_dfr_h}
+  \label{cap_deriv_sec_df:tab:ex_dfr_h}
 \end{table}
 
-No \verb+GNU Octave+, podemos fazer estes cálculos com o seguinte código:
-\begin{verbatim}
-f = @(x) sin(x);
-Df = @(x,h) (f(x)-f(x-h))/h;
-x=pi/3;
-h=1e-1;
-printf('%1.5E %1.1E\n',Df(x,h),abs(cos(x)-Df(x,h)))
-\end{verbatim}
+\begin{lstlisting}[caption=dfr\_h.py]
+import numpy as np
+
+def dfr_h(f, x, h=1e-7):
+    df = (f(x) - f(x-h))/h
+    return df
+
+f = lambda x: np.sin(x)
+x = np.pi/3
+h = 1e-1
+dfdx = dfr_h(f, x, h)
+\end{lstlisting}
 \end{ex}
 
-\subsubsection{Diferenças finitas central de ordem $h^2$}
+\subsubsection{Fórumla de Diferenças Finitas Central de Ordem $h^2$}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-Usando o polinômio de Taylor de grau 2 para aproximar a função $f(x)$ em torno de $x$, obtemos
+Usando o polinômio de Taylor de grau 2 para aproximar a função $f(x)$ em torno de $x$, temos
 \begin{align}
   f(x+h) &= f(x) + hf'(x) + \frac{h}{2}f''(x) + O(h^3)\\
   f(x-h) &= f(x) - hf'(x) + \frac{h}{2}f''(x) + O(h^3).
@@ -194,60 +191,84 @@ Então, subtraindo esta segunda equação da primeira, temos
 \begin{equation}
   f(x+h)-f(x-h) = 2hf'(x) + O(h^3).
 \end{equation}
-Agora, isolando $f(x)$
+Então, isolando $f(x)$, obtemos
 \begin{equation}
   f'(x) = \frac{f(x+h)-f(x-h)}{2h} + O(h^2),
 \end{equation}
-o que nos fornece a chamada fórmula de diferenças finitas central de ordem $h^2$\index{fórmula de diferenças finitas!central de ordem $h^2$}
-\begin{equation}\label{eq:dfc_h2}
+Isto nos fornece a chamada \hl{\emph{fórmula de diferenças finitas central de ordem $h^2$}}
+\begin{equation}\label{cap_deriv_sec_df:eq:dfc_h2}\hleq
   D_{0,h^2}f(x) := \frac{f(x+h)-f(x-h)}{2h}.
 \end{equation}
 
-\begin{ex}\label{ex:dfc_h2}
+\begin{ex}\label{cap_deriv_sec_df:ex:dfc_h2}
   Consideremos o problema de aproximar a derivada da função $f(x) = \sen(x)$ no ponto $\pi/3$. Usando a fórmula de diferenças finitas central de ordem $h^2$ obtemos
-  \begin{align}
-    f'\left(\frac{\pi}{3}\right) \approx D_{0,h^2}f(x) &= \frac{f\left(\frac{\pi}{3}+h\right)-f\left(\frac{\pi}{3}-h\right)}{2h}\\
-          &= \frac{\sen\left(\frac{\pi}{3}+h\right)-\sen\left(\frac{\pi}{3}-h\right)}{2h}. 
+  \begin{subequations}
+    \begin{align}
+      f'\left(\frac{\pi}{3}\right) &\approx D_{0,h^2}f(x) \\
+                                   &= \frac{f\left(\frac{\pi}{3}+h\right)-f\left(\frac{\pi}{3}-h\right)}{2h}\\
+                                   &= \frac{\sen\left(\frac{\pi}{3}+h\right)-\sen\left(\frac{\pi}{3}-h\right)}{2h}. 
   \end{align}
+\end{subequations}
+Na Tabela~\ref{cap_deriv_sec_df:tab:ex_dfc_h2} temos os valores desta aproximação para diferentes escolhas de $h$, bem como, o erro absoluto da aproximação de $f'(\pi/3)$ por $D_{0,h^2}f(\pi/3)$.
 
 \begin{table}[h!]
   \centering
-  \caption{Resultados referente ao Exemplo~\ref{ex:dfc_h2}.}
+  \caption{Resultados referente ao Exemplo~\ref{cap_deriv_sec_df:ex:dfc_h2}.}
   \begin{tabular}{l|c|c}
     $h$ & $D_{0,h^2}f(\pi/3)$ & $|f'(\pi/3)-D_{0,h^2}f(\pi/3)|$\\ \hline
-    $10^{-1}$ & $4,99167\E-1$ & $8,3\E-04$ \\
-    $10^{-2}$ & $4,99992\E-1$ & $8,3\E-06$ \\
-    $10^{-3}$ & $5,00000\E-1$ & $8,3\E-08$ \\
-    $10^{-5}$ & $5,00000\E-1$ & $8,3\E-10$ \\
-    $10^{-10}$ & $5.00000\E-1$ & $7,8\E-12$ \\\hline
+    $10^{-1}$ & $4.99167\E-1$ & $8.3\E-04$ \\
+    $10^{-2}$ & $4.99992\E-1$ & $8.3\E-06$ \\
+    $10^{-3}$ & $5.00000\E-1$ & $8.3\E-08$ \\
+    $10^{-5}$ & $5.00000\E-1$ & $8.3\E-10$ \\
+    $10^{-10}$ & $5.00000\E-1$ & $7.8\E-12$ \\\hline
   \end{tabular}
-  \label{tab:ex_dfc_h2}
+  \label{cap_deriv_sec_df:tab:ex_dfc_h2}
 \end{table}
 
-Na Tabela~\ref{tab:ex_dfc_h2} temos os valores desta aproximação para diferentes escolhas de $h$, bem como, o erro absoluto da aproximação de $f'(\pi/3)$ por $D_{0,h^2}f(\pi/3)$.
 
-No \verb+GNU Octave+, podemos fazer estes cálculos com o seguinte código:
-\begin{verbatim}
-f = @(x) sin(x);
-Df = @(x,h) (f(x+h)-f(x-h))/(2*h);
-x=pi/3;
-h=1e-1;
-printf('%1.5E %1.1E\n',Df(x,h),abs(cos(x)-Df(x,h)))
-\end{verbatim}
+\begin{lstlisting}[caption=dfc\_h2.py]
+import numpy as np
+
+def dfc_h2(f, x, h=1e-7):
+    df = (f(x+h) - f(x-h))/(2*h)
+    return df
+
+f = lambda x: np.sin(x)
+x = np.pi/3
+h = 1e-1
+dfdx = dfc_h2(f, x, h)
+\end{lstlisting}
 \end{ex}
 
 \subsection*{Exercícios}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
+\begin{exer}
+  Considere a função $f(x) = \cos(x)$. Use a fórmula de diferenças finitas progressiva de ordem $h$ para computar a aproximação de $f'(\pi/3)$ com 5 dígitos significativos corretos.
+\end{exer}
+\begin{resp}
+  $f'(\pi/3) = -0.866025\E+0, h=10^{-7}$
+\end{resp}
 
-\begin{exer}\label{exer:df_fun}
+\begin{exer}
+  Considere a função $f(x) = \cos(x)$. Use a fórmula de diferenças finitas regressiva de ordem $h$ para computar a aproximação de $f'(\pi/3)$ com 5 dígitos significativos corretos.
+\end{exer}
+\begin{resp}
+  $f'(\pi/3) = -0.866025\E+0, h=10^{-6}$
+\end{resp}
+
+\begin{exer}
+  Considere a função $f(x) = \cos(x)$. Use a fórmula de diferenças finitas central de ordem $h^2$ para computar a aproximação de $f'(\pi/3)$ com 5 dígitos significativos corretos.
+\end{exer}
+\begin{resp}
+  $f'(\pi/3) = -0.866025\E+0, h=10^{-3}$
+\end{resp}
+
+\begin{exer}\label{cap_deriv_sec_df:exer:df_fun}
   Calcule aproximações da derivada de
   \begin{equation}
     f(x) = \frac{\sen(x+2) - e^{-x^2}}{x^2 + \ln(x+2)}+x
   \end{equation}
-no ponto $x=2,5$ dadas pelas seguintes fórmulas de diferenças finitas com $h=10^{-2}$:
+no ponto $x=2.5$ dadas pelas seguintes fórmulas de diferenças finitas com $h=10^{-2}$:
 \begin{enumerate}[a)]
 \item progressiva de ordem $h$.
 \item regressiva de ordem $h$.
@@ -255,36 +276,72 @@ no ponto $x=2,5$ dadas pelas seguintes fórmulas de diferenças finitas com $h=1
 \end{enumerate}
 \end{exer}
 \begin{resp}
-  % \ifisoctave 
-  % \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_deriv/dados/exer_df_fun/exer_df_fun.m}{Código.} 
-  % \fi
-  a)~$D_{+,h}f(2,5)=1,05949$; b)~$D_{-,h}f(2,5)=1,05877$; c)~$D_{0,h^2}f(2,5)=1,05913$;
+  a)~$D_{+,h}f(2.5)=1,05949$; b)~$D_{-,h}f(2.5)=1,05877$; c)~$D_{0,h^2}f(2.5)=1,05913$;
 \end{resp}
 
-\begin{exer}\label{exer:df_tab}
+\begin{exer}\label{cap_deriv_sec_df:exer:df_tab}
   Considere a seguinte tabela de pontos
   \begin{center}
-    \begin{tabular}{l|cccccc}
-      $i$ & $1$ & $2$ & $3$ & $4$ & $5$ & $6$ \\\hline
-      $x_i$ & $2,0$ & $2,1$ & $2,2$ & $2,3$ & $2,4$ & $2,5$ \\
-      $y_i$ & $1,86$ & $1,90$ & $2,01$ & $2,16$ & $2,23$ & $2,31$ \\\hline
+    \begin{tabular}{l|rr}
+      $i$ & $x_i$ & $y_i$\\\hline
+      $1$ & $2.0$ & $1.86$\\
+      $2$ & $2.1$ & $1.90$\\
+      $3$ & $2.2$ & $2.01$\\
+      $4$ & $2.3$ & $2.16$\\
+      $5$ & $2.4$ & $2.23$\\
+      $6$ & $2.5$ & $2.31$\\\hline
     \end{tabular}
   \end{center}
 Calcule aproximações de $dy/dx$ usando diferenças finitas centrais de ordem $h^2$ quando possível e, caso contrário, diferenças finitas progressiva ou regressiva conforme o caso.
 \end{exer}
 \begin{resp}
-  % \ifisoctave 
-  % \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_deriv/dados/exer_df_tab/exer_df_tab.m}{Código.} 
-  % \fi
   \begin{center}
-    \begin{tabular}{l|cccccc}\hline
-      $i$ & $1$ & $2$ & $3$ & $4$ & $5$ & $6$ \\
-      $dy/dx$ & $4,0\E-1$ & $7,5\E-1$ & $1,3\E+0$ & $1,1\E+0$ & $7,5\E-1$ & $8,0\E-1$ \\\hline
+    \begin{tabular}{l|r}
+      $i$ & $dy/dx$\\\hline
+      $1$ & $4.0\E-2$\\
+      $2$ & $7.5\E-1$\\
+      $3$ & $1.3\E+0$\\
+      $4$ & $1.1\E+0$\\
+      $5$ & $7.5\E-1$\\
+      $6$ & $8.0\E-1$\\\hline
     \end{tabular}
   \end{center}
 \end{resp}
 
-\section{Derivadas de segunda ordem}\label{cap_deriv_sec_d2f}\index{fórmula de diferenças finitas!derivada segunda}
+\begin{exer}
+  Use uma combinação de polinômios de Taylor de grau 2 para desenvolver a fórmula de diferenças finitas progressiva de ordem $h^2$
+  \begin{equation}\label{cap_deriv_sec_df:eq:dfp_h2}
+    D_{+,h^2}(x) := \frac{1}{2h}\left[-3f(x) + 4f(x+h) - f(x+2h)\right].
+  \end{equation}
+  Então, aplique-a para computar $f'(\pi/3)$ com $f(x)=\sen(x)$ e verifique o comportamento do erro $|D_{+,h^2}(\pi/3) - f'(\pi/3)|$ em relação à ordem de truncamento da fórmula.
+\end{exer}
+
+\begin{exer}
+  Use uma combinação de polinômios de Taylor de grau 2 para desenvolver a fórmula de diferenças finitas regressiva de ordem $h^2$
+  \begin{equation}\label{cap_deriv_sec_df:eq:dfr_h2}
+    D_{-,h^2}(x) := \frac{1}{2h}\left[3f(x) - 4f(x-h) + f(x-2h)\right].
+  \end{equation}
+  Então, aplique-a para computar $f'(\pi/3)$ com $f(x)=\sen(x)$ e verifique o comportamento do erro $|D_{+,h^2}(\pi/3) - f'(\pi/3)|$ em relação à ordem de truncamento da fórmula.
+\end{exer}
+
+\begin{exer}
+  Refaça as computações do Exercício \ref{cap_deriv_sec_df:exer:df_tab} usando fórmulas de diferenças finitas de ordem $h^2$ para todos os pontos.
+\end{exer}
+\begin{resp}
+  \begin{center}
+    \begin{tabular}{l|r}
+      $i$ & $dy/dx$\\\hline
+      $1$ & $5.0\E-2$\\
+      $2$ & $7.5\E-1$\\
+      $3$ & $1.3\E+0$\\
+      $4$ & $1.1\E+0$\\
+      $5$ & $7.5\E-1$\\
+      $6$ & $8.5\E-1$\\\hline
+    \end{tabular}
+  \end{center}  
+\end{resp}
+
+\section{Derivadas de Segunda Ordem}\label{cap_deriv_sec_d2f}
 
 \begin{flushleft}
   [[tag:revisar]]
