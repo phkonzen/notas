@@ -379,20 +379,317 @@ def angulo(v, w):
 
 \section{Vetores e Arranjos}\label{cap_arr_sec_vetor}
 
-[[tag:construcao]]
+\hl{O uso de {\lstinline+arrays+} é uma das formas mais adequadas para fazermos a modelagem computacional de \emph{vetores}}. Entretanto, devemos ficar atentos que \hl{vetores e arranjos não são equivalentes}. Embora, a soma/subtração e multiplicação por escalar são similares, a multiplicação e potenciação envolvendo vetores não estão definidas, mas para arranjos são operações elemento-a-elemento.
 
-O {\numpy} também conta com várias funções matemáticas predefinidas, consulte
+No que segue, vamos assumir que a biblioteca {\numpy} está importada, i.e.
+\begin{lstlisting}
+>>> import numpy as np
+\end{lstlisting}
+
+\begin{ex}
+  Podemos alocar os vetores
+  \begin{align}
+    &\pmb{v} = (1, 0, -2),\\
+    &\pmb{w} = (2, -1, 3),
+  \end{align}
+  como \lstinline+arrays+ do {\numpy}
+\begin{lstlisting}
+>>> v = np.array([1, 0, -2])
+>>> w = np.array([2, -1, 3])
+\end{lstlisting}
+
+  A soma dos vetores é uma operação elemento-a-elemento
+  \begin{subequations}
+    \begin{align}
+      \pmb{v}+\pmb{w} &= (1, 0, -2) + (2, -1, 3)\\
+                      &= \left(1+2, 0+(-1), -2+3\right)\\
+                      &= (3, -1, 1)
+    \end{align}
+  \end{subequations}
+  e a dos \lstinline+arrays+ é equivalente
+\begin{lstlisting}
+>>> v+w
+array([ 3, -1,  1])
+\end{lstlisting}
+
+  A subtração dos vetores também é uma operação elemento-a-elemento
+  \begin{subequations}
+    \begin{align}
+      \pmb{v}-\pmb{w} &= (1, 0, -2) - (2, -1, 3)\\
+                      &= \left(1-2, 0-(-1), -2-3\right)\\
+                      &= (-1, 1, -5)
+    \end{align}
+  \end{subequations}
+  e a dos \lstinline+arrays+ é equivalente
+\begin{lstlisting}
+>>> v-w
+array([ -1, 1,  -5])
+\end{lstlisting}
+
+  Ainda, a multiplicação por escalar
+  \begin{subequations}
+    \begin{align}
+      2\pmb{v} &= 2(1, 0, -2)\\
+               &= \left(2\cdot 1, 2\cdot 0, 2\cdot(-2)\right)\\
+               &= (2, 0, -4)
+    \end{align}
+  \end{subequations}
+  também é feita elemento-a-elemento, assim como com \lstinline+arrays+
+\begin{lstlisting}
+>>> 2*v
+array([ 2,  0, -4])
+\end{lstlisting}
+
+  Agora, para vetores, a multiplicação $\pmb{v}\pmb{w}$, divisão $\pmb{v}/\pmb{w}$, potenciação $\pmb{v}^2$ não são operações definidas. Diferentemente, para arranjos são operações elemento-a-elemento
+\begin{lstlisting}
+>>> v*w
+array([ 2,  0, -6])
+>>> v/w
+array([ 0.5       , -0.        , -0.66666667])
+>>> v**2
+array([1, 0, 4])
+\end{lstlisting}
+\end{ex}
+
+\subsection{Funções Vetoriais}
+
+Funções vetoriais $f:\mathbb{R}^n\to\mathbb{R}^n$ e funcionais $f:\mathbb{R}^n\to\mathbb{R}$ também podem ser adequadamente modeladas com o emprego de \lstinline+arrays+ do \hl{{\numpy}}. A biblioteca também \hl{conta com várias funções matemáticas predefinidas}, consulte
 \begin{center}
   \url{https://numpy.org/doc/stable/reference/routines.math.html}
 \end{center}
-A aplicação dessas funções correm elemento-a-elemento do \lstinline+array+ de entrada.
 
 \begin{ex}\normalfont{(\hl{Função Vetorial}.)}
-  
-  [[tag::construcao]]
+  A implementação da função vetorial $\pmb{f}:\mathbb{R}^3\to\mathbb{R}^3$
+  \begin{equation}
+    \pmb{f}(\pmb{x}) = (x_1^2+\sin(x_1), x_2^2+\sin(x_2), x_3^2+\sin(x_3))
+  \end{equation}
+  para $\pmb{x} = (x_1, x_2, x_3)\in\mathbb{R}^3$, pode ser feita da seguinte forma
+\begin{lstlisting}
+import numpy as np
 
+def f(x):
+    return x**2 + np.sin(x)
+
+# exemplo
+x = np.array([0, np.pi, np.pi/2])
+print(f'y = {f(x)}')
+\end{lstlisting}
+  Verifique!
+\end{ex}
+
+\subsection{Produto Interno}
+
+O \hl{\emph{produto interno}} (ou, produto escalar) é a operação entre vetores $\pmb{v},\pmb{w}\in\mathbb{R}^n$ definida por
+\begin{equation}
+  \pmb{v}\cdot\pmb{v} := v_1w_1+v_2w_2+\cdots+v_nw_n.
+\end{equation}
+A função\hl{{\href{https://numpy.org/doc/stable/reference/generated/numpy.dot.html}{numpy.dot(v,w)}}} computa o produto interno dos \lstinline+arrays+.
+
+\begin{ex}
+  Consideramos os vetores
+  \begin{align}
+    &\pmb{v} = (1, 0, -2),\\
+    &\pmb{w} = (2, -1, 3).
+  \end{align}
+  O produto interno desses vetores é
+  \begin{subequations}
+    \begin{align}
+    \pmb{v}\cdot\pmb{w} &= v_1w_1 + v_2w_2 + v_3w_3\\
+                        &= 1\cdot 2 + 0\cdot(-1) + (-2)\cdot 3\\
+                        &= 2 + 0 -6 = -4
+    \end{align}
+  \end{subequations}
+  Usando \lstinline+arrays+, temos
+\begin{lstlisting}
+>>> v = np.array([1, 0, -2])
+>>> w = np.array([2, -1, 3])
+>>> np.sum(v*w)
+-4
+>>> np.dot(v,w)
+-4
+\end{lstlisting}
+\end{ex}
+
+\subsection{Norma de Vetores}
+
+A \hl{\emph{norma} $L^2$ de um vetor} $\pmb{v}\in\mathbb{R}^n$ é definida por
+\begin{equation}
+  \|\pmb{v}\| := \sqrt{v_1^2+v_2^2+\cdots+v_n^2}
+\end{equation}
+O \hl{módulo {\href{https://numpy.org/doc/stable/reference/routines.linalg.html}{\lstinline+numpy.linalg+}} de Álgebra Linear contém a função {\href{https://numpy.org/doc/stable/reference/generated/numpy.linalg.norm.html}{\lstinline+numpy.linalg.norm(v)+}}} para a computação da norma de \lstinline+arrays+.
+
+\begin{ex}
+  A norma do vetor $\pmb{v} = (3, 0, -4)$ é
+  \begin{subequations}
+    \begin{align}
+      \|\pmb{v}\| &= \sqrt{v_1^2 + v_2^2 + v_3^2}\\
+                  &= \sqrt{3^2 + 0^2 + (-4)^2}\\
+                  &= \sqrt{9 + 0 + 16}\\
+                  &= \sqrt{25} = 5.
+    \end{align}
+  \end{subequations}
+  Usando o módulo \lstinline+numpy.linalg+, obtemos
+\begin{lstlisting}
+>>> import numpy as np
+>>> import numpy.linalg as npla
+>>> v = np.array([3, 0, -4])
+>>> np.sqrt(np.dot(v,v))
+5.0
+>>> npla.norm(v)
+5.0
+\end{lstlisting}
+\end{ex}
+
+\subsection{Produto Vetorial}
+
+O \hl{\emph{produto vetorial}} entre dois vetores $\pmb{v}, \pmb{w}\in\mathbb{R}^3$ é definido por
+\begin{subequations}
+  \begin{align}
+    \pmb{v}\times\pmb{w} &:=
+                           \begin{vmatrix}
+                             \pmb{i} & \pmb{j} & \pmb{k}\\
+                             v_1 & v_2 & v_3\\
+                             w_1 & w_2 & w_3
+                           \end{vmatrix}\\
+                         &=
+                           \begin{vmatrix}
+                             v_2 & v_3\\
+                             w_2 & w_3
+                           \end{vmatrix}\pmb{i}\\
+                         &+ \begin{vmatrix}
+                             v_1 & v_3\\
+                             w_1 & w_3
+                           \end{vmatrix}\pmb{j}\\
+                         &+ \begin{vmatrix}
+                             v_1 & v_2\\
+                             w_1 & w_2
+                           \end{vmatrix}\pmb{k}\\
+  \end{align}
+\end{subequations}
+A função \hl{{\lstinline+numpy.cross(v,w)+}} computa o produto vetorial entre \lstinline+arrays+ (unidimensionais de 3 elementos).
+
+\begin{ex}
+  O produto vetorial entre os vetores $\pmb{v} = (1, -2, 1)$ e $\pmb{w} = (0, 2, -1)$ é
+  \begin{subequations}
+    \begin{align}
+      \pmb{v}\times \pmb{w} &=
+                              \begin{vmatrix}
+                                \pmb{i} & \pmb{j} & \pmb{k}\\
+                                1 & -2 & 1\\
+                                0 & 2 & -1
+                              \end{vmatrix}\\
+                            &= 0\pmb{i} + \pmb{j} + 2\pmb{k}\\
+                            &= (0, 1, 2).
+    \end{align}
+  \end{subequations}
+    Com o {\numpy}, temos
+\begin{lstlisting}
+>>> v = np.array([1, -2, 1])
+>>> w = np.array([0, 2, -1])
+>>> np.cross(v,w)
+array([0, 1, 2])
+\end{lstlisting}
 \end{ex}
 
 \subsection{Exercícios}
 
-[[tag:construcao]]
+\begin{exer}
+  Considere os seguintes vetores
+  \begin{align}
+    &\pmb{u} = (2, -1, 1)\\
+    &\pmb{v} = (1, -3, 2)\\
+    &\pmb{w} = (-2, -1, -3)
+  \end{align}
+  Usando \lstinline+arrays+ do {\numpy}, compute:
+  \begin{enumerate}[a)]
+  \item $\pmb{u}\cdot\pmb{v}$
+  \item $\pmb{u}\cdot (2\pmb{v})$
+  \item $\pmb{u}\cdot (\pmb{w} + \pmb{v})$
+  \item $\pmb{v}\cdot (\pmb{v} - 2\pmb{u})$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  Dica: use a função $np.dot()$ e verifique as computações calculando os resultados esperados.
+\end{resp}
+
+\begin{exer}
+  Considere os seguintes vetores
+  \begin{align}
+    &\pmb{u} = (2, -1, 1)\\
+    &\pmb{v} = (1, -3, 2)\\
+    &\pmb{w} = (-2, -1, -3)
+  \end{align}
+  Usando \lstinline+arrays+ do {\numpy}, compute:
+  \begin{enumerate}[a)]
+  \item $\|\pmb{u}\|$
+  \item $\|\pmb{u} + \pmb{v}\|$
+  \item $|\pmb{u}\cdot \pmb{w}|$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  Dica: do módulo \lstinline+numpy.linalg+ use a função \lstinline+npla.norm+ e verifique as computações calculando os resultados esperados.
+\end{resp}
+
+\begin{exer}
+  Dados vetores $\pmb{u}$ e $\pmb{v}$, temos que
+  \begin{equation}
+    \pmb{u}\cdot\pmb{v} = \|\pmb{u}\|\|\pmb{v}\|\cos\theta,
+  \end{equation}
+  onde $\theta$ é o ângulo entre esses vetores. Implemente uma função que recebe dois vetores e retorna o ângulo entre eles. Teste seu código para diferentes vetores.
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+import numpy as np
+import numpy.linalg as npla
+
+def angulo(v, w):
+    # \|v\|
+    norm_v = npla.norm(v)
+    # \|w\|
+    norm_w = npla.norm(w)
+    # u.v
+    vdw = np.dot(v, w)
+    # cos \theta
+    ct = norm_v*norm_w/udw
+    return np.acos(ct)
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  A projeção ortogonal do vetor $\pmb{u}$ na direção do vetor $\pmb{v}$ é definida por
+  \begin{equation}
+    \proj_{\pmb{v}} \pmb{u} := \frac{\pmb{u}\cdot\pmb{v}}{\|\pmb{v}\|^2}\pmb{v}.
+  \end{equation}
+  Implemente uma função que recebe dois vetores $\pmb{u}$, $\pmb{v}$ e retorne a projeção de $\pmb{u}$ na direção de $\pmb{v}$. Teste seu código para diferentes vetores.
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+import numpy as np
+import numpy.linalg as npla
+
+def proj(u, v):
+    # \|v\|
+    norm_v = npla.norm(v)
+    # u.v
+    udv = np.dot(u, v)
+    # proj_v u
+    proj_vu = udv/norm_v * v
+    return proj_vu
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  Considere os vetores
+  \begin{align}
+    &\pmb{u} = (2, -3, 1),\\
+    &\pmb{v} = (1, -2, -1).
+  \end{align}
+  Usando \lstinline+arrays+ do {\numpy}, compute os seguintes produtos vetoriais:
+  \begin{enumerate}[a)]
+  \item $\pmb{u}\times\pmb{v}$
+  \item $\pmb{v}\times (2\pmb{v})$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  Dica: use a função \lstinline+numpy.cross()+ e verifique as computações calculando os resultados esperados.
+\end{resp}
