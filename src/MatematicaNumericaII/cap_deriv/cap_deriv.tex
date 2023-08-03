@@ -343,13 +343,9 @@ Calcule aproximações de $dy/dx$ usando diferenças finitas centrais de ordem $
 
 \section{Derivadas de Segunda Ordem}\label{cap_deriv_sec_d2f}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
+Diferentemente do usual em técnicas analíticas, no âmbito da matemática numérica é preferível obter aproximações diretas de derivadas de segunda ordem, em vez de utilizar aproximações sucessivas de derivadas. Na sequência, desenvolvemos e aplicaremos uma fórmula de diferenças finitas central para a aproximação de derivadas de segunda ordem.
 
-Diferentemente do que é costumeiro em técnicas analíticas, no âmbito da matemática numérica é preferível obter aproximações diretas de derivadas de segunda ordem, em vez de utilizar aproximações sucessivas de derivadas de primeira ordem. Na sequência, desenvolveremos e aplicaremos uma fórmula de diferenças finitas central para a aproximação de derivadas de segunda ordem.
-
-Consideremos os seguintes polinômios de Taylor de grau 3 de $f(x)$ em torno do ponto x
+Consideremos os seguintes polinômios de Taylor{\taylor} de grau 3 de $f(x)$ em torno do ponto x
 \begin{align}
   f(x+h) &= f(x) + hf'(x) + \frac{h^2}{2}f''(x) + \frac{h^3}{3!}f'''(x) + O(h^4),\\
   f(x-h) &= f(x) - hf'(x) + \frac{h^2}{2}f''(x) - \frac{h^3}{3!}f'''(x) + O(h^4).\\
@@ -360,63 +356,66 @@ Somando estas duas equações, obtemos
 \end{equation}
 Então, isolando $f''(x)$ temos
 \begin{equation}
-  f''(x) = \frac{f(x+h) - 2f(x) + f(x-h)}{h^2} + O(h^2).
+  f''(x) = \frac{f(x+h) - 2f(x) + f(x-h)}{h^2} + \hleq{O(h^2)}.
 \end{equation}
-Isto nos leva a definição da \emph{fórmula de diferenças finitas de ordem $h^2$ para a derivada segunda}
-\begin{equation}
-  D_{0,h^2}^2 f(x) := \frac{f(x+h) - 2f(x) + f(x-h)}{h^2}.
+Isto nos leva a definição da \hl{\emph{fórmula de diferenças finitas de ordem $h^2$ para a derivada segunda}}
+\begin{equation}\hleq
+  D^2_{0,h^2} f(x) := \frac{f(x+h) - 2f(x) + f(x-h)}{h^2}.
 \end{equation}
 
-\begin{ex}\label{ex:d2fc_h2}
-  Consideremos o problema de computar a derivada segunda de $f(x) = x^2 + \sen x$ no ponto $x=\pi/6$. Analiticamente, $f''(\pi/6) = 2 - \sen(\pi/6) = 1,5$. Numericamente, vamos explorar as seguintes duas aproximações:
+\begin{ex}\label{cap_deriv_sec_d2f:ex:d2fc_h2}
+  Consideramos o problema de computar a derivada segunda de $f(x) = x^2 + \sen x$ no ponto $x=\pi/6$. Analiticamente, $f''(\pi/6) = 2 - \sen(\pi/6) = 1,5$. Numericamente, vamos explorar as seguintes duas aproximações:
   \begin{enumerate}
   \item[a)] Aplicação de sucessivas diferenças finitas centrais de ordem $h^2$ para derivada primeira, i.e.
-    \begin{equation}\label{eq:ddf}
-      f''(x) \approx D_{0,h^2}D_{0,h^2}f(x) = \frac{D_{0,h^2}f(x+h) - D_{0,h^2}f(x-h)}{2h}
-    \end{equation}
+    \begin{subequations}\label{cap_deriv_sec_d2f:eq:ddf}
+      \begin{align}
+        f''(x) &\approx D_{0,h^2}D_{0,h^2}f(x) \\
+               &= \frac{D_{0,h^2}f(x+h) - D_{0,h^2}f(x-h)}{2h}
+      \end{align}
+    \end{subequations}
   \item[b)] Aplicação da fórmula de diferenças finitas central de ordem $h^2$ para a derivada segunda, i.e.
-    \begin{equation}
-      f''(x) \approx D_{0,h^2}^2 f(x) = \frac{f(x+h) - 2f(x) + f(x-h)}{h^2}.
-    \end{equation}
+    \begin{subequations}
+      \begin{align}
+        f''(x) &\approx D_{0,h^2}^2 f(x)\\
+               &= \frac{f(x+h) - 2f(x) + f(x-h)}{h^2}.
+      \end{align}
+    \end{subequations}
   \end{enumerate}
 
 \begin{table}[h!]
   \centering
-  \caption{Resultados referente ao Exemplo~\ref{ex:d2fc_h2}. Notação: $\delta_{DD}:=|f''(\pi/6)-D_{0,h^2}D_{0,h^2}f(\pi/6)|$ e $\delta_{D^2}:=|f''(\pi/6)-D^2_{0,h^2}f(\pi/6)|$.}
+  \caption{Resultados referente ao Exemplo~\ref{cap_deriv_sec_d2f:ex:d2fc_h2}. Notação: $\delta_{DD}:=|f''(\pi/6)-D_{0,h^2}D_{0,h^2}f(\pi/6)|$ e $\delta_{D^2}:=|f''(\pi/6)-D^2_{0,h^2}f(\pi/6)|$.}
   \begin{tabular}{l|cc|cc}
     $h$ & $D_{0,h^2}D_{0,h^2}f(\pi/6)$ & $\delta_{DD}$ & $D^2_{0,h^2}f(\pi/6)$ & $\delta_{D^2}$ \\ \hline
-    $10^{-1}$ &  $1,50166$ & $1,7\E-03$ & $1,50042$ & $4,2\E-04$ \\
-    $10^{-2}$ &  $1,50002$ & $1,7\E-05$ & $1,50000$ & $4,2\E-06$ \\
-    $10^{-3}$ &  $1,50000$ & $1,7\E-07$ & $1,50000$ & $4,2\E-08$ \\
-    $10^{-5}$ &  $1,50000$ & $1,2\E-07$ & $1,50000$ & $1,2\E-07$ \\\hline
+    $10^{-1}$ &  $1.50166$ & $1.7\E-03$ & $1.50042$ & $4.2\E-04$ \\
+    $10^{-2}$ &  $1.50002$ & $1.7\E-05$ & $1.50000$ & $4.2\E-06$ \\
+    $10^{-3}$ &  $1.50000$ & $1.7\E-07$ & $1.50000$ & $4.2\E-08$ \\
+    $10^{-5}$ &  $1.50000$ & $1.2\E-07$ & $1.50000$ & $1.2\E-07$ \\\hline
   \end{tabular}
-  \label{tab:ex_d2fc_h2}
+  \label{cap_deriv_sec_d2f:tab:ex_d2fc_h2}
 \end{table}
 
-Na Tabela~\ref{tab:ex_d2fc_h2} temos os valores computados em ambos os casos e seus respectivos erros absolutos para diversas escolhas de $h$. Observamos que a aplicação da diferença finita $D^2_{0,h^2}$ fornece resultados mais precisos (para valores moderados de $h$) do que as sucessivas aplicações de $D_{0,h^2}$. De fato, uma rápida inspeção de \eqref{eq:ddf} mostra que
+Na Tabela~\ref{cap_deriv_sec_d2f:tab:ex_d2fc_h2} temos os valores computados em ambos os casos e seus respectivos erros absolutos para diversas escolhas de $h$. Observamos que a aplicação da diferença finita $D^2_{0,h^2}$ fornece resultados mais precisos (para valores moderados de $h$) do que as sucessivas aplicações de $D_{0,h^2}$. De fato, uma rápida inspeção de \eqref{cap_deriv_sec_d2f:eq:ddf} mostra que
 \begin{equation}
   D_{0,h^2}D_{0,h^2}f(x) = \underbrace{\frac{f(x+2h) - 2f(x) + f(x-2h)}{4h^2}}_{D^2_{0,(2h)^2}f(x)}.
 \end{equation}
 
-No \verb+GNU Octave+, podemos fazer estes cálculos com o seguinte código:
-\begin{verbatim}
-f = @(x) sin(x) + x^2;
-Df = @(x,h) (f(x+h)-f(x-h))/(2*h);
-DDf = @(x,h) (Df(x+h,h)-Df(x-h,h))/(2*h);
-D2f = @(x,h) (f(x+h) - 2*f(x) + f(x-h))/(h^2);
-x=pi/6;
-h=1e-1;
-printf('%1.5E %1.1E %1.5E %1.1E\n',...
-  DDf(x,h),abs(1.5-DDf(x,h)),...
-  D2f(x,h),abs(1.5-D2f(x,h)))
-\end{verbatim}
+\begin{lstlisting}[caption=d2fc\_h2.py]
+import numpy as np
+
+def d2fc_h2(f, x, h=1e-7):
+    df = (f(x+h) - 2*f(x) + f(x-h))/h**2
+    return df
+
+f = lambda x: x**2 + np.sin(x)
+x = np.pi/6
+h = 1e-1
+d2fdx2 = d2fc_h2(f, x, h)
+print(f'{h}: d2fdx2 = {d2fdx2:.5e}, erro = {np.fabs(d2fdx2-1.5):.1e}')
+\end{lstlisting}
 \end{ex}
 
 \subsection*{Exercícios}
-
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
 
 \begin{exer}\label{exer:d2fc_fun}
   Use a fórmula de diferenças finitas central de ordem $h^2$ para computar aproximações da segunda derivada de
@@ -433,11 +432,16 @@ no ponto $x=2,5$. Para tanto, use os passos
 Por fim, com base nos resultados obtidos, qual foi o maior passo que forneceu a aproximação com precisão de pelo menos $5$ dígitos significativos? Justifique sua resposta.
 \end{exer}
 \begin{resp}
-  % \ifisoctave 
-  % \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_deriv/dados/exer_d2fc_fun/exer_d2fc_fun.m}{Código.} 
-  % \fi
-  a)~$7,25162\E-2$; b)~$7.24701\E-2$; c)~$7,24696\E-2$; d)~$7,24696\E-2$; $h=10^{-2}$;
+  a)~$7.25162\E-2$; b)~$7.24701\E-2$; c)~$7.24696\E-2$; d)~$7.24696\E-2$; $h=10^{-2}$;
 \end{resp}
+
+\begin{exer}
+  Considere a função $f(x) = e^x\ln(x+1) - x$. Use a fórmula de diferenças finitas central de ordem $h^2$ para computar a aproximação de $f''(1)$ com 6 dígitos significativos corretos.
+\end{exer}
+\begin{resp}
+  $f''(1) = 3.92288\E+0$, $h=10^{-3}$.
+\end{resp}
+
 
 \begin{exer}\label{exer:d2fc_tab}
   Considere a seguinte tabela de pontos
@@ -451,31 +455,25 @@ Por fim, com base nos resultados obtidos, qual foi o maior passo que forneceu a 
 Calcule a aproximação $d^2y/dx^2$ no ponto $x=2,2$ usando a fórmula de diferenças finitas central de ordem $h^2$.
 \end{exer}
 \begin{resp}
-  % \ifisoctave 
-  % \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_deriv/dados/exer_d2fc_tab/exer_d2fc_tab.m}{Código.} 
-  % \fi
-  $4,0$; 
+  $4.0$; 
 \end{resp}
 
-\section{Diferenças finitas por polinômios interpoladores}\label{cap_deriv_sec_df_pi}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
+\section{Diferenças Finitas por Polinômios Interpoladores}\label{cap_deriv_sec_df_pi}
 
-Aqui, discutimos a obtenção de fórmulas de diferenças finitas por polinômios interpoladores. Seja $p(x)$ o polinômio interpolador dos pontos $\{(x_i,f(x_i))\}_{i=1}^{n+1}$ de uma dada função $f(x)$, com $x_1 < x_2 < \cdots < x_{n+1}$. Então, pelo teorema de Lagrange temos
-\begin{equation}
+Vamos estudar como obter \hl{fórmulas de diferenças finitas por polinômios interpoladores}. Seja \hl{$p(x)$ o \emph{polinômio interpolador} dos pontos $\{(x_i,f(x_i))\}_{i=1}^{n+1}$} de uma dada função $f(x)$, com $x_1 < x_2 < \cdots < x_{n+1}$. Então, pelo teorema de Lagrange temos
+\begin{equation}\hleq
   f(x) = p(x) + R_{n+1}(x),
 \end{equation}
-onde $R(x)$ é o erro na aproximação de $f(x)$ por $p(x)$ e tem a forma
-\begin{equation}
+onde \hl{$R(x)$ é o erro na aproximação de $f(x)$ por $p(x)$} e tem a forma
+\begin{equation}\hleq
   R_{n+1}(x) = \frac{f^{(n+1)}(\xi)}{(n+1)!}\prod_{j=1}^{n+1}(x-x_j).
 \end{equation}
 onde $\xi = \xi(x)$.
 
-Deste modo, a ideia para obtermos as fórmulas de diferenças é aproximarmos $f'(x)$ por $p'(x)$. Entretanto, isto nos coloca a questão de estimarmos o erro $|f'(x) - p'(x)|$. Por sorte temos os seguinte teorema.
+Deste modo, \hl{a ideia para obtermos as fórmulas de diferenças é aproximarmos $f'(x)$ por $p'(x)$}. Entretanto, isto nos coloca a questão de estimarmos o erro $|f'(x) - p'(x)|$. Por sorte temos os seguinte teorema.
 
-\begin{teo}\label{teo:erro_de_Lagrange_deriv}
+\begin{teo}\label{cap_deriv_sec_df_pi:teo:erro_de_Lagrange_deriv}
   Seja $p(x)$ o polinômio interpolador de uma dada função $f(x)$ pelo pontos $\{(x_i, f(x_i))\}_{i=1}^{n+1}$, com $x_1<x_2<\cdots<x_{n+1}$. Se $f(x)$ é $(n+1)$ continuamente diferenciável, então o resíduo $R_{n+1}^{(k)}(x) = f^{(k)}(x) - p^{(k)}(x)$ é
   \begin{equation}
     R_{n+1}^{(k)} = \frac{f^{(n+1)}(\eta) }{(n+1-k)!}\prod_{j=1}^{n+1-k}(x-\xi_j),
@@ -488,11 +486,7 @@ onde $\xi_j$ é um ponto tal que $x_j < \xi_j < x_{j+k}$, $j=1, 2, \dotsc, n+1+k
 
 \subsection{Fórmulas de dois pontos}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-Seja $p(x)$ o polinômio interpolador de Lagrange de $f(x)$ pelos pontos $(x_1, f(x_1))$ e $(x_2, f(x_2))$, com $x_1 < x_2$, i.e.
+Para obtermos \hl{fórmulas de diferenças finitas de dois pontos consideramos  $p(x)$ o polinômio interpolador de Lagrange de $f(x)$ pelos pontos $(x_1, f(x_1))$ e $(x_2, f(x_2))$}, com $x_1 < x_2$, i.e.
 \begin{align}
   f(x) &= p(x) + R_{2}(x)\\
   &= f(x_1)\frac{x-x_2}{x_1-x_2} + f(x_2)\frac{x-x_1}{x_2-x_1} + R_2(x).
@@ -505,25 +499,21 @@ e, derivando com respeito a $x$
 \begin{equation}
   f'(x) = \frac{f(x_2)-f(x_1)}{h} + R_2^{(1)}(x),
 \end{equation}
-onde $ R_2^{(1)}(x)$ é dado conforme o teorema~\ref{teo:erro_de_Lagrange_deriv}.
+onde $ R_2^{(1)}(x)$ é dado conforme o Teorema~\ref{cap_deriv_sec_df_pi:teo:erro_de_Lagrange_deriv}.
 
-Agora, escolhendo $x=x_1$, temos $x_2 = x_1 + h = x + h$ e, obtemos a \emph{fórmula de diferenças finitas progressiva de ordem $h$}
-\begin{equation}
+Agora, escolhendo $x=x_1$, temos $x_2 = x_1 + h = x + h$ e, obtemos a \hl{\emph{fórmula de diferenças finitas progressiva de ordem $h$}}
+\begin{equation}\hleq
   f(x) = \underbrace{\frac{f(x+h) - f(x)}{h}}_{D_{+,h}f(x)} + O(h).
 \end{equation}
 
-Se escolhermos $x=x_2$, temos $x_1 = x_2 - h = x - h$, obtemos a \emph{fórmula de diferenças finitas regressiva de ordem $h$}
-\begin{equation}
+Se escolhermos $x=x_2$, temos $x_1 = x_2 - h = x - h$, obtemos a \hl{\emph{fórmula de diferenças finitas regressiva de ordem $h$}}
+\begin{equation}\hleq
   f(x) = \underbrace{\frac{f(x) - f(x-h)}{h}}_{D_{-,h}f(x)} + O(h).
 \end{equation}
 
 \subsubsection{Fórmulas de três pontos}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-Para obtermos fórmulas de diferenças finitas de três pontos consideramos o polinômio interpolador de Lagrange de $f(x)$ pelos pontos $(x_1, f(x_1))$, $(x_2, f(x_2))$ e $(x_3, f(x_3))$, $x_1<x_2<x_3$, i.e.
+Para obtermos \hl{fórmulas de diferenças finitas de três pontos consideramos o polinômio interpolador de Lagrange de $f(x)$ pelos pontos $(x_1, f(x_1))$, $(x_2, f(x_2))$ e $(x_3, f(x_3))$, $x_1<x_2<x_3$}, i.e.
 \begin{align}
   f(x) &= f(x_1)\frac{(x-x_2)(x-x_3)}{(x_1-x_2)(x_1-x_3)} \\
   &+ f(x_2)\frac{(x-x_1)(x-x_3)}{(x_2-x_1)(x_2-x_3)} \\
@@ -536,34 +526,30 @@ Derivando em relação a $x$, obtemos
   &+ f\left(x_{3} \right)\frac{\left(x_{1} - x_{2}\right)\left(2 x - x_{1} - x_{2}\right)}{\left(x_{1} - x_{2}\right) \left(x_{1} - x_{3}\right) \left(x_{2} - x_{3}\right)} + R_3^{(1)}(x).
 \end{align}
 
-Aqui, podemos escolher por obter fórmulas de diferenças com passo constante ou não. Por exemplo, denotando $h_1=x_2-x_1$ e $h_2=x_3-x_2$ e escolhendo $x=x_1$, temos $x_2 = x+h_1$ e $x_3 = x+h_1+h_2$. Fazendo estas substituições na expressão acima, obtemos seguinte fórmula de diferenças finitas progressiva
+Aqui, \hl{podemos escolher por obter fórmulas de diferenças com passo constante ou não}. Por exemplo, denotando $h_1=x_2-x_1$ e $h_2=x_3-x_2$ e escolhendo $x=x_1$, temos $x_2 = x+h_1$ e $x_3 = x+h_1+h_2$. Fazendo estas substituições na expressão acima, obtemos seguinte fórmula de diferenças finitas progressiva
 \begin{align}
   D_{+,h1,h2}f(x) &= \frac{1}{h_{1} h_{2} \left(h_{1} + h_{2}\right)} \left(- h_{2} \left(2 h_{1} + h_{2}\right) f{\left (x \right )} \right.\\
     &+ \left. \left(h_{1} + h_{2}\right)^{2} f{\left (x + h_{1} \right )} \right.\\
     &- \left. h_{1}^{2} f{\left (x + h_{1} + h_{2} \right )} \right).
 \end{align}
-Agora, assumindo um passo constante $h=h_1=h_2$, obtemos a \emph{fórmula de diferenças progressiva de ordem $h^2$}\index{fórmula de diferenças finitas!progressiva de ordem $h^2$}
-\begin{equation}
+Agora, \hl{assumindo um passo constante $h=h_1=h_2$, obtemos a \emph{fórmula de diferenças progressiva de ordem $h^2$}}
+\begin{equation}\hleq
   D_{+,h^2}f(x) = \frac{1}{2 h} \left[- 3 f{\left (x \right )} + 4 f{\left (x + h \right )} - f{\left (x + 2 h \right )}\right].\label{eq:dfp_3pts}
 \end{equation}
 
-Escolhendo $x=x_2$, $x_1=x-h$ e $x_3=x+h$ na equação~\eqref{eq:aux_deriv1}, obtemos a \emph{fórmula de diferenças finitas central de ordem $h^2$}\index{fórmula de diferenças finitas!central de ordem $h^2$}
-\begin{equation}
+\hl{Escolhendo $x=x_2$, $x_1=x-h$ e $x_3=x+h$ na equação~{\eqref{eq:aux_deriv1}}, obtemos a \emph{fórmula de diferenças finitas central de ordem $h^2$}}
+\begin{equation}\hleq
   D_{0,h^2} = \frac{1}{2 h} \left[f{\left (x + h \right )} - f{\left (x - h \right )}\right].
 \end{equation}
 
-Por fim, escolhendo $x=x_3$, $x_1=x-2h$ e $x_2=x-h$ na equação~\eqref{eq:aux_deriv1}, obtemos a \emph{fórmula de diferenças finitas regressiva de ordem $h^2$}\index{fórmula de diferenças finitas!regressiva de ordem $h^2$}
-\begin{equation}
+Por fim, \hl{escolhendo $x=x_3$, $x_1=x-2h$ e $x_2=x-h$ na equação~{\eqref{eq:aux_deriv1}}, obtemos a \emph{fórmula de diferenças finitas regressiva de ordem $h^2$}}
+\begin{equation}\hleq
   D_{-,h^2} = \frac{1}{2 h} \left[3 f{\left (x \right )} - 4 f{\left (x - h \right )}  + f{\left (x - 2 h\right )}\right].
 \end{equation}
 
 \subsection{Fórmulas de cinco pontos}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-Aqui, usamos o polinômio interpolador de Lagrange da função $f(x)$ pelos pontos $(x_1, f(x_1)$, $(x_2, f(x_2))$, $(x_3, f(x_3))$ e $(x_5, f(x_5))$, com $x_1 < x_2 < x_3 < x_4 < x_5$. Isto nos fornece
+Aqui, \hl{usamos o polinômio interpolador de Lagrange da função $f(x)$ pelos pontos $(x_1, f(x_1)$, $(x_2, f(x_2))$, $(x_3, f(x_3))$ e $(x_5, f(x_5))$}, com $x_1 < x_2 < x_3 < x_4 < x_5$. Isto nos fornece
 \begin{equation}
   f(x) = \sum_{i=1}^5 f(x_i)\left(\prod_{j=1, j\neq i}^{5} \frac{x-x_j}{x_i-x_j}\right) + R_5(x).
 \end{equation}
@@ -572,17 +558,15 @@ Calculando a derivada em relação a $x$, temos
   f'(x) = \sum_{i=1}^5 f(x_i)\left(\sum_{\overset{j=1}{j\neq i}}^5\prod_{\overset{k=1}{k\neq i, k\neq j}}^{5} \frac{x-x_k}{x_i-x_k}\right) + R^{(1)}_5(x).
 \end{equation}
 
-Por exemplo, substituindo $x_1=x-2h$, $x_2=x-h$, $x_3=x$, $x_4=x+h$ e $x_5=x+2h$ na equação acima, obtemos fórmula de diferenças finitas central de ordem $h^4$
-\begin{align}
-  D_{+,h^4}f(x) := \frac{1}{12h} &\left[f{\left (x - 2 h\right )} - 8 f{\left(x - h \right )} \right. \nonumber \\
-  &+ \left. 8 f{\left (x + h \right )} - f{\left (x + 2 h \right )}\right].\label{eq:dfc_5pts}
-\end{align}
+Por exemplo, \hl{substituindo $x_1=x-2h$, $x_2=x-h$, $x_3=x$, $x_4=x+h$ e $x_5=x+2h$} na equação acima, \hl{\emph{obtemos fórmula de diferenças finitas central de ordem $h^4$}}
+\begin{equation}\label{eq:dfc_5pts}\hleq
+  \begin{aligned}
+    D_{+,h^4}f(x) &:= \frac{1}{12h} \left[f{\left (x - 2 h\right )} - 8 f{\left(x - h \right )} \right. \\
+    &+ \left. 8 f{\left (x + h \right )} - f{\left (x + 2 h \right )}\right].
+  \end{aligned}
+\end{equation}
 
 \subsection*{Exercícios}
-
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
 
 \begin{exer}\label{exer:dfch4_fun}
   Use a fórmula de diferenças finitas central de ordem $h^4$ para computar a aproximação da derivada de
@@ -592,10 +576,7 @@ Por exemplo, substituindo $x_1=x-2h$, $x_2=x-h$, $x_3=x$, $x_4=x+h$ e $x_5=x+2h$
 no ponto $x=2,5$ com passo $h=0,1$.
 \end{exer}
 \begin{resp}
-  % \ifisoctave 
-  % \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_deriv/dados/exer_dfch4_fun/exer_dfch4_fun.m}{Código.} 
-  % \fi
-  $1,05913$
+  $1.05913$
 \end{resp}
 
 \begin{exer}\label{exer:df_5pts_pi}
@@ -609,9 +590,6 @@ no ponto $x=2,5$ com passo $h=0,1$.
   \end{enumerate}
 \end{exer}
 \begin{resp}
-  % \ifisoctave 
-  % \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_deriv/dados/exer_df_5pts_pi/exer_df_5pts_pi.m}{Código.} 
-  % \fi
   \begin{tiny}
     \begin{align*}
       \text{a)}&~\frac{1}{12 h} \left[3 f{\left (x- 4h \right )} - 16 f{\left (x- 3 h \right )} + 36 f{\left (x- 2 h \right )} - 48 f{\left (x- h \right ) + 25 f{\left (x \right )}}\right]\\
@@ -636,9 +614,6 @@ no ponto $x=2,5$ com passo $h=0,1$.
 Calcule a aproximação $dy/dx$ nos pontos tabelados usando as fórmulas de diferenças finitas obtidas no exercício anteriores (Exercício~\ref{exer:df_5pts_pi}). Para tanto, dê preferência para fórmulas centrais sempre que possível.
 \end{exer}
 \begin{resp}
-  % \ifisoctave 
-  % \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_deriv/dados/exer_dfh4_tab/exer_dfh4_tab.m}{Código.} 
-  % \fi
   \begin{tiny}
     \begin{center}
       \begin{tabular}{l|cccccc}\hline
