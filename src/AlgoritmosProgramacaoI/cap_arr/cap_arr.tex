@@ -693,3 +693,182 @@ def proj(u, v):
 \begin{resp}
   Dica: use a função \lstinline+numpy.cross()+ e verifique as computações calculando os resultados esperados.
 \end{resp}
+
+\section{Arranjos Multidimensionais}\label{cap_arr_sec_multi}
+
+\hl{Um arranjo no {\numpy} ({\lstinline+numpy.array+}) é um tabelamento de elementos de um mesmo tipo}. Os elementos são organizados por eixos indexados (em inglês, \textit{axes}). Enquanto que nas seções anteriores nos restringimos a \lstinline+arrays+ unidimensionais (de apenas um eixo), aqui, vamos estudar a alocação e manipulação de arranjos de vários eixos.
+
+\subsection{Alocação, Indexação e Fatiamento}
+
+\hl{A \emph{alocação} de um {\lstinline+numpy.array+} com mais de um eixo pode ser feita usando-se de \emph{listas encadeadas}}. Por exemplo,
+\begin{lstlisting}
+>>> import numpy as np
+>>> a = np.array([[1,2,3],[4,5,6]])
+>>> a
+array([[1, 2, 3],
+       [4, 5, 6]])
+\end{lstlisting}
+cria o arranjo \lstinline+a+ de dois eixos, enquanto
+\begin{lstlisting}
+>>> b = np.array([[[1,2],[3,4]],[[-1,-2],[-3,-4]]])
+>>> b
+array([[[ 1,  2],
+        [ 3,  4]],
+
+       [[-1, -2],
+        [-3, -4]]])
+\end{lstlisting}
+cria o arranjo \lstinline+b+ de três eixos. Para fazer um paralelo com a matemática, o arranjo \lstinline+a+ é similar (mas, não equivalente) a matriz $A = [a_{i,j}]_{i,j=1}^{2,3}$
+\begin{equation}
+  A =
+  \begin{bmatrix}
+    1 & 2 & 3\\
+    4 & 5 & 6
+  \end{bmatrix},
+\end{equation}
+e o arranjo \lstinline+b+ é similar (mas, não equivalente) ao tensor $B = [b_{i,j,k}]_{i,j,k=1}^{2,2,2}$.
+
+\hl{A propriedade {\lstinline+.shape+} é um \textit{tuple} contendo o tamanho de cada eixo}. Por exemplo,
+\begin{lstlisting}
+>>> a.shape
+(2, 3)
+>>> a.shape[0]
+2
+>>> a.shape[1]
+3
+\end{lstlisting}
+informa que \lstinline+a+ tem dois eixos, o primeiro com tamanho $2$ e o segundo com tamanho $3$. Um paralelo com matrizes, dizemos que \lstinline+a+ tem duas linhas e três colunas. No caso do arranjo \lstinline+b+, temos
+\begin{lstlisting}
+>>> b.shape
+(2, 2, 2)
+>>> b.shape[2]
+2
+\end{lstlisting}
+o que nos informa tratar-se de um \lstinline+array+ de três eixos, cada um com tamanho $2$.
+
+\hl{Os elementos em um arranjo são \emph{indexados por eixos} e o \emph{fatiamento} também pode ser feito por eixos}. Por exemplo,
+\begin{lstlisting}
+>>> a
+array([[1, 2, 3],
+       [4, 5, 6]])
+>>> a[1,0]
+4
+>>> a[0]
+array([1, 2, 3])
+>>> a[:,1]
+array([2, 5])
+>>> a[:,2:]
+array([[3],
+       [6]])
+>>> a[1,::-1]
+array([6, 5, 4])
+\end{lstlisting}
+No caso do arranjo \lstinline+b+ de três eixos, temos
+\begin{lstlisting}
+>>> b
+array([[[ 1,  2],
+        [ 3,  4]],
+
+       [[-1, -2],
+        [-3, -4]]])
+>>> b[1,1,0]
+-3
+>>> b[0,1]
+array([3, 4])
+>>> b[1,0,::-1]
+array([-2, -1])
+\end{lstlisting}
+
+\subsection{Inicialização}
+
+O {\numpy} conta com várias funções para a inicialização de \lstiniline+arrays+, algumas das mais usadas são:
+\begin{itemize}
+\item \hl{{\lstinline+np.zeros()+} : inicializa com zeros.}
+\begin{lstlisting}
+>>> np.zeros((2,3))
+array([[0., 0., 0.],
+       [0., 0., 0.]])
+\end{lstlisting}
+\item \hl{{\lstinline+np.ones()+} : inicializa com uns.}
+\begin{lstlisting}
+>>> np.ones((2,3,2))
+array([[[1., 1.],
+        [1., 1.],
+        [1., 1.]],
+
+       [[1., 1.],
+        [1., 1.],
+        [1., 1.]]])
+\end{lstlisting}
+\item \hl{{\lstinline+np.empty()+} : inicializa com valor da memória.}
+\begin{lstlisting}
+>>> np.empty((2,1))
+array([[5.73021895e-300],
+       [6.95260453e-310]])
+\end{lstlisting}
+\end{itemize}
+Observamos que o tamanho de cada eixo é passado por um \lstinline+tuple+.
+
+\subsection{Manipulação}
+
+[[tag:construcao]]
+
+\subsection{Operações elemento-a-elemento}
+
+[[tag:construcao]]
+
+\subsection{Exercícios}
+
+[[tag:construcao]]
+
+\begin{exer}
+  Aloque o arranjo que corresponde a matriz
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      -2 & 1 & -4\\
+      0  & -3 & 2\\
+      -1 & 5 & -7\\
+      2 & 3 & 6
+    \end{bmatrix}
+  \end{equation}
+  Sem implementar, forneça a saída das seguintes instruções:
+  \begin{enumerate}[a)]
+  \item \lstinline+A[2,1]+
+  \item \lstinline+A[0,2]+
+  \item \lstinline+A[-2,-2]+
+  \item \lstinline+A[3]+
+  \item \lstinline+A[3:,:]+
+  \item \lstinline+A[:,2]+
+  \item \lstinline+A[:,1:2]+
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  Dica: aloque o arranjo e implemente as instruções.
+\end{resp}
+
+\begin{exer}
+  Considere o arranjo
+\begin{lstlisting}
+A = np.array([[[-1,2,0],
+               [3,-2,1],
+               [1,-4,2]],
+              [[2,-1,0],
+               [5,-2,0],
+               [2,6,3]],
+              [[1,-1,0],
+               [7,-2,4],
+               [2,-2,1]]])
+\end{lstlisting}
+  Sem implementar, forneça a saída das seguintes instruções:
+  \begin{enumerate}[a)]
+  \item \lstinline+A[2,0,1]+
+  \item \lstinline+A[1,1,0]+
+  \item \lstinline+A[2]+
+  \item \lstinline+A[1,2]+
+  \item \lstinline+A[1:,:2,2]+
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  Dica: aloque o arranjo e implemente as instruções.
+\end{resp}
