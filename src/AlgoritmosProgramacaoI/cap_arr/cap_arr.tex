@@ -781,7 +781,7 @@ array([-2, -1])
 
 \subsection{Inicialização}
 
-O {\numpy} conta com várias funções para a inicialização de \lstiniline+arrays+, algumas das mais usadas são:
+O {\numpy} conta com várias funções para a inicialização de \lstinline+arrays+, algumas das mais usadas são:
 \begin{itemize}
 \item \hl{{\lstinline+np.zeros()+} : inicializa com zeros.}
 \begin{lstlisting}
@@ -811,15 +811,187 @@ Observamos que o tamanho de cada eixo é passado por um \lstinline+tuple+.
 
 \subsection{Manipulação}
 
-[[tag:construcao]]
+O {\numpy} contém várias funções para a manipulação de \lstinline+arrays+. Algumas das mais usadas são:
+\begin{itemize}
+\item \hl{{\href{https://numpy.org/doc/stable/reference/generated/numpy.reshape.html\#numpy.reshape}{\lstinline+arr.reshape()+}}} : reformatação de um arranjo.
+\begin{lstlisting}
+>>> a = np.array([[1,2,3],[4,5,6]])
+>>> a.reshape(3,2)
+array([[1, 2],
+       [3, 4],
+       [5, 6]])
+>>> a.reshape(-1)
+array([1, 2, 3, 4, 5, 6])
+\end{lstlisting}
+\item \hl{{\href{https://numpy.org/doc/stable/reference/generated/numpy.concatenate.html}{\lstinline+arr.concatenate()+}}} : concatena um \lstinline+tuple+ de arranjos.
+\begin{lstlisting}
+>>> a = np.array([1,2,3])
+>>> b = np.array([4,5,6])
+>>> np.concatenate((a,b))
+array([1, 2, 3, 4, 5, 6])
+>>> a = a.reshape(1,-1)
+>>> b = b.reshape(1,-1)
+>>> np.concatenate((a,b))
+array([[1, 2, 3],
+       [4, 5, 6]])
+>>> np.concatenate((a,b), axis=1)
+array([[1, 2, 3, 4, 5, 6]])
+\end{lstlisting}
+\end{itemize}
 
-\subsection{Operações elemento-a-elemento}
+\subsection{Operações e Funções Elementares}
 
-[[tag:construcao]]
+De forma análoga a arranjos unidimensionais, as operações aritméticas e funções elementares são aplicadas elemento-a-elementos em um arranjo. Por exemplo,
+\begin{lstlisting}
+>>> a = np.array([[0.,1/6],[1/4,1/3]])
+>>> b = np.array([[0.,6],[4,3]])
+>>> np.sin(np.pi*a*b)
+array([[0.0000000e+00, 1.2246468e-16],
+       [1.2246468e-16, 1.2246468e-16]])
+\end{lstlisting}
+
+\subsubsection{Multiplicação Matriz-Vetor}
+
+Dada uma matriz $A = [a_{i,j}]_{i,j=1}^{n,m}$ e um vetor $\pmb{x} = (x_i)_{i=1}^m$, a \hl{\emph{multiplicação matriz-vetor}} $A\pmb{x}$ é definida por
+\begin{subequations}
+  \begin{align}
+    A\pmb{x} &=\begin{bmatrix}
+      a_{1,1} & a_{1,2} & \cdots & a_{1,m}\\
+      a_{2,1} & a_{2,2} & \cdots & a_{2,m}\\
+      \vdots & \vdots & \vdots & \vdots\\
+      a_{n,1} & a_{n,2} & \cdots & a_{n,m}
+    \end{bmatrix}\begin{bmatrix}
+      x_1\\
+      x_2\\
+      \vdots\\
+      x_m
+    \end{bmatrix}\\
+    &=
+      \begin{bmatrix}
+        a_{1,1}x_1 + a_{1,2}x_2 + \cdots + a_{1,m}x_m\\
+        a_{2,1}x_1 + a_{2,2}x_2 + \cdots + a_{2,m}x_m\\
+        \cdots\\
+        a_{n,1}x_1 + a_{n,2}x_2 + \cdots + a_{n,m}x_m
+      \end{bmatrix}
+  \end{align}
+\end{subequations}
+
+\begin{ex}
+  Considere a matriz
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      1 & -1 & 2\\
+      2 & 1 & 3\\
+      0 & 2 & 1
+    \end{bmatrix}
+  \end{equation}
+  e o vetor $\pmb{x} = (-1, 2, 1)$. A multiplicação matriz-vetor é
+  \begin{subequations}
+    \begin{align}
+      A\pmb{x} &= \begin{bmatrix}
+        1 & -1 & 2\\
+        2 & 1 & 3\\
+        0 & 2 & 1
+      \end{bmatrix}
+      \begin{bmatrix}
+        -1\\
+        2\\
+        1
+      \end{bmatrix}\\
+               &= (-1, 3, 5)
+    \end{align}
+   \end{subequations}
+
+\begin{lstlisting}
+import numpy as np
+
+def MatrizVetor(A, x):
+    n,m = A.shape
+    y = np.empty(n)
+    for i in range(n):
+        y[i] = 0.
+        for j in range(m):
+            y[i] += A[i,j]*x[j]
+    return y
+
+A = np.array([[1, -1, 2],
+              [2,  1, 3],
+              [0,  2, 1]])
+x = np.array([-1, 2, 1])
+print(MatrizVetor(A,x))
+\end{lstlisting}
+\end{ex}
+
+\subsubsection{Multiplicação Matriz-Matriz}
+
+Dadas matrizes $A = [a_{i,j}]_{i,j=1}^{n,p}$ e $B = [b_{i,j}]_{i,j=1}^{p,m}$, a \hl{\emph{multiplicação matriz-matriz}} $AB$ é a matriz $AB = C = [c_{i,j}]_{i,j=1}^{n,m}$ de elementos
+\begin{equation}
+  c_{i,j} = \sum_{k=1}^{p} a_{i,k}\cdot b_{k,j}.
+\end{equation}
+
+\begin{ex}
+  Consideramos as matrizes
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      1 & -1 & 2\\
+      2 & 1 & 3\\
+      0 & 2 & 1
+    \end{bmatrix}
+  \end{equation}
+  \begin{equation}
+    B =
+    \begin{bmatrix}
+      2 & 0\\
+      1 & 2\\
+      0 & 2
+    \end{bmatrix}
+  \end{equation}
+  A multiplicação matriz-matriz $AB$ é
+  \begin{subequations}
+    \begin{align}
+      AB &= \begin{bmatrix}
+      1 & -1 & 2\\
+      \hleq{2} & \hleq{1} & \hleq{3}\\
+      0 & 2 & 1
+    \end{bmatrix}\begin{bmatrix}
+      2 & \hleq{0}\\
+      1 & \hleq{2}\\
+      0 & \hleq{2}
+    \end{bmatrix}
+        &=
+          \begin{bmatrix}
+            1 & 2\\
+            5 & \hleq{8}\\
+            2 & 6
+          \end{bmatrix}
+    \end{align}
+  \end{subequations}
+
+\begin{lstlisting}
+def MatrizMatriz(A, B):
+    n,p = A.shape
+    m = B.shape[1]
+    C = np.empty((n,m))
+    for i in range(n):
+        for j in range(m):
+            C[i,j] = 0.
+            for k in range(p):
+                C[i,j] += A[i,k]*B[k,j]
+    return C
+
+A = np.array([[1, -1, 2],
+              [2,  1, 3],
+              [0,  2, 1]])
+B = np.array([[2, 0],
+              [1, 2],
+              [0, 2]])
+print(MatrizMatriz(A,B))
+\end{lstlisting}
+\end{ex}
 
 \subsection{Exercícios}
-
-[[tag:construcao]]
 
 \begin{exer}
   Aloque o arranjo que corresponde a matriz
@@ -871,4 +1043,87 @@ A = np.array([[[-1,2,0],
 \end{exer}
 \begin{resp}
   Dica: aloque o arranjo e implemente as instruções.
+\end{resp}
+
+\begin{exer}
+  Considere o arranjo
+\begin{lstlisting}
+>>> a = np.array([[1,2],[5,8],[2,6]])
+>>> a
+array([[1, 2],
+       [5, 8],
+       [2, 6]])
+\end{lstlisting}
+  Sem implementar, escreva os seguintes arranjos derivados:
+  \begin{enumerate}[a)]
+  \item \lstinline+a.reshape(6)+
+  \item \lstinline+a.reshape(2,3)+
+  \item \lstinline+a.reshape(-1)+
+  \item \lstinline+a.reshape(-1,3)+
+  \item \lstinline+a.reshape(3,-1)+
+  \item \lstinline+a.reshape(4,-1)+
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  Dica: aloque o arranjo e implemente as instruções.
+\end{resp}
+
+\begin{exer}
+  Considere os arranjos
+\begin{lstlisting}
+>>> a = np.array([1,2,3]).reshape(1,-1)
+>>> b = np.array([4,5,6]).reshape(-1,1)
+\end{lstlisting}
+  Sem implementar, escreva os seguintes arranjos derivados:
+  \begin{enumerate}[a)]
+  \item \lstinline+np.concatenate((a,b.reshape(1,-1)))+
+  \item \lstinline+np.concatenate((a.reshape(-1,1),b))+
+  \item \lstinline+np.concatenate((a,b.reshape(1,-1)), axis=1)+
+  \item \lstinline+np.concatenate((a.reshape(-1,1),b), axis=1)+
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  Dica: aloque o arranjo e implemente as instruções.
+\end{resp}
+
+\begin{exer}
+  Implemente uma função que recebe uma matriz (representada por um \lstinline+array+) e retorna a sua transposta. Teste seu código para diversas matrizes com diversos formatos.
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+import numpy as np
+
+def Transposta(A):
+    n,m = A.shape
+    B = np.empty((m,n))
+    for i in range(n):
+        for j in range(m):
+            B[j,i] = A[i,j]
+    return B
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  Implemente uma função que compute a multiplicação vetor-matriz
+  \begin{subequations}
+    \begin{align}
+      \pmb{y} &= \pmb{x}A \\
+              &:= \begin{bmatrix}
+                x_1 & x_2 & \cdots & x_n
+              \end{bmatrix}
+                                     \begin{bmatrix}
+                                       a_{1,1} & a_{1,2} & \cdots & a_{1,m}\\
+                                       a_{2,1} & a_{2,2} & \cdots & a_{2,m}\\
+                                       \vdots & \vdots & \vdots & \vdots\\
+                                       a_{n,1} & a_{n,2} & \cdots & a_{n,m}
+                                     \end{bmatrix}
+    \end{align}
+  \end{subequations}
+  onde, por definição, $\pmb{y} = [y_j]_{j=1}^m$, com elementos
+  \begin{equation}
+    y_j = \sum_{k=1}^n x_k\cdot a_{k,j}.
+  \end{equation}
+\end{exer}
+\begin{resp}
+  Dica: a função \href{https://numpy.org/devdocs/reference/generated/numpy.dot.html}{\lstinline+np.dot()+} também computa a multiplicação vetor-matriz. Teste sua implementação para diferentes matriz e vetores de diferentes tamanhos.
 \end{resp}
