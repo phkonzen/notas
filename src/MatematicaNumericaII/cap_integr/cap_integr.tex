@@ -3,292 +3,333 @@
 \chapter{Integração}\label{cap_integr}
 \thispagestyle{fancy}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-Neste capítulo, discutimos os métodos numéricos fundamentais para a aproximação de integrais definidas de funções. Tais métodos são chamados de \emph{quadraturas numéricas} e têm a forma
-\begin{equation}
+Neste capítulo, estudamos os métodos fundamentais para a \hlemph{aproximação numérica de integrais definidas de funções} de uma variável real. São chamados de \hl{\emph{quadraturas numéricas}} e têm a forma
+\begin{equation}\hleq
   \int_a^b f(x)\,dx \approx \sum_{i=1}^n f(x_i)w_i,
 \end{equation}
-onde $x_i$ e $w_i$ são, respectivamente, o $i$-ésimo nodo e o $i$-ésimo peso da quadratura, $i=1, 2, \dotsc, n$.
+onde \hl{$x_i$ e $w_i$} são, respectivamente, o $i$-ésimo \hl{\emph{nodo}} e o $i$-ésimo \hlemph{peso da quadratura}, $i=1, 2, \dotsc, n$.
 
-\section{Regras de Newton-Cotes}\label{cap_integr_sec_NC}
+\section{Regras de Newton-Cotes}\label{cap_integr_sec_nc}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-Dada uma função $f(x)$ e um intervalo $[a, b]$, denotamos por
-\begin{equation}
+Buscamos um método para a aproximação numérica da integral de uma dada função $f(x)$ em um dado intervalo $[a, b]$, i.e.
+\begin{equation}\hleq
   I := \int_a^b f(x)\,dx.
 \end{equation}
-a integral de $f(x)$ no intervalo $[a, b]$. A ideia das regras de Newton-Cotes e aproximar $I$ pela integral de um polinômio interpolador de $f(x)$ por pontos previamente selecionados.
+\hl{A ideia das \emph{Regras de Newton-Cotes} é aproximar $I$ pela integral de um polinômio interpolador de $f(x)$ por pontos previamente selecionados}.
 
-Seja, então, $p(x)$ o polinômio interpolador de grau $n$ de $f(x)$ pelos dados pontos $\{(x_i, f(x_i))\}_{i=1}^{n+1}$, com $x_1 < x_2 < \cdots < x_{n+1}$ e $x_i\in [a, b]$ para todo $i=1, 2, \dotsc, n+1$. Então, pelo teorema de Lagrange, temos
+Seja, $p(x)$ o \emph{polinômio interpolador} de grau $n$ de $f(x)$ pelos dados pontos $\{(x_i, f(x_i))\}_{i=1}^{n+1}$, com $x_1 < x_2 < \cdots < x_{n+1}$ e $x_i\in [a, b]$ para todo $i=1, 2, \dotsc, n+1$. Então, pelo Teorema de Lagrange, temos
 \begin{equation}
   f(x) = p(x) + R_{n+1}(x),
 \end{equation}
 onde
 \begin{equation}
-  p(x) = \sum_{i=1}^{n+1} f(x_i)\prod_{\overset{j=1}{j\neq i}}^{n+1} \frac{(x-x_j)}{x_i-x_j}
+  p(x) = \sum_{i=1}^{n+1} f(x_i)\prod_{\overset{j=1}{j\neq i}}^{n+1} \frac{x-x_j}{x_i-x_j}
 \end{equation}
 e
 \begin{equation}
   R_{n+1}(x) = \frac{f^{(n+1)}(\xi)}{(n+1)!}\prod_{j=1}^{n+1}(x-x_j),
 \end{equation}
-onde $\xi = \xi(x)$ pertencente ao intervalo $[x_1, x_{n+1}]$. Deste modo, temos
-\begin{align}
-  I &:= \int_a^b f(x)\\
-  &= \int_a^b p(x)\,dx + \int_a^b R_{n+1}(x)\,dx\\
-  &= \underbrace{\sum_{i=1}^{n+1} f(x_i)\int_a^b \prod_{\overset{j=1}{j\neq i}}^{n+1} \frac{(x-x_j)}{x_i-x_j)}\,dx}_{\text{quadratura}} + \underbrace{\int_a^b R_{n+1}(x)\,dx}_{\text{erro de truncamento}}
+para algum $\xi = \xi(x)$ pertencente ao intervalo $[x_1, x_{n+1}]$. Deste modo, temos
+\begin{subequations}
+  \begin{align}
+    \hleq{I} &:= \int_a^b f(x)\\
+      &= \int_a^b p(x)\,dx + \int_a^b R_{n+1}(x)\,dx\\
+      &\hleq{= \underbrace{\sum_{i=1}^{n+1} f(x_i)\int_a^b \prod_{\overset{j=1}{j\neq i}}^{n+1} \frac{(x-x_j)}{x_i-x_j)}\,dx}_{\text{quadratura}}}\nonumber\\
+      &\hleq{+ \underbrace{\int_a^b R_{n+1}(x)\,dx}_{\text{erro de truncamento}}}
 \end{align}
-Ou seja, nas quadraturas (regras) de Newton-Cotes, os nodos são as abscissas dos pontos interpolados e os pesos são as integrais dos polinômios de Lagrange associados.
+\end{subequations}
+Ou seja, nas quadraturas (regras) de Newton-Cotes, \hl{os nodos são as abscissas dos pontos interpolados e os pesos são as integrais dos polinômios de Lagrange associados}.
 
-Na sequência, abordaremos as regras de Newton-Cotes mais usuais e estimaremos o erro de truncamento caso a caso. Para uma abordagem mais geral, recomenda-se consultar~\cite[Cap. 7,Sec. 1.1]{Isaacson1994a}.
+Na sequência, desenvolvemos as Regras de Newton-Cotes mais usuais e estimamos o erro de truncamento em cada caso\footnote{Consulte \cite[Cap. 7,Sec. 1.1]{Isaacson1994a}, para uma abordagem mais geral.}.
 
-\subsection{Regras de Newton-Cotes fechadas}
+\subsection{Regras de Newton-Cotes Fechadas}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
+\hl{As \emph{Regras de Newton-Cotes Fechadas} são aquelas em que a quadratura inclui os extremos do intervalo de integração}.
 
-As regras de Newton-Cotes fechadas são aqueles que a quadratura incluem os extremos do intervalo de integração, i.e. os nodos extremos são $x_1=a$ e $x_{n+1}=b$.
+\subsubsection{Regra do Trapézio}
 
-\subsubsection{Regra do trapézio}
-
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-A regra do trapézio é obtida tomando-se os nodos $x_1=a$ e $x_2=b$. Então, denotando $h:=b-a$\footnote{Neste capítulo, $h$ é escolhido como a distância entre os nodos.}, os pesos da quadratura são:
-\begin{align}
-  w_1 &= \int_a^b \frac{x-b}{a-b}\,dx \\
-  &= \frac{(b-a)}{2} = \frac{h}{2}
-\end{align}
+\hl{A \emph{Regra do Trapézio} é obtida tomando-se os nodos $\hleq{x_1=a}$ e $\hleq{x_2=b}$}. Então, denotando $h:=b-a$\footnote{Neste capítulo, $h$ é escolhido como a distância entre os nodos.}, os pesos da quadratura são:
+\begin{subequations}
+  \begin{align}
+    \hleq{w_1} &= \int_a^b \frac{x-b}{a-b}\,dx \\
+               &= \frac{(b-a)}{2} \hleq{= \frac{h}{2}}.
+  \end{align}
+\end{subequations}
 e
-\begin{align}
-  w_2 &= \int_a^b \frac{x-a}{b-a}\,dx \\
-  &= \frac{(b-a)}{2} = \frac{h}{2}.
-\end{align}
+\begin{subequations}
+  \begin{align}
+    \hleq{w_2} &= \int_a^b \frac{x-a}{b-a}\,dx \\
+        &= \frac{(b-a)}{2} \hleq{= \frac{h}{2}}.
+  \end{align}
+\end{subequations}
 Agora, estimamos o erro de truncamento com
 \begin{align}
-  E &:= \int_a^b R_2(x)\,dx\\
+  \hleq{R} &:= \int_a^b R_2(x)\,dx\\
   &= \int_a^b \frac{f''(\xi(x))}{2}(x-a)(x-b)\,dx\\
   &\leq C\left|\int_a^b (x-a)(x-b)\,dx\right|\\
-  &= C\frac{(b-a)^3}{6} = O(h^3).
+  &= C\frac{(b-a)^3}{6} \hleq{= O(h^3)}.
 \end{align}
 
-Portanto, a \emph{regra do trapézio}\index{regra do!trapézio} é dada por
-\begin{equation}
-  \int_a^b f(x)\,dx = \frac{h}{2}(f(a) + f(b)) + O(h^3).
+Portanto, a \hlemph{Regra do Trapézio} é
+\begin{equation}\hleq
+  \int_a^b f(x)\,dx = \frac{h}{2}\left[f(a) + f(b)\right] + O(h^3).
 \end{equation}
 
-\begin{ex}\label{ex:int_trap}
-  Consideremos o problema de computar a integral de $f(x)=xe^{-x^2}$ no intervalo $[0, 1/4]$. Analiticamente, temos
-  \begin{align}
-    I = \int_0^{1/4} xe^{-x^2}\,dx &= \left. -\frac{e^{-x^2}}{2} \right|_0^{1/4}\\
-    &= \frac{1-e^{-1/4}}{2} = 3,02935\E-2.
+\begin{ex}\label{cap_integr_sec_nc:ex:int_trap}
+  Consideramos o problema de computar a integral de $f(x)=xe^{-x^2}$ no intervalo $[0, 1/4]$. Analiticamente, temos
+  \begin{subequations}
+    \begin{align}
+      I &= \int_0^{1/4} xe^{-x^2}\,dx\\
+        &= \left. -\frac{e^{-x^2}}{2} \right|_0^{1/4}\\
+        &= \frac{1-e^{-1/4}}{2} = 3,02935\E-2.
   \end{align}
-Agora, usando a regra do trapézio, obtemos a seguinte aproximação para $I$
-\begin{align}
-  I &\approx \frac{h}{2}(f(0) + f(1/2))\\
-  &= \frac{1/4}{2}\left(0 + \frac{1}{4}e^{-(1/4)^2}\right) = 2,93567\E-2.
-\end{align}
+\end{subequations}
+Agora, usando a Regra do Trapézio, obtemos a seguinte aproximação
+\begin{subequations}
+  \begin{align}
+    I &\approx \frac{h}{2}\left[f(0) + f(1/4)\right]\\
+      &= \frac{1/4}{2}\left(0 + \frac{1}{4}e^{-(1/4)^2}\right)\\
+      &= 2,93567\E-2.
+  \end{align}
+\end{subequations}
 
-% \ifisoctave
-% Podemos obter a aproximação dada pela regra do trapézio no \verb+GNU Octave+ com o seguinte código:
-% \begin{verbatim}
-% f = @(x) x*exp(-x^2);
-% a=0;
-% b=0.25;
-% h=b-a;
-% Itrap = (h/2)*(f(a)+f(b));
-% printf("%1.5E\n",Itrap)
-% \end{verbatim}
-% \fi
+\begin{lstlisting}
+import numpy as np
+
+# intervalo
+a = 0.
+b = 1./4
+# fun
+f = lambda x: x*np.exp(-x**2)
+# quad
+h = b-a
+I = h/2*(f(a) + f(b))
+print(f'I = {I:.5e}')
+\end{lstlisting}
 \end{ex}
 
 \subsubsection{Regra de Simpson}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-A regra de Simpson é obtida escolhendo-se os nodos $x_1=a$, $x_2=(a+b)/2$ e $x_3=b$. Com isso e denotando $h=(b-a)/2$, calculamos os seguintes pesos:
-\begin{align}
-  w_1 &= \int_a^b\frac{(x-x_2)(x-x_3)}{(x_1-x_2)(x_1-x_3)}\,dx\\
-  &= \frac{(b-a)}{6} = \frac{h}{3},
-\end{align}
-\begin{align}
-  w_2 &= \int_a^b\frac{(x-x_1)(x-x_3)}{(x_2-x_1)(x_2-x_3)}\,dx\\
-  &= 4\frac{(b-a)}{6} = 4\frac{h}{3}
-\end{align}
+\hl{A \emph{Regra de Simpson}{\simpson} é obtida escolhendo-se os nodos $\hleq{x_1=a}$, $\hleq{x_2=(a+b)/2}$ e $\hleq{x_3=b}$}. Denotando $\hleq{h:=(b-a)/2}$, calculamos os pesos
+\begin{subequations}
+  \begin{align}
+    \hleq{w_1} &= \int_a^b\frac{(x-x_2)(x-x_3)}{(x_1-x_2)(x_1-x_3)}\,dx\\
+        &= \frac{(b-a)}{6} \hleq{= \frac{h}{3}},
+  \end{align}
+\end{subequations}
+\begin{subequations}
+  \begin{align}
+    \hleq{w_2} &= \int_a^b\frac{(x-x_1)(x-x_3)}{(x_2-x_1)(x_2-x_3)}\,dx\\
+        &= 4\frac{(b-a)}{6} \hleq{= 4\frac{h}{3}}
+  \end{align}
+\end{subequations}
 e
 \begin{align}
-  w_3 &= \int_a^b\frac{(x-x_1)(x-x_2)}{(x_3-x_1)(x_3-x_2)}\,dx\\
-  &= \frac{(b-a)}{6} = \frac{h}{3}.
+  \hleq{w_3} &= \int_a^b\frac{(x-x_1)(x-x_2)}{(x_3-x_1)(x_3-x_2)}\,dx\\
+  &= \frac{(b-a)}{6} \hleq{= \frac{h}{3}}.
 \end{align}
-Isto nos fornece a chamada \emph{regra de Simpson}\index{regra de Simpson}
-\begin{equation}\label{eq:aux_Simpson}
+Isto nos fornece a quadratura
+\begin{equation}\label{cap_integr_sec_nc:eq:aux_Simpson}
   I \approx \frac{h}{3}\left[f(a) + 4f\left(\frac{a+b}{2}\right) + f(b)\right]
 \end{equation}
 
-Nos resta estimar o erro de truncamento da regra de Simpson. Para tanto, consideramos a expansão em polinômio de Taylor de grau 3 de $f(x)$ em torno do ponto $x_2$, i.e.
-\begin{align}
-  f(x) &= f(x_2) + f'(x_2)(x-x_2) + \frac{f''(x_2)}{2}(x-x_2)^2 \nonumber\\
-  &+ \frac{f'''(x_2)}{6}(x-x_2)^3 \nonumber\\
-  &+ \frac{f^{(4)}(\xi_1(x))}{24}(x-x_2)^4,
-\end{align}
+Para estimar o \hlemph{erro de truncamento}, consideramos a expansão em polinômio de Taylor{\taylor} de grau 3 de $f(x)$ em torno do ponto $x_2$, i.e.
+\begin{equation}
+  \begin{aligned}
+    f(x) &= f(x_2) + f'(x_2)(x-x_2)\\
+         &+ \frac{f''(x_2)}{2}(x-x_2)^2\\
+         &+ \frac{f'''(x_2)}{6}(x-x_2)^3\\
+         &+ \frac{f^{(4)}(\xi_1(x))}{24}(x-x_2)^4,
+\end{aligned}
+\end{equation}
 donde
-\begin{align}
-  \int_a^b f(x)\,dx &= 2hf(x_2) + \frac{h^3}{3}f''(x_2) \nonumber\\
-  &+ \frac{1}{24}\int_a^bf^{(4)}(\xi_1(x))(x-x_2)^4\,dx.\label{eq:aux_int_sim1}
-\end{align}
+\begin{equation}\label{cap_integr_sec_nc:eq:aux_int_sim1}
+  \begin{aligned}
+    \int_a^b f(x)\,dx &= 2hf(x_2) + \frac{h^3}{3}f''(x_2)\\
+    &+ \frac{1}{24}\int_a^bf^{(4)}(\xi_1(x))(x-x_2)^4\,dx.
+  \end{aligned}
+\end{equation}
 Daí, usando da fórmula de diferenças finitas central de ordem $h^2$, temos
-\begin{equation}\label{eq:aux_int_sim2}
+\begin{equation}\label{cap_integr_sec_nc:eq:aux_int_sim2}
   f''(x_2) = \frac{f(x_1) - 2f(x_2) + f(x_3)}{h^2} + O(h^2).
 \end{equation}
-Ainda, o último termo da equação~\eqref{eq:aux_int_sim1} pode ser estimado por
-\begin{align}
-  \left|\frac{1}{24}\int_a^bf^{(4)}(\xi_1(x))(x-x_2)^4\,dx\right| &\leq C\left|\int_a^b (x-x_2)^4\,dx\right|\\
-  &= C(b-a)^5 = O(h^5).\label{eq:aux_int_sim3}
-\end{align}\label{eq:aux_int_sim3}
-Então, de \eqref{eq:aux_int_sim1}, \eqref{eq:aux_int_sim2} e \eqref{eq:aux_int_sim3}, temos
-\begin{equation}
-  \int_a^b f(x)\,dx = \frac{h}{3}\left[f(a) + 4f\left(\frac{a+b}{2}\right) + f(b)\right] + O(h^5),
-\end{equation}
-o que mostra que a \emph{regra de Simpson tem erro de truncamento da ordem $h^5$}.
-
-\begin{ex}\label{ex:int_simp}
-  Aproximando a integral dada no Exemplo~\ref{ex:int_trap} pela a regra de Simpson, temos
+O último termo de \eqref{cap_integr_sec_nc:eq:aux_int_sim1} pode ser estimado por
+\begin{subequations}\label{cap_integr_sec_nc:eq:aux_int_sim3}
   \begin{align}
-    \int_0^{1/4} f(x)\,dx &\approx \frac{1/8}{3}\left[f(0) + 4f\left(\frac{1}{8}\right) + f\left(\frac{1}{4}\right)\right]\\
-    &= \frac{1}{24}\left[\frac{1}{2}e^{-(1/8)^2} + \frac{1}{4}e^{-(1/4)^2}\right]\\
-    &= 3,02959\E-2.
+    \left|\frac{1}{24}\int_a^bf^{(4)}(\xi_1(x))(x-x_2)^4\,dx\right| &\leq C\left|\int_a^b (x-x_2)^4\,dx\right|\\
+                                                                    &= C(b-a)^5 = O(h^5).
   \end{align}
+\end{subequations}
+Então, de \eqref{cap_integr_sec_nc:eq:aux_int_sim1}, \eqref{cap_integr_sec_nc:eq:aux_int_sim2} e \eqref{cap_integr_sec_nc:eq:aux_int_sim3}, temos a \hlemph{Regra de Simpson}
+\begin{equation}\hleq
+  \int_a^b f(x)\,dx = \frac{h}{3}\left[f(a) + 4f\left(\frac{a+b}{2}\right) + f(b)\right] + O(h^5).
+\end{equation}
 
-% \ifisoctave
-% Podemos computar a aproximação dada pela regra de Simpson no \verb+GNU Octave+ com o seguinte código:
-% \begin{verbatim}
-% f = @(x) x*exp(-x^2);
-% a=0;
-% b=1/4;
-% h=(b-a)/2;
-% Isimp = (h/3)*(f(a)+4*f((a+b)/2)+f(b));
-% printf("%1.5E\n",Isimp)
-% \end{verbatim}
-% \fi
+\begin{ex}\label{cap_integr_sec_nc:ex:int_simp}
+  A aproximação da integral do Exemplo~\ref{cap_integr_sec_nc:ex:int_trap} pela a Regra de Simpson é
+  \begin{subequations}
+    \begin{align}
+      \int_0^{1/4} f(x)\,dx &\approx \frac{1/8}{3}\left[f(0) + 4f\left(\frac{1}{8}\right) + f\left(\frac{1}{4}\right)\right]\\
+                            &= \frac{1}{24}\left[\frac{1}{2}e^{-(1/8)^2} + \frac{1}{4}e^{-(1/4)^2}\right]\\
+                            &= 3,02959\E-2.
+  \end{align}
+\end{subequations}
+
+\begin{lstlisting}
+import numpy as np
+
+# intervalo
+a = 0.
+b = 1./4
+# fun
+f = lambda x: x*np.exp(-x**2)
+# quad
+h = (b-a)/2
+I = h/3*(f(a) + 4*f((b-a)/2) + f(b))
+print(f'I = {I:.5e}')
+\end{lstlisting}
 \end{ex}
 
-\subsection{Regras de Newton-Cotes abertas}
+\subsection{Regras de Newton-Cotes Abertas}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
+\hl{As \emph{Regras de Newton-Cotes Abertas} não incluem os extremos dos intervalos como nodos das quadraturas}.
 
-As regras de Newton-Cotes abertas não incluem os extremos dos intervalos como nodos das quadraturas.
+\subsubsection{Regra do Ponto Médio}
 
-\subsubsection{Regra do ponto médio}
-
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-A regra do ponto médio\index{regra do!ponto médio} é obtida usando apenas o nodo $x_1=(a+b)/2$. Desta forma, temos
+\hl{A \emph{Regra do Ponto Médio} é obtida usando apenas o nodo $\hleq{x_1=(a+b)/2}$}. Desta forma, temos
 \begin{equation}
-  \int_a^b f(x)\,dx = \int_a^b f(x_1)\,dx + \int_a^b f'(\xi(x))(x-x_1)\,dx,
+  \begin{aligned}
+    \int_a^b f(x)\,dx &= \int_a^b f(x_1)\,dx\\
+    &+ \int_a^b f'(\xi(x))(x-x_1)\,dx,
+  \end{aligned}
 \end{equation}
-donde, denotando $h:=(b-a)$, temos
-\begin{equation}
-  \int_a^b f(x),dx = hf\left(\frac{a+b}{2}\right) + O(h^3).
+donde, denotando $\hleq{h:=(b-a)}$, temos\footnote{Para a estimativa do erro de truncamento, consulte o Exercício~\ref{cap_integr_sec_nc:exer:trunc_pto_medio}.}
+\begin{equation}\hleq
+  \int_a^b f(x)\,dx = hf\left(\frac{a+b}{2}\right) + O(h^3).
 \end{equation}
-Deixa-se para o leitor a verificação do erro de truncamento (veja, Exercício~\ref{exer:trunc_pto_medio}).
 
-\begin{ex}\label{ex:int_pto_medio}
-  Aproximando a integral dada no Exemplo~\ref{ex:int_trap} pela a regra do ponto médio, temos
-  \begin{align}
-    \int_0^{1/4} f(x)\,dx &\approx \frac{1}{4}f\left(\frac{1}{8}\right)\\
-    &= \frac{1}{32}e^{-(1/8)^2}\\
-    &= 3,07655\E-2
-  \end{align}
+\begin{ex}\label{cap_integr_sec_nc:ex:int_pto_medio}
+  Aproximando a integral dada no Exemplo~\ref{cap_integr_sec_nc:ex:int_trap} pela a Regra do Ponto Médio, obtemos
+  \begin{subequations}
+    \begin{align}
+      \int_0^{1/4} f(x)\,dx &\approx \frac{1}{4}f\left(\frac{1}{8}\right)\\
+                            &= \frac{1}{32}e^{-(1/8)^2}\\
+                            &= 3,07655\E-2
+    \end{align}
+  \end{subequations}
 
-% \ifisoctave
-% Podemos computar a aproximação dada pela regra do ponto médio no \verb+GNU Octave+ com o seguinte código:
-% \begin{verbatim}
-% f = @(x) x*exp(-x^2);
-% a=0;
-% b=0.25;
-% h=b-a;
-% Ipmd = h*f((a+b)/2);
-% printf("%1.5E\n",Ipmd)
-% \end{verbatim}
-% \fi
+\begin{lstlisting}
+import numpy as np
+
+# intervalo
+a = 0.
+b = 1./4
+# fun
+f = lambda x: x*np.exp(-x**2)
+# quad
+h = b-a
+I = h*f((b-a)/2)
+print(f'I = {I:.5e}')
+\end{lstlisting}
 \end{ex}
 
-\subsection*{Exercício}
+\subsection{Exercício}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
+\begin{exer}
+  Aproxime
+  \begin{equation}
+    I = \int_{\pi/6}^{\pi/4} e^{-x}\cos(x)\,dx
+  \end{equation}
+  pelas seguintes Regras de Newton-Cotes e compute o erro absoluto em relação ao valor exato:
+  \begin{enumerate}[a)]
+  \item Regra do Trapézio.
+  \item Regra de Simpson.
+  \item Regra do Ponto Médio.
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  $I = 1.08414\e-1$, a)~$\tilde{I} = 1.09356\e-01$, $|\tilde{I}-I| = 9.4\e-4$, b)~$\tilde{I} = 1.08413\e-01$, $|\tilde{I}-I| = 7.1\e-07$, c)~$\tilde{I} = 1.07942\e-01$, $|\tilde{I}-I| = 4.7\e-04$
+\end{resp}
 
-\begin{exer}\label{exer:int_NC_fun}
+\begin{exer}
   Aproxime
   \begin{equation}
     \int_{-1}^0 \frac{\sen(x+2)-e^{-x^2}}{x^2+\ln(x+2)}\,dx
   \end{equation}
 usando a:
 \begin{enumerate}[a)]
-\item regra do ponto médio.
-\item regra do trapézio.
-\item regra de Simpson.
+\item Regra do Ponto Médio.
+\item Regra do Trapézio.
+\item Regra de Simpson.
 \end{enumerate}
 \end{exer}
 \begin{resp}
-  % \ifisoctave 
-  % \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_integr/dados/exer_int_NC_fun/exer_int_NC_fun.m}{Código.} 
-  % \fi
   a)~$3,33647\E-1$; b)~$1,71368\E-1$; c)~$2,79554\E-1$
 \end{resp}
 
-\begin{exer}\label{exer:int_NC_tab}
+\begin{exer}\label{cap_integr_sec_nc:exer:int_tab}
   Considere a seguinte tabela de pontos
   \begin{center}
-    \begin{tabular}{l|cccccc}
-      $i$ & $1$ & $2$ & $3$ & $4$ & $5$ & $6$ \\\hline
-      $x_i$ & $2,0$ & $2,1$ & $2,2$ & $2,3$ & $2,4$ & $2,5$ \\
-      $y_i$ & $1,86$ & $1,90$ & $2,01$ & $2,16$ & $2,23$ & $2,31$ \\\hline
+    \begin{tabular}{l|cc}\toprule
+      $i$ & $x_i$ & $y_i$\\\midrule
+      $1$ & $2.0$ & $1.86$\\
+      $2$ & $2.1$ & $1.90$\\
+      $3$ & $2.2$ & $2.01$\\
+      $4$ & $2.3$ & $2.16$\\
+      $5$ & $2.4$ & $2.23$\\
+      $6$ & $2.5$ & $2.31$\\\bottomrule
     \end{tabular}
   \end{center}
-Assumindo que $y = f(x)$, calcule:
+Assumindo que $y = f(x)$, compute:
 \begin{enumerate}[a)]
-\item $\displaystyle \int_{2,1}^{2,3} f(x)\,dx$ usando a regra do ponto médio.
-\item $\displaystyle \int_{2,0}^{2,5} f(x)\,dx$ usando a regra do trapézio.
-\item $\displaystyle \int_{2,0}^{2,4} f(x)\,dx$ usando a regra de Simpson.
+\item $\displaystyle \int_{2,1}^{2,3} f(x)\,dx$ usando a Regra do Ponto Médio.
+\item $\displaystyle \int_{2,0}^{2,5} f(x)\,dx$ usando a Regra do Trapézio.
+\item $\displaystyle \int_{2,0}^{2,4} f(x)\,dx$ usando a Regra de Simpson.
 \end{enumerate}
 \end{exer}
 \begin{resp}
-  % \ifisoctave 
-  % \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_integr/dados/exer_int_NC_tab/exer_int_NC_tab.m}{Código.} 
-  % \fi
   a)~$4,02000\E-1$; b)~$1,04250E+0$; c)~$8,08667\E-1$
 \end{resp}
 
-\begin{exer}\label{exer:trunc_pto_medio}
+\begin{exer}
+  Considere uma função $y = f(x)$ com valores tabelados como no Exercício~\ref{cap_integr_sec_nc:exer:int_tab}. Observando que
+  \begin{equation}
+    \begin{aligned}
+      \underbrace{\int_{2.0}^{2.4}f(x)\,dx}_{:= I} &= \underbrace{\int_{2.0}^{2.2}f(x)\,dx}_{:= I_1}\\
+      &+ \underbrace{\int_{2.2}^{2.4}f(x)\,dx}_{:= I_2}
+  \end{aligned}
+  \end{equation}
+  compute, com a Regra de Simpson, as seguintes aproximações:
+  \begin{enumerate}[a)]
+  \item $\tilde{I} \approx I$.
+  \item $\tilde{I}_1 \approx I_1$.
+  \item $\tilde{I}_2 \approx I_2$.
+  \item $\tilde{\tilde{I}} = \tilde{I}_1 + \tilde{I}_2$.
+  \end{enumerate}
+  Por fim, diga qual das aproximações $\tilde{I}$ e $\tilde{\tilde{I}}$ de $I$ tem maior exatidão. Justifique sua proposta.
+\end{exer}
+\begin{resp}
+  a)~$\tilde{I} = 8.08667\e-01$, b)~$\tilde{I}_1 = 3.82333\e-01$, c)~$\tilde{I}_2 = 4.29333\e-01$, d)~$\tilde{\tilde{I}} = 8.11667\e-01$. (mais exata)
+\end{resp}
+
+\begin{exer}\label{cap_integr_sec_nc:exer:trunc_pto_medio}
   Mostre que o erro de truncamento da regra do ponto médio é da ordem de $h^3$, onde $h$ é o tamanho do intervalo de integração.
 \end{exer}
 \begin{resp}
   Use um procedimento semelhante aquele usado para determinar a ordem do erro de truncamento da regra de Simpson.
 \end{resp}
 
-\begin{exer}\label{exer:NC_aberta_2pts}
-  Obtenha a regra de Newton-Cotes aberta de $2$ pontos e estime seu erro de truncamento.
+\begin{exer}\label{cap_integr_sec_nc:exer:NC_aberta_2pts}
+  Desenvolva a Regra de Newton-Cotes Aberta de $2$ pontos e estime seu erro de truncamento.
 \end{exer}
 \begin{resp}
-  \begin{align}
-    \displaystyle \int_a^bf(x)\,dx &= \frac{3h}{2}\left[f\left(a+\frac{1}{3}(b-a)\right)\right. \\
-    &+ \left. f\left(a + \frac{2}{3}(b-a)\right)\right] + O(h^3), ~h=\frac{(b-a)}{3}
-  \end{align}
+  $h:=\frac{(b-a)}{3}$,
+  \begin{equation*}
+    \begin{aligned}
+      \int_a^bf(x)\,dx &= \frac{3h}{2}\left[f\left(a+\frac{1}{3}(b-a)\right)\right. \\
+      &+ \left. f\left(a + \frac{2}{3}(b-a)\right)\right] + O(h^3).
+    \end{aligned}
+\end{equation*}
 \end{resp}
 
 \section{Regras compostas de Newton-Cotes}\label{cap_integr_sec_int_comp}

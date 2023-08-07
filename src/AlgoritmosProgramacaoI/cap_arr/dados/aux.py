@@ -1,5 +1,18 @@
 import numpy as np
 
+def Transposta(A):
+    n,m = A.shape
+    B = np.empty((m,n))
+    for i in range(n):
+        for j in range(m):
+            B[j,i] = A[i,j]
+    return B
+
+A = np.array([[2, 0],
+              [1, 2],
+              [0, 2]])
+print(Transposta(A))
+
 def MatrizVetor(A, x):
     n,m = A.shape
     y = np.empty(n)
@@ -23,10 +36,9 @@ def MatrizMatriz(A, B):
 A = np.array([[1, -1, 2],
               [2,  1, 3],
               [0,  2, 1]])
-B = np.array([[2, 0, 1],
-              [1, 2, 0],
-              [0, 2, 1]])
-x = np.array([-1, 2, 1])
+B = np.array([[2, 0],
+              [1, 2],
+              [0, 2]])
 print(MatrizMatriz(A,B))
 
         
