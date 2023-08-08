@@ -10,7 +10,7 @@ plt.rcParams.update({
 
 
 # malha
-n = 3
+n = 20
 h = 2./n
 xx = np.linspace(-1., 1., n+1)
 
