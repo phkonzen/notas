@@ -1,61 +1,11 @@
 import numpy as np
+# matriz dos coefs
+A = np.array([[2, -1, 1],
+              [-1, 1, 3],
+              [1, 3, -3]])
+# vet termos consts
+b = np.array([-3, 6, 2])
 
-def Transposta(A):
-    n,m = A.shape
-    B = np.empty((m,n))
-    for i in range(n):
-        for j in range(m):
-            B[j,i] = A[i,j]
-    return B
-
-A = np.array([[2, 0],
-              [1, 2],
-              [0, 2]])
-print(Transposta(A))
-
-def MatrizVetor(A, x):
-    n,m = A.shape
-    y = np.empty(n)
-    for i in range(n):
-        y[i] = 0.
-        for j in range(m):
-            y[i] += A[i,j]*x[j]
-    return y
-
-def MatrizMatriz(A, B):
-    n,p = A.shape
-    m = B.shape[1]
-    C = np.empty((n,m))
-    for i in range(n):
-        for j in range(m):
-            C[i,j] = 0.
-            for k in range(p):
-                C[i,j] += A[i,k]*B[k,j]
-    return C
-
-A = np.array([[1, -1, 2],
-              [2,  1, 3],
-              [0,  2, 1]])
-B = np.array([[2, 0],
-              [1, 2],
-              [0, 2]])
-print(MatrizMatriz(A,B))
-
-        
-
-def bubbleSort(arr):
-    arr = arr.copy()
-    n = len(arr)
-    for k in range(n-1):
-        noUpdated = True
-        for i in range(n-k-1):
-            if not(arr[i] < arr[i+1]):
-                arr[i], arr[i+1] = arr[i+1], arr[i]
-                noUpdated = False
-        if (noUpdated):
-            break
-    return arr
-
-v = np.array([-1,1,0,4,3])
-w = bubbleSort(v)
-print(w)
+B = np.array([[1, -1],
+              [2, 1],
+              [1, 0]])

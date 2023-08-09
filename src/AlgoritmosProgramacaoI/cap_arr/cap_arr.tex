@@ -377,7 +377,7 @@ def angulo(v, w):
 \end{resp}
 
 
-\section{Vetores e Arranjos}\label{cap_arr_sec_vetor}
+\section{Vetores}\label{cap_arr_sec_vetor}
 
 \hl{O uso de {\lstinline+arrays+} é uma das formas mais adequadas para fazermos a modelagem computacional de \emph{vetores}}. Entretanto, devemos ficar atentos que \hl{vetores e arranjos não são equivalentes}. Embora, a soma/subtração e multiplicação por escalar são similares, a multiplicação e potenciação envolvendo vetores não estão definidas, mas para arranjos são operações elemento-a-elemento.
 
@@ -1126,4 +1126,667 @@ def Transposta(A):
 \end{exer}
 \begin{resp}
   Dica: a função \href{https://numpy.org/devdocs/reference/generated/numpy.dot.html}{\lstinline+np.dot()+} também computa a multiplicação vetor-matriz. Teste sua implementação para diferentes matriz e vetores de diferentes tamanhos.
+\end{resp}
+
+\section{Matrizes}\label{cap_arr_sec_mat}
+
+Arranjos multidimensionais\footnote{Consulte a Seção \ref{cap_arr_sec_multi}} fornecem uma boa estrutura para a representação de matrizes em computador. \hl{Uma matriz $A$, assim como um arranjo bidimensional, é uma coleção de valores organizados de forma retangular}, por exemplo, a matriz $A = [a_{i,j}]_{i,j=1}^{n,m}$ tem a forma
+\begin{equation}\hleq
+  A =
+  \begin{bmatrix}
+    a_{1,1} & a_{1,2} & \cdots & a_{1,m}\\
+    a_{2,1} & a_{2,2} & \cdots & a_{2,m}\\
+    \vdots & \vdots & \vdots & \vdots\\
+    a_{n,1} & a_{n,2} & \cdots & a_{n,m}
+  \end{bmatrix}
+\end{equation}
+Seus elementos $a_{i,j}$ são organizados por eixos, o eixo das linhas (\lstinline+axis=0+) e o eixo das colunas (\lstinline+axis=1+).
+
+\begin{ex}\label{cap_arr_sec_mat:ex:sislin}
+  O sistema linear
+  \begin{subequations}
+    \begin{align}
+      &2x_1 - x_2 + x_3 = -3\\
+      &-x_1 + x_2 + {\hleq 3}x_3 = {\hleq 6}\\
+      &x_1 + 3x_2 - 3x_3 = 2
+    \end{align}
+  \end{subequations}
+  pode ser escrito na seguinte forma matricial
+  \begin{equation}
+    A\pmb{x} = \pmb{b},
+  \end{equation}
+  onde $A = [a_{i,j}]_{i,j=1}^{3,3}$ é a matriz de coeficientes
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      2 & -1 & 1\\
+      -1 & 1 & {\hleq 3}\\
+      1 & 3 & -3
+    \end{bmatrix},
+  \end{equation}
+  o vetor dos termos constantes $\pmb{b} = (b_1, b_2, b_3)$ é
+  \begin{equation}
+    \pmb{b} = (-3, {\hleq 6}, 2),
+  \end{equation}
+  enquanto que o vetor das incógnitas é $\pmb{x} = (x_1, x_2, x_3)$. No seguinte código, usamos de \lstinline+numpy.arrays+ para alocamos a matriz dos coeficientes $A$ e o vetor dos termos constantes $\pmb{b}$.
+\begin{lstlisting}
+import numpy as np
+# matriz dos coefs
+A = np.array([[2, -1, 1],
+              [-1, 1, 3],
+              [1, 3, -3]])
+# vet termos consts
+b = np.array([-3, 6, 2])
+\end{lstlisting}
+\end{ex}
+
+\subsection{Operações Matriciais}
+
+Embora úteis para a representação de matrizes, \hl{arranjos bidimensionais não são equivalentes a matrizes}. Em arranjos, as operações aritméticas elementares (\lstinline!+!, \lstinline!-!, \lstinline!*!, \lstinline!/!, etc.) são operações elemento-a-elemento, para matrizes a multiplicação não é assim calculada e a divisão não é definida.
+
+\subsubsection{Multiplicação Matricial}
+
+No {\numpy}, a multiplicação matricial está disponível com as funções \lstinline+numpy.dot()+, \lstinline+numpy.matmul()+ e com o operador \lstinline+@+\footnote{Oi, sumido! ;-)}.
+
+\begin{ex}
+  Considerando as matrizes
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      2 & -1 & 1\\
+      -1 & 1 & {\hleq 3}\\
+      1 & 3 & -3
+    \end{bmatrix},
+  \end{equation}
+  \begin{equation}
+    B =
+    \begin{bmatrix}
+      1 & -1\\
+      2 & 1\\
+      1 & 0
+    \end{bmatrix}
+  \end{equation}
+  temos
+  \begin{equation}
+    AB =
+    \begin{bmatrix}
+      1 & -3\\
+      4 & 2\\
+      4 & 2
+    \end{bmatrix}
+  \end{equation}
+  Usando o {\numpy}, temos
+\begin{lstlisting}
+import numpy as np
+
+A = np.array([[2, -1, 1],
+              [-1, 1, 3],
+              [1, 3, -3]])
+
+B = np.array([[1, -1],
+              [2, 1],
+              [1, 0]])
+
+AB = A@B
+print(f'AB =\n {AB}')
+
+AB = np.matmul(A, B)
+print(f'AB =\n {AB}')
+
+AB = np.dot(A, B)
+print(f'AB =\n {AB}')
+\end{lstlisting}
+\end{ex}
+
+\begin{ex}
+  Consideramos o sistema linear introduzido no Exemplo \ref{cap_arr_sec_mat:ex:sislin}. Vamos verificar que sua solução é $x_1 = -1$, $x_2 = 2$ e $x_3 = 1$. Equivalentemente, temos que
+  \begin{equation}
+    A\pmb{x} = \pmb{b},
+  \end{equation}
+  com $\pmb{x} = (-1, 2, 1)$. Isto é, se $\pmb{x}$ é solução do sistema, então é nulo o resíduo $\pmb{b} - A\pmb{x}$, i.e.
+  \begin{equation}
+    \pmb{b} - A\pmb{x} = \pmb{0}.
+  \end{equation}
+  Ou equivalentemente, $\|\pmb{b} - A\pmb{x}\| = 0$.
+
+\begin{lstlisting}
+import numpy as np
+import numpy.linalg as npla
+
+# matriz dos coefs
+A = np.array([[2, -1, 1],
+              [-1, 1, 3],
+              [1, 3, -3]])
+# vet termos consts
+b = np.array([-3, 6, 2])
+# solucao
+x = np.array([-1, 2, 1])
+
+# verificacao
+res = b - A@x
+norm_res = npla.norm(res)
+print(f'É solução? {np.isclose(norm_res, 0.)}')
+\end{lstlisting}
+\end{ex}
+
+\subsubsection{Matriz Transposta}
+
+Por definição, a transposta de uma matriz $A = [a_{i,j}]_{i,j=1}^{n,m}$ é a matriz $A^T = [a_{j,i}]_{j,i=1}^{m,n}$, i.e. a matriz $B$ obtida de $A$ pela permutação de suas linhas com suas colunas. No {\numpy}, a transposta de um arranjo bidimensional pode ser calculado com a função \lstinline+numpy.transpose()+, com o método \lstinline+numpy.ndarray.transpose()+ ou com o atributo \lstinline+numpy.ndarray.T+.
+
+\begin{ex}
+  Uma matriz é dita ser simétrica, quando $A = A^T$. Observamos que é simétrica a matriz
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      2 & -1 & 1\\
+      -1 & 1 & {\hleq 3}\\
+      1 & 3 & -3
+    \end{bmatrix},
+  \end{equation}
+
+\begin{lstlisting}
+import numpy as np
+A = np.array([[2, -1, 1],
+              [-1, 1, 3],
+              [1, 3, -3]])
+
+trans_A = np.transpose(A) 
+print(f'A^T =\n {trans_A}')
+
+trans_A = A.transpose() 
+print(f'A^T =\n {trans_A}')
+
+trans_A = A.T
+print(f'A^T =\n {trans_A}')
+
+print(f'É simétrica? {np.allclose(A, A.T)}')
+\end{lstlisting}
+
+  Agora, não é simétrica a matriz
+  \begin{equation}
+    B =
+    \begin{bmatrix}
+      1 & -1\\
+      2 & 1\\
+      1 & 0
+    \end{bmatrix}.
+  \end{equation}
+
+\begin{lstlisting}
+import numpy as np
+B = np.array([[1, -1],
+              [2, 1],
+              [1, 0]])
+print(B.T)
+\end{lstlisting}
+\end{ex}
+
+\subsubsection{Determinante}
+
+Por definição, o determinante de uma matriz $A = [a_{i,j}]_{i,j=1}^{n,n}$ é o escalar
+\begin{subequations}
+  \begin{align}
+    \det(A) &=
+              \begin{vmatrix}
+                a_{1,1} & a_{1,2} & \cdots & a_{1,n}\\
+                a_{2,1} & a_{2,2} & \cdots & a_{2,n}\\
+                \vdots & \vdots & \vdots & \vdots\\
+                a_{n,1} & a_{n,2} & \cdots & a_{n,n}                
+              \end{vmatrix}\\
+            &:= \sum_{\sigma\in S_n}\sign(\sigma)a_{1,\sigma_1}a_{2,\sigma_2}\cdots a_{n,\sigma_n}
+  \end{align}
+\end{subequations}
+onde $S_n$ é o conjunto de todas as permutações de ${1, 2, \dotsc, n}$ e $\sign(\sigma)$ é o sinal (ou assinatura) da permutação $\sigma\in S_n$. Para matrizes $2\times 2$, temos
+\begin{subequations}
+  \begin{align}
+    \det(A) &=
+        \begin{vmatrix}
+          a_{1,1} & a_{1,2}\\
+          a_{2,1} & a_{2,2}
+        \end{vmatrix}\\
+      &= a_{1,1}a_{2,2} - a_{1,2}a_{2,1}.
+  \end{align}
+\end{subequations}
+Enquanto que no caso de matriz $3\times 3$, temos\footnote{Pela \href{https://pt.wikipedia.org/wiki/Regra_de_Sarrus}{regra de Sarrus}.}
+\begin{subequations}
+  \begin{align}
+    \det(A) &=
+              \begin{vmatrix}
+                a_{1,1} & a_{1,2} & a_{1,3}\\
+                a_{2,1} & a_{2,2} & a_{2,3}\\
+                a_{3,1} & a_{3,2} & a_{3,3}
+              \end{vmatrix}\\
+            &= a_{1,1}a_{2,2}a_{3,3}\\
+            &+ a_{1,2}a_{2,3}a_{3,1}\\
+            &+ a_{1,3}a_{2,1}a_{3,2}\\
+            &- a_{1,3}a_{2,2}a_{3,1}\\
+            &- a_{1,1}a_{2,3}a_{3,2}\\
+            &- a_{1,2}a_{2,1}a_{3,3}.
+  \end{align}
+\end{subequations}
+
+No {\numpy}, o determinante de um arranjo pode ser computado com a função \lstinline+numpy.linalg.det()+.
+
+\begin{ex}
+  O determinante
+  \begin{subequations}
+    \begin{align}
+      \det(A) &=
+                \begin{vmatrix}
+                  2 & -1 & 1\\
+                  -1 & 1 & {\hleq 3}\\
+                  1 & 3 & -3
+                \end{vmatrix}\\
+              &= -28
+    \end{align}
+  \end{subequations}
+
+\begin{lstlisting}
+import numpy as np
+import numpy.linalg as npla
+A = np.array([[2, -1, 1],
+              [-1, 1, 3],
+              [1, 3, -3]])
+
+detA = npla.det(A)
+print(f'det(A) = {detA}')
+\end{lstlisting}
+\end{ex}
+
+\subsection{Aplicação: Método de Cramer}
+
+O \hl{\emph{Método de Cramer}}{\cramer} usa de determinantes para o \hl{cálculo da solução de sistemas lineares}. Dado um sistema linear $n\times n$
+\begin{equation}\hleq
+  A\pmb{x} = \pmb{b}
+\end{equation}
+denotamos a matriz dos coeficientes por
+\begin{equation}
+  A =
+  \begin{bmatrix}
+    \pmb{a}_1 & \pmb{a}_2 & \cdots & \pmb{a}_n
+\end{bmatrix},
+\end{equation}
+onde $\pmb{a}_i$ denota a $i$-ésima coluna de $A$. Vamos denotar por $A_i$ a matriz obtida de $A$ substituindo $\pmb{a}_i$ pelo vetor dos termos constantes $\pmb{b}$, i.e.
+\begin{equation}
+  A_i :=
+  \begin{bmatrix}
+    \pmb{a}_1 & \cdots & \pmb{a}_{i-1} & {\hleq \pmb{b}} & \pmb{a}_{i+1} & \cdots & \pmb{a}_n
+  \end{bmatrix}
+\end{equation}
+\hl{O método consiste em computar a solução $\pmb{x} = (x_1, x_2, \ldots, x_n)$ com}
+\begin{equation}\hleq
+  x_i = \frac{\det(A_i)}{\det(A)},
+\end{equation}
+para cada $i = 1, 2, \dotsc, n$.
+
+\begin{ex}
+  Vamos resolver o sistema linear dado no Exercício \ref{cap_arr_sec_mat:ex:sislin}. Sua forma matricial é
+  \begin{equation}
+    A\pmb{x} = \pmb{b}
+  \end{equation}
+  com matriz dos coeficientes
+  \begin{equation}
+        A =
+    \begin{bmatrix}
+      2 & -1 & 1\\
+      -1 & 1 & 3\\
+      1 & 3 & -3
+    \end{bmatrix},
+  \end{equation}
+  e vetor dos termos constantes
+  \begin{equation}
+    \pmb{b} = ({\hleq -3, 6, 2}).
+  \end{equation}
+  Para aplicação do Método de Cramer, calculamos
+  \begin{subequations}
+    \begin{align}
+      \det(A) &:=
+                \begin{vmatrix}
+                  2 & -1 & 1\\
+                  -1 & 1 & 3\\
+                  1 & 3 & -3
+                \end{vmatrix}\\
+              &= -28
+    \end{align}
+  \end{subequations}    
+  e das matrizes auxiliares
+  \begin{subequations}
+    \begin{align}
+      \det(A_1) &:=
+                \begin{vmatrix}
+                  {\hleq -3} & -1 & 1\\
+                  {\hleq 6} & 1 & 3\\
+                  {\hleq 2} & 3 & -3
+                \end{vmatrix}\\
+              &= 28
+    \end{align}
+  \end{subequations}
+  \begin{subequations}
+    \begin{align}
+      \det(A_2) &:=
+                \begin{vmatrix}
+                  2 & {\hleq -3} & 1\\
+                  -1 & {\hleq 6} & 3\\
+                  1 & {\hleq 2} & -3
+                \end{vmatrix}\\
+              &= -56
+    \end{align}
+  \end{subequations}
+  \begin{subequations}
+    \begin{align}
+      \det(A_3) &:=
+                \begin{vmatrix}
+                  2 & -1 & {\hleq -3}\\
+                  -1 & 1 & {\hleq 6}\\
+                  1 & 3 & {\hleq 2}
+                \end{vmatrix}\\
+              &= -56
+    \end{align}
+  \end{subequations}
+  Com isso, obtemos a solução
+  \begin{subequations}
+    \begin{align}
+      x_1 &= \frac{\det(A_1)}{\det(A)} = -1,\\
+      x_2 &= \frac{\det(A_2)}{\det(A)} = 2,\\
+      x_3 &= \frac{\det(A_3)}{\det(A)} = 1.
+    \end{align}
+  \end{subequations}
+
+\begin{lstlisting}
+import numpy as np
+import numpy.linalg as npla
+# matriz dos coefs
+A = np.array([[2, -1, 1],
+              [-1, 1, 3],
+              [1, 3, -3]])
+# vet termos consts
+b = np.array([-3, 6, 2])
+
+# det(A)
+detA = npla.det(A)
+print(f'det(A) = {detA}')
+
+# matrizes auxiliares
+## A1
+A1 = np.copy(A)
+A1[:,0] = b
+detA1 = npla.det(A1)
+print(f'det(A1) = {detA1}')
+
+## A2
+A2 = np.copy(A)
+A2[:,1] = b
+detA2 = npla.det(A2)
+print(f'det(A2) = {detA2}')
+
+## A3
+A3 = np.copy(A)
+A3[:,2] = b
+detA3 = npla.det(A3)
+print(f'det(A3) = {detA3}')
+
+# solucao
+x = np.array([detA1/detA, detA2/detA, detA3/detA])
+print(f'x = {x}')
+\end{lstlisting}
+\end{ex}
+
+
+\subsection{Exercícios}
+
+\begin{exer}
+  Aloque e imprima as seguintes matrizes como \lstinline+arrays+:
+  \begin{enumerate}[a)]
+  \item
+    \begin{equation}
+      A =
+      \begin{bmatrix}
+        -1 & 2\\
+        7 & -3
+      \end{bmatrix}
+    \end{equation}
+  \item
+    \begin{equation}
+      B =
+      \begin{bmatrix}
+        -1 & 2 & 4\\
+        7 & -3 & -5 
+      \end{bmatrix}
+    \end{equation}
+  \item
+    \begin{equation}
+      C =
+      \begin{bmatrix}
+        -1 & 2 & 4\\
+        7 & -3 & -5\\
+        2 & 9 & 6
+      \end{bmatrix}
+    \end{equation}
+  \item
+    \begin{equation}
+      D =
+      \begin{bmatrix}
+        -1 & 2 & 4\\
+        7 & -3 & -5\\
+        2 & 9 & 6\\
+        1 & -1 & 1
+      \end{bmatrix}
+    \end{equation}
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+import numpy as np
+# a)
+A = np.array([[-1, 2],
+              [7, -3]])
+print(f'A =\n {A}')
+# b)
+B = np.array([[-1, 2, 4],
+              [7, -3, -5]])
+print(f'B =\n {B}')
+# c)
+C = np.array([[-1, 2, 4],
+              [7, -3, -5],
+              [2, 9, 6]])
+print(f'C =\n {C}')
+# d)
+D = np.array([[-1, 2, 4],
+              [7, -3, -5],
+              [2, 9, 6],
+              [1, -1, 1]])
+print(f'D =\n {D}')
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  Aloque as matrizes como \lstinline+array+ do {\numpy}
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+        -1 & 2 & 4\\
+        7 & -3 & -5
+      \end{bmatrix}      
+  \end{equation}
+  e
+  \begin{equation}
+    B =
+    \begin{bmatrix}
+        1 & -1 & 2\\
+        3 & 0 & 5
+      \end{bmatrix}.      
+  \end{equation}
+  Então, compute e imprima o resultado das seguintes operações matriciais
+  \begin{enumerate}[a)]
+  \item $A + B$
+  \item $A - B$
+  \item $2A$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+import numpy as np
+A = np.array([[-1, 2, 4],
+              [7, -3, -5]])
+B = np.array([[1, -1, 2],
+              [3, 0, 5]])
+# a)
+ApB = A + B
+print(f'A+B =\n {ApB}')
+# b)
+AmB = A - B
+print(f'A-B =\n {AmB}')
+# c)
+_2A = 2*A
+print(f'2A =\n {_2A}')
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  Aloque as matrizes como \lstinline+array+ do {\numpy}
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+        -1 & 2 & 4\\
+        7 & -3 & -5
+      \end{bmatrix}      
+  \end{equation}
+  e
+  \begin{equation}
+    B =
+    \begin{bmatrix}
+        1 & -1\\
+        3 & 0\\
+        2 & 5
+      \end{bmatrix}.      
+  \end{equation}
+  Então, compute e imprima o resultado das seguintes operações matriciais
+  \begin{enumerate}[a)]
+  \item $AB$
+  \item $BA$
+  \item $B^T$
+  \item $A^TB^T$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+import numpy as np
+A = np.array([[-1, 2, 4],
+              [7, -3, -5]])
+B = np.array([[1, -1],
+              [3, 0],
+              [2, 5]])
+# a)
+AB = A @ B
+print(f'AB =\n {AB}')
+# b)
+BA = B @ A
+print(f'BA =\n {BA}')
+# c)
+Bt = B.T
+print(f'B^T =\n {Bt}')
+# d)
+AtBt = A.T @ B.T
+print(f'A^T.B^T =\n {AtBt}')
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}\label{cap_arr_sec_mat:exer:sislin}
+  Escreva a forma matricial $A\pmb{x} = \pmb{b}$ do seguinte sistema linear
+  \begin{subequations}
+    \begin{align}
+      &-x_1 + 2x_2 - 2x_3 = 6\\
+      &3x_1 - 4x_2 + x_3 = -11\\
+      &x_1 -5x_2 + 3x_3 = -10
+    \end{align}
+  \end{subequations}
+  Aloque a matriz dos coeficientes $A$ e o vetor dos termos constantes $\pmb{b}$ como \lstinline+array+ do {\numpy}. Então, verifique quais dos seguintes vetores é solução do sistema
+  \begin{enumerate}[a)]
+  \item $\pmb{x} = (1, -1, -2)$
+  \item $\pmb{x} = (-1, -2, 1)$
+  \item $\pmb{x} = (-2, 1, -1)$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+import numpy as np
+A = np.array([[-1, 2, -2],
+              [3, -4, 1],
+              [1, -5, 3]])
+b = np.array([6, -11, -10])
+# c)
+x = np.array([-2, 1, -1])
+print(f'É solução? {np.allclose(A@x, b)}')
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  Calcule e compute o determinante das seguintes matrizes
+  \begin{enumerate}[a)]
+  \item
+    \begin{equation}
+      A =
+      \begin{bmatrix}
+        -1 & 2\\
+        7 & -3
+      \end{bmatrix}
+    \end{equation}
+  \item
+    \begin{equation}
+      B =
+      \begin{bmatrix}
+        -1 & 2 & 4\\
+        1 & -3 & -5\\
+        2 & 0 & 6
+      \end{bmatrix}
+    \end{equation}
+  \item
+    \begin{equation}
+      C =
+      \begin{bmatrix}
+        -1 & 2 & 4 & 1\\
+        7 & -3 & -5 & -1\\
+        2 & 0 & 1 & 0\\
+        1 & -1 & 1 & -2
+      \end{bmatrix}
+    \end{equation}
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+import numpy as np
+import numpy.linalg as npla
+# a)
+A = np.array([[-1, 2],
+              [7, -3]])
+detA = npla.det(A)
+print(f'det(A) =\n {detA}')
+# b)
+B = np.array([[-1, 2, 4],
+              [1, -3, -5],
+              [2, 0, 6]])
+detB = npla.det(B)
+print(f'det(B) =\n {detB}')
+# c)
+C = np.array([[-1, 2, 4, 1],
+              [-1, -3, -5, -1],
+              [2, 0, 1, 0],
+              [1, -1, 1, -2]])
+detC = npla.det(C)
+print(f'det(C) =\n {detC}')
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  Use o Método de Cramer para computar a solução do sistema dado no Exercício \ref{cap_arr_sec_mat:exer:sislin}. Verifique sua solução com a computada pelo método \href{https://numpy.org/doc/stable/reference/generated/numpy.linalg.solve.html}{\lstinline+numpy.linalg.solve()+}.
+\end{exer}
+\begin{resp}
+  Dica: $\pmb{x} = (-2, 1, -1)$.
+\end{resp}
+
+\begin{exer}
+  Desenvolva sua própria função {\python} para a computação do determinante de uma matriz $A$ $n\times n$.
+\end{exer}
+\begin{resp}
+  Dica: use a função \href{https://docs.python.org/3/library/itertools.html\#itertools.permutations}{\lstinline+itertools.permutations()+} para obter um iterador sobre as permutações.
 \end{resp}
