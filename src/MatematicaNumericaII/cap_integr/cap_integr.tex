@@ -332,237 +332,241 @@ Assumindo que $y = f(x)$, compute:
 \end{equation*}
 \end{resp}
 
-\section{Regras compostas de Newton-Cotes}\label{cap_integr_sec_int_comp}
+\section{Regras Compostas de Newton-Cotes}\label{cap_integr_sec_int_comp}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-Regras de integração numérica compostas (ou quadraturas compostas\index{quadratura composta}) são aquelas obtidas da composição de quadraturas aplicadas as subintervalos do intervalo de integração. Mais especificamente, a integral de uma dada função $f(x)$ em um dado intervalo $[a, b]$ pode ser reescrita como uma soma de integrais em sucessivos subintervalos de $[a, b]$, i.e.
+\hl{Regras de integração numérica compostas (ou \emph{quadraturas compostas}) são aquelas obtidas da composição de quadraturas aplicadas as subintervalos do intervalo de integração}. Mais especificamente, a integral de uma dada função $f(x)$ em um dado intervalo $[a, b]$ pode ser reescrita como uma soma de integrais em sucessivos subintervalos de $[a, b]$, i.e.
 \begin{equation}
   \int_a^b f(x)\,dx = \sum_{i=1}^{n} \int_{x_i}^{x_{i+1}}f(x)\,dx,
 \end{equation}
 onde $a=x_1 < x_2 < \cdots < x_{n+1}=b$. Então, a aplicação de uma quadratura em cada integral em $[x_i, x_{i+1}]$, $i=1, 2, \dotsc, n$, nos fornece uma regra composta.
 
-\subsection{Regra composta do ponto médio}
+\subsection{Regra Composta do Ponto Médio}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-Consideremos uma partição uniforme do intervalo de integração $[a, b]$ da forma $a=\tilde{x}_1 < \tilde{x}_2 < \cdots < \tilde{x}_{n+1}=b$, com $h=x_{i+1}-x_{i}$, $i=1, 2, \dotsc, n$. Então, aplicando a regra do ponto médio a cada integral nos subintervalos $[\tilde{x}_i, \tilde{x}_{i+1}]$, temos
+Consideramos uma partição uniforme do intervalo de integração $[a, b]$ da forma $a=\tilde{x}_1 < \tilde{x}_2 < \cdots < \tilde{x}_{n+1}=b$, com $h=\tilde{x}_{i+1}-\tilde{x}_{i}$, $i=1, 2, \dotsc, n$. Então, aplicando a regra do ponto médio a cada integral nos subintervalos $[\tilde{x}_i, \tilde{x}_{i+1}]$, temos
 \begin{align}
   \int_a^b f(x)\,dx &= \sum_{i=1}^{n}\int_{\tilde{x}_i}^{\tilde{x}_{i+1}}f(x)\,dx\\
-  &= \sum_{i=1}^n \left[hf\left(\frac{\tilde{x}_i+\tilde{x}_{i+1}}{2}\right) + O(h^3)\right].
+  &= \sum_{i=1}^n \left[{\hleq hf\left(\frac{\tilde{x}_i+\tilde{x}_{i+1}}{2}\right)} + O(h^3)\right].
 \end{align}
-Agora, observando que $h:=(b-a)/n$ e escolhendo os nodos $x_i = a + (i-1/2)h$, $i=1, 2, \dotsc, n$, obtemos a \emph{regra composta do ponto médio com $n$ subintervalos}
-\begin{equation}
+Agora, observando que \hl{$\hleq{h:=(b-a)/n}$ e escolhendo os nodos}
+\begin{equation}\hleq
+  x_i = a + (i - 1/2)h,
+\end{equation}
+  $i=1, 2, \dotsc, n$, obtemos a \hl{\emph{regra composta do ponto médio com $n$ subintervalos}}
+\begin{equation}\hleq
   \int_a^b f(x)\,dx = \sum_{i=1}^n hf(x_i) + O(h^2).
 \end{equation}
 
-\begin{ex}\label{ex:int_comp_pm}
-  Consideremos o problema de computar a integral de $f(x)=xe^{-x^2}$ no intervalo $[0, 1]$. Usando a regra composta do ponto médio com $n$ subintervalos, obtemos a aproximação
+\begin{ex}\label{cap_integr_sec_int_comp:ex:int_comp_pm}
+  Consideramos o problema de computar a integral de $f(x)=xe^{-x^2}$ no intervalo $[0, 1]$. Usando a regra composta do ponto médio com $n$ subintervalos, obtemos a aproximação
   \begin{equation}
-    \underbrace{\int_a^b f(x)\,dx}_{I} \approx \underbrace{\sum_{i=1}^n hf(x_i)}_{S},
+    \underbrace{\int_0^1 xe^{-x^2}\,dx}_{I} \approx \underbrace{\sum_{i=1}^n hf(x_i)}_{S},
   \end{equation}
-onde $h=1/(4n)$ e $x_i = (i-1/2)h$, $i=1, 2, \dotsc, n$. Na Tabela~\ref{tab:ex_int_comp_pm}, temos as aproximações computadas com diversos números de subintervalos, bem como, seus erros absolutos.
+onde $h=1/n$ e $x_i = (i-1/2)h$, $i=1, 2, \dotsc, n$. Na Tabela~\ref{cap_integr_sec_int_comp:tab:ex_int_comp_pm}, temos as aproximações computadas com diversos números de subintervalos, bem como, seus erros absolutos.
 
-\begin{table}[h!]
+\begin{table}[H]
   \centering
-  \caption{Resultados referentes ao Exemplo~\ref{ex:int_comp_pm}.}
-  \begin{tabular}{l|cc}
-    $n$ & $S$ & $|I-S|$ \\\hline
-    1   & $3,89400\E-1$ & $7,3\E-2$ \\
-    10  & $3,16631\E-1$ & $5,7\E-4$ \\
-    100 & $3,16066\E-1$ & $5,7\E-6$ \\
-    1000& $3.16060\E-1$ & $5,7\E-8$ \\\hline
+  \caption{Resultados referentes ao Exemplo~\ref{cap_integr_sec_int_comp:ex:int_comp_pm}.}
+  \begin{tabular}{l|cc}\toprule
+    $n$ & $S$ & $|S-I|$ \\\midrule
+    1   & $3.89400\E-1$ & $7.3\E-2$ \\
+    10  & $3.16631\E-1$ & $5.7\E-4$ \\
+    100 & $3.16066\E-1$ & $5.7\E-6$ \\
+    1000& $3.16060\E-1$ & $5.7\E-8$ \\\bottomrule
   \end{tabular}
-  \label{tab:ex_int_comp_pm}
+  \label{cap_integr_sec_int_comp:tab:ex_int_comp_pm}
 \end{table}
 
-% \ifisoctave
-% Podemos fazer estas computações com o auxílio do seguinte código \verb+GNU Octave+:
-% \begin{verbatim}
-% f = @(x) x*exp(-x^2);
-% a=0;
-% b=1;
-% n=10;
-% h=(b-a)/n;
-% s=0;
-% for i=1:n
-%   x=a+(i-1/2)*h;
-%   s+=h*f(x);
-% endfor
-% printf("%1.5E %1.1E\n",s,abs((1-e^(-1))/2-s))
-% \end{verbatim}
-% \fi
+\begin{lstlisting}[caption=pm\_comp.py]
+import numpy as np
+
+def pm_comp(f, a, b, n):
+    h = (b-a)/n
+    S = 0.
+    for i in range(n):
+        x = a + (i+0.5)*h
+        S += f(x)
+    S *= h
+    return S
+
+# intervalo
+a = 0.
+b = 1.
+# integrando
+def f(x):
+    return x*np.exp(-x**2)
+
+# quad
+n = 10
+S = pm_comp(f, a, b, n)
+# exata
+I = 1./2 - np.exp(-1.)/2
+# erro abs
+print(f'{n}: {S:.5e}, {np.fabs(S-I):.1e}')
+\end{lstlisting}
 \end{ex}
 
-\subsection{Regra composta do trapézio}
+\subsection{Regra Composta do Trapézio}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-Para obtermos a regra composta do trapézio, consideramos uma partição uniforme do intervalo de integração $[a, b]$ da forma $a=x_1 < x_2 < \cdots < x_{n+1}=b$ com $h=x_{i+1}-x_{i}$, $i=1, 2, \dotsc, n$. Então, aplicando a regra do trapézio em cada integração nos subintervalos, obtemos
-\begin{align}
-  \int_a^bf(x)\,dx &= \sum_{i=1}^n \int_{x_i}^{x_{i+1}} f(x)\,dx\\
-  &= \sum_{i=1}^n \left\{\frac{h}{2}\left[f(x_i)+f(x_{i+1})\right] + O(h^3)\right\}\\
-  &= f(x_1)\frac{h}{2} + \sum_{i=2}^{n} hf(x_i) + f(x_{n+1})\frac{h}{2} + O(h^2). 
-\end{align}
-Desta forma, a regra composto do trapézio\index{regra composta!do trapézio} com $n$ subintervalos é
-\begin{equation}
-  \int_a^b f(x)\,dx = \frac{h}{2}\left[f(x_1) + \sum_{i=2}^{n} 2f(x_i) + f(x_{n+1})\right] + O(h^2),
+Para obtermos a \emph{regra composta do trapézio}, consideramos uma partição uniforme do intervalo de integração $[a, b]$ da forma $a=x_1 < x_2 < \cdots < x_{n+1}=b$ com $h=x_{i+1}-x_{i}$, $i=1, 2, \dotsc, n$. Então, aplicando a regra do trapézio em cada integração nos subintervalos, obtemos
+\begin{subequations}
+  \begin{align}
+    \int_a^bf(x)\,dx &= \sum_{i=1}^n \int_{x_i}^{x_{i+1}} f(x)\,dx\\
+                     &= \sum_{i=1}^n \left\{{\hleq \frac{h}{2}\left[f(x_i)+f(x_{i+1})\right]} + O(h^3)\right\}\\
+                     &= \frac{h}{2}f(x_1) + \sum_{i=2}^{n} hf(x_i) + \frac{h}{2}f(x_{n+1}) + O(h^2). 
+  \end{align}
+\end{subequations}
+Desta forma, a \hl{\emph{regra composta do trapézio com $n$ subintervalos}} é
+\begin{equation}\hleq
+  \int_a^b f(x)\,dx = \frac{h}{2}\left[f(x_1) + 2\sum_{i=2}^{n} f(x_i) + f(x_{n+1})\right] + O(h^2),
 \end{equation}
-onde $h=(b-a)/n$ e $x_i = a + (i-1)h$, $i=1, 2, \dotsc, n$.
+onde \hl{$\hleq h=(b-a)/n$ e $\hleq x_i = a + (i-1)h$}, $i=1, 2, \dotsc, n$.
 
-\begin{ex}\label{ex:int_comp_trap}
-  Consideremos o problema de computar a integral de $f(x)=xe^{-x^2}$ no intervalo $[0, 1]$. Usando a regra composta do trapézio com $n$ subintervalos, obtemos a aproximação
+\begin{ex}\label{cap_integr_sec_int_comp:ex:int_comp_trap}
+Consideramos o problema de computar a integral de $f(x)=xe^{-x^2}$ no intervalo $[0, 1]$. Usando a regra composta do trapézio com $n$ subintervalos, obtemos a aproximação
   \begin{equation}
-    \underbrace{\int_a^b f(x)\,dx}_{I} \approx \underbrace{\frac{h}{2}\left[f(x_1) + 2\sum_{i=2}^{n} f(x_i) + f(x_{n+1})\right]}_{S},
+    \underbrace{\int_0^1 xe^{-x^2}\,dx}_{I} \approx \underbrace{\frac{h}{2}\left[f(x_1) + 2\sum_{i=2}^{n} f(x_i) + f(x_{n+1})\right]}_{S},
   \end{equation}
-onde $h=1/(4n)$ e $x_i = (i-1)h$, $i=1, 2, \dotsc, n$. Na Tabela~\ref{tab:ex_int_comp_trap}, temos as aproximações computadas com diversos números de subintervalos, bem como, seus erros absolutos.
+onde $h=1/n$ e $x_i = (i-1)h$, $i=1, 2, \dotsc, n$. Na Tabela~\ref{cap_integr_sec_int_comp:tab:ex_int_comp_trap}, temos as aproximações computadas com diversos números de subintervalos, bem como, seus erros absolutos.
 
-\begin{table}[h!]
+\begin{table}[H]
   \centering
-  \caption{Resultados referentes ao Exemplo~\ref{ex:int_comp_trap}.}
-  \begin{tabular}{l|cc}
-    $n$ & $S$ & $|I-S|$ \\\hline
-    1   & $1,83940\E-1$ & $1,3\E-1$ \\
-    10  & $3,14919\E-1$ & $1,1\E-3$ \\
-    100 & $3.16049\E-1$ & $1,1\E-5$ \\
-    1000& $3,16060\E-1$ & $1,1\E-7$ \\\hline
+  \caption{Resultados referentes ao Exemplo~\ref{cap_integr_sec_int_comp:ex:int_comp_trap}.}
+  \begin{tabular}{l|cc}\toprule
+    $n$ & $S$ & $|S-I|$ \\\midrule
+    1   & $1.83940\E-1$ & $1.3\E-1$ \\
+    10  & $3.14919\E-1$ & $1.1\E-3$ \\
+    100 & $3.16049\E-1$ & $1.1\E-5$ \\
+    1000& $3.16060\E-1$ & $1.1\E-7$ \\\bottomrule
   \end{tabular}
-  \label{tab:ex_int_comp_trap}
+  \label{cap_integr_sec_int_comp:tab:ex_int_comp_trap}
 \end{table}
 
-% \ifisoctave
-% Podemos fazer estas computações com o auxílio do seguinte código \verb+GNU Octave+:
-% \begin{verbatim}
-% f = @(x) x*exp(-x^2);
-% a=0;
-% b=1;
-% n=1000;
-% h=(b-a)/n;
-% s=f(a);
-% for i=2:n
-%   x=a+(i-1)*h;
-%   s+=2*f(x);
-% endfor
-% s+=f(b);
-% s*=h/2;
-% printf("%1.5E %1.1E\n",s,abs((1-e^(-1))/2-s))
-% \end{verbatim}
-% \fi
+\begin{lstlisting}[caption=trap\_comp.py]
+import numpy as np
+
+def trap_comp(f, a, b, n):
+    h = (b-a)/n
+    S = f(a)
+    for i in range(1,n):
+        x = a + i*h
+        S += 2*f(x)
+    S += f(b)
+    S *= h/2
+    return S
+\end{lstlisting}
 \end{ex}
 
-\subsection{Regra composta de Simpson}
+\subsection{Regra Composta de Simpson}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
+A fim de obtermos a \emph{regra composta de Simpson}, consideramos uma partição uniforme do intervalo de integração $[a, b]$ da forma $a=\tilde{x}_1 < \tilde{x}_2 < \cdots < \tilde{x}_{n+1}=b$, com $h=(\tilde{x}_{i+1}-\tilde{x}_{i})/2$, $i=1, 2, \dotsc, n$. Então, aplicando a regra de Simpson a cada integral nos subintervalos $[\tilde{x}_i, \tilde{x}_{i+1}]$, temos
+\begin{subequations}
+  \begin{align}
+    \int_a^b f(x)\,dx &= \sum_{i=1}^{n}\int_{\tilde{x}_i}^{\tilde{x}_{i+1}}f(x)\,dx\\
+                      &= \sum_{i=1}^n \left\{{\hleq\frac{h}{3}\left[f(\tilde{x_i}) + 4f\left(\frac{\tilde{x}_i+\tilde{x}_{i+1}}{2}\right) + f(\tilde{x_{i+1}})\right]} + O(h^5)\right\}.
+  \end{align}
+\end{subequations}
+Então, observando que \hl{$\hleq h=(b-a)/(2n)$} e tomando \hl{$\hleq x_i=a+(i-1)h$}, $i=1, 2, \dotsc, n$, obtemos a \hlemph{regra composta de Simpson com $n$ subintervalos}
+\begin{equation}\hleq
+  \begin{aligned}
+    \int_a^b f(x)\,dx &= \frac{h}{3}\left[f(x_1) + 2\sum_{i=2}^{n} f(x_{2i-1}) + 4\sum_{i=1}^{n} f(x_{2i}) + f(x_{n+1})\right]\\
+    &+ O(h^4)
+  \end{aligned}
+\end{equation}
 
-A fim de obtermos a regra composta de Simpson, consideramos uma partição uniforme do intervalo de integração $[a, b]$ da forma $a=\tilde{x}_1 < \tilde{x}_2 < \cdots < \tilde{x}_{n+1}=b$, com $h=(\tilde{x}_{i+1}-\tilde{x}_{i})/2$, $i=1, 2, \dotsc, n$. Então, aplicando a regra de Simpson a cada integral nos subintervalos $[\tilde{x}_i, \tilde{x}_{i+1}]$, temos
-\begin{align}
-  \int_a^b f(x)\,dx &= \sum_{i=1}^{n}\int_{\tilde{x}_i}^{\tilde{x}_{i+1}}f(x)\,dx\\
-  &= \sum_{i=1}^n \left\{\frac{h}{3}\left[f(\tilde{x_i}) + 4f\left(\frac{\tilde{x}_i+\tilde{x}_{i+1}}{2}\right) + f(\tilde{x_{i+1}})\right] + O(h^5)\right\}.
-\end{align}
-Então, observando que $h=(b-a)/(2n)$ e tomando $x_i=a+(i-1)h$, $i=1, 2, \dotsc, n$, obtemos a regra composta de Simpson\index{regra composta!de Simpson} com $n$ subintervalos
-\begin{align}
-  \int_a^b f(x)\,dx &= \frac{h}{3}\left[f(x_1) + 2\sum_{i=2}^{n} f(x_{2i-1}) + 4\sum_{i=1}^{n} f(x_{2i}) + f(x_{n+1})\right] \nonumber\\
-  &+ O(h^4)
-\end{align}
-
-\begin{ex}\label{ex:int_comp_sim}
-  Consideremos o problema de computar a integral de $f(x)=xe^{-x^2}$ no intervalo $[0, 1]$. Usando a regra composta de Simpson com $n$ subintervalos, obtemos a aproximação
+\begin{ex}\label{cap_integr_sec_int_comp:ex:int_comp_sim}
+  Consideramos o problema de computar a integral de $f(x)=xe^{-x^2}$ no intervalo $[0, 1]$. Usando a regra composta de Simpson com $n$ subintervalos, obtemos a aproximação
   \begin{equation}
-    \underbrace{\int_a^b f(x)\,dx}_{I} \approx \underbrace{\frac{h}{3}\left[f(x_1) + 2\sum_{i=2}^{n} f(x_{2i-1}) + 4\sum_{i=1}^{n} f(x_{2i}) + f(x_{n+1})\right]}_{S},
+    \underbrace{\int_0^1 xe^{-x^2}\,dx}_{I} \approx \underbrace{\frac{h}{3}\left[f(x_1) + 2\sum_{i=2}^{n} f(x_{2i-1}) + 4\sum_{i=1}^{n} f(x_{2i}) + f(x_{n+1})\right]}_{S},
   \end{equation}
-onde $h=1/(8n)$ e $x_i = (i-1)h$, $i=1, 2, \dotsc, n$. Na Tabela~\ref{tab:ex_int_comp_sim}, temos as aproximações computadas com diversos números de subintervalos, bem como, seus erros absolutos.
+onde $h=1/(2n)$ e $x_i = (i-1)h$, $i=1, 2, \dotsc, n$. Na Tabela~\ref{cap_integr_sec_int_comp:tab:ex_int_comp_sim}, temos as aproximações computadas com diversos números de subintervalos, bem como, seus erros absolutos.
 
-\begin{table}[h!]
+\begin{table}[H]
   \centering
-  \caption{Resultados referentes ao Exemplo~\ref{ex:int_comp_sim}.}
-  \begin{tabular}{l|cc}
-    $n$ & $S$ & $|I-S|$ \\\hline
-    1   & $3,20914\E-1$ & $4,9\E-3$ \\
-    10  & $3,16061\E-1$ & $3,4\E-7$ \\
-    100 & $3,16060\E-1$ & $3,4\E-11$ \\
-    1000& $3,16060\E-1$ & $4,2\E-15$ \\\hline
+  \caption{Resultados referentes ao Exemplo~\ref{cap_integr_sec_int_comp:ex:int_comp_sim}.}
+  \begin{tabular}{l|cc}\toprule
+    $n$ & $S$ & $|I-S|$ \\\midrule
+    $1$    & $3.20914\E-1$ & $4.9\E-3$ \\
+    $10$   & $3.16061\E-1$ & $3.4\E-7$ \\
+    $100$  & $3.16060\E-1$ & $3.4\E-11$ \\
+    $1000$ & $3.16060\E-1$ & $4.2\E-15$ \\\bottomrule
   \end{tabular}
-  \label{tab:ex_int_comp_sim}
+  \label{cap_integr_sec_int_comp:tab:ex_int_comp_sim}
 \end{table}
 
-% \ifisoctave
-% Podemos fazer estas computações com o auxílio do seguinte código \verb+GNU Octave+:
-% \begin{verbatim}
-% f = @(x) x*exp(-x^2);
-% a=0;
-% b=1;
-% n=1000;
-% h=(b-a)/(2*n);
-% s=f(a);
-% for i=2:n
-%   x=a+(2*i-2)*h;
-%   s+=2*f(x);
-% endfor
-% for i=1:n
-%   x=a+(2*i-1)*h;
-%   s+=4*f(x);
-% endfor
-% s+=f(b);
-% s*=h/3;
-% printf("%1.5E %1.1E\n",s,abs((1-e^(-1))/2-s))
-% \end{verbatim}
-% \fi
+\begin{lstlisting}[caption=simpson\_comp.py]
+import numpy as np
+
+def simpson_comp(f, a, b, n):
+    h = (b-a)/(2*n)
+    S = f(a)
+    for i in range(1,n):
+        x = a + (2*i)*h
+        S += 2*f(x)
+    for i in range(0,n):
+        x = a + (2*i+1)*h
+        S += 4*f(x)  
+    S += f(b)
+    S *= h/3
+    return S
+\end{lstlisting}
 \end{ex}
 
 \subsection*{Exercícios}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-\begin{exer}\label{exer:int_comp_fun}
+\begin{exer}
   Aproxime
   \begin{equation}
     \int_{-1}^0 \frac{\sen(x+2)-e^{-x^2}}{x^2+\ln(x+2)}\,dx
   \end{equation}
-usando a:
-\begin{enumerate}[a)]
-\item regra composta do ponto médio com $10$ subintervalos.
-\item regra composta do trapézio com $10$ subintervalos.
-\item regra composta de Simpson com $10$ subintervalos.
-\end{enumerate}
+  usando a:
+  \begin{enumerate}[a)]
+  \item regra composta do ponto médio com $10$ subintervalos.
+  \item regra composta do trapézio com $10$ subintervalos.
+  \item regra composta de Simpson com $10$ subintervalos.
+  \end{enumerate}
 \end{exer}
 \begin{resp}
-  % \ifisoctave 
-  % \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_integr/dados/exer_int_comp_fun/exer_int_comp_fun.m}{Código.} 
-  % \fi
-  a)~$2,69264\E-1$; b)~$2,68282\E-1$; c)~$2,68937\E-1$
+  a)~$2.69264\E-1$; b)~$2.68282\E-1$; c)~$2.68937\E-1$
 \end{resp}
 
-\begin{exer}\label{exer:int_comp_tab}
-  Considere a seguinte tabela de pontos
-  \begin{center}
-    \begin{tabular}{l|cccccc}
-      $i$ & $1$ & $2$ & $3$ & $4$ & $5$ & $6$ \\\hline
-      $x_i$ & $2,0$ & $2,1$ & $2,2$ & $2,3$ & $2,4$ & $2,5$ \\
-      $y_i$ & $1,86$ & $1,90$ & $2,01$ & $2,16$ & $2,23$ & $2,31$ \\\hline
-    \end{tabular}
-  \end{center}
-Assumindo que $y = f(x)$, e usando o máximo de subintervalos possíveis, calcule:
-\begin{enumerate}[a)]
-\item $\displaystyle \int_{2,0}^{2,4} f(x)\,dx$ usando a regra do ponto médio composta.
-\item $\displaystyle \int_{2,0}^{2,5} f(x)\,dx$ usando a regra do trapézio composta.
-\item $\displaystyle \int_{2,0}^{2,4} f(x)\,dx$ usando a regra de Simpson composta.
-\end{enumerate}
+\begin{exer}
+  Considere
+  \begin{equation}
+    I = \int_{\pi/6}^{\pi/4} e^{-x}\cos(x)\,dx
+  \end{equation}
+  Para cada uma das seguintes quadraturas, compute a aproximação de $I$ com $5$ dígitos significativos corretos.
+  \begin{enumerate}[a)]
+  \item regra composta do ponto médio.
+  \item regra composta do trapézio.
+  \item regra composta de Simpson.
+  \end{enumerate}
 \end{exer}
 \begin{resp}
-  % \ifisoctave 
-  % \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_integr/dados/exer_int_comp_tab/exer_int_comp_tab.m}{Código.} 
-  % \fi
-  a)~$8,12000\E-1$; b)~$1,03850$; c)~$8,11667\E-1$
+  Dica: para cada quadratura, observe a convergência das aproximações com sucessivos refinamentos no número de intervalos.
+\end{resp}
+
+\begin{exer}
+  Considere a seguinte tabela de pontos
+  \begin{center}
+    \begin{tabular}{l|cc}\toprule
+      $i$ & $x_i$ & $y_i$\\\midrule
+      $1$ & $2.0$ & $1.86$\\
+      $2$ & $2.1$ & $1.90$\\
+      $3$ & $2.2$ & $2.01$\\
+      $4$ & $2.3$ & $2.16$\\
+      $5$ & $2.4$ & $2.23$\\
+      $6$ & $2.5$ & $2.31$\\\bottomrule
+    \end{tabular}
+  \end{center}
+  Assumindo que $y = f(x)$, e usando o máximo de subintervalos possíveis, calcule:
+  \begin{enumerate}[a)]
+  \item $\displaystyle \int_{2,0}^{2,4} f(x)\,dx$ usando a regra do ponto médio composta.
+  \item $\displaystyle \int_{2,0}^{2,5} f(x)\,dx$ usando a regra do trapézio composta.
+  \item $\displaystyle \int_{2,0}^{2,4} f(x)\,dx$ usando a regra de Simpson composta.
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a)~$8.12000\E-1$; b)~$1.03850$; c)~$8.11667\E-1$
 \end{resp}
 
 \section{Quadratura de Romberg}\label{cap_integr_sec_Romberg}
