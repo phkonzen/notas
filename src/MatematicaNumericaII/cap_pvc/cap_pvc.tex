@@ -15,7 +15,7 @@ onde a incógnita é $u = u(x)$ com dada $f = f(x, u, u')$ e dados parâmetros $
 
 \section{Método de Diferenças Finitas}\label{cap_pvc_sec_mdf}
 
-Consideramos o seguinte Problema Linear de Valor de Contorno (PVC)
+Consideramos o seguinte problema linear de valor de contorno (PVC)
 \begin{subequations}\label{cap_pvc_sec_mdf:eq:pvc}\hleq
   \begin{align}
     &u'' + \alpha(x) u' + \beta(x) u = f(x), ~a < x < b, \label{cap_pvc_sec_mdf:eq:pvc_eq}\\
@@ -159,17 +159,8 @@ com tamanho de malha $h=1/n$ e nodos $x_i = (i-1)h$ indexados por $i = 1, 2, \do
 
 Resolvendo este sistema com $h=10^{-1}$ obtemos a solução numérica apresentada na Figura~\ref{cap_pvc_sec_mdf:fig:ex_pvc_mdf_1}. Ainda, na Tabela~\ref{cap_pvc_sec_mdf:tab:ex_pvc_mdf_1} temos a comparação na norma $L^2$ da solução numérica $\tilde{\pmb{u}}$ com a solução analítica $\pmb{u} = (u(x_i))_{i=1}^{n+1}$ para diferentes escolhas de $h$.
 
-\begin{lstlisting}
+\begin{lstlisting}[caption=pvc\_mdf.py]
 import numpy as np
-import numpy.linalg as npla
-import matplotlib.pyplot as plt
-
-plt.rcParams.update({
-     "text.usetex": True,
-     "font.family": "serif",
-     "font.size": 14
-     })
-
 
 # malha
 n = 10
@@ -256,8 +247,8 @@ onde
     \end{array}
   \right.
 \end{equation}
-\end{exer}
 Use uma aproximação adequada pelo método de diferenças finitas para obter o valor aproximado de $u(0)$ com precisão de $2$ dígitos significativos.
+\end{exer}
 \begin{resp}
   $7,2\E-1$
 \end{resp}
@@ -280,4 +271,285 @@ Use uma aproximação adequada pelo método de diferenças finitas para obter o 
   b) resultado mais preciso.
 \end{resp}
 
+\section{Método de Elementos Finitos}\label{cap_pvc_sec_fem}
 
+Consideramos o seguinte problema linear de valor de contorno (PVC)
+\begin{subequations}\label{cap_pvc_sec_fem:eq:pvc}\hleq
+  \begin{align}
+    &-u'' = f(x), ~a < x < b, \label{cap_pvc_sec_fem:eq:pvc_eq}\\
+    &u(a) = 0, \label{cap_pvc_sec_fem:eq:pvc_bc1}\\
+    &u(b) = 0. \label{cap_pvc_sec_fem:eq:pvc_bc2}
+  \end{align}
+\end{subequations}
+onde a incógnita é $u = u(x)$ com dada fonte $f = f(x)$.
+
+\hl{A solução pelo \emph{Método de Elementos Finitos} (FEM) de {\eqref{cap_pvc_sec_mdf:eq:pvc_eq}}-{\eqref{cap_pvc_sec_mdf:eq:pvc_bc2}} surge da aproximação do problema em um espaço de dimensão finita de funções}. São três passos fundamentais: 1. escrever a formulação fraca do problema\footnote{Por convenção, {\eqref{cap_pvc_sec_mdf:eq:pvc_eq}}-{\eqref{cap_pvc_sec_mdf:eq:pvc_bc2}} é chamado de formulação forte do problema.}, 2. escrever a formulação de elementos finitos e 3. resolver o problema de elementos finitos.
+
+\begin{flushleft}
+  \textbf{1. Formulação Fraca}
+\end{flushleft}
+
+Para obter a \emph{formulação fraca} do PVC {\eqref{cap_pvc_sec_fem:eq:pvc_eq}}-{\eqref{cap_pvc_sec_fem:eq:pvc_bc2}}, multiplicamos \eqref{cap_pvc_sec_fem:eq:pvc_eq} por uma arbitrária função teste $v = v(x)$
+\begin{equation}
+  -u''v = fv
+\end{equation}
+e integramos no domínio $a \leq x \leq b$, i.e.
+\begin{equation}
+    -\int_a^bu''v\,dx = \int_a^bfv\,dx.
+\end{equation}
+Então, aplicando \emph{integração por partes} no primeiro termo do lado esquerdo, obtemos
+\begin{equation}
+    \int_a^bu'v'\,dx - \left[u'v\right]_{x=a}^b = \int_a^bfv\,dx.
+\end{equation}
+
+Vamos denotar o produto interno em $L^2([a,b])$\footnote{$u\in L^2([a,b]) \Leftrightarrow \int_a^b |u|^2\,dx < \infty$.} por
+\begin{equation}
+  (u, v)_2 := \int_a^b uv\,dx
+\end{equation}
+e nos contornos
+\begin{equation}
+  \langle u, v \rangle := u(b)v(b) - u(a)v(a).
+\end{equation}
+Com isso, definimos a \hlemph{formulação fraca} como o seguinte problema: \hl{encontrar $u\in V := H_0^1([a,b])$\footnote{$H_0^1([a,b]) := \{u=u(x);~u,u'\in L^2([a,b]), u(a)=u(b)=0\}$.} tal que}
+\begin{equation}\hleq\label{cap_pvc_sec_fem:eq:prob_fraco}
+  a(u, v) = l(v), ~\forall v\in V,
+\end{equation}
+onde a \emph{forma bilinear} é
+\begin{equation}
+  a(u, v) := (u', v')_2
+\end{equation}
+e a \emph{forma linear} é
+\begin{equation}
+  l(v) := (f, v)_2.
+\end{equation}
+
+\begin{flushleft}
+  \textbf{2. Formulação de Elementos Finitos}
+\end{flushleft}
+
+\hl{A \emph{formulação de elementos finitos} do problema {\eqref{cap_pvc_sec_fem:eq:pvc_eq}}-{\eqref{cap_pvc_sec_fem:eq:pvc_bc2}} é obtida a partir de {\eqref{cap_pvc_sec_fem:eq:prob_fraco}} pela substituição do espaço de funções $V$ por um \emph{espaço de dimensão finita} $V_h$}. A ideia é que $V_h\to V$, bem como a solução de elementos finitos $u_h\to u\in V$ quando $h\to 0$.
+
+Para construir o \emph{espaço de elementos finitos} $V_h$, vamos considerar elementos do tipo
+\begin{equation}
+  \begin{aligned}
+    P_1(I) := &\left\{v=v(x); v(x)=c_0+c_1x,\right. \\
+    &\qquad\qquad\qquad\left. x\in I, c_0,c_1\in\mathbb{R}\right\},
+  \end{aligned}
+\end{equation}
+onde $I$ é um intervalo fechado.
+
+Sobre o domínio, assumimos uma malha uniforme
+\begin{equation}
+  M([a,b]) := \{x_1, x_2, \dotsc, x_{n+1}\}
+\end{equation}
+com $h = (b-a)/n$, $x_i = a + (i-1)h$, $i=1, 2, \dotsc, n+1$. Nesta, definimos o espaço de funções
+\begin{equation}
+  \begin{aligned}
+    V_{h,0} &:= \left\{v=v(x); v\in C^0[a,b], v(a)=v(b)=0, \right.\\
+    &\left.\qquad\qquad\qquad v|_{[x_i,x_{i+1}]}\in P_1([x_i,x_{i+1}]), i=1, 2, \dotsc, n\right\}.
+  \end{aligned}
+\end{equation}
+Pode-se mostrar que $V_h = \spn\{\phi_i\}_{i=1}^{n-1}$, com base nodal
+\begin{equation}
+  \phi_j(x_i) = \left\{
+    \begin{array}{ll}
+      1 &, i=j,\\
+      0 &, i\neq j
+    \end{array}
+\right.
+\end{equation}
+para $i,j = 2, \dotsc, n$ e $\phi_1(a)=0=\phi_n(b)$. Podemos verificar que
+\begin{equation}
+  \phi_i(x) = \left\{
+    \begin{array}{ll}
+      (x-x_{i-1})/h &, x\in [x_{i-1}, x_i],\\
+      (x_{i+1}-x)/h &, x\in [x_i, x_{i+1}],\\
+      0 &, \text{noutros casos}
+    \end{array}
+\right.
+\end{equation}
+
+Com isso, definimos a \hlemph{formulação de elementos finitos} sendo o seguinte problema: \hl{encontrar $u_h\in V_{h,0}$ tal que}
+\begin{equation}
+  a(u_h, v_h) = l(v_h), ~\forall v_h\in V_h.
+\end{equation}
+Tendo em vista que $V_h = \spn\{\phi_i\}_{i=1}^{n+1}$, este é equivalente a
+\begin{equation}\label{cap_pvc_sec_mef:eq:fef}\hleq
+  a(u_h, \phi_j) = l(\phi_j), ~\forall 1\leq j \leq n-1.
+\end{equation}
+
+\begin{flushleft}
+  \textbf{3. Resolução do Problema de Elementos Finitos}
+\end{flushleft}
+
+\hl{O problema de elementos finitos {\eqref{cap_pvc_sec_mef:eq:fef}} consiste em um sistema linear} $\hleq A\pmb{u} = \pmb{b}$. De fato, a solução $u_h\in V_{h,0}$ pode ser escrita como a seguinte combinação linear
+\begin{equation}
+  u_h = \sum_{j=1}^{n-1}u_j\phi_j.
+\end{equation}
+Logo, temos que
+\begin{subequations}
+  \begin{align}
+    a(u_h, \phi_i) &= \left(\sum_{j=1}^{n-1}u_j\phi_j, \phi_i\right)_2,\\
+                   &= \sum_{j=1}^{n-1}u_j(\phi_j,\phi_i)_2,\\
+                   &= A\pmb{u},
+  \end{align}
+\end{subequations}
+onde a \hlemph{matriz dos coeficientes} é $\hleq{A = \left[a_{i,j}:=(\phi_j, \phi_i)\right]_{i,j=1}^{n-1}}$ e o \hlemph{vetor das incógnitas} é $\hleq{\pmb{u} = (u_j)_{j=1}^{n-1}}$. Doutro lado, temos
+\begin{equation}
+  l(\phi_i) = (f, \phi_i)_2,
+\end{equation}
+o que nos fornece o \hlemph{vetor dos termos constantes} $\hleq \pmb{b} = \left(b_i:=(f, \phi_i)_2\right)_{i=1}^{n-1}$.
+
+O cálculo dos elementos de $A$ fornece
+\begin{subequations}
+  \begin{align}
+    a_{i,i} &= (\phi_i, \phi_i)_2\\
+            &= \int_a^b \phi_i^2\,dx\\
+            &= \int_{x_{i-1}}^{x_{i+1}}\phi_i^2\,dx\\
+            &= \int_{x_{i-1}}^{x_i} \frac{(x-x_{i-1})^2}{h^2}\,dx\\
+            &+ \int_{x_{i}}^{x_{i+1}} \frac{(x_{i+1}-x_{i})^2}{h^2}\,dx\\
+            &= \frac{2}{h}, ~i=1, 2, \dotsc, n-1,
+  \end{align}
+\end{subequations}
+\begin{subequations}
+  \begin{align}
+    a_{i,i+1} &= (\phi_{i+1}, \phi_i)_2\\
+            &= \int_a^b \phi_{i+1}\phi_i\,dx\\
+            &= \int_{x_{i}}^{x_{i+1}}\frac{(x_{i+1}-x)}{h}\frac{(x - x_{i+1})}{h}\,dx\\
+            &= -\frac{1}{h}, ~i=1, 2, \dotsc, n-2,
+  \end{align}
+\end{subequations}
+\begin{subequations}
+  \begin{align}
+    a_{i-1,i} &= (\phi_{i-1}, \phi_i)_2\\
+            &= \int_a^b \phi_{i-1}\phi_i\,dx\\
+            &= \int_{x_{i-1}}^{x_{i}}\frac{(x_i-x)}{h}\frac{(x - x_{i})}{h}\,dx\\
+            &= -\frac{1}{h}, ~i=2, \dotsc, n-1,
+  \end{align}
+\end{subequations}
+observando que, noutros casos, $a_{i,j} = 0$.
+
+Um cálculo aproximado dos elementos de $\pmb{b}$ fornece\footnote{Por simplicidade, usando a regra do ponto médio para aproximar as integrais.}
+\begin{subequations}
+  \begin{align}
+    b_i &= (f, \phi_i)_2\\
+        &= \int_a^b f(x)\phi_i(x)\,dx\\
+        &= \int_{x_{i-1}}^{x_{i}} f(x)\frac{(x-x_{i-1})}{h}\,dx\\
+        &+ \int_{x_{i}}^{x_{i+1}} f(x)\frac{(x_{i+1}-x)}{h}\,dx\\
+        &\approx \frac{h}{2}f(x_{i-1/2}) + \frac{h}{2}f(x_{i+1/2}).
+  \end{align}
+\end{subequations}
+
+\begin{ex}\label{cap_pvc_sec_mef:ex:pvc_mef}
+  Consideramos o seguinte PVC
+  \begin{align}
+    &-u'' = \pi^2\sen(\pi x), ~0 < x < 1,\\
+    &u(0) = 0,\\
+    &u(1) = 0.
+  \end{align}
+  A solução analítica deste problema é $u(x) = \sen(\pi x)$.
+  
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./cap_pvc/dados/fig_mef/fig}
+    \caption{Resultado referente ao Exemplo~\ref{cap_pvc_sec_mef:ex:pvc_mef}.}
+    \label{cap_pvc_sec_mef:fig:ex_pvc_mef}
+  \end{figure}
+
+Resolvendo este sistema com $h=10^{-1}$ obtemos a solução numérica apresentada na Figura~\ref{cap_pvc_sec_mef:fig:ex_pvc_mef}.
+
+\begin{lstlisting}[caption=pvc\_mef.py]
+import numpy as np
+
+# malha
+n = 10
+h = 1./n
+xx = np.linspace(0., 1., n+1)
+
+# fonte
+def f(x):
+    return np.pi**2*np.sin(np.pi*x)
+
+# prob discreto
+A = np.zeros((n-1, n-1))
+b = np.empty(n-1)
+
+# c.c. x = 0.
+A[0,0] = 2./h
+A[0,1] = -1./h
+b[0] = h/2 * (f(xx[1]-0.5*h) + f(xx[1]+0.5*h))
+
+# pts internos
+for i in range(1,n-2):
+    A[i,i-1] = -1./h
+    A[i,i] = 2./h
+    A[i,i+1] = -1./h
+    b[i] = h/2 * (f(xx[i+1]-0.5*h) + f(xx[i+1]+0.5*h))
+
+# c.c. x = 1.
+A[n-2,n-3] = -1./h
+A[n-2,n-2] = 2./h
+b[n-2] = h/2 * (f(xx[n-1]-0.5*h) + f(xx[n-1]+0.5*h))
+
+# resol
+u = npla.solve(A, b)
+## c.c. (dirichlet)
+u = np.concatenate(([0.],u,[0.]))
+\end{lstlisting}
+\end{ex}
+
+\subsection{Exercícios}
+
+\begin{exer}
+  Considere o PVC
+  \begin{align}
+    &-u'' = \pi^2\cos(\pi x), ~0 < x < 1,\\
+    &u(0) = 1,\\
+    &u(1) = -1.
+  \end{align}
+  A solução analítica deste problema é $u(x) = \cos(\pi x)$. Use o MEF para computar aproximações numéricas $\tilde{\pmb{u}}_h$ com tamanhos de malha $h=10^{-1}, 10^{-2}, 10^{-3}, 10^{-4}$ e verifique o erro absoluto $\varepsilon_{\text{abs}} := \|\tilde{\pmb{u}}_h - \pmb{u}\|$.
+\end{exer}
+
+\begin{exer}
+  Considere o PVC
+  \begin{align}
+    &-u'' = 1, ~-1 < x < 1,\\
+    &u(-1) = 0,\\
+    &u(1) = 0.
+  \end{align}
+  A solução analítica deste problema é $u(x) = 1-x^2$. Use o MEF com $n=20$ subintervalos na malha e verifique o erro absoluto $\varepsilon_{\text{abs}} := \|\tilde{\pmb{u}}_h - \pmb{u}\|$. Por que o erro está próximo precisão de máquina? Justifique sua resposta.
+\end{exer}
+
+\begin{exer}
+Considere o seguinte PVC
+\begin{subequations}
+  \begin{align}
+    &-u'' + u' = f(x), ~-1 < x < 1,\\
+    &u(-1) = 0,\\
+    &u'(1) =0,
+  \end{align}
+\end{subequations}
+onde
+\begin{equation}
+  f(x) = \left\{
+    \begin{array}{ll}
+      1 &, x\leq 0\\
+      0 &, x>0
+    \end{array}
+  \right.
+\end{equation}
+Use uma aproximação adequada pelo MEF para obter o valor aproximado de $u(0)$ com precisão de $2$ dígitos significativos.
+\end{exer}
+\begin{resp}
+  $7,2\E-1$
+\end{resp}
+
+\begin{exer}
+  Considere o PVC
+  \begin{align}
+    &-u'' = \pi^2\cos(\pi x), ~0 < x < 1,\\
+    &u(0) = 1,\\
+    &u'(1) = 0.
+  \end{align}
+  A solução analítica deste problema é $u(x) = \cos(\pi x)$. Aplique o MEF para computar uma aproximação numérica com erro absoluto de no máximo $10^{-3}$ na norma $L^2$.
+\end{exer}
