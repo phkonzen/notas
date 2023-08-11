@@ -680,31 +680,28 @@ usando a quadratura de Romberg de ordem 4.
   $2,68953\E-1$
 \end{resp}
 
-\section{Grau de exatidão}\label{cap_integr_sec_grau_exat}
+\section{Grau de Exatidão}\label{cap_integr_sec_grau_exat}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-O grau de exatidão é uma medida de exatidão de uma quadratura numérica. Mais precisamente, dizemos que uma dada quadratura numérica de nodos e pesos $\{(x_i, w_i)\}_{i=1}^n$ tem grau de exatidão $m$, quando
+O grau de exatidão \hl{é uma medida de exatidão de uma quadratura numérica}. Mais precisamente, \hl{dizemos que uma dada quadratura numérica de nodos e pesos $\{(x_i, w_i)\}_{i=1}^n$ tem grau de exatidão $m$, quando}
 \begin{equation}
   \int_a^b p(x)\,dx = \sum_{i=1}^n p(x_i)w_i
 \end{equation}
-para todo polinômio $p(x)$ de grau menor $m$. Ou ainda, conforme descrito na definição a seguir.
+\hl{para todo polinômio $p(x)$ de grau menor $m$}. Ou ainda, conforme descrito na definição a seguir.
 
-\begin{defn}\index{grau de exatidão}
+\begin{defn}\normalfont{(\hl{Grau de Exatidão}.)}
   Dizemos que uma dada quadratura numérica de pontos e nodos $\{x_i, w_i\}_{i=1}^n$ tem \emph{grau de exatidão} $m$, quando
-  \begin{equation}
+  \begin{equation}\hleq
     \int_a^b x^k\,dx = \sum_{i=1}^n x_i^kw_i,~\forall k\leq m.
   \end{equation}
 \end{defn}
 
-\begin{ex}
-  Determinemos o grau de exatidão da regra do ponto médio. Para tanto, verificamos para quais $k$ vale
-  \begin{equation}
-    \int_a^b x^k\,dx = (b-a)\left(\frac{a+b}{2}\right)^k.
-  \end{equation}
-Vejamos:
+\subsection{Regra do Ponto Médio}
+
+Vamos determinar \hl{o grau de exatidão da regra do ponto médio}. Para tanto, verificamos para quais $k$ vale
+\begin{equation}
+  \int_a^b x^k\,dx = (b-a)\left(\frac{a+b}{2}\right)^k.
+\end{equation}
+Temos
 \begin{itemize}
 \item $k=0$:
   \begin{align}
@@ -722,15 +719,34 @@ Vejamos:
     &(b-a)\left(\frac{a+b}{2}\right)^2 \neq \frac{b^3}{3}-\frac{a^3}{3}.
   \end{align}
 \end{itemize}
-Ou seja, a regra do ponto média tem grau de exatidão $1$.
-\end{ex}
+Ou seja, a regra do ponto médio tem grau de exatidão $1$. Isto quer dizer, que a regra do ponto médio fornece o valor exato para a integral de qualquer polinômio de grau menor ou igual a 1.
 
 \begin{ex}
-  Determinemos o grau de exatidão da regra de Simpson. Para tanto, verificamos para quais $k$ vale
-  \begin{equation}
-    \int_a^b x^k\,dx = \frac{(b-a)}{6}\left(f(a) + 4f\left(\frac{a+b}{2}\right) + f(b)\right)^k.
-  \end{equation}
-Vejamos:
+  A integral
+  \begin{subequations}
+    \begin{align}
+    I &= \int_1^5 1-2x\,dx\\
+      &= \left. x - x^2\right|_{1}^5\\
+      &= (5-25) - (1-1) = -20.
+    \end{align}
+  \end{subequations}
+  Pela regra do ponto médio, temos
+  \begin{subequations}
+    \begin{align}
+      S &= hf\left(\frac{a+b}{2}\right)\\
+        &= (5-1)\left[1 - 2\cdot \frac{(1+5)}{2}\right]\\
+        &= 4(1 - 6) = -20.
+    \end{align}
+  \end{subequations}
+\end{ex}
+
+\subsection{Regra de Simpson}
+
+Vamos determinar o grau de exatidão da regra de Simpson. Para tanto, verificamos para quais $k$ vale
+\begin{equation}
+  \int_a^b x^k\,dx = \frac{(b-a)}{6}\left(f(a) + 4f\left(\frac{a+b}{2}\right) + f(b)\right)^k.
+\end{equation}
+Temos
 \begin{itemize}
 \item $k=0$:
   \begin{align}
@@ -762,14 +778,29 @@ Vejamos:
     &\frac{(b-a)}{6}\left(a^4 + 4\left(\frac{a+b}{2}\right)^4 + b^4\right) \neq \frac{b^5}{5}-\frac{a^5}{5}.
   \end{align}
 \end{itemize}
-Ou seja, a regra de Simpson tem grau de exatidão $3$.
+Ou seja, a regra de Simpson tem grau de exatidão $3$. Isto significa que ela fornece o valor exato da integral de qualquer polinômio de grau menor ou igual a 3.
+
+\begin{ex}
+  A integral
+  \begin{subequations}
+    \begin{align}
+      I &= \int_{-1}^1 1-x^2\,dx\\
+        &= \left. x - \frac{x^3}{3}\right|\\
+        &= \left(1 - \frac{1}{3}\right) - \left(-1 + \frac{1}{3}\right)\\
+        &= \frac{4}{3}.
+    \end{align}
+  \end{subequations}
+  Pela regra de Simpson, temos
+  \begin{subequations}
+    \begin{align}
+      S &= \frac{h}{3}\left[f(a) + 4f\left(\frac{a+b}{2}\right) + f(b)\right]\\
+        &= \frac{1}{3}\left[(1-(-1)^2) + 4(1-0^2) + (1-(1)^2)\right]\\
+        &= \frac{4}{3}.
+    \end{align}
+  \end{subequations}
 \end{ex}
 
-\subsection*{Exercícios}
-
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
+\subsection{Exercícios}
 
 \begin{exer}
   Determine o grau de exatidão da regra do trapézio.
@@ -779,10 +810,46 @@ Ou seja, a regra de Simpson tem grau de exatidão $3$.
 \end{resp}
 
 \begin{exer}
+  Calcule
+  \begin{equation}
+    \int_{-7\sqrt{3}}^{7\sqrt{3}} \pi x - e\,dx.
+  \end{equation}
+\end{exer}
+\begin{resp}
+  Dica: use a regra do ponto médio.
+\end{resp}
+
+\begin{exer}
   Determine o nodo e o peso da quadratura numérica de um único nodo e de grau de exatidão $1$ para o intervalo de integração $[-1, 1]$.
 \end{exer}
 \begin{resp}
   $x_1=0$, $w_1=2$
+\end{resp}
+
+\begin{exer}
+  Considere uma quadratura numérica de dois nodos e pesos
+  \begin{equation}
+    S = f(x_1)\omega_1 + f(x_2)\omega_2.
+  \end{equation}
+  Determine as possíveis escolhas de pesos e nodos para que ela tenha grau de exatidão $2$ no intervalo de integração $[0,1]$.
+\end{exer}
+\begin{resp}
+  \begin{align}
+    &\omega_1 + \omega_2 = 1\\
+    &x_2\omega_2 = \frac{1}{2}\\
+    &x_1^2\omega_1 + x_2^2\omega_2 = \frac{1}{3}
+  \end{align}
+\end{resp}
+
+\begin{exer}
+  Mostre que a seguinte quadratura numérica
+  \begin{equation}
+    S = f(-1)\frac{1}{3} + f(0)\frac{4}{3} + f(1)\frac{1}{3}
+  \end{equation}
+  tem grau de exatidão $3$ no intervalo de integração $[-1, 1]$.
+\end{exer}
+\begin{resp}
+  Dica: consulte o grau de exatidão da regra de Simpson.
 \end{resp}
 
 \section{Quadratura Gauss-Legendre}\label{cap_integr_sec_Gauss-Legendre}
