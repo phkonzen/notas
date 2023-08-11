@@ -1,11 +1,11 @@
 import numpy as np
+from numpy.polynomial.legendre import leggauss
 
-# intervalo
-a = 0.
-b = 1./4
-# fun
-f = lambda x: x*np.exp(-x**2)
-# quad
-h = b-a
-I = h*(f((a+b)/2))
-print(f'I = {I:.5e}')
+# integrando
+f = lambda x: np.cos(x)
+# quadratura
+n = 4
+x,w = leggauss(n)
+# aproximação
+S = np.sum(f(x)*w)
+print(f'{n}: S = {S:.5e}')
