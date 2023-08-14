@@ -195,7 +195,7 @@ u = npla.solve(A, b)
 \end{lstlisting}
 \end{ex}
 
-\subsection*{Exercícios}
+\subsection{Exercícios}
 
 \begin{exer}
   Considere o PVC
@@ -552,4 +552,204 @@ Use uma aproximação adequada pelo MEF para obter o valor aproximado de $u(0)$ 
     &u'(1) = 0.
   \end{align}
   A solução analítica deste problema é $u(x) = \cos(\pi x)$. Aplique o MEF para computar uma aproximação numérica com erro absoluto de no máximo $10^{-3}$ na norma $L^2$.
+\end{exer}
+
+\section{Método de Volumes Finitos}
+
+\hl{O \emph{Método de Volumes Finitos} (MVF) é um método de discretização apropriado para problemas conservativos}. Consideramos o seguinte problema linear de valor de contorno (PVC)
+\begin{subequations}\label{cap_pvc_sec_fvm:eq:pvc}\hleq
+  \begin{align}
+    &-u_{xx} = f(x), ~a < x < b, \label{cap_pvc_sec_fem:eq:pvc_eq}\\
+    &u(a) = 0, \label{cap_pvc_sec_fem:eq:pvc_bc1}\\
+    &u(b) = 0. \label{cap_pvc_sec_fem:eq:pvc_bc2}
+  \end{align}
+\end{subequations}
+onde a incógnita é $u = u(x)$ com dada fonte $f = f(x)$. A Eq.~\eqref{cap_pvc_sec_fvm:eq:pvc} pode ser reescrita na forma conservativa
+\begin{equation}
+  \div(\pmb{F}) = f,
+\end{equation}
+onde $\pmb{F} = -u_x$
+
+\begin{flushleft}
+  \hlemph{1. Discretização Espacial.}
+\end{flushleft}
+
+Assumimos uma malha do domínio $[a, b]$ da forma
+\begin{equation}
+  a = x_{\frac{1}{2}} < x_1 < x_{\frac{3}{2}} < \cdots < x_{i-\frac{1}{2}} < x_i < x_{i+\frac{1}{2}} < \cdots < x_{n} < x_{n+\frac{1}{2}} = b,
+\end{equation}
+onde $h = (b-a)/n$, $x_{i-\frac{1}{2}} = a + (i-1)h$, $h^{-} = h^{+} = h/2$, $i = 1, 2, \dotsc, n$. Também denotamos $K_i = \left(x_{i-\frac{1}{2}}, x_{i+\frac{1}{2}}\right)$ a $i$-ésima célula da malha.
+
+\begin{flushleft}
+  \hlemph{2. Discretização das Equações.}
+\end{flushleft}
+
+No MVF, as incógnitas $u_i$, $i = 1, 2, \dotsc, n$, são as aproximações para o valor médio de $u$ nas células $K_i$, i.e.
+\begin{equation}
+  u_i = \frac{1}{|K_i|}\int_{a}^{b}u(x)\,dx.
+\end{equation}
+O sistema discreto para $u_i$ é obtido tomando a média da Eq.~\label{cap_pvc_sec_fem:eq:pvc_eq} na célula $K_i$, donde temos
+\begin{subequations}
+  \begin{align}
+    &-\frac{1}{h}\int_{x_{i-\frac{1}{2}}}^{x_{i+\frac{1}{2}}}u_{xx}\,dx = \frac{1}{h}\int_{K_i}f\,dx,\\
+    &\hleq \frac{1}{h}\left[-u_x\left(x_{i+\frac{1}{2}}\right) + u_x\left(x_{i-\frac{1}{2}}\right)\right] = \frac{1}{h}\int_{K_i}f\,dx\label{cap_pvc_sec_fvm:eq:aux00}
+  \end{align}
+\end{subequations}
+Por fórmula de diferenças finitas central, temos
+\begin{equation}
+  u_{x}\left(x_{i+\frac{1}{2}}\right) = \frac{u_i - u_{i-1}}{h} + O(h)
+\end{equation}
+e
+\begin{equation}
+  u_x\left(x_{i-\frac{1}{2}}\right) = \frac{u_{i+1} - u_i}{h} + O(h)
+\end{equation}
+Com isso, obtemos as equações
+\begin{equation}\label{cap_pvc_sec_fvm:eq:aux0}
+  \frac{1}{h}\left(-\frac{u_{i+1}-u_{i}}{h} + \frac{u_i - u_{i-1}}{h}\right) = \frac{1}{h}\int_{K_i}f\,dx,
+\end{equation}
+Rearranjando os termos e aproximando a integral de $f$ pela \href{https://notaspedrok.com.br/notas/MatematicaNumericaII/cap_integr_sec_nc.html}{\emph{regra do ponto médio}}, obtemos
+\begin{equation}\label{cap_pvc_sec_fvm:eq:aux}
+  -\frac{1}{h^2}u_{i-1} + \frac{2}{h^2}u_i - \frac{1}{h^2}u_{i+1} = f_i,
+\end{equation}
+onde $f_i := f(x_i)$ e $i = 2, 3, \dotsc, n-1$.
+
+Na célula $K_1$, tomamos a aproximação
+\begin{subequations}
+  \begin{align}
+    u_x\left(x_{\frac{1}{2}}\right) &= \frac{u_{1} - u_{\frac{1}{2}}}{h/2} + O\left(h\right),\\
+                                    &= = \frac{u_{1}}{h/2} + O\left(h\right).
+  \end{align}
+\end{subequations}
+Aplicando na Eq.~\eqref{cap_pvc_sec_fvm:eq:aux00}, obtemos
+\begin{equation}\hleq
+  \frac{1}{h}\left(-\frac{u_{2}-u_{1}}{h} + \frac{u_1}{h/2}\right) = \frac{1}{h}\int_{K_i}f\,dx,
+\end{equation}
+Analogamente, integrando na célula $K_n$ de fronteira, obtemos
+\begin{equation}\hleq
+  \frac{1}{h}\left(\frac{u_{n}}{h/2} + \frac{u_{n} - u_{n-1}}{h}\right) = \frac{1}{h}\int_{K_i}f\,dx.
+\end{equation}
+
+Por fim, obtemos o \hlemph{sistema discreto}
+\begin{subequations}\hleq
+  \begin{align}
+    &\frac{3}{h^2}u_1 - \frac{1}{h^2}u_{2} = f_1,\\
+    &-\frac{1}{h^2}u_{i-1} + \frac{2}{h^2}u_i - \frac{1}{h^2}u_{i+1} = f_i,\\
+    &-\frac{1}{h^2}u_{n-1} + \frac{3}{h^2}u_{n+1} = f_n,
+  \end{align}
+\end{subequations}
+para $i = 2, 3, \dotsc, n-1$.
+
+\begin{ex}\label{cap_pvc_sec_mvf:ex:pvc_mvf}
+  Consideramos o seguinte PVC
+  \begin{align}
+    &-u'' = \pi^2\sen(\pi x), ~0 < x < 1,\\
+    &u(0) = 0,\\
+    &u(1) = 0.
+  \end{align}
+  A solução analítica deste problema é $u(x) = \sen(\pi x)$.
+  
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./cap_pvc/dados/fig_mvf/fig}
+    \caption{Resultado referente ao Exemplo~\ref{cap_pvc_sec_mef:ex:pvc_mvf}.}
+    \label{cap_pvc_sec_mvf:fig:ex_pvc_mvf}
+  \end{figure}
+
+  Resolvendo este sistema com $h=10^{-1}$ obtemos a solução numérica apresentada na Figura~\ref{cap_pvc_sec_mvf:fig:ex_pvc_mvf}.
+
+\begin{lstlisting}[caption=pvc\_mvf.py]
+import numpy as np
+
+# fonte
+def f(x):
+  return np.pi**2*np.sin(np.pi*x)
+
+# malha
+n = 10
+h = 1./n
+xx = np.linspace(h/2, 1.-h/2, n)
+
+# prob. discreto
+A = np.zeros((n,n))
+b = np.empty(n)
+
+# c.c. x = 0
+A[0,0] = 3./h**2
+A[0,1] = -1./h**2
+b[0] = f(xx[0])
+
+# pts internos
+for i in range(1,n-1):
+  A[i,i-1] = -1./h**2
+  A[i,i] = 2./h**2
+  A[i,i+1] = -1./h**2
+  b[i] = f(xx[i])
+
+# c.c. x = 1
+A[n-1,n-2] = -1./h**2
+A[n-1,n-1] = 3./h**2
+b[n-1] = f(xx[n-1])
+
+# resol prob disc
+u = npla.solve(A, b)
+
+xx = np.concatenate(([0.],xx,[1.]))
+u = np.concatenate(([0.],u,[0.]))
+\end{lstlisting}
+\end{ex}
+
+\subsection{Exercícios}
+
+\begin{exer}
+  Considere o PVC
+  \begin{align}
+    &-u'' = \pi^2\cos(\pi x), ~0 < x < 1,\\
+    &u(0) = 1,\\
+    &u(1) = -1.
+  \end{align}
+  A solução analítica deste problema é $u(x) = \cos(\pi x)$. Use o MVF para computar aproximações numéricas $\tilde{\pmb{u}}_h$ com tamanhos de malha $h=10^{-1}, 10^{-2}, 10^{-3}, 10^{-4}$ e verifique o erro absoluto $\varepsilon_{\text{abs}} := \|\tilde{\pmb{u}}_h - \pmb{u}\|$.
+\end{exer}
+
+\begin{exer}
+  Considere o PVC
+  \begin{align}
+    &-u'' = 1, ~-1 < x < 1,\\
+    &u(-1) = 0,\\
+    &u(1) = 0.
+  \end{align}
+  A solução analítica deste problema é $u(x) = 1-x^2$. Use o MVF com $n=20$ subintervalos na malha e verifique o erro absoluto $\varepsilon_{\text{abs}} := \|\tilde{\pmb{u}}_h - \pmb{u}\|$.
+\end{exer}
+
+\begin{exer}
+Considere o seguinte PVC
+\begin{subequations}
+  \begin{align}
+    &-u'' + u' = f(x), ~-1 < x < 1,\\
+    &u(-1) = 0,\\
+    &u'(1) =0,
+  \end{align}
+\end{subequations}
+onde
+\begin{equation}
+  f(x) = \left\{
+    \begin{array}{ll}
+      1 &, x\leq 0\\
+      0 &, x>0
+    \end{array}
+  \right.
+\end{equation}
+Use uma aproximação adequada pelo MVF para obter o valor aproximado de $u(0)$ com precisão de $2$ dígitos significativos.
+\end{exer}
+\begin{resp}
+  $7,2\E-1$
+\end{resp}
+
+\begin{exer}
+  Considere o PVC
+  \begin{align}
+    &-u'' = \pi^2\cos(\pi x), ~0 < x < 1,\\
+    &u(0) = 1,\\
+    &u'(1) = 0.
+  \end{align}
+  A solução analítica deste problema é $u(x) = \cos(\pi x)$. Aplique o MVF para computar uma aproximação numérica com erro absoluto de no máximo $10^{-3}$ na norma $L^2$.
 \end{exer}
