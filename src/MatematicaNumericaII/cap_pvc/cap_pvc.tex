@@ -554,17 +554,17 @@ Use uma aproximação adequada pelo MEF para obter o valor aproximado de $u(0)$ 
   A solução analítica deste problema é $u(x) = \cos(\pi x)$. Aplique o MEF para computar uma aproximação numérica com erro absoluto de no máximo $10^{-3}$ na norma $L^2$.
 \end{exer}
 
-\section{Método de Volumes Finitos}
+\section{Método de Volumes Finitos}\label{cap_pvc_sec_mvf}
 
 \hl{O \emph{Método de Volumes Finitos} (MVF) é um método de discretização apropriado para problemas conservativos}. Consideramos o seguinte problema linear de valor de contorno (PVC)
-\begin{subequations}\label{cap_pvc_sec_fvm:eq:pvc}\hleq
+\begin{subequations}\label{cap_pvc_sec_mvf:eq:pvc}\hleq
   \begin{align}
-    &-u_{xx} = f(x), ~a < x < b, \label{cap_pvc_sec_fem:eq:pvc_eq}\\
-    &u(a) = 0, \label{cap_pvc_sec_fem:eq:pvc_bc1}\\
-    &u(b) = 0. \label{cap_pvc_sec_fem:eq:pvc_bc2}
+    &-u_{xx} = f(x), ~a < x < b, \label{cap_pvc_sec_mvf:eq:pvc_eq}\\
+    &u(a) = 0, \label{cap_pvc_sec_mvf:eq:pvc_bc1}\\
+    &u(b) = 0. \label{cap_pvc_sec_mvf:eq:pvc_bc2}
   \end{align}
 \end{subequations}
-onde a incógnita é $u = u(x)$ com dada fonte $f = f(x)$. A Eq.~\eqref{cap_pvc_sec_fvm:eq:pvc} pode ser reescrita na forma conservativa
+onde a incógnita é $u = u(x)$ com dada fonte $f = f(x)$. A Eq.~\eqref{cap_pvc_sec_mvf:eq:pvc} pode ser reescrita na forma conservativa
 \begin{equation}
   \div(\pmb{F}) = f,
 \end{equation}
@@ -592,7 +592,7 @@ O sistema discreto para $u_i$ é obtido tomando a média da Eq.~\label{cap_pvc_s
 \begin{subequations}
   \begin{align}
     &-\frac{1}{h}\int_{x_{i-\frac{1}{2}}}^{x_{i+\frac{1}{2}}}u_{xx}\,dx = \frac{1}{h}\int_{K_i}f\,dx,\\
-    &\hleq \frac{1}{h}\left[-u_x\left(x_{i+\frac{1}{2}}\right) + u_x\left(x_{i-\frac{1}{2}}\right)\right] = \frac{1}{h}\int_{K_i}f\,dx\label{cap_pvc_sec_fvm:eq:aux00}
+    &\hleq \frac{1}{h}\left[-u_x\left(x_{i+\frac{1}{2}}\right) + u_x\left(x_{i-\frac{1}{2}}\right)\right] = \frac{1}{h}\int_{K_i}f\,dx\label{cap_pvc_sec_mvf:eq:aux00}
   \end{align}
 \end{subequations}
 Por fórmula de diferenças finitas central, temos
@@ -604,11 +604,11 @@ e
   u_x\left(x_{i-\frac{1}{2}}\right) = \frac{u_{i+1} - u_i}{h} + O(h)
 \end{equation}
 Com isso, obtemos as equações
-\begin{equation}\label{cap_pvc_sec_fvm:eq:aux0}
+\begin{equation}\label{cap_pvc_sec_mvf:eq:aux0}
   \frac{1}{h}\left(-\frac{u_{i+1}-u_{i}}{h} + \frac{u_i - u_{i-1}}{h}\right) = \frac{1}{h}\int_{K_i}f\,dx,
 \end{equation}
 Rearranjando os termos e aproximando a integral de $f$ pela \href{https://notaspedrok.com.br/notas/MatematicaNumericaII/cap_integr_sec_nc.html}{\emph{regra do ponto médio}}, obtemos
-\begin{equation}\label{cap_pvc_sec_fvm:eq:aux}
+\begin{equation}\label{cap_pvc_sec_mvf:eq:aux}
   -\frac{1}{h^2}u_{i-1} + \frac{2}{h^2}u_i - \frac{1}{h^2}u_{i+1} = f_i,
 \end{equation}
 onde $f_i := f(x_i)$ e $i = 2, 3, \dotsc, n-1$.
@@ -620,7 +620,7 @@ Na célula $K_1$, tomamos a aproximação
                                     &= = \frac{u_{1}}{h/2} + O\left(h\right).
   \end{align}
 \end{subequations}
-Aplicando na Eq.~\eqref{cap_pvc_sec_fvm:eq:aux00}, obtemos
+Aplicando na Eq.~\eqref{cap_pvc_sec_mvf:eq:aux00}, obtemos
 \begin{equation}\hleq
   \frac{1}{h}\left(-\frac{u_{2}-u_{1}}{h} + \frac{u_1}{h/2}\right) = \frac{1}{h}\int_{K_i}f\,dx,
 \end{equation}
