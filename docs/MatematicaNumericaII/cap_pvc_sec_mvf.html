@@ -1,0 +1,633 @@
+<!DOCTYPE html><html lang="pt">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>5.3 Método de Volumes Finitos‣ Capítulo 5 Problema de Valor de Contorno ‣ Matemática Numérica II</title>
+<!--Generated on Mon Aug 14 20:33:31 2023 by LaTeXML (version 0.8.6) http://dlmf.nist.gov/LaTeXML/.-->
+<!--Document created on 14 de agosto de 2023.-->
+
+<link rel="stylesheet" href="LaTeXML.css" type="text/css">
+<link rel="stylesheet" href="ltx-book.css" type="text/css">
+<link rel="stylesheet" href="ltx-listings.css" type="text/css">
+<link rel="stylesheet" href="ltx-ulem.css" type="text/css">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="../main.css" type="text/css">
+<link rel="stylesheet" href="./fonts/cmun-serif.css" type="text/css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=MML_SVG" type="text/javascript"></script>
+<link rel="up" href="cap_pvc.html" title="Capítulo 5 Problema de Valor de Contorno ‣ Matemática Numérica II">
+<link rel="up up" href="main.html" title="Matemática Numérica II">
+<link rel="start" href="main.html" title="Matemática Numérica II">
+<link rel="prev" href="cap_pvc_sec_fem.html" title="5.2 Método de Elementos Finitos ‣ Capítulo 5 Problema de Valor de Contorno ‣ Matemática Numérica II">
+<link rel="next" href="cap_edp.html" title="Capítulo 6 Equações Diferenciais Parciais ‣ Matemática Numérica II">
+<link rel="section" href="cap_pvc_sec_mdf.html" title="5.1 Método de Diferenças Finitas ‣ Capítulo 5 Problema de Valor de Contorno ‣ Matemática Numérica II">
+<link rel="section" href="cap_pvc_sec_fem.html" title="5.2 Método de Elementos Finitos ‣ Capítulo 5 Problema de Valor de Contorno ‣ Matemática Numérica II">
+<link rel="chapter" href="licenca.html" title="Licença ‣ Matemática Numérica II">
+<link rel="chapter" href="prefacio.html" title="Prefácio ‣ Matemática Numérica II">
+<link rel="chapter" href="cap_deriv.html" title="Capítulo 1 Derivação ‣ Matemática Numérica II">
+<link rel="chapter" href="cap_extrapl.html" title="Capítulo 2 Técnicas de extrapolação ‣ Matemática Numérica II">
+<link rel="chapter" href="cap_integr.html" title="Capítulo 3 Integração ‣ Matemática Numérica II">
+<link rel="chapter" href="cap_pvi.html" title="Capítulo 4 Problema de Valor Inicial ‣ Matemática Numérica II">
+<link rel="chapter" href="cap_pvc.html" title="Capítulo 5 Problema de Valor de Contorno ‣ Matemática Numérica II">
+<link rel="chapter" href="cap_edp.html" title="Capítulo 6 Equações Diferenciais Parciais ‣ Matemática Numérica II">
+<link rel="bibliography" href="bib.html" title="Referências ‣ Matemática Numérica II">
+<meta name="author" content="Pedro H A Konzen"/><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous"><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script><link href="../fontawesome/css/all.min.css" rel="stylesheet"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"><link rel="stylesheet" href="goodies.css" type="text/css"><!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WZM0C3FQ62"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-WZM0C3FQ62');
+</script>
+</head>
+<body><div class="container-fluid mb-0"><div class="row"><div class="col-xxl-1"></div><div class="col-xxl-10"><div id="colabAlert" class="alert alert-warning alert-dismissible sticky-top m-0 d-flex justify-content-between" role="alert" style="">
+  <!-- <p class="m-0 d-flex justify-content-between"> -->
+    <span><a href="../contato.html"><i class="fas fa-envelope"></i></a>  <strong> Colabore com <a href="../contato.html" class="link-primary">sugestões</a> ou avisos de <a href="../contato.html">erros</a>!</strong></span>  <span class="material-symbols-outlined m-0">screen_rotation</span>
+  <span><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></span>
+  <!-- </p> -->
+</div>
+<div class="container-fluid d-flex justify-content-center mt-2 mb-2 fixed-bottom">
+  <div id="generalAlert" class="alert alert-warning alert-dismissible" role="alert" style="max-width: 300rem;">
+    Ao navegar por este
+    <i>site
+    </i>, você concorda com a
+    <a href="https://notaspedrok.com.br/notas/politica.html">Política de Uso de Dados
+    </a>.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+    </button>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+      $("#generalAlert").hide();
+      if (document.referrer.lastIndexOf("notaspedrok.com.br") == -1) {
+          $("#generalAlert").fadeIn(1000);
+      }
+  });   
+</script>
+<!-- begin: navbar --><nav class="navbar navbar-dark bg-primary mb-1"><div class="container-fluid"><a class="navbar-brand" href="main.html">Notas de Aula<br/><small>Matemática Numérica II</small></a><button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button><div class="collapse navbar-collapse" id="navbarNav"><ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="../index.html"><i class="fas fa-home"></i> Início</a></li><li class="nav-item"><a class="nav-link active" href="main.html">Sumário</a></li><li class="nav-item"><a class="nav-link" href="main.pdf"><i class="fas fa-download" aria-hidden="true"></i> PDF</a></li><li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">Contato</a><div class="dropdown-menu" aria-labelledby="navbarDropdown"><a class="dropdown-item" href="../contato.html"><i class="fas fa-envelope"></i> Mensagem</a><a class="dropdown-item" href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i> notas.pedrok</a></div><!-- div class="dropdown-menu" aria-labelledby="navbarDropdown" --></li> <!-- li class="nav-item dropdown" --><li class="nav-item"><a class="nav-link" href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i> Repo</a></li><li class="nav-item"><a class="nav-link" href="../politica.html">Política de dados</a></li></ul></div><!-- /.navbar-collapse --></div><!-- /.container-fluid --></nav><!-- end: navbar --><p class="text-left mb-0"><a href="./contato.html"><i class="fas fa-envelope"></i></a> | <a href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i></a> | <a href="https://archive.org/details/notas-de-aula"><i class="fas fa-building-columns"></i></a> | <a href="https://www.youtube.com/channel/UCwutHKlKLgVj6IkFSUFBqoA"><i class="fab fa-youtube"></i></a> | <a href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i></a></p>
+<div class="ltx_page_main">
+<header class="ltx_page_header">
+<div>
+<a href="cap_pvc.html" title="Capítulo 5 Problema de Valor de Contorno ‣ Matemática Numérica II" class="ltx_ref" rel="up"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">5 </span>Problema de Valor de Contorno</span></a><a href="cap_pvc_sec_fem.html" title="5.2 Método de Elementos Finitos ‣ Capítulo 5 Problema de Valor de Contorno ‣ Matemática Numérica II" class="ltx_ref" rel="prev"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">5.2 </span>Método de Elementos Finitos</span></a><a href="cap_edp.html" title="Capítulo 6 Equações Diferenciais Parciais ‣ Matemática Numérica II" class="ltx_ref" rel="next"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">6 </span>Equações Diferenciais Parciais</span></a>
+</div></header>
+<div class="ltx_page_content">
+<section class="ltx_section ltx_authors_1line" lang="pt">
+<h1 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">5.3 </span>Método de Volumes Finitos <small><a href="../contato.html"><i class="fas fa-envelope"></i></a></small></h1>
+
+<div id="p1" class="ltx_para">
+<p class="ltx_p"><span class="ltx_text" style="background-color:#FFFF00;">O <span class="ltx_text ltx_font_bold">Método de Volumes Finitos</span> (MVF) é um método de discretização apropriado para problemas conservativos</span>. Consideramos o seguinte problema linear de valor de contorno (PVC)</p>
+<table id="cap_pvc_sec_mvf:eq:pvc" class="ltx_equationgroup ltx_eqn_table">
+<tbody id="Ch6.S3.EGx174" class="ltx_eqn_row"><tr><td class="ltx_eqn_cell" colspan="4"></td></tr></tbody>
+<tbody id="cap_pvc_sec_mvf:eq:pvc_eq"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch5.E70.1.m1" class="ltx_Math" alttext="\displaystyle-u_{xx}=f(x),\leavevmode\nobreak\ a&lt;x&lt;b," display="inline"><mrow><mrow><mrow><mrow><mo mathcolor="#0000FF">-</mo><msub><mi mathcolor="#0000FF">u</mi><mrow><mi mathcolor="#0000FF">x</mi><mo mathcolor="#0000FF">⁢</mo><mi mathcolor="#0000FF">x</mi></mrow></msub></mrow><mo mathcolor="#0000FF">=</mo><mrow><mi mathcolor="#0000FF">f</mi><mo mathcolor="#0000FF">⁢</mo><mrow><mo mathcolor="#0000FF" stretchy="false">(</mo><mi mathcolor="#0000FF">x</mi><mo mathcolor="#0000FF" stretchy="false">)</mo></mrow></mrow></mrow><mo mathcolor="#0000FF" rspace="7.5pt">,</mo><mrow><mi mathcolor="#0000FF">a</mi><mo mathcolor="#0000FF">&lt;</mo><mi mathcolor="#0000FF">x</mi><mo mathcolor="#0000FF">&lt;</mo><mi mathcolor="#0000FF">b</mi></mrow></mrow><mo mathcolor="#0000FF">,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right"><span class="ltx_text" style="color:#0000FF;">(5.70a)</span></span></td>
+</tr></tbody>
+<tbody id="cap_pvc_sec_mvf:eq:pvc_bc1"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch5.E70.2.m1" class="ltx_Math" alttext="\displaystyle u(a)=0," display="inline"><mrow><mrow><mrow><mi mathcolor="#0000FF">u</mi><mo mathcolor="#0000FF">⁢</mo><mrow><mo mathcolor="#0000FF" stretchy="false">(</mo><mi mathcolor="#0000FF">a</mi><mo mathcolor="#0000FF" stretchy="false">)</mo></mrow></mrow><mo mathcolor="#0000FF">=</mo><mn mathcolor="#0000FF">0</mn></mrow><mo mathcolor="#0000FF">,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right"><span class="ltx_text" style="color:#0000FF;">(5.70b)</span></span></td>
+</tr></tbody>
+<tbody id="cap_pvc_sec_mvf:eq:pvc_bc2"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch5.E70.3.m1" class="ltx_Math" alttext="\displaystyle u(b)=0." display="inline"><mrow><mrow><mrow><mi mathcolor="#0000FF">u</mi><mo mathcolor="#0000FF">⁢</mo><mrow><mo mathcolor="#0000FF" stretchy="false">(</mo><mi mathcolor="#0000FF">b</mi><mo mathcolor="#0000FF" stretchy="false">)</mo></mrow></mrow><mo mathcolor="#0000FF">=</mo><mn mathcolor="#0000FF">0</mn></mrow><mo mathcolor="#0000FF">.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right"><span class="ltx_text" style="color:#0000FF;">(5.70c)</span></span></td>
+</tr></tbody>
+</table>
+<p class="ltx_p">onde a incógnita é <math id="p1.m1" class="ltx_Math" alttext="u=u(x)" display="inline"><mrow><mi>u</mi><mo>=</mo><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></math> com dada fonte <math id="p1.m2" class="ltx_Math" alttext="f=f(x)" display="inline"><mrow><mi>f</mi><mo>=</mo><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></math>. A Eq. (<a href="#cap_pvc_sec_mvf:eq:pvc" title="(5.70) ‣ 5.3 Método de Volumes Finitos ‣ Capítulo 5 Problema de Valor de Contorno ‣ Matemática Numérica II" class="ltx_ref"><span class="ltx_text ltx_ref_tag">5.70</span></a>) pode ser reescrita na forma conservativa</p>
+<table id="Ch5.E71" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch5.E71.m1" class="ltx_Math" alttext="\div(\boldsymbol{F})=f," display="block"><mrow><mo>÷</mo><mrow><mo stretchy="false">(</mo><mi>𝑭</mi><mo stretchy="false">)</mo></mrow><mo>=</mo><mi>f</mi><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(5.71)</span></td>
+</tr>
+</table>
+<p class="ltx_p">onde <math id="p1.m3" class="ltx_Math" alttext="\boldsymbol{F}=-u_{x}" display="inline"><mrow><mi>𝑭</mi><mo>=</mo><mrow><mo>-</mo><msub><mi>u</mi><mi>x</mi></msub></mrow></mrow></math></p>
+</div>
+<div id="p2" class="ltx_para ltx_align_left">
+<p class="ltx_p"><span class="ltx_text ltx_font_bold" style="background-color:#FFFF00;">1. Discretização Espacial.</span>
+</p>
+</div>
+<div id="p3" class="ltx_para">
+<p class="ltx_p">Assumimos uma malha do domínio <math id="p3.m1" class="ltx_Math" alttext="[a,b]" display="inline"><mrow><mo stretchy="false">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false">]</mo></mrow></math> da forma</p>
+<table id="Ch5.E72" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch5.E72.m1" class="ltx_Math" alttext="a=x_{\frac{1}{2}}&lt;x_{1}&lt;x_{\frac{3}{2}}&lt;\cdots&lt;x_{i-\frac{1}{2}}&lt;x_{i}&lt;x_{i+%
+\frac{1}{2}}&lt;\cdots&lt;x_{n}&lt;x_{n+\frac{1}{2}}=b," display="block"><mrow><mrow><mi>a</mi><mo>=</mo><msub><mi>x</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mo>&lt;</mo><msub><mi>x</mi><mn>1</mn></msub><mo>&lt;</mo><msub><mi>x</mi><mfrac><mn>3</mn><mn>2</mn></mfrac></msub><mo>&lt;</mo><mi mathvariant="normal">⋯</mi><mo>&lt;</mo><msub><mi>x</mi><mrow><mi>i</mi><mo>-</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></mrow></msub><mo>&lt;</mo><msub><mi>x</mi><mi>i</mi></msub><mo>&lt;</mo><msub><mi>x</mi><mrow><mi>i</mi><mo>+</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></mrow></msub><mo>&lt;</mo><mi mathvariant="normal">⋯</mi><mo>&lt;</mo><msub><mi>x</mi><mi>n</mi></msub><mo>&lt;</mo><msub><mi>x</mi><mrow><mi>n</mi><mo>+</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></mrow></msub><mo>=</mo><mi>b</mi></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(5.72)</span></td>
+</tr>
+</table>
+<p class="ltx_p">onde <math id="p3.m2" class="ltx_Math" alttext="h=(b-a)/n" display="inline"><mrow><mi>h</mi><mo>=</mo><mrow><mrow><mo stretchy="false">(</mo><mrow><mi>b</mi><mo>-</mo><mi>a</mi></mrow><mo stretchy="false">)</mo></mrow><mo>/</mo><mi>n</mi></mrow></mrow></math>, <math id="p3.m3" class="ltx_Math" alttext="x_{i-\frac{1}{2}}=a+(i-1)h" display="inline"><mrow><msub><mi>x</mi><mrow><mi>i</mi><mo>-</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></mrow></msub><mo>=</mo><mrow><mi>a</mi><mo>+</mo><mrow><mrow><mo stretchy="false">(</mo><mrow><mi>i</mi><mo>-</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mi>h</mi></mrow></mrow></mrow></math>, <math id="p3.m4" class="ltx_Math" alttext="h^{-}=h^{+}=h/2" display="inline"><mrow><msup><mi>h</mi><mo>-</mo></msup><mo>=</mo><msup><mi>h</mi><mo>+</mo></msup><mo>=</mo><mrow><mi>h</mi><mo>/</mo><mn>2</mn></mrow></mrow></math>, <math id="p3.m5" class="ltx_Math" alttext="i=1,2,\dotsc,n" display="inline"><mrow><mi>i</mi><mo>=</mo><mrow><mn>1,2</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mi>n</mi></mrow></mrow></math>. Também denotamos <math id="p3.m6" class="ltx_Math" alttext="K_{i}=\left(x_{i-\frac{1}{2}},x_{i+\frac{1}{2}}\right)" display="inline"><mrow><msub><mi>K</mi><mi>i</mi></msub><mo>=</mo><mrow><mo>(</mo><msub><mi>x</mi><mrow><mi>i</mi><mo>-</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></mrow></msub><mo>,</mo><msub><mi>x</mi><mrow><mi>i</mi><mo>+</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></mrow></msub><mo>)</mo></mrow></mrow></math> a <math id="p3.m7" class="ltx_Math" alttext="i" display="inline"><mi>i</mi></math>-ésima célula da malha.</p>
+</div>
+<div id="p4" class="ltx_para ltx_align_left">
+<p class="ltx_p"><span class="ltx_text ltx_font_bold" style="background-color:#FFFF00;">2. Discretização das Equações.</span></p>
+</div>
+<div id="p5" class="ltx_para">
+<p class="ltx_p">No MVF, as incógnitas <math id="p5.m1" class="ltx_Math" alttext="u_{i}" display="inline"><msub><mi>u</mi><mi>i</mi></msub></math>, <math id="p5.m2" class="ltx_Math" alttext="i=1,2,\dotsc,n" display="inline"><mrow><mi>i</mi><mo>=</mo><mrow><mn>1,2</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mi>n</mi></mrow></mrow></math>, são as aproximações para o valor médio de <math id="p5.m3" class="ltx_Math" alttext="u" display="inline"><mi>u</mi></math> nas células <math id="p5.m4" class="ltx_Math" alttext="K_{i}" display="inline"><msub><mi>K</mi><mi>i</mi></msub></math>, i.e.</p>
+<table id="cap_pvc_sec_fem:eq:pvc_eq" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch5.E73.m1" class="ltx_Math" alttext="u_{i}=\frac{1}{|K_{i}|}\int_{a}^{b}u(x)\,dx." display="block"><mrow><mrow><msub><mi>u</mi><mi>i</mi></msub><mo>=</mo><mrow><mfrac><mn>1</mn><mrow><mo stretchy="false">|</mo><msub><mi>K</mi><mi>i</mi></msub><mo stretchy="false">|</mo></mrow></mfrac><mo>⁢</mo><mrow><msubsup><mo largeop="true" symmetric="true">∫</mo><mi>a</mi><mi>b</mi></msubsup><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo rspace="4.2pt" stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mo rspace="0pt">𝑑</mo><mi>x</mi></mrow></mrow></mrow></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(5.73)</span></td>
+</tr>
+</table>
+<p class="ltx_p">O sistema discreto para <math id="p5.m5" class="ltx_Math" alttext="u_{i}" display="inline"><msub><mi>u</mi><mi>i</mi></msub></math> é obtido tomando a média da Eq.  na célula <math id="p5.m6" class="ltx_Math" alttext="K_{i}" display="inline"><msub><mi>K</mi><mi>i</mi></msub></math>, donde temos</p>
+<table id="Ch5.E74" class="ltx_equationgroup ltx_eqn_table">
+<tbody id="Ch6.S3.EGx175" class="ltx_eqn_row"><tr><td class="ltx_eqn_cell" colspan="4"></td></tr></tbody>
+<tbody id="Ch5.E74.1"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch5.E74.1.m1" class="ltx_Math" alttext="\displaystyle-\frac{1}{h}\int_{x_{i-\frac{1}{2}}}^{x_{i+\frac{1}{2}}}u_{xx}\,%
+dx=\frac{1}{h}\int_{K_{i}}f\,dx," display="inline"><mrow><mrow><mrow><mo>-</mo><mrow><mstyle displaystyle="true"><mfrac><mn>1</mn><mi>h</mi></mfrac></mstyle><mo>⁢</mo><mrow><mstyle displaystyle="true"><msubsup><mo largeop="true" symmetric="true">∫</mo><msub><mi>x</mi><mrow><mi>i</mi><mo>-</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></mrow></msub><msub><mi>x</mi><mrow><mi>i</mi><mo>+</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></mrow></msub></msubsup></mstyle><mrow><mpadded width="+1.7pt"><msub><mi>u</mi><mrow><mi>x</mi><mo>⁢</mo><mi>x</mi></mrow></msub></mpadded><mo>⁢</mo><mrow><mo rspace="0pt">𝑑</mo><mi>x</mi></mrow></mrow></mrow></mrow></mrow><mo>=</mo><mrow><mstyle displaystyle="true"><mfrac><mn>1</mn><mi>h</mi></mfrac></mstyle><mo>⁢</mo><mrow><mstyle displaystyle="true"><msub><mo largeop="true" symmetric="true">∫</mo><msub><mi>K</mi><mi>i</mi></msub></msub></mstyle><mrow><mpadded width="+1.7pt"><mi>f</mi></mpadded><mo>⁢</mo><mrow><mo rspace="0pt">𝑑</mo><mi>x</mi></mrow></mrow></mrow></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(5.74a)</span></td>
+</tr></tbody>
+<tbody id="cap_pvc_sec_mvf:eq:aux00"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch5.E74.2.m1" class="ltx_Math" alttext="\displaystyle\color[rgb]{0,0,1}\definecolor[named]{pgfstrokecolor}{rgb}{0,0,1}%
+\pgfsys@color@rgb@stroke{0}{0}{1}\pgfsys@color@rgb@fill{0}{0}{1}\frac{1}{h}%
+\left[-u_{x}\left(x_{i+\frac{1}{2}}\right)+u_{x}\left(x_{i-\frac{1}{2}}\right)%
+\right]=\frac{1}{h}\int_{K_{i}}f\,dx" display="inline"><mrow><mrow><mstyle displaystyle="true"><mfrac mathcolor="#0000FF"><mn mathcolor="#0000FF">1</mn><mi mathcolor="#0000FF">h</mi></mfrac></mstyle><mo mathcolor="#0000FF">⁢</mo><mrow><mo mathcolor="#0000FF">[</mo><mrow><mrow><mo mathcolor="#0000FF">-</mo><mrow><msub><mi mathcolor="#0000FF">u</mi><mi mathcolor="#0000FF">x</mi></msub><mo mathcolor="#0000FF">⁢</mo><mrow><mo mathcolor="#0000FF">(</mo><msub><mi mathcolor="#0000FF">x</mi><mrow><mi mathcolor="#0000FF">i</mi><mo mathcolor="#0000FF">+</mo><mfrac mathcolor="#0000FF"><mn mathcolor="#0000FF">1</mn><mn mathcolor="#0000FF">2</mn></mfrac></mrow></msub><mo mathcolor="#0000FF">)</mo></mrow></mrow></mrow><mo mathcolor="#0000FF">+</mo><mrow><msub><mi mathcolor="#0000FF">u</mi><mi mathcolor="#0000FF">x</mi></msub><mo mathcolor="#0000FF">⁢</mo><mrow><mo mathcolor="#0000FF">(</mo><msub><mi mathcolor="#0000FF">x</mi><mrow><mi mathcolor="#0000FF">i</mi><mo mathcolor="#0000FF">-</mo><mfrac mathcolor="#0000FF"><mn mathcolor="#0000FF">1</mn><mn mathcolor="#0000FF">2</mn></mfrac></mrow></msub><mo mathcolor="#0000FF">)</mo></mrow></mrow></mrow><mo mathcolor="#0000FF">]</mo></mrow></mrow><mo mathcolor="#0000FF">=</mo><mrow><mstyle displaystyle="true"><mfrac mathcolor="#0000FF"><mn mathcolor="#0000FF">1</mn><mi mathcolor="#0000FF">h</mi></mfrac></mstyle><mo mathcolor="#0000FF">⁢</mo><mrow><mstyle displaystyle="true"><msub><mo largeop="true" mathcolor="#0000FF" symmetric="true">∫</mo><msub><mi mathcolor="#0000FF">K</mi><mi mathcolor="#0000FF">i</mi></msub></msub></mstyle><mrow><mpadded width="+1.7pt"><mi mathcolor="#0000FF">f</mi></mpadded><mo mathcolor="#0000FF">⁢</mo><mrow><mo mathcolor="#0000FF" rspace="0pt">𝑑</mo><mi mathcolor="#0000FF">x</mi></mrow></mrow></mrow></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(5.74b)</span></td>
+</tr></tbody>
+</table>
+<p class="ltx_p">Por fórmula de diferenças finitas central, temos</p>
+<table id="Ch5.E75" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch5.E75.m1" class="ltx_Math" alttext="u_{x}\left(x_{i+\frac{1}{2}}\right)=\frac{u_{i}-u_{i-1}}{h}+O(h)" display="block"><mrow><mrow><msub><mi>u</mi><mi>x</mi></msub><mo>⁢</mo><mrow><mo>(</mo><msub><mi>x</mi><mrow><mi>i</mi><mo>+</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></mrow></msub><mo>)</mo></mrow></mrow><mo>=</mo><mrow><mfrac><mrow><msub><mi>u</mi><mi>i</mi></msub><mo>-</mo><msub><mi>u</mi><mrow><mi>i</mi><mo>-</mo><mn>1</mn></mrow></msub></mrow><mi>h</mi></mfrac><mo>+</mo><mrow><mi>O</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>h</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(5.75)</span></td>
+</tr>
+</table>
+<p class="ltx_p">e</p>
+<table id="Ch5.E76" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch5.E76.m1" class="ltx_Math" alttext="u_{x}\left(x_{i-\frac{1}{2}}\right)=\frac{u_{i+1}-u_{i}}{h}+O(h)" display="block"><mrow><mrow><msub><mi>u</mi><mi>x</mi></msub><mo>⁢</mo><mrow><mo>(</mo><msub><mi>x</mi><mrow><mi>i</mi><mo>-</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></mrow></msub><mo>)</mo></mrow></mrow><mo>=</mo><mrow><mfrac><mrow><msub><mi>u</mi><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>-</mo><msub><mi>u</mi><mi>i</mi></msub></mrow><mi>h</mi></mfrac><mo>+</mo><mrow><mi>O</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>h</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(5.76)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Com isso, obtemos as equações</p>
+<table id="cap_pvc_sec_mvf:eq:aux0" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch5.E77.m1" class="ltx_Math" alttext="\frac{1}{h}\left(-\frac{u_{i+1}-u_{i}}{h}+\frac{u_{i}-u_{i-1}}{h}\right)=\frac%
+{1}{h}\int_{K_{i}}f\,dx," display="block"><mrow><mrow><mrow><mfrac><mn>1</mn><mi>h</mi></mfrac><mo>⁢</mo><mrow><mo>(</mo><mrow><mrow><mo>-</mo><mfrac><mrow><msub><mi>u</mi><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>-</mo><msub><mi>u</mi><mi>i</mi></msub></mrow><mi>h</mi></mfrac></mrow><mo>+</mo><mfrac><mrow><msub><mi>u</mi><mi>i</mi></msub><mo>-</mo><msub><mi>u</mi><mrow><mi>i</mi><mo>-</mo><mn>1</mn></mrow></msub></mrow><mi>h</mi></mfrac></mrow><mo>)</mo></mrow></mrow><mo>=</mo><mrow><mfrac><mn>1</mn><mi>h</mi></mfrac><mo>⁢</mo><mrow><msub><mo largeop="true" symmetric="true">∫</mo><msub><mi>K</mi><mi>i</mi></msub></msub><mrow><mpadded width="+1.7pt"><mi>f</mi></mpadded><mo>⁢</mo><mrow><mo rspace="0pt">𝑑</mo><mi>x</mi></mrow></mrow></mrow></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(5.77)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Rearranjando os termos e aproximando a integral de <math id="p5.m7" class="ltx_Math" alttext="f" display="inline"><mi>f</mi></math> pela <a href="https://notaspedrok.com.br/notas/MatematicaNumericaII/cap_integr_sec_nc.html" title="" class="ltx_ref ltx_href ltx_font_bold">regra do ponto médio</a>, obtemos</p>
+<table id="cap_pvc_sec_mvf:eq:aux" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch5.E78.m1" class="ltx_Math" alttext="-\frac{1}{h^{2}}u_{i-1}+\frac{2}{h^{2}}u_{i}-\frac{1}{h^{2}}u_{i+1}=f_{i}," display="block"><mrow><mrow><mrow><mrow><mrow><mo>-</mo><mrow><mfrac><mn>1</mn><msup><mi>h</mi><mn>2</mn></msup></mfrac><mo>⁢</mo><msub><mi>u</mi><mrow><mi>i</mi><mo>-</mo><mn>1</mn></mrow></msub></mrow></mrow><mo>+</mo><mrow><mfrac><mn>2</mn><msup><mi>h</mi><mn>2</mn></msup></mfrac><mo>⁢</mo><msub><mi>u</mi><mi>i</mi></msub></mrow></mrow><mo>-</mo><mrow><mfrac><mn>1</mn><msup><mi>h</mi><mn>2</mn></msup></mfrac><mo>⁢</mo><msub><mi>u</mi><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow></msub></mrow></mrow><mo>=</mo><msub><mi>f</mi><mi>i</mi></msub></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(5.78)</span></td>
+</tr>
+</table>
+<p class="ltx_p">onde <math id="p5.m8" class="ltx_Math" alttext="f_{i}:=f(x_{i})" display="inline"><mrow><msub><mi>f</mi><mi>i</mi></msub><mo>:=</mo><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow></mrow></math> e <math id="p5.m9" class="ltx_Math" alttext="i=2,3,\dotsc,n-1" display="inline"><mrow><mi>i</mi><mo>=</mo><mrow><mn>2,3</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mrow><mi>n</mi><mo>-</mo><mn>1</mn></mrow></mrow></mrow></math>.</p>
+</div>
+<div id="p6" class="ltx_para">
+<p class="ltx_p">Na célula <math id="p6.m1" class="ltx_Math" alttext="K_{1}" display="inline"><msub><mi>K</mi><mn>1</mn></msub></math>, tomamos a aproximação</p>
+<table id="Ch5.E79" class="ltx_equationgroup ltx_eqn_table">
+<tbody id="Ch6.S3.EGx176" class="ltx_eqn_row"><tr><td class="ltx_eqn_cell" colspan="5"></td></tr></tbody>
+<tbody id="Ch5.E79.1"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch5.E79.1.m1" class="ltx_Math" alttext="\displaystyle u_{x}\left(x_{\frac{1}{2}}\right)" display="inline"><mrow><msub><mi>u</mi><mi>x</mi></msub><mo>⁢</mo><mrow><mo>(</mo><msub><mi>x</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mo>)</mo></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch5.E79.1.m2" class="ltx_Math" alttext="\displaystyle=\frac{u_{1}-u_{\frac{1}{2}}}{h/2}+O\left(h\right)," display="inline"><mrow><mrow><mi></mi><mo>=</mo><mrow><mstyle displaystyle="true"><mfrac><mrow><msub><mi>u</mi><mn>1</mn></msub><mo>-</mo><msub><mi>u</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub></mrow><mrow><mi>h</mi><mo>/</mo><mn>2</mn></mrow></mfrac></mstyle><mo>+</mo><mrow><mi>O</mi><mo>⁢</mo><mrow><mo>(</mo><mi>h</mi><mo>)</mo></mrow></mrow></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(5.79a)</span></td>
+</tr></tbody>
+<tbody id="Ch5.E79.2"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch5.E79.2.m1" class="ltx_Math" alttext="\displaystyle==\frac{u_{1}}{h/2}+O\left(h\right)." display="inline"><mrow><mo>=</mo><mo>=</mo><mstyle displaystyle="true"><mfrac><msub><mi>u</mi><mn>1</mn></msub><mrow><mi>h</mi><mo>/</mo><mn>2</mn></mrow></mfrac></mstyle><mo>+</mo><mi>O</mi><mrow><mo>(</mo><mi>h</mi><mo>)</mo></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(5.79b)</span></td>
+</tr></tbody>
+</table>
+<p class="ltx_p">Aplicando na Eq. (<a href="#cap_pvc_sec_mvf:eq:aux00" title="(5.74b) ‣ (5.74) ‣ 5.3 Método de Volumes Finitos ‣ Capítulo 5 Problema de Valor de Contorno ‣ Matemática Numérica II" class="ltx_ref"><span class="ltx_text ltx_ref_tag">5.74b</span></a>), obtemos</p>
+<table id="Ch5.E80" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch5.E80.m1" class="ltx_Math" alttext="\color[rgb]{0,0,1}\definecolor[named]{pgfstrokecolor}{rgb}{0,0,1}%
+\pgfsys@color@rgb@stroke{0}{0}{1}\pgfsys@color@rgb@fill{0}{0}{1}\frac{1}{h}%
+\left(-\frac{u_{2}-u_{1}}{h}+\frac{u_{1}}{h/2}\right)=\frac{1}{h}\int_{K_{i}}f%
+\,dx," display="block"><mrow><mrow><mrow><mfrac mathcolor="#0000FF"><mn mathcolor="#0000FF">1</mn><mi mathcolor="#0000FF">h</mi></mfrac><mo mathcolor="#0000FF">⁢</mo><mrow><mo mathcolor="#0000FF">(</mo><mrow><mrow><mo mathcolor="#0000FF">-</mo><mfrac mathcolor="#0000FF"><mrow><msub><mi mathcolor="#0000FF">u</mi><mn mathcolor="#0000FF">2</mn></msub><mo mathcolor="#0000FF">-</mo><msub><mi mathcolor="#0000FF">u</mi><mn mathcolor="#0000FF">1</mn></msub></mrow><mi mathcolor="#0000FF">h</mi></mfrac></mrow><mo mathcolor="#0000FF">+</mo><mfrac mathcolor="#0000FF"><msub><mi mathcolor="#0000FF">u</mi><mn mathcolor="#0000FF">1</mn></msub><mrow><mi mathcolor="#0000FF">h</mi><mo mathcolor="#0000FF">/</mo><mn mathcolor="#0000FF">2</mn></mrow></mfrac></mrow><mo mathcolor="#0000FF">)</mo></mrow></mrow><mo mathcolor="#0000FF">=</mo><mrow><mfrac mathcolor="#0000FF"><mn mathcolor="#0000FF">1</mn><mi mathcolor="#0000FF">h</mi></mfrac><mo mathcolor="#0000FF">⁢</mo><mrow><msub><mo largeop="true" mathcolor="#0000FF" symmetric="true">∫</mo><msub><mi mathcolor="#0000FF">K</mi><mi mathcolor="#0000FF">i</mi></msub></msub><mrow><mpadded width="+1.7pt"><mi mathcolor="#0000FF">f</mi></mpadded><mo mathcolor="#0000FF">⁢</mo><mrow><mo mathcolor="#0000FF" rspace="0pt">𝑑</mo><mi mathcolor="#0000FF">x</mi></mrow></mrow></mrow></mrow></mrow><mo mathcolor="#0000FF">,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(5.80)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Analogamente, integrando na célula <math id="p6.m2" class="ltx_Math" alttext="K_{n}" display="inline"><msub><mi>K</mi><mi>n</mi></msub></math> de fronteira, obtemos</p>
+<table id="Ch5.E81" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch5.E81.m1" class="ltx_Math" alttext="\color[rgb]{0,0,1}\definecolor[named]{pgfstrokecolor}{rgb}{0,0,1}%
+\pgfsys@color@rgb@stroke{0}{0}{1}\pgfsys@color@rgb@fill{0}{0}{1}\frac{1}{h}%
+\left(\frac{u_{n}}{h/2}+\frac{u_{n}-u_{n-1}}{h}\right)=\frac{1}{h}\int_{K_{i}}%
+f\,dx." display="block"><mrow><mrow><mrow><mfrac mathcolor="#0000FF"><mn mathcolor="#0000FF">1</mn><mi mathcolor="#0000FF">h</mi></mfrac><mo mathcolor="#0000FF">⁢</mo><mrow><mo mathcolor="#0000FF">(</mo><mrow><mfrac mathcolor="#0000FF"><msub><mi mathcolor="#0000FF">u</mi><mi mathcolor="#0000FF">n</mi></msub><mrow><mi mathcolor="#0000FF">h</mi><mo mathcolor="#0000FF">/</mo><mn mathcolor="#0000FF">2</mn></mrow></mfrac><mo mathcolor="#0000FF">+</mo><mfrac mathcolor="#0000FF"><mrow><msub><mi mathcolor="#0000FF">u</mi><mi mathcolor="#0000FF">n</mi></msub><mo mathcolor="#0000FF">-</mo><msub><mi mathcolor="#0000FF">u</mi><mrow><mi mathcolor="#0000FF">n</mi><mo mathcolor="#0000FF">-</mo><mn mathcolor="#0000FF">1</mn></mrow></msub></mrow><mi mathcolor="#0000FF">h</mi></mfrac></mrow><mo mathcolor="#0000FF">)</mo></mrow></mrow><mo mathcolor="#0000FF">=</mo><mrow><mfrac mathcolor="#0000FF"><mn mathcolor="#0000FF">1</mn><mi mathcolor="#0000FF">h</mi></mfrac><mo mathcolor="#0000FF">⁢</mo><mrow><msub><mo largeop="true" mathcolor="#0000FF" symmetric="true">∫</mo><msub><mi mathcolor="#0000FF">K</mi><mi mathcolor="#0000FF">i</mi></msub></msub><mrow><mpadded width="+1.7pt"><mi mathcolor="#0000FF">f</mi></mpadded><mo mathcolor="#0000FF">⁢</mo><mrow><mo mathcolor="#0000FF" rspace="0pt">𝑑</mo><mi mathcolor="#0000FF">x</mi></mrow></mrow></mrow></mrow></mrow><mo mathcolor="#0000FF">.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(5.81)</span></td>
+</tr>
+</table>
+</div>
+<div id="p7" class="ltx_para">
+<p class="ltx_p">Por fim, obtemos o <span class="ltx_text ltx_font_bold" style="background-color:#FFFF00;">sistema discreto</span></p>
+<table id="Ch5.E82" class="ltx_equationgroup ltx_eqn_table">
+<tbody id="Ch6.S3.EGx177" class="ltx_eqn_row"><tr><td class="ltx_eqn_cell" colspan="4"></td></tr></tbody>
+<tbody id="Ch5.E82.1"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch5.E82.1.m1" class="ltx_Math" alttext="\displaystyle\frac{3}{h^{2}}u_{1}-\frac{1}{h^{2}}u_{2}=f_{1}," display="inline"><mrow><mrow><mrow><mrow><mstyle displaystyle="true"><mfrac mathcolor="#0000FF"><mn mathcolor="#0000FF">3</mn><msup><mi mathcolor="#0000FF">h</mi><mn mathcolor="#0000FF">2</mn></msup></mfrac></mstyle><mo mathcolor="#0000FF">⁢</mo><msub><mi mathcolor="#0000FF">u</mi><mn mathcolor="#0000FF">1</mn></msub></mrow><mo mathcolor="#0000FF">-</mo><mrow><mstyle displaystyle="true"><mfrac mathcolor="#0000FF"><mn mathcolor="#0000FF">1</mn><msup><mi mathcolor="#0000FF">h</mi><mn mathcolor="#0000FF">2</mn></msup></mfrac></mstyle><mo mathcolor="#0000FF">⁢</mo><msub><mi mathcolor="#0000FF">u</mi><mn mathcolor="#0000FF">2</mn></msub></mrow></mrow><mo mathcolor="#0000FF">=</mo><msub><mi mathcolor="#0000FF">f</mi><mn mathcolor="#0000FF">1</mn></msub></mrow><mo mathcolor="#0000FF">,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right"><span class="ltx_text" style="color:#0000FF;">(5.82a)</span></span></td>
+</tr></tbody>
+<tbody id="Ch5.E82.2"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch5.E82.2.m1" class="ltx_Math" alttext="\displaystyle-\frac{1}{h^{2}}u_{i-1}+\frac{2}{h^{2}}u_{i}-\frac{1}{h^{2}}u_{i+%
+1}=f_{i}," display="inline"><mrow><mrow><mrow><mrow><mrow><mo mathcolor="#0000FF">-</mo><mrow><mstyle displaystyle="true"><mfrac mathcolor="#0000FF"><mn mathcolor="#0000FF">1</mn><msup><mi mathcolor="#0000FF">h</mi><mn mathcolor="#0000FF">2</mn></msup></mfrac></mstyle><mo mathcolor="#0000FF">⁢</mo><msub><mi mathcolor="#0000FF">u</mi><mrow><mi mathcolor="#0000FF">i</mi><mo mathcolor="#0000FF">-</mo><mn mathcolor="#0000FF">1</mn></mrow></msub></mrow></mrow><mo mathcolor="#0000FF">+</mo><mrow><mstyle displaystyle="true"><mfrac mathcolor="#0000FF"><mn mathcolor="#0000FF">2</mn><msup><mi mathcolor="#0000FF">h</mi><mn mathcolor="#0000FF">2</mn></msup></mfrac></mstyle><mo mathcolor="#0000FF">⁢</mo><msub><mi mathcolor="#0000FF">u</mi><mi mathcolor="#0000FF">i</mi></msub></mrow></mrow><mo mathcolor="#0000FF">-</mo><mrow><mstyle displaystyle="true"><mfrac mathcolor="#0000FF"><mn mathcolor="#0000FF">1</mn><msup><mi mathcolor="#0000FF">h</mi><mn mathcolor="#0000FF">2</mn></msup></mfrac></mstyle><mo mathcolor="#0000FF">⁢</mo><msub><mi mathcolor="#0000FF">u</mi><mrow><mi mathcolor="#0000FF">i</mi><mo mathcolor="#0000FF">+</mo><mn mathcolor="#0000FF">1</mn></mrow></msub></mrow></mrow><mo mathcolor="#0000FF">=</mo><msub><mi mathcolor="#0000FF">f</mi><mi mathcolor="#0000FF">i</mi></msub></mrow><mo mathcolor="#0000FF">,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right"><span class="ltx_text" style="color:#0000FF;">(5.82b)</span></span></td>
+</tr></tbody>
+<tbody id="Ch5.E82.3"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch5.E82.3.m1" class="ltx_Math" alttext="\displaystyle-\frac{1}{h^{2}}u_{n-1}+\frac{3}{h^{2}}u_{n+1}=f_{n}," display="inline"><mrow><mrow><mrow><mrow><mo mathcolor="#0000FF">-</mo><mrow><mstyle displaystyle="true"><mfrac mathcolor="#0000FF"><mn mathcolor="#0000FF">1</mn><msup><mi mathcolor="#0000FF">h</mi><mn mathcolor="#0000FF">2</mn></msup></mfrac></mstyle><mo mathcolor="#0000FF">⁢</mo><msub><mi mathcolor="#0000FF">u</mi><mrow><mi mathcolor="#0000FF">n</mi><mo mathcolor="#0000FF">-</mo><mn mathcolor="#0000FF">1</mn></mrow></msub></mrow></mrow><mo mathcolor="#0000FF">+</mo><mrow><mstyle displaystyle="true"><mfrac mathcolor="#0000FF"><mn mathcolor="#0000FF">3</mn><msup><mi mathcolor="#0000FF">h</mi><mn mathcolor="#0000FF">2</mn></msup></mfrac></mstyle><mo mathcolor="#0000FF">⁢</mo><msub><mi mathcolor="#0000FF">u</mi><mrow><mi mathcolor="#0000FF">n</mi><mo mathcolor="#0000FF">+</mo><mn mathcolor="#0000FF">1</mn></mrow></msub></mrow></mrow><mo mathcolor="#0000FF">=</mo><msub><mi mathcolor="#0000FF">f</mi><mi mathcolor="#0000FF">n</mi></msub></mrow><mo mathcolor="#0000FF">,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right"><span class="ltx_text" style="color:#0000FF;">(5.82c)</span></span></td>
+</tr></tbody>
+</table>
+<p class="ltx_p">para <math id="p7.m1" class="ltx_Math" alttext="i=2,3,\dotsc,n-1" display="inline"><mrow><mi>i</mi><mo>=</mo><mrow><mn>2,3</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mrow><mi>n</mi><mo>-</mo><mn>1</mn></mrow></mrow></mrow></math>.</p>
+</div>
+<div id="cap_pvc_sec_mvf:ex:pvc_mvf" class="ltx_theorem ltx_theorem_ex">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Exemplo 5.3.1</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmex1.p1" class="ltx_para">
+<p class="ltx_p">Consideramos o seguinte PVC</p>
+<table id="Ch6.S3.EGx178" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="Ch5.E83"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch5.E83.m1" class="ltx_Math" alttext="\displaystyle-u^{\prime\prime}=\pi^{2}\operatorname{sen}(\pi x),\leavevmode%
+\nobreak\ 0&lt;x&lt;1," display="inline"><mrow><mrow><mrow><mo>-</mo><msup><mi>u</mi><mo>′′</mo></msup></mrow><mo>=</mo><mrow><msup><mi>π</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mi>sen</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mrow><mi>π</mi><mo>⁢</mo><mi>x</mi></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>⁢</mo><mn>, 0</mn></mrow><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>1</mn></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(5.83)</span></td>
+</tr></tbody>
+<tbody id="Ch5.E84"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch5.E84.m1" class="ltx_Math" alttext="\displaystyle u(0)=0," display="inline"><mrow><mrow><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>0</mn></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(5.84)</span></td>
+</tr></tbody>
+<tbody id="Ch5.E85"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch5.E85.m1" class="ltx_Math" alttext="\displaystyle u(1)=0." display="inline"><mrow><mrow><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>0</mn></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(5.85)</span></td>
+</tr></tbody>
+</table>
+<p class="ltx_p">A solução analítica deste problema é <math id="Thmex1.p1.m1" class="ltx_Math" alttext="u(x)=\operatorname{sen}(\pi x)" display="inline"><mrow><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mi>sen</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mrow><mi>π</mi><mo>⁢</mo><mi>x</mi></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow></math>.
+</p>
+</div>
+<figure id="cap_pvc_sec_mvf:fig:ex_pvc_mvf" class="ltx_figure"><img src="cap_pvc/dados/fig_mvf/fig.png" id="Ch5.F3.g1" class="ltx_graphics ltx_centering" width="432" height="325" alt="">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure"><span class="ltx_text" style="font-size:90%;">Figura 5.3</span>: </span><span class="ltx_text" style="font-size:90%;">Resultado referente ao Exemplo <span class="ltx_ref ltx_missing_label ltx_ref_self">LABEL:cap_pvc_sec_mef:ex:pvc_mvf</span>.</span></figcaption>
+</figure>
+<div id="Thmex1.p2" class="ltx_para">
+<p class="ltx_p">Resolvendo este sistema com <math id="Thmex1.p2.m1" class="ltx_Math" alttext="h=10^{-1}" display="inline"><mrow><mi>h</mi><mo>=</mo><msup><mn>10</mn><mrow><mo>-</mo><mn>1</mn></mrow></msup></mrow></math> obtemos a solução numérica apresentada na Figura <a href="#cap_pvc_sec_mvf:fig:ex_pvc_mvf" title="Figura 5.3 ‣ Exemplo 5.3.1. ‣ 5.3 Método de Volumes Finitos ‣ Capítulo 5 Problema de Valor de Contorno ‣ Matemática Numérica II" class="ltx_ref"><span class="ltx_text ltx_ref_tag">5.3</span></a>.</p>
+</div>
+<figure id="LST18" class="ltx_float ltx_lstlisting">
+<figcaption class="ltx_caption"><span class="ltx_tag ltx_tag_float">Código 18: </span>pvc_mvf.py</figcaption>
+<div class="ltx_listing ltx_lst_numbers_left ltx_lstlisting ltx_listing">
+<div class="ltx_listing_data"><a href="data:text/plain;base64,aW1wb3J0IG51bXB5IGFzIG5wCgojIGZvbnRlCmRlZiBmKHgpOgogIHJldHVybiBucC5waSoqMipucC5zaW4obnAucGkqeCkKCiMgbWFsaGEKbiA9IDEwCmggPSAxLi9uCnh4ID0gbnAubGluc3BhY2UoaC8yLCAxLi1oLzIsIG4pCgojIHByb2IuIGRpc2NyZXRvCkEgPSBucC56ZXJvcygobixuKSkKYiA9IG5wLmVtcHR5KG4pCgojIGMuYy4geCA9IDAKQVswLDBdID0gMy4vaCoqMgpBWzAsMV0gPSAtMS4vaCoqMgpiWzBdID0gZih4eFswXSkKCiMgcHRzIGludGVybm9zCmZvciBpIGluIHJhbmdlKDEsbi0xKToKICBBW2ksaS0xXSA9IC0xLi9oKioyCiAgQVtpLGldID0gMi4vaCoqMgogIEFbaSxpKzFdID0gLTEuL2gqKjIKICBiW2ldID0gZih4eFtpXSkKCiMgYy5jLiB4ID0gMQpBW24tMSxuLTJdID0gLTEuL2gqKjIKQVtuLTEsbi0xXSA9IDMuL2gqKjIKYltuLTFdID0gZih4eFtuLTFdKQoKIyByZXNvbCBwcm9iIGRpc2MKdSA9IG5wbGEuc29sdmUoQSwgYikKCnh4ID0gbnAuY29uY2F0ZW5hdGUoKFswLl0seHgsWzEuXSkpCnUgPSBucC5jb25jYXRlbmF0ZSgoWzAuXSx1LFswLl0pKQ==" download="">⬇</a></div>
+<div id="lstnumberx486" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">1</span></span>
+              <span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">import</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">numpy</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">as</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">np</span>
+</div>
+<div id="lstnumberx487" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">2</span></span>
+              
+</div>
+<div id="lstnumberx488" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">3</span></span>
+              <span class="ltx_text ltx_font_typewriter" style="font-size:90%;">#</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">fonte</span>
+</div>
+<div id="lstnumberx489" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">4</span></span>
+              <span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">def</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">f</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">x</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">):</span>
+</div>
+<div id="lstnumberx490" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">5</span></span>
+              <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">return</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">np</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">pi</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">**2*</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">np</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">sin</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">np</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">pi</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">*</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">x</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">)</span>
+</div>
+<div id="lstnumberx491" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">6</span></span>
+              
+</div>
+<div id="lstnumberx492" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">7</span></span>
+              <span class="ltx_text ltx_font_typewriter" style="font-size:90%;">#</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">malha</span>
+</div>
+<div id="lstnumberx493" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">8</span></span>
+              <span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">n</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">10</span>
+</div>
+<div id="lstnumberx494" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">9</span></span>
+              <span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">h</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">1./</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">n</span>
+</div>
+<div id="lstnumberx495" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">10</span></span>
+              <span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">xx</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">np</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">linspace</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">h</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">/2,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">1.-</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">h</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">/2,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">n</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">)</span>
+</div>
+<div id="lstnumberx496" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">11</span></span>
+              
+</div>
+<div id="lstnumberx497" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">12</span></span>
+              <span class="ltx_text ltx_font_typewriter" style="font-size:90%;">#</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">prob</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">discreto</span>
+</div>
+<div id="lstnumberx498" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">13</span></span>
+              <span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">A</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">np</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">zeros</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">((</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">n</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">n</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">))</span>
+</div>
+<div id="lstnumberx499" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">14</span></span>
+              <span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">b</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">np</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">empty</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">n</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">)</span>
+</div>
+<div id="lstnumberx500" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">15</span></span>
+              
+</div>
+<div id="lstnumberx501" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">16</span></span>
+              <span class="ltx_text ltx_font_typewriter" style="font-size:90%;">#</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">c</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">c</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">x</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">0</span>
+</div>
+<div id="lstnumberx502" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">17</span></span>
+              <span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">A</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">[0,0]</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">3./</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">h</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">**2</span>
+</div>
+<div id="lstnumberx503" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">18</span></span>
+              <span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">A</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">[0,1]</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">-1./</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">h</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">**2</span>
+</div>
+<div id="lstnumberx504" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">19</span></span>
+              <span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">b</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">[0]</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">f</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">xx</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">[0])</span>
+</div>
+<div id="lstnumberx505" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">20</span></span>
+              
+</div>
+<div id="lstnumberx506" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">21</span></span>
+              <span class="ltx_text ltx_font_typewriter" style="font-size:90%;">#</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">pts</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">internos</span>
+</div>
+<div id="lstnumberx507" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">22</span></span>
+              <span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">for</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">i</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">in</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">range</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(1,</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">n</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">-1):</span>
+</div>
+<div id="lstnumberx508" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">23</span></span>
+              <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">A</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">[</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">i</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">i</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">-1]</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">-1./</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">h</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">**2</span>
+</div>
+<div id="lstnumberx509" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">24</span></span>
+              <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">A</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">[</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">i</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">i</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">]</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">2./</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">h</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">**2</span>
+</div>
+<div id="lstnumberx510" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">25</span></span>
+              <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">A</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">[</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">i</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">i</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">+1]</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">-1./</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">h</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">**2</span>
+</div>
+<div id="lstnumberx511" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">26</span></span>
+              <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">b</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">[</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">i</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">]</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">f</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">xx</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">[</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">i</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">])</span>
+</div>
+<div id="lstnumberx512" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">27</span></span>
+              
+</div>
+<div id="lstnumberx513" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">28</span></span>
+              <span class="ltx_text ltx_font_typewriter" style="font-size:90%;">#</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">c</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">c</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">x</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">1</span>
+</div>
+<div id="lstnumberx514" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">29</span></span>
+              <span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">A</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">[</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">n</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">-1,</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">n</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">-2]</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">-1./</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">h</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">**2</span>
+</div>
+<div id="lstnumberx515" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">30</span></span>
+              <span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">A</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">[</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">n</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">-1,</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">n</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">-1]</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">3./</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">h</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">**2</span>
+</div>
+<div id="lstnumberx516" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">31</span></span>
+              <span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">b</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">[</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">n</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">-1]</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">f</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">xx</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">[</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">n</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">-1])</span>
+</div>
+<div id="lstnumberx517" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">32</span></span>
+              
+</div>
+<div id="lstnumberx518" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">33</span></span>
+              <span class="ltx_text ltx_font_typewriter" style="font-size:90%;">#</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">resol</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">prob</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">disc</span>
+</div>
+<div id="lstnumberx519" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">34</span></span>
+              <span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">u</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">npla</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">solve</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">A</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">b</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">)</span>
+</div>
+<div id="lstnumberx520" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">35</span></span>
+              
+</div>
+<div id="lstnumberx521" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">36</span></span>
+              <span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">xx</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">np</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">concatenate</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(([0.],</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">xx</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,[1.]))</span>
+</div>
+<div id="lstnumberx522" class="ltx_listingline">
+                <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">37</span></span>
+              <span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">u</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">np</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">concatenate</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(([0.],</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">u</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,[0.]))</span>
+</div>
+</div>
+</figure>
+</div>
+<section id="SS1" class="ltx_subsection">
+<h2 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">5.3.1 </span>Exercícios <small><a href="../contato.html"><i class="fas fa-envelope"></i></a></small></h2>
+
+<div id="Thmexer1" class="ltx_theorem ltx_theorem_exer">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Exercício 5.3.1</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmexer1.p1" class="ltx_para">
+<p class="ltx_p">Considere o PVC</p>
+<table id="Ch6.S3.EGx179" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="Ch5.E86"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch5.E86.m1" class="ltx_Math" alttext="\displaystyle-u^{\prime\prime}=\pi^{2}\cos(\pi x),\leavevmode\nobreak\ 0&lt;x&lt;1," display="inline"><mrow><mrow><mrow><mo>-</mo><msup><mi>u</mi><mo>′′</mo></msup></mrow><mo>=</mo><mrow><msup><mi>π</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mi>cos</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mrow><mi>π</mi><mo>⁢</mo><mi>x</mi></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>⁢</mo><mn>, 0</mn></mrow><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>1</mn></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(5.86)</span></td>
+</tr></tbody>
+<tbody id="Ch5.E87"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch5.E87.m1" class="ltx_Math" alttext="\displaystyle u(0)=1," display="inline"><mrow><mrow><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>1</mn></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(5.87)</span></td>
+</tr></tbody>
+<tbody id="Ch5.E88"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch5.E88.m1" class="ltx_Math" alttext="\displaystyle u(1)=-1." display="inline"><mrow><mrow><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mo>-</mo><mn>1</mn></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(5.88)</span></td>
+</tr></tbody>
+</table>
+<p class="ltx_p">A solução analítica deste problema é <math id="Thmexer1.p1.m1" class="ltx_Math" alttext="u(x)=\cos(\pi x)" display="inline"><mrow><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mi>cos</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mrow><mi>π</mi><mo>⁢</mo><mi>x</mi></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow></math>. Use o MVF para computar aproximações numéricas <math id="Thmexer1.p1.m2" class="ltx_Math" alttext="\tilde{\boldsymbol{u}}_{h}" display="inline"><msub><mover accent="true"><mi>𝒖</mi><mo stretchy="false">~</mo></mover><mi>h</mi></msub></math> com tamanhos de malha <math id="Thmexer1.p1.m3" class="ltx_Math" alttext="h=10^{-1},10^{-2},10^{-3},10^{-4}" display="inline"><mrow><mi>h</mi><mo>=</mo><mrow><msup><mn>10</mn><mrow><mo>-</mo><mn>1</mn></mrow></msup><mo>⁢</mo><msup><mn>,10</mn><mrow><mo>-</mo><mn>2</mn></mrow></msup><mo>⁢</mo><msup><mn>,10</mn><mrow><mo>-</mo><mn>3</mn></mrow></msup><mo>⁢</mo><msup><mn>,10</mn><mrow><mo>-</mo><mn>4</mn></mrow></msup></mrow></mrow></math> e verifique o erro absoluto <math id="Thmexer1.p1.m4" class="ltx_Math" alttext="\varepsilon_{\text{abs}}:=\|\tilde{\boldsymbol{u}}_{h}-\boldsymbol{u}\|" display="inline"><mrow><msub><mi>ε</mi><mtext>abs</mtext></msub><mo>:=</mo><mrow><mo>∥</mo><mrow><msub><mover accent="true"><mi>𝒖</mi><mo stretchy="false">~</mo></mover><mi>h</mi></msub><mo>-</mo><mi>𝒖</mi></mrow><mo>∥</mo></mrow></mrow></math>.</p>
+</div>
+</div>
+<div id="Thmexer2" class="ltx_theorem ltx_theorem_exer">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Exercício 5.3.2</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmexer2.p1" class="ltx_para">
+<p class="ltx_p">Considere o PVC</p>
+<table id="Ch6.S3.EGx180" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="Ch5.E89"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch5.E89.m1" class="ltx_Math" alttext="\displaystyle-u^{\prime\prime}=1,\leavevmode\nobreak\ -1&lt;x&lt;1," display="inline"><mrow><mrow><mrow><mrow><mo>-</mo><msup><mi>u</mi><mo>′′</mo></msup></mrow><mo>=</mo><mn>1</mn></mrow><mo rspace="7.5pt">,</mo><mrow><mrow><mo>-</mo><mn>1</mn></mrow><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>1</mn></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(5.89)</span></td>
+</tr></tbody>
+<tbody id="Ch5.E90"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch5.E90.m1" class="ltx_Math" alttext="\displaystyle u(-1)=0," display="inline"><mrow><mrow><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mo>-</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>0</mn></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(5.90)</span></td>
+</tr></tbody>
+<tbody id="Ch5.E91"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch5.E91.m1" class="ltx_Math" alttext="\displaystyle u(1)=0." display="inline"><mrow><mrow><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>0</mn></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(5.91)</span></td>
+</tr></tbody>
+</table>
+<p class="ltx_p">A solução analítica deste problema é <math id="Thmexer2.p1.m1" class="ltx_Math" alttext="u(x)=1-x^{2}" display="inline"><mrow><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mn>1</mn><mo>-</mo><msup><mi>x</mi><mn>2</mn></msup></mrow></mrow></math>. Use o MVF com <math id="Thmexer2.p1.m2" class="ltx_Math" alttext="n=20" display="inline"><mrow><mi>n</mi><mo>=</mo><mn>20</mn></mrow></math> subintervalos na malha e verifique o erro absoluto <math id="Thmexer2.p1.m3" class="ltx_Math" alttext="\varepsilon_{\text{abs}}:=\|\tilde{\boldsymbol{u}}_{h}-\boldsymbol{u}\|" display="inline"><mrow><msub><mi>ε</mi><mtext>abs</mtext></msub><mo>:=</mo><mrow><mo>∥</mo><mrow><msub><mover accent="true"><mi>𝒖</mi><mo stretchy="false">~</mo></mover><mi>h</mi></msub><mo>-</mo><mi>𝒖</mi></mrow><mo>∥</mo></mrow></mrow></math>.</p>
+</div>
+</div>
+<div id="Thmexer3" class="ltx_theorem ltx_theorem_exer">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Exercício 5.3.3</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmexer3.p1" class="ltx_para">
+<p class="ltx_p">Considere o seguinte PVC
+</p>
+<table id="Ch5.E92" class="ltx_equationgroup ltx_eqn_table">
+<tbody id="Ch6.S3.EGx181" class="ltx_eqn_row"><tr><td class="ltx_eqn_cell" colspan="4"></td></tr></tbody>
+<tbody id="Ch5.E92.1"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch5.E92.1.m1" class="ltx_Math" alttext="\displaystyle-u^{\prime\prime}+u^{\prime}=f(x),\leavevmode\nobreak\ -1&lt;x&lt;1," display="inline"><mrow><mrow><mrow><mrow><mrow><mo>-</mo><msup><mi>u</mi><mo>′′</mo></msup></mrow><mo>+</mo><msup><mi>u</mi><mo>′</mo></msup></mrow><mo>=</mo><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow></mrow><mo rspace="7.5pt">,</mo><mrow><mrow><mo>-</mo><mn>1</mn></mrow><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>1</mn></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(5.92a)</span></td>
+</tr></tbody>
+<tbody id="Ch5.E92.2"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch5.E92.2.m1" class="ltx_Math" alttext="\displaystyle u(-1)=0," display="inline"><mrow><mrow><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><mo>-</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>0</mn></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(5.92b)</span></td>
+</tr></tbody>
+<tbody id="Ch5.E92.3"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch5.E92.3.m1" class="ltx_Math" alttext="\displaystyle u^{\prime}(1)=0," display="inline"><mrow><mrow><mrow><msup><mi>u</mi><mo>′</mo></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>0</mn></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(5.92c)</span></td>
+</tr></tbody>
+</table>
+<p class="ltx_p">onde</p>
+<table id="Ch5.E93" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch5.E93.m1" class="ltx_Math" alttext="f(x)=\left\{\begin{array}[]{ll}1&amp;,x\leq 0\\
+0&amp;,x&gt;0\end{array}\right." display="block"><mrow><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mo>{</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd columnalign="left"><mn>1</mn></mtd><mtd columnalign="left"><mrow><mo>,</mo><mi>x</mi><mo>≤</mo><mn>0</mn></mrow></mtd></mtr><mtr><mtd columnalign="left"><mn>0</mn></mtd><mtd columnalign="left"><mrow><mo>,</mo><mi>x</mi><mo>&gt;</mo><mn>0</mn></mrow></mtd></mtr></mtable><mi></mi></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(5.93)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Use uma aproximação adequada pelo MVF para obter o valor aproximado de <math id="Thmexer3.p1.m1" class="ltx_Math" alttext="u(0)" display="inline"><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo></mrow></mrow></math> com precisão de <math id="Thmexer3.p1.m2" class="ltx_Math" alttext="2" display="inline"><mn>2</mn></math> dígitos significativos.</p>
+</div>
+</div>
+<div class="d-grid gap-2 d-md-flex justify-content-md-end"><button class="btn btn-warning" type="button" data-bs-toggle="collapse" data-bs-target="#Thmrespx70">Resposta</button></div><div class="collapse" id="Thmrespx70">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Resp</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmrespx70.p1" class="ltx_para">
+<p class="ltx_p"><math id="Thmrespx70.p1.m1" class="ltx_Math" alttext="7,2\mathrm{e}\!-\!1" display="inline"><mrow><mrow><mn>7,2</mn><mo>⁢</mo><mpadded width="-1.7pt"><mi mathvariant="normal">e</mi></mpadded></mrow><mo rspace="0.8pt">-</mo><mn>1</mn></mrow></math></p>
+</div>
+</div>
+<div id="Thmexer4" class="ltx_theorem ltx_theorem_exer">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Exercício 5.3.4</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmexer4.p1" class="ltx_para">
+<p class="ltx_p">Considere o PVC</p>
+<table id="Ch6.S3.EGx182" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="Ch5.E94"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch5.E94.m1" class="ltx_Math" alttext="\displaystyle-u^{\prime\prime}=\pi^{2}\cos(\pi x),\leavevmode\nobreak\ 0&lt;x&lt;1," display="inline"><mrow><mrow><mrow><mo>-</mo><msup><mi>u</mi><mo>′′</mo></msup></mrow><mo>=</mo><mrow><msup><mi>π</mi><mn>2</mn></msup><mo>⁢</mo><mrow><mi>cos</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mrow><mi>π</mi><mo>⁢</mo><mi>x</mi></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>⁢</mo><mn>, 0</mn></mrow><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>1</mn></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(5.94)</span></td>
+</tr></tbody>
+<tbody id="Ch5.E95"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch5.E95.m1" class="ltx_Math" alttext="\displaystyle u(0)=1," display="inline"><mrow><mrow><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>1</mn></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(5.95)</span></td>
+</tr></tbody>
+<tbody id="Ch5.E96"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch5.E96.m1" class="ltx_Math" alttext="\displaystyle u^{\prime}(1)=0." display="inline"><mrow><mrow><mrow><msup><mi>u</mi><mo>′</mo></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mn>0</mn></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(5.96)</span></td>
+</tr></tbody>
+</table>
+<p class="ltx_p">A solução analítica deste problema é <math id="Thmexer4.p1.m1" class="ltx_Math" alttext="u(x)=\cos(\pi x)" display="inline"><mrow><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mi>cos</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mrow><mi>π</mi><mo>⁢</mo><mi>x</mi></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow></math>. Aplique o MVF para computar uma aproximação numérica com erro absoluto de no máximo <math id="Thmexer4.p1.m2" class="ltx_Math" alttext="10^{-3}" display="inline"><msup><mn>10</mn><mrow><mo>-</mo><mn>3</mn></mrow></msup></math> na norma <math id="Thmexer4.p1.m3" class="ltx_Math" alttext="L^{2}" display="inline"><msup><mi>L</mi><mn>2</mn></msup></math>.</p>
+</div>
+</div>
+</section>
+</section>
+</div>
+<footer class="ltx_page_footer">
+<div>
+<a href="cap_pvc_sec_fem.html" title="5.2 Método de Elementos Finitos ‣ Capítulo 5 Problema de Valor de Contorno ‣ Matemática Numérica II" class="ltx_ref" rel="prev"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">5.2 </span>Método de Elementos Finitos</span></a><a href="bib.html" title="Referências ‣ Matemática Numérica II" class="ltx_ref" rel="bibliography"><span class="ltx_text ltx_ref_title">Referências</span></a><a href="cap_edp.html" title="Capítulo 6 Equações Diferenciais Parciais ‣ Matemática Numérica II" class="ltx_ref" rel="next"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">6 </span>Equações Diferenciais Parciais</span></a>
+</div>
+<div class="ltx_page_logo"><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />O texto acima está sob Licença <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR">Creative Commons Atribuição-CompartilhaIgual 4.0 Internacional</a>. Generated  on Mon Aug 14 20:33:31 2023 by <a href="http://dlmf.nist.gov/LaTeXML/">LaTeXML <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg==" alt="[LOGO]"></a>
+</div></footer>
+</div>
+<div class="card" id="rodape" style="">
+  <div class="card-footer text-left">
+    <a href="../contato.html"><i class="fas fa-envelope"></i></a> | <a href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i></a> | <a href="https://archive.org/details/notas-de-aula"><i class="fas fa-building-columns"></i></a> | <a href="https://www.youtube.com/channel/UCwutHKlKLgVj6IkFSUFBqoA"><i class="fab fa-youtube"></i></a> | <a href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i></a>
+  </div> <!-- div class="card" -->
+</div> <!-- div class="card-footer text-right" -->
+</div> <!-- div class=col-xxl-10 --></div> <!-- div class=row --></div> <!-- div class=container-fluid --></body>
+</html>
