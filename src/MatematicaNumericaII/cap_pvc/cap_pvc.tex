@@ -28,7 +28,7 @@ onde a incógnita é $u = u(x)$ com dada fonte $f = f(x)$ e dados parâmetros $g
 \hl{A aproximação pelo \emph{Método de Diferenças Finitas} (MDF) de {\eqref{cap_pvc_sec_mdf:eq:pvc_eq}}-{\eqref{cap_pvc_sec_mdf:eq:pvc_bc2}} surge da substituição das derivadas por Fórmulas de Diferenças Finitas}. De forma geral, o método pode ser dividido em três etapas: 1. discretização do domínio, 2. discretização das equações, 3. resolução do problema discreto.
 
 \begin{flushleft}
-  \emph{1. Discretização do Domínio}
+  \hlemph{1. Discretização do Domínio.}
 \end{flushleft}
 
 \hl{A \emph{discretização do domínio} é seu particionamento em \emph{subintervalos} (\emph{células} computacionais) e \emph{pontos} (\emph{nodos} computacionais)}. Por simplicidade, vamos considerar apenas o caso de um particionamento uniforme. Particionamos o domínio $D = [a, b]$ em $n$ de subintervalos de \emph{tamanho de malha}
@@ -42,7 +42,7 @@ e os nodos da partição podem ser indexados da seguinte forma
 com $i = 1, 2, 3, \dotsc, n+1$.
 
 \begin{flushleft}
-  {\bf 2. Discretização das Equações}
+  \hlemph{2. Discretização das Equações.}
 \end{flushleft}
 
 Começando por \eqref{cap_pvc_sec_mdf:eq:pvc_eq}, em um nodo \hl{$x=x_i$, $i=2, 3, \dotsc, n$}, temos
@@ -98,7 +98,7 @@ Por fim, as equações \eqref{cap_pvc_sec_mdf:eq:pvc_mdf_sis1}-\eqref{cap_pvc_se
 para $i = 2, 3, \dotsc, n$.
 
 \begin{flushleft}
-  {\bf 3. Resolução do problema discreto}
+  \hlemph{3. Resolução do Problema Discreto.}
 \end{flushleft}
 
 \hl{O problema discreto {\eqref{cap_pvc_sec_mdf:eq:pd}} consiste em um sistema linear de $n+1$ equações com $n+1$ incógnitas}. Na forma matricial temos
@@ -117,7 +117,7 @@ onde $\pmb{u} = (u_1, u_2, \dotsc, u_{n+1})$ é o vetor das incógnitas, $\pmb{b
 \end{align}
 para $i = 2, 3, \dotsc, n$.
 
-\hl{A resolução do sistema discreto se resume, a resolver o sistema $A\pmb{u} = \pmb{b}$}, o que pode ser feito por qualquer método numérico apropriado.
+\hl{A resolução do problema discreto se resume, a resolver o sistema $A\pmb{u} = \pmb{b}$}, o que pode ser feito por qualquer método numérico apropriado.
 
 \begin{ex}\label{cap_pvc_sec_mdf:ex:pvc_mdf_1}
   Consideramos o seguinte PVC
@@ -584,18 +584,18 @@ onde $h = (b-a)/n$, $x_{i-\frac{1}{2}} = a + (i-1)h$, $h^{-} = h^{+} = h/2$, $i 
   \hlemph{2. Discretização das Equações.}
 \end{flushleft}
 
-No MVF, as incógnitas $u_i$, $i = 1, 2, \dotsc, n$, são as aproximações para o valor médio de $u$ nas células $K_i$, i.e.
+No MVF, \hl{as incógnitas $u_i$, $i = 1, 2, \dotsc, n$, são as aproximações para o valor médio de $u$ nas células $K_i$}, i.e.
 \begin{equation}
   u_i = \frac{1}{|K_i|}\int_{a}^{b}u(x)\,dx.
 \end{equation}
-O sistema discreto para $u_i$ é obtido tomando a média da Eq.~\label{cap_pvc_sec_fem:eq:pvc_eq} na célula $K_i$, donde temos
+O problema discreto para $u_i$ é obtido tomando a média da Eq.~\label{cap_pvc_sec_fem:eq:pvc_eq} na célula $K_i$, donde temos
 \begin{subequations}
   \begin{align}
     &-\frac{1}{h}\int_{x_{i-\frac{1}{2}}}^{x_{i+\frac{1}{2}}}u_{xx}\,dx = \frac{1}{h}\int_{K_i}f\,dx,\\
     &\hleq \frac{1}{h}\left[-u_x\left(x_{i+\frac{1}{2}}\right) + u_x\left(x_{i-\frac{1}{2}}\right)\right] = \frac{1}{h}\int_{K_i}f\,dx\label{cap_pvc_sec_mvf:eq:aux00}
   \end{align}
 \end{subequations}
-Por fórmula de diferenças finitas central, temos
+Por \href{https://notaspedrok.com.br/notas/MatematicaNumericaII/cap_deriv_sec_df.html}{fórmula de diferenças finitas central}, temos
 \begin{equation}
   u_{x}\left(x_{i+\frac{1}{2}}\right) = \frac{u_i - u_{i-1}}{h} + O(h)
 \end{equation}
@@ -629,15 +629,38 @@ Analogamente, integrando na célula $K_n$ de fronteira, obtemos
   \frac{1}{h}\left(\frac{u_{n}}{h/2} + \frac{u_{n} - u_{n-1}}{h}\right) = \frac{1}{h}\int_{K_i}f\,dx.
 \end{equation}
 
-Por fim, obtemos o \hlemph{sistema discreto}
-\begin{subequations}\hleq
+Por fim, obtemos o \hlemph{problema discreto}
+\begin{subequations}\hleq\label{cap_pvc_sec_mvf:eq:pd}
   \begin{align}
     &\frac{3}{h^2}u_1 - \frac{1}{h^2}u_{2} = f_1,\\
     &-\frac{1}{h^2}u_{i-1} + \frac{2}{h^2}u_i - \frac{1}{h^2}u_{i+1} = f_i,\\
-    &-\frac{1}{h^2}u_{n-1} + \frac{3}{h^2}u_{n+1} = f_n,
+    &-\frac{1}{h^2}u_{n-1} + \frac{3}{h^2}u_{n} = f_n,
   \end{align}
 \end{subequations}
 para $i = 2, 3, \dotsc, n-1$.
+
+\begin{flushleft}
+  \hlemph{3. Resolução do Problema Discreto.}
+\end{flushleft}
+
+\hl{A resolução do problema discreto se resume a computar a solução do sistema linear {\eqref{cap_pvc_sec_mvf:eq:pd}}}. Sua forma matricial é $A\pmb{u} = \pmb{b}$, onde a matriz de coeficientes $A = [a_{i,j}]_{i,j=1}^{n,n}$ tem elementos da diagonal são
+\begin{subequations}
+  \begin{align}
+    &a_{1,1} = \frac{3}{h^2},\\
+    &a_{i,i} = \frac{2}{h^2}, ~2\leq i \leq n-1,\\
+    &a_{n,n} = \frac{3}{h^2},
+  \end{align}
+\end{subequations}
+e os demais $a_{i,j}$ para $i\neq j$
+\begin{equation}
+  a_{i,j} = \left\{
+    \begin{array}{ll}
+      - \frac{1}{h^2} &, j=i-1 ~\text{ou} ~j=i+1,\\
+      0 &, \text{noutros casos}
+    \end{array}
+\right.
+\end{equation}
+O vetor dos termos constantes é $\pmb{b} = (b_i = f_i)_{i=1}^n$, $f_i = f(x_i)$ e o vetor das incógnitas é $u = (u_i)_{i=1}^n$, sendo $u_i$ a aproximação do valor médio de $u$ na célula $K_i$, $i = 1, 2, \dotsc, n$.
 
 \begin{ex}\label{cap_pvc_sec_mvf:ex:pvc_mvf}
   Consideramos o seguinte PVC
