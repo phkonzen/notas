@@ -172,24 +172,30 @@ class Index:
 
         # anúncio
         body += '<div class="carousel-item">'
-        body += self.add_anuncio(text = 'XLII CNMAC 2023 - Inscrições até 28/Jul*',
+        body += self.add_anuncio(text = 'XLII CNMAC 2023 - 18-22/Set',
                                  link = 'http://www.cnmac.org.br',
+                                 status = 'primary')
+        body += '</div>'
+
+        # anúncio
+        body += '<div class="carousel-item">'
+        body += self.add_anuncio(text = 'ENMC/ECTM 2023 - Submissões até 30/Ago',
+                                 link = 'https://enmc.ccam.uesc.br',
                                  status = 'danger')
         body += '</div>'
 
         # anúncio
         body += '<div class="carousel-item">'
-        body += self.add_anuncio(text = 'ENMC/ECTM 2023 - Submissões até 15/Ago',
-                                 link = 'https://enmc.ccam.uesc.br',
+        body += self.add_anuncio(text = 'IV JMMA 2023: Submissões até 15/Set',
+                                 link = 'https://sites.google.com/view/jmma-ufsm/',
                                  status = 'warning')
         body += '</div>'
-
 
         # anúncio
         body += '<div class="carousel-item active">'
         body += self.add_anuncio(text = 'PPGMAp - UFRGS: Seleção Mestrado 2023/2',
                                  link = 'https://www.ufrgs.br/ppgmap',
-                                 status = 'warning')
+                                 status = 'danger')
         body += '</div>'
 
 
