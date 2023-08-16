@@ -56,7 +56,7 @@ fl.close()
 \hl{A \emph{escrita de um arquivo} consiste em exportar dados/informações de um código/programa para um arquivo de dados}. Para tanto: 1. abrimos o arquivo no código com o comando \lstinline+open(file, mode='w')+ (\lstinline+'w'+, do inglês, \textit{write}); 2. usamos um método de escrita, por exemplo, \lstinline+f.write()+ para escrever no arquivo; 3. fechamos o arquivo com \lstinline+f.close()+.
 
 Por exemplo, o seguinte código escreve o arquivo \lstinline+foo.txt+ (consulte o Código~\ref{cap_ag_sec_arq:cod:foo.txt}).
-\begin{lstlisting}
+\begin{lstlisting}[caption=foo.py, label=cap_ag_sec_arq:cod:foo.py]
 import numpy as np
 # abre o arq
 fl = open('foo.txt', mode='w')
@@ -72,7 +72,7 @@ fl.write('n, x, y\n')
 # entradas da tabela
 xx = np.arange(1., 3., 0.5)
 for i,x in enumerate(xx):
-    fl.write(f'{i}, {x:.1f}, {np.log(x):.4f}\n')
+    fl.write(f'{i+1}, {x:.1f}, {np.log(x):.4f}\n')
 # fecha o arq
 fl.close()
 \end{lstlisting}
@@ -93,7 +93,7 @@ fl.close()
 \end{lstlisting}
 \end{ex}
 
-\subsection{Arquivo Binário}
+\subsection{Arquivo Binário}\label{cap_ag_sec_arq:ssec:arqbin}
 
 Um arquivo binário permite a escrita e leitura de dados binários de qualquer tipo (\lstinline+int+, \lstinline+float+, \lstinline+string+, \lstinline+tuple+, \lstinline+list+, etc.). A módulo \href{https://docs.python.org/3/library/pickle.html}{\lstinline+pickle+} contém funções para a escrita e leitura de dados em aquivos binários.
 
@@ -156,4 +156,81 @@ print(data)
 
 \subsection{Exercícios}
 
-[[tag:construcao]]
+\begin{exer}
+  Baixe o arquivo \lstinline+foo.txt+ disponível no Código~\ref{cap_ag_sec_arq:cod:foo.txt}. Então, desenvolva um código que:
+  \begin{enumerate}[a)]
+  \item leia o aquivo \lstinline+foo.txt+ e,
+  \item salve um novo arquivo \lstinline+novo.txt+ que não contenha a terceira entrada da tabela contida no arquivo original.
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+fin = open('foo.txt')
+fout = open('novo.txt', 'w')
+for i, linha in enumerate(fin):
+    if (i != 8):
+        fout.write(linha)
+fin.close()
+fout.close()
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}\label{cap_ag_sec_arq:exer:tabela}
+  Desenvolva um código que escreve a seguinte tabela de ângulos fundamentais em um arquivo texto.
+  \begin{center}
+    \begin{tabular}{c|cc}\toprule
+      $\theta$ & $\sin(\theta)$ & $\cos(\theta)$\\\midrule
+      $0$      & $0$          & $1$\\
+      $\pi/6$  & $\sqrt{3}/2$ & $1/2$\\
+      $\pi/4$  & $\sqrt{2}/2$ & $\sqrt{2}/2$\\
+      $\pi/3$  & $1/2$        & $\sqrt{3}/2$\\
+      $\pi/2$  & $1$          & $0$\\\bottomrule
+    \end{tabular}
+  \end{center}
+\end{exer}
+\begin{resp}
+  Dica: consulte o Código~\ref{cap_ag_sec_arq:cod:foo.py}.
+\end{resp}
+
+\begin{exer}
+  Desenvolva um código que escreve a tabela dada no Exercício~\ref{cap_ag_sec_arq:exer:tabela} como um dicionário em um arquivo binário. Então, leia o arquivo gerado e verifique os dados salvos.
+\end{exer}
+\begin{resp}
+  Dica: consulte a Subseção~\ref{cap_ag_sec_arq:ssec:arqbin}.
+\end{resp}
+
+\begin{exer}
+  Baixe para seu computador o seguinte arquivo texto.
+\begin{lstlisting}[caption=mat.txt]
+'''
+Matriz A
+'''
+1, -1, 2
+2, 1, 3,
+-3, -1, -2
+\end{lstlisting}
+  Este arquivo contém os elementos da matriz $A = [a_{i,j}]_{i,j=1}^{3,3}$. Desenvolva um código que leia este arquivo, aloque a matriz $A$ associada e, então, calcule e imprima o valor de seu determinante, i.e. $\det(A)$.
+\end{exer}
+\begin{resp}
+  Dica: use o método \href{https://docs.python.org/3/library/stdtypes.html#str.split}{\lstinline+str.split()+}.
+\end{resp}
+
+\begin{exer}
+  Faça um código que salve a matriz
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      1 & -1 & 2\\
+      2 & 1 & 3\\
+      -3 & -1 & -2
+    \end{bmatrix}
+  \end{equation}
+  como um arquivo binário \lstinline+.npy+. Em um outro código, leia o arquivo gerado, compute e imprima o traço de $A$, i.e.
+  \begin{equation}
+    \tr(A) = \sum_{i=1}^3 a_{i,i}.
+  \end{equation}
+\end{exer}
+\begin{resp}
+  Dica: $\tr(A) = 0$.
+\end{resp}
+
