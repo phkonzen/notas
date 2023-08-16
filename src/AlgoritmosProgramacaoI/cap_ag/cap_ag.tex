@@ -1,0 +1,159 @@
+% Este trabalho está licenciado sob a Licença Atribuição-CompartilhaIgual 4.0 Internacional Creative Commons. Para visualizar uma cópia desta licença, visite http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR ou mande uma carta para Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+
+\chapter{Arquivos e Gráficos}\label{cap_ag}
+\thispagestyle{fancy}
+
+\section{Arquivos}\label{cap_ag_sec_arq}
+
+\subsection{Arquivo Texto}
+
+\hl{Um \emph{arquivo texto} usualmente é identificado com a extensão {\lstinline+.txt+} e contém uma {\lstinline+string+}}, i.e. uma coleção de caracteres.
+
+Vamos considerar que o seguinte arquivo
+\begin{lstlisting}[caption = foo.txt, label=cap_ag_sec_arq:cod:foo.txt]
+'''
+Tabela de valores de
+y = log(x).
+'''
+
+n, x, y
+1, 1.0, 0.0000
+2, 1.5, 0.4055
+3, 2.0, 0.6931
+4, 2.5, 0.9163
+\end{lstlisting}
+O nome deste aquivo é \lstinline+foo.txt+. Baixe-o e salve-o com o mesmo nome em uma pasta de sua área de usuário no sistema de seu computador.
+
+\subsubsection{Leitura}
+
+\hl{Em programação, a \emph{leitura de um arquivo} consiste em importar dados/informação de um arquivo para um código/programa}. Para tanto, precisamos \hlemph{abrir o arquivo}, i.e. criar um objeto da classe {\lstinline+file+} associado ao arquivo. Em {\python}, abrimos um arquivo com a função \hl{{\href{https://docs.python.org/3/library/functions.html\#open}{\lstinline+open(file, mode)+}}}. Nela, \lstinline+file+ consiste em uma \lstinline+string+ com o \emph{caminho para o aquivo} no sistema de arquivo do sistema operacional e, \lstinline+mode+ é uma string que especifica o modo de abertura. Para a abertura em modo leitura de um arquivo texto, usa-se \lstinline+mode='r'+ (\lstinline+r+, do inglês, \textit{read}).
+
+Um vez aberto a \hlemph{leitura do arquivo} pode ser feita com métodos específicos do objeto {\lstinline+file+}, por exemplo, com o método {\lstinline+f.read()+}. Para uma lista de métodos disponíveis em {\python}, consulte
+\begin{center}
+  \url{https://docs.python.org/3/tutorial/inputoutput.html#methods-of-file-objects}
+\end{center}
+Por fim, precisamos \hlemph{fechar o arquivo}, o que pode ser feito com o método {\lstinline+f.close()+}.
+
+Por exemplo, consideramos o seguinte código
+\begin{lstlisting}
+fl = open('foo.txt', 'r')
+texto = fl.read()
+fl.close()
+print(texto)
+\end{lstlisting}
+Na primeira linha, o código: 1. abre o arquivo \lstinline+foo.txt+\footnote{Aqui, é considerado que o arquivo está na mesma pasta em que o código está sendo executado.}, 2. lê o aquivo inteiro, 3. fecha-o e, 4. imprime o conteúdo lido. No código, \lstinline+texto+ é uma \lstinline+string+ que pode ser manipulada com os métodos e técnicas na Seção~\ref{cap_lingua_sec_string}.
+
+Alternativamente, pode-se fazer a \hlemph{leitura linha-por-linha} do arquivo, como segue
+\begin{lstlisting}
+fl = open('foo.txt', 'r')
+for linha in fl:
+    print(linha)
+fl.close()
+\end{lstlisting}
+
+\subsubsection{Escrita}
+
+\hl{A \emph{escrita de um arquivo} consiste em exportar dados/informações de um código/programa para um arquivo de dados}. Para tanto: 1. abrimos o arquivo no código com o comando \lstinline+open(file, mode='w')+ (\lstinline+'w'+, do inglês, \textit{write}); 2. usamos um método de escrita, por exemplo, \lstinline+f.write()+ para escrever no arquivo; 3. fechamos o arquivo com \lstinline+f.close()+.
+
+Por exemplo, o seguinte código escreve o arquivo \lstinline+foo.txt+ (consulte o Código~\ref{cap_ag_sec_arq:cod:foo.txt}).
+\begin{lstlisting}
+import numpy as np
+# abre o arq
+fl = open('foo.txt', mode='w')
+# cabeçalho
+fl.write("""'''
+Tabela de valores de
+y = log(x)
+'''\n""")
+# linha em branco
+fl.write('\n')
+# id das entradas
+fl.write('n, x, y\n')
+# entradas da tabela
+xx = np.arange(1., 3., 0.5)
+for i,x in enumerate(xx):
+    fl.write(f'{i}, {x:.1f}, {np.log(x):.4f}\n')
+# fecha o arq
+fl.close()
+\end{lstlisting}
+
+Observamos que abertura de arquivo no modo \lstinline+mode='w'+ sobrescreve o arquivo caso ele já exista. Para \hl{escrever em um arquivo já existente}, sem perdê-lo, podemos usar o modo \lstinline+mode='a'+ (\lstinline+'a'+, do inglês, \textit{append}).
+
+\begin{ex}
+  Vamos fazer um código que adiciona uma nova entrada na tabela de valores do arquivo \lstinline+foot.txt+, disponível no Código~\ref{cap_ag_sec_arq:cod:foo.txt}. A nova entrada, corresponde ao valor de $y = \ln(3.0)$.
+\begin{lstlisting}
+import numpy as np
+# abre o arq
+fl = open('foo.txt', mode='a')
+x = 3.
+y = np.log(x)
+fl.write(f'5, {x:.1f}, {y:.4f}\n')
+# fecha o arq
+fl.close()
+\end{lstlisting}
+\end{ex}
+
+\subsection{Arquivo Binário}
+
+Um arquivo binário permite a escrita e leitura de dados binários de qualquer tipo (\lstinline+int+, \lstinline+float+, \lstinline+string+, \lstinline+tuple+, \lstinline+list+, etc.). A módulo \href{https://docs.python.org/3/library/pickle.html}{\lstinline+pickle+} contém funções para a escrita e leitura de dados em aquivos binários.
+
+\subsubsection{Escrita}
+
+Em um arquivo binário, os dados são escritos como registros binários, i.e. precisam ser convertidos para binário (serializados) e escritos no arquivo. A função \lstinline+pickle.dump(obj)+ faz isso para qualquer objeto {\python}.
+
+\begin{ex}
+  Vamos escrever uma versão binária \lstinline+'foo.pk'+ do arquivo texto \lstinline+foo.txt+ trabalho acima. Para tanto, precisamos organizar os dados em um único objeto {\python}. Aqui, usamos um \lstinline+dict+ para organizar a informação e, então, salvar em arquivo binário.
+\begin{lstlisting}[caption=foo.bin, label=cap_ag_sec_arq:cod:foo.bin]
+import numpy as np
+import pickle
+# dados
+data = {}
+## cabeçalho
+data['info'] = 'Tabela de valores de y = log(x)'
+## entradas
+data['x'] = np.arange(1., 3., 0.5)
+data['y'] = np.log(data['x'])
+# abre arquivo
+fl = open('foo.bin', 'wb')
+# escreve no arquivo
+pickle.dump(data, fl)
+# fecha arquivo
+fl.close()
+\end{lstlisting}
+\end{ex}
+
+\subsubsection{Leitura}
+
+A leitura de um arquivo binário requer conhecer a estrutura dos dados alocados. No caso de um arquivo \lstinline+pickle+, a leitura pode ser feita com a função \lstinline+pickle.load()+. Por exemplo, o arquivo \lstinline+foo.bin+ (criado no Código~\ref{cap_ag_sec_arq:cod:foo.bin}) pode ser lido como segue
+\begin{lstlisting}
+fl = open('foo.bin', 'rb')
+data = pickle.load(fl)
+fl.close()
+print(data)
+\end{lstlisting}
+
+\begin{obs}\normalfont{(\hl{Atenção}.)}
+  Não abra e leia arquivos \lstinline+pickle+ que você não tenha certeza do conteúdo. Aquivos deste formato podem conter qualquer objeto {\python}, inclusive funções maliciosas.
+\end{obs}
+
+\subsection{Escrita e Leitura com {\numpy}}
+
+\hl{O {\numpy} contém a função {\lstinline+np.save(fn, arr)+} para escrita no arquivo binário {\lstinline+fn+} um arranjo {\lstinline+arr+}}. Por padrão, a extensão \lstinline+.npy+ é usada. Por exemplo,
+\begin{lstlisting}
+import numpy as np
+xx = np.arange(1., 3., 0.5)
+yy = np.log(xx)
+data = np.vstack((xx, yy))
+np.save('foo.npy', data)
+\end{lstlisting}
+
+A leitura de um arquivo \lstinline+.npy+ pode ser feita com a função \lstinline+np.load(fn)+, que retorna o arranjo lido a partir do arquivo binário \lstinline+fn+. Por exemplo,
+\begin{lstlisting}
+import numpy as np
+data = np.load('foo.npy')
+print(data)
+\end{lstlisting}
+
+\subsection{Exercícios}
+
+[[tag:construcao]]
