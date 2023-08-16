@@ -1,25 +1,24 @@
 import numpy as np
 import numpy.linalg as npla
 from numpy import pi, sin, cos
-import matplotlib.pyplot as plt
 
 # parâmetros
-n = 10000
+n = 10
 h = 1./n
 xx = np.linspace(0., 1., n+1)
 
 # c.c. Dirichlet
-ua = 1.
-ub = -1.
+ua = 0.
+ub = 0.
 
 def f(x, u, ux):
-    return u**2 - cos(pi*x)**2 - pi**2*cos(pi*x)
+    return u*ux - pi*sin(pi*x)*(pi + cos(pi*x))
 
 def fu(x, u, ux):
-    return 2*u
+    return ux
 
 def fux(x, u, ux):
-    return 0.
+    return u
 
 # rhs
 def F(u):
@@ -69,12 +68,3 @@ for k in range(maxiter):
     if (ndlta < 1e-10):
         print('convergiu.')
         break
-
-def ue(x):
-    return cos(pi*x)
-
-print(f'{h:.1e}: err ={ npla.norm(u - ue(xx)):.1e}')
-
-#plt.plot(xx, u)
-#plt.plot(xx, ue(xx))
-#plt.show()

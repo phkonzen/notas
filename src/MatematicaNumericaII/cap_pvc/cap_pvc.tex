@@ -776,3 +776,243 @@ Use uma aproximação adequada pelo MVF para obter o valor aproximado de $u(0)$ 
   \end{align}
   A solução analítica deste problema é $u(x) = \cos(\pi x)$. Aplique o MVF para computar uma aproximação numérica com erro absoluto de no máximo $10^{-3}$ na norma $L^2$.
 \end{exer}
+
+\section{Problemas Não-Lineares}\label{cap_pvc_sec_pnlin}
+
+Vamos estudar a resolução de \hlemph{Problemas Não-Lineares de Valores de Contorno} da forma
+\begin{subequations}\label{cap_pvc_sec_pnlin:eq:pvc}\hleq
+  \begin{align}
+    &u_{xx} = f\left(x, u, u_x\right), ~a \leq x \leq b,\label{cap_pvc_sec_pnlin:eq:pvc_eq}\\
+    &u(a) = u_a,\label{cap_pvc_sec_pnlin:eq:pvc_bca}\\
+    &u(b) = u_b,\label{cap_pvc_sec_pnlin:eq:pvc_bcb}
+  \end{align}
+\end{subequations}
+onde \hl{$f = f(x, u, u_x)$ é uma função não linear para $u$ ou $u_x$}.
+
+Empregando o \hlemph{Método de Diferenças Finitas} (MDF), começamos assumindo uma \hlemph{malha} uniforme de $n$-subintervalos com \hl{\emph{nodos} $x_i = a + (i-1)h$}, \hl{\emph{tamanho de malha} $h = (b-a)/n$}, $i = 1, 2, \dotsc, n+1$. Denotando \hl{$u_i \approx u(x_i)$} e aplicando fórmulas de diferenças finitas centrais para $u_{xx}$ e $u_x$, a Eq.~\eqref{cap_pvc_sec_pnlin:eq:pvc_eq} fornece
+\begin{equation}
+  \begin{aligned}
+    &\frac{1}{h^2}u_{i-1} - \frac{2}{h^2}u_i \frac{1}{h^2}u_{i+1} =\\
+    &\quad\quad f\left(x_i, u_i, \frac{1}{2h}u_{i+1}-\frac{1}{2h}u_{i-1}\right),
+  \end{aligned}
+\end{equation}
+para $i = 2, 3, \dotsc, n$. As condições de contorno Eqs.~\eqref{cap_pvc_sec_pnlin:eq:pvc_bca}-\eqref{cap_pvc_sec_pnlin:eq:pvc_bcb}, fornecem as equações de fechamento
+\begin{subequations}
+  \begin{align}
+    &u_1 = u_a,\\
+    &u_{n+1} = u_b.
+  \end{align}
+\end{subequations}
+
+Com isso, temos que o \hlemph{problema discreto} associado consiste em: \hl{encontrar $\pmb{u} = (u_i)_{i=1}^{n+1}$ solução do seguinte sistema de equações não-lineares}
+\begin{subequations}\label{cap_pvc_sec_pnlin:eq:pd}\hleq
+  \begin{align}
+    &u_1 - u_a = 0,\\
+    &-\frac{1}{h^2}u_{i-1} + \frac{2}{h^2}u_i - \frac{1}{h^2}u_{i+1}\nonumber\\
+    &\quad\quad\quad + f\left(x_i, u_i, \frac{1}{2h}u_{i+1}-\frac{1}{2h}u_{i-1}\right) = 0,\\
+    &u_{n+1} - u_b = 0.
+  \end{align}
+\end{subequations}
+
+A \hlemph{resolução do problema discreto} \eqref{cap_pvc_sec_pnlin:eq:pd} pode ser feito com o \href{https://notaspedrok.com.br/notas/MatematicaNumericaI/cap_snl_sec_newton.html}{Método de Newton}{\newton}. Para tando, observamos que o sistema tem a forma vetorial
+\begin{equation}\hleq
+  F(\pmb{u}) = \pmb{0},
+\end{equation}
+onde $F(\pmb{u}) = \left(f_i(\pmb{u})\right)_{i=1}^{(n+1)}$ é a função vetorial de componentes
+\begin{subequations}
+  \begin{align}
+    f_1(\pmb{u}) &= u_1 - u_a,\\
+    f_i(\pmb{u}) &= -\frac{1}{h^2}u_{i-1} + \frac{2}{h^2}u_i - \frac{1}{h^2}u_{i+1}\nonumber\\
+                 &\quad\quad + f\left(x_i, u_i, \frac{1}{2h}u_{i+1}-\frac{1}{2h}u_{i-1}\right),\\
+    f_{n+1}(\pmb{u}) &= u_{n+1} - u_b,
+  \end{align}
+\end{subequations}
+com $i = 2, 3, \dotsc, n$. A \hlemph{iteração do Método de Newton} consiste em
+\begin{subequations}\hleq
+  \begin{align}
+    &\pmb{u}^{(0)} = \text{aprox. inicial},\\
+    &\pmb{u}^{(k+1)} = \pmb{u}^{(k)} + \pmb{\delta}^{(k)},
+  \end{align}
+\end{subequations}
+onde \hl{$\pmb{\delta}^{(k)}$ é a \emph{atualização de Newton}} computada por
+\begin{equation}\hleq
+  J_{F}\left(\pmb{u}^{(k)}\right)\pmb{\delta}^{(k)} = -F\left(\pmb{u}^{(k)}\right),
+\end{equation}
+para $k = 0, 1, 2, \ldots$ até que um critério de parada seja satisfeito. A \hlemph{matriz jacobiana}{\jacobi} é denotada por $J_{F}\left(\pmb{u}^{(k)}\right) = [\jmath_{i,j}]_{i,j=1}^{n+1,n+1}$ e tem elementos não nulos
+\begin{equation}
+  \jmath_{1,1} = 1,
+\end{equation}
+\begin{subequations}
+  \begin{align}
+    &\jmath_{i,i-1} = -\frac{1}{h^2} - \frac{1}{2h}f_{u_x}\left(x_i, u_i, \frac{1}{2h}u_{i+1}-\frac{1}{2h}u_{i-1}\right),\\
+    &\jmath_{i,i} = \frac{2}{h^2} + f_{u}\left(x_i, u_i, \frac{1}{2h}u_{i+1}-\frac{1}{2h}u_{i-1}\right),\\
+    &\jmath_{i,i+1} = -\frac{1}{h^2} + \frac{1}{2h}f_{u_x}\left(x_i, u_i, \frac{1}{2h}u_{i+1}-\frac{1}{2h}u_{i-1}\right),
+  \end{align}
+\end{subequations}
+para $i = 2, 3, \dotsc, n$ e
+\begin{equation}
+  \jmath_{n+1,n+1} = 1.
+\end{equation}
+
+\begin{ex}\label{cap_pvc_sec_pnlin:ex:mdf-newton}
+  Vamos considerar o seguinte PVC
+  \begin{subequations}\label{cap_pvc_sec_pnlin:eq:pvc-ex}
+    \begin{align}
+      &uu_x - u_{xx} = \pi\sen(\pi x)\left[\pi + \cos(\pi x)\right], ~0 < x < 1,\\
+      &u(0) = u(1) = 0.
+    \end{align}
+  \end{subequations}
+  Rearranjando os termos, podemos escrevê-lo na forma da Eq.~\eqref{cap_pvc_sec_pnlin:eq:pvc}, com $u_a=u_b=0$ e
+  \begin{equation}
+    f(x, u, u_x) = uu_x - \pi\sen(\pi x)\left[\pi + \cos(\pi x)\right].
+  \end{equation}
+  Com isso, calculamos
+  \begin{subequations}
+    \begin{align}
+      &f_u(x, u, u_x) = u_x,\\
+      &f_{u_x}(x, u, u_x) = u.
+    \end{align}
+  \end{subequations}
+  Então, a aplicação do MDF-Newton com $h=10^{-1}$ fornece o resultado da Fig.~\ref{cap_pvc_sec_pnlin:fig:mdf-newton}.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./cap_pvc/dados/fig_mdf-newton/fig}
+    \caption{Resultado da aplicação do MDF-Newton para o PVC do Ex.~\ref{cap_pvc_sec_pnlin:ex:mdf-newton}.}
+    \label{cap_pvc_sec_pnlin:fig:mdf-newton}
+  \end{figure}
+
+\begin{lstlisting}[caption=mdf-newton.py]
+import numpy as np
+import numpy.linalg as npla
+from numpy import pi, sin, cos
+
+# parâmetros
+n = 10
+h = 1./n
+xx = np.linspace(0., 1., n+1)
+
+# c.c. Dirichlet
+ua = 0.
+ub = 0.
+
+def f(x, u, ux):
+    return u*ux - pi*sin(pi*x)*(pi + cos(pi*x))
+
+def fu(x, u, ux):
+    return ux
+
+def fux(x, u, ux):
+    return u
+
+# rhs
+def F(u):
+    y = np.empty(n+1)
+    # f_1
+    y[0] = u[0] - ua
+    # f_i
+    for i in range(1,n):
+        ux = u[i+1]/(2*h) - u[i-1]/(2*h) 
+        y[i] = -1./h**2*u[i-1] + 2./h**2*u[i] - 1./h**2*u[i+1] \
+            + f(xx[i], u[i], ux)
+    # f_{n+1}
+    y[n] = u[n] - ub
+
+    return y
+
+# jacobiana
+def J(u):
+    J = np.zeros((n+1,n+1))
+    J[0,0] = 1.
+    for i in range(1,n):
+        ux = 1./(2*h)*u[i+1] - 1./(2*h)*u[i-1]
+        J[i,i-1] = -1./h**2 - 1/(2*h)\
+            * fux(xx[i], u[i], ux)
+        J[i,i] = 2/h**2 + fu(xx[i], u[i], ux)
+        J[i,i+1] = -1./h**2 + 1/(2*h)\
+            * fux(xx[i], u[i], ux)
+    J[n,n] = 1.
+
+    return J
+
+# aprox inicial
+u = np.zeros(n+1)
+
+# iterações de Newton
+maxiter = 10
+for k in range(maxiter):
+
+    # passo de Newton
+    dlta = npla.solve(J(u), -F(u))
+
+    # atualização
+    u += dlta
+
+    ndlta = npla.norm(dlta)
+    print(f'{k+1}: norm = {ndlta:.2e}')
+    if (ndlta < 1e-10):
+        print('convergiu.')
+        break
+\end{lstlisting}
+\end{ex}
+
+\section{Exercícios}
+
+\begin{exer}
+  Considere o PVC
+  \begin{subequations}
+    \begin{align}
+      &u^2 - u_{xx} = \cos^2(\pi x) + \pi^2\cos(\pi x), ~0 < x < 1,\\
+      &u(0) = 1,\\
+      &u(1) = -1.
+    \end{align}
+  \end{subequations}
+  Este problema tem solução analítica $u(x) = \cos(\pi x)$. Use o MDF-Newton para computar $u_h$ aproximações de $u$ para $h = 10^{-1}$, $10^{-2}$, $10^{-3}$, $10^{-4}$. Então, verifique a convergência com base no erro $\varepsilon_h := \|\tilde{\pmb{u}} - \pmb{u}\|_2$. A convergência tem a taxa esperada? Justifique sua resposta.
+\end{exer}
+\begin{resp}
+  \begin{center}
+    \begin{tabular}{ll}\toprule
+      $h$ & $\varepsilon_h$ \\\midrule
+      $10^{-1}$ & $4.0\e-03$\\
+      $10^{-2}$ & $1.3\e-04$\\
+      $10^{-3}$ & $4.0\e-06$\\
+      $10^{-4}$ & $1.3\e-07$\\\bottomrule
+    \end{tabular}
+  \end{center}
+\end{resp}
+
+\begin{exer}\label{cap_pvc_sec_pnlin:exer:mdf-newton}
+  Considere o PVC
+  \begin{subequations}
+    \begin{align}
+      &uu_x - u_{xx} = 2 + x(1-x)(1-2x), ~0 < x < 1,\\
+      &u_x(0) = 1,\\
+      &u(1) = 0.
+    \end{align}
+  \end{subequations}
+  Este problema tem solução analítica $u(x) = x(1-x)$. Use o MDF-Newton para computar $u_h$ aproximações de $u$ para $h = 10^{-1}$, $10^{-2}$, $10^{-3}$:
+  \begin{enumerate}[a)]
+  \item aplicando as diferenças finitas $D_{0,h^2}u(x)$ para $0 < x < 1$ e $D_{+,h}u(x)$ para $x=0$.
+  \item aplicando as diferenças finitas $D_{0,h^2}u(x)$ para $0 < x < 1$ e $D_{+,h^2}u(x)$ para $x=0$.
+  \end{enumerate}
+  Qual dessas formulações tem a melhor taxa de convergência do erro em relação ao passo de malha $h$? Justifique e verifique sua resposta.
+\end{exer}
+\begin{resp}
+  b) tem melhor taxa de convergência.
+\end{resp}
+
+\begin{exer}
+  Desenvolva uma versão do método MEF-Newton (\href{https://notaspedrok.com.br/notas/MatematicaNumericaII/cap_pvc_sec_fem.html}{Método de Elementos Finitos} com o \href{https://notaspedrok.com.br/notas/MatematicaNumericaI/cap_snl_sec_newton.html}{Método de Newton}) para computar a solução aproximada do PVC dado no Exemplo~\ref{cap_pvc_sec_pnlin:ex:mdf-newton}. Implemente-o e verifique a convergência do método para $h=10^{-1}$, $10^{-2}$ e $10^{-3}$.
+\end{exer}
+
+\begin{exer}
+  Desenvolva uma versão do método MVF-Newton (\href{https://notaspedrok.com.br/notas/MatematicaNumericaII/cap_pvc_sec_mvf.html}{Método de Volumes Finitos} com o \href{https://notaspedrok.com.br/notas/MatematicaNumericaI/cap_snl_sec_newton.html}{Método de Newton}) para computar a solução aproximada do PVC dado no Exemplo~\ref{cap_pvc_sec_pnlin:ex:mdf-newton}. Implemente-o e verifique a convergência do método para $h=10^{-1}$, $10^{-2}$ e $10^{-3}$.
+\end{exer}
+
+\begin{exer}
+  Desenvolva uma versão do método MEF-Newton (\href{https://notaspedrok.com.br/notas/MatematicaNumericaII/cap_pvc_sec_fem.html}{Método de Elementos Finitos} com o \href{https://notaspedrok.com.br/notas/MatematicaNumericaI/cap_snl_sec_newton.html}{Método de Newton}) para computar a solução aproximada do PVC dado no Exercício~\ref{cap_pvc_sec_pnlin:exer:mdf-newton}. Implemente-o e verifique a convergência do método para $h=10^{-1}$, $10^{-2}$ e $10^{-3}$.  
+\end{exer}
+
+\begin{exer}
+  Desenvolva uma versão do método MVF-Newton (\href{https://notaspedrok.com.br/notas/MatematicaNumericaII/cap_pvc_sec_mvf.html}{Método de Volumes Finitos} com o \href{https://notaspedrok.com.br/notas/MatematicaNumericaI/cap_snl_sec_newton.html}{Método de Newton}) para computar a solução aproximada do PVC dado no Exercício~\ref{cap_pvc_sec_pnlin:exer:mdf-newton}. Implemente-o e verifique a convergência do método para $h=10^{-1}$, $10^{-2}$ e $10^{-3}$.
+\end{exer}
