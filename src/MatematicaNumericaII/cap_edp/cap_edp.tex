@@ -3,52 +3,56 @@
 \chapter{Equações Diferenciais Parciais}\label{cap_edp}
 \thispagestyle{fancy}
 
+Neste capítulo, estudamos alguns tópicos fundamentais da aplicação do Método de Diferenças Finitas (MDF) para a solução numérica de Equações Diferenciais Parciais (EDPs).
+
+\section{Equação de Poisson}\label{cap_edp_sec_poisson}
+
+Consideramos a \hlemph{equação de Poisson}{\poisson} (ou \emph{equação de Laplace}{\laplace} heterogênea) no domínio retangular $D = (a, b)\times (c, d)$ com condições de contorno de Dirichlet homogêneas
+\begin{subequations}\label{cap_edp_sec_poisson:eq:prob}\hleq
+  \begin{align}
+    &\Delta u = f(x, y), ~(x, y)\in D, \label{cap_edp_sec_poisson:eq:prob_eq}\\
+    &u(x,y) = 0, ~\p D,\label{cap_edp_sec_poisson:eq:prob_bc}
+  \end{align}
+\end{subequations}
+onde $u = u(x,y)$ é a incógnita, $\Delta u := u_{xx} + u_{yy}$ e $\p D$ é a fronteira do domínio $D$.
+
+\hl{A aplicação do Método de Diferenças Finitas para resolver este problema consiste dos} mesmos \hl{passos} usados para resolver problemas de valores de contorno (consulte Seção~\ref{cap_pvc_sec_mdf}), a saber\hl{: 1. discretização do domínio, 2. discretização das equações, 3. resolução do problema discreto}.
+
 \begin{flushleft}
-  [[tag:revisar]]
+  \hlemph{1. Discretização do Domínio (Malha).}
 \end{flushleft}
 
-Neste capítulo, discutimos alguns tópicos fundamentais da aplicação do método de diferenças finitas para a simulação (aproximação da solução) de equações diferenciais parciais.
-
-\section{Equação de Poisson}\label{cap_edp_sec_Poisson}\index{equação! de Poisson}
-
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-A equação de Poisson em um domínio retangular $D = (x_{\text{ini}}, x_{\text{fin}})\times (y_{\text{ini}}, y_{\text{fin}})$ com condições de contorno de Dirichlet homogêneas refere-se o seguinte problema
-\begin{align}
-  u_{xx} + u_{yy} &= f(x, y),~(x, y)\in D, \label{eq:edp_Poisson_eq}\\
-  u(x_{\text{ini}}, y) &= 0,~y_{\text{ini}}\leq y \leq y_{\text{fin}},\label{eq:edp_Poisson_bcxini}\\
-  u(x_{\text{fin}}, y) &= 0,~y_{\text{ini}}\leq y \leq y_{\text{fin}},\label{eq:edp_Poisson_bcxfin}\\
-  u(x, y_{\text{ini}}) &= 0,~x_{\text{ini}}\leq x \leq x_{\text{fin}},\label{eq:edp_Poisson_bcyini}\\
-  u(x, y_{\text{fin}}) &= 0,,~x_{\text{ini}}\leq x \leq x_{\text{fin}},\label{eq:edp_Poisson_bcyfin}
+Tratando-se do domínio retangular $\overline{D} = [a, b]\times [c, d]$, podemos construir uma malha do produto cartesiano de partições uniformes dos intervalos $[a, b]$ e $[c, d]$. Ou seja, tomamos
+\begin{subequations}
+  \begin{align}
+    x_{i} &:= a + (i-1)h_x,\\
+    y_{j} &:= c + (j-1)h_y,  
 \end{align}
-onde $u = u(x,y)$ é a incógnita.
+\end{subequations}
+com $i = 1, 2, \dotsc, n_x$, $j = 1, 2, \dotsc, n_y$, sendo $n_x$ e $n_y$ o número de subintervalos escolhidos para as partições, respectivamente, e os passos $h_x = (b-a)/n_x$ e $h_y=(d-c)/n_y$. O tamanho da malha é definido por $h := \max\{h_x, h_y\}$.
 
-A aplicação do método de diferenças finitas para resolver este problema consiste dos mesmos passos usados para resolver problemas de valores de contorno (veja Capítulo~\ref{cap_pvc}), a saber: 1. construção da malha, 2. discretização das equações, 3. resolução do problema discreto.
-
-\begin{flushleft}
-  {\bf 1. Construção da malha}
-\end{flushleft}
-
-Tratando-se do domínio retangular $\overline{D} = [x_{\text{ini}}, x_{\text{fin}}]\times [y_{\text{ini}}, y_{\text{fin}}]$, podemos construir uma malha do produto cartesiano de partições uniformes dos intervalos $[x_{\text{ini}}, x_{\text{fin}}]$ e $[y_{\text{ini}}, y_{\text{fin}}]$. Mais explicitamente, tomamos
-\begin{align}
-  x_{i} &:= x_{\text{ini}} + (i-1)h_x,\quad h_x = \frac{x_{\text{fin}}-x_{\text{ini}}}{n_x-1},\\
-  y_{j} &:= y_{\text{ini}} + (j-1)h_y,\quad h_y = \frac{y_{\text{fin}}-y_{\text{ini}}}{n_y-1},  
-\end{align}
-onde $i = 1, 2, \dotsc, n_x$, $j = 1, 2, \dotsc, n_y$, sendo $n_x$ e $n_y$ o número de subintervalos escolhidos para as partições em $x$ e $y$, respectivamente.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./cap_edp/dados/figMalha2D/fig}
+  \caption{Malha bidimensional.}
+  \label{cap_edp_sec_poisson:fig:malha2D}
+\end{figure}
 
 O produto cartesiano das partições em $x$ e $y$ nos fornece uma partição do domínio $\overline{D}$ da forma
 \begin{equation}
   P(\overline{D}) = \{(x_1, y_1), (x_1, y_2), \dotsc, (x_i, y_j), \dotsc, (x_{n_x}, y_{n_y})\},
 \end{equation}
-cujos nodos $(x_i, y_j)$ podem ser indexados (enumerados) por $k = j + (i-1)n_x$.  Por simplicidade, no decorrer do texto, assumiremos $n_x=n_y=:n$ e, por conseguinte, $h_x=h_y=h$.
+cujos nodos $(x_i, y_j)$ podem ser enumerados (indexados) por $k = i + (j-1)n_x$.  Por simplicidade, no decorrer do texto, assumiremos $n_x=n_y=:n$ e, por conseguinte, $h_x=h_y=h$ e temos a \hlemph{enumeração}
+\begin{equation}\label{cap_edp_sec_poisson:eq:enum}\hleq
+  k = i + (j-1)n.
+\end{equation}
+Consulte a Figura~\ref{cap_edp_sec_poisson:fig:malha2D}.
 
 \begin{flushleft}
-  {\bf 2. Discretização das equações}
+  \hlemph{2. Discretização das Equações.}
 \end{flushleft}
 
-Usando a fórmula de diferenças finitas central de ordem $h^2$ para a segunda derivada, temos
+Usando a \href{https://notaspedrok.com.br/notas/MatematicaNumericaII/cap_deriv_sec_d2f.html}{fórmula de diferenças finitas central} de ordem $h^2$ para a segunda derivada, temos
 \begin{align}
   u_{xx}(x,y) &= \frac{u(x+h,y)-2u(x,y)+u(x-h,y)}{h^2} + O(h^2),\\
   u_{yy}(x,y) &= \frac{u(x,y+h)-2u(x,y)+u(x,y-h)}{h^2} + O(h^2).
@@ -58,54 +62,64 @@ Daí, denotando $u_{ij}\approx u(x_i, y_j)$ temos
   u_{xx}(x_i,y_j) &= \frac{u_{i+1,j}-2u_{i,j}+u_{i-1,j}}{h^2} + O(h^2),\\
   u_{yy}(x_i,y_j) &= \frac{u_{i,j+1}-2u_{i,j}+u_{i,j-1}}{h^2} + O(h^2).  
 \end{align}
-Então, da equação~\ref{eq:edp_Poisson_eq} temos
+Então, da Eq.~\ref{cap_edp_sec_poisson:eq:prob_eq} temos
 \begin{equation}
-  \frac{u_{i+1,j}-2u_{i,j}+u_{i-1,j}}{h^2} + \frac{u_{i,j+1}-2u_{i,j}+u_{i,j-1}}{h^2} + O(h^2) = f(x_i,y_j).
+  \begin{aligned}
+    &\frac{u_{i+1,j}-2u_{i,j}+u_{i-1,j}}{h^2}\\
+    &\qquad + \frac{u_{i,j+1}-2u_{i,j}+u_{i,j-1}}{h^2} + O(h^2) = f(x_i,y_j).
+\end{aligned}
 \end{equation}
-Adora, denotando $u_k := u_{j+(i-1)n}$, desprezando o termo do erro de truncamento e rearranjando os termos nesta última equação temos
-\begin{equation}\label{eq:edp_Poisson_mdf_sis0}
-  \frac{1}{h^2}u_{k-n} + \frac{1}{h^2}u_{k-1} -\frac{4}{h^2}u_{k} + \frac{1}{h^2}u_{k+1} + \frac{1}{h^2}u_{k+n} = f(x_i,y_j),
+Agora, com base na enumeração \eqref{cap_edp_sec_poisson:eq:enum} denotamos $u_k := u_{i+(j-1)n}$, desprezando o erro de truncamento e rearranjando os termos, obtemos
+\begin{equation}\label{cap_edp_sec_poisson:eq:mdf_ni}\hleq
+  \frac{1}{h^2}u_{k-n} + \frac{1}{h^2}u_{k-1} -\frac{4}{h^2}u_{k} + \frac{1}{h^2}u_{k+1} + \frac{1}{h^2}u_{k+n} = f_k,
 \end{equation}
-para $i,j=2, 3, \dotsc, n-1$. Isto é, esta última expressão nos fornece um sistema de $(n-2)^2$ equações para $n^2$ incógnitas $u_k$.
+para $k = i + (j+1)n$ com $i,j=2, 3, \dotsc, n-1$ (nodos internos). Isto é, esta última expressão nos fornece um sistema de $(n-2)^2$ equações para $n^2$ incógnitas $\pmb{u} = (u_k)_{k=1}^{n^2}$. Para fechar o sistema, usamos as condições de contorno \eqref{cap_edp_sec_poisson:eq:prob_bc}
+\begin{equation}\label{cap_edp_sec_poisson:eq:mdf_nb}\hleq
+  u_k = 0
+\end{equation}
+para $k = i + (j+1)n$ com $i=1,n$ e $j=1, 2, \dotsc, n$, ou $i=2,3,\dotsc, n-1$ e $j=1,n$.
 
-Para fechar o sistema, usamos as condições de contorno \eqref{eq:edp_Poisson_bcxini}-\eqref{eq:edp_Poisson_bcyfin}:
-\begin{align}
-  u_{1,j} &= 0,\quad u_{n,j}=0,\label{eq:edp_Poisson_mdf_sis1}\\
-  u_{i,1} &= 0,\quad u_{i,n}=0\label{eq:edp_Poisson_mdf_sis2},
-\end{align}
-$i,j=1, 2, \dotsc, n$.
-
-Com isso, o problema discreto obtido da aplicação do método de diferenças finitas consiste no sistema linear de $n^2$ equações \eqref{eq:edp_Poisson_mdf_sis0}-e\eqref{eq:edp_Poisson_mdf_sis2} para as $n^2$ incógnitas $u_k$, $k=1, 2, \dotsc, n^2$.
+Com isso, o \hlemph{problema discreto} obtido da aplicação do MDF \hl{consiste no sistema linear de $n^2\times n^2$ {\eqref{cap_edp_sec_poisson:eq:mdf_ni}}-{\eqref{cap_edp_sec_poisson:eq:mdf_nb}}}.
 
 
 \begin{flushleft}
-  {\bf 3. Resolução do problema discreto}
+  \hlemph{3. Resolução do Problema Discreto.}
 \end{flushleft}
 
-O problema discreto \eqref{eq:edp_Poisson_mdf_sis0}-\eqref{eq:edp_Poisson_mdf_sis2} pode ser escrito na forma matricial
-\begin{equation}
-  A\tilde{u} = b,\label{eq:edp_Poisson_prob_disc}
+O problema discreto \eqref{cap_edp_sec_poisson:eq:mdf_ni}-\eqref{cap_edp_sec_poisson:eq:mdf_nb} pode ser escrito na forma matricial
+\begin{equation}\label{cap_edp_sec_poisson:eq:sis}\hleq
+  A\pmb{u} = \pmb{b},
 \end{equation}
-onde o vetor da incógnitas é $\tilde{u}=(u_1, u_2, \dotsc, u_{n^2})$ e o vetor dos termos contantes $b$ é tal que
-\begin{align}
-  i=1,n,~j=1, 2, \dotsc, n &:~b_k = 0,\\
-  i=1, 2, \dotsc, n,~j=1,n &:~b_k = 0,\\
-  i,j=2, 3, \dotsc, n-1 &:~b_k = f(x_i,y_j).
-\end{align}
-Além disso, a matriz dos coeficientes $A$ é tal que
-\begin{align}
-  i=1,n,~j=1, 2, \dotsc, n &:~a_{k,k} = 1,\\
-  i=1, 2, \dotsc, n,~j=1,n &:~a_{k,k} = 1,\\
-  i,j=2, 3, \dotsc, n-1 &:~a(k,k-n)=\frac{1}{h^2},\\
-                        &~~a(k,k-1)=\frac{1}{h^2},\\
-                        &~~a(k,k)=-\frac{4}{h^2},\\
-                        &~~a(k,k+1)=\frac{1}{h^2},\\
-                        &~~a(k,k+n)=\frac{1}{h^2}.
-\end{align}
-Assim sendo, basta empregarmos um método apropriado para resolver o sistema linear \eqref{eq:edp_Poisson_prob_disc} para obter a solução aproximada de $u$ nos nodos $(x_i, y_j)$.
+onde o vetor da incógnitas é $\pmb{u}=(u_k)_{k=1}^{n^2}$. A matriz dos coeficientes $A = [a_{l,m}]_{l,m=1}^{n^2,n^2}$ e o vetor dos termos contantes $\pmb{b} = (b_{k})_{k=1}^{n^2}$ têm elementos não nulos
+\begin{equation}
+  \begin{aligned}
+    &i=1, n, ~j=1, 2, \dotsc, n:\\
+    &\qquad a_{k,k} = 1,\\
+    &\qquad b_k = 0,\\
+  \end{aligned}
+\end{equation}
+\begin{equation}
+  \begin{aligned}
+    &i=1, 2, \dotsc, n, ~j=1, n:\\
+    &\qquad a_{k,k} = 1,\\
+    &\qquad b_k = 0,\\
+  \end{aligned}
+\end{equation}
+\begin{equation}
+  \begin{aligned}
+    &i,j=2, 3, \dotsc, n-1 &:\\
+    &\qquad a_{k,k-n} = \frac{1}{h^2},\\
+    &\qquad a_{k,k-1} = \frac{1}{h^2},\\
+    &\qquad a+{k,k} = -\frac{4}{h^2},\\
+    &\qquad a_{k,k+1} = \frac{1}{h^2},\\
+    &\qquad a_{k,k+n} = \frac{1}{h^2},\\
+    &\qquad b_{k} = f(x_i, y_j).
+  \end{aligned}
+\end{equation}
+Assim sendo, basta empregarmos um método apropriado para resolver o sistema linear \eqref{cap_edp_sec_poisson:eq:sis} para obter a solução aproximada de $u$ nos nodos $(x_i, y_j)$.
 
 
-\begin{ex}\label{ex:edp_Poisson}
+\begin{ex}\label{ex:edp_Poisson} [[tag:revisar]]  
   Consideremos o seguinte problema
   \begin{align}
     u_{xx} + u_{yy} &= -\sen(x)\sen(y),~(x, y)\in (0, \pi)\times (0, \pi),\\
