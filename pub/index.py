@@ -62,8 +62,13 @@ class Index:
         card = ""
         card += f'<div class="card border-{color} mb-3" style="width: 21rem;">'
         card += f'<div class="card-header text-bg-{color} d-flex justify-content-between">{header} '
-        if (status != ""):
+        if (status == "atualizando"):
+            card += f'<div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>'
+        elif (status == "Novo"):
+            card += f'<span class="align-middle"><span class="badge rounded-pill text-bg-light">{status}</span></span><div class="spinner-border text-light" role="status"><span class="sr-only">Loading...</span></div>'
+        elif (status != ""):
             card += f'<span class="align-middle"><span class="badge rounded-pill text-bg-light">{status}</span></span>'
+            
         card += '</div>'
         card += '<div class="card-body">'
         card += f'<h4 class="card-title">{title}</h4>'
@@ -351,7 +356,7 @@ class Index:
                               text = "Vetores no espaço euclidiano tridimensional",
                               badges = [],
                               link = "Vetores/main.html",
-                              color = "primary", status = "Estável")
+                              color = "primary", status = "")
         body += '</div>'
 
         body += '</div> <!-- div class=row-->'
