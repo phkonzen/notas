@@ -37,9 +37,9 @@ plt.text(-0.2,0,"$1$")
 plt.text(-0.2,1,"$2$")
 plt.text(-0.2,2,"$3$")
 plt.text(-0.2,3,"$j$")
-plt.text(-0.735,4,"$n-2$")
-plt.text(-0.735,5,"$n-1$")
-plt.text(-0.25,6,"$n$")
+plt.text(-0.735,4,"$n-1$")
+plt.text(-0.735,5,"$n$")
+plt.text(-0.25,6,"$n+1$")
 
 plt.text(0.1,0.2,"$1$",
          bbox=dict(boxstyle="Round,pad=0.2",fc="white",lw=0.4))
@@ -49,16 +49,16 @@ plt.text(2.1,0.2,"$3$",
          bbox=dict(boxstyle="Round,pad=0.2",fc="white",lw=0.4))
 plt.text(3.1,0.2,"$\\cdots$",
          bbox=dict(boxstyle="Round,pad=0.2",fc="white",lw=0.4))
-plt.text(5.1,0.2,"$n-1$",
+plt.text(5.1,0.2,"$n$",
          bbox=dict(boxstyle="Round,pad=0.2",fc="white",lw=0.4))
-plt.text(6.1,0.2,"$n$",
+plt.text(6.1,0.2,"$n+1$",
          bbox=dict(boxstyle="Round,pad=0.2",fc="white",lw=0.4))
 
-plt.text(0.1,1.2,"$n+1$",
+plt.text(0.1,1.2,"$n+2$",
          bbox=dict(boxstyle="Round,pad=0.2",fc="white",lw=0.4))
 plt.text(3.1,1.2,"$\\cdots$",
          bbox=dict(boxstyle="Round,pad=0.2",fc="white",lw=0.4))
-plt.text(6.1,1.2,"$2n$",
+plt.text(6.1,1.2,"$2(n+1)$",
          bbox=dict(boxstyle="Round,pad=0.2",fc="white",lw=0.4))
 
 plt.text(0.1,3.2,"$\\vdots$",
@@ -66,7 +66,7 @@ plt.text(0.1,3.2,"$\\vdots$",
 plt.text(6.1,3.2,"$\\vdots$",
          bbox=dict(boxstyle="Round,pad=0.2",fc="white",lw=0.4))
 
-plt.text(3.1,2.2,"$k-n$",
+plt.text(3.1,2.2,"$k-n-1$",
          bbox=dict(boxstyle="Round,pad=0.2",fc="white",lw=0.4))
 plt.text(2.1,3.2,"$k-1$",
          bbox=dict(boxstyle="Round,pad=0.2",fc="white",lw=0.4))
@@ -74,17 +74,17 @@ plt.text(3.1,3.2,"$k$",
          bbox=dict(boxstyle="Round,pad=0.2",fc="white",lw=0.4))
 plt.text(4.1,3.2,"$k+1$",
          bbox=dict(boxstyle="Round,pad=0.2",fc="white",lw=0.4))
-plt.text(3.1,4.2,"$k+n$",
+plt.text(3.1,4.2,"$k+n+1$",
          bbox=dict(boxstyle="Round,pad=0.2",fc="white",lw=0.4))
 
 plt.text(6.1,3.2,"$\\vdots$",
          bbox=dict(boxstyle="Round,pad=0.2",fc="white",lw=0.4))
 
-plt.text(0.1,6.2,"$(n-1)n+1$",
+plt.text(0.1,6.2,"$n(n+1)$",
          bbox=dict(boxstyle="Round,pad=0.2",fc="white",lw=0.4))
 plt.text(3.1,6.2,"$\\cdots$",
          bbox=dict(boxstyle="Round,pad=0.2",fc="white",lw=0.4))
-plt.text(6.1,6.2,"$n^2$",
+plt.text(6.1,6.2,"$(n+1)^2$",
          bbox=dict(boxstyle="Round,pad=0.2",fc="white",lw=0.4))
 
 
