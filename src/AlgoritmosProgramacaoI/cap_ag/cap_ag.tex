@@ -234,3 +234,358 @@ Matriz A
   Dica: $\tr(A) = 0$.
 \end{resp}
 
+\section{Gráficos}\label{cap_ag_sec_graf}
+
+Vamos usar o pacote computacional {\matplotlib} para a elaboração de gráficos de funções. Usualmente, vamos utilizar os seguintes módulos {\python}
+\begin{lstlisting}
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import numpy as np
+\end{lstlisting}
+
+\subsection{Área Gráfica}
+
+No {\matplotlib}, os gráficos são colocados em um \textit{container} \href{https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure}{\lstinline+Figure+} (uma janela gráfica ou um arquivo de imagem). O \textit{container} pode ter um ou mais \href{https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes}{Axes}, uma área gráfica contendo todos os elementos de um gráfico (eixos, pontos, linhas, anotações, legendas, etc.). Podemos usar \href{https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.plot.html#matplotlib.axes.Axes.plot}{Axes.plot} para plotar dados.
+
+\begin{ex}\label{cap_ag_sec_graf:ex:fig_absx}
+  Consideramos a função
+  \begin{equation}
+    f(x) = |x|, ~-\frac{1}{2}\leq x < 1.
+  \end{equation}
+  A Figura~\ref{cap_ag_sec_graf:fig:absx}, mostra o gráfico de $f$ plotado com o código abaixo.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./cap_ag/dados/fig_absx/fig}
+    \caption{Gráfico referente ao Exemplo~\ref{cap_ag_sec_graf:ex:absx}.}
+    \label{cap_ag_sec_graf:fig:absx}
+  \end{figure}
+  
+\begin{lstlisting}
+import matplotlib.pyplot as plt
+
+# figure
+fig = plt.figure()
+# axes
+ax = fig.add_subplot()
+# plot
+ax.plot([-0.5, 0, 1],
+        [0.5, 0, 1])
+# display
+plt.show()
+\end{lstlisting}
+\end{ex}
+
+No caso de curvas, podemos usamos um número adequado de pontos de forma que os segmentos de linhas ficam imperceptíveis a olho nu.
+
+\begin{ex}\label{cap_ag_sec_graf:ex:fun}
+  Consideramos a função
+  \begin{equation}
+    f(x) = \left\{
+      \begin{array}{ll}
+        -(x+1)^2-2 &, ~-2\leq x < -\frac{1}{2},\\
+        |x| &, ~-\frac{1}{2}\leq x < 1,\\
+        (x-2)^3 + 2, &, ~1\leq x < 3.
+      \end{array}
+    \right.
+  \end{equation}
+  A Figura~\ref{cap_ag_sec_graf:fig:fun}, mostra o gráfico de $f$ plotado com o código abaixo.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./cap_ag/dados/fig_fun/fig}
+    \caption{Gráfico referente ao Exemplo~\ref{cap_ag_sec_graf:ex:fun}.}
+    \label{cap_ag_sec_graf:fig:fun}
+  \end{figure}  
+
+\begin{lstlisting}
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import numpy as np
+
+# figure
+fig = plt.figure()
+# axis
+ax = fig.add_subplot()
+# -2 <= x < -0.5
+x = np.linspace(-2, -0.5)
+ax.plot(x, -(x+1)**2-2)
+# -0.5 <= x < 1
+x = np.linspace(-0.5, 1)
+ax.plot(x, np.fabs(x))
+# 1 <= x < 3
+x = np.linspace(1, 3)
+ax.plot(x, (x-2)**3+2)
+# display
+plt.show()
+\end{lstlisting}
+\end{ex}
+
+\subsection{Eixos}
+
+No {\matplotlib}, os eixos de um gráfico são objetos da classe \href{https://matplotlib.org/stable/api/axis_api.html#matplotlib.axis.Axis}{\lstinline+Axis+}\footnote{Não confundir com Axes, um objeto que contém todos os elementos de um gráfico.}.
+
+\begin{ex}\label{cap_ag_sec_graf:ex:axis}
+  Com o código abaixo, produzimos a Figura~\ref{cap_ag_sec_graf:fig:eixos}, a qual contém o gráfico da função do Exemplo~\ref{cap_ag_sec_graf:fig:fun} com os eixos editados.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./cap_ag/dados/fig_eixos/fig}
+    \caption{Gráfico referente ao Exemplo~\ref{cap_ag_sec_graf:ex:eixos}.}
+    \label{cap_ag_sec_graf:fig:eixos}
+  \end{figure}  
+
+\begin{lstlisting}
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import numpy as np
+
+# figure
+fig = plt.figure()
+# axis
+ax = fig.add_subplot()
+# -2 <= x < -0.5
+x = np.linspace(-2, -0.5)
+ax.plot(x, -(x+1)**2-2)
+# -0.5 <= x < 1
+x = np.linspace(-0.5, 1)
+ax.plot(x, np.fabs(x))
+# 1 <= x < 3
+x = np.linspace(1, 3)
+ax.plot(x, (x-2)**3+2)
+# eixo-x
+ax.set_xlim((-2.1, 3.1))
+ax.set_xticks([-2, -1, 0, 1, 2, 3])
+ax.set_xlabel('x')
+#eixo-y
+ax.set_ylim((-3.1, 3.1))
+ax.set_yticks([-3, -2, -1, 0, 1, 2, 3])
+ax.set_ylabel('y')
+# grid
+ax.grid()
+# display
+plt.savefig('fig.png', bbox_inches='tight')
+plt.savefig('fig.pdf', bbox_inches='tight')
+plt.show()
+\end{lstlisting}
+\end{ex}
+
+\subsection{Elementos Gráficos}
+
+No {\matplotlib}, os elementos gráficos (basicamente tudo o que é visível, pontos, linhas, eixos, etc.) são objetos da classe \href{https://matplotlib.org/stable/api/artist_api.html#artist-class}{Artist}.
+
+\begin{ex}\label{cap_ag_sec_graf:ex:elgraf}
+  Com o código abaixo, produzimos a Figura~\ref{cap_ag_sec_graf:fig:elgraf}, a qual contém o gráfico da função do Exemplo~\ref{cap_ag_sec_graf:fig:elgraf} com os eixos editados.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./cap_ag/dados/fig_elgraf/fig}
+    \caption{Gráfico referente ao Exemplo~\ref{cap_ag_sec_graf:ex:elgraf}.}
+    \label{cap_ag_sec_graf:fig:elgraf}
+  \end{figure}
+  
+\begin{lstlisting}
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import numpy as np
+
+# figure
+fig = plt.figure()
+# axis
+ax = fig.add_subplot()
+
+# -2 <= x < -0.5
+x = np.linspace(-2, -0.5)
+f1 = lambda x: -(x+1)**2-2
+ax.plot(x, f1(x), color='blue',
+        label='-(x+1)^2-2')
+ax.plot([-2.], f1(-2.), linestyle='', marker='o',
+        color='blue')
+ax.plot([-0.5], f1(-0.5), ls='', marker='o',
+        markerfacecolor='white', markeredgecolor='blue')
+
+# -0.5 <= x < 1
+x = np.linspace(-0.5, 1)
+f2 = lambda x: np.fabs(x)
+ax.plot(x, f2(x), color='orange', label='|x|')
+ax.plot([-0.5], [f2(-0.5)], ls='', marker='o',
+        color='orange')
+
+ax.plot([-0.5, -0.5], [f1(-0.5), f2(-0.5)],
+        ls = '--', color='gray', alpha=0.5)
+
+# 1 <= x < 3
+x = np.linspace(1, 3)
+f3 = lambda x: (x-2)**3+2
+ax.plot(x, f3(x), color='green',
+        label='(x-2)^3+2')
+ax.plot([1.], [f3(1.)], ls='', marker='o',
+        color='green')
+ax.plot([3.], [f3(3.)], ls='', marker='o',
+        mfc='white', mec='green')
+
+# eixo-x
+ax.set_xlim((-2.1, 3.1))
+ax.set_xticks([-2, -1, 0, 1, 2, 3])
+ax.set_xlabel('x')
+# eixo-y
+ax.set_ylim((-3.1, 3.1))
+ax.set_yticks([-3, -2, -1, 0, 1, 2, 3])
+ax.set_ylabel('y')
+# grid
+ax.grid()
+ax.legend()
+# display
+plt.savefig('fig.png', bbox_inches='tight')
+plt.savefig('fig.pdf', bbox_inches='tight')
+plt.show()
+\end{lstlisting}
+\end{ex}
+
+\subsection{Textos e Anotações}
+
+Elementos texto podem ser adicionados a um \lstinline+Axes+ com o comando \href{https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.text.html#matplotlib.axes.Axes.text}{\lstinline+axes.text()+}. Anotações, consistem em um apontamento, e podem ser adicionadas com o comando \href{https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.annotate.html#matplotlib.axes.Axes.annotate}{\lstinline+axes.annotate()+}. Elementos texto suportam \LaTeX usando-se o marcador de texto \lstinline!$!.%$
+
+\begin{ex}\label{cap_ag_sec_graf:ex:texto}
+  Com o código abaixo, produzimos a Figura~\ref{cap_ag_sec_graf:fig:texto}, a qual contém o gráfico da função do Exemplo~\ref{cap_ag_sec_graf:fig:texto} com os eixos editados.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./cap_ag/dados/fig_texto/fig}
+    \caption{Gráfico referente ao Exemplo~\ref{cap_ag_sec_graf:ex:texto}.}
+    \label{cap_ag_sec_graf:fig:texto}
+  \end{figure}
+  
+\begin{lstlisting}
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import numpy as np
+
+# figure
+fig = plt.figure()
+# axis
+ax = fig.add_subplot()
+
+# -2 <= x < -0.5
+x = np.linspace(-2, -0.5)
+f1 = lambda x: -(x+1)**2-2
+ax.plot(x, f1(x), color='blue',
+        label='$y=-(x+1)^2-2$')
+ax.plot([-2.], f1(-2.), linestyle='', marker='o',
+        color='blue')
+ax.plot([-0.5], f1(-0.5), ls='', marker='o',
+        markerfacecolor='white', markeredgecolor='blue')
+
+# -0.5 <= x < 1
+x = np.linspace(-0.5, 1)
+f2 = lambda x: np.fabs(x)
+ax.plot(x, f2(x), color='orange', label='$y=|x|$')
+ax.plot([-0.5], [f2(-0.5)], ls='', marker='o',
+        color='orange')
+
+ax.plot([-0.5, -0.5], [f1(-0.5), f2(-0.5)],
+        ls = '--', color='gray', alpha=0.5)
+# anotação
+ax.annotate('mín. local', xy=(0,0), xytext=(0.1,-0.6),
+            arrowprops={'arrowstyle':'->'})
+
+# 1 <= x < 3
+x = np.linspace(1, 3)
+f3 = lambda x: (x-2)**3+2
+ax.plot(x, f3(x), color='green',
+        label='$y=(x-2)^3+2$')
+ax.plot([1.], [f3(1.)], ls='', marker='o',
+        color='green')
+ax.plot([3.], [f3(3.)], ls='', marker='o',
+        mfc='white', mec='green')
+
+# hachurando
+ax.fill_between(x, f3(x), color='gray', alpha=0.25)
+ax.plot([1., 1.], [0., f3(1.)],
+        ls='--', color='gray', alpha=0.5)
+ax.plot([3., 3.], [0., f3(3.)],
+        ls='--', color='gray', alpha=0.5)
+# texto
+ax.text(1.5, 0.9, '$\\int_{1}^3 (x-2)^3+2\,dx$')
+
+# eixo-x
+ax.set_xlim((-2.1, 3.1))
+ax.set_xticks([-2, -1, 0, 1, 2, 3])
+ax.set_xlabel('$x$')
+# eixo-y
+ax.set_ylim((-3.1, 3.1))
+ax.set_yticks([-3, -2, -1, 0, 1, 2, 3])
+ax.set_ylabel('$y$')
+# grid
+ax.grid()
+ax.legend()
+# display
+plt.savefig('fig.png', bbox_inches='tight')
+plt.savefig('fig.pdf', bbox_inches='tight')
+plt.show()
+\end{lstlisting}
+\end{ex}
+
+\subsection{Exercícios}
+
+\begin{exer}
+  Use o {\matplotlib} para produzir um gráfico para as seguintes funções:
+  \begin{enumerate}[a)]
+  \item $\displaystyle f(x) = x^2$, $-2 \leq x \leq 2$.
+  \item $\displaystyle g(x) = 2x^3+2$, $-3 \leq x \leq 0$.
+  \item $\displaystyle h(x) = \sen(x)$, $-\pi \leq x \leq \pi$.
+  \end{enumerate}
+\end{exer}
+
+\begin{exer}
+  Use o {\matplotlib} para plotar o gráfico da função sigmoid
+  \begin{equation}
+    f(x) = \frac{1}{1 + e^{-x}}.
+  \end{equation}
+  Na mesma área gráfica, plote retas tracejadas identificando suas assíntotas horizontais.
+\end{exer}
+\begin{resp}
+  Dica: $y = 0$ e $y=1$ são assíntotas horizontais da função sigmoid.
+\end{resp}
+
+\begin{exer}
+  Use o {\matplotlib} para plotar o gráfico de $f(x) = 1/x$, $-2 \leq x \leq 2$. Na mesma área gráfica, plote uma reta tracejada identificando a assíntota vertical de $f$.
+\end{exer}
+\begin{resp}
+  Dica: $x = 0$ é assíntota vertical de $f$.
+\end{resp}
+
+\begin{exer}
+  Use o {\matplotlib} para produzir um gráfico para a seguinte função definida por partes
+  \begin{equation}
+    f(x) = \left\{
+      \begin{array}{ll}
+        \cos(x) &, -\pi < x \leq 0,\\
+        1-x^2 &, 0 < x \leq 2.
+      \end{array}
+    \right.
+  \end{equation}
+  Use de marcadores para identificar os pontos extremos de cada parte da função. Também, adicione o \textit{label} de cada eixo e uma legenda para identificar cada parte da função.
+\end{exer}
+
+\begin{exer}
+  Em uma mesma área gráfica, plote as curvas $y = x + 1$ e $y = x^2$, e marque seus pontos de interseção. Para cada um destes pontos, inclua a anotação ``pto. de interseção''.
+\end{exer}
+
+\begin{exer}
+  No gráfico da função sigmoid
+  \begin{equation}
+    f(x) = \frac{1}{1 + e^{-x}}
+  \end{equation}
+  hachure (pinte) a região que corresponde a área associada a integral definida
+  \begin{equation}
+    \int_1^3 f(x)\,dx.
+  \end{equation}
+\end{exer}
+\begin{resp}
+  Dica: use a função \href{https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.fill_between.html#matplotlib.axes.Axes.fill_between}{\lstinline+Axes.fill_between()+}.
+\end{resp}
+
+\begin{ex}
+  Em uma mesma área gráfica, plote a área entre as curvas $y = x + 1$ e $y = x^2$, $x=-1$ e $x=2$.
+\end{ex}
