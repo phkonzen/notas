@@ -30,7 +30,7 @@ plt.plot([3],[4],marker="o",markersize=4,color="red")
 plt.plot([2],[3],marker="o",markersize=4,color="red")
 plt.plot([4],[3],marker="o",markersize=4,color="red")
   
-for i,v in enumerate(["$1$","$2$","$3$","$i$","$n-2$","$n-1$","$n$"]):
+for i,v in enumerate(["$1$","$2$","$3$","$i$","$n-1$","$n$","$n+1$"]):
   plt.text(i,-0.3,v)
 
 plt.text(-0.2,0,"$1$")
