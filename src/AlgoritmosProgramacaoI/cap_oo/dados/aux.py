@@ -24,6 +24,10 @@ class Triangulo:
         self.c = np.sqrt((self.A[0]-self.B[0])**2\
                          + (self.A[1]-self.B[1])**2)
 
+    def perimetro(self):
+        return self.a + self.b + self.c
+    
+        
     def plot(self):
         fig = plt.figure()
         ax = fig.add_subplot()

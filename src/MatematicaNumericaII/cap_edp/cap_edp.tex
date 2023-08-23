@@ -271,47 +271,46 @@ Compare a taxa de convergência do erro $\varepsilon_h := \|\tilde{\pmb{u}}_h -\
 Usando uma malha uniforme, obtenha soluções para $n = 10, 20, 40, 80, 160$ (número de subintervalos). Sua solução está correta? Justifique sua resposta.
 \end{exer}
 
-\section{Equação do calor}\label{cap_edp_sec_calor}\index{equação!do calor}
+\section{Equação do Calor}\label{cap_edp_sec_calor}
+
+\hl{Consideramos a \emph{equação do calor} com condição inicial dada e condições de contorno de Dirichlet homogêneas}
+\begin{subequations}\label{cap_edp_sec_calor:eq:prob}\hleq
+  \begin{align}
+    &u_t - \alpha u_{xx} = f(t,x), ~0<t\leq t_f, ~a<x<b, \label{cap_edp_sec_calor:eq:calor}\\
+    &u(0,x) = u_0(x), ~a < x < b,\label{edp_calor_eq:eq:ci}\\
+    &u(t,a) = u(t,b) = 0, ~0<t\leq t_f,\label{edp_calor_eq:eq:bc}
+  \end{align}
+\end{subequations}
+\hl{onde $u = u(t,x)$ é a incógnita}.
+
+O problema {\eqref{cap_edp_sec_calor:eq:prob}} é um problema de valor inicial com condições de contorno. Uma das estratégias numéricas de solução é o chamado \hlemph{Método das Linhas}, o qual trata separadamente as discretizações espacial e temporal. Aqui, vamos começar pela discretização espacial e, então, trataremos a discretização temporal.
 
 \begin{flushleft}
-  [[tag:revisar]]
+  \textbf{1. Discretização Espacial.}
 \end{flushleft}
 
-A equação do calor definida em  $D = (x_{\text{ini}}, x_{\text{fin}})$ com condição inicial dada e condições de contorno de Dirichlet homogêneas refere-se o seguinte problema
-\begin{align}
-  u_t - \alpha u_{xx} &= f(t,x),~t>t_0,~x\in D, \label{eq:edp_calor_eq}\\
-  u(t_0,x) &= u_0(x),~x\in D,\label{eq:edp_calor_ci}\\
-  u(t, x_{\text{ini}}) &= 0,~t>t_0,\label{eq:edp_calor_bcxini}\\
-  u(t, x_{\text{fin}}) &= 0,~t>t_0\label{eq:edp_calor_bcxfin}
-\end{align}
-onde $u = u(t,x)$ é a incógnita.
-
-O problema acima é um problema de valor inicial com condições de contorno. Uma das estratégias numéricas de solução é o chamado método de Rothe, o qual trata separadamente as discretizações espacial e temporal. Aqui, vamos começar pela discretização espacial e, então, trataremos a discretização temporal.
-
-\begin{flushleft}
-  {\bf Discretização espacial}
-\end{flushleft}
-
-Na discretização espacial, aplicaremos o método de diferenças finitas. Começamos considerando uma partição do domínio $P(\overline{D}) = \{x_1, x_2, \dotsc, x_n\}$ com pontos $x_i = x_{\text{ini}}+(i-1)h$ igualmente espaçados por $h=(x_{\text{fin}}-x_{\text{ini}})$.  Então, denotando $u_{i}=u_{i}(t)\approx u(t,x_i)$ e usando da fórmula de diferenças finitas central de ordem $h^2$ para as derivadas segundas na equação \eqref{eq:edp_calor_eq}, temos
+Na discretização espacial, aplicamos o \hlemph{Método de Diferenças Finitas} (MDF). Começamos considerando uma malha uniforme de nodos $x_i = a + (i-1)h_x$, $i = 1, 2, \dotsc, n_x+1$, com tamanho de malha $h_x = (b-a)/n_x$, sendo $n_x$ o número de subintervalos. Denotando $u_i(t) \approx u(t, x_i)$ e empregando a fórmula de diferenças finitas centrais $D^2_{0,h^2}$, temos que a Eq.~\eqref{cap_edp_sec_calor:eq:calor} fica aproximada por
 \begin{equation}
-  \frac{\dd}{\dd t}u_{i} - \alpha\frac{u_{i-1}-2u_{i}+u_{i+1}}{h^2} = f(t,x_i),
+  \frac{d u_{i}}{d t} = \frac{\alpha}{h_x^2}u_{i-1}-\frac{2\alpha}{h_x^2}u_i + \frac{\alpha}{h_x^2}u_{i+1} + f(t,x_i),
 \end{equation}
-para $i=2, 3, \dotsc, n-1$. Agora, das condições de contorno, temos $u_1=0$ e $u_n=0$, donde obtemos o seguinte sistema de equações diferenciais ordinárias
-\begin{align}\label{eq:edp_calor_disc_x1}
-  \frac{\dd}{\dd t}u_2 &= -\frac{2\alpha}{h^2}u_{2} +\frac{\alpha}{h^2}u_{3} + f(t,x_2),\\
-  \frac{\dd}{\dd t}u_i &= \frac{\alpha}{h^2}u_{i-1} - \frac{2\alpha}{h^2}u_{i} +\frac{\alpha}{h^2}u_{i+1} + f(t,x_i),\\
-  \frac{\dd}{\dd t}u_{n-1} &= \frac{\alpha}{h^2}u_{n-2} - \frac{2\alpha}{h^2}u_{n-1}  + f(t,x_{n-1}),\\
-\end{align}
-onde $i=3, 4, \dotsc, n-2$ e com condições iniciais dadas por \eqref{eq:edp_calor_ci}, i.e.
-\begin{equation}\label{eq:edp_calor_disc_x2}
-  u_j(t_0) = u_0(x),~j=2, 3, \dotsc, n-1.
-\end{equation}
-Ainda, observamos que o sistema \eqref{eq:edp_calor_disc_x1} pode ser escrito de forma mais compacta como
+para $i=2, 3, \dotsc, n_x$. Agora, das condições de contorno \eqref{edp_calor_eq:eq:bc}, temos $u_1=0$ e $u_n=0$. Com isso, obtemos o seguinte sistema de equações diferenciais ordinárias
+\begin{subequations}
+  \begin{align}
+    &\frac{d u_2}{d t} = -\frac{2\alpha}{h_x^2}u_{2} + \frac{\alpha}{h_x^2}u_{3} + f(t,x_2),\\
+    &\frac{d u_i}{d t} = \frac{\alpha}{h_x^2}u_{i-1} - \frac{2\alpha}{h_x^2}u_{i} +\frac{\alpha}{h_x^2}u_{i+1} + f(t,x_i),\\
+    &\frac{d u_{n}}{d t} = \frac{\alpha}{h_x^2}u_{n-2} - \frac{2\alpha}{h_x^2}u_{n-1}  + f(t,x_{n-1}),
+  \end{align}
+\end{subequations}
+onde $i=3, 4, \dotsc, n-1$ e com condições iniciais dadas por \eqref{edp_calor_eq:eq:ci}, i.e.
 \begin{equation}
-  \frac{\dd \tilde{u}}{\dd t} = A\tilde{u} + \tilde{f},
+  u_i(0) = u_0(x_i),
 \end{equation}
-onde $\tilde{u}(t) = (u_2(t), u_3(t), \dotsc, u_{n-1}(t))$, $\tilde{f}(t) = (f(t,x_2), f(t,x_3), \dotsc, f(t,x_{n-1}))$ e $A$ é uma matriz $(n-2)\times (n-2)$ da forma
-\begin{equation}\label{eq:edp_calor_disc_x3}
+para $i=2, 3, \dotsc, n$. Este sistema pode ser escrito na seguinte forma matricial
+\begin{equation}\label{cap_edp_sec_calor:eq:sis}\hleq
+  \frac{d \tilde{\pmb{u}}}{d t} = A\tilde{\pmb{u}} + \tilde{f},
+\end{equation}
+onde $\tilde{\pmb{u}}(t) = (u_2(t), u_3(t), \dotsc, u_{n}(t))$, $\tilde{f}(t) = (f(t,x_2), f(t,x_3), \dotsc, f(t,x_{n}))$ e $A$ é uma matriz $(n-1)\times (n-1)$ da forma
+\begin{equation}\label{cap_edp_sec_calor:eq:mat}
   A =
   \begin{bmatrix}
     -\frac{2\alpha}{h^2} & \frac{\alpha}{h^2} & 0 & 0 & 0 & \cdots & 0 & 0\\
@@ -324,128 +323,112 @@ onde $\tilde{u}(t) = (u_2(t), u_3(t), \dotsc, u_{n-1}(t))$, $\tilde{f}(t) = (f(t
 
 
 \begin{flushleft}
-  {\bf Discretização temporal}
+  \textbf{2. Discretização Temporal.}
 \end{flushleft}
 
-Aqui, vamos usar o método de Euler (veja, \ref{cap_pvi_sec_Euler}) para aproximar a solução de \eqref{eq:edp_calor_disc_x3}-\eqref{eq:edp_calor_disc_x2}. Para tando, escolhemos um passo de tempo $h_t>0$ e denotamos $t^{(k)} = t_0 + (k-1)h_t$, $\tilde{u}^{(k)}\approx \tilde{u}(t^{(k)})$ e $\tilde{f}^{(k)} = \tilde{f}(t^{(k)})$. Com isso, a iteração do método de Euler nos fornece
-\begin{align}
-  \tilde{u}^{(1)} &= \tilde{u}_0\\
-  \tilde{u}^{(k+1)} &= \tilde{u}^{(k)} + h_t\left(A\tilde{u}^{(k)}+\tilde{f}^{(k)}\right),
-\end{align}
-com $k=1, 2, \ldots$. Equivalentemente, escrevemos
-\begin{align}
-  \tilde{u}^{(1)} &= \tilde{u}_0\\
-  \tilde{u}^{(k+1)} &= \left(I - h_tA\right)\tilde{u}^{(k)} + h_t\tilde{f}^{(k)}.
-\end{align}
+\hl{Para a discretização temporal vamos usar o \emph{esquema-$\theta$}}. Consideramos os tempos discretos $t^{(k)} = kh_t$, com passo no tempo $h_t = t_f/n_t$, para $k = 0, 1, 2, \dotsc, n_t$. Denotando $u^{(k)}_i \approx u\left(t^{(k)}, x_i\right)$, o esquema consiste nas iterações
+\begin{subequations}\hleq
+  \begin{align}
+    &\tilde{\pmb{u}}^{(0)} = \tilde{\pmb{u}}_0\\
+    &\tilde{\pmb{u}}^{(k+1)} = \tilde{\pmb{u}}^{(k)} + (1-\theta)h_t\left(A\tilde{\pmb{u}}^{(k)}+\tilde{\pmb{f}}^{(k)}\right)\nonumber\\
+    &\qquad\qquad\qquad + \theta h_t\left(A\tilde{\pmb{u}}^{(k+1)}+\tilde{\pmb{f}}^{(k+1)}\right),\label{cap_edp_sec_calor:eq:theta}
+  \end{align}
+\end{subequations}
+para $k = 0, 1, \dotsc, n_t-1$ e para um escolhido $0 \leq \theta \leq 1$. No caso, $f$ não depende de $u$ e a Eq.~\eqref{cap_edp_sec_calor:eq:theta} é equivalente ao sistema linear
+\begin{equation}\hleq
+  \left(I - \theta h_t A\right)\tilde{\pmb{u}}^{(k+1)} = \left[I + (1-\theta)h_tA\right]\tilde{\pmb{u}}^{(k)} + h_t\tilde{\pmb{f}}_\theta^{(k)},
+\end{equation}
+com $\tilde{\pmb{f}}_\theta^{(k)} = (1-\theta)\tilde{\pmb{f}}^{(k)} + \theta\tilde{\pmb{f}}^{(k+1)}$.
 
-\begin{obs}
-  O esquema numérico acima é \emph{condicionalmente estável}. Pode-se mostrar a seguinte condição de estabilidade \cite[Cap. 12, Seç. 2]{Burden2015a}:
+\begin{obs}\normalfont{(\hlemph{Estabilidade e Erro de Truncamento}.)}
+  Para $\theta = 0$ (Euler explícito) o esquema numérico \emph{condicionalmente estável} \cite[Cap. 12, Seç. 2]{Burden2015a} para
   \begin{equation}
     \alpha\frac{h_t}{h^2}\leq \frac{1}{2}.
   \end{equation}
+  Para $\theta = 1$ (Euler implícito) o esquema é incondicionalmente estável. Em ambos estes casos, o erro de truncamento é $O(h_t + h_x^2)$. Escolhendo-se $\theta=\frac{1}{2}$ (Método de Crank-Nicolson), o esquema numérico é incondicionalmente estável e com erro de truncamento $O(h_t^2 + h_x^2)$. 
 \end{obs}
 
-\begin{ex}\label{ex:edp_calor}
-  Consideremos o seguinte problema
-  \begin{align}
-    u_t - u_{xx} &= \sen(x),~t>0,~0\leq x \leq \pi,\\
-    u(0,x) &= 0,~0<x<\pi,\\
-    u(t,0) &= 0,~t>0\\
-    u(t,\pi) &= 0,~t>0.
-  \end{align}
+\begin{ex}\label{cap_edp_sec_calor:ex:calor}
+  Consideramos o seguinte problema de calor
+  \begin{subequations}
+    \begin{align}
+      &u_t - u_{xx} = (\pi^2 - 1)e^{-t}\sen(\pi x), ~0 < t \leq 1, ~0\leq x \leq 1,\\
+      &u(0,x) = \sen(\pi x), ~0 \leq x \leq 1,\\
+      &u(t,0) = u(t,1) = 0, ~ 0 \leq t \leq 1,
+    \end{align}
+  \end{subequations}
+  Este problema tem solução exata $u(t,x) = e^{-t}\sen(\pi x)$. A Figura~\ref{cap_edp_sec_calor:fig:ex_calor_surface} mostra o gráfico de superfície $u = u(t,x)$ da solução numérica. Na Figura~\ref{cap_edp_sec_calor:fig:ex_calor_contour}, temos a comparação entre a solução numérica e a solução exata (isolinhas).
 
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width=0.45\textwidth]{./cap_edp/dados/ex_edp_calor/ex_edp_calor_t01} 
-  \includegraphics[width=0.45\textwidth]{./cap_edp/dados/ex_edp_calor/ex_edp_calor_t05}\\
-  \includegraphics[width=0.45\textwidth]{./cap_edp/dados/ex_edp_calor/ex_edp_calor_t1} 
-  \includegraphics[width=0.45\textwidth]{./cap_edp/dados/ex_edp_calor/ex_edp_calor_t10}
-  \caption{Resultados referentes ao Exemplo~\ref{ex:edp_calor}.}
-  \label{fig:ex_edp_calor}
-\end{figure}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./cap_edp/dados/fig_ex_calor/fig_surface}
+    \caption{Solução aproximada do problema de calor do Exemplo~\ref{cap_edp_sec_calor:ex:calor}.}
+    \label{cap_edp_sec_calor:fig:ex_calor_surface}
+  \end{figure}
+  
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./cap_edp/dados/fig_ex_calor/fig_contour}
+    \caption{Comparação das soluções numérica e exata (isolinhas brancas) do Exemplo~\ref{cap_edp_sec_calor:ex:calor}.}
+    \label{cap_edp_sec_calor:fig:ex_calor_contour}
+  \end{figure}
 
-Este problema tem solução estacionário $u(x) = \sen(x)$. Na Figura~\ref{fig:ex_edp_calor}, temos o esboço das soluções numéricas em diferentes tempos $t$ usando o esquema numérico acima com $h=10^{-1}$ e $h_t=10^{-3}$.
+\begin{lstlisting}[caption=calor.py]
+import numpy as np
+import numpy.linalg as npla
 
-\ifisoctave
-No \verb+GNU Octave+, podemos computar os resultados discutidos neste exemplo com o seguinte código:
-\begin{verbatim}
-#params
-n=11;
-h=pi/(n-1);
+# params
+alpha = 1.
+theta = 0.5
 
-tf=1;
-ht=10^-3;
-nt=round(tf/ht)+1;
+# malha temporal
+nt = 10
+ht = 1./nt
+tt = np.linspace(0., 1., nt+1)
 
-#fonte
-f = @(x) sin(x);
+# malha espacial
+nx = 10
+h = 1./n
+xx = np.linspace(0., 1., n+1)
 
-#malha
-t=[0:ht:(nt-1)*ht]'; 
-x=[0:h:(n-1)*h]';
+# rhs
+def f(t, x):
+    return (np.pi**2-1)*np.exp(-t)*np.sin(np.pi*x)
 
-#matriz MDF
-A = sparse(n-2,n-2);
-A(1,1)=-2/h^2;
-A(1,2)=1/h^2;
-for i=2:n-3
-  A(i,i-1)=1/h^2;
-  A(i,i)=-2/h^2;
-  A(i,i+1)=1/h^2;
-endfor
-A(n-2,n-3)=1/h^2;
-A(n-2,n-2)=-2/h^2;
+# axiliares
+lbda = alpha/h**2
 
-#c.i.
-u=zeros(n,1);
+# matriz difusão
+A = np.zeros(((nx-1), (nx-1)))
+A[0,0] = -2*lbda
+A[0,1] = lbda
+for i in range(1,nx-2):
+    A[i,i-1] = lbda
+    A[i,i] = -2*lbda
+    A[i,i+1] = lbda
+A[nx-2,nx-3] = lbda
+A[nx-2,nx-2] = -2*lbda
 
-#iter. de Euler
-for k=1:nt-1
-  u(2:n-1)=u(2:n-1)+ht*(A*u(2:n-1)+f(x(2:n-1)));
-endfor
+# matrizes auxiliares
+Jth = np.identity(A.shape[0]) - theta*ht*A
+J1th = np.identity(A.shape[0]) + (1-theta)*ht*A
 
-#visu
-uest = @(x) sin(x);
-plot(x,uest(x),'r.-',...
-     x,u,'b.-');grid
-xlabel('x');
-ylabel('u');
-legend('sol.est.','sol.num.');
-\end{verbatim}
-\fi
+# c.i.
+u0 = np.sin(np.pi * xx)
+
+# laço no tempo
+u = u0.copy()
+for k in range(nt):    
+    print(f'{k+1}: t = {tt[k+1]:f}')
+    fth = (1-theta)*f(tt[k],xx[1:-1]) + theta*f(tt[k+1],xx[1:-1])
+    u[1:-1] = npla.solve(Jth, J1th@u0[1:-1]+ht*fth)
+    u0 = u.copy()    
+\end{lstlisting}
 \end{ex}
 
-\subsection*{Exercícios}
+\subsection{Exercícios}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-\begin{exer}
-  Considere o seguinte problema
-  \begin{align}
-    u_t - u_{xx} &= f(x),~t>0,~0\leq x \leq 1,\\
-    u(0,x) &= 0,~0<x<1,\\
-    u(t,0) &= 1,~t>0\\
-    u(t,1) &= 0,~t>0.
-  \end{align}
-com
-\begin{equation}
-  f(x) = \left\{
-    \begin{array}{ll}
-      1 &, x\leq 0,5,\\
-      0 &, x>0,5
-    \end{array}
-\right.
-\end{equation}
-Use o método de diferenças finitas para obter uma aproximação de $u(1,0.5)$ com dois dígitos significativos de precisão.
-\end{exer}
-\begin{resp}
-  \ifisoctave 
-  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_edp/dados/exer_edp_calor_1/exer_edp_calor_1.m}{Código.} 
-  \fi
-  $5,6\E-1$
-\end{resp}
+[[tag:construcao]]
 
 \section{Equação da onda}\label{cap_edp_sec_onda}\index{equação!da onda}
 
