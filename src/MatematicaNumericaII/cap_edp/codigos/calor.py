@@ -1,12 +1,5 @@
 import numpy as np
 import numpy.linalg as npla
-import matplotlib.pyplot as plt
-
-plt.rcParams.update({
-     "text.usetex": True,
-     "font.family": "serif",
-     "font.size": 14
-     })
 
 # params
 alpha = 1.
@@ -49,42 +42,9 @@ u0 = np.sin(np.pi * xx)
 
 # laço no tempo
 u = u0.copy()
-U = u.copy()
-for k in range(nt):
-    
+for k in range(nt):    
     print(f'{k+1}: t = {tt[k+1]:f}')
-
     fth = (1-theta)*f(tt[k],xx[1:-1]) + theta*f(tt[k+1],xx[1:-1])
     u[1:-1] = npla.solve(Jth, J1th@u0[1:-1]+ht*fth)
-    U = np.vstack((U,u))
     u0 = u.copy()    
 
-def exata(t,x):
-    return np.exp(-t)*np.sin(np.pi*x)
-
-T,X = np.meshgrid(tt, xx, indexing='ij')
-Ue = exata(T,X)
-
-plt.close()
-fig = plt.figure(dpi=300)
-ax = fig.add_subplot(projection='3d')
-ax.plot_surface(T, X, U, cmap='plasma',
-                alpha=0.8)
-ax.set_xlabel('$t$')
-ax.set_ylabel('$x$')
-ax.set_zlabel('$u$')
-plt.savefig('fig_surface.png', bbox_inches='tight')
-plt.savefig('fig_surface.pdf', bbox_inches='tight')
-
-fig = plt.figure(dpi=300)
-ax = fig.add_subplot()
-levels=np.linspace(0., 1., 11)
-cb = ax.contourf(X, T, U, levels=levels,
-                 cmap='plasma', antialiased=True)
-cl = ax.contour(X, T, Ue, levels=levels, colors='white')
-ax.clabel(cl, inline=True, fmt='%.1f')
-ax.set_xlabel('$x$')
-ax.set_ylabel('$t$')
-plt.colorbar(cb)
-plt.savefig('fig_contour.png', bbox_inches='tight')
-plt.savefig('fig_contour.pdf', bbox_inches='tight')
