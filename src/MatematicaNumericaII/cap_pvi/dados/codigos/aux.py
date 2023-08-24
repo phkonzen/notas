@@ -1,5 +1,18 @@
 import numpy as np
 
+from scipy.optimize import fsolve
+
+def eulerimp(f, t0, y0, h, n):
+    t = t0
+    y = y0
+    for k in range(n):
+        y = fsolve(lambda x:
+                   x - y - h*f(t+h, x),
+                   x0 = y, xtol=1e-10)[0]
+        t += h
+    return t, y
+
+
 def euler(f, t0, y0, h, n):
     t = np.empty(n+1)
     t[0] = t0
@@ -19,4 +32,4 @@ def exact(t):
 
 h = 1e-1
 n = 15
-t,y = euler(f, 0., 0., h, n)
+t,y = eulerimp(f, 0., 0., h, n)
