@@ -183,7 +183,7 @@ class Index:
         body += '</div>'
 
         # anúncio
-        body += '<div class="carousel-item">'
+        body += '<div class="carousel-item active">'
         body += self.add_anuncio(text = 'ENMC/ECTM 2023 - Submissões até 30/Ago',
                                  link = 'https://enmc.ccam.uesc.br',
                                  status = 'danger')
@@ -197,10 +197,10 @@ class Index:
         body += '</div>'
 
         # anúncio
-        body += '<div class="carousel-item active">'
+        body += '<div class="carousel-item">'
         body += self.add_anuncio(text = 'PPGMAp - UFRGS: Seleção Mestrado 2023/2',
                                  link = 'https://www.ufrgs.br/ppgmap',
-                                 status = 'danger')
+                                 status = 'primary')
         body += '</div>'
 
 
