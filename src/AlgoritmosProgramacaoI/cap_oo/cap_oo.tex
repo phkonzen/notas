@@ -45,7 +45,7 @@ y.digaOla()
 \end{lstlisting}
 Aqui, o atributo \lstinline+Brasileira.pais+ é compartilhada entre todas as instâncias da classe (objetos), enquanto que \lstinline+Brasileira.nome+ é um atributo de cada objeto. O método \lstinline+__init()__+ (linhas 3-4) é executada no momento da criação de cada nova instância (linhas 11 e 13).
 
-\begin{ex}
+\begin{ex}\label{cap_oo_sec_class:ex:triangulo}
   No seguinte código, começamos a definição de uma classe para a manipulação de triângulos.
 \begin{lstlisting}[caption=classTriangulo.py, label=cap_poo_sec_class:cod:classTriangulo]
 import matplotlib.pyplot as plt
@@ -185,3 +185,219 @@ class Triangulo:
 \end{resp}
   
 
+\section{Herança}\label{cap_oo_sec_her}
+
+\hl{Na programação orientada-a-objetos, \emph{herança} consiste na definição de uma classe derivada a partir de uma dada classe base}. A sintaxe de definição de uma classe derivada é
+\begin{lstlisting}
+class ClasseDerivada(ClasseBase):
+    bloco-0
+    bloco-1
+    ...
+    bloco-n
+\end{lstlisting}
+\hl{A classe derivada herda todos os atributos da classe base}. Por exemplo, consideramos o seguinte código
+\begin{lstlisting}
+class ClasseBase:
+    def __init__(self, nome):
+        self.nome = nome
+        
+    def digaOi(self):
+        print(f'{self.nome}: Oi!')
+
+class ClasseDerivada(ClasseBase):
+    def digaTchau(self):
+        print(f'{self.nome}: Tchau!')
+
+obj = ClasseDerivada('Fulane')
+obj.digaOi()
+obj.digaTchau()
+\end{lstlisting}
+Nas linhas 1-6, a classe base é definida contendo dois métodos: \lstinline+self.__init__()+ chamado na criação de um objeto da classe (uma instância) e, \lstinline+self.digaOi()+ que imprime uma saudação. A classe derivada é definida nas linhas 8-10, ela herda os atributos da classe base e contém um novo método \lstinline+self.digaTchau()+, que imprime uma mensagem de despedida.
+
+A criação de uma instância (objeto) de uma classe derivada é feita da mesma forma que de uma classe base. \hl{A referência a um atributo do objeto é, primeiramente, buscada na classe derivada e, se não encontrada, é buscada na classe base}. Este regra aplica-se recursivamente se a classe base também é derivada de outra classe. \hl{Isso permite que uma classe derivada sobreponha atributos de sua classe base}.
+
+\begin{obs}\normalfont{(\hl{{\lstinline+super()+}}.)}
+O método \href{https://docs.python.org/3/library/functions.html#super}{\lstinline+super()+} retorno um objeto \textit{proxy} da classe base, que acessa os atributos desta classe.
+\end{obs}
+
+\begin{ex}
+  Vamos criar uma classe para manipular triângulo isósceles. Para tanto, vamos derivá-la a partir da classe \lstinline+Triangulo+ definida no Exemplo~\ref{cap_oo_sec_class:ex:triangulo}. Vamos assumir que os triângulos isósceles têm vértices $\Delta ABC$ com lados $b = AC$ e $a = BC$ de mesmo tamanho.
+\begin{lstlisting}[caption=classTrianguloIsosceles.py, label=cap_oo_sec_her:cod:classTrianguloIsosceles]
+import numpy as np
+import matplotlib.pyplot as plt
+
+class Triangulo:
+    '''
+    Classe Triangulo ABC.
+    '''
+    num_lados = 3
+    def __init__(self, A, B, C):
+        # vértices
+        self.A = A
+        self.B = B
+        self.C = C
+
+    def plot(self):
+        fig = plt.figure()
+        ax = fig.add_subplot()
+        # lados
+        ax.plot([self.A[0], self.B[0]],
+                [self.A[1], self.B[1]], marker='o', color='blue')
+        ax.text((self.A[0]+self.B[0])/2,
+                (self.A[1]+self.B[1])/2, 'c')
+        ax.plot([self.B[0], self.C[0]],
+                [self.B[1], self.C[1]], marker='o', color='blue')
+        ax.text((self.B[0]+self.C[0])/2,
+                (self.B[1]+self.C[1])/2, 'a')
+        ax.plot([self.C[0], self.A[0]],
+                [self.C[1], self.A[1]], marker='o', color='blue')
+        ax.text((self.A[0]+self.C[0])/2,
+                (self.A[1]+self.C[1])/2, 'b')
+        # vertices
+        ax.text(self.A[0], self.A[1], 'A')
+        ax.text(self.B[0], self.B[1], 'B')
+        ax.text(self.C[0], self.C[1], 'C')
+        ax.grid()
+        plt.show()
+
+
+class TrianguloIsosceles(Triangulo):
+    def __init__(self,A,B,C):
+        # vertices
+        super().__init__(A,B,C)
+        # lados
+        self.a = self.b = self.c = 0.
+
+    def calcLados(self):
+        self.a = np.sqrt((self.B[0] - self.C[0])**2\
+                         + (self.B[1] - self.C[1])**2)
+        self.b = np.sqrt((self.A[0] - self.C[0])**2\
+                         + (self.A[1] - self.C[1])**2)
+        self.c = np.sqrt((self.B[0] - self.A[0])**2\
+                         + (self.B[1] - self.A[1])**2)
+        assert(self.a == self.b)
+
+tria = TrianguloIsosceles((1,0),
+                          (3,0),
+                          (2,1))
+tria.plot()
+tria.calcLados()
+\end{lstlisting}
+\end{ex}
+
+\begin{obs}\normalfont{(\hl{Herança Múltipla}.)}
+  {\python} suporta a herança múltipla de classes. A sintaxe é
+\begin{lstlisting}
+class ClasseDerivada(Base1, Base2, ..., BraseN):
+    bloco-0
+    bloco-1
+    ...
+    bloco-m
+\end{lstlisting}
+  Quando um objeto da classe derivada faz uma referência a um atributo, este é procurado de forma sequencial (e recursiva, caso uma das classe bases seja também uma classe derivada) começando por essa e, caso não encontrado, buscando-se nas classes \lstinline+Base1+, \lstinline+Base2+, ..., \lstinline+BaseN+.
+\end{obs}
+
+\subsection{Exercícios}
+
+\begin{exer}
+  No Código~\ref{cap_oo_sec_her:cod:classTrianguloIsosceles}, adicione à classe \lstinline+Triangulo+ o método \lstinline+Triangulo.perimetro()+ que computa, aloca e retorna o valor do perímetro do triângulo. Então, sobreponha o método à classe \lstinline+TrianguloIsosceles+. Teste seu código para diferentes triângulos.
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+class Triangulo:
+    def __init(self,A,B,C)__:
+        ...
+        self.p = 0.
+        ...
+    ...
+    def perimetro(self):
+        self.p = self.a\
+               + self.b\
+               + self.c
+        return self.p
+    ...
+
+class TrianguloIsosceles(Triangulo):
+    ...
+    def perimetro(self):
+        self.p = 2*self.a + self.c
+        return self.p
+    ...
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}\label{cap_oo_sec_her:exer:retangulo}
+  Implemente uma classe \lstinline+Retangulo(largura, altura)+ para a manipulação de retângulos de \lstinline+largura+ e \lstinline+altura+ dadas. Equipe sua classe com métodos para o cálculo do perímetro, da diagonal e da área de retângulo. Então, implemente a classe derivada \lstinline+Quadrado(lado)+ para a manipulação de quadrados de \lstinline+lado+ dado. Teste sua implementação para diferentes retângulos e quadrados.
+\end{exer}
+\begin{resp}
+\begin{lstlisting}
+import math as m
+
+class Retangulo:
+    def __init__(self, largura, altura):
+        self.largura = largura
+        self.altura = altura
+
+    def perimetro(self):
+        return self.largura\
+               + self.altura
+
+    def diagonal(self):
+        return m.sqrt(self.largura**2\
+                      + self.altura**2)
+
+    def area(self):
+        return self.largura\
+               * self.altura
+
+class Quadrado(Retangulo):
+    def __init__(self,lado):
+        super().__init__(lado,lado)
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  Refaça o Exercício~\ref{cap_oo_sec_her:exer:retangulo} sobrepondo os métodos do cálculo do perímetro, da diagonal e da área para quadrados.
+\end{exer}
+\begin{resp}
+  Dica: para um quadrado de lado $l$, o perímetro é $p = 2l$, por exemplo.
+\end{resp}
+
+\begin{exer}
+  Implemente uma classe \lstinline+TrianguloEquilatero+, derivada da classe \lstinline+TrianguloIsosceles+ definida no Código~\ref{cap_oo_sec_her:cod:classTrianguloIsosceles}. Adicione métodos para o cálculo do perímetro e da altura de triângulo equiláteros. Teste seu código para diferentes triângulos.
+\end{exer}
+\begin{resp}
+  Dica:
+\begin{lstlisting}
+...
+class Triangulo:
+   def __init__(self,A,B,C):
+      ...
+   ...
+
+class TrianguloIsosceles(Triangulo):
+   ...
+
+class TrianguloEquilatero(TrianguloIsosceles):
+   def __init__(self,A,B,C):
+      super().__init__(A,B,C)
+
+   def perimetro(self):
+      ...
+
+   def altura(self):
+      ...
+   
+   def area(self):
+      ...
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  Implemente:
+  \begin{enumerate}[a)]
+  \item Uma classe \lstinline+Quadrilatero+ para a manipulação de quadriláteros de lados $abcd$. Equipe sua classe com um método \lstinline+self.perimetro()+ para o cálculo do perímetro.
+  \item Uma classe \lstinline+Retangulo+, derivada da classe \lstinline+Quadrilatero+, para a manipulação de retângulos de lado dado e altura dada. Na classe derivada, sobreponha o método \lstinline+self.perimetro()+ para o cálculo do perímetro e implemente novos métodos para o cálculo da diagonal e da área de retângulos.
+  \item Uma classe \lstinline+Quadrado+, derivada da classe \lstinline+Retangulo+, para a manipulação de quadrados de lado dado. Na classe derivada, sobreponha os métodos para os cálculos do perímetro, da diagonal e da área.
+  \end{enumerate}
+\end{exer}
