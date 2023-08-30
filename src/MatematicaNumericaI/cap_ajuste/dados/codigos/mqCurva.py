@@ -1,3 +1,6 @@
+import numpy as np
+import numpy.linalg as npla
+
 # dados
 xx = np.array([-1.0,
               0.0,
