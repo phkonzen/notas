@@ -1,26 +1,15 @@
 import numpy as np
 import numpy.linalg as npla
 
-def poliInterp(x, y):
-    # num. pts
-    n = x.size
-    # Vandermonde
-    A = np.empty((n,n))
-    for j in range(n):
-        A[:,j] = x**(n-1-j)
-    print(f'{npla.cond(A):.2e}')
-    # coefs
-    p = npla.solve(A, y)
-    return p
+x = np.array([-2.5, -1.3, 0.2, 1.7, 2.3]).reshape(-1,1)
+y = np.array([3.8, 0.5, 2.7, 1.2, -1.3]).reshape(-1,1)
 
-# exemplo
-n = 100
-h = 0.1
-x = np.linspace(0, (n-1)*h, n)
-y = x.copy()
+A = np.sin(x)
+A = np.hstack((A,np.cos(x)))
+A = np.hstack((A,np.ones((x.size,1))))
+c = npla.solve(A.T@A,A.T@y)
 
-# poli interp
-p = poliInterp(x, y)
+def f(x, c=c):
+    return c[0]*np.sin(x) + c[1]*np.cos(x) + c[2]
 
-# # verificação
-# print(np.polyval(p, x))
+print(npla.norm(y - f(x)))
