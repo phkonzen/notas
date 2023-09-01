@@ -1,0 +1,505 @@
+<!DOCTYPE html><html lang="pt">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>3.1 Olá, Mundo!‣ Capítulo 3 Computação paralela e distribuída (MPI) ‣ Matemática Numérica Paralela</title>
+<!--Generated on Fri Sep  1 18:44:45 2023 by LaTeXML (version 0.8.6) http://dlmf.nist.gov/LaTeXML/.-->
+<!--Document created on 1 de setembro de 2023.-->
+
+<link rel="stylesheet" href="LaTeXML.css" type="text/css">
+<link rel="stylesheet" href="ltx-book.css" type="text/css">
+<link rel="stylesheet" href="ltx-listings.css" type="text/css">
+<link rel="stylesheet" href="ltx-ulem.css" type="text/css">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="../main.css" type="text/css">
+<link rel="stylesheet" href="./fonts/cmun-serif.css" type="text/css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=MML_SVG" type="text/javascript"></script>
+<link rel="up" href="cap_mpi.html" title="Capítulo 3 Computação paralela e distribuída (MPI) ‣ Matemática Numérica Paralela">
+<link rel="up up" href="main.html" title="Matemática Numérica Paralela">
+<link rel="start" href="main.html" title="Matemática Numérica Paralela">
+<link rel="prev" href="cap_mpi.html" title="Capítulo 3 Computação paralela e distribuída (MPI) ‣ Matemática Numérica Paralela">
+<link rel="next" href="cap_mpi_sec_p2pcom.html" title="3.2 Rotinas de comunicação ponto-a-ponto ‣ Capítulo 3 Computação paralela e distribuída (MPI) ‣ Matemática Numérica Paralela">
+<link rel="section" href="cap_mpi_sec_p2pcom.html" title="3.2 Rotinas de comunicação ponto-a-ponto ‣ Capítulo 3 Computação paralela e distribuída (MPI) ‣ Matemática Numérica Paralela">
+<link rel="section" href="cap_mpi_sec_colcom.html" title="3.3 Comunicações coletivas ‣ Capítulo 3 Computação paralela e distribuída (MPI) ‣ Matemática Numérica Paralela">
+<link rel="section" href="cap_mpi_sec_redu.html" title="3.4 Reduções ‣ Capítulo 3 Computação paralela e distribuída (MPI) ‣ Matemática Numérica Paralela">
+<link rel="section" href="cap_mpi_sec_calor.html" title="3.5 Aplicação: Equação do calor ‣ Capítulo 3 Computação paralela e distribuída (MPI) ‣ Matemática Numérica Paralela">
+<link rel="chapter" href="licenca.html" title="Licença ‣ Matemática Numérica Paralela">
+<link rel="chapter" href="prefacio.html" title="Prefácio ‣ Matemática Numérica Paralela">
+<link rel="chapter" href="cap_intro.html" title="Capítulo 1 Introdução ‣ Matemática Numérica Paralela">
+<link rel="chapter" href="cap_mp.html" title="Capítulo 2 Multiprocessamento (MP) ‣ Matemática Numérica Paralela">
+<link rel="chapter" href="cap_mpi.html" title="Capítulo 3 Computação paralela e distribuída (MPI) ‣ Matemática Numérica Paralela">
+<link rel="bibliography" href="bib.html" title="Referências ‣ Matemática Numérica Paralela">
+<meta name="author" content="Pedro H A Konzen"/><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous"><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script><link href="../fontawesome/css/all.min.css" rel="stylesheet"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"><link rel="stylesheet" href="goodies.css" type="text/css"><!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WZM0C3FQ62"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-WZM0C3FQ62');
+</script>
+</head>
+<body><div class="container-fluid mb-0"><div class="row"><div class="col-xxl-1"></div><div class="col-xxl-10"><div id="colabAlert" class="alert alert-warning alert-dismissible sticky-top m-0 d-flex justify-content-between" role="alert" style="">
+  <!-- <p class="m-0 d-flex justify-content-between"> -->
+    <span><a href="../contato.html"><i class="fas fa-envelope"></i></a>  <strong> Colabore com <a href="../contato.html" class="link-primary">sugestões</a> ou avisos de <a href="../contato.html">erros</a>!</strong></span>  <span class="material-symbols-outlined m-0">screen_rotation</span>
+  <span><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></span>
+  <!-- </p> -->
+</div>
+<div class="container-fluid d-flex justify-content-center mt-2 mb-2 fixed-bottom">
+  <div id="generalAlert" class="alert alert-warning alert-dismissible" role="alert" style="max-width: 300rem;">
+    Ao navegar por este
+    <i>site
+    </i>, você concorda com a
+    <a href="https://notaspedrok.com.br/notas/politica.html">Política de Uso de Dados
+    </a>.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+    </button>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+      $("#generalAlert").hide();
+      if (document.referrer.lastIndexOf("notaspedrok.com.br") == -1) {
+          $("#generalAlert").fadeIn(1000);
+      }
+  });   
+</script>
+<!-- begin: navbar --><nav class="navbar navbar-dark bg-primary mb-1"><div class="container-fluid"><a class="navbar-brand" href="main.html">Notas de Aula<br/><small>Matemática Numérica Paralela</small></a><button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button><div class="collapse navbar-collapse" id="navbarNav"><ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="../index.html"><i class="fas fa-home"></i> Início</a></li><li class="nav-item"><a class="nav-link active" href="main.html">Sumário</a></li><li class="nav-item"><a class="nav-link" href="main.pdf"><i class="fas fa-download" aria-hidden="true"></i> PDF</a></li><li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">Contato</a><div class="dropdown-menu" aria-labelledby="navbarDropdown"><a class="dropdown-item" href="../contato.html"><i class="fas fa-envelope"></i> Mensagem</a><a class="dropdown-item" href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i> notas.pedrok</a></div><!-- div class="dropdown-menu" aria-labelledby="navbarDropdown" --></li> <!-- li class="nav-item dropdown" --><li class="nav-item"><a class="nav-link" href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i> Repo</a></li><li class="nav-item"><a class="nav-link" href="../politica.html">Política de dados</a></li></ul></div><!-- /.navbar-collapse --></div><!-- /.container-fluid --></nav><!-- end: navbar --><p class="text-left mb-0"><a href="./contato.html"><i class="fas fa-envelope"></i></a> | <a href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i></a> | <a href="https://archive.org/details/notas-de-aula"><i class="fas fa-building-columns"></i></a> | <a href="https://www.youtube.com/channel/UCwutHKlKLgVj6IkFSUFBqoA"><i class="fab fa-youtube"></i></a> | <a href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i></a></p>
+<div class="ltx_page_main">
+<header class="ltx_page_header">
+<div>
+<a href="cap_mpi.html" title="Capítulo 3 Computação paralela e distribuída (MPI) ‣ Matemática Numérica Paralela" class="ltx_ref" rel="up"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">3 </span>Computação paralela e distribuída (MPI)</span></a><a href="cap_mpi.html" title="Capítulo 3 Computação paralela e distribuída (MPI) ‣ Matemática Numérica Paralela" class="ltx_ref" rel="prev"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">3 </span>Computação paralela e distribuída (MPI)</span></a><a href="cap_mpi_sec_p2pcom.html" title="3.2 Rotinas de comunicação ponto-a-ponto ‣ Capítulo 3 Computação paralela e distribuída (MPI) ‣ Matemática Numérica Paralela" class="ltx_ref" rel="next"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">3.2 </span>Rotinas de comunicação ponto-a-ponto</span></a>
+</div></header>
+<div class="ltx_page_content">
+<section class="ltx_section ltx_authors_1line" lang="pt">
+<h1 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">3.1 </span>Olá, Mundo! <small><a href="../contato.html"><i class="fas fa-envelope"></i></a></small></h1>
+
+
+<div id="p2" class="ltx_para">
+<p class="ltx_p">A computação paralela com MPI inicia-se simultaneamente com múltiplos processadores (instâncias de processamento), cada um utilizando seu próprio endereço de memória (memória distribuída). Cada processo lê e escreve em seu próprio endereço de memória privada. Observamos que o processamento já inicia-se ramificado e distribuído, sendo possível a comunicação entre os processos por instruções explícitas (instruções MPI, <span class="ltx_text ltx_font_italic">Message Passing Interface</span>). A sincronização entre os processos também requer instruções específicas.</p>
+</div>
+<div id="p3" class="ltx_para">
+<p class="ltx_p">Vamos escrever nosso primeiro código MPI. O Código <code class="ltx_verbatim ltx_font_typewriter">ola.cc</code> é paralelamente executado por diferentes processadores, cada processo escreve “Olá” e identifica-se.</p>
+</div>
+<figure id="LSTx18" class="ltx_float ltx_lstlisting">
+<figcaption class="ltx_caption">Código: ola.cc</figcaption>
+<div class="ltx_listing ltx_lst_language_C++ ltx_lst_numbers_left ltx_lstlisting ltx_listing">
+<div class="ltx_listing_data"><a href="data:text/plain;base64,I2luY2x1ZGUgPHN0ZGlvLmg+CgovLyBBUEkgTVBJCiNpbmNsdWRlIDxtcGkuaD4KCmludCBtYWluKGludCBhcmdjLCBjaGFyKiogYXJndikgewogIC8vIEluaWNpYWxpemEgbyBNUEkKICBNUElfSW5pdChOVUxMLCBOVUxMKTsKCiAgLy8gbnVtZXJvIHRvdGFsIGRlIHByb2Nlc3NvcwogIGludCB3b3JsZF9zaXplOwogIE1QSV9Db21tX3NpemUoTVBJX0NPTU1fV09STEQsICZ3b3JsZF9zaXplKTsKCiAgLy8gSUQgKHJhbmspIGRvIHByb2Nlc3NvCiAgaW50IHdvcmxkX3Jhbms7CiAgTVBJX0NvbW1fcmFuayhNUElfQ09NTV9XT1JMRCwgJndvcmxkX3JhbmspOwoKICAvLyBFc2NyZXZlIG1lbnNhZ2VtCiAgcHJpbnRmKCJPbGEhIEV1IHNvdSBvIHByb2Nlc3NvICVkLyVkLlxuIiwKCSB3b3JsZF9yYW5rLCB3b3JsZF9zaXplKTsKCiAgLy8gRmluYWxpemEgbyBNUEkKICBNUElfRmluYWxpemUoKTsKCiAgcmV0dXJuIDA7Cn0K" download="">⬇</a></div>
+<div id="lstnumberx1002" class="ltx_listingline">
+              <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">1</span></span>
+            <span class="ltx_text ltx_lst_directive ltx_lst_keyword ltx_font_typewriter" style="font-size:90%;color:#0000FF;">#include</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&lt;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">stdio</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">h</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&gt;</span>
+</div>
+<div id="lstnumberx1003" class="ltx_listingline">
+              <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">2</span></span>
+            
+</div>
+<div id="lstnumberx1004" class="ltx_listingline">
+              <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">3</span></span>
+            <span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;color:#808080;">//<span class="ltx_text ltx_lst_space"> </span>API<span class="ltx_text ltx_lst_space"> </span>MPI</span>
+</div>
+<div id="lstnumberx1005" class="ltx_listingline">
+              <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">4</span></span>
+            <span class="ltx_text ltx_lst_directive ltx_lst_keyword ltx_font_typewriter" style="font-size:90%;color:#0000FF;">#include</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&lt;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">mpi</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">h</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&gt;</span>
+</div>
+<div id="lstnumberx1006" class="ltx_listingline">
+              <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">5</span></span>
+            
+</div>
+<div id="lstnumberx1007" class="ltx_listingline">
+              <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">6</span></span>
+            <span class="ltx_text ltx_lst_keyword ltx_font_typewriter" style="font-size:90%;color:#0000FF;">int</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">main</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter" style="font-size:90%;color:#0000FF;">int</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">argc</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter" style="font-size:90%;color:#0000FF;">char</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">**</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">argv</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">)</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">{</span>
+</div>
+<div id="lstnumberx1008" class="ltx_listingline">
+              <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">7</span></span>
+            <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;color:#808080;">//<span class="ltx_text ltx_lst_space"> </span>Inicializa<span class="ltx_text ltx_lst_space"> </span>o<span class="ltx_text ltx_lst_space"> </span>MPI</span>
+</div>
+<div id="lstnumberx1009" class="ltx_listingline">
+              <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">8</span></span>
+            <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_Init</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">NULL</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">NULL</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1010" class="ltx_listingline">
+              <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">9</span></span>
+            
+</div>
+<div id="lstnumberx1011" class="ltx_listingline">
+              <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">10</span></span>
+            <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;color:#808080;">//<span class="ltx_text ltx_lst_space"> </span>numero<span class="ltx_text ltx_lst_space"> </span>total<span class="ltx_text ltx_lst_space"> </span>de<span class="ltx_text ltx_lst_space"> </span>processos</span>
+</div>
+<div id="lstnumberx1012" class="ltx_listingline">
+              <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">11</span></span>
+            <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter" style="font-size:90%;color:#0000FF;">int</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_size</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">;</span>
+</div>
+<div id="lstnumberx1013" class="ltx_listingline">
+              <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">12</span></span>
+            <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_Comm_size</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_COMM_WORLD</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&amp;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_size</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1014" class="ltx_listingline">
+              <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">13</span></span>
+            
+</div>
+<div id="lstnumberx1015" class="ltx_listingline">
+              <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">14</span></span>
+            <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;color:#808080;">//<span class="ltx_text ltx_lst_space"> </span>ID<span class="ltx_text ltx_lst_space"> </span>(rank)<span class="ltx_text ltx_lst_space"> </span>do<span class="ltx_text ltx_lst_space"> </span>processo</span>
+</div>
+<div id="lstnumberx1016" class="ltx_listingline">
+              <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">15</span></span>
+            <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter" style="font-size:90%;color:#0000FF;">int</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_rank</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">;</span>
+</div>
+<div id="lstnumberx1017" class="ltx_listingline">
+              <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">16</span></span>
+            <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_Comm_rank</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_COMM_WORLD</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&amp;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_rank</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1018" class="ltx_listingline">
+              <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">17</span></span>
+            
+</div>
+<div id="lstnumberx1019" class="ltx_listingline">
+              <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">18</span></span>
+            <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;color:#808080;">//<span class="ltx_text ltx_lst_space"> </span>Escreve<span class="ltx_text ltx_lst_space"> </span>mensagem</span>
+</div>
+<div id="lstnumberx1020" class="ltx_listingline">
+              <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">19</span></span>
+            <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">printf</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_string ltx_font_typewriter" style="font-size:90%;">"Ola!<span class="ltx_text ltx_lst_space"> </span>Eu<span class="ltx_text ltx_lst_space"> </span>sou<span class="ltx_text ltx_lst_space"> </span>o<span class="ltx_text ltx_lst_space"> </span>processo<span class="ltx_text ltx_lst_space"> </span>%d/%d.\n"</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span>
+</div>
+<div id="lstnumberx1021" class="ltx_listingline">
+              <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">20</span></span>
+            <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">         </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_rank</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_size</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1022" class="ltx_listingline">
+              <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">21</span></span>
+            
+</div>
+<div id="lstnumberx1023" class="ltx_listingline">
+              <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">22</span></span>
+            <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;color:#808080;">//<span class="ltx_text ltx_lst_space"> </span>Finaliza<span class="ltx_text ltx_lst_space"> </span>o<span class="ltx_text ltx_lst_space"> </span>MPI</span>
+</div>
+<div id="lstnumberx1024" class="ltx_listingline">
+              <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">23</span></span>
+            <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_Finalize</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">();</span>
+</div>
+<div id="lstnumberx1025" class="ltx_listingline">
+              <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">24</span></span>
+            
+</div>
+<div id="lstnumberx1026" class="ltx_listingline">
+              <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">25</span></span>
+            <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter" style="font-size:90%;color:#0000FF;">return</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">0;</span>
+</div>
+<div id="lstnumberx1027" class="ltx_listingline">
+              <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">26</span></span>
+            <span class="ltx_text ltx_font_typewriter" style="font-size:90%;">}</span>
+</div>
+</div>
+</figure>
+<div id="p4" class="ltx_para">
+<p class="ltx_p">Na linha 3, o API MPI é incluído no código. O ambiente MPI é inicializado na linha 8 com a rotina <a href="https://www.open-mpi.org/doc/v4.1/man3/MPI%5C_Init.3.php" title="" class="ltx_ref ltx_href">MPI_Init</a> inicializa o ambiente MPI. Na inicialização, o comunicador <code class="ltx_verbatim ltx_font_typewriter">MPI_COMM_WORLD</code> é construído entre todos os processos inicializados e um identificador (<span class="ltx_text ltx_font_italic">rank</span>) é atribuído a cada processo. O número total de processos é obtido com a rotina <a href="https://www.open-mpi.org/doc/v4.1/man3/MPI%5C_Comm%5C_size.3.php" title="" class="ltx_ref ltx_href">MPI_Comm_size</a>. Cada processo é identificado por um número natural sequencial 0, 1, …, <code class="ltx_verbatim ltx_font_typewriter">world_size</code>-1. O id (<span class="ltx_text ltx_font_italic">rank</span>) de um processo é obtido com a rotina <a href="https://www.open-mpi.org/doc/v4.1/man3/MPI%5C_Comm%5C_rank.3.php" title="" class="ltx_ref ltx_href">MPI_Comm_rank</a> (veja a linha 16). A rotina <a href="https://www.open-mpi.org/doc/v4.1/man3/MPI%5C_Finalize.3.php" title="" class="ltx_ref ltx_href">MPI_Finalize</a> finaliza o ambiente MPI.
+</p>
+</div>
+<div id="p5" class="ltx_para">
+<p class="ltx_p">Para compilar este código, digite no terminal</p>
+<pre class="ltx_verbatim ltx_font_typewriter">
+$ mpic++ ola.cc
+</pre>
+<p class="ltx_p">Esta instrução de compilação é análoga a</p>
+<pre class="ltx_verbatim ltx_font_typewriter">
+g++ ola.cc -I/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi
+   -I/usr/lib/x86_64-linux-gnu/openmpi/include
+   -pthread -L/usr/lib/x86_64-linux-gnu/openmpi/lib
+   -lmpi_cxx -lmpi
+</pre>
+<p class="ltx_p">ou semelhante dependendo da instalação. Para ver a sua configuração, digite</p>
+<pre class="ltx_verbatim ltx_font_typewriter">
+$ mpic++ ola.cc --showme
+</pre>
+</div>
+<div id="p6" class="ltx_para">
+<p class="ltx_p">Ao compilar, um executável <code class="ltx_verbatim ltx_font_typewriter">a.out</code> será criado. Para executá-lo, basta digitar no terminal:</p>
+<pre class="ltx_verbatim ltx_font_typewriter">
+$ mpirun -np 2 a.out
+</pre>
+<p class="ltx_p">Esta instrução inicializa simultaneamente duas cópias (<code class="ltx_verbatim ltx_font_typewriter">-np 2</code>, dois processos) do código <code class="ltx_verbatim ltx_font_typewriter">ola.cc</code> (do executável <code class="ltx_verbatim ltx_font_typewriter">a.out</code>). Cada processo é executado de forma idependente (em paralelo e não sincronizados).</p>
+</div>
+<div id="p7" class="ltx_para">
+<p class="ltx_p">Ao executar, devemos ver a saída do terminal como algo parecido com</p>
+<pre class="ltx_verbatim ltx_font_typewriter">
+Olá! Eu sou o processo 1/2.
+Olá! Eu sou o processo 0/2.
+</pre>
+</div>
+<div id="p8" class="ltx_para">
+<p class="ltx_p">A saída irá variar conforme o processo que primeiro enviar a mensagem para o dispositivo de saída. Execute o código várias vezes e analise as saídas!</p>
+</div>
+<section id="SSx1" class="ltx_subsection">
+<h2 class="ltx_title ltx_title_subsection">Exercícios resolvidos <small><a href="../contato.html"><i class="fas fa-envelope"></i></a></small></h2>
+
+
+<div id="Thmexeresol1" class="ltx_theorem ltx_theorem_exeresol">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">ER 3.1.1</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmexeresol1.p1" class="ltx_para">
+<p class="ltx_p">O número de instâncias de processamento pode ser alterado diretamente na instrução <code class="ltx_verbatim ltx_font_typewriter">mpirun</code> pela opção <code class="ltx_verbatim ltx_font_typewriter">-np</code>. Altere o número de instâncias de processamento para 4 e execute o Código ola.cc.</p>
+</div>
+</div>
+<div id="Thmresolx11" class="ltx_theorem ltx_theorem_resol">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Solução</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmresolx11.p1" class="ltx_para">
+<p class="ltx_p">Para alterar o número de instâncias de processamento não é necessário recompilar o código<span id="Ch3.footnote1" class="ltx_note ltx_role_footnote"><sup class="ltx_note_mark">1</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">1</sup>
+                  <span class="ltx_tag ltx_tag_note">1</span>
+                  
+                  
+                  
+                Caso ainda não tenha compilado o código, copile-o.</span></span></span>. Basta executá-lo com o comando</p>
+<pre class="ltx_verbatim ltx_font_typewriter">
+$ mpirun -np 4 ./a.out
+</pre>
+<p class="ltx_p">A saída deve ser algo do tipo</p>
+<pre class="ltx_verbatim ltx_font_typewriter">
+Olá! Eu sou o processo 1/4.
+Olá! Eu sou o processo 3/4.
+Olá! Eu sou o processo 2/4.
+Olá! Eu sou o processo 0/4.
+</pre>
+<p class="ltx_p">Execute o código várias vezes e analise as saídas!</p>
+</div>
+</div>
+<div id="Thmexeresol2" class="ltx_theorem ltx_theorem_exeresol">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">ER 3.1.2</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmexeresol2.p1" class="ltx_para">
+<p class="ltx_p">Escreva um código MPI para ser executado com 2 instâncias de processamento. Cada processo recebe os números inteiros</p>
+<pre class="ltx_verbatim ltx_font_typewriter">
+int n = 2;
+int m = 3;
+</pre>
+<p class="ltx_p">Então, um dos processos deve escrever a soma <math id="Thmexeresol2.p1.m1" class="ltx_Math" alttext="n+m" display="inline"><mrow><mi>n</mi><mo>+</mo><mi>m</mi></mrow></math> e o outro deve escrever o produto.</p>
+</div>
+</div>
+<div id="Thmresolx12" class="ltx_theorem ltx_theorem_resol">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Solução</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmresolx12.p1" class="ltx_para">
+<p class="ltx_p">O código abaixo contém uma implementação deste exercício. Veja os comentários abaixo.</p>
+</div>
+<figure id="LSTx19" class="ltx_float ltx_lstlisting">
+<figcaption class="ltx_caption">Código: sp.cc</figcaption>
+<div class="ltx_listing ltx_lst_language_C++ ltx_lst_numbers_left ltx_lstlisting ltx_listing">
+<div class="ltx_listing_data"><a href="data:text/plain;base64,I2luY2x1ZGUgPHN0ZGlvLmg+CiNpbmNsdWRlIDxhc3NlcnQuaD4KCi8vIEFQSSBNUEkKI2luY2x1ZGUgPG1waS5oPgoKaW50IG1haW4oaW50IGFyZ2MsIGNoYXIqKiBhcmd2KSB7CiAgLy8gSW5pY2lhbGl6YSBvIE1QSQogIE1QSV9Jbml0KE5VTEwsIE5VTEwpOwoKICAvLyBudW1lcm8gdG90YWwgZGUgcHJvY2Vzc29zCiAgaW50IHdvcmxkX3NpemU7CiAgTVBJX0NvbW1fc2l6ZShNUElfQ09NTV9XT1JMRCwgJndvcmxkX3NpemUpOwoKICAvLyB2ZXJpZmljYSBvIG51bS4gZGUgcHJvY2Vzc29zCiAgaWYgKHdvcmxkX3NpemUgIT0gMikgewogICAgcHJpbnRmKCJFUlJPISBOdW1lcm8gZGUgcHJvY2Vzc29zICIKCSAgICJkZXZlIHNlciBpZ3VhbCAyLlxuIik7CiAgICBpbnQgZXJyb3Jjb2RlPS0xOwogICAgTVBJX0Fib3J0KE1QSV9DT01NX1dPUkxELCBlcnJvcmNvZGUpOwogIH0KCiAgLy8gSUQgKHJhbmspIGRvIHByb2Nlc3NvCiAgaW50IHdvcmxkX3Jhbms7CiAgTVBJX0NvbW1fcmFuayhNUElfQ09NTV9XT1JMRCwgJndvcmxkX3JhbmspOwoKICBpbnQgbiA9IDI7CiAgaW50IG0gPSAzOwoKICBpZiAod29ybGRfcmFuayA9PSAwKQogICAgcHJpbnRmKCJuK20gPSAlZFxuIiwgbittKTsKICBlbHNlIGlmICh3b3JsZF9yYW5rID09IDEpCiAgICBwcmludGYoIm4qbSA9ICVkXG4iLCBuKm0pOwoKICAvLyBGaW5hbGl6YSBvIE1QSQogIE1QSV9GaW5hbGl6ZSgpOwoKICByZXR1cm4gMDsKfQo=" download="">⬇</a></div>
+<div id="lstnumberx1028" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">1</span></span>
+                <span class="ltx_text ltx_lst_directive ltx_lst_keyword ltx_font_typewriter" style="font-size:90%;color:#0000FF;">#include</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&lt;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">stdio</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">h</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&gt;</span>
+</div>
+<div id="lstnumberx1029" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">2</span></span>
+                <span class="ltx_text ltx_lst_directive ltx_lst_keyword ltx_font_typewriter" style="font-size:90%;color:#0000FF;">#include</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&lt;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">assert</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">h</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&gt;</span>
+</div>
+<div id="lstnumberx1030" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">3</span></span>
+                
+</div>
+<div id="lstnumberx1031" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">4</span></span>
+                <span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;color:#808080;">//<span class="ltx_text ltx_lst_space"> </span>API<span class="ltx_text ltx_lst_space"> </span>MPI</span>
+</div>
+<div id="lstnumberx1032" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">5</span></span>
+                <span class="ltx_text ltx_lst_directive ltx_lst_keyword ltx_font_typewriter" style="font-size:90%;color:#0000FF;">#include</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&lt;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">mpi</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">.</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">h</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&gt;</span>
+</div>
+<div id="lstnumberx1033" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">6</span></span>
+                
+</div>
+<div id="lstnumberx1034" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">7</span></span>
+                <span class="ltx_text ltx_lst_keyword ltx_font_typewriter" style="font-size:90%;color:#0000FF;">int</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">main</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter" style="font-size:90%;color:#0000FF;">int</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">argc</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter" style="font-size:90%;color:#0000FF;">char</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">**</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">argv</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">)</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">{</span>
+</div>
+<div id="lstnumberx1035" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">8</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;color:#808080;">//<span class="ltx_text ltx_lst_space"> </span>Inicializa<span class="ltx_text ltx_lst_space"> </span>o<span class="ltx_text ltx_lst_space"> </span>MPI</span>
+</div>
+<div id="lstnumberx1036" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">9</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_Init</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">NULL</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">NULL</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1037" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">10</span></span>
+                
+</div>
+<div id="lstnumberx1038" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">11</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;color:#808080;">//<span class="ltx_text ltx_lst_space"> </span>numero<span class="ltx_text ltx_lst_space"> </span>total<span class="ltx_text ltx_lst_space"> </span>de<span class="ltx_text ltx_lst_space"> </span>processos</span>
+</div>
+<div id="lstnumberx1039" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">12</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter" style="font-size:90%;color:#0000FF;">int</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_size</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">;</span>
+</div>
+<div id="lstnumberx1040" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">13</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_Comm_size</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_COMM_WORLD</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&amp;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_size</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1041" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">14</span></span>
+                
+</div>
+<div id="lstnumberx1042" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">15</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;color:#808080;">//<span class="ltx_text ltx_lst_space"> </span>verifica<span class="ltx_text ltx_lst_space"> </span>o<span class="ltx_text ltx_lst_space"> </span>num.<span class="ltx_text ltx_lst_space"> </span>de<span class="ltx_text ltx_lst_space"> </span>processos</span>
+</div>
+<div id="lstnumberx1043" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">16</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter" style="font-size:90%;color:#0000FF;">if</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_size</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">!=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">2)</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">{</span>
+</div>
+<div id="lstnumberx1044" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">17</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">    </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">printf</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_string ltx_font_typewriter" style="font-size:90%;">"ERRO!<span class="ltx_text ltx_lst_space"> </span>Numero<span class="ltx_text ltx_lst_space"> </span>de<span class="ltx_text ltx_lst_space"> </span>processos<span class="ltx_text ltx_lst_space"> </span>"</span>
+</div>
+<div id="lstnumberx1045" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">18</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">           </span><span class="ltx_text ltx_lst_string ltx_font_typewriter" style="font-size:90%;">"deve<span class="ltx_text ltx_lst_space"> </span>ser<span class="ltx_text ltx_lst_space"> </span>igual<span class="ltx_text ltx_lst_space"> </span>2.\n"</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1046" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">19</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">    </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter" style="font-size:90%;color:#0000FF;">int</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">errorcode</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=-1;</span>
+</div>
+<div id="lstnumberx1047" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">20</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">    </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_Abort</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_COMM_WORLD</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">errorcode</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1048" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">21</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">}</span>
+</div>
+<div id="lstnumberx1049" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">22</span></span>
+                
+</div>
+<div id="lstnumberx1050" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">23</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;color:#808080;">//<span class="ltx_text ltx_lst_space"> </span>ID<span class="ltx_text ltx_lst_space"> </span>(rank)<span class="ltx_text ltx_lst_space"> </span>do<span class="ltx_text ltx_lst_space"> </span>processo</span>
+</div>
+<div id="lstnumberx1051" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">24</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter" style="font-size:90%;color:#0000FF;">int</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_rank</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">;</span>
+</div>
+<div id="lstnumberx1052" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">25</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_Comm_rank</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_COMM_WORLD</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">&amp;</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_rank</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1053" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">26</span></span>
+                
+</div>
+<div id="lstnumberx1054" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">27</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter" style="font-size:90%;color:#0000FF;">int</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">n</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">2;</span>
+</div>
+<div id="lstnumberx1055" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">28</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter" style="font-size:90%;color:#0000FF;">int</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">m</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">=</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">3;</span>
+</div>
+<div id="lstnumberx1056" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">29</span></span>
+                
+</div>
+<div id="lstnumberx1057" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">30</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter" style="font-size:90%;color:#0000FF;">if</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_rank</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">==</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">0)</span>
+</div>
+<div id="lstnumberx1058" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">31</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">    </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">printf</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_string ltx_font_typewriter" style="font-size:90%;">"n+m<span class="ltx_text ltx_lst_space"> </span>=<span class="ltx_text ltx_lst_space"> </span>%d\n"</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">n</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">+</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">m</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1059" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">32</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter" style="font-size:90%;color:#0000FF;">else</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter" style="font-size:90%;color:#0000FF;">if</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">world_rank</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">==</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">1)</span>
+</div>
+<div id="lstnumberx1060" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">33</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">    </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">printf</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">(</span><span class="ltx_text ltx_lst_string ltx_font_typewriter" style="font-size:90%;">"n*m<span class="ltx_text ltx_lst_space"> </span>=<span class="ltx_text ltx_lst_space"> </span>%d\n"</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">,</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">n</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">*</span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">m</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">);</span>
+</div>
+<div id="lstnumberx1061" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">34</span></span>
+                
+</div>
+<div id="lstnumberx1062" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">35</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_comment ltx_font_typewriter ltx_font_italic" style="font-size:90%;color:#808080;">//<span class="ltx_text ltx_lst_space"> </span>Finaliza<span class="ltx_text ltx_lst_space"> </span>o<span class="ltx_text ltx_lst_space"> </span>MPI</span>
+</div>
+<div id="lstnumberx1063" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">36</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_identifier ltx_font_typewriter" style="font-size:90%;">MPI_Finalize</span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">();</span>
+</div>
+<div id="lstnumberx1064" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">37</span></span>
+                
+</div>
+<div id="lstnumberx1065" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">38</span></span>
+                <span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;">  </span><span class="ltx_text ltx_lst_keyword ltx_font_typewriter" style="font-size:90%;color:#0000FF;">return</span><span class="ltx_text ltx_lst_space ltx_font_typewriter" style="font-size:90%;"> </span><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">0;</span>
+</div>
+<div id="lstnumberx1066" class="ltx_listingline">
+                  <span class="ltx_tag ltx_tag_listingline"><span class="ltx_text ltx_font_typewriter" style="font-size:90%;">39</span></span>
+                <span class="ltx_text ltx_font_typewriter" style="font-size:90%;">}</span>
+</div>
+</div>
+</figure>
+<div id="Thmresolx12.p2" class="ltx_para">
+<p class="ltx_p">Neste código, os processos são abortados caso o usuário tente executá-lo com um número de processos diferente de 2. Para abortar todos os processos ativos, utiliza-se a rotina <a href="https://www.open-mpi.org/doc/v4.1/man3/MPI%5C_Abort.3.php" title="" class="ltx_ref ltx_href">MPI_Abort</a> (veja as linhas 15-21). O argumento de entrada <code class="ltx_verbatim ltx_font_typewriter">errorcode</code> é arbitrário e serve para informar o usuário de uma categoria de erros conforme a política de programação utilizada.</p>
+</div>
+<div id="Thmresolx12.p3" class="ltx_para">
+<p class="ltx_p">Observamos que o controle do que cada processo deve fazer, é feito através de sua identificação <code class="ltx_verbatim ltx_font_typewriter">world_rank</code> (veja as linhas 30-33).</p>
+</div>
+</div>
+</section>
+<section id="SSx2" class="ltx_subsection">
+<h2 class="ltx_title ltx_title_subsection">Exercícios <small><a href="../contato.html"><i class="fas fa-envelope"></i></a></small></h2>
+
+
+<div id="Thmexer1" class="ltx_theorem ltx_theorem_exer">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Exercício 3.1.1</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmexer1.p1" class="ltx_para">
+<p class="ltx_p">Rode o Código <code class="ltx_verbatim ltx_font_typewriter">ola.cc</code> com um número de processadores (<span class="ltx_text ltx_font_italic">core</span>) maior do que o disponível em sua máquina. O que você observa? Modifique a instrução <code class="ltx_verbatim ltx_font_typewriter">mpirun</code> para aceitar a execução confirme o número de <span class="ltx_text ltx_font_italic">threads</span> disponível na máquina. Por fim, modifique a instrução de forma a aceitar um número arbitrário de instâncias de processamento.</p>
+</div>
+</div>
+<div id="Thmexer2" class="ltx_theorem ltx_theorem_exer">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Exercício 3.1.2</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmexer2.p1" class="ltx_para">
+<p class="ltx_p">Faça um código MPI para ser executado com 2 instâncias de processamento. Uma das instâncias de processamento deve alocar</p>
+<pre class="ltx_verbatim ltx_font_typewriter">
+int a = 2;
+int b = 3;
+</pre>
+<p class="ltx_p">e escrever a diferença <math id="Thmexer2.p1.m1" class="ltx_Math" alttext="a-b" display="inline"><mrow><mi>a</mi><mo>-</mo><mi>b</mi></mrow></math>. A outra instância deve alocar</p>
+<pre class="ltx_verbatim ltx_font_typewriter">
+int a = 4;
+int b = 5;
+</pre>
+<p class="ltx_p">e escrever o quociente <math id="Thmexer2.p1.m2" class="ltx_Math" alttext="b/a" display="inline"><mrow><mi>b</mi><mo>/</mo><mi>a</mi></mrow></math>.</p>
+</div>
+</div>
+</section>
+</section>
+</div>
+<footer class="ltx_page_footer">
+<div>
+<a href="cap_mpi.html" title="Capítulo 3 Computação paralela e distribuída (MPI) ‣ Matemática Numérica Paralela" class="ltx_ref" rel="prev"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">3 </span>Computação paralela e distribuída (MPI)</span></a><a href="bib.html" title="Referências ‣ Matemática Numérica Paralela" class="ltx_ref" rel="bibliography"><span class="ltx_text ltx_ref_title">Referências</span></a><a href="cap_mpi_sec_p2pcom.html" title="3.2 Rotinas de comunicação ponto-a-ponto ‣ Capítulo 3 Computação paralela e distribuída (MPI) ‣ Matemática Numérica Paralela" class="ltx_ref" rel="next"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">3.2 </span>Rotinas de comunicação ponto-a-ponto</span></a>
+</div>
+<div class="ltx_page_logo"><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />O texto acima está sob Licença <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR">Creative Commons Atribuição-CompartilhaIgual 4.0 Internacional</a>. Generated  on Fri Sep  1 18:44:45 2023 by <a href="http://dlmf.nist.gov/LaTeXML/">LaTeXML <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg==" alt="[LOGO]"></a>
+</div></footer>
+</div>
+<div class="card" id="rodape" style="">
+  <div class="card-footer text-left">
+    <a href="../contato.html"><i class="fas fa-envelope"></i></a> | <a href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i></a> | <a href="https://archive.org/details/notas-de-aula"><i class="fas fa-building-columns"></i></a> | <a href="https://www.youtube.com/channel/UCwutHKlKLgVj6IkFSUFBqoA"><i class="fab fa-youtube"></i></a> | <a href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i></a>
+  </div> <!-- div class="card" -->
+</div> <!-- div class="card-footer text-right" -->
+</div> <!-- div class=col-xxl-10 --></div> <!-- div class=row --></div> <!-- div class=container-fluid --></body>
+</html>

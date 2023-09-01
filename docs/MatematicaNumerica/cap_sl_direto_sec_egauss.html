@@ -1,0 +1,753 @@
+<!DOCTYPE html><html lang="pt">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>3.1 Eliminação gaussiana‣ Capítulo 3 Métodos diretos para sistemas lineares ‣ Matemática numérica</title>
+<!--Generated on Fri Sep  1 18:48:00 2023 by LaTeXML (version 0.8.6) http://dlmf.nist.gov/LaTeXML/.-->
+<!--Document created on 1 de setembro de 2023.-->
+
+<link rel="stylesheet" href="LaTeXML.css" type="text/css">
+<link rel="stylesheet" href="ltx-book.css" type="text/css">
+<link rel="stylesheet" href="ltx-listings.css" type="text/css">
+<link rel="stylesheet" href="ltx-ulem.css" type="text/css">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="../main.css" type="text/css">
+<link rel="stylesheet" href="./fonts/cmun-serif.css" type="text/css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=MML_SVG" type="text/javascript"></script>
+<link rel="up" href="cap_sl_direto.html" title="Capítulo 3 Métodos diretos para sistemas lineares ‣ Matemática numérica">
+<link rel="up up" href="main.html" title="Matemática numérica">
+<link rel="start" href="main.html" title="Matemática numérica">
+<link rel="prev" href="cap_sl_direto.html" title="Capítulo 3 Métodos diretos para sistemas lineares ‣ Matemática numérica">
+<link rel="next" href="cap_sl_direto_sec_norma_numcond.html" title="3.2 Norma e número de condicionamento ‣ Capítulo 3 Métodos diretos para sistemas lineares ‣ Matemática numérica">
+<link rel="section" href="cap_sl_direto_sec_norma_numcond.html" title="3.2 Norma e número de condicionamento ‣ Capítulo 3 Métodos diretos para sistemas lineares ‣ Matemática numérica">
+<link rel="section" href="cap_sl_direto_sec_egauss_pivo.html" title="3.3 Método de eliminação gaussiana com pivotamento parcial com escala ‣ Capítulo 3 Métodos diretos para sistemas lineares ‣ Matemática numérica">
+<link rel="section" href="cap_sl_direto_sec_lu.html" title="3.4 Fatoração LU ‣ Capítulo 3 Métodos diretos para sistemas lineares ‣ Matemática numérica">
+<link rel="chapter" href="licenca.html" title="Licença ‣ Matemática numérica">
+<link rel="chapter" href="prefacio.html" title="Prefácio ‣ Matemática numérica">
+<link rel="chapter" href="cap_aritm.html" title="Capítulo 1 Aritmética de Máquina ‣ Matemática numérica">
+<link rel="chapter" href="cap_eq1d.html" title="Capítulo 2 Equação com uma incógnita ‣ Matemática numérica">
+<link rel="chapter" href="cap_sl_direto.html" title="Capítulo 3 Métodos diretos para sistemas lineares ‣ Matemática numérica">
+<link rel="chapter" href="cap_sl_iter.html" title="Capítulo 4 Métodos iterativos para sistemas lineares ‣ Matemática numérica">
+<link rel="chapter" href="cap_snl.html" title="Capítulo 5 Sistema de equações não lineares ‣ Matemática numérica">
+<link rel="chapter" href="cap_interp.html" title="Capítulo 6 Interpolação ‣ Matemática numérica">
+<link rel="chapter" href="cap_ajuste.html" title="Capítulo 7 Aproximação por mínimos quadrados ‣ Matemática numérica">
+<link rel="chapter" href="cap_deriv.html" title="Capítulo 8 Derivação ‣ Matemática numérica">
+<link rel="chapter" href="cap_extrapl.html" title="Capítulo 9 Técnicas de extrapolação ‣ Matemática numérica">
+<link rel="chapter" href="cap_integr.html" title="Capítulo 10 Integração ‣ Matemática numérica">
+<link rel="chapter" href="cap_pvi.html" title="Capítulo 11 Problema de valor inicial ‣ Matemática numérica">
+<link rel="chapter" href="cap_pvc.html" title="Capítulo 12 Problema de valor de contorno ‣ Matemática numérica">
+<link rel="chapter" href="cap_edp.html" title="Capítulo 13 Equações Diferenciais Parciais ‣ Matemática numérica">
+<link rel="bibliography" href="bib.html" title="Referências ‣ Matemática numérica">
+<meta name="author" content="Pedro H A Konzen"/><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous"><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script><link href="../fontawesome/css/all.min.css" rel="stylesheet"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"><link rel="stylesheet" href="goodies.css" type="text/css"><!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WZM0C3FQ62"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-WZM0C3FQ62');
+</script>
+</head>
+<body><div class="container-fluid mb-0"><div class="row"><div class="col-xxl-1"></div><div class="col-xxl-10"><div id="colabAlert" class="alert alert-warning alert-dismissible sticky-top m-0 d-flex justify-content-between" role="alert" style="">
+  <!-- <p class="m-0 d-flex justify-content-between"> -->
+    <span><a href="../contato.html"><i class="fas fa-envelope"></i></a>  <strong> Colabore com <a href="../contato.html" class="link-primary">sugestões</a> ou avisos de <a href="../contato.html">erros</a>!</strong></span>  <span class="material-symbols-outlined m-0">screen_rotation</span>
+  <span><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></span>
+  <!-- </p> -->
+</div>
+<div class="container-fluid d-flex justify-content-center mt-2 mb-2 fixed-bottom">
+  <div id="generalAlert" class="alert alert-warning alert-dismissible" role="alert" style="max-width: 300rem;">
+    Ao navegar por este
+    <i>site
+    </i>, você concorda com a
+    <a href="https://notaspedrok.com.br/notas/politica.html">Política de Uso de Dados
+    </a>.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+    </button>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+      $("#generalAlert").hide();
+      if (document.referrer.lastIndexOf("notaspedrok.com.br") == -1) {
+          $("#generalAlert").fadeIn(1000);
+      }
+  });   
+</script>
+<!-- begin: navbar --><nav class="navbar navbar-dark bg-primary mb-1"><div class="container-fluid"><a class="navbar-brand" href="main.html">Notas de Aula<br/><small>Matemática Numérica</small></a><button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button><div class="collapse navbar-collapse" id="navbarNav"><ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="../index.html"><i class="fas fa-home"></i> Início</a></li><li class="nav-item"><a class="nav-link active" href="main.html">Sumário</a></li><li class="nav-item"><a class="nav-link" href="main.pdf"><i class="fas fa-download" aria-hidden="true"></i> PDF</a></li><li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">Contato</a><div class="dropdown-menu" aria-labelledby="navbarDropdown"><a class="dropdown-item" href="../contato.html"><i class="fas fa-envelope"></i> Mensagem</a><a class="dropdown-item" href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i> notas.pedrok</a></div><!-- div class="dropdown-menu" aria-labelledby="navbarDropdown" --></li> <!-- li class="nav-item dropdown" --><li class="nav-item"><a class="nav-link" href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i> Repo</a></li><li class="nav-item"><a class="nav-link" href="../politica.html">Política de dados</a></li></ul></div><!-- /.navbar-collapse --></div><!-- /.container-fluid --></nav><!-- end: navbar --><p class="text-left mb-0"><a href="./contato.html"><i class="fas fa-envelope"></i></a> | <a href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i></a> | <a href="https://archive.org/details/notas-de-aula"><i class="fas fa-building-columns"></i></a> | <a href="https://www.youtube.com/channel/UCwutHKlKLgVj6IkFSUFBqoA"><i class="fab fa-youtube"></i></a> | <a href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i></a></p>
+<div class="ltx_page_main">
+<header class="ltx_page_header">
+<div>
+<a href="cap_sl_direto.html" title="Capítulo 3 Métodos diretos para sistemas lineares ‣ Matemática numérica" class="ltx_ref" rel="up"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">3 </span>Métodos diretos para sistemas lineares</span></a><a href="cap_sl_direto.html" title="Capítulo 3 Métodos diretos para sistemas lineares ‣ Matemática numérica" class="ltx_ref" rel="prev"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">3 </span>Métodos diretos para sistemas lineares</span></a><a href="cap_sl_direto_sec_norma_numcond.html" title="3.2 Norma e número de condicionamento ‣ Capítulo 3 Métodos diretos para sistemas lineares ‣ Matemática numérica" class="ltx_ref" rel="next"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">3.2 </span>Norma e número de condicionamento</span></a>
+</div></header>
+<div class="ltx_page_content">
+<section class="ltx_section ltx_authors_1line" lang="pt">
+<h1 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">3.1 </span>Eliminação gaussiana <small><a href="../contato.html"><i class="fas fa-envelope"></i></a></small></h1>
+
+<div id="p1" class="ltx_para">
+<p class="ltx_p">Um sistema linear</p>
+<table id="Ch13.S3.EGx41" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="eq:sl_fa_1"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch3.E5.m1" class="ltx_Math" alttext="\displaystyle a_{11}x_{1}+a_{12}x_{2}+\cdots+a_{1n}x_{n}" display="inline"><mrow><mrow><msub><mi>a</mi><mn>11</mn></msub><mo>⁢</mo><msub><mi>x</mi><mn>1</mn></msub></mrow><mo>+</mo><mrow><msub><mi>a</mi><mn>12</mn></msub><mo>⁢</mo><msub><mi>x</mi><mn>2</mn></msub></mrow><mo>+</mo><mi mathvariant="normal">⋯</mi><mo>+</mo><mrow><msub><mi>a</mi><mrow><mn>1</mn><mo>⁢</mo><mi>n</mi></mrow></msub><mo>⁢</mo><msub><mi>x</mi><mi>n</mi></msub></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E5.m2" class="ltx_Math" alttext="\displaystyle=b_{1}" display="inline"><mrow><mi></mi><mo>=</mo><msub><mi>b</mi><mn>1</mn></msub></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.5)</span></td>
+</tr></tbody>
+<tbody id="Ch3.E6"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch3.E6.m1" class="ltx_Math" alttext="\displaystyle a_{21}x_{1}+a_{22}x_{2}+\cdots+a_{2n}x_{n}" display="inline"><mrow><mrow><msub><mi>a</mi><mn>21</mn></msub><mo>⁢</mo><msub><mi>x</mi><mn>1</mn></msub></mrow><mo>+</mo><mrow><msub><mi>a</mi><mn>22</mn></msub><mo>⁢</mo><msub><mi>x</mi><mn>2</mn></msub></mrow><mo>+</mo><mi mathvariant="normal">⋯</mi><mo>+</mo><mrow><msub><mi>a</mi><mrow><mn>2</mn><mo>⁢</mo><mi>n</mi></mrow></msub><mo>⁢</mo><msub><mi>x</mi><mi>n</mi></msub></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E6.m2" class="ltx_Math" alttext="\displaystyle=b_{2}" display="inline"><mrow><mi></mi><mo>=</mo><msub><mi>b</mi><mn>2</mn></msub></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.6)</span></td>
+</tr></tbody>
+<tbody id="Ch3.E7"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E7.m1" class="ltx_Math" alttext="\displaystyle\vdots" display="inline"><mi mathvariant="normal">⋮</mi></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.7)</span></td>
+</tr></tbody>
+<tbody id="eq:sl_fa_n"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch3.E8.m1" class="ltx_Math" alttext="\displaystyle a_{n1}x_{1}+a_{n2}x_{2}+\cdots+a_{nn}x_{n}" display="inline"><mrow><mrow><msub><mi>a</mi><mrow><mi>n</mi><mo>⁢</mo><mn>1</mn></mrow></msub><mo>⁢</mo><msub><mi>x</mi><mn>1</mn></msub></mrow><mo>+</mo><mrow><msub><mi>a</mi><mrow><mi>n</mi><mo>⁢</mo><mn>2</mn></mrow></msub><mo>⁢</mo><msub><mi>x</mi><mn>2</mn></msub></mrow><mo>+</mo><mi mathvariant="normal">⋯</mi><mo>+</mo><mrow><msub><mi>a</mi><mrow><mi>n</mi><mo>⁢</mo><mi>n</mi></mrow></msub><mo>⁢</mo><msub><mi>x</mi><mi>n</mi></msub></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E8.m2" class="ltx_Math" alttext="\displaystyle=b_{n}." display="inline"><mrow><mrow><mi></mi><mo>=</mo><msub><mi>b</mi><mi>n</mi></msub></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.8)</span></td>
+</tr></tbody>
+</table>
+<p class="ltx_p">pode ser escrito na forma matricial</p>
+<table id="Ch3.E9" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E9.m1" class="ltx_Math" alttext="A\boldsymbol{x}=\boldsymbol{b}," display="block"><mrow><mrow><mrow><mi>A</mi><mo>⁢</mo><mi>𝒙</mi></mrow><mo>=</mo><mi>𝒃</mi></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.9)</span></td>
+</tr>
+</table>
+<p class="ltx_p">onde <math id="p1.m1" class="ltx_Math" alttext="A=[a_{ij}]_{i,j=1}^{n,n}" display="inline"><mrow><mi>A</mi><mo>=</mo><msubsup><mrow><mo stretchy="false">[</mo><msub><mi>a</mi><mrow><mi>i</mi><mo>⁢</mo><mi>j</mi></mrow></msub><mo stretchy="false">]</mo></mrow><mrow><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow><mo>=</mo><mn>1</mn></mrow><mrow><mi>n</mi><mo>,</mo><mi>n</mi></mrow></msubsup></mrow></math> é chamada de matriz dos coeficientes, <math id="p1.m2" class="ltx_Math" alttext="\boldsymbol{x}=(x_{1},x_{2},\dotsc,x_{n})" display="inline"><mrow><mi>𝒙</mi><mo>=</mo><mrow><mo stretchy="false">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>x</mi><mn>2</mn></msub><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><msub><mi>x</mi><mi>n</mi></msub><mo stretchy="false">)</mo></mrow></mrow></math> é o vetor (coluna) das incógnitas e <math id="p1.m3" class="ltx_Math" alttext="\boldsymbol{b}=(b_{1},b_{2},\dotsc,b_{n})" display="inline"><mrow><mi>𝒃</mi><mo>=</mo><mrow><mo stretchy="false">(</mo><msub><mi>b</mi><mn>1</mn></msub><mo>,</mo><msub><mi>b</mi><mn>2</mn></msub><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><msub><mi>b</mi><mi>n</mi></msub><mo stretchy="false">)</mo></mrow></mrow></math> é o vetor (coluna) dos termos constantes.</p>
+</div>
+<div id="p2" class="ltx_para">
+<p class="ltx_p">Outra forma matricial de representar o sistema (<a href="#eq:sl_fa_1" title="(3.5) ‣ 3.1 Eliminação gaussiana ‣ Capítulo 3 Métodos diretos para sistemas lineares ‣ Matemática numérica" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.5</span></a>)-(<a href="#eq:sl_fa_n" title="(3.8) ‣ 3.1 Eliminação gaussiana ‣ Capítulo 3 Métodos diretos para sistemas lineares ‣ Matemática numérica" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.8</span></a>) é pela chamada matriz estendida</p>
+<table id="Ch3.E10" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E10.m1" class="ltx_Math" alttext="E=[A\leavevmode\nobreak\ \boldsymbol{b}]." display="block"><mrow><mrow><mi>E</mi><mo>=</mo><mrow><mo stretchy="false">[</mo><mrow><mpadded width="+5pt"><mi>A</mi></mpadded><mo>⁢</mo><mi>𝒃</mi></mrow><mo stretchy="false">]</mo></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.10)</span></td>
+</tr>
+</table>
+<p class="ltx_p">No caso, <math id="p2.m1" class="ltx_Math" alttext="E" display="inline"><mi>E</mi></math> é a seguinte matriz <math id="p2.m2" class="ltx_Math" alttext="n\times(n+1)" display="inline"><mrow><mi>n</mi><mo>×</mo><mrow><mo stretchy="false">(</mo><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></mrow></math></p>
+<table id="Ch3.E11" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E11.m1" class="ltx_Math" alttext="E=\begin{bmatrix}a_{11}&amp;a_{12}&amp;\cdots&amp;a_{1n}&amp;b_{1}\\
+a_{21}&amp;a_{22}&amp;\cdots&amp;a_{2n}&amp;b_{2}\\
+\vdots&amp;\vdots&amp;\vdots&amp;\vdots&amp;\vdots\\
+a_{n1}&amp;a_{n2}&amp;\cdots&amp;a_{nn}&amp;b_{n}\end{bmatrix}" display="block"><mrow><mi>E</mi><mo>=</mo><mrow><mo>[</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd columnalign="center"><msub><mi>a</mi><mn>11</mn></msub></mtd><mtd columnalign="center"><msub><mi>a</mi><mn>12</mn></msub></mtd><mtd columnalign="center"><mi mathvariant="normal">⋯</mi></mtd><mtd columnalign="center"><msub><mi>a</mi><mrow><mn>1</mn><mo>⁢</mo><mi>n</mi></mrow></msub></mtd><mtd columnalign="center"><msub><mi>b</mi><mn>1</mn></msub></mtd></mtr><mtr><mtd columnalign="center"><msub><mi>a</mi><mn>21</mn></msub></mtd><mtd columnalign="center"><msub><mi>a</mi><mn>22</mn></msub></mtd><mtd columnalign="center"><mi mathvariant="normal">⋯</mi></mtd><mtd columnalign="center"><msub><mi>a</mi><mrow><mn>2</mn><mo>⁢</mo><mi>n</mi></mrow></msub></mtd><mtd columnalign="center"><msub><mi>b</mi><mn>2</mn></msub></mtd></mtr><mtr><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd><mtd columnalign="center"><mi mathvariant="normal">⋮</mi></mtd></mtr><mtr><mtd columnalign="center"><msub><mi>a</mi><mrow><mi>n</mi><mo>⁢</mo><mn>1</mn></mrow></msub></mtd><mtd columnalign="center"><msub><mi>a</mi><mrow><mi>n</mi><mo>⁢</mo><mn>2</mn></mrow></msub></mtd><mtd columnalign="center"><mi mathvariant="normal">⋯</mi></mtd><mtd columnalign="center"><msub><mi>a</mi><mrow><mi>n</mi><mo>⁢</mo><mi>n</mi></mrow></msub></mtd><mtd columnalign="center"><msub><mi>b</mi><mi>n</mi></msub></mtd></mtr></mtable><mo>]</mo></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.11)</span></td>
+</tr>
+</table>
+</div>
+<div id="p3" class="ltx_para">
+<p class="ltx_p">O método de eliminação gaussiana consistem em realizar operações sobre as equações (sobre as linhas) do sistema (<a href="#eq:sl_fa_1" title="(3.5) ‣ 3.1 Eliminação gaussiana ‣ Capítulo 3 Métodos diretos para sistemas lineares ‣ Matemática numérica" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.5</span></a>)-(<a href="#eq:sl_fa_n" title="(3.8) ‣ 3.1 Eliminação gaussiana ‣ Capítulo 3 Métodos diretos para sistemas lineares ‣ Matemática numérica" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.8</span></a>) (da matriz estendida <math id="p3.m1" class="ltx_Math" alttext="E" display="inline"><mi>E</mi></math>) de forma a reescrevê-lo como um sistema triangular, ou diagonal. Para tanto, podemos utilizar as seguintes operações:</p>
+<ol id="I1" class="ltx_enumerate">
+<li id="I1.i1" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">1.</span> 
+<div id="I1.i1.p1" class="ltx_para">
+<p class="ltx_p">permutação entre as equações (linhas) (<math id="I1.i1.p1.m1" class="ltx_Math" alttext="E_{i}\leftrightarrow E_{j}" display="inline"><mrow><msub><mi>E</mi><mi>i</mi></msub><mo>↔</mo><msub><mi>E</mi><mi>j</mi></msub></mrow></math>).</p>
+</div>
+</li>
+<li id="I1.i2" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">2.</span> 
+<div id="I1.i2.p1" class="ltx_para">
+<p class="ltx_p">multiplicação de uma equação (linha) por um escalar não nulo (<math id="I1.i2.p1.m1" class="ltx_Math" alttext="E_{i}\leftarrow\lambda E_{i}" display="inline"><mrow><msub><mi>E</mi><mi>i</mi></msub><mo>←</mo><mrow><mi>λ</mi><mo>⁢</mo><msub><mi>E</mi><mi>i</mi></msub></mrow></mrow></math>).</p>
+</div>
+</li>
+<li id="I1.i3" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">3.</span> 
+<div id="I1.i3.p1" class="ltx_para">
+<p class="ltx_p">substituição de uma equação (linha) por ela somada com a multiplicação de uma outra por um escalar não nulo (<math id="I1.i3.p1.m1" class="ltx_Math" alttext="E_{i}\leftarrow E_{i}+\lambda E_{j}" display="inline"><mrow><msub><mi>E</mi><mi>i</mi></msub><mo>←</mo><mrow><msub><mi>E</mi><mi>i</mi></msub><mo>+</mo><mrow><mi>λ</mi><mo>⁢</mo><msub><mi>E</mi><mi>j</mi></msub></mrow></mrow></mrow></math>).</p>
+</div>
+</li>
+</ol>
+</div>
+<div id="ex:egauss_exec" class="ltx_theorem ltx_theorem_ex">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Exemplo 3.1.1</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmex1.p1" class="ltx_para">
+<p class="ltx_p">O sistema linear</p>
+<table id="Ch13.S3.EGx42" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="eq:ex_egauss_exec_sl_1"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch3.E12.m1" class="ltx_Math" alttext="\displaystyle-2x_{1}-3x_{2}+2x_{3}+3x_{4}" display="inline"><mrow><mrow><mrow><mo>-</mo><mrow><mn>2</mn><mo>⁢</mo><msub><mi>x</mi><mn>1</mn></msub></mrow></mrow><mo>-</mo><mrow><mn>3</mn><mo>⁢</mo><msub><mi>x</mi><mn>2</mn></msub></mrow></mrow><mo>+</mo><mrow><mn>2</mn><mo>⁢</mo><msub><mi>x</mi><mn>3</mn></msub></mrow><mo>+</mo><mrow><mn>3</mn><mo>⁢</mo><msub><mi>x</mi><mn>4</mn></msub></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E12.m2" class="ltx_Math" alttext="\displaystyle=10" display="inline"><mrow><mi></mi><mo>=</mo><mn>10</mn></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.12)</span></td>
+</tr></tbody>
+<tbody id="Ch3.E13"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch3.E13.m1" class="ltx_Math" alttext="\displaystyle-4x_{1}-6x_{2}+6x_{3}+6x_{4}" display="inline"><mrow><mrow><mrow><mo>-</mo><mrow><mn>4</mn><mo>⁢</mo><msub><mi>x</mi><mn>1</mn></msub></mrow></mrow><mo>-</mo><mrow><mn>6</mn><mo>⁢</mo><msub><mi>x</mi><mn>2</mn></msub></mrow></mrow><mo>+</mo><mrow><mn>6</mn><mo>⁢</mo><msub><mi>x</mi><mn>3</mn></msub></mrow><mo>+</mo><mrow><mn>6</mn><mo>⁢</mo><msub><mi>x</mi><mn>4</mn></msub></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E13.m2" class="ltx_Math" alttext="\displaystyle=20" display="inline"><mrow><mi></mi><mo>=</mo><mn>20</mn></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.13)</span></td>
+</tr></tbody>
+<tbody id="Ch3.E14"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch3.E14.m1" class="ltx_Math" alttext="\displaystyle-2x_{1}+4x_{3}+6x_{4}" display="inline"><mrow><mrow><mo>-</mo><mrow><mn>2</mn><mo>⁢</mo><msub><mi>x</mi><mn>1</mn></msub></mrow></mrow><mo>+</mo><mrow><mn>4</mn><mo>⁢</mo><msub><mi>x</mi><mn>3</mn></msub></mrow><mo>+</mo><mrow><mn>6</mn><mo>⁢</mo><msub><mi>x</mi><mn>4</mn></msub></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E14.m2" class="ltx_Math" alttext="\displaystyle=10" display="inline"><mrow><mi></mi><mo>=</mo><mn>10</mn></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.14)</span></td>
+</tr></tbody>
+<tbody id="eq:ex_egauss_exec_sl_4"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch3.E15.m1" class="ltx_Math" alttext="\displaystyle 4x_{1}+3x_{2}-8x_{3}-6x_{4}" display="inline"><mrow><mrow><mrow><mn>4</mn><mo>⁢</mo><msub><mi>x</mi><mn>1</mn></msub></mrow><mo>+</mo><mrow><mn>3</mn><mo>⁢</mo><msub><mi>x</mi><mn>2</mn></msub></mrow></mrow><mo>-</mo><mrow><mn>8</mn><mo>⁢</mo><msub><mi>x</mi><mn>3</mn></msub></mrow><mo>-</mo><mrow><mn>6</mn><mo>⁢</mo><msub><mi>x</mi><mn>4</mn></msub></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E15.m2" class="ltx_Math" alttext="\displaystyle=-17" display="inline"><mrow><mi></mi><mo>=</mo><mrow><mo>-</mo><mn>17</mn></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.15)</span></td>
+</tr></tbody>
+</table>
+<p class="ltx_p">pode ser escrito na forma matricial <math id="Thmex1.p1.m1" class="ltx_Math" alttext="A\boldsymbol{x}=\boldsymbol{b}" display="inline"><mrow><mrow><mi>A</mi><mo>⁢</mo><mi>𝒙</mi></mrow><mo>=</mo><mi>𝒃</mi></mrow></math>, onde</p>
+<table id="Ch3.E16" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E16.m1" class="ltx_Math" alttext="A=\begin{bmatrix}-2&amp;-3&amp;2&amp;3\\
+-4&amp;-6&amp;6&amp;6\\
+-2&amp;0&amp;4&amp;6\\
+4&amp;3&amp;-8&amp;-6\end{bmatrix}," display="block"><mrow><mrow><mi>A</mi><mo>=</mo><mrow><mo>[</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd columnalign="center"><mrow><mo>-</mo><mn>2</mn></mrow></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>3</mn></mrow></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd></mtr><mtr><mtd columnalign="center"><mrow><mo>-</mo><mn>4</mn></mrow></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>6</mn></mrow></mtd><mtd columnalign="center"><mn>6</mn></mtd><mtd columnalign="center"><mn>6</mn></mtd></mtr><mtr><mtd columnalign="center"><mrow><mo>-</mo><mn>2</mn></mrow></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>4</mn></mtd><mtd columnalign="center"><mn>6</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>4</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>8</mn></mrow></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>6</mn></mrow></mtd></mtr></mtable><mo>]</mo></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.16)</span></td>
+</tr>
+</table>
+<p class="ltx_p"><math id="Thmex1.p1.m2" class="ltx_Math" alttext="\boldsymbol{x}=(x_{1},x_{2},x_{3},x_{4})" display="inline"><mrow><mi>𝒙</mi><mo>=</mo><mrow><mo stretchy="false">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>x</mi><mn>2</mn></msub><mo>,</mo><msub><mi>x</mi><mn>3</mn></msub><mo>,</mo><msub><mi>x</mi><mn>4</mn></msub><mo stretchy="false">)</mo></mrow></mrow></math> e <math id="Thmex1.p1.m3" class="ltx_Math" alttext="\boldsymbol{b}=(10,20,10,-17)" display="inline"><mrow><mi>𝒃</mi><mo>=</mo><mrow><mo stretchy="false">(</mo><mn>10,20,10</mn><mo>,</mo><mrow><mo>-</mo><mn>17</mn></mrow><mo stretchy="false">)</mo></mrow></mrow></math>. Sua matriz estendida é</p>
+<table id="Ch3.E17" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E17.m1" class="ltx_Math" alttext="E=\begin{bmatrix}-2&amp;-3&amp;2&amp;3&amp;10\\
+-4&amp;-6&amp;6&amp;6&amp;20\\
+-2&amp;0&amp;4&amp;6&amp;10\\
+4&amp;3&amp;-8&amp;-6&amp;-17\end{bmatrix}" display="block"><mrow><mi>E</mi><mo>=</mo><mrow><mo>[</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd columnalign="center"><mrow><mo>-</mo><mn>2</mn></mrow></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>3</mn></mrow></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mn>10</mn></mtd></mtr><mtr><mtd columnalign="center"><mrow><mo>-</mo><mn>4</mn></mrow></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>6</mn></mrow></mtd><mtd columnalign="center"><mn>6</mn></mtd><mtd columnalign="center"><mn>6</mn></mtd><mtd columnalign="center"><mn>20</mn></mtd></mtr><mtr><mtd columnalign="center"><mrow><mo>-</mo><mn>2</mn></mrow></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>4</mn></mtd><mtd columnalign="center"><mn>6</mn></mtd><mtd columnalign="center"><mn>10</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>4</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>8</mn></mrow></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>6</mn></mrow></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>17</mn></mrow></mtd></mtr></mtable><mo>]</mo></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.17)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Então, usando o método de eliminação gaussiana, temos</p>
+<table id="Ch13.S3.EGx43" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="Ch3.E26"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch3.E26.m1" class="ltx_Math" alttext="\displaystyle E" display="inline"><mi>E</mi></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E26.m2" class="ltx_Math" alttext="\displaystyle=\begin{bmatrix}\hidden@noalign{}\hfil\textstyle-2&amp;-3&amp;2&amp;3&amp;10\\
+\hidden@noalign{}\hfil\textstyle-4&amp;-6&amp;6&amp;6&amp;20\\
+\hidden@noalign{}\hfil\textstyle-2&amp;0&amp;4&amp;6&amp;10\\
+\hidden@noalign{}\hfil\textstyle 4&amp;3&amp;-8&amp;-6&amp;-17\end{bmatrix}\begin{matrix}%
+\hidden@noalign{}\hfil\textstyle\\
+\hidden@noalign{}\hfil\textstyle E_{2}\leftarrow E_{2}-(e_{21}/\boldsymbol{e_{%
+11}})E_{1}\\
+\hidden@noalign{}\hfil\textstyle\\
+\hidden@noalign{}\hfil\textstyle\\
+\end{matrix}" display="inline"><mrow><mi></mi><mo>=</mo><mrow><mrow><mo>[</mo><mtable columnspacing="5pt" rowspacing="0pt"><mtr><mtd columnalign="center"><mrow><mo>-</mo><mn>2</mn></mrow></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>3</mn></mrow></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mn>10</mn></mtd></mtr><mtr><mtd columnalign="center"><mrow><mo>-</mo><mn>4</mn></mrow></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>6</mn></mrow></mtd><mtd columnalign="center"><mn>6</mn></mtd><mtd columnalign="center"><mn>6</mn></mtd><mtd columnalign="center"><mn>20</mn></mtd></mtr><mtr><mtd columnalign="center"><mrow><mo>-</mo><mn>2</mn></mrow></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>4</mn></mtd><mtd columnalign="center"><mn>6</mn></mtd><mtd columnalign="center"><mn>10</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>4</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>8</mn></mrow></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>6</mn></mrow></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>17</mn></mrow></mtd></mtr></mtable><mo>]</mo></mrow><mo>⁢</mo><mtable rowspacing="0pt"><mtr><mtd></mtd></mtr><mtr><mtd columnalign="center"><mrow><msub><mi>E</mi><mn>2</mn></msub><mo>←</mo><mrow><msub><mi>E</mi><mn>2</mn></msub><mo>-</mo><mrow><mrow><mo stretchy="false">(</mo><mrow><msub><mi>e</mi><mn>21</mn></msub><mo>/</mo><msub><mi>𝒆</mi><mn>𝟏𝟏</mn></msub></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><msub><mi>E</mi><mn>1</mn></msub></mrow></mrow></mrow></mtd></mtr><mtr><mtd></mtd></mtr></mtable></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.26)</span></td>
+</tr></tbody>
+<tbody id="Ch3.E35"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E35.m1" class="ltx_Math" alttext="\displaystyle\sim\begin{bmatrix}\hidden@noalign{}\hfil\textstyle\boldsymbol{-2%
+}&amp;-3&amp;2&amp;3&amp;10\\
+\hidden@noalign{}\hfil\textstyle 0&amp;0&amp;2&amp;0&amp;0\\
+\hidden@noalign{}\hfil\textstyle-2&amp;0&amp;4&amp;6&amp;10\\
+\hidden@noalign{}\hfil\textstyle 4&amp;3&amp;-8&amp;-6&amp;-17\end{bmatrix}\begin{matrix}%
+\hidden@noalign{}\hfil\textstyle\\
+\hidden@noalign{}\hfil\textstyle\\
+\hidden@noalign{}\hfil\textstyle E_{3}\leftarrow E_{3}-(e_{31}/\boldsymbol{e_{%
+11}})E_{1}\\
+\hidden@noalign{}\hfil\textstyle\\
+\end{matrix}" display="inline"><mrow><mi></mi><mo>∼</mo><mrow><mrow><mo>[</mo><mtable columnspacing="5pt" rowspacing="0pt"><mtr><mtd columnalign="center"><mrow><mo mathvariant="bold">-</mo><mn>𝟐</mn></mrow></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>3</mn></mrow></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mn>10</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mrow><mo>-</mo><mn>2</mn></mrow></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>4</mn></mtd><mtd columnalign="center"><mn>6</mn></mtd><mtd columnalign="center"><mn>10</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>4</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>8</mn></mrow></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>6</mn></mrow></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>17</mn></mrow></mtd></mtr></mtable><mo>]</mo></mrow><mo>⁢</mo><mtable rowspacing="0pt"><mtr><mtd></mtd></mtr><mtr><mtd></mtd></mtr><mtr><mtd columnalign="center"><mrow><msub><mi>E</mi><mn>3</mn></msub><mo>←</mo><mrow><msub><mi>E</mi><mn>3</mn></msub><mo>-</mo><mrow><mrow><mo stretchy="false">(</mo><mrow><msub><mi>e</mi><mn>31</mn></msub><mo>/</mo><msub><mi>𝒆</mi><mn>𝟏𝟏</mn></msub></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><msub><mi>E</mi><mn>1</mn></msub></mrow></mrow></mrow></mtd></mtr></mtable></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.35)</span></td>
+</tr></tbody>
+<tbody id="Ch3.E44"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E44.m1" class="ltx_Math" alttext="\displaystyle\sim\begin{bmatrix}\hidden@noalign{}\hfil\textstyle\boldsymbol{-2%
+}&amp;-3&amp;2&amp;3&amp;10\\
+\hidden@noalign{}\hfil\textstyle 0&amp;0&amp;2&amp;0&amp;0\\
+\hidden@noalign{}\hfil\textstyle 0&amp;3&amp;2&amp;3&amp;0\\
+\hidden@noalign{}\hfil\textstyle 4&amp;3&amp;-8&amp;-6&amp;-17\end{bmatrix}\begin{matrix}%
+\hidden@noalign{}\hfil\textstyle\\
+\hidden@noalign{}\hfil\textstyle\\
+\hidden@noalign{}\hfil\textstyle\\
+\hidden@noalign{}\hfil\textstyle E_{4}\leftarrow E_{4}-(e_{41}/\boldsymbol{e_{%
+11}})E_{1}\\
+\end{matrix}" display="inline"><mrow><mi></mi><mo>∼</mo><mrow><mrow><mo>[</mo><mtable columnspacing="5pt" rowspacing="0pt"><mtr><mtd columnalign="center"><mrow><mo mathvariant="bold">-</mo><mn>𝟐</mn></mrow></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>3</mn></mrow></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mn>10</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>4</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>8</mn></mrow></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>6</mn></mrow></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>17</mn></mrow></mtd></mtr></mtable><mo>]</mo></mrow><mo>⁢</mo><mtable rowspacing="0pt"><mtr><mtd></mtd></mtr><mtr><mtd></mtd></mtr><mtr><mtd></mtd></mtr><mtr><mtd columnalign="center"><mrow><msub><mi>E</mi><mn>4</mn></msub><mo>←</mo><mrow><msub><mi>E</mi><mn>4</mn></msub><mo>-</mo><mrow><mrow><mo stretchy="false">(</mo><mrow><msub><mi>e</mi><mn>41</mn></msub><mo>/</mo><msub><mi>𝒆</mi><mn>𝟏𝟏</mn></msub></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><msub><mi>E</mi><mn>1</mn></msub></mrow></mrow></mrow></mtd></mtr></mtable></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.44)</span></td>
+</tr></tbody>
+<tbody id="Ch3.E53"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E53.m1" class="ltx_Math" alttext="\displaystyle\sim\begin{bmatrix}\hidden@noalign{}\hfil\textstyle\boldsymbol{-2%
+}&amp;-3&amp;2&amp;3&amp;10\\
+\hidden@noalign{}\hfil\textstyle 0&amp;0&amp;2&amp;0&amp;0\\
+\hidden@noalign{}\hfil\textstyle 0&amp;\boldsymbol{3}&amp;2&amp;3&amp;0\\
+\hidden@noalign{}\hfil\textstyle 0&amp;-3&amp;-4&amp;0&amp;3\end{bmatrix}\begin{matrix}%
+\hidden@noalign{}\hfil\textstyle\\
+\hidden@noalign{}\hfil\textstyle E_{2}\leftrightarrow E_{3}\\
+\hidden@noalign{}\hfil\textstyle\\
+\hidden@noalign{}\hfil\textstyle\\
+\end{matrix}" display="inline"><mrow><mi></mi><mo>∼</mo><mrow><mrow><mo>[</mo><mtable columnspacing="5pt" rowspacing="0pt"><mtr><mtd columnalign="center"><mrow><mo mathvariant="bold">-</mo><mn>𝟐</mn></mrow></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>3</mn></mrow></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mn>10</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>𝟑</mn></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>3</mn></mrow></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>4</mn></mrow></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd></mtr></mtable><mo>]</mo></mrow><mo>⁢</mo><mtable rowspacing="0pt"><mtr><mtd></mtd></mtr><mtr><mtd columnalign="center"><mrow><msub><mi>E</mi><mn>2</mn></msub><mo>↔</mo><msub><mi>E</mi><mn>3</mn></msub></mrow></mtd></mtr><mtr><mtd></mtd></mtr></mtable></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.53)</span></td>
+</tr></tbody>
+<tbody id="Ch3.E62"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E62.m1" class="ltx_Math" alttext="\displaystyle\sim\begin{bmatrix}\hidden@noalign{}\hfil\textstyle\boldsymbol{-2%
+}&amp;-3&amp;2&amp;3&amp;10\\
+\hidden@noalign{}\hfil\textstyle 0&amp;\boldsymbol{3}&amp;2&amp;3&amp;0\\
+\hidden@noalign{}\hfil\textstyle 0&amp;0&amp;2&amp;0&amp;0\\
+\hidden@noalign{}\hfil\textstyle 0&amp;-3&amp;-4&amp;0&amp;3\end{bmatrix}\begin{matrix}%
+\hidden@noalign{}\hfil\textstyle\\
+\hidden@noalign{}\hfil\textstyle\\
+\hidden@noalign{}\hfil\textstyle\\
+\hidden@noalign{}\hfil\textstyle E_{4}\leftarrow E_{4}-(e_{42}/\boldsymbol{e_{%
+22}})E_{2}\\
+\end{matrix}" display="inline"><mrow><mi></mi><mo>∼</mo><mrow><mrow><mo>[</mo><mtable columnspacing="5pt" rowspacing="0pt"><mtr><mtd columnalign="center"><mrow><mo mathvariant="bold">-</mo><mn>𝟐</mn></mrow></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>3</mn></mrow></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mn>10</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>𝟑</mn></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>3</mn></mrow></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>4</mn></mrow></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd></mtr></mtable><mo>]</mo></mrow><mo>⁢</mo><mtable rowspacing="0pt"><mtr><mtd></mtd></mtr><mtr><mtd></mtd></mtr><mtr><mtd></mtd></mtr><mtr><mtd columnalign="center"><mrow><msub><mi>E</mi><mn>4</mn></msub><mo>←</mo><mrow><msub><mi>E</mi><mn>4</mn></msub><mo>-</mo><mrow><mrow><mo stretchy="false">(</mo><mrow><msub><mi>e</mi><mn>42</mn></msub><mo>/</mo><msub><mi>𝒆</mi><mn>𝟐𝟐</mn></msub></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><msub><mi>E</mi><mn>2</mn></msub></mrow></mrow></mrow></mtd></mtr></mtable></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.62)</span></td>
+</tr></tbody>
+<tbody id="Ch3.E71"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E71.m1" class="ltx_Math" alttext="\displaystyle\sim\begin{bmatrix}\hidden@noalign{}\hfil\textstyle\boldsymbol{-2%
+}&amp;-3&amp;2&amp;3&amp;10\\
+\hidden@noalign{}\hfil\textstyle 0&amp;3&amp;2&amp;3&amp;0\\
+\hidden@noalign{}\hfil\textstyle 0&amp;0&amp;\boldsymbol{2}&amp;0&amp;0\\
+\hidden@noalign{}\hfil\textstyle 0&amp;0&amp;-2&amp;3&amp;3\end{bmatrix}\begin{matrix}%
+\hidden@noalign{}\hfil\textstyle\\
+\hidden@noalign{}\hfil\textstyle\\
+\hidden@noalign{}\hfil\textstyle\\
+\hidden@noalign{}\hfil\textstyle E_{4}\leftarrow E_{4}-(e_{43}/\boldsymbol{e_{%
+33}})E_{3}\\
+\end{matrix}" display="inline"><mrow><mi></mi><mo>∼</mo><mrow><mrow><mo>[</mo><mtable columnspacing="5pt" rowspacing="0pt"><mtr><mtd columnalign="center"><mrow><mo mathvariant="bold">-</mo><mn>𝟐</mn></mrow></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>3</mn></mrow></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mn>10</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>𝟐</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>2</mn></mrow></mtd><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd></mtr></mtable><mo>]</mo></mrow><mo>⁢</mo><mtable rowspacing="0pt"><mtr><mtd></mtd></mtr><mtr><mtd></mtd></mtr><mtr><mtd></mtd></mtr><mtr><mtd columnalign="center"><mrow><msub><mi>E</mi><mn>4</mn></msub><mo>←</mo><mrow><msub><mi>E</mi><mn>4</mn></msub><mo>-</mo><mrow><mrow><mo stretchy="false">(</mo><mrow><msub><mi>e</mi><mn>43</mn></msub><mo>/</mo><msub><mi>𝒆</mi><mn>𝟑𝟑</mn></msub></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><msub><mi>E</mi><mn>3</mn></msub></mrow></mrow></mrow></mtd></mtr></mtable></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.71)</span></td>
+</tr></tbody>
+<tbody id="Ch3.E76"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E76.m1" class="ltx_Math" alttext="\displaystyle\sim\begin{bmatrix}\hidden@noalign{}\hfil\textstyle\boldsymbol{-2%
+}&amp;-3&amp;2&amp;3&amp;10\\
+\hidden@noalign{}\hfil\textstyle 0&amp;\boldsymbol{3}&amp;2&amp;3&amp;0\\
+\hidden@noalign{}\hfil\textstyle 0&amp;0&amp;\boldsymbol{2}&amp;0&amp;0\\
+\hidden@noalign{}\hfil\textstyle 0&amp;0&amp;0&amp;\boldsymbol{3}&amp;3\end{bmatrix}" display="inline"><mrow><mi></mi><mo>∼</mo><mrow><mo>[</mo><mtable columnspacing="5pt" rowspacing="0pt"><mtr><mtd columnalign="center"><mrow><mo mathvariant="bold">-</mo><mn>𝟐</mn></mrow></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>3</mn></mrow></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mn>10</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>𝟑</mn></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>𝟐</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>𝟑</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd></mtr></mtable><mo>]</mo></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.76)</span></td>
+</tr></tbody>
+</table>
+<p class="ltx_p">Esta última matriz estendida é chamada de <span class="ltx_text ltx_font_bold">matriz escalonada</span> do sistema. Desta, temos que (<a href="#eq:ex_egauss_exec_sl_1" title="(3.12) ‣ Exemplo 3.1.1. ‣ 3.1 Eliminação gaussiana ‣ Capítulo 3 Métodos diretos para sistemas lineares ‣ Matemática numérica" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.12</span></a>)-(<a href="#eq:ex_egauss_exec_sl_4" title="(3.15) ‣ Exemplo 3.1.1. ‣ 3.1 Eliminação gaussiana ‣ Capítulo 3 Métodos diretos para sistemas lineares ‣ Matemática numérica" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.15</span></a>) é equivalente ao seguinte sistema triangular</p>
+<table id="Ch13.S3.EGx44" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="Ch3.E77"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch3.E77.m1" class="ltx_Math" alttext="\displaystyle-2x_{1}-3x_{2}+2x_{3}+3x_{4}" display="inline"><mrow><mrow><mrow><mo>-</mo><mrow><mn>2</mn><mo>⁢</mo><msub><mi>x</mi><mn>1</mn></msub></mrow></mrow><mo>-</mo><mrow><mn>3</mn><mo>⁢</mo><msub><mi>x</mi><mn>2</mn></msub></mrow></mrow><mo>+</mo><mrow><mn>2</mn><mo>⁢</mo><msub><mi>x</mi><mn>3</mn></msub></mrow><mo>+</mo><mrow><mn>3</mn><mo>⁢</mo><msub><mi>x</mi><mn>4</mn></msub></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E77.m2" class="ltx_Math" alttext="\displaystyle=10" display="inline"><mrow><mi></mi><mo>=</mo><mn>10</mn></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.77)</span></td>
+</tr></tbody>
+<tbody id="Ch3.E78"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch3.E78.m1" class="ltx_Math" alttext="\displaystyle 3x_{2}+2x_{3}+3x_{4}" display="inline"><mrow><mrow><mn>3</mn><mo>⁢</mo><msub><mi>x</mi><mn>2</mn></msub></mrow><mo>+</mo><mrow><mn>2</mn><mo>⁢</mo><msub><mi>x</mi><mn>3</mn></msub></mrow><mo>+</mo><mrow><mn>3</mn><mo>⁢</mo><msub><mi>x</mi><mn>4</mn></msub></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E78.m2" class="ltx_Math" alttext="\displaystyle=0" display="inline"><mrow><mi></mi><mo>=</mo><mn>0</mn></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.78)</span></td>
+</tr></tbody>
+<tbody id="Ch3.E79"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch3.E79.m1" class="ltx_Math" alttext="\displaystyle 2x_{3}" display="inline"><mrow><mn>2</mn><mo>⁢</mo><msub><mi>x</mi><mn>3</mn></msub></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E79.m2" class="ltx_Math" alttext="\displaystyle=0" display="inline"><mrow><mi></mi><mo>=</mo><mn>0</mn></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.79)</span></td>
+</tr></tbody>
+<tbody id="Ch3.E80"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch3.E80.m1" class="ltx_Math" alttext="\displaystyle 3x_{4}" display="inline"><mrow><mn>3</mn><mo>⁢</mo><msub><mi>x</mi><mn>4</mn></msub></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E80.m2" class="ltx_Math" alttext="\displaystyle=3." display="inline"><mrow><mrow><mi></mi><mo>=</mo><mn>3</mn></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.80)</span></td>
+</tr></tbody>
+</table>
+<p class="ltx_p">Resolvendo da última equação para a primeira, temos
+</p>
+<table id="Ch13.S3.EGx45" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="Ch3.E81"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch3.E81.m1" class="ltx_Math" alttext="\displaystyle x_{4}" display="inline"><msub><mi>x</mi><mn>4</mn></msub></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E81.m2" class="ltx_Math" alttext="\displaystyle=1," display="inline"><mrow><mrow><mi></mi><mo>=</mo><mn>1</mn></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.81)</span></td>
+</tr></tbody>
+<tbody id="Ch3.E82"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch3.E82.m1" class="ltx_Math" alttext="\displaystyle x_{3}" display="inline"><msub><mi>x</mi><mn>3</mn></msub></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E82.m2" class="ltx_Math" alttext="\displaystyle=0," display="inline"><mrow><mrow><mi></mi><mo>=</mo><mn>0</mn></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.82)</span></td>
+</tr></tbody>
+<tbody id="Ch3.E83"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch3.E83.m1" class="ltx_Math" alttext="\displaystyle x_{2}" display="inline"><msub><mi>x</mi><mn>2</mn></msub></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E83.m2" class="ltx_Math" alttext="\displaystyle=\frac{-2x_{3}-3x_{4}}{3}=-1," display="inline"><mrow><mrow><mi></mi><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mrow><mo>-</mo><mrow><mn>2</mn><mo>⁢</mo><msub><mi>x</mi><mn>3</mn></msub></mrow></mrow><mo>-</mo><mrow><mn>3</mn><mo>⁢</mo><msub><mi>x</mi><mn>4</mn></msub></mrow></mrow><mn>3</mn></mfrac></mstyle><mo>=</mo><mrow><mo>-</mo><mn>1</mn></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.83)</span></td>
+</tr></tbody>
+<tbody id="Ch3.E84"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch3.E84.m1" class="ltx_Math" alttext="\displaystyle x_{1}" display="inline"><msub><mi>x</mi><mn>1</mn></msub></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E84.m2" class="ltx_Math" alttext="\displaystyle=\frac{10+3x_{2}-3x_{3}-3x_{4}}{-2}=-2." display="inline"><mrow><mrow><mi></mi><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mrow><mn>10</mn><mo>+</mo><mrow><mn>3</mn><mo>⁢</mo><msub><mi>x</mi><mn>2</mn></msub></mrow></mrow><mo>-</mo><mrow><mn>3</mn><mo>⁢</mo><msub><mi>x</mi><mn>3</mn></msub></mrow><mo>-</mo><mrow><mn>3</mn><mo>⁢</mo><msub><mi>x</mi><mn>4</mn></msub></mrow></mrow><mrow><mo>-</mo><mn>2</mn></mrow></mfrac></mstyle><mo>=</mo><mrow><mo>-</mo><mn>2</mn></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.84)</span></td>
+</tr></tbody>
+</table>
+</div>
+<div id="Thmex1.p2" class="ltx_para">
+<p class="ltx_p">No <code class="ltx_verbatim ltx_font_typewriter">GNU Octave</code>, podemos fazer as computações acima com o seguinte <a href="https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/ex_egauss_exec/ex_egauss_exec.m" title="" class="ltx_ref ltx_href">código</a>:</p>
+<pre class="ltx_verbatim ltx_font_typewriter">A = [-2 -3 2 3; ...
+     -4 -6 6 6; ...
+     -2 0 4 6; ...
+     4 3 -8 -6]
+b = [10 20 10 -17]’
+
+E = [A b]
+
+E(2,:) = E(2,:) - E(2,1)/E(1,1)*E(1,:)
+E(3,:) = E(3,:) - E(3,1)/E(1,1)*E(1,:)
+E(4,:) = E(4,:) - E(4,1)/E(1,1)*E(1,:)
+
+aux = E(2,:);
+E(2,:) = E(3,:);
+E(3,:) = aux
+
+E(4,:) = E(4,:) - E(4,2)/E(2,2)*E(2,:)
+
+E(4,:) = E(4,:) - E(4,3)/E(3,3)*E(3,:)
+
+x = zeros(4,1);
+x(4) = E(4,5)/E(4,4);
+x(3) = (E(3,5) - E(3,4)*x(4))/E(3,3);
+x(2) = (E(2,5) - E(2,3)*x(3) ...
+        - E(2,4)*x(4))/E(2,2);
+x(1) = (E(1,5) - E(1,2)*x(2) ...
+        - E(1,3)*x(3) - E(1,4)*x(4))/E(1,1)
+</pre>
+</div>
+</div>
+<div id="Thmobs1" class="ltx_theorem ltx_theorem_obs">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Observação 3.1.1</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmobs1.p1" class="ltx_para">
+<p class="ltx_p">Para a resolução de um sistema linear <math id="Thmobs1.p1.m1" class="ltx_Math" alttext="n\times n" display="inline"><mrow><mi>n</mi><mo>×</mo><mi>n</mi></mrow></math>, o método de eliminação gaussiana demanda</p>
+<table id="Ch3.E85" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E85.m1" class="ltx_Math" alttext="\frac{n^{3}}{3}+n^{2}-\frac{n}{3}" display="block"><mrow><mrow><mfrac><msup><mi>n</mi><mn>3</mn></msup><mn>3</mn></mfrac><mo>+</mo><msup><mi>n</mi><mn>2</mn></msup></mrow><mo>-</mo><mfrac><mi>n</mi><mn>3</mn></mfrac></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.85)</span></td>
+</tr>
+</table>
+<p class="ltx_p">multiplicações/divisões e</p>
+<table id="Ch3.E86" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E86.m1" class="ltx_Math" alttext="\frac{n^{3}}{3}+\frac{n^{2}}{2}-\frac{5n}{6}" display="block"><mrow><mrow><mfrac><msup><mi>n</mi><mn>3</mn></msup><mn>3</mn></mfrac><mo>+</mo><mfrac><msup><mi>n</mi><mn>2</mn></msup><mn>2</mn></mfrac></mrow><mo>-</mo><mfrac><mrow><mn>5</mn><mo>⁢</mo><mi>n</mi></mrow><mn>6</mn></mfrac></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.86)</span></td>
+</tr>
+</table>
+<p class="ltx_p">adições/subtrações <cite class="ltx_cite ltx_citemacro_cite">[<span class="ltx_ref ltx_missing_citation ltx_ref_self">Burden2015a</span>]</cite>.</p>
+</div>
+</div>
+<div id="p4" class="ltx_para">
+<p class="ltx_p">Com o mesmo custo computacional, podemos utilizar o método de eliminação gaussiana para transformar o sistema dado em um sistema diagonal.</p>
+</div>
+<div id="ex:egauss_reduzida" class="ltx_theorem ltx_theorem_ex">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Exemplo 3.1.2</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmex2.p1" class="ltx_para">
+<p class="ltx_p">Voltando ao exemplo anterior (Exemplo <a href="#ex:egauss_exec" title="Exemplo 3.1.1. ‣ 3.1 Eliminação gaussiana ‣ Capítulo 3 Métodos diretos para sistemas lineares ‣ Matemática numérica" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.1.1</span></a>, vimos que a matriz estendida do sistema (<a href="#eq:ex_egauss_exec_sl_1" title="(3.12) ‣ Exemplo 3.1.1. ‣ 3.1 Eliminação gaussiana ‣ Capítulo 3 Métodos diretos para sistemas lineares ‣ Matemática numérica" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.12</span></a>)-(<a href="#eq:ex_egauss_exec_sl_4" title="(3.15) ‣ Exemplo 3.1.1. ‣ 3.1 Eliminação gaussiana ‣ Capítulo 3 Métodos diretos para sistemas lineares ‣ Matemática numérica" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.15</span></a>) é equivalente a</p>
+<table id="Ch3.E87" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.E87.m1" class="ltx_Math" alttext="E\sim\begin{bmatrix}-2&amp;-3&amp;2&amp;3&amp;10\\
+0&amp;3&amp;2&amp;3&amp;0\\
+0&amp;0&amp;2&amp;0&amp;0\\
+0&amp;0&amp;0&amp;3&amp;3\end{bmatrix}." display="block"><mrow><mrow><mi>E</mi><mo>∼</mo><mrow><mo>[</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd columnalign="center"><mrow><mo>-</mo><mn>2</mn></mrow></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>3</mn></mrow></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mn>10</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd></mtr></mtable><mo>]</mo></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.87)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Então, podemos continuar aplicando o método de eliminação gaussiana, agora de baixo para cima, até obtermos um sistema diagonal equivalente. Vejamos</p>
+<table id="Ch13.S3.EGx46" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="Ch3.E96"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch3.E96.m1" class="ltx_Math" alttext="\displaystyle E" display="inline"><mi>E</mi></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E96.m2" class="ltx_Math" alttext="\displaystyle\sim\begin{bmatrix}\hidden@noalign{}\hfil\textstyle-2&amp;-3&amp;2&amp;3&amp;10\\
+\hidden@noalign{}\hfil\textstyle 0&amp;3&amp;2&amp;3&amp;0\\
+\hidden@noalign{}\hfil\textstyle 0&amp;0&amp;2&amp;0&amp;0\\
+\hidden@noalign{}\hfil\textstyle 0&amp;0&amp;0&amp;\boldsymbol{3}&amp;3\end{bmatrix}\begin{%
+array}[]{l}\hidden@noalign{}E_{1}\leftarrow E_{1}-(e_{14}/e_{44})E_{4}\\
+\hidden@noalign{}E_{2}\leftarrow E_{2}-(e_{24}/e_{44})E_{4}\\
+\\
+\\
+\end{array}" display="inline"><mrow><mi></mi><mo>∼</mo><mrow><mrow><mo>[</mo><mtable columnspacing="5pt" rowspacing="0pt"><mtr><mtd columnalign="center"><mrow><mo>-</mo><mn>2</mn></mrow></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>3</mn></mrow></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mn>10</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>𝟑</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd></mtr></mtable><mo>]</mo></mrow><mo>⁢</mo><mtable rowspacing="0pt"><mtr><mtd columnalign="left"><mrow><msub><mi>E</mi><mn>1</mn></msub><mo>←</mo><mrow><msub><mi>E</mi><mn>1</mn></msub><mo>-</mo><mrow><mrow><mo stretchy="false">(</mo><mrow><msub><mi>e</mi><mn>14</mn></msub><mo>/</mo><msub><mi>e</mi><mn>44</mn></msub></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><msub><mi>E</mi><mn>4</mn></msub></mrow></mrow></mrow></mtd></mtr><mtr><mtd columnalign="left"><mrow><msub><mi>E</mi><mn>2</mn></msub><mo>←</mo><mrow><msub><mi>E</mi><mn>2</mn></msub><mo>-</mo><mrow><mrow><mo stretchy="false">(</mo><mrow><msub><mi>e</mi><mn>24</mn></msub><mo>/</mo><msub><mi>e</mi><mn>44</mn></msub></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><msub><mi>E</mi><mn>4</mn></msub></mrow></mrow></mrow></mtd></mtr><mtr><mtd></mtd></mtr></mtable></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.96)</span></td>
+</tr></tbody>
+<tbody id="Ch3.E105"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E105.m1" class="ltx_Math" alttext="\displaystyle\sim\begin{bmatrix}\hidden@noalign{}\hfil\textstyle-2&amp;-3&amp;2&amp;0&amp;7\\
+\hidden@noalign{}\hfil\textstyle 0&amp;3&amp;2&amp;0&amp;-3\\
+\hidden@noalign{}\hfil\textstyle 0&amp;0&amp;\boldsymbol{2}&amp;0&amp;0\\
+\hidden@noalign{}\hfil\textstyle 0&amp;0&amp;0&amp;3&amp;3\end{bmatrix}\begin{array}[]{l}%
+\hidden@noalign{}E_{1}\leftarrow E_{1}-(e_{13}/e_{33})E_{3}\\
+\hidden@noalign{}E_{2}\leftarrow E_{2}-(e_{23}/e_{33})E_{3}\\
+\\
+\\
+\end{array}" display="inline"><mrow><mi></mi><mo>∼</mo><mrow><mrow><mo>[</mo><mtable columnspacing="5pt" rowspacing="0pt"><mtr><mtd columnalign="center"><mrow><mo>-</mo><mn>2</mn></mrow></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>3</mn></mrow></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>7</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>3</mn></mrow></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>𝟐</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd></mtr></mtable><mo>]</mo></mrow><mo>⁢</mo><mtable rowspacing="0pt"><mtr><mtd columnalign="left"><mrow><msub><mi>E</mi><mn>1</mn></msub><mo>←</mo><mrow><msub><mi>E</mi><mn>1</mn></msub><mo>-</mo><mrow><mrow><mo stretchy="false">(</mo><mrow><msub><mi>e</mi><mn>13</mn></msub><mo>/</mo><msub><mi>e</mi><mn>33</mn></msub></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><msub><mi>E</mi><mn>3</mn></msub></mrow></mrow></mrow></mtd></mtr><mtr><mtd columnalign="left"><mrow><msub><mi>E</mi><mn>2</mn></msub><mo>←</mo><mrow><msub><mi>E</mi><mn>2</mn></msub><mo>-</mo><mrow><mrow><mo stretchy="false">(</mo><mrow><msub><mi>e</mi><mn>23</mn></msub><mo>/</mo><msub><mi>e</mi><mn>33</mn></msub></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><msub><mi>E</mi><mn>3</mn></msub></mrow></mrow></mrow></mtd></mtr><mtr><mtd></mtd></mtr></mtable></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.105)</span></td>
+</tr></tbody>
+<tbody id="Ch3.E114"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E114.m1" class="ltx_Math" alttext="\displaystyle\sim\begin{bmatrix}\hidden@noalign{}\hfil\textstyle-2&amp;-3&amp;0&amp;0&amp;4\\
+\hidden@noalign{}\hfil\textstyle 0&amp;\boldsymbol{3}&amp;0&amp;0&amp;-3\\
+\hidden@noalign{}\hfil\textstyle 0&amp;0&amp;2&amp;0&amp;0\\
+\hidden@noalign{}\hfil\textstyle 0&amp;0&amp;0&amp;3&amp;3\end{bmatrix}\begin{array}[]{l}%
+\hidden@noalign{}E_{1}\leftarrow E_{1}-(e_{12}/e_{22})E_{2}\\
+\\
+\\
+\\
+\end{array}" display="inline"><mrow><mi></mi><mo>∼</mo><mrow><mrow><mo>[</mo><mtable columnspacing="5pt" rowspacing="0pt"><mtr><mtd columnalign="center"><mrow><mo>-</mo><mn>2</mn></mrow></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>3</mn></mrow></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>4</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>𝟑</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>3</mn></mrow></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>2</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd></mtr></mtable><mo>]</mo></mrow><mo>⁢</mo><mtable rowspacing="0pt"><mtr><mtd columnalign="left"><mrow><msub><mi>E</mi><mn>1</mn></msub><mo>←</mo><mrow><msub><mi>E</mi><mn>1</mn></msub><mo>-</mo><mrow><mrow><mo stretchy="false">(</mo><mrow><msub><mi>e</mi><mn>12</mn></msub><mo>/</mo><msub><mi>e</mi><mn>22</mn></msub></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><msub><mi>E</mi><mn>2</mn></msub></mrow></mrow></mrow></mtd></mtr><mtr><mtd></mtd></mtr><mtr><mtd></mtd></mtr></mtable></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.114)</span></td>
+</tr></tbody>
+<tbody id="Ch3.E123"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E123.m1" class="ltx_Math" alttext="\displaystyle\sim\begin{bmatrix}\hidden@noalign{}\hfil\textstyle\boldsymbol{-2%
+}&amp;0&amp;0&amp;0&amp;4\\
+\hidden@noalign{}\hfil\textstyle 0&amp;\boldsymbol{3}&amp;0&amp;0&amp;-3\\
+\hidden@noalign{}\hfil\textstyle 0&amp;0&amp;\boldsymbol{2}&amp;0&amp;0\\
+\hidden@noalign{}\hfil\textstyle 0&amp;0&amp;0&amp;\boldsymbol{3}&amp;3\end{bmatrix}\begin{%
+array}[]{l}\hidden@noalign{}E_{1}\leftarrow E_{1}/e_{11}\\
+\hidden@noalign{}E_{2}\leftarrow E_{2}/e_{22}\\
+\hidden@noalign{}E_{3}\leftarrow E_{3}/e_{33}\\
+\hidden@noalign{}E_{4}\leftarrow E_{4}/e_{44}\\
+\end{array}" display="inline"><mrow><mi></mi><mo>∼</mo><mrow><mrow><mo>[</mo><mtable columnspacing="5pt" rowspacing="0pt"><mtr><mtd columnalign="center"><mrow><mo mathvariant="bold">-</mo><mn>𝟐</mn></mrow></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>4</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>𝟑</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>3</mn></mrow></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>𝟐</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>𝟑</mn></mtd><mtd columnalign="center"><mn>3</mn></mtd></mtr></mtable><mo>]</mo></mrow><mo>⁢</mo><mtable rowspacing="0pt"><mtr><mtd columnalign="left"><mrow><msub><mi>E</mi><mn>1</mn></msub><mo>←</mo><mrow><msub><mi>E</mi><mn>1</mn></msub><mo>/</mo><msub><mi>e</mi><mn>11</mn></msub></mrow></mrow></mtd></mtr><mtr><mtd columnalign="left"><mrow><msub><mi>E</mi><mn>2</mn></msub><mo>←</mo><mrow><msub><mi>E</mi><mn>2</mn></msub><mo>/</mo><msub><mi>e</mi><mn>22</mn></msub></mrow></mrow></mtd></mtr><mtr><mtd columnalign="left"><mrow><msub><mi>E</mi><mn>3</mn></msub><mo>←</mo><mrow><msub><mi>E</mi><mn>3</mn></msub><mo>/</mo><msub><mi>e</mi><mn>33</mn></msub></mrow></mrow></mtd></mtr><mtr><mtd columnalign="left"><mrow><msub><mi>E</mi><mn>4</mn></msub><mo>←</mo><mrow><msub><mi>E</mi><mn>4</mn></msub><mo>/</mo><msub><mi>e</mi><mn>44</mn></msub></mrow></mrow></mtd></mtr></mtable></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.123)</span></td>
+</tr></tbody>
+<tbody id="Ch3.E128"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_eqn_cell"></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E128.m1" class="ltx_Math" alttext="\displaystyle\sim\begin{bmatrix}\hidden@noalign{}\hfil\textstyle 1&amp;0&amp;0&amp;0&amp;-2\\
+\hidden@noalign{}\hfil\textstyle 0&amp;1&amp;0&amp;0&amp;-1\\
+\hidden@noalign{}\hfil\textstyle 0&amp;0&amp;1&amp;0&amp;0\\
+\hidden@noalign{}\hfil\textstyle 0&amp;0&amp;0&amp;1&amp;1\end{bmatrix}" display="inline"><mrow><mi></mi><mo>∼</mo><mrow><mo>[</mo><mtable columnspacing="5pt" rowspacing="0pt"><mtr><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>2</mn></mrow></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>1</mn></mrow></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mn>1</mn></mtd></mtr></mtable><mo>]</mo></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.128)</span></td>
+</tr></tbody>
+</table>
+<p class="ltx_p">Esta última matriz é chamada de matriz escalonada reduzida (por linhas) e a solução do sistema encontra-se em sua última coluna, i.e. <math id="Thmex2.p1.m1" class="ltx_Math" alttext="\boldsymbol{x}=(-2,-1,0,1)" display="inline"><mrow><mi>𝒙</mi><mo>=</mo><mrow><mo stretchy="false">(</mo><mrow><mo>-</mo><mn>2</mn></mrow><mo>,</mo><mrow><mo>-</mo><mn>1,0,1</mn></mrow><mo stretchy="false">)</mo></mrow></mrow></math>.</p>
+</div>
+<div id="Thmex2.p2" class="ltx_para">
+<p class="ltx_p">No <code class="ltx_verbatim ltx_font_typewriter">GNU Octave</code>, podemos fazer as computações acima com o seguinte <a href="https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/ex_egauss_reduzida/ex_egauss_reduzida.m" title="" class="ltx_ref ltx_href">código</a>:</p>
+<pre class="ltx_verbatim ltx_font_typewriter">A = [-2 -3 2 3; ...
+     -4 -6 6 6; ...
+     -2 0 4 6; ...
+     4 3 -8 -6]
+b = [10 20 10 -17]’
+E = [A b]
+n=size(E,1)
+
+%para baixo
+for i=1:n-1
+  if (abs(E(i,i)) &lt; 1e-15)
+    for j=i+1:n
+      if (abs(E(j,i)) &gt; 1e-15)
+        break
+      end
+    endfor
+    aux=E(i,:);
+    E(i,:)=E(j,:);
+    E(j,:)=aux;
+  end
+  E(i+1:n,:) -= E(i+1:n,i)/E(i,i)*E(i,:);
+endfor
+E
+
+%para cima
+for i=n:-1:2
+  E(i,:) = E(i,:)/E(i,i);
+  E(1:i-1,:) -= E(1:i-1,i)*E(i,:);
+endfor
+E(1,:) = E(1,:)/E(1,1)
+</pre>
+</div>
+</div>
+<section id="SSx1" class="ltx_subsection">
+<h2 class="ltx_title ltx_title_subsection">Exercícios <small><a href="../contato.html"><i class="fas fa-envelope"></i></a></small></h2>
+
+<div id="exer:egauss_reduzida" class="ltx_theorem ltx_theorem_exer">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Exercício 3.1.1</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmexer1.p1" class="ltx_para">
+<p class="ltx_p">Use o método de eliminação gaussiana para obter a matriz escalonada reduzida do seguinte sistema</p>
+<table id="Ch13.S3.EGx47" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="Ch3.E129"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch3.E129.m1" class="ltx_Math" alttext="\displaystyle-3x_{1}+2x_{2}-5x_{4}+x_{5}" display="inline"><mrow><mrow><mrow><mrow><mo>-</mo><mrow><mn>3</mn><mo>⁢</mo><msub><mi>x</mi><mn>1</mn></msub></mrow></mrow><mo>+</mo><mrow><mn>2</mn><mo>⁢</mo><msub><mi>x</mi><mn>2</mn></msub></mrow></mrow><mo>-</mo><mrow><mn>5</mn><mo>⁢</mo><msub><mi>x</mi><mn>4</mn></msub></mrow></mrow><mo>+</mo><msub><mi>x</mi><mn>5</mn></msub></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E129.m2" class="ltx_Math" alttext="\displaystyle=-23" display="inline"><mrow><mi></mi><mo>=</mo><mrow><mo>-</mo><mn>23</mn></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.129)</span></td>
+</tr></tbody>
+<tbody id="Ch3.E130"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch3.E130.m1" class="ltx_Math" alttext="\displaystyle-x_{2}-3x_{3}" display="inline"><mrow><mrow><mo>-</mo><msub><mi>x</mi><mn>2</mn></msub></mrow><mo>-</mo><mrow><mn>3</mn><mo>⁢</mo><msub><mi>x</mi><mn>3</mn></msub></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E130.m2" class="ltx_Math" alttext="\displaystyle=9" display="inline"><mrow><mi></mi><mo>=</mo><mn>9</mn></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.130)</span></td>
+</tr></tbody>
+<tbody id="Ch3.E131"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch3.E131.m1" class="ltx_Math" alttext="\displaystyle-2x_{1}-x_{2}+x_{3}" display="inline"><mrow><mrow><mrow><mo>-</mo><mrow><mn>2</mn><mo>⁢</mo><msub><mi>x</mi><mn>1</mn></msub></mrow></mrow><mo>-</mo><msub><mi>x</mi><mn>2</mn></msub></mrow><mo>+</mo><msub><mi>x</mi><mn>3</mn></msub></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E131.m2" class="ltx_Math" alttext="\displaystyle=-1" display="inline"><mrow><mi></mi><mo>=</mo><mrow><mo>-</mo><mn>1</mn></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.131)</span></td>
+</tr></tbody>
+<tbody id="Ch3.E132"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch3.E132.m1" class="ltx_Math" alttext="\displaystyle 2x_{2}-4x_{3}+3x_{4}" display="inline"><mrow><mrow><mrow><mn>2</mn><mo>⁢</mo><msub><mi>x</mi><mn>2</mn></msub></mrow><mo>-</mo><mrow><mn>4</mn><mo>⁢</mo><msub><mi>x</mi><mn>3</mn></msub></mrow></mrow><mo>+</mo><mrow><mn>3</mn><mo>⁢</mo><msub><mi>x</mi><mn>4</mn></msub></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E132.m2" class="ltx_Math" alttext="\displaystyle=8" display="inline"><mrow><mi></mi><mo>=</mo><mn>8</mn></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.132)</span></td>
+</tr></tbody>
+<tbody id="Ch3.E133"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch3.E133.m1" class="ltx_Math" alttext="\displaystyle x_{1}-3x_{3}-x_{5}" display="inline"><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>-</mo><mrow><mn>3</mn><mo>⁢</mo><msub><mi>x</mi><mn>3</mn></msub></mrow><mo>-</mo><msub><mi>x</mi><mn>5</mn></msub></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E133.m2" class="ltx_Math" alttext="\displaystyle=11" display="inline"><mrow><mi></mi><mo>=</mo><mn>11</mn></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.133)</span></td>
+</tr></tbody>
+</table>
+</div>
+</div>
+<div class="d-grid gap-2 d-md-flex justify-content-md-end"><button class="btn btn-warning" type="button" data-bs-toggle="collapse" data-bs-target="#Thmrespx29">Resposta</button></div><div class="collapse" id="Thmrespx29">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Resp</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmrespx29.p1" class="ltx_para">
+<p class="ltx_p"><a href="https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/exer_egauss_reduzida/exer_egauss_reduzida.m" title="" class="ltx_ref ltx_href">Código.</a></p>
+<table id="Ch3.Ex1" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.Ex1.m1" class="ltx_Math" alttext="\begin{bmatrix}1&amp;0&amp;0&amp;0&amp;0&amp;1\\
+0&amp;1&amp;0&amp;0&amp;0&amp;-3\\
+0&amp;0&amp;1&amp;0&amp;0&amp;-2\\
+0&amp;0&amp;0&amp;1&amp;0&amp;2\\
+0&amp;0&amp;0&amp;0&amp;1&amp;-4\\
+\end{bmatrix}" display="block"><mrow><mo>[</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>1</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>3</mn></mrow></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>2</mn></mrow></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>2</mn></mtd></mtr><mtr><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>0</mn></mtd><mtd columnalign="center"><mn>1</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>4</mn></mrow></mtd></mtr></mtable><mo>]</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr>
+</table>
+</div>
+</div>
+<div id="exer:egauss_arredondamento" class="ltx_theorem ltx_theorem_exer">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Exercício 3.1.2</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmexer2.p1" class="ltx_para">
+<p class="ltx_p">Use o método de eliminação gaussiana para obter a matriz escalonada reduzida do seguinte sistema</p>
+<table id="Ch13.S3.EGx48" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="Ch3.E134"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch3.E134.m1" class="ltx_Math" alttext="\displaystyle-10^{-12}x_{1}+20x_{2}-3x_{3}" display="inline"><mrow><mrow><mrow><mo>-</mo><mrow><msup><mn>10</mn><mrow><mo>-</mo><mn>12</mn></mrow></msup><mo>⁢</mo><msub><mi>x</mi><mn>1</mn></msub></mrow></mrow><mo>+</mo><mrow><mn>20</mn><mo>⁢</mo><msub><mi>x</mi><mn>2</mn></msub></mrow></mrow><mo>-</mo><mrow><mn>3</mn><mo>⁢</mo><msub><mi>x</mi><mn>3</mn></msub></mrow></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E134.m2" class="ltx_Math" alttext="\displaystyle=-1" display="inline"><mrow><mi></mi><mo>=</mo><mrow><mo>-</mo><mn>1</mn></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.134)</span></td>
+</tr></tbody>
+<tbody id="Ch3.E135"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch3.E135.m1" class="ltx_Math" alttext="\displaystyle 2,001x_{1}+10^{-5}x_{2}-x_{3}" display="inline"><mrow><mrow><mrow><mn>2,001</mn><mo>⁢</mo><msub><mi>x</mi><mn>1</mn></msub></mrow><mo>+</mo><mrow><msup><mn>10</mn><mrow><mo>-</mo><mn>5</mn></mrow></msup><mo>⁢</mo><msub><mi>x</mi><mn>2</mn></msub></mrow></mrow><mo>-</mo><msub><mi>x</mi><mn>3</mn></msub></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E135.m2" class="ltx_Math" alttext="\displaystyle=-2" display="inline"><mrow><mi></mi><mo>=</mo><mrow><mo>-</mo><mn>2</mn></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.135)</span></td>
+</tr></tbody>
+<tbody id="Ch3.E136"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch3.E136.m1" class="ltx_Math" alttext="\displaystyle 4x_{1}-2x_{2}+x_{3}" display="inline"><mrow><mrow><mrow><mn>4</mn><mo>⁢</mo><msub><mi>x</mi><mn>1</mn></msub></mrow><mo>-</mo><mrow><mn>2</mn><mo>⁢</mo><msub><mi>x</mi><mn>2</mn></msub></mrow></mrow><mo>+</mo><msub><mi>x</mi><mn>3</mn></msub></mrow></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch3.E136.m2" class="ltx_Math" alttext="\displaystyle=0,1" display="inline"><mrow><mi></mi><mo>=</mo><mn>0,1</mn></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.136)</span></td>
+</tr></tbody>
+</table>
+</div>
+</div>
+<div class="d-grid gap-2 d-md-flex justify-content-md-end"><button class="btn btn-warning" type="button" data-bs-toggle="collapse" data-bs-target="#Thmrespx30">Resposta</button></div><div class="collapse" id="Thmrespx30">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Resp</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmrespx30.p1" class="ltx_para">
+<p class="ltx_p"><a href="https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_direto/dados/exer_egauss_arredondamento/exer_egauss_arredondamento.m" title="" class="ltx_ref ltx_href">Código.</a></p>
+<table id="Ch3.Ex2" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch3.Ex2.m1" class="ltx_Math" alttext="\begin{bmatrix}1.0000&amp;0.0000&amp;0.0000&amp;-3.9435\mathrm{e}\!-\!1\\
+-0.0000&amp;1.0000&amp;-0.0000&amp;-2.3179\mathrm{e}\!-\!1\\
+0.0000&amp;0.0000&amp;1.0000&amp;1.2120\mathrm{e}\!+\!0\end{bmatrix}" display="block"><mrow><mo>[</mo><mtable columnspacing="5pt" displaystyle="true" rowspacing="0pt"><mtr><mtd columnalign="center"><mn>1.0000</mn></mtd><mtd columnalign="center"><mn>0.0000</mn></mtd><mtd columnalign="center"><mn>0.0000</mn></mtd><mtd columnalign="center"><mrow><mrow><mo>-</mo><mrow><mn>3.9435</mn><mo>⁢</mo><mpadded width="-1.7pt"><mi mathvariant="normal">e</mi></mpadded></mrow></mrow><mo rspace="0.8pt">-</mo><mn>1</mn></mrow></mtd></mtr><mtr><mtd columnalign="center"><mrow><mo>-</mo><mn>0.0000</mn></mrow></mtd><mtd columnalign="center"><mn>1.0000</mn></mtd><mtd columnalign="center"><mrow><mo>-</mo><mn>0.0000</mn></mrow></mtd><mtd columnalign="center"><mrow><mrow><mo>-</mo><mrow><mn>2.3179</mn><mo>⁢</mo><mpadded width="-1.7pt"><mi mathvariant="normal">e</mi></mpadded></mrow></mrow><mo rspace="0.8pt">-</mo><mn>1</mn></mrow></mtd></mtr><mtr><mtd columnalign="center"><mn>0.0000</mn></mtd><mtd columnalign="center"><mn>0.0000</mn></mtd><mtd columnalign="center"><mn>1.0000</mn></mtd><mtd columnalign="center"><mrow><mrow><mn>1.2120</mn><mo>⁢</mo><mpadded width="-1.7pt"><mi mathvariant="normal">e</mi></mpadded></mrow><mo rspace="0.8pt">+</mo><mn>0</mn></mrow></mtd></mtr></mtable><mo>]</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr>
+</table>
+</div>
+</div>
+</section>
+</section>
+</div>
+<footer class="ltx_page_footer">
+<div>
+<a href="cap_sl_direto.html" title="Capítulo 3 Métodos diretos para sistemas lineares ‣ Matemática numérica" class="ltx_ref" rel="prev"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">3 </span>Métodos diretos para sistemas lineares</span></a><a href="bib.html" title="Referências ‣ Matemática numérica" class="ltx_ref" rel="bibliography"><span class="ltx_text ltx_ref_title">Referências</span></a><a href="cap_sl_direto_sec_norma_numcond.html" title="3.2 Norma e número de condicionamento ‣ Capítulo 3 Métodos diretos para sistemas lineares ‣ Matemática numérica" class="ltx_ref" rel="next"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">3.2 </span>Norma e número de condicionamento</span></a>
+</div>
+<div class="ltx_page_logo"><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />O texto acima está sob Licença <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR">Creative Commons Atribuição-CompartilhaIgual 4.0 Internacional</a>. Generated  on Fri Sep  1 18:48:00 2023 by <a href="http://dlmf.nist.gov/LaTeXML/">LaTeXML <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg==" alt="[LOGO]"></a>
+</div></footer>
+</div>
+<div class="card" id="rodape" style="">
+  <div class="card-footer text-left">
+    <a href="../contato.html"><i class="fas fa-envelope"></i></a> | <a href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i></a> | <a href="https://archive.org/details/notas-de-aula"><i class="fas fa-building-columns"></i></a> | <a href="https://www.youtube.com/channel/UCwutHKlKLgVj6IkFSUFBqoA"><i class="fab fa-youtube"></i></a> | <a href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i></a>
+  </div> <!-- div class="card" -->
+</div> <!-- div class="card-footer text-right" -->
+</div> <!-- div class=col-xxl-10 --></div> <!-- div class=row --></div> <!-- div class=container-fluid --></body>
+</html>

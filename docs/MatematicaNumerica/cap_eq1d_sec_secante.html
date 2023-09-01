@@ -1,0 +1,453 @@
+<!DOCTYPE html><html lang="pt">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>2.6 Método da secante‣ Capítulo 2 Equação com uma incógnita ‣ Matemática numérica</title>
+<!--Generated on Fri Sep  1 18:48:00 2023 by LaTeXML (version 0.8.6) http://dlmf.nist.gov/LaTeXML/.-->
+<!--Document created on 1 de setembro de 2023.-->
+
+<link rel="stylesheet" href="LaTeXML.css" type="text/css">
+<link rel="stylesheet" href="ltx-book.css" type="text/css">
+<link rel="stylesheet" href="ltx-listings.css" type="text/css">
+<link rel="stylesheet" href="ltx-ulem.css" type="text/css">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="../main.css" type="text/css">
+<link rel="stylesheet" href="./fonts/cmun-serif.css" type="text/css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=MML_SVG" type="text/javascript"></script>
+<link rel="up" href="cap_eq1d.html" title="Capítulo 2 Equação com uma incógnita ‣ Matemática numérica">
+<link rel="up up" href="main.html" title="Matemática numérica">
+<link rel="start" href="main.html" title="Matemática numérica">
+<link rel="prev" href="cap_mef1d_sec_newton.html" title="2.5 Método de Newton ‣ Capítulo 2 Equação com uma incógnita ‣ Matemática numérica">
+<link rel="next" href="cap_eq1d_sec_raizes.html" title="2.7 Raízes de polinômios ‣ Capítulo 2 Equação com uma incógnita ‣ Matemática numérica">
+<link rel="section" href="cap_eq1d_sec_bissec.html" title="2.1 Método da bisseção ‣ Capítulo 2 Equação com uma incógnita ‣ Matemática numérica">
+<link rel="section" href="cap_eq1d_sec_falsapos.html" title="2.2 Método da falsa posição ‣ Capítulo 2 Equação com uma incógnita ‣ Matemática numérica">
+<link rel="section" href="cap_eq1d_pfixo.html" title="2.3 Iteração de ponto fixo ‣ Capítulo 2 Equação com uma incógnita ‣ Matemática numérica">
+<link rel="section" href="cap_eq1d_sec_Steffensen.html" title="2.4 Método de Steffensen ‣ Capítulo 2 Equação com uma incógnita ‣ Matemática numérica">
+<link rel="section" href="cap_mef1d_sec_newton.html" title="2.5 Método de Newton ‣ Capítulo 2 Equação com uma incógnita ‣ Matemática numérica">
+<link rel="section" href="cap_eq1d_sec_raizes.html" title="2.7 Raízes de polinômios ‣ Capítulo 2 Equação com uma incógnita ‣ Matemática numérica">
+<link rel="chapter" href="licenca.html" title="Licença ‣ Matemática numérica">
+<link rel="chapter" href="prefacio.html" title="Prefácio ‣ Matemática numérica">
+<link rel="chapter" href="cap_aritm.html" title="Capítulo 1 Aritmética de Máquina ‣ Matemática numérica">
+<link rel="chapter" href="cap_eq1d.html" title="Capítulo 2 Equação com uma incógnita ‣ Matemática numérica">
+<link rel="chapter" href="cap_sl_direto.html" title="Capítulo 3 Métodos diretos para sistemas lineares ‣ Matemática numérica">
+<link rel="chapter" href="cap_sl_iter.html" title="Capítulo 4 Métodos iterativos para sistemas lineares ‣ Matemática numérica">
+<link rel="chapter" href="cap_snl.html" title="Capítulo 5 Sistema de equações não lineares ‣ Matemática numérica">
+<link rel="chapter" href="cap_interp.html" title="Capítulo 6 Interpolação ‣ Matemática numérica">
+<link rel="chapter" href="cap_ajuste.html" title="Capítulo 7 Aproximação por mínimos quadrados ‣ Matemática numérica">
+<link rel="chapter" href="cap_deriv.html" title="Capítulo 8 Derivação ‣ Matemática numérica">
+<link rel="chapter" href="cap_extrapl.html" title="Capítulo 9 Técnicas de extrapolação ‣ Matemática numérica">
+<link rel="chapter" href="cap_integr.html" title="Capítulo 10 Integração ‣ Matemática numérica">
+<link rel="chapter" href="cap_pvi.html" title="Capítulo 11 Problema de valor inicial ‣ Matemática numérica">
+<link rel="chapter" href="cap_pvc.html" title="Capítulo 12 Problema de valor de contorno ‣ Matemática numérica">
+<link rel="chapter" href="cap_edp.html" title="Capítulo 13 Equações Diferenciais Parciais ‣ Matemática numérica">
+<link rel="bibliography" href="bib.html" title="Referências ‣ Matemática numérica">
+<meta name="author" content="Pedro H A Konzen"/><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous"><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script><link href="../fontawesome/css/all.min.css" rel="stylesheet"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"><link rel="stylesheet" href="goodies.css" type="text/css"><!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WZM0C3FQ62"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-WZM0C3FQ62');
+</script>
+</head>
+<body><div class="container-fluid mb-0"><div class="row"><div class="col-xxl-1"></div><div class="col-xxl-10"><div id="colabAlert" class="alert alert-warning alert-dismissible sticky-top m-0 d-flex justify-content-between" role="alert" style="">
+  <!-- <p class="m-0 d-flex justify-content-between"> -->
+    <span><a href="../contato.html"><i class="fas fa-envelope"></i></a>  <strong> Colabore com <a href="../contato.html" class="link-primary">sugestões</a> ou avisos de <a href="../contato.html">erros</a>!</strong></span>  <span class="material-symbols-outlined m-0">screen_rotation</span>
+  <span><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></span>
+  <!-- </p> -->
+</div>
+<div class="container-fluid d-flex justify-content-center mt-2 mb-2 fixed-bottom">
+  <div id="generalAlert" class="alert alert-warning alert-dismissible" role="alert" style="max-width: 300rem;">
+    Ao navegar por este
+    <i>site
+    </i>, você concorda com a
+    <a href="https://notaspedrok.com.br/notas/politica.html">Política de Uso de Dados
+    </a>.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+    </button>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+      $("#generalAlert").hide();
+      if (document.referrer.lastIndexOf("notaspedrok.com.br") == -1) {
+          $("#generalAlert").fadeIn(1000);
+      }
+  });   
+</script>
+<!-- begin: navbar --><nav class="navbar navbar-dark bg-primary mb-1"><div class="container-fluid"><a class="navbar-brand" href="main.html">Notas de Aula<br/><small>Matemática Numérica</small></a><button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button><div class="collapse navbar-collapse" id="navbarNav"><ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="../index.html"><i class="fas fa-home"></i> Início</a></li><li class="nav-item"><a class="nav-link active" href="main.html">Sumário</a></li><li class="nav-item"><a class="nav-link" href="main.pdf"><i class="fas fa-download" aria-hidden="true"></i> PDF</a></li><li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">Contato</a><div class="dropdown-menu" aria-labelledby="navbarDropdown"><a class="dropdown-item" href="../contato.html"><i class="fas fa-envelope"></i> Mensagem</a><a class="dropdown-item" href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i> notas.pedrok</a></div><!-- div class="dropdown-menu" aria-labelledby="navbarDropdown" --></li> <!-- li class="nav-item dropdown" --><li class="nav-item"><a class="nav-link" href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i> Repo</a></li><li class="nav-item"><a class="nav-link" href="../politica.html">Política de dados</a></li></ul></div><!-- /.navbar-collapse --></div><!-- /.container-fluid --></nav><!-- end: navbar --><p class="text-left mb-0"><a href="./contato.html"><i class="fas fa-envelope"></i></a> | <a href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i></a> | <a href="https://archive.org/details/notas-de-aula"><i class="fas fa-building-columns"></i></a> | <a href="https://www.youtube.com/channel/UCwutHKlKLgVj6IkFSUFBqoA"><i class="fab fa-youtube"></i></a> | <a href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i></a></p>
+<div class="ltx_page_main">
+<header class="ltx_page_header">
+<div>
+<a href="cap_eq1d.html" title="Capítulo 2 Equação com uma incógnita ‣ Matemática numérica" class="ltx_ref" rel="up"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">2 </span>Equação com uma incógnita</span></a><a href="cap_mef1d_sec_newton.html" title="2.5 Método de Newton ‣ Capítulo 2 Equação com uma incógnita ‣ Matemática numérica" class="ltx_ref" rel="prev"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">2.5 </span>Método de Newton</span></a><a href="cap_eq1d_sec_raizes.html" title="2.7 Raízes de polinômios ‣ Capítulo 2 Equação com uma incógnita ‣ Matemática numérica" class="ltx_ref" rel="next"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">2.7 </span>Raízes de polinômios</span></a>
+</div></header>
+<div class="ltx_page_content">
+<section class="ltx_section ltx_authors_1line" lang="pt">
+<h1 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">2.6 </span>Método da secante <small><a href="../contato.html"><i class="fas fa-envelope"></i></a></small></h1>
+
+<div id="p1" class="ltx_para">
+<p class="ltx_p">O método da secante é uma variação do método de Newton. Observemos que para duas aproximações <math id="p1.m1" class="ltx_Math" alttext="x^{(k)}" display="inline"><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup></math> e <math id="p1.m2" class="ltx_Math" alttext="x^{(k-1)}" display="inline"><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mrow><mi>k</mi><mo>-</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup></math> suficientemente próximas, temos<span id="Ch2.footnote10" class="ltx_note ltx_role_footnote"><sup class="ltx_note_mark">10</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">10</sup>
+              <span class="ltx_tag ltx_tag_note">10</span>
+              
+              
+              
+            Razão fundamental do Cálculo.</span></span></span></p>
+<table id="Ch2.E99" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E99.m1" class="ltx_Math" alttext="f^{\prime}(x^{(k)})\approx\frac{f(x^{(k)})-f(x^{(k-1)})}{x^{(k)}-x^{(k-1)}}." display="block"><mrow><mrow><mrow><msup><mi>f</mi><mo>′</mo></msup><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow><mo>≈</mo><mfrac><mrow><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow><mo>-</mo><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mrow><mi>k</mi><mo>-</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow></mrow><mrow><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo>-</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mrow><mi>k</mi><mo>-</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup></mrow></mfrac></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.99)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Assim sendo, substituindo esta aproximação em (<a href="cap_mef1d_sec_newton.html#eq:Newton_iteracao" title="(2.77) ‣ 2.5 Método de Newton ‣ Capítulo 2 Equação com uma incógnita ‣ Matemática numérica" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.77</span></a>), obtemos as iterações do método da secante:</p>
+<table id="Ch13.S3.EGx36" class="ltx_equationgroup ltx_eqn_align ltx_eqn_table">
+
+<tbody id="Ch2.E100"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch2.E100.m1" class="ltx_Math" alttext="\displaystyle x^{(1)}" display="inline"><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msup></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch2.E100.m2" class="ltx_Math" alttext="\displaystyle,x^{(2)}=\text{aprox. iniciais}," display="inline"><mrow><mo>,</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><mtext>aprox. iniciais</mtext><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.100)</span></td>
+</tr></tbody>
+<tbody id="Ch2.E101"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="Ch2.E101.m1" class="ltx_Math" alttext="\displaystyle x^{(k+1)}" display="inline"><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mrow><mi>k</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="Ch2.E101.m2" class="ltx_Math" alttext="\displaystyle=x^{(k)}-f(x^{(k)})\frac{x^{(k)}-x^{(k-1)}}{f(x^{(k)})-f(x^{(k-1)%
+})}," display="inline"><mrow><mrow><mi></mi><mo>=</mo><mrow><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo>-</mo><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mstyle displaystyle="true"><mfrac><mrow><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo>-</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mrow><mi>k</mi><mo>-</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup></mrow><mrow><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow><mo>-</mo><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mrow><mi>k</mi><mo>-</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow></mrow></mfrac></mstyle></mrow></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.101)</span></td>
+</tr></tbody>
+</table>
+<p class="ltx_p">para <math id="p1.m3" class="ltx_Math" alttext="k=2,3,\ldots" display="inline"><mrow><mi>k</mi><mo>=</mo><mrow><mn>2,3</mn><mo>,</mo><mi mathvariant="normal">…</mi></mrow></mrow></math>.</p>
+</div>
+<div id="ex:secante_exec" class="ltx_theorem ltx_theorem_ex">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Exemplo 2.6.1</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmex1.p1" class="ltx_para">
+<p class="ltx_p">Consideremos o problema de encontrar o zero da função</p>
+<table id="Ch2.E102" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E102.m1" class="ltx_Math" alttext="f(x)=\operatorname{sen}^{2}\left(x+\frac{\pi}{4}\right)-x^{3}+\frac{\pi}{4}x^{%
+2}+\frac{5\pi^{2}}{16}x+\frac{3\pi^{3}}{64}." display="block"><mrow><mrow><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mrow><msup><mi>sen</mi><mn>2</mn></msup><mo>⁡</mo><mrow><mo>(</mo><mrow><mi>x</mi><mo>+</mo><mfrac><mi>π</mi><mn>4</mn></mfrac></mrow><mo>)</mo></mrow></mrow><mo>-</mo><msup><mi>x</mi><mn>3</mn></msup></mrow><mo>+</mo><mrow><mfrac><mi>π</mi><mn>4</mn></mfrac><mo>⁢</mo><msup><mi>x</mi><mn>2</mn></msup></mrow><mo>+</mo><mrow><mfrac><mrow><mn>5</mn><mo>⁢</mo><msup><mi>π</mi><mn>2</mn></msup></mrow><mn>16</mn></mfrac><mo>⁢</mo><mi>x</mi></mrow><mo>+</mo><mfrac><mrow><mn>3</mn><mo>⁢</mo><msup><mi>π</mi><mn>3</mn></msup></mrow><mn>64</mn></mfrac></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.102)</span></td>
+</tr>
+</table>
+<p class="ltx_p">no intervalo <math id="Thmex1.p1.m1" class="ltx_Math" alttext="[2,3]" display="inline"><mrow><mo stretchy="false">[</mo><mn>2,3</mn><mo stretchy="false">]</mo></mrow></math>. Então, fazendo as iterações do método da secante com aproximações iniciais <math id="Thmex1.p1.m2" class="ltx_Math" alttext="x^{(1)}=2,6" display="inline"><mrow><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><mn>2,6</mn></mrow></math> e <math id="Thmex1.p1.m3" class="ltx_Math" alttext="x^{(2)}-2,5" display="inline"><mrow><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msup><mo>-</mo><mn>2,5</mn></mrow></math>, obtemos os resultados apresentados na Tabela <a href="#tab:ex_secante_exec" title="Tabela 2.11 ‣ Exemplo 2.6.1. ‣ 2.6 Método da secante ‣ Capítulo 2 Equação com uma incógnita ‣ Matemática numérica" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.11</span></a>.</p>
+</div>
+<figure id="tab:ex_secante_exec" class="ltx_table">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_table"><span class="ltx_text" style="font-size:90%;">Tabela 2.11</span>: </span><span class="ltx_text" style="font-size:90%;">Resultados referentes ao Exemplo <a href="#ex:secante_exec" title="Exemplo 2.6.1. ‣ 2.6 Método da secante ‣ Capítulo 2 Equação com uma incógnita ‣ Matemática numérica" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.6.1</span></a>.</span></figcaption>
+<table class="ltx_tabular ltx_centering ltx_guessed_headers ltx_align_middle">
+<thead class="ltx_thead">
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_right ltx_th ltx_th_column ltx_th_row ltx_border_r"><math id="Ch2.T11.m1" class="ltx_Math" alttext="k" display="inline"><mi>k</mi></math></th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_column"><math id="Ch2.T11.m2" class="ltx_Math" alttext="x^{(k-1)}" display="inline"><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mrow><mi>k</mi><mo>-</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup></math></th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_column"><math id="Ch2.T11.m3" class="ltx_Math" alttext="x^{(k)}" display="inline"><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup></math></th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_column"><math id="Ch2.T11.m4" class="ltx_Math" alttext="|x^{(k)}-x^{(k-1)}|" display="inline"><mrow><mo stretchy="false">|</mo><mrow><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo>-</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mrow><mi>k</mi><mo>-</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup></mrow><mo stretchy="false">|</mo></mrow></math></th>
+</tr>
+</thead>
+<tbody class="ltx_tbody">
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_right ltx_th ltx_th_row ltx_border_r ltx_border_t">2</th>
+<td class="ltx_td ltx_align_center ltx_border_t"><math id="Ch2.T11.m5" class="ltx_Math" alttext="2,6000" display="inline"><mn>2,6000</mn></math></td>
+<td class="ltx_td ltx_align_center ltx_border_t"><math id="Ch2.T11.m6" class="ltx_Math" alttext="2,5000" display="inline"><mn>2,5000</mn></math></td>
+<td class="ltx_td ltx_align_center ltx_border_t">-x-</td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_right ltx_th ltx_th_row ltx_border_r">3</th>
+<td class="ltx_td ltx_align_center"><math id="Ch2.T11.m7" class="ltx_Math" alttext="2,5000" display="inline"><mn>2,5000</mn></math></td>
+<td class="ltx_td ltx_align_center"><math id="Ch2.T11.m8" class="ltx_Math" alttext="2.3728" display="inline"><mn>2.3728</mn></math></td>
+<td class="ltx_td ltx_align_center"><math id="Ch2.T11.m9" class="ltx_Math" alttext="1,3\mathrm{e}\!-\!1" display="inline"><mrow><mrow><mn>1,3</mn><mo>⁢</mo><mpadded width="-1.7pt"><mi mathvariant="normal">e</mi></mpadded></mrow><mo rspace="0.8pt">-</mo><mn>1</mn></mrow></math></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_right ltx_th ltx_th_row ltx_border_r">4</th>
+<td class="ltx_td ltx_align_center"><math id="Ch2.T11.m10" class="ltx_Math" alttext="2,3728" display="inline"><mn>2,3728</mn></math></td>
+<td class="ltx_td ltx_align_center"><math id="Ch2.T11.m11" class="ltx_Math" alttext="2,3574" display="inline"><mn>2,3574</mn></math></td>
+<td class="ltx_td ltx_align_center"><math id="Ch2.T11.m12" class="ltx_Math" alttext="1,5\mathrm{e}\!-\!2" display="inline"><mrow><mrow><mn>1,5</mn><mo>⁢</mo><mpadded width="-1.7pt"><mi mathvariant="normal">e</mi></mpadded></mrow><mo rspace="0.8pt">-</mo><mn>2</mn></mrow></math></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_right ltx_th ltx_th_row ltx_border_r">5</th>
+<td class="ltx_td ltx_align_center"><math id="Ch2.T11.m13" class="ltx_Math" alttext="2,3574" display="inline"><mn>2,3574</mn></math></td>
+<td class="ltx_td ltx_align_center"><math id="Ch2.T11.m14" class="ltx_Math" alttext="2,3562" display="inline"><mn>2,3562</mn></math></td>
+<td class="ltx_td ltx_align_center"><math id="Ch2.T11.m15" class="ltx_Math" alttext="1,2\mathrm{e}\!-\!3" display="inline"><mrow><mrow><mn>1,2</mn><mo>⁢</mo><mpadded width="-1.7pt"><mi mathvariant="normal">e</mi></mpadded></mrow><mo rspace="0.8pt">-</mo><mn>3</mn></mrow></math></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_right ltx_th ltx_th_row ltx_border_r">6</th>
+<td class="ltx_td ltx_align_center"><math id="Ch2.T11.m16" class="ltx_Math" alttext="2,3562" display="inline"><mn>2,3562</mn></math></td>
+<td class="ltx_td ltx_align_center"><math id="Ch2.T11.m17" class="ltx_Math" alttext="2,3562" display="inline"><mn>2,3562</mn></math></td>
+<td class="ltx_td ltx_align_center"><math id="Ch2.T11.m18" class="ltx_Math" alttext="1,1\mathrm{e}\!-\!5" display="inline"><mrow><mrow><mn>1,1</mn><mo>⁢</mo><mpadded width="-1.7pt"><mi mathvariant="normal">e</mi></mpadded></mrow><mo rspace="0.8pt">-</mo><mn>5</mn></mrow></math></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_right ltx_th ltx_th_row ltx_border_b ltx_border_r">7</th>
+<td class="ltx_td ltx_align_center ltx_border_b"><math id="Ch2.T11.m19" class="ltx_Math" alttext="2,3562" display="inline"><mn>2,3562</mn></math></td>
+<td class="ltx_td ltx_align_center ltx_border_b"><math id="Ch2.T11.m20" class="ltx_Math" alttext="2,3562" display="inline"><mn>2,3562</mn></math></td>
+<td class="ltx_td ltx_align_center ltx_border_b"><math id="Ch2.T11.m21" class="ltx_Math" alttext="7,0\mathrm{e}\!-\!9" display="inline"><mrow><mrow><mn>7,0</mn><mo>⁢</mo><mpadded width="-1.7pt"><mi mathvariant="normal">e</mi></mpadded></mrow><mo rspace="0.8pt">-</mo><mn>9</mn></mrow></math></td>
+</tr>
+</tbody>
+</table>
+</figure>
+<div id="Thmex1.p2" class="ltx_para">
+<p class="ltx_p">Os resultados apresentados na Tabela <a href="#tab:ex_secante_exec" title="Tabela 2.11 ‣ Exemplo 2.6.1. ‣ 2.6 Método da secante ‣ Capítulo 2 Equação com uma incógnita ‣ Matemática numérica" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.11</span></a> podem ser computados no <code class="ltx_verbatim ltx_font_typewriter">GNU Octave</code> com o seguinte <a href="https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/ex_secante_exec/ex_secante_exec.m" title="" class="ltx_ref ltx_href">código</a>:</p>
+<pre class="ltx_verbatim ltx_font_typewriter">f = @(x) sin(x+pi/4).^2-x.^3+pi/4*x.^2+5*pi^2/16*x+3*pi^3/64;
+
+x1 = 2.6;
+x2 = 2.5;
+printf("%d %1.4E %1.4E\n",
+      1,x1,x2)
+for k=3:7
+  x = x2 - f(x2)*(x2-x1)/(f(x2)-f(x1));
+  printf("%d %1.4E %1.4E %1.1E\n",...
+          k,x2,x,abs(x-x2))
+  x1=x2;
+  x2=x;
+endfor
+</pre>
+</div>
+</div>
+<section id="SS1" class="ltx_subsection">
+<h2 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">2.6.1 </span>Interpretação geométrica <small><a href="../contato.html"><i class="fas fa-envelope"></i></a></small></h2>
+
+<div id="SS1.p1" class="ltx_para">
+<p class="ltx_p">A iteração do método da secante é</p>
+<table id="Ch2.E103" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E103.m1" class="ltx_Math" alttext="x^{(k+1)}=x^{(k)}-f(x^{(k)})\frac{x^{(k)}-x^{(k-1)}}{f(x^{(k)})-f(x^{(k-1)})}," display="block"><mrow><mrow><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mrow><mi>k</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><mrow><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo>-</mo><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mfrac><mrow><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo>-</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mrow><mi>k</mi><mo>-</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup></mrow><mrow><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow><mo>-</mo><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mrow><mi>k</mi><mo>-</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow></mrow></mfrac></mrow></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.103)</span></td>
+</tr>
+</table>
+<p class="ltx_p">donde segue que</p>
+<table id="Ch2.E104" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E104.m1" class="ltx_Math" alttext="0=x^{(k+1)}-x^{(k)}+f(x^{(k)})\frac{x^{(k)}-x^{(k-1)}}{f(x^{(k)})-f(x^{(k-1)})}," display="block"><mrow><mrow><mn>0</mn><mo>=</mo><mrow><mrow><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mrow><mi>k</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo>-</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup></mrow><mo>+</mo><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mfrac><mrow><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo>-</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mrow><mi>k</mi><mo>-</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup></mrow><mrow><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow><mo>-</mo><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mrow><mi>k</mi><mo>-</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow></mrow></mfrac></mrow></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.104)</span></td>
+</tr>
+</table>
+<p class="ltx_p">bem como que</p>
+<table id="eq:secante_geointerp" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E105.m1" class="ltx_Math" alttext="0=\frac{f(x^{(k)})-f(x^{(k-1)})}{x^{(k)}-x^{(k-1)}}(x^{(k+1)}-x^{(k)})+f(x^{(k%
+)})." display="block"><mrow><mrow><mn>0</mn><mo>=</mo><mrow><mrow><mfrac><mrow><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow><mo>-</mo><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mrow><mi>k</mi><mo>-</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow></mrow><mrow><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo>-</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mrow><mi>k</mi><mo>-</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup></mrow></mfrac><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mrow><mi>k</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo>-</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.105)</span></td>
+</tr>
+</table>
+<p class="ltx_p">Agora, observemos que</p>
+<table id="Ch2.E106" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E106.m1" class="ltx_Math" alttext="y=\frac{f(x^{(k)})-f(x^{(k-1)})}{x-x^{(k-1)}}(x^{(k+1)}-x^{(k)})+f(x^{(k)})." display="block"><mrow><mrow><mi>y</mi><mo>=</mo><mrow><mrow><mfrac><mrow><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow><mo>-</mo><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mrow><mi>k</mi><mo>-</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow></mrow><mrow><mi>x</mi><mo>-</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mrow><mi>k</mi><mo>-</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup></mrow></mfrac><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mrow><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mrow><mi>k</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo>-</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup></mrow><mo stretchy="false">)</mo></mrow></mrow><mo>+</mo><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.106)</span></td>
+</tr>
+</table>
+<p class="ltx_p">é a equação da reta secante ao gráfico de <math id="SS1.p1.m1" class="ltx_Math" alttext="f" display="inline"><mi>f</mi></math> pelos pontos <math id="SS1.p1.m2" class="ltx_Math" alttext="(x^{(k)},f(x^{(k)}))" display="inline"><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo>,</mo><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></math> e <math id="SS1.p1.m3" class="ltx_Math" alttext="(x^{(k-1)},f(x^{(k-1)}))" display="inline"><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mrow><mi>k</mi><mo>-</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo>,</mo><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mrow><mi>k</mi><mo>-</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></math>.</p>
+</div>
+<div id="SS1.p2" class="ltx_para">
+<p class="ltx_p">Do observado acima, temos que (<a href="#eq:secante_geointerp" title="(2.105) ‣ 2.6.1 Interpretação geométrica ‣ 2.6 Método da secante ‣ Capítulo 2 Equação com uma incógnita ‣ Matemática numérica" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.105</span></a>) nos mostra que a iterada <math id="SS1.p2.m1" class="ltx_Math" alttext="x^{(k+1)}" display="inline"><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mrow><mi>k</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup></math> é a a interseção do eixo <math id="SS1.p2.m2" class="ltx_Math" alttext="x" display="inline"><mi>x</mi></math> com a reta secante ao gráfico de <math id="SS1.p2.m3" class="ltx_Math" alttext="f" display="inline"><mi>f</mi></math> pelos pontos <math id="SS1.p2.m4" class="ltx_Math" alttext="(x^{(k)},f(x^{(k)}))" display="inline"><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo>,</mo><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></math> e <math id="SS1.p2.m5" class="ltx_Math" alttext="(x^{(k-1)},f(x^{(k-1)}))" display="inline"><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mrow><mi>k</mi><mo>-</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo>,</mo><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mrow><mi>k</mi><mo>-</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">)</mo></mrow></math>. Veja a Figura <a href="#fig:secante_geointerp" title="Figura 2.10 ‣ 2.6.1 Interpretação geométrica ‣ 2.6 Método da secante ‣ Capítulo 2 Equação com uma incógnita ‣ Matemática numérica" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.10</span></a>.</p>
+</div>
+<figure id="fig:secante_geointerp" class="ltx_figure"><img src="cap_eq1d/dados/fig_secante_geointerp/fig_secante_geointerp.jpg" id="Ch2.F10.g1" class="ltx_graphics ltx_centering" width="432" height="394" alt="">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure"><span class="ltx_text" style="font-size:90%;">Figura 2.10</span>: </span><span class="ltx_text" style="font-size:90%;">Interpretação geométrica das iterações do método da secante. Veja no <a href="https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/fig_secante_geointerp/fig_secante_geointerp.ggb" title="" class="ltx_ref ltx_href">Geogebra</a>.</span></figcaption>
+</figure>
+<div id="Thmobs1" class="ltx_theorem ltx_theorem_obs">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Observação 2.6.1</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmobs1.p1" class="ltx_para">
+<p class="ltx_p">A interpretação geométrica do método da secante pode nos ajudar a escolher as aproximações iniciais <math id="Thmobs1.p1.m1" class="ltx_Math" alttext="x^{(1)}" display="inline"><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msup></math> e <math id="Thmobs1.p1.m2" class="ltx_Math" alttext="x^{(2)}" display="inline"><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msup></math>. Como uma boa prática, escolhemo-las próximas do zero (por inspeção gráfica), tomando <math id="Thmobs1.p1.m3" class="ltx_Math" alttext="x^{(2)}" display="inline"><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msup></math> como uma aproximação melhor que <math id="Thmobs1.p1.m4" class="ltx_Math" alttext="x^{(1)}" display="inline"><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msup></math>.</p>
+</div>
+</div>
+</section>
+<section id="SS2" class="ltx_subsection">
+<h2 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">2.6.2 </span>Análise de convergência <small><a href="../contato.html"><i class="fas fa-envelope"></i></a></small></h2>
+
+<div id="SS2.p1" class="ltx_para">
+<p class="ltx_p">Pode-se mostrar<span id="Ch2.footnote11" class="ltx_note ltx_role_footnote"><sup class="ltx_note_mark">11</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">11</sup>
+                <span class="ltx_tag ltx_tag_note">11</span>
+                
+                
+                
+              Veja, por exemplo, <a href="https://www.ufrgs.br/reamat/CalculoNumerico/livro-oct/sdeduv-metodo_das_secantes.html" title="" class="ltx_ref ltx_href">Seção 3.5.2 do livro “Cálculo Numérico”</a> do projeto <a href="https://www.ufrgs.br/reamat" title="" class="ltx_ref ltx_href">REAMAT</a>.</span></span></span> que a taxa de convergência do método da secante é super-linear com</p>
+<table id="Ch2.E107" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E107.m1" class="ltx_Math" alttext="|x^{(k+1)}-x^{*}|\leq C|x^{(k)}-x^{*}|^{\boldsymbol{\varphi}}," display="block"><mrow><mrow><mrow><mo stretchy="false">|</mo><mrow><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mrow><mi>k</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo>-</mo><msup><mi>x</mi><mo>*</mo></msup></mrow><mo stretchy="false">|</mo></mrow><mo>≤</mo><mrow><mi>C</mi><mo>⁢</mo><msup><mrow><mo stretchy="false">|</mo><mrow><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo>-</mo><msup><mi>x</mi><mo>*</mo></msup></mrow><mo stretchy="false">|</mo></mrow><mi>𝝋</mi></msup></mrow></mrow><mo>,</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.107)</span></td>
+</tr>
+</table>
+<p class="ltx_p">onde <math id="SS2.p1.m1" class="ltx_Math" alttext="\varphi=(1+\sqrt{5})/2\approx 1,618" display="inline"><mrow><mi>φ</mi><mo>=</mo><mrow><mrow><mo stretchy="false">(</mo><mrow><mn>1</mn><mo>+</mo><msqrt><mn>5</mn></msqrt></mrow><mo stretchy="false">)</mo></mrow><mo>/</mo><mn>2</mn></mrow><mo>≈</mo><mn>1,618</mn></mrow></math> (razão áurea) e <math id="SS2.p1.m2" class="ltx_Math" alttext="x^{*}" display="inline"><msup><mi>x</mi><mo>*</mo></msup></math> é o zero de <math id="SS2.p1.m3" class="ltx_Math" alttext="f" display="inline"><mi>f</mi></math>.</p>
+</div>
+<div id="ex:secante_taxa" class="ltx_theorem ltx_theorem_ex">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Exemplo 2.6.2</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmex2.p1" class="ltx_para">
+<p class="ltx_p">Consideremos o problema de encontrar o zero da função</p>
+<table id="Ch2.E108" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E108.m1" class="ltx_Math" alttext="f(x)=\operatorname{sen}^{2}\left(x+\frac{\pi}{4}\right)-x^{3}+\frac{\pi}{4}x^{%
+2}+\frac{5\pi^{2}}{16}x+\frac{3\pi^{3}}{64}." display="block"><mrow><mrow><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mrow><msup><mi>sen</mi><mn>2</mn></msup><mo>⁡</mo><mrow><mo>(</mo><mrow><mi>x</mi><mo>+</mo><mfrac><mi>π</mi><mn>4</mn></mfrac></mrow><mo>)</mo></mrow></mrow><mo>-</mo><msup><mi>x</mi><mn>3</mn></msup></mrow><mo>+</mo><mrow><mfrac><mi>π</mi><mn>4</mn></mfrac><mo>⁢</mo><msup><mi>x</mi><mn>2</mn></msup></mrow><mo>+</mo><mrow><mfrac><mrow><mn>5</mn><mo>⁢</mo><msup><mi>π</mi><mn>2</mn></msup></mrow><mn>16</mn></mfrac><mo>⁢</mo><mi>x</mi></mrow><mo>+</mo><mfrac><mrow><mn>3</mn><mo>⁢</mo><msup><mi>π</mi><mn>3</mn></msup></mrow><mn>64</mn></mfrac></mrow></mrow><mo>.</mo></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.108)</span></td>
+</tr>
+</table>
+<p class="ltx_p">no intervalo <math id="Thmex2.p1.m1" class="ltx_Math" alttext="[2,3]" display="inline"><mrow><mo stretchy="false">[</mo><mn>2,3</mn><mo stretchy="false">]</mo></mrow></math>. Este problema foi construído de forma que <math id="Thmex2.p1.m2" class="ltx_Math" alttext="x^{*}=3\pi/4" display="inline"><mrow><msup><mi>x</mi><mo>*</mo></msup><mo>=</mo><mrow><mrow><mn>3</mn><mo>⁢</mo><mi>π</mi></mrow><mo>/</mo><mn>4</mn></mrow></mrow></math> é um zero de <math id="Thmex2.p1.m3" class="ltx_Math" alttext="f" display="inline"><mi>f</mi></math>. Agora, fazendo as iterações do método da secante com aproximações iniciais <math id="Thmex2.p1.m4" class="ltx_Math" alttext="x^{(1)}=2,6" display="inline"><mrow><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><mn>2,6</mn></mrow></math> e <math id="Thmex2.p1.m5" class="ltx_Math" alttext="x^{(2)}=2,5" display="inline"><mrow><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><mn>2,5</mn></mrow></math>, obtemos os resultados apresentados na Tabela <a href="#tab:ex_secante_taxa" title="Tabela 2.12 ‣ Exemplo 2.6.2. ‣ 2.6.2 Análise de convergência ‣ 2.6 Método da secante ‣ Capítulo 2 Equação com uma incógnita ‣ Matemática numérica" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.12</span></a>.</p>
+</div>
+<figure id="tab:ex_secante_taxa" class="ltx_table">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_table"><span class="ltx_text" style="font-size:90%;">Tabela 2.12</span>: </span><span class="ltx_text" style="font-size:90%;">Resultados referentes ao Exemplo <a href="#ex:secante_taxa" title="Exemplo 2.6.2. ‣ 2.6.2 Análise de convergência ‣ 2.6 Método da secante ‣ Capítulo 2 Equação com uma incógnita ‣ Matemática numérica" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.6.2</span></a>.</span></figcaption>
+<table class="ltx_tabular ltx_centering ltx_guessed_headers ltx_align_middle">
+<thead class="ltx_thead">
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_right ltx_th ltx_th_column ltx_th_row ltx_border_r"><math id="Ch2.T12.m1" class="ltx_Math" alttext="k" display="inline"><mi>k</mi></math></th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_column"><math id="Ch2.T12.m2" class="ltx_Math" alttext="x^{(k)}" display="inline"><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup></math></th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_column"><math id="Ch2.T12.m3" class="ltx_Math" alttext="|x^{(k)}-x^{*}|" display="inline"><mrow><mo stretchy="false">|</mo><mrow><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo>-</mo><msup><mi>x</mi><mo>*</mo></msup></mrow><mo stretchy="false">|</mo></mrow></math></th>
+</tr>
+</thead>
+<tbody class="ltx_tbody">
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_right ltx_th ltx_th_row ltx_border_r ltx_border_t">3</th>
+<td class="ltx_td ltx_align_center ltx_border_t"><math id="Ch2.T12.m4" class="ltx_Math" alttext="2,3728" display="inline"><mn>2,3728</mn></math></td>
+<td class="ltx_td ltx_align_center ltx_border_t"><math id="Ch2.T12.m5" class="ltx_Math" alttext="1,7\mathrm{e}\!-\!02" display="inline"><mrow><mrow><mn>1,7</mn><mo>⁢</mo><mpadded width="-1.7pt"><mi mathvariant="normal">e</mi></mpadded></mrow><mo rspace="0.8pt">-</mo><mn>02</mn></mrow></math></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_right ltx_th ltx_th_row ltx_border_r">4</th>
+<td class="ltx_td ltx_align_center"><math id="Ch2.T12.m6" class="ltx_Math" alttext="2,3574" display="inline"><mn>2,3574</mn></math></td>
+<td class="ltx_td ltx_align_center"><math id="Ch2.T12.m7" class="ltx_Math" alttext="1,2\mathrm{e}\!-\!03" display="inline"><mrow><mrow><mn>1,2</mn><mo>⁢</mo><mpadded width="-1.7pt"><mi mathvariant="normal">e</mi></mpadded></mrow><mo rspace="0.8pt">-</mo><mn>03</mn></mrow></math></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_right ltx_th ltx_th_row ltx_border_r">5</th>
+<td class="ltx_td ltx_align_center"><math id="Ch2.T12.m8" class="ltx_Math" alttext="2,3562" display="inline"><mn>2,3562</mn></math></td>
+<td class="ltx_td ltx_align_center"><math id="Ch2.T12.m9" class="ltx_Math" alttext="1,1\mathrm{e}\!-\!05" display="inline"><mrow><mrow><mn>1,1</mn><mo>⁢</mo><mpadded width="-1.7pt"><mi mathvariant="normal">e</mi></mpadded></mrow><mo rspace="0.8pt">-</mo><mn>05</mn></mrow></math></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_right ltx_th ltx_th_row ltx_border_b ltx_border_r">6</th>
+<td class="ltx_td ltx_align_center ltx_border_b"><math id="Ch2.T12.m10" class="ltx_Math" alttext="2,3562" display="inline"><mn>2,3562</mn></math></td>
+<td class="ltx_td ltx_align_center ltx_border_b"><math id="Ch2.T12.m11" class="ltx_Math" alttext="7,0\mathrm{e}\!-\!09" display="inline"><mrow><mrow><mn>7,0</mn><mo>⁢</mo><mpadded width="-1.7pt"><mi mathvariant="normal">e</mi></mpadded></mrow><mo rspace="0.8pt">-</mo><mn>09</mn></mrow></math></td>
+</tr>
+</tbody>
+</table>
+</figure>
+<div id="Thmex2.p2" class="ltx_para">
+<p class="ltx_p">Os resultados apresentados na Tabela <a href="#tab:ex_secante_taxa" title="Tabela 2.12 ‣ Exemplo 2.6.2. ‣ 2.6.2 Análise de convergência ‣ 2.6 Método da secante ‣ Capítulo 2 Equação com uma incógnita ‣ Matemática numérica" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2.12</span></a> podem ser computados no <code class="ltx_verbatim ltx_font_typewriter">GNU Octave</code> com o seguinte <a href="https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/ex_secante_taxa/ex_secante_taxa.m" title="" class="ltx_ref ltx_href">código</a>:</p>
+<pre class="ltx_verbatim ltx_font_typewriter">f = @(x) sin(x+pi/4).^2-x.^3+pi/4*x.^2+5*pi^2/16*x+3*pi^3/64;
+
+xstar = 3*pi/4;
+
+phi = (1+sqrt(5))/2
+
+x1 = 2.6;
+x2 = 2.5;
+for k=3:10
+  x = x2 - f(x2)*(x2-x1)/(f(x2)-f(x1));
+  printf("%d %1.4E %1.1E\n",...
+          k,x,abs(x-xstar))
+  x1=x2;
+  x2=x;
+endfor
+</pre>
+</div>
+</div>
+<div id="Thmobs2" class="ltx_theorem ltx_theorem_obs">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Observação 2.6.2</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmobs2.p1" class="ltx_para">
+<p class="ltx_p">(Zeros de multiplicidade par.)
+A taxa de convergência super-linear do método da secante não se mantém para o caso de <math id="Thmobs2.p1.m1" class="ltx_Math" alttext="x^{*}" display="inline"><msup><mi>x</mi><mo>*</mo></msup></math> ser um zero múltiplo. Para contornar este problema, pode-se aplicar o método à derivada <math id="Thmobs2.p1.m2" class="ltx_Math" alttext="n-1" display="inline"><mrow><mi>n</mi><mo>-</mo><mn>1</mn></mrow></math> de <math id="Thmobs2.p1.m3" class="ltx_Math" alttext="f" display="inline"><mi>f</mi></math>, a fim de se aproximar um zero de multiplicidade <math id="Thmobs2.p1.m4" class="ltx_Math" alttext="n" display="inline"><mi>n</mi></math>.</p>
+</div>
+</div>
+<div id="Thmobs3" class="ltx_theorem ltx_theorem_obs">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Observação 2.6.3</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmobs3.p1" class="ltx_para">
+<p class="ltx_p">(Cancelamento catastrófico.)
+Conforme convergem as iterações do método da secante, o denominador <math id="Thmobs3.p1.m1" class="ltx_Math" alttext="f(x^{(k)})-f(x^{(k-1)})" display="inline"><mrow><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow><mo>-</mo><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mrow><mi>k</mi><mo>-</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow></mrow></mrow></math> pode convergir rapidamente para zero, ocasionando uma divisão por zero.</p>
+</div>
+</div>
+</section>
+<section id="SSx1" class="ltx_subsection">
+<h2 class="ltx_title ltx_title_subsection">Exercícios <small><a href="../contato.html"><i class="fas fa-envelope"></i></a></small></h2>
+
+<div id="exer:secante_1" class="ltx_theorem ltx_theorem_exer">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Exercício 2.6.1</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmexer1.p1" class="ltx_para">
+<p class="ltx_p">Use o método da secante para obter uma aproximação do zero de <math id="Thmexer1.p1.m1" class="ltx_Math" alttext="f(x)=x^{3}\operatorname{sen}(x)-\cos(x)" display="inline"><mrow><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><msup><mi>x</mi><mn>3</mn></msup><mo>⁢</mo><mrow><mi>sen</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow></mrow><mo>-</mo><mrow><mi>cos</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></mrow></math> no intervalo <math id="Thmexer1.p1.m2" class="ltx_Math" alttext="[0,5,1]" display="inline"><mrow><mo stretchy="false">[</mo><mn>0,5,1</mn><mo stretchy="false">]</mo></mrow></math> com precisão de <math id="Thmexer1.p1.m3" class="ltx_Math" alttext="10^{-5}" display="inline"><msup><mn>10</mn><mrow><mo>-</mo><mn>5</mn></mrow></msup></math>.</p>
+</div>
+</div>
+<div class="d-grid gap-2 d-md-flex justify-content-md-end"><button class="btn btn-warning" type="button" data-bs-toggle="collapse" data-bs-target="#Thmrespx26">Resposta</button></div><div class="collapse" id="Thmrespx26">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Resp</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmrespx26.p1" class="ltx_para">
+<p class="ltx_p"><a href="https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/exer_secante_1/exer_secante_1.m" title="" class="ltx_ref ltx_href">Código.</a>
+<math id="Thmrespx26.p1.m1" class="ltx_Math" alttext="9,1581\times 10^{-1}" display="inline"><mrow><mn>9,1581</mn><mo>×</mo><msup><mn>10</mn><mrow><mo>-</mo><mn>1</mn></mrow></msup></mrow></math></p>
+</div>
+</div>
+<div id="exer:secante_multpar" class="ltx_theorem ltx_theorem_exer">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Exercício 2.6.2</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmexer2.p1" class="ltx_para">
+<p class="ltx_p">Use o método da secante para obter uma aproximação do zero de</p>
+<table id="Ch2.E109" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="Ch2.E109.m1" class="ltx_Math" alttext="f(x)=(-x^{2}+1,154x-0,332929)\cos(x)+x^{2}-1,154x+0,332929" display="block"><mrow><mrow><mi>f</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mrow><mrow><mrow><mo stretchy="false">(</mo><mrow><mrow><mrow><mo>-</mo><msup><mi>x</mi><mn>2</mn></msup></mrow><mo>+</mo><mrow><mn>1,154</mn><mo>⁢</mo><mi>x</mi></mrow></mrow><mo>-</mo><mn>0,332929</mn></mrow><mo stretchy="false">)</mo></mrow><mo>⁢</mo><mrow><mi>cos</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow></mrow><mo>+</mo><msup><mi>x</mi><mn>2</mn></msup></mrow><mo>-</mo><mrow><mn>1,154</mn><mo>⁢</mo><mi>x</mi></mrow></mrow><mo>+</mo><mn>0,332929</mn></mrow></mrow></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2.109)</span></td>
+</tr>
+</table>
+<p class="ltx_p">no intervalo <math id="Thmexer2.p1.m1" class="ltx_Math" alttext="(0,55,\leavevmode\nobreak\ 0,65)" display="inline"><mrow><mo stretchy="false">(</mo><mn>0,55, 0,65</mn><mo stretchy="false">)</mo></mrow></math> com precisão de <math id="Thmexer2.p1.m2" class="ltx_Math" alttext="10^{-}5" display="inline"><mrow><msup><mn>10</mn><mo>-</mo></msup><mo>⁢</mo><mn>5</mn></mrow></math>.</p>
+</div>
+</div>
+<div class="d-grid gap-2 d-md-flex justify-content-md-end"><button class="btn btn-warning" type="button" data-bs-toggle="collapse" data-bs-target="#Thmrespx27">Resposta</button></div><div class="collapse" id="Thmrespx27">
+<h6 class="ltx_title ltx_runin ltx_title_theorem">
+<span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Resp</span></span><span class="ltx_text ltx_font_bold">.</span>
+</h6>
+<div id="Thmrespx27.p1" class="ltx_para">
+<p class="ltx_p"><a href="https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/exer_secante_multpar/exer_secante_multpar.m" title="" class="ltx_ref ltx_href">Código.</a>
+<math id="Thmrespx27.p1.m1" class="ltx_Math" alttext="5,7700\times 10^{-1}" display="inline"><mrow><mn>5,7700</mn><mo>×</mo><msup><mn>10</mn><mrow><mo>-</mo><mn>1</mn></mrow></msup></mrow></math></p>
+</div>
+</div>
+</section>
+</section>
+</div>
+<footer class="ltx_page_footer">
+<div>
+<a href="cap_mef1d_sec_newton.html" title="2.5 Método de Newton ‣ Capítulo 2 Equação com uma incógnita ‣ Matemática numérica" class="ltx_ref" rel="prev"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">2.5 </span>Método de Newton</span></a><a href="bib.html" title="Referências ‣ Matemática numérica" class="ltx_ref" rel="bibliography"><span class="ltx_text ltx_ref_title">Referências</span></a><a href="cap_eq1d_sec_raizes.html" title="2.7 Raízes de polinômios ‣ Capítulo 2 Equação com uma incógnita ‣ Matemática numérica" class="ltx_ref" rel="next"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">2.7 </span>Raízes de polinômios</span></a>
+</div>
+<div class="ltx_page_logo"><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />O texto acima está sob Licença <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR">Creative Commons Atribuição-CompartilhaIgual 4.0 Internacional</a>. Generated  on Fri Sep  1 18:48:00 2023 by <a href="http://dlmf.nist.gov/LaTeXML/">LaTeXML <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg==" alt="[LOGO]"></a>
+</div></footer>
+</div>
+<div class="card" id="rodape" style="">
+  <div class="card-footer text-left">
+    <a href="../contato.html"><i class="fas fa-envelope"></i></a> | <a href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i></a> | <a href="https://archive.org/details/notas-de-aula"><i class="fas fa-building-columns"></i></a> | <a href="https://www.youtube.com/channel/UCwutHKlKLgVj6IkFSUFBqoA"><i class="fab fa-youtube"></i></a> | <a href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i></a>
+  </div> <!-- div class="card" -->
+</div> <!-- div class="card-footer text-right" -->
+</div> <!-- div class=col-xxl-10 --></div> <!-- div class=row --></div> <!-- div class=container-fluid --></body>
+</html>
