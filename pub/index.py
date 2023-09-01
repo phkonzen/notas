@@ -63,7 +63,7 @@ class Index:
         card += f'<div class="card border-{color} mb-3" style="width: 21rem;">'
         card += f'<div class="card-header text-bg-{color} d-flex justify-content-between">{header} '
         if (status == "atualizando"):
-            card += f'<div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>'
+            card += f'<div class="spinner-border" role="status"><span class="sr-only">Em atualização ...</span></div>'
         elif (status == "Novo"):
             card += f'<span class="align-middle"><span class="badge rounded-pill text-bg-light">{status}</span></span><div class="spinner-border text-light" role="status"><span class="sr-only">Loading...</span></div>'
         elif (status != ""):
@@ -93,7 +93,7 @@ class Index:
         obj += f'<div class="card-text text-{status} d-flex align-self-center">'
         obj += f'<a href={link} class="stretched-link"></a>'
         obj += f'<div class="spinner-grow spinner-grow-sm m-1" role="status"></div>'
-        obj += text
+        obj += f'<span class="text-primary">{text}</span>'
         obj += '</div>'
         obj += '</div>'
         return obj
@@ -183,8 +183,8 @@ class Index:
         body += '</div>'
 
         # anúncio
-        body += '<div class="carousel-item active">'
-        body += self.add_anuncio(text = 'ENMC/ECTM 2023 - Submissões até 30/Ago',
+        body += '<div class="carousel-item">'
+        body += self.add_anuncio(text = 'ENMC/ECTM 2023 - Submissões até 07/Set',
                                  link = 'https://enmc.ccam.uesc.br',
                                  status = 'danger')
         body += '</div>'
@@ -197,16 +197,16 @@ class Index:
         body += '</div>'
 
         # anúncio
-        body += '<div class="carousel-item">'
-        body += self.add_anuncio(text = 'PPGMAp - UFRGS: Seleção Mestrado 2023/2',
+        body += '<div class="carousel-item active">'
+        body += self.add_anuncio(text = 'PPGMAp/UFRGS: Chamada Alun@ Especial 23/2',
                                  link = 'https://www.ufrgs.br/ppgmap',
-                                 status = 'primary')
+                                 status = 'warning')
         body += '</div>'
 
 
         # anúncio
         body += '<div class="carousel-item">'
-        body += self.add_anuncio(text = 'IME - UFRGS: Instituto de Matemática e Estatística',
+        body += self.add_anuncio(text = 'IME/UFRGS: Instituto de Matemática e Estatística',
                                  link = 'http://www.ufrgs.br/ime',
                                  status = 'primary')
         body += '</div>'
