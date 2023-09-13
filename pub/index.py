@@ -62,8 +62,8 @@ class Index:
         card = ""
         card += f'<div class="card border-{color} mb-3" style="width: 21rem;">'
         card += f'<div class="card-header text-bg-{color} d-flex justify-content-between">{header} '
-        if (status == "atualizando"):
-            card += f'<div class="spinner-border" role="status"><span class="sr-only">Em atualização ...</span></div>'
+        if (status == "Atualizando"):
+            card += f'<div class="spinner-border text-light" role="status"><span class="sr-only">Em atualização ...</span></div>'
         elif (status == "Novo"):
             card += f'<span class="align-middle"><span class="badge rounded-pill text-bg-light">{status}</span></span><div class="spinner-border text-light" role="status"><span class="sr-only">Loading...</span></div>'
         elif (status != ""):
@@ -179,28 +179,28 @@ class Index:
         body += '<div class="carousel-item">'
         body += self.add_anuncio(text = 'XLII CNMAC 2023 - 18-22/Set',
                                  link = 'http://www.cnmac.org.br',
-                                 status = 'primary')
-        body += '</div>'
-
-        # anúncio
-        body += '<div class="carousel-item">'
-        body += self.add_anuncio(text = 'ENMC/ECTM 2023 - Submissões até 07/Set',
-                                 link = 'https://enmc.ccam.uesc.br',
                                  status = 'danger')
         body += '</div>'
 
         # anúncio
         body += '<div class="carousel-item">'
-        body += self.add_anuncio(text = 'IV JMMA 2023: Submissões até 15/Set',
-                                 link = 'https://sites.google.com/view/jmma-ufsm/',
+        body += self.add_anuncio(text = 'ENMC/ECTM 2023 - 25-27/Out',
+                                 link = 'https://enmc.ccam.uesc.br',
                                  status = 'warning')
         body += '</div>'
 
         # anúncio
         body += '<div class="carousel-item active">'
-        body += self.add_anuncio(text = 'PPGMAp/UFRGS: Chamada Alun@ Especial 23/2',
+        body += self.add_anuncio(text = 'IV JMMA 2023: Submissões até 30/Set',
+                                 link = 'https://sites.google.com/view/jmma-ufsm/',
+                                 status = 'danger')
+        body += '</div>'
+
+        # anúncio
+        body += '<div class="carousel-item">'
+        body += self.add_anuncio(text = 'PPGMAp/UFRGS: Mestrado & Doutorado',
                                  link = 'https://www.ufrgs.br/ppgmap',
-                                 status = 'warning')
+                                 status = 'primary')
         body += '</div>'
 
 
@@ -214,11 +214,46 @@ class Index:
         body += '</div>'
         body += '</div>'
 
+
+        # *** NOTAS DE AULA ***
+
         body += '<h3 class="">Notas de Aula</h3>'
         body += '<hr>'
 
         body += '<div class="row row-cols-auto justify-content-around">'
-        
+
+        # card: Redes Neurais Artificiais
+        body += '<div class="col">'
+        body += self.new_card(header = "Notas de Aula",
+                              title = "Redes Neurais Artificiais",
+                              text = "Introdução às Redes Neurais Artificiais",
+                              badges = ["Python", "PyTorch"],
+                              link = "RedesNeuraisArtificiais/main.html",
+                              color = "warning", status = "Novo")
+        body += '</div>'
+
+
+        # card: Método de Elementos Finitos
+        body += '<div class="col">'
+        body += self.new_card(header = "Notas de Aula",
+                              title = "Método dos Elementos Finitos",
+                              text = "Introdução ao método dos elementos finitos",
+                              badges = ["Python", "FEniCS"],
+                              link = "MetodoElementosFinitos/main.html",
+                              color = "warning", status = "Atualizando")
+        body += '</div>'
+
+        # card: notas de aula de Matemática Numérica Paralela
+        body += '<div class="col">'
+        body += self.new_card(header = "Notas de Aula",
+                              title = "Matemática Numérica Paralela",
+                              text = "Introdução à computação paralela a métodos numéricos",
+                              badges = ["C/C++", "OpenMP", "OpenMPI"],
+                              link = "MatematicaNumericaParalela/main.html",
+                              color = "warning", status = "Atualizando")
+        body += '</div>'
+
+
         # card: notas de aula de Algoritmos e Programação I
         body += '<div class="col">'
         body += self.new_card(header = "Notas de Aula",
@@ -226,7 +261,7 @@ class Index:
                               text = "Introdução aos algoritmos de programação de computadores",
                               badges = ["Python", "NumPy", "Matplotlib"],
                               link = "AlgoritmosProgramacaoI/main.html",
-                              color = "warning", status = "Novo")
+                              color = "primary", status = "")
         body += '</div>'
 
         # card: notas de aula de Cálculo I
@@ -286,7 +321,7 @@ class Index:
                               text = "Introdução a métodos numéricos para resolução de equações e para aproximação de funções",
                               badges = ["Python", "NumPy"],
                               link = "MatematicaNumericaI/main.html",
-                              color = "warning", status = "Novo")
+                              color = "primary", status = "")
         body += '</div>'
 
         # card: notas de aula de Matemática Numérica II
@@ -296,7 +331,7 @@ class Index:
                               text = "Introdução a métodos numéricos para o cálculo de funções e resolução de equações diferenciais",
                               badges = ["Python", "NumPy"],
                               link = "MatematicaNumericaII/main.html",
-                              color = "warning", status = "Novo")
+                              color = "primary", status = "")
         body += '</div>'
 
         # card: notas de aula de Matemática Numérica Avançada
@@ -309,26 +344,7 @@ class Index:
                               color = "primary", status = "")
         body += '</div>'
 
-        # card: notas de aula de Matemática Numérica Paralela
-        body += '<div class="col">'
-        body += self.new_card(header = "Notas de Aula",
-                              title = "Matemática Numérica Paralela",
-                              text = "Introdução à computação paralela a métodos numéricos",
-                              badges = ["C/C++", "OpenMP", "OpenMPI"],
-                              link = "MatematicaNumericaParalela/main.html",
-                              color = "primary", status = "")
-        body += '</div>'
-
-        # card: Método de elementos finitos
-        body += '<div class="col">'
-        body += self.new_card(header = "Notas de Aula",
-                              title = "Método dos Elementos Finitos",
-                              text = "Introdução ao método dos elementos finitos",
-                              badges = ["Python", "FEniCS"],
-                              link = "MetodoElementosFinitos/main.html",
-                              color = "primary", status = "")
-        body += '</div>'
-
+        
         # card: Pré-Cálculo
         body += '<div class="col">'
         body += self.new_card(header = "Notas de Aula",
@@ -337,16 +353,6 @@ class Index:
                               badges = ["Python", "SymPy"],
                               link = "PreCalculo/main.html",
                               color = "primary", status = "")
-        body += '</div>'
-
-        # card: Redes Neurais Artificiais
-        body += '<div class="col">'
-        body += self.new_card(header = "Notas de Aula",
-                              title = "Redes Neurais Artificiais",
-                              text = "Introdução às Redes Neurais Artificiais",
-                              badges = ["Python", "PyTorch"],
-                              link = "RedesNeuraisArtificiais/main.html",
-                              color = "warning", status = "Novo")
         body += '</div>'
 
         # card: Vetores
