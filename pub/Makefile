@@ -58,6 +58,9 @@ MiniCalcPy: mainMiniCalcPy.py
 MiniPython: mainMiniPython.py
 	python3 mainMiniPython.py
 
+MiniCpp: mainMiniCpp.py
+	python3 mainMiniCpp.py
+
 .PHONY: clean
 
 clean:

@@ -32,6 +32,7 @@ from vetores import *
 from geometriaanalitica import *
 from minicalcpy import *
 from minipython import *
+from minicpp import *
 
 #pastas temporárias
 odir = '.docs'
@@ -84,6 +85,7 @@ v = Vetores(srcdir,odir)
 ga = GeometriaAnalitica(srcdir,odir)
 minicalcpy = MiniCalcPy(srcdir,odir)
 minipy = MiniPython(srcdir,odir)
+minicpp = MiniCpp(srcdir,odir)
 
 def build(id):
     id.build()
@@ -106,7 +108,8 @@ if __name__ == '__main__':
                  v,
                  ga,
                  minicalcpy,
-                 minipy])
+                 minipy,
+                 minicpp])
 
 #cria o README.md do ../docs
 os.system('cp docs_readme.md '+odir+'/README.md')
