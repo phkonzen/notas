@@ -177,32 +177,24 @@ class Index:
 
         # anúncio
         body += '<div class="carousel-item">'
-        body += self.add_anuncio(text = 'XLII CNMAC 2023 - 18-22/Set',
-                                 link = 'http://www.cnmac.org.br',
+        body += self.add_anuncio(text = 'ENMC/ECTM 2023 - 25-27/Out',
+                                 link = 'https://enmc.ccam.uesc.br',
                                  status = 'danger')
         body += '</div>'
 
         # anúncio
         body += '<div class="carousel-item">'
-        body += self.add_anuncio(text = 'ENMC/ECTM 2023 - 25-27/Out',
-                                 link = 'https://enmc.ccam.uesc.br',
+        body += self.add_anuncio(text = 'IV JMMA 2023: 15-17/Nov',
+                                 link = 'https://sites.google.com/view/jmma-ufsm/',
                                  status = 'warning')
         body += '</div>'
 
         # anúncio
         body += '<div class="carousel-item active">'
-        body += self.add_anuncio(text = 'IV JMMA 2023: Submissões até 30/Set',
-                                 link = 'https://sites.google.com/view/jmma-ufsm/',
-                                 status = 'danger')
-        body += '</div>'
-
-        # anúncio
-        body += '<div class="carousel-item">'
         body += self.add_anuncio(text = 'PPGMAp/UFRGS: Mestrado & Doutorado',
                                  link = 'https://www.ufrgs.br/ppgmap',
                                  status = 'primary')
         body += '</div>'
-
 
         # anúncio
         body += '<div class="carousel-item">'
@@ -380,7 +372,7 @@ class Index:
                               text = "Introdução à Python para matemática",
                               badges = ["Python", "NumPy", "Matplotlib"],
                               link = "MiniPython/main.html",
-                              color = "primary", status = "")
+                              color = "warning", status = "Atualizando")
         body += '</div>'
 
         # card: Mini Cálculo com Python
