@@ -165,59 +165,66 @@ y = 0
   Implemente um código em que a(o) usuária(o) entra com valores para as variáveis \lstinline+x+ e \lstinline+y+\footnote{A entrada de valores via console pode ser feita com o objeto \href{https://en.cppreference.com/w/cpp/io/cin}{std::cin} da classe \href{https://en.cppreference.com/w/cpp/io/basic_istream}{iostream}.}. Então, os valores das variáveis são permutados entre si.
 \end{exr}
 
-% \subsection{Operações Aritméticas Elementares}
+\subsection{Operações Aritméticas Elementares}
 
-% Os operadores aritméticos elementares são:
-% \begin{itemize}
-% \item[]\hl{{\lstinline-+-} \emph{: adição}}
-% \item[]\hl{{\lstinline+-+} \emph{: subtração}}
-% \item[]\hl{{\lstinline+*+} \emph{: multiplicação}}
-% \item[]\hl{{\lstinline+/+} \emph{: divisão}}
-% \item[]\hl{{\lstinline+**+} \emph{: potenciação}}
-% \item[]\hl{{\lstinline+\%+} \emph{: módulo}}
-% \item[]\hl{{\lstinline+//+} \emph{: divisão inteira}}
-% \end{itemize}
+Os operadores aritméticos elementares são:
+\begin{itemize}
+\item[]\hl{{\lstinline!+, -!} \emph{: adição, subtração}}
+\item[]\hl{{\lstinline+*, /+} \emph{: multiplicação, divisão}}
+\item[]\hl{{\lstinline+\%+} \emph{: módulo}}
+\end{itemize}
 
-% \begin{ex}
-%   Estudamos a seguinte computação
-% \begin{lstlisting}
-% >>> 2+8*3/2**2-1
-% 7.0
-% \end{lstlisting}
-%   Observamos que as operações \lstinline+**+ tem precedência sobre as operações \lstinline+*+, \lstinline+/+, \lstinline+\%+, \lstinline+//+, as quais têm precedência sobre as operações \lstinline!+, -!. Operações de mesma precedência seguem a ordem da esquerda para direita, conforme escritas na linha de comando. Usa-se parênteses para alterar a precedência entre as operações, por exemplo
-% \begin{lstlisting}
-% >>> (2+8*3)/2**2-1
-% 5.5
-% \end{lstlisting}
-% \end{ex}
+\begin{ex}
+  Qual é o valor impresso pelo seguinte código?
+\begin{lstlisting}
+#include <iostream>
 
-% \begin{obs}\normalfont{(\hl{Precedência das Operações}.)}
-% Consulte mais informações sobre a precedência de operadores em \href{https://docs.python.org/3/reference/expressions.html#operator-precedence}{Python Docs}.
-% \end{obs}
+int main()
+{
+  std::cout << 2+17%9/2*2-1
+	    << std::endl;
+  return 0;
+}
+\end{lstlisting}
 
-% \begin{exr}\label{exr:bhaskara}
-%   Compute as raízes do seguinte polinômio quadrático
-%   \begin{equation}
-%     p(x) = 2x^2 - 2x - 4
-%   \end{equation}
-%   usando a fórmula de Bhaskara{\bhaskara}.
-% \end{exr}
+  Observamos que as operações {\lstinline+*+} e {\lstinline+/+} têm \hlemph{precedência} maior que a operação \lstinline+\%+. Esta, por sua vez, tem precedência maior que as operações {\lstinline!+!} e {\lstinline!-!}. Operações de mesma precedência seguem a ordem da esquerda para direita, conforme escritas na linha de comando. \hl{Usa-se parênteses para alterar a precedência entre as operações}, por exemplo
+\begin{lstlisting}
+std::cout << ((2+17)%9)/2*2-1
+          << std::endl;
+\end{lstlisting}
+imprime o resultado \lstinline!-1!. Sim, pois a \hl{divisão inteira} está sendo usada. Para computar a divisão em ponto flutuante, um dos operandos deve ser \lstinline!double!. Para tanto, podemos fazer um \hlemph{\textit{casting}} como segue
+\begin{lstlisting}
+std::cout << double((2+17)%9)/2*2-1
+	  << std::endl;
+\end{lstlisting}
+Ou, simplesmente,
+\begin{lstlisting}
+std::cout << ((2+17)%9)/2.*2-1
+	  << std::endl;
+\end{lstlisting}
+\end{ex}
 
-% O operador \lstinline+\%+ módulo computa o \emph{resto da divisão} e o operador \lstinline+//+ a \emph{divisão inteira}, por exemplo
-% \begin{lstlisting}
-% >>> 5 % 2
-% 1
-% >>> 5 // 2
-% 2
-% \end{lstlisting}
+\begin{obs}\normalfont{(\hl{Precedência das Operações}.)}
+Consulte mais informações sobre a precedência de operadores em \href{https://en.wikipedia.org/wiki/Operators_in_C_and_C\%2B\%2B#Operator_precedence}{Wikipedia:Operators in C and C++}.
+\end{obs}
 
-% \begin{exr}
-%   Use o {\python} para computar os inteiros não negativos $q$ e $r$ tais que
-%   \begin{equation}
-%     25 = q\cdot 3 + r,
-%   \end{equation}
-%   sendo $r$ o menor possível.
-% \end{exr}
+\begin{exer}
+  Escreva um programa para computar o vértice da parábola
+  \begin{equation}
+    ax^2 + bx + c = 0,
+  \end{equation}
+  para $a = 2$, $b = -2$ e $c = 4$. 
+\end{exer}
+
+\hl{O operador {\lstinline+\%+} módulo computa o \emph{resto} da divisão inteira}, por exemplo, \lstinline+5\%2+ é igual a \lstinline+1+.
+
+\begin{exr}
+  Use o {\python} para computar os inteiros não negativos $q$ e $r$ tais que
+  \begin{equation}
+    25 = q\cdot 3 + r,
+  \end{equation}
+  sendo $r$ o menor possível.
+\end{exr}
 
 % \subsection{Funções e Constantes Elementares}
 
@@ -250,8 +257,12 @@ y = 0
 %   \end{enumerate}
 % \end{exr}
 
-% \begin{exr}
-%   Refaça o Exercício \label{exr:bhaskara} usando a função \lstinline+math.sqrt+ para computar a raiz quadrada do discriminante.
+% \begin{exr}\label{exr:bhaskara}
+%   Compute as raízes do seguinte polinômio quadrático
+%   \begin{equation}
+%     p(x) = 2x^2 - 2x - 4
+%   \end{equation}
+%   usando a fórmula de Bhaskara{\bhaskara}.
 % \end{exr}
 
 % \subsection{Operadores de Comparação Elementares}
