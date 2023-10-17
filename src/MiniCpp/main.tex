@@ -12,7 +12,7 @@
 
 \begin{document}
 
-\title{Minicurso de C++ para Matemática}
+\title{Minicurso de C/C++ para Matemática}
 \author{Pedro H A Konzen}
 \date{\today}
 % \ifishtml
@@ -39,11 +39,11 @@ Este trabalho está licenciado sob a Licença Atribuição-CompartilhaIgual 4.0 
 
 \subsection{Instalação e Execução}
 
-\hl{Códigos C++ precisam ser compilados antes de serem executados}. De forma simplificada, o \emph{compilador} é um programa que interpreta e converte o código em um programa executável em computador. Há vários compiladores gratuitos disponíveis na web. Ao longo deste minicurso, usaremos a coleção de compiladores \href{https://gcc.gnu.org/}{GNU GCC} instalados em sistema operacional {\linux}.
+\hl{Códigos C/C++ precisam ser compilados antes de serem executados}. De forma simplificada, o \emph{compilador} é um programa que interpreta e converte o código em um programa executável em computador. Há vários compiladores gratuitos disponíveis na web. Ao longo deste minicurso, usaremos a coleção de compiladores \href{https://gcc.gnu.org/}{GNU GCC} instalados em sistema operacional {\linux}.
 
 \subsubsection{IDE}
 
-\hl{Usar um \emph{ambiente integrado de desenvolvimento} (IDE, em inglês, \textit{integrated development environment}) é a melhor forma de capturar o melhor da linguagem C++}. Algumas alternativas são:
+\hl{Usar um \emph{ambiente integrado de desenvolvimento} (IDE, em inglês, \textit{integrated development environment}) é a melhor forma de capturar o melhor das linguagens C/C++}. Algumas alternativas são:
 \begin{itemize}
 \item \href{https://www.eclipse.org/ide/}{Eclipse}
 \item \href{https://www.gnu.org/software/emacs/download.html}{GNU Emacs}
@@ -52,19 +52,18 @@ Este trabalho está licenciado sob a Licença Atribuição-CompartilhaIgual 4.0 
 
 \subsection{Olá, mundo!}
 
-Vamos \hl{implementar} nosso primeiro programa C++. \hl{Em geral, são três passos: 1. escrever; 2. compilar; 3. executar.}
+Vamos \hl{implementar} nosso primeiro programa C/C++. \hl{Em geral, são três passos: 1. escrever; 2. compilar; 3. executar.}
 
 \begin{enumerate}[1.]
 \item \hlemph{Escrever o código}.
 
   Em seu IDE preferido, digite o código:
-\begin{lstlisting}[caption=ola.cpp]
-#include <iostream>
+\begin{lstlisting}[caption=ola.cc]
+#include <stdio.h>
 
-int main() {
-  
-  std::cout << "Olá, mundo!"
-	    << std::endl;
+int main()
+{
+  printf("Olá, mundo!\n");
   return 0;
 }
 \end{lstlisting}
@@ -73,7 +72,7 @@ int main() {
 
 Para compilá-lo, digite no terminal de seu sistema operacional
 \begin{lstlisting}
-$ g++ ola.cpp -o ola.x
+$ gcc ola.cc -o ola.x
 \end{lstlisting}
 
 \item \hlemph{Executar}.
@@ -89,39 +88,34 @@ $ ./ola.x
 
 \subsection{Tipos de Dados Básicos}
 
-\hl{Na linguagem C++, \emph{dados} são alocados em \emph{variáveis} com tipos declarados}\footnote{Consulte \href{https://en.wikipedia.org/wiki/C_data_types}{Wikipedia: C data type} para uma lista dos tipos de dados disponíveis na linguagem}.
+\hl{Na linguagem C/C++, \emph{dados} são alocados em \emph{variáveis} com tipos declarados}\footnote{Consulte \href{https://en.wikipedia.org/wiki/C_data_types}{Wikipedia: C data type} para uma lista dos tipos de dados disponíveis na linguagem}.
 
 \begin{ex}
   Consideramos o seguinte código.
-\begin{lstlisting}[caption=dados.cpp]
-/* dados.cpp
+\begin{lstlisting}[caption=dados.cc]
+/* dados.cc
    Exemplo de alocação de variáveis.
 */
-#include <iostream>
-#include <string>
+#include <stdio.h>
 
-int main() {
+int main() 
+{
   // var inteira
   int i = 1;
   // var pto flutuante
   double x;
-  // var string
-  std::string s;
 
   x = 2.5;
-  s = "i + x";
+  char s[6] = "i + x";
   double y = i + x;
-  std::cout << s << " = " \
-	    << y << std::endl;
+  printf("%s = %f\n", s, y);
   return 0;
 }
 \end{lstlisting}
 
   Na linha 9, é alocada uma \hlemph{variável do tipo inteira} com \emph{identificador} \lstinline+i+ e \emph{valor} \lstinline+1+. Na linha 11, é alocada uma \hlemph{variável do tipo ponto flutuante} (64~\textit{bits}) com identificador \lstinline+x+.
 
-  Na linha 13, é alocada uma \hlemph{variável do tipo \textit{string}} (cadeia de caracteres). Antes, na linha 5, precisamos incluir a classe padrão \href{https://cplusplus.com/reference/string/string/}{string}.
-
-  Na linha 17, alocamos uma nova variável \lstinline+y+. Uma vez declarada como ponto flutuante, o resultado da computação \lstinline+i + x+ é reinterpretado (\textit{casting}) para ponto flutuante.
+  Na linha 14, é alocada uma \hlemph{variável do tipo \textit{string}}\footnote{Um arranjo de \lstinline+char+ (caracteres).}. Na linha 15, alocamos uma nova variável \lstinline+y+.
 \end{ex}
 
 \begin{obs}\normalfont{(\hl{Comentários e Continuação de Linha}.)}
@@ -132,20 +126,20 @@ int main() {
   Podemos usar \emph{notação científica} em C++. Por exemplo $5.2\times 10^{-2}$ é digitado da seguinte forma \lstinline+5.2e-2+.
 
 \begin{lstlisting}[caption=notacaoCientifica.cpp]
-#include <iostream>
+#include <stdio.h>
 
-int main() {
+int main()
+{
 
+  int i = -51;
   double x = 5.2e-2;
-  
-  std::cout << "Padrão: "
-	    << x << std::endl;
 
-  std::cout << "Fixada: " << std::fixed
-	    << x << std::endl;;
-
-  std::cout << "Científica: " << std::scientific
-	    << x << std::endl;;
+  // inteiro
+  printf("inteiro: %d\n", i);
+  // fixada
+  printf("fixada: %f\n", x);
+  // notação científica
+  printf("científica: %e\n", x);
   return 0;
 }
 \end{lstlisting}
@@ -162,7 +156,7 @@ y = 0
 \end{exr}
 
 \begin{exr}
-  Implemente um código em que a(o) usuária(o) entra com valores para as variáveis \lstinline+x+ e \lstinline+y+\footnote{A entrada de valores via console pode ser feita com o objeto \href{https://en.cppreference.com/w/cpp/io/cin}{std::cin} da classe \href{https://en.cppreference.com/w/cpp/io/basic_istream}{iostream}.}. Então, os valores das variáveis são permutados entre si.
+  Implemente um código em que a(o) usuária(o) entra com valores para as variáveis \lstinline+x+ e \lstinline+y+\footnote{A entrada de valores via console pode ser feita com o método \href{https://cplusplus.com/reference/cstdio/scanf} da biblioteca \href{https://cplusplus.com/reference/cstdio}{stdio.h}.}. Então, os valores das variáveis são permutados entre si.
 \end{exr}
 
 \subsection{Operações Aritméticas Elementares}
@@ -177,31 +171,20 @@ Os operadores aritméticos elementares são:
 \begin{ex}
   Qual é o valor impresso pelo seguinte código?
 \begin{lstlisting}
-#include <iostream>
+#include <stdio.h>
 
 int main()
 {
-  std::cout << 2+17%9/2*2-1
-	    << std::endl;
+  printf("%f\n", 2+17%9/2*2-1 );
   return 0;
 }
 \end{lstlisting}
 
   Observamos que as operações {\lstinline+*+} e {\lstinline+/+} têm \hlemph{precedência} maior que a operação \lstinline+\%+. Esta, por sua vez, tem precedência maior que as operações {\lstinline!+!} e {\lstinline!-!}. Operações de mesma precedência seguem a ordem da esquerda para direita, conforme escritas na linha de comando. \hl{Usa-se parênteses para alterar a precedência entre as operações}, por exemplo
 \begin{lstlisting}
-std::cout << ((2+17)%9)/2*2-1
-          << std::endl;
+printf("%f\n", ((2+17)%9))/2.*2-1 );
 \end{lstlisting}
-imprime o resultado \lstinline!-1!. Sim, pois a \hl{divisão inteira} está sendo usada. Para computar a divisão em ponto flutuante, um dos operandos deve ser \lstinline!double!. Para tanto, podemos fazer um \hlemph{\textit{casting}} como segue
-\begin{lstlisting}
-std::cout << double((2+17)%9)/2*2-1
-	  << std::endl;
-\end{lstlisting}
-Ou, simplesmente,
-\begin{lstlisting}
-std::cout << ((2+17)%9)/2.*2-1
-	  << std::endl;
-\end{lstlisting}
+imprime o resultado \lstinline!-1!. Sim, pois a \hl{divisão inteira} está sendo usada. Para computar a divisão em ponto flutuante, um dos operandos deve ser \lstinline!double!. Para tanto, podemos fazer um \hlemph{\textit{casting}} \lstinline!double((2+17)\%9)/2*2-1! ou, simplesmente, \lstinline!((2+17)\%9)/2.*2-1!.
 \end{ex}
 
 \begin{obs}\normalfont{(\hl{Precedência das Operações}.)}
@@ -226,44 +209,43 @@ Consulte mais informações sobre a precedência de operadores em \href{https://
   sendo $r$ o menor possível.
 \end{exr}
 
-% \subsection{Funções e Constantes Elementares}
+\subsection{Funções e Constantes Elementares}
 
-% \hl{O \emph{módulo} Python {\href{https://docs.python.org/3/library/math.html}{math}} disponibiliza várias funções e constantes elementares}. Para usá-las, precisamos importar o módulo em nosso código
-% \begin{lstlisting}
-% >>> import math
-% \end{lstlisting}
-% Com isso, temos acesso a todas as definições e declarações contidas neste módulo. Por exemplo
-% \begin{lstlisting}
-% >>> math.pi
-% 3.141592653589793
-% >>> math.cos(math.pi)
-% -1.0
-% >>> math.sqrt(2)
-% 1.4142135623730951
-% >>> math.log(math.e)
-% 1.0
-% \end{lstlisting}
+\hl{A \emph{biblioteca} C/C++ {\href{https://cplusplus.com/reference/cmath}{math.h}} disponibiliza várias funções e constantes elementares}.
+\begin{lstlisting}[caption=mat.cc]
+#include <stdio.h>
+#include <math.h>
 
-% \begin{obs}
-%   Notemos que \lstinline+math.log+ é a função logaritmo natural, i.e. $\ln(x) = \log_e(x)$. A implementação {\python} para o logaritmo de base 10 é \lstinline+math.log(x,10)+ ou, mais acurado, \lstinline+math.log10+.
-% \end{obs}
+int main()
+{
+  printf("pi = %.9e\n", M_PI);
+  printf("2^(1/2) = %.5f\n", sqrt(2.));
+  printf("log(e) = %f\n", log(M_E));
+  return 0;
+}
+\end{lstlisting}
 
-% \begin{exr}
-%   Compute
-%   \begin{enumerate}[a)]
-%   \item $\displaystyle \sen\left(\frac{\pi}{4}\right)$
-%   \item $\displaystyle e^{\log_3(\pi)}$
-%   \item $\displaystyle \sqrt[3]{-27}$
-%   \end{enumerate}
-% \end{exr}
+\begin{obs}\normalfont{(\hl{Logaritmo Natural}.)}
+  Notamos que \lstinline+log+ é a função logaritmo natural, i.e. $\ln(x) = \log_e(x)$. A implementação C/C++ para o logaritmo de base 10 é \lstinline!log10(x)!.
+\end{obs}
 
-% \begin{exr}\label{exr:bhaskara}
-%   Compute as raízes do seguinte polinômio quadrático
-%   \begin{equation}
-%     p(x) = 2x^2 - 2x - 4
-%   \end{equation}
-%   usando a fórmula de Bhaskara{\bhaskara}.
-% \end{exr}
+\begin{exr}
+  Compute
+  \begin{enumerate}[a)]
+  \item $\displaystyle \sen\left(\frac{\pi}{4}\right)$
+  \item $\displaystyle \log_3(\pi)$
+  \item $\displaystyle e^{\log_2(\pi)}$
+  \item $\displaystyle \sqrt[3]{-27}$
+  \end{enumerate}
+\end{exr}
+
+\begin{exr}\label{exr:bhaskara}
+  Compute as raízes do seguinte polinômio quadrático
+  \begin{equation}
+    p(x) = 2x^2 - 2x - 4
+  \end{equation}
+  usando a fórmula de Bhaskara{\bhaskara}.
+\end{exr}
 
 % \subsection{Operadores de Comparação Elementares}
 
