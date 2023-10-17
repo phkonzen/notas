@@ -1,0 +1,932 @@
+%Este trabalho está licenciado sob a Licença Atribuição-CompartilhaIgual 4.0 Internacional Creative Commons. Para visualizar uma cópia desta licença, visite http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR ou mande uma carta para Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+
+\chapter{Redes Informadas pela Física}\label{cap_pinns}
+\thispagestyle{fancy}
+
+\hlemph{Redes neurais informadas pela física} (PINNs, do inglês, \textit{physics-informed neural networks}) são métodos de \textit{deep learning} para a solução de equações diferenciais.
+
+\section{Problemas de Valores Iniciais}
+
+Consideramos um \hlemph{problema de valor inicial} (\hlemph{IVP}, do inglês, \textit{initial value problem})
+\begin{subequations}\label{eq:ivp}\hleq
+  \begin{align}
+    &y'(t) = g\left(t, y(t)\right), ~t_0 < t < t_f,\\
+    &y(t_0) = y_0,
+  \end{align}
+\end{subequations}
+com dada $g:\mathbb{R}^2\to\mathbb{R}$ e dados valor inicial $y_0\in\mathbb{R}$, tempos inicial $t_0\in\mathbb{R}$ e final $t_f\in\mathbb{R}$.
+
+\subsection{Euler PINN}
+
+A solução do IVP \eqref{eq:ivp} pode ser obtida por uma \hlemph{rede neural informada pela física} (PINN, do inglês, \textit{physics-informed neural network}) assumindo a seguinte aproximação de \href{https://notaspedrok.com.br/notas/MatematicaNumericaII/cap_pvi_sec_euler.html}{Euler explícita}
+\begin{subequations}\label{eq:ivp}\hleq
+  \begin{align}
+    &y^{(s+1)} = y^{(s)} + h_tg\left(t^{(s)}, y^{(s)}\right), ~0\leq s\leq n_t-1,\\
+    &y^{(0)} = y_0,
+  \end{align}
+\end{subequations}
+onde $y^{(s)} \approx y\left(t^{(s)}\right)$, nos tempos discretos $t^{(s)} = t_0 + sh_t$, com passo $h_t=(t_t-t_0)/n_t$, $s = 0, 1, 2, \dotsc, n_t$.
+
+Nosso modelo PINN é uma \href{https://notaspedrok.com.br/notas/RedesNeuraisArtificiais/cap_mlp_sec_modelo.html}{perceptron multicamada} (MLP)
+\begin{equation}\hleq
+  \tilde{y} = \mathcal{N}\left(t; \left\{W^{(l)}, \pmb{b}^{(l)}, \pmb{f}^{(l)}\right\}_{l=1}^{n_h+1}\right),
+\end{equation}
+de dada arquitetura $1 - n_n\times n_h - 1$, i.e. uma entrada, $n_h$ camadas escondidas, cada com $n_n$ neurônios e uma saída. A entrada é o valor do tempo $t$ e a saída é $\tilde{y} = \mathcal{N}(t) \approx y(t)$, a estimativa da solução do IVP \eqref{eq:ivp}. Escolhidas as funções de ativação $\pmb{f}^{(l)}$, $l = 1, 2, \dotsc, n_h+1$, o treinamento da PINN consiste em resolver o seguinte problema de minimização
+\begin{equation}\hleq
+  \min_{\left\{W^{(l)}, \pmb{b}^{(l)}\right\}_{l=1}^{n_h+1}} \frac{1}{n_s}\sum_{s=0}^{n_s-1}\left|\mathcal{R}^{(s)}\right|^2 + p_p\left|\tilde{y}^{(0)} - y_0\right|^2,
+\end{equation}
+onde $p_p>0$ é um dado \hlemph{parâmetro de penalização} e $\mathcal{R}^{(s)}$ é o \hlemph{resíduo}
+\begin{equation}\hleq
+  \mathcal{R}^{(s)} := \frac{y^{(s+1)} - y^{(s)}}{h_t} - h_tg\left(t^{(s)}, y^{(s)}\right).
+\end{equation}
+
+\begin{ex}
+  Consideramos o seguinte IVP
+  \begin{subequations}
+    \begin{align}
+      &y'(t) = \sin(t) - y, ~0 < t < 1,\\
+      &y(0) = \frac{1}{2}.
+    \end{align}
+  \end{subequations}
+\end{ex}
+
+\begin{lstlisting}[caption=pyEulerPINN.py]
+import torch
+from scipy.integrate import quad
+
+# model
+## num hidden layers
+nh = 2
+## num neurons per hidden layer
+nn = 50
+## activation fun in hidden layers
+fh = torch.nn.Tanh()
+## model architecture
+model = torch.nn.Sequential()
+model.add_module('layer_1', torch.nn.Linear(1,nn))
+model.add_module('fun_1', fh)
+for l in range(2, nh):
+    model.add_module(f'layer_{l}', torch.nn.Linear(nn,nn))
+    model.add_module(f'fun_{l}', fh)
+model.add_module(f'layer_{nh}', torch.nn.Linear(nn,1))
+
+# IVP params
+
+## init time
+t0 = 0.
+## init condition
+y0 = 0.5
+## final time
+tf = 1.
+
+## num of time samples
+ns = 10
+## time step
+ht = (tf - t0)/ns
+## time samples
+ts = torch.linspace(t0, tf, ns+1).reshape(-1,1)
+
+## rhs
+def g(t, y):
+    return y + torch.sin(t)
+
+# training
+## num of epochs
+nepochs = 10000
+## output loss freq
+eout = 100
+## tolerance
+tol = 1e-4
+## early-stop
+n_iter_no_change = 100
+
+## optimizer
+optim = torch.optim.Adam(model.parameters(), lr=1e-3)
+
+# training loop
+count_no_change = 0
+best_loss = 1e38
+for epoch in range(nepochs):
+
+    # forward
+    yy = model(ts)
+
+    # loss
+    ## t>0
+    lup = torch.mean(((yy[1:] - yy[:-1])/ht \
+                      - g(ts[:-1], yy[:-1]))**2)
+    ## t = 0
+    lic = (yy[0] - y0)**2
+
+    loss_train = lup + lic        
+
+    # backward
+    optim.zero_grad()
+    loss_train.backward()
+    optim.step()
+
+    # validation
+    ys = model(ts).detach()
+    yv = torch.empty_like(ys)
+    yv[0] = y0
+    for s in range(1,ns+1):
+        yv[s] = yv[s-1] + quad(lambda t: g(torch.tensor([[t]]),
+                                      model(torch.tensor([[t]])).detach()),
+                               ts[s-1], ts[s])[0]
+    loss_valid = torch.mean((ys - yv)**2)
+
+    if (loss_valid < best_loss):
+        torch.save(model, 'model.pt')
+        best_loss = loss_valid
+        count_no_change = 0
+    else:
+        count_no_change += 1
+
+    if ((epoch % eout == 0) or (count_no_change == 0)):
+        msg = f'{epoch}: train = {loss_train.item():.4e}, valid = {loss_valid.item():.4e}'
+        if (count_no_change == 0):
+            msg += ' (best)'
+        print(msg)
+
+    if ((best_loss < tol) or (count_no_change > n_iter_no_change)):
+        break
+
+    if (loss_train < tol):
+        break
+\end{lstlisting}
+
+\subsection{AD-PINN}
+
+Aqui nosso modelo PINN é novamnte uma \href{https://notaspedrok.com.br/notas/RedesNeuraisArtificiais/cap_mlp_sec_modelo.html}{perceptron multicamada} (MLP)
+\begin{equation}\hleq
+  \tilde{y} = \mathcal{N}\left(t; \left\{W^{(l)}, \pmb{b}^{(l)}, \pmb{f}^{(l)}\right\}_{l=1}^{n_h+1}\right),
+\end{equation}
+de dada arquitetura $1 - n_n\times n_h - 1$, i.e. uma entrada, $n_h$ camadas escondidas, cada com $n_n$ neurônios e uma saída. A entrada é o valor do tempo $t$ e a saída é $\tilde{y} = \mathcal{N}(t) \approx y(t)$, a estimativa da solução do IVP \eqref{eq:ivp}. Escolhidas as funções de ativação $\pmb{f}^{(l)}$, $l = 1, 2, \dotsc, n_h+1$, o treinamento da PINN consiste em resolver o seguinte problema de minimização
+\begin{equation}\hleq
+  \min_{\left\{W^{(l)}, \pmb{b}^{(l)}\right\}_{l=1}^{n_h+1}} \frac{1}{n_s}\sum_{s=0}^{n_s-1}\left|\mathcal{R}^{(s)}\right|^2 + p_p\left|\tilde{y}^{(0)} - y_0\right|^2,
+\end{equation}
+onde $p_p>0$ é um dado \hlemph{parâmetro de penalização} e $\mathcal{R}^{(s)}$ é o \hlemph{resíduo}
+\begin{equation}\hleq
+  \mathcal{R}^{(s)} := y'^{(s)} - h_tg\left(t^{(s)}, y^{(s)}\right),
+\end{equation}
+com $y'^{(s)} \approx y'\left(t^{(s)}\right)$ computada por diferenciação automática da MLP.
+
+\begin{ex}
+  Consideramos o seguinte IVP
+  \begin{subequations}
+    \begin{align}
+      &y'(t) = \sin(t) - y, ~0 < t < 1,\\
+      &y(0) = \frac{1}{2}.
+    \end{align}
+  \end{subequations}
+\end{ex}
+
+\begin{lstlisting}[caption=pyEulerPINN.py]
+import torch
+from scipy.integrate import quad
+
+# model
+## num hidden layers
+nh = 2
+## num neurons per hidden layer
+nn = 50
+## activation fun in hidden layers
+fh = torch.nn.Tanh()
+## model architecture
+model = torch.nn.Sequential()
+model.add_module('layer_1', torch.nn.Linear(1,nn))
+model.add_module('fun_1', fh)
+for l in range(2, nh):
+    model.add_module(f'layer_{l}', torch.nn.Linear(nn,nn))
+    model.add_module(f'fun_{l}', fh)
+model.add_module(f'layer_{nh}', torch.nn.Linear(nn,1))
+
+# IVP params
+
+## init time
+t0 = 0.
+## init condition
+y0 = 0.5
+## final time
+tf = 1.
+
+## num of time samples
+ns = 10
+## time step
+ht = (tf - t0)/ns
+## time samples
+ts = torch.linspace(t0, tf, ns+1).reshape(-1,1)
+
+## rhs
+def g(t, y):
+    return y + torch.sin(t)
+
+# training
+## num of epochs
+nepochs = 10000
+## output loss freq
+eout = 100
+## tolerance
+tol = 1e-4
+## early-stop
+n_iter_no_change = 100
+
+## optimizer
+optim = torch.optim.Adam(model.parameters(), lr=1e-3)
+
+# training loop
+count_no_change = 0
+best_loss = 1e38
+for epoch in range(nepochs):
+
+    # forward
+    yy = model(ts)
+
+    # loss
+    ## t>0
+    lup = torch.mean(((yy[1:] - yy[:-1])/ht \
+                      - g(ts[:-1], yy[:-1]))**2)
+    ## t = 0
+    lic = (yy[0] - y0)**2
+
+    loss_train = lup + lic        
+
+    # backward
+    optim.zero_grad()
+    loss_train.backward()
+    optim.step()
+
+    # validation
+    ys = model(ts).detach()
+    yv = torch.empty_like(ys)
+    yv[0] = y0
+    for s in range(1,ns+1):
+        yv[s] = yv[s-1] + quad(lambda t: g(torch.tensor([[t]]),
+                                      model(torch.tensor([[t]])).detach()),
+                               ts[s-1], ts[s])[0]
+    loss_valid = torch.mean((ys - yv)**2)
+
+    if (loss_valid < best_loss):
+        torch.save(model, 'model.pt')
+        best_loss = loss_valid
+        count_no_change = 0
+    else:
+        count_no_change += 1
+
+    if ((epoch % eout == 0) or (count_no_change == 0)):
+        msg = f'{epoch}: train = {loss_train.item():.4e}, valid = {loss_valid.item():.4e}'
+        if (count_no_change == 0):
+            msg += ' (best)'
+        print(msg)
+
+    if ((best_loss < tol) or (count_no_change > n_iter_no_change)):
+        break
+
+    if (loss_train < tol):
+        break
+\end{lstlisting}
+
+\subsection{Exercícios}
+
+[[tag:construcao]]
+
+\section{Aplicação: Equação de Laplace}\label{cap_mlp_sec_eqlaplace}
+
+Vamos criar uma MLP para resolver
+\begin{subequations}
+  \begin{align}
+    -\Delta u &= 0,\quad \pmb{x}\in D = (0, 1)^2,\\
+    u &= 0,\quad \pmb{x}\in\p D.
+  \end{align}
+\end{subequations}
+
+Como exemplo, vamos considerar um problema com solução manufaturada
+\begin{equation}
+  u(\pmb{x}) = x_1(1-x_1) - x_2(1-x_2).
+\end{equation}
+
+\subsection{Diferenças Finitas}
+
+% \lstinputlisting[caption=mlp\_eqlaplace.py, label=cap_mlp_sec_modelo:cod:mlp_eqlaplace]{./cap_mlp/dados/py_mlp_eqlaplace/main.py}
+\begin{lstlisting}[caption=mlp\_eqlaplace\_df.py, label=cap_mlp_sec_modelo:cod:mlp_eqlaplace_df]
+import torch
+import matplotlib.pyplot as plt
+import random
+import numpy as np
+
+# modelo
+model = torch.nn.Sequential(
+    torch.nn.Linear(2,50),
+    torch.nn.Tanh(),
+    torch.nn.Linear(50,10),
+    torch.nn.Tanh(),
+    torch.nn.Linear(10,5),
+    torch.nn.Tanh(),
+    torch.nn.Linear(5,1)
+)
+
+# SGD - (Stochastic) Gradient Descent
+optim = torch.optim.SGD(model.parameters(),
+                        lr = 1e-3,
+                        momentum = 0.9,
+                        dampening = 0.)
+
+# Solução esperada
+def u(x, y):
+    return a*x*(1-x) - a*y*(1-y)
+
+
+def laplace_loss(X, U, h2, n, uc=u, p=1.):
+    # num de amostras
+    nc = 2*n + 2*(n-2)
+    ni = n**2 - nc
+
+    # loss interno
+    lin = 0.
+    for i in range(1,n-1):
+      for j in range(1,n-1):
+        s = j + i*n
+        l = (U[s-n, 0] - 2 * U[s, 0] + U[s+n, 0])/h2 # x
+        l += (U[s-1, 0] - 2 * U[s, 0] + U[s+1, 0])/h2 # y
+        lin += l**2
+    lin /= ni 
+
+    # loss contorno
+    lc = 0.
+    # 0 <= x <= 1 e y == 0
+    for i in range(n):
+        s = i*n
+        x = M[s,0]
+        y = M[s,1]
+        lc += (U[s,0] - uc(x,y))**2
+    # 0 <= x <= 1 e y == 1
+    for i in range(n):
+        s = n-1 + i*n
+        x = M[s,0]
+        y = M[s,1]
+        lc += (U[s,0] - uc(x,y))**2
+    # 0 == x e 0 < y < 1
+    for j in range(1, n-1):
+        s = j
+        x = M[s,0]
+        y = M[s,1]
+        lc += (U[s,0] - uc(x,y))**2
+    # 1 == x e 0 < y < 1
+    for j in range(1, n-1):
+        s = j + n*(n-1)
+        x = M[s,0]
+        y = M[s,1]
+        lc += (U[s,0] - uc(x,y))**2
+    lc *= p/nc
+    
+    loss = lin + lc
+    return loss
+
+    
+# dados do problema
+
+# collocation points
+a = 1
+n = 11
+ns = n**2
+h = 1./(n-1)
+h2 = h**2
+
+# malha
+x = torch.linspace(0, 1, n)
+y = torch.linspace(0, 1, n)
+
+M = torch.empty((ns, 2))
+s = 0
+for i, xx in enumerate(x):
+  for j, yy in enumerate(y):
+    M[s,0] = xx
+    M[s,1] = yy
+    s += 1
+
+# gráfico
+X, Y = np.meshgrid(x, y)
+U_esp = u(X, Y)
+
+# training
+nepochs = 10000
+nout_loss = 100
+nout_plot = 500
+
+for epoch in range(nepochs):
+
+    # forward
+    U_est = model(M)
+
+    # loss function
+    loss = laplace_loss(M, U_est, h2, n, u, p=10.)
+
+    if ((epoch % nout_loss) == 0):
+        print(f'{epoch}: loss = {loss.item():.4e}')
+    
+    # output current solution
+    if ((epoch) % nout_plot == 0):
+        # verificação
+        fig = plt.figure()
+        ax = fig.add_subplot()
+
+        ns = 50
+        x1 = torch.linspace(0., 1., ns)
+        x2 = torch.linspace(0., 1., ns)
+        X1, X2 = torch.meshgrid(x1, x2)
+        # exact
+        Z_esp = torch.empty_like(X1)
+        for i,x in enumerate(x1):
+            for j,y in enumerate(x2):
+                Z_esp[i,j] = u(x, y)
+        c = ax.contour(X1, X2, Z_esp, levels=10, colors='white')
+        ax.clabel(c)
+
+        X_plot = torch.cat((X1.reshape(-1,1),
+                            X2.reshape(-1,1)), dim=1)
+        Z_est = model(X_plot)
+        Z_est = Z_est.reshape((ns,ns))
+        cf = ax.contourf(X1, X2, Z_est.detach(), levels=10, cmap='coolwarm')
+        plt.colorbar(cf)
+        
+        ax.grid()
+        ax.set_xlabel('$x_1$')
+        ax.set_ylabel('$x_2$')
+        plt.show()        
+
+    # backward
+    optim.zero_grad()
+    loss.backward()
+    optim.step()
+\end{lstlisting}
+
+\subsection{Autograd}
+
+\begin{lstlisting}[caption=mlp\_eqlaplace\_ag.py, label=cap_mlp_sec_modelo:cod:mlp_eqlaplace_ag]
+import torch
+import matplotlib.pyplot as plt
+import random
+import numpy as np
+
+# modelo
+model = torch.nn.Sequential(
+    torch.nn.Linear(2,50),
+    torch.nn.Tanh(),
+    torch.nn.Linear(50,10),
+    torch.nn.Tanh(),
+    torch.nn.Linear(10,5),
+    torch.nn.Tanh(),
+    torch.nn.Linear(5,1)
+)
+
+# SGD - (Stochastic) Gradient Descent
+optim = torch.optim.SGD(model.parameters(),
+                        lr = 1e-3,
+                        momentum = 0.9,
+                        dampening = 0.)
+
+# Solução esperada
+def u(x, y):
+    return a*x*(1-x) - a*y*(1-y)
+
+
+def laplace_loss(X, U, h2, n, uc=u, p=1.):
+    # num de amostras
+    nc = 2*n + 2*(n-2)
+    ni = n**2 - nc
+
+    # loss interno
+    lin = 0.
+    for i in range(1,n-1):
+      for j in range(1,n-1):
+        s = j + i*n
+        x = X[s:s+1,:].detach()
+        x.requires_grad = True
+        u = model(x)
+        grad_u = torch.autograd.grad(u, x,
+                                     create_graph = True,
+                                     retain_graph = True)[0]
+        u_x = grad_u[0,0]
+        u_y = grad_u[0,1]
+
+        u_xx = torch.autograd.grad(u_x, x,
+                                   create_graph = True,
+                                   retain_graph = True)[0][0,0]
+        u_yy = torch.autograd.grad(u_y, x,
+                                   create_graph = True,
+                                   retain_graph = True)[0][0,1]
+        lin = torch.add(lin, (u_xx + u_yy)**2)
+    lin /= ni 
+
+    # loss contorno
+    lc = 0.
+    # 0 <= x <= 1 e y == 0
+    for i in range(n):
+        s = i*n
+        x = M[s,0]
+        y = M[s,1]
+        lc += (U[s,0] - uc(x,y))**2
+    # 0 <= x <= 1 e y == 1
+    for i in range(n):
+        s = n-1 + i*n
+        x = M[s,0]
+        y = M[s,1]
+        lc += (U[s,0] - uc(x,y))**2
+    # 0 == x e 0 < y < 1
+    for j in range(1, n-1):
+        s = j
+        x = M[s,0]
+        y = M[s,1]
+        lc += (U[s,0] - uc(x,y))**2
+    # 1 == x e 0 < y < 1
+    for j in range(1, n-1):
+        s = j + n*(n-1)
+        x = M[s,0]
+        y = M[s,1]
+        lc += (U[s,0] - uc(x,y))**2
+    lc *= p/nc
+    
+    loss = lin + lc
+    return loss
+
+    
+# dados do problema
+
+# collocation points
+a = 1
+n = 11
+ns = n**2
+h = 1./(n-1)
+h2 = h**2
+
+# malha
+x = torch.linspace(0, 1, n)
+y = torch.linspace(0, 1, n)
+
+M = torch.empty((ns, 2))
+s = 0
+for i, xx in enumerate(x):
+  for j, yy in enumerate(y):
+    M[s,0] = xx
+    M[s,1] = yy
+    s += 1
+
+# gráfico
+X, Y = np.meshgrid(x, y)
+U_esp = u(X, Y)
+
+# training
+nepochs = 10000
+nout_loss = 100
+nout_plot = 500
+
+for epoch in range(nepochs):
+
+    # forward
+    U_est = model(M)
+
+    # loss function
+    loss = laplace_loss(M, U_est, h2, n, u, p=10.)
+
+    if ((epoch % nout_loss) == 0):
+        print(f'{epoch}: loss = {loss.item():.4e}')
+    
+    # output current solution
+    if ((epoch) % nout_plot == 0):
+        # verificação
+        fig = plt.figure()
+        ax = fig.add_subplot()
+
+        ns = 50
+        x1 = torch.linspace(0., 1., ns)
+        x2 = torch.linspace(0., 1., ns)
+        X1, X2 = torch.meshgrid(x1, x2)
+        # exact
+        Z_esp = torch.empty_like(X1)
+        for i,x in enumerate(x1):
+            for j,y in enumerate(x2):
+                Z_esp[i,j] = u(x, y)
+        c = ax.contour(X1, X2, Z_esp, levels=10, colors='white')
+        ax.clabel(c)
+
+        X_plot = torch.cat((X1.reshape(-1,1),
+                            X2.reshape(-1,1)), dim=1)
+        Z_est = model(X_plot)
+        Z_est = Z_est.reshape((ns,ns))
+        cf = ax.contourf(X1, X2, Z_est.detach(), levels=10, cmap='coolwarm')
+        plt.colorbar(cf)
+        
+        ax.grid()
+        ax.set_xlabel('$x_1$')
+        ax.set_ylabel('$x_2$')
+        plt.show()        
+
+    # backward
+    optim.zero_grad()
+    loss.backward()
+    optim.step()
+\end{lstlisting}
+
+\subsection{Exercícios}
+
+[[tag::construcao]]
+
+\section{Aplicação: Equação do Calor}\label{cap_mlp_sec_calor}
+
+Consideramos o problema
+\begin{subequations}\label{cap_mlp_sec_calor:eq:prob}
+  \begin{align}
+    &u_t = u_{xx} + f, (t,x)\in (0, 1] \times (-1, 1),\\
+    &u(0,x) = \sen(\pi x), x\in [-1, 1],\\
+    &u(t,-1) = u(t,1) = 0, t\in (t_0, tf],
+  \end{align}
+\end{subequations}
+onde $f(t,x) = (\pi^2 - 1)e^{-t}\sen(\pi x)$ é a fonte. Este problema foi manufaturado a partir da solução
+\begin{equation}
+  u(t,x) = e^{-t}\sen(\pi x).
+\end{equation}
+
+\subsection{Diferenças Finitas}
+
+Assumimos a discretização no tempo $t^{(k)} = kh_t$, $k = 0, 1, 2, \dotsc, n_t$, com passo $h_t = 1/n_t$. Para a discretização no espaço, assumimos $x_{i} = -1 + ih_x$, $i = 0, 1, 2, \dotsc, n_x$, com passo $h_x = 2/n_x$. Ainda, denotando $u^{(k)}_i \approx u\left(t^{(k)}, x_i\right)$, usamos as seguintes fórmulas de diferenças finitas
+\begin{equation}
+  u_t\left(t^{(k)}, x_i\right) \approx \frac{u_i^{(k)} - u_i^{(k-1)}}{h_t},\\
+\end{equation}
+para $0<k<n_t$, $0\leq i\leq n_x$ e
+\begin{equation}
+  u_{xx}\left(t^{(k)}, x_i\right) \approx \frac{u_{i-1}^{(k)} - 2u_i^{(k)} + u_{i+1}^{(k)}}{h_x^2},\\
+\end{equation}
+para $0\leq k\leq n_t$ e $0 < i < n_x$.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./cap_mlp/dados/fig_mlp_calor/fig}
+  \caption{Soluções RNA (linhas brancas) \textit{versus} analítica (cores de face) para o Problema \ref{cap_mlp_sec_calor:eq:prob}.}
+  \label{cap_mlp_sec_calor:fig:rna_calor}
+\end{figure}
+
+\begin{lstlisting}[caption=mlp\_calor.py]
+import torch
+from torch import pi, sin, exp
+import matplotlib.pyplot as plt
+
+# modelo
+model = torch.nn.Sequential(
+    torch.nn.Linear(2,500),
+    torch.nn.ELU(),
+    torch.nn.Linear(500,500),
+    torch.nn.ELU(),
+    torch.nn.Linear(500,500),
+    torch.nn.ELU(),
+    torch.nn.Linear(500,1)
+)
+
+# otimizador
+optim = torch.optim.SGD(model.parameters(),
+                        lr = 1e-2, momentum = 0.9)
+scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optim)
+
+# amostras
+nt = 10
+ht = 1./nt
+tt = torch.linspace(0., 1., nt+1)
+nx = 20
+hx = 2./nx
+xx = torch.linspace(-1., 1., nx+1)
+T, X = torch.meshgrid(tt, xx,
+                      indexing='ij')
+Uesp = torch.empty_like(T)
+nsamples = (nt+1)*(nx+1)
+M = torch.empty((nsamples, 2))
+s = 0
+for i,t in enumerate(tt):
+    for j,x in enumerate(xx):
+        Uesp[i,j] = exp(-t)*sin(pi*x)
+        M[s,0] = t
+        M[s,1] = x
+        s += 1
+
+# treinamento
+nepochs = 10001
+tol = 1e-5
+nout = 100
+
+for epoch in range(nepochs):
+
+    # forward
+    Uest = model(M)
+
+    # loss
+    ## c.i.
+    lci = torch.tensor([0.])
+    for j,x in enumerate(xx):
+        s = j
+        assert(M[s,1] == x)
+        uesp = sin(pi*x)
+        lci += (Uest[s] - uesp)**2
+    ## pts internos
+    lin = torch.tensor([0.])
+    for i in range(1,nt+1):
+        for j in range(1,nx):
+            s = j + i*(nx+1)
+            # u_t
+            l = (Uest[s] - Uest[s-nx-1])/ht
+            # u_xx
+            l -= (Uest[s-1] - 2*Uest[s] + Uest[s+1])/hx**2
+            # f
+            l -= (pi**2 - 1.)*exp(-M[s,0])*sin(pi*M[s,1])
+            lin += l**2
+    ## c.c.
+    lcc = torch.tensor([0.])
+    for i,t in enumerate(tt[1:]):
+        # x = 0
+        s = i*(nx+1)
+        lcc += Uest[s]**2
+        # x = 1
+        s = nx + i*(nx+1)
+        lcc += Uest[s]**2
+
+    loss = (lci + lin + lcc)/nsamples
+
+    lr = optim.param_groups[-1]['lr']
+    print(f'{epoch}: loss = {loss.item():.4e}, lr = {lr:.4e}')
+
+    # output
+    if ((epoch % nout == 0) or (loss.item() < tol)):
+        plt.close()
+        fig = plt.figure(dpi=300)
+        ax = fig.add_subplot()
+        cb = ax.contourf(T, X, Uesp,
+                         levels=10)
+        fig.colorbar(cb)
+        cl = ax.contour(T, X, Uest.detach().reshape(nt+1,nx+1),
+                        levels=10, colors='white')
+        ax.clabel(cl, fmt='%.1f')
+        ax.set_xlabel('$t$')
+        ax.set_ylabel('$x$')
+        plt.title(f'{epoch}: loss = {loss.item():.4e}, lr = {lr:.4e}')
+        plt.savefig(f'./results/sol_{epoch:0>6}.png')
+
+    if (loss.item() < tol):
+        break
+    
+    # backward
+    scheduler.step(loss)
+    optim.zero_grad()
+    loss.backward()
+    optim.step()
+\end{lstlisting}
+
+\subsection{Diferenciação Automética}
+
+\begin{lstlisting}[caption=mlp\_calor\_autograd.py]
+import torch
+from torch import pi, sin, exp
+from collections import OrderedDict
+import matplotlib.pyplot as plt
+
+# modelo
+hidden = [50]*8
+activation = torch.nn.Tanh()
+layerList = [('layer_0', torch.nn.Linear(2, hidden[0])),
+             ('activation_0', activation)]
+for l in range(len(hidden)-1):
+    layerList.append((f'layer_{l+1}',
+                      torch.nn.Linear(hidden[l], hidden[l+1])))
+    layerList.append((f'activation_{l+1}', activation))
+layerList.append((f'layer_{len(hidden)}', torch.nn.Linear(hidden[-1], 1)))
+#layerList.append((f'activation_{len(hidden)}', torch.nn.Sigmoid()))
+layerDict = OrderedDict(layerList)
+model = torch.nn.Sequential(OrderedDict(layerDict))
+
+# otimizador
+# optim = torch.optim.SGD(model.parameters(),
+#                          lr = 1e-3, momentum=0.85)
+optim = torch.optim.Adam(model.parameters(),
+                         lr = 1e-2)
+scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optim,
+                                                       factor=0.1,
+                                                       patience=100)
+
+# treinamento
+nt = 10
+tt = torch.linspace(0., 1., nt+1)
+nx = 20
+xx = torch.linspace(-1., 1., nx+1)
+T,X = torch.meshgrid(tt, xx, indexing='ij')
+tt = tt.reshape(-1,1)
+xx = xx.reshape(-1,1)
+
+Sic = torch.hstack((torch.zeros_like(xx), xx))
+Uic = sin(pi*xx)
+
+Sbc0 = torch.hstack((tt[1:,:], -1.*torch.ones_like(tt[1:,:])))
+Ubc0 = torch.zeros_like(tt[1:,:])
+
+Sbc1 = torch.hstack((tt[1:,:], 1.*torch.ones_like(tt[1:,:])))
+Ubc1 = torch.zeros_like(tt[1:,:])
+
+tin = tt[1:,:]
+xin = xx[1:-1,:]
+Sin = torch.empty((nt*(nx-1), 2))
+Fin = torch.empty((nt*(nx-1), 1))
+s = 0
+for i,t in enumerate(tin):
+    for j,x in enumerate(xin):
+        Sin[s,0] = t
+        Sin[s,1] = x
+        Fin[s,0] = (pi**2 - 1.)*exp(-t)*sin(pi*x)
+        s += 1
+tin = torch.tensor(Sin[:,0:1], requires_grad=True)
+xin = torch.tensor(Sin[:,1:2], requires_grad=True)
+Sin = torch.hstack((tin,xin))
+
+nepochs = 50001
+tol = 1e-4
+nout = 100
+
+for epoch in range(nepochs):
+
+    # loss
+
+    ## c.i.
+    Uest = model(Sic)
+    lic = torch.mean((Uest - Uic)**2)
+    
+    ## residual
+    U = model(Sin)
+    U_t = torch.autograd.grad(
+        U, tin,
+        grad_outputs=torch.ones_like(U),
+        retain_graph=True,
+        create_graph=True)[0]
+    U_x = torch.autograd.grad(
+        U, xin,
+        grad_outputs=torch.ones_like(U),
+        retain_graph=True,
+        create_graph=True)[0]
+    U_xx = torch.autograd.grad(
+        U_x, xin,
+        grad_outputs=torch.ones_like(U_x),
+        retain_graph=True,
+        create_graph=True)[0]
+    res = U_t - U_xx - Fin
+    lin = torch.mean(res**2)
+
+    ## c.c. x = -1
+    Uest = model(Sbc0)
+    lbc0 = torch.mean(Uest**2)
+
+    ## c.c. x = 1
+    Uest = model(Sbc1)
+    lbc1 = torch.mean(Uest**2)
+
+    loss = lin + lic + lbc0 + lbc1
+
+    lr = optim.param_groups[-1]['lr']
+    print(f'{epoch}: loss = {loss.item():.4e}, lr = {lr:.4e}')
+
+    # backward
+    scheduler.step(loss)
+    optim.zero_grad()
+    loss.backward()
+    optim.step()
+
+
+    # output
+    if ((epoch % nout == 0) or (loss.item() < tol)):
+        plt.close()
+        fig = plt.figure(dpi=300)
+        nt = 10
+        tt = torch.linspace(0., 1., nt+1)
+        nx = 20
+        xx = torch.linspace(-1., 1., nx+1)
+        T,X = torch.meshgrid(tt, xx, indexing='ij')
+        Uesp = torch.empty_like(T)
+        M = torch.empty(((nt+1)*(nx+1),2))
+        s = 0
+        for i,t in enumerate(tt):
+            for j,x in enumerate(xx):
+                Uesp[i,j] = exp(-t)*sin(pi*x)
+                M[s,0] = t
+                M[s,1] = x
+                s += 1
+        Uest = model(M)
+        Uest = Uest.detach().reshape(nt+1,nx+1)
+        l2rel = torch.norm(Uest - Uesp)/torch.norm(Uesp)
+        
+        ax = fig.add_subplot()
+        cb = ax.contourf(T, X, Uesp,
+                         levels=10)
+        fig.colorbar(cb)
+        cl = ax.contour(T, X, Uest,
+                        levels=10, colors='white')
+        ax.clabel(cl, fmt='%.1f')
+        ax.set_xlabel('$t$')
+        ax.set_ylabel('$x$')
+        plt.title(f'{epoch}: loss = {loss.item():.4e}, l2rel = {l2rel:.4e}')
+        plt.savefig(f'./results/sol_{(epoch//nout):0>6}.png')
+
+    if ((loss.item() < tol) or (lr < 1e-6)):
+        break
+\end{lstlisting}
