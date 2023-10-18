@@ -148,24 +148,28 @@ int main()
 \begin{exr}
   Antes de implementar, diga qual o valor de \lstinline+x+ após as seguintes instruções.
 \begin{lstlisting}
-int x = 1
-int y = x
-y = 0
+int x = 1;
+int y = x;
+y = 0;
 \end{lstlisting}
   Justifique seu resposta e verifique-a.
 \end{exr}
 
 \begin{exr}
-  Implemente um código em que a(o) usuária(o) entra com valores para as variáveis \lstinline+x+ e \lstinline+y+\footnote{A entrada de valores via console pode ser feita com o método \href{https://cplusplus.com/reference/cstdio/scanf} da biblioteca \href{https://cplusplus.com/reference/cstdio}{stdio.h}.}. Então, os valores das variáveis são permutados entre si.
+  Implemente um código em que a(o) usuária(o) entra com valores para as variáveis \lstinline+x+ e \lstinline+y+. Então, os valores das variáveis são permutados entre si. Dica: a entrada de dados por usuária(o) pode ser feita com o método C/C++ \href{https://cplusplus.com/reference/cstdio/scanf}{scanf} da biblioteca \href{https://cplusplus.com/reference/cstdio}{stdio.h}. Por exemplo,
+\begin{lstlisting}
+double x;
+scanf("%lf", x);
+\end{lstlisting}
+faz a leitura de um \lstinline+double+ (long float) e o armazena na variável \lstinline+x+.
 \end{exr}
 
 \subsection{Operações Aritméticas Elementares}
 
-Os operadores aritméticos elementares são:
+Os operadores aritméticos elementares são\footnote{Em ordem de precedência.}:
 \begin{itemize}
-\item[]\hl{{\lstinline!+, -!} \emph{: adição, subtração}}
-\item[]\hl{{\lstinline+*, /+} \emph{: multiplicação, divisão}}
-\item[]\hl{{\lstinline+\%+} \emph{: módulo}}
+\item[]\hl{{\lstinline!*!}, {\lstinline!/!}, {\texttt{\%}} \emph{: multiplicação, divisão, módulo}}
+\item[]\hl{{\lstinline!+!}, {\lstinline!-!} \emph{: adição, subtração}}
 \end{itemize}
 
 \begin{ex}
@@ -180,11 +184,11 @@ int main()
 }
 \end{lstlisting}
 
-  Observamos que as operações {\lstinline+*+} e {\lstinline+/+} têm \hlemph{precedência} maior que a operação \lstinline+\%+. Esta, por sua vez, tem precedência maior que as operações {\lstinline!+!} e {\lstinline!-!}. Operações de mesma precedência seguem a ordem da esquerda para direita, conforme escritas na linha de comando. \hl{Usa-se parênteses para alterar a precedência entre as operações}, por exemplo
+  Observamos que as operações {\lstinline+*+}, {\lstinline+/+} e {\texttt{\%}} têm precedência maior que as operações {\lstinline!+!} e {\lstinline!-!}. Operações de mesma precedência seguem a ordem da esquerda para direita, conforme escritas na linha de comando. \hl{Usa-se parênteses para alterar a precedência entre as operações}, por exemplo
 \begin{lstlisting}
-printf("%f\n", ((2+17)%9))/2.*2-1 );
+printf("%f\n", (2+17)%9/2*2-1 );
 \end{lstlisting}
-imprime o resultado \lstinline!-1!. Sim, pois a \hl{divisão inteira} está sendo usada. Para computar a divisão em ponto flutuante, um dos operandos deve ser \lstinline!double!. Para tanto, podemos fazer um \hlemph{\textit{casting}} \lstinline!double((2+17)\%9)/2*2-1! ou, simplesmente, \lstinline!((2+17)\%9)/2.*2-1!.
+imprime o resultado \lstinline!-1!. Sim, pois a \hl{divisão inteira} está sendo usada. Para computar a divisão em ponto flutuante, um dos operandos deve ser \lstinline!double!. Para tanto, podemos fazer um \hlemph{\textit{casting}} \lstinline!double((2+17)\%9)/2*2-1! ou, simplesmente, \lstinline!(2+17)\%9/2.*2-1!.
 \end{ex}
 
 \begin{obs}\normalfont{(\hl{Precedência das Operações}.)}
@@ -202,7 +206,7 @@ Consulte mais informações sobre a precedência de operadores em \href{https://
 \hl{O operador {\lstinline+\%+} módulo computa o \emph{resto} da divisão inteira}, por exemplo, \lstinline+5\%2+ é igual a \lstinline+1+.
 
 \begin{exr}
-  Use o {\python} para computar os inteiros não negativos $q$ e $r$ tais que
+  Use C/C++ para computar os inteiros não negativos $q$ e $r$ tais que
   \begin{equation}
     25 = q\cdot 3 + r,
   \end{equation}
@@ -347,345 +351,6 @@ int main()
 \begin{exr}
   Implemente uma instrução para computar o operador \lstinline+xor+ (ou exclusivo). Dadas duas afirmações \lstinline+A+ e \lstinline+B+, \lstinline+A xor B+ é \lstinline+true+ no caso de uma, e somente uma, das afirmações ser \lstinline+true+, caso contrário é \lstinline+false+.
 \end{exr}
-
-% \subsection{Conjuntos}
-
-% {\python} tem conjuntos finitos como um tipo básico de variável. Um conjunto é uma coleção de itens \emph{não ordenada} e \emph{imutável} e \emph{não admite itens duplicados}. Por exemplo,
-% \begin{lstlisting}
-% >>> a = {1, 2, 3}
-% >>> type(a)
-% <class 'set'>
-% >>> b = set((2, 1, 3, 3))
-% >>> b
-% {1, 2, 3}
-% >>> a == b
-% True
-% >>> # conjunto vazio
-% >>> e = set()
-% \end{lstlisting}
-% aloca o conjunto $a = \{1,2, 3\}$. Note que o conjunto $b$ é igual a $a$. Observamos que o conjunto vazio deve ser construído com a instrução \lstinline+set()+ e não com \lstinline+{}+\footnote{Isso constrói um dicionário vazio, como introduziremos logo mais.}.
-
-% \begin{obs}
-%   A função {\python} \lstinline+len+ retorna o número de elementos de um conjunto. Por exemplo,
-%   \begin{lstlisting}
-%   >>> len(a)
-%   3
-%   \end{lstlisting}
-% \end{obs}
-
-% Operadores envolvendo conjuntos:
-% \begin{itemize}
-% \item[] \lstinline+-+: diferença entre conjuntos;
-% \item[] \lstinline+|+: união de conjuntos;
-% \item[] \lstinline+&+: interseção de conjuntos;
-% \item[] \lstinline+^+: diferença simétrica;
-% \end{itemize}
-
-% \begin{ex}
-%   Sejam os conjuntos
-%   \begin{gather}
-%     A = \{2, \pi, -0.25, 3, \text{'banana'}\},\\
-%     B = \{\text{'laranja'}, 3, \operatorname{arc cos}(-1), -1\}
-%   \end{gather}
-%   Compute
-%   \begin{enumerate}[a)]
-%   \item $A\setminus B$
-%   \item $A\cup B$
-%   \item $A\cap B$
-%   \item $A\Delta B = (A\setminus B) \cup (B\setminus A)$
-%   \end{enumerate}
-
-%   \noindent{\bf Resolução.} Começamos alocando os conjuntos como segue
-%   \begin{lstlisting}
-%   >>> import math
-%   >>> A = {2, math.pi, -0.25, 3, 'banana'}
-%   >>> B = {'laranja', 3, math.acos(-1), -1}
-%   \end{lstlisting}
-  
-%   \begin{enumerate}[a)]
-%   \item $A\setminus B$
-%     \begin{lstlisting}
-%     >>> A - B
-%     {-0.25, 2, 'banana'}
-%     \end{lstlisting}
-%   \item $A\cup B$
-%     \begin{lstlisting}
-%     >>> A | B
-%     {-0.25, 2, 3, 3.141592653589793, \
-%     'laranja', 'banana', -1}
-%     \end{lstlisting}
-%   \item $A\cap B$
-%     \begin{lstlisting}
-%     >>> A & B
-%     {3, 3.141592653589793}
-%     \end{lstlisting}
-%   \item $A\Delta B$
-%     \begin{lstlisting}
-%     >>> A ^ B
-%     {-0.25, 2, 'laranja', 'banana', -1}
-%     \end{lstlisting}
-%   \end{enumerate}
-% \end{ex}
-
-% \begin{obs}\label{obs:compreensão_de_conjuntos}
-%   {\python} disponibiliza a sintaxe de compreensão de conjuntos. Por exemplo,
-%   \begin{lstlisting}
-%   >>> {x for x in A if type(x) == str}
-%   {'banana'}
-%   \end{lstlisting}
-% \end{obs}
-
-% \begin{exr}
-%   Considere o conjunto
-%   \begin{equation}
-%     Z = \{-3, -2, -1, 0, 1, 2, 3\}.
-%   \end{equation}
-%   Faça um código {\python} para extrair o subconjunto dos números pares do conjunto $Z$.
-% \end{exr}
-
-% \subsection{$n$-uplas}
-
-% Em {\python} $n$-uplas ({\it tuples}) é uma sequência de objetos, i.e. {\bf uma coleção ordenada}, {\bf indexada} e {\bf imutável}. Por exemplo, na sequência temos um par, uma tripla e uma quadrupla
-% \begin{lstlisting}
-% >>> a = (1, 2)
-% >>> a
-% (1, 2)
-% >>> b = -1, 1, 0
-% (-1, 1, 0)
-% >>> c = (0.5, 'laranja', {2, -1}, 2)
-% >>> c
-% (0.5, 'laranja', {2, -1}, 2)
-% >>> len(c)
-% 4
-% \end{lstlisting}
-
-% Os elementos de um \lstinline+tuple+ são indexados, o índice $0$ corresponde ao primeiro elemento, o índice $1$ ao segundo elemento e assim por diante. Desta forma é possível o acesso direto a um elemento de um \lstinline+tuple+ usando-se sua posição. Por exemplo,
-% \begin{lstlisting}
-% >>> c[2]
-% {2, -1}
-% \end{lstlisting}
-% Pode-se também extrair uma fatia (um subconjunto) usando-se a notação \lstinline+:+. Por exemplo,
-% \begin{lstlisting}
-% >>> c[1:3]
-% ('laranja', {2, -1})
-% \end{lstlisting}
-
-% \begin{itemize}
-% \item Operadores básicos:
-%   \begin{itemize}
-%   \item[] \lstinline-+-: concatenação
-%     \begin{lstlisting}
-%     >>> (1, 2) + (3, 4, 5)
-%     (1, 2, 3, 4, 5)
-%     \end{lstlisting}
-%   \item[] \lstinline+*+: repetição
-%     \begin{lstlisting}
-%     >>> (1, 2) * 2
-%     (1, 2, 1, 2)
-%     \end{lstlisting}
-%   \item[] \lstinline+in+: pertencimento
-%     \begin{lstlisting}
-%     >>> 1 in (-1, 0, 1, 2)
-%     True
-%     \end{lstlisting}
-%   \end{itemize}
-% \end{itemize}
-
-% \begin{exr}
-%   Aloque os conjuntos
-%   \begin{gather}
-%     A = \{-1, 0, 2\},\\
-%     B = \{2, 3, 5\}.
-%   \end{gather}
-%   Então, compute o produto cartesiano $A\times B=\{(a,b):~a\in A, b\in B\}$. Qual o número de elementos da $A\times B$? Dica: use a sintaxe de compreensão de conjuntos (consulte a Observação \ref{obs:compreensão_de_conjuntos}).
-% \end{exr}
-
-% \begin{exr}
-%   Aloque o gráfico discreto da função\footnote{O gráfico de uma função restrito a um conjunto $A$ é o conjunto $\operatorname{G}(f)|_{A} = \{(x,y):~x\in A, y=f(x)\}$.} $f(x) = x^2$ para $x=0, \frac{1}{2}, 1, 2$. Dica: use a sintaxe de compreensão de conjuntos (consulte a Observação \ref{obs:compreensão_de_conjuntos}).
-% \end{exr}
-
-% \subsection{Listas}
-
-% O tipo {\python} \lstinline+list+ permite alocar em uma única variável uma lista de itens ordenada. Por exemplo, observemos as seguintes listas
-% \begin{lstlisting}
-% >>> x = [-1, 2, -3, -5]
-% >>> type(x)
-% <class 'list'>
-% >>> y = ['a', 'b', 'a']
-% >>> y
-% ['a', 'b', 'a']
-% >>> vazia = []
-% >>> len(x)
-% 4
-% \end{lstlisting}
-
-% Os elementos de uma lista são indexados, o índice $0$ corresponde ao primeiro elemento, o índice $1$ ao segundo elemento e assim por diante. Desta forma é possível o acesso direto a um elemento de uma lista usando-se sua posição. Por exemplo,
-% \begin{lstlisting}
-% >>> x[0]
-% -1
-% >>> y[2] = 'c'
-% >>> y
-% ['a', 'b', 'c']
-% \end{lstlisting}
-% Pode-se fazer um corte de elementos de uma lista usando o operador \lstinline+:+. Por exemplo,
-% \begin{lstlisting}
-% >>> x = [1,2,-1,3,-2]
-% >>> x[2:5]
-% [-1, 3, -2]
-% \end{lstlisting}
-
-% Operadores básicos:
-% \begin{itemize}
-% \item[] \lstinline-+-: concatenação
-%   \begin{lstlisting}
-%     >>> [1, 2] + [3, 4, 5]
-%     [1, 2, 3, 4, 5]
-%   \end{lstlisting}
-% \item[] \lstinline+*+: repetição
-%   \begin{lstlisting}
-%     >>> [1, 2] * 2
-%     [1, 2, 1, 2]
-%   \end{lstlisting}
-% \item[] \lstinline+in+: pertencimento
-%   \begin{lstlisting}
-%     >>> 1 in [-1, 0, 1, 2]
-%     True
-%   \end{lstlisting}
-% \end{itemize}
-
-% \begin{obs}
-%   Listas contam com várias funções prontas para a execução de diversas tarefas práticas como, por exemplo, inserir/deletar itens, contar ocorrências, ordenar itens, etc. Consulte \href{https://docs.python.org/3/tutorial/datastructures.html#more-on-lists}{Python Docs}.
-% \end{obs}
-
-% \begin{obs}(Alocação {\it versus} cópia)
-%   Estude o seguinte exemplo
-%   \begin{lstlisting}
-%   >>> x = [2, 3, 1]
-%   >>> y = x
-%   >>> y[1] = 0
-%   >>> x
-%   [2, 0, 1]
-%   \end{lstlisting}
-%   Notamos que \lstinline+y+ aponta para o mesmo endereço de memória de \lstinline+x+. Para copiar uma lista e alocá-la em um novo endereço de memória, deve-se usar a função \lstinline+list.copy()+, como segue
-%   \begin{lstlisting}
-%   >>> x = [2, 3, 1]
-%   >>> y = x.copy()
-%   >>> y[1] = 0
-%   >>> x
-%   [2, 3, 1]
-%   >>> y
-%   [2, 0, 1]
-%   \end{lstlisting}
-% \end{obs}
-
-% \begin{exr}
-%   Implemente uma lista para alocar os primeiros 5 elementos da sequência de Fibonacci\footnote{Leonardo Fibonacci, 1170 - 1250, matemático italiano. Fonte: \href{https://pt.wikipedia.org/wiki/Leonardo\_Fibonacci}{Wikipédia}.}.
-% \end{exr}
-
-% \begin{exr}
-%   Uma aplicação do Método Babilônico\footnote{Matemática Babilônica, matemática desenvolvida na Mesopotâmia, desde os Sumérios até a queda da Babilônia em 539 a.C.. Fonte: \href{https://pt.wikipedia.org/wiki/Matem\%C3\%A1tica\_babil\%C3\%B4nica}{Wikipédia}.} para a aproximação da solução da equação $x^2-2 = 0$, consiste na iteração
-%   \begin{gather}
-%     x_0 = 1,\\
-%     x_{i+1} = \frac{x_i}{2} + \frac{1}{x_i},\quad i=0,1,2,\ldots
-%   \end{gather}
-%   Implemente uma lista para alocar as quatro primeiras aproximações da solução, i.e. $x_0$, $x_1$, $x_2$, $x_3$.
-% \end{exr}
-
-% \begin{exr}
-%   Aloque os seguintes vetores como listas no {\python}
-%   \begin{gather}
-%     x = (-1, 3, -2),\\
-%     y = (4, -2, 0).
-%   \end{gather}
-%   Então, compute
-%   \begin{enumerate}[a)]
-%   \item $x+y$
-%   \item $x\cdot y$
-%   \end{enumerate}
-%   Dica: use uma compreensão de lista e os métodos {\python} \href{https://docs.python.org/3/library/functions.html#zip}{\lstinline+zip+} e \href{https://docs.python.org/3/library/functions.html?highlight=sum#sum}{\lstinline+sum+}.
-% \end{exr}
-
-% \begin{exr}
-%   Uma matriz pode ser alocada como uma lista de listas {\python}, alocando cada linha como uma lista e a matriz como a lista destas listas. Por exemplo, a matriz
-%   \begin{equation}
-%     M =
-%     \begin{bmatrix}
-%       1 & -2 \\
-%       2 & 3
-%     \end{bmatrix}
-%   \end{equation}
-%   pode ser alocada como a seguinte lista de listas
-%   \begin{lstlisting}
-%   >>> M = [[1,-2],[2,3]]
-%   >>> M
-%   [[1, -2], [2, 3]]
-%   \end{lstlisting}
-%   Use listas para alocar a matriz
-%   \begin{equation}
-%     A =
-%     \begin{bmatrix}
-%       1 & -2 & 1\\
-%       8 & 0 & -7\\
-%       3 & -1 & -2
-%     \end{bmatrix}
-%   \end{equation}
-%   e o vetor coluna
-%   \begin{equation}
-%     x = (2, -3, 1),
-%   \end{equation}
-%   então compute $Ax$.
-% \end{exr}
-
-% %revisão
-% \subsection{Dicionários}
-
-% Em {\python} um dicionário é um mapeamento objeto a objeto, cada par (\verb+chave:valor+) é separado por uma vírgula. Por exemplo,
-% \begin{lstlisting}
-% >>> a = {'nome': 'triangulo', 'perimetro': 3.2}
-% >>> a
-% {'nome': 'triangulo', 'perimetro': 3.2}
-% >>> b = {1: 2.71, (1,2): 2, 'a': {1,0,-1}}
-% >>> b
-% {1: 2.71, (1, 2): 2, 'a': {0, 1, -1}}
-% >>> d = {1: 'a', 'b': 2, 1.4: -1, 2: 'b'}
-% >>> d
-% {1: 'a', 'b': 2, 1.4: -1, 2: 'b'}
-% \end{lstlisting}
-
-% O acesso a um item do dicionário é feito usando-se sua \emph{chave}. Por exemplo,
-% \begin{lstlisting}
-% >>> d['b']
-% 2
-% >>> d[1.4] = 1
-% >>> d
-% {1: 'a', 'b': 2, 1.4: 1, 2: 'b'}
-% \end{lstlisting}
-% Pode-se adicionar um novo par, simplesmente, atribuindo valor a uma nova chave. Por exemplo,
-% \begin{lstlisting}
-% >>> d[1.5] = 0
-% >>> d
-% {1: 'a', 'b': 2, 1.4: 1, 2: 'b', 1.5: 0}
-% \end{lstlisting}
-
-% \begin{obs}
-%   Consulte sobre mais sobre dicionários em \href{https://docs.python.org/3/tutorial/datastructures.html#dictionaries}{Python Docs}.
-% \end{obs}
-
-% \begin{exr}
-%   Considere a função afim
-%   \begin{equation}
-%     f(x) = 3 - x.
-%   \end{equation}
-%   Implemente um dicionário para alocar a raiz da função, a interseção com o eixo $y$ e seu coeficiente angular.
-% \end{exr}
-
-% \begin{exr}
-%   Considere a função quadrática
-%   \begin{equation}
-%     g(x) = x^2 - x - 2
-%   \end{equation}
-%   Implemente um dicionário para alocar suas raízes, vértice e interseção com o eixo $y$.
-% \end{exr}
 
 % \section{Função, ramificação e repetição}\label{sec_fun}
 
