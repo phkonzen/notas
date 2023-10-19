@@ -216,6 +216,10 @@ Consulte mais informações sobre a precedência de operadores em \href{https://
 \subsection{Funções e Constantes Elementares}
 
 \hl{A \emph{biblioteca} C/C++ {\href{https://cplusplus.com/reference/cmath}{math.h}} disponibiliza várias funções e constantes elementares}.
+
+
+\begin{ex}
+  O seguinte código, imprime os valores de $\pi$, $\sqrt{2}$ e $\ln e$.
 \begin{lstlisting}[caption=mat.cc]
 #include <stdio.h>
 #include <math.h>
@@ -228,6 +232,14 @@ int main()
   return 0;
 }
 \end{lstlisting}
+\end{ex}
+
+\begin{obs}\normalfont{(\hl{Compilação e Linkagem}.)}
+  A compilação de um código C/C++ envolve a linkagem de bibliotecas. A \lstinline!stdio.h! é linkada de forma automática na compilação. Já, \lstinline!math.h! precisa ser explicitamente linkada com
+\begin{lstlisting}
+$ gcc foo.cc -lm
+\end{lstlisting}
+\end{obs}
 
 \begin{obs}\normalfont{(\hl{Logaritmo Natural}.)}
   Notamos que \lstinline+log+ é a função logaritmo natural, i.e. $\ln(x) = \log_e(x)$. A implementação C/C++ para o logaritmo de base 10 é \lstinline!log10(x)!.
@@ -410,7 +422,7 @@ int main()
 
 \subsection{Métodos/Funções}
 
-\hl{Um \emph{método} (ou \emph{função}) é um subprograma (ou subbloco computacional) que pode ser chamado/executado em qualquer parte do programa principal}. Todo código C/C++ inicia-se no método \lstinline+main()+, consulte o Código~\label{cod:ola}. A sintaxe de definição de um método é
+\hl{Um \emph{método} (ou \emph{função}) é um subprograma (ou subbloco computacional) que pode ser chamado/executado em qualquer parte do programa principal}. Todo código C/C++ inicia-se no método \lstinline+main()+, consulte o Código~\ref{cod:ola}. A sintaxe de definição de um método é
 \begin{lstlisting}
 typeOut foo(typeIn0 x0, typeIn1 x1, ..., typeInN x2)
 {
@@ -615,7 +627,7 @@ int main()
 
 \hl{Estruturas de repetição são instruções que permitem a execução repetida de um bloco computacional}. São três instruções disponíveis \lstinline+while+, \lstinline+do ... while+ e \lstinline+for+.
 
-\subsubsection{\lstinline+while+}
+\subsubsection{\texttt{while}}
 
 A \hl{sintaxe da instrução {\lstinline+while+}} é
 \begin{lstlisting}
@@ -650,20 +662,23 @@ int main()
 \end{lstlisting}
 \end{ex}
 
-
 \begin{obs}
   As instruções de controle \href{https://en.cppreference.com/w/cpp/language/break}{\lstinline!break!}, \href{https://en.cppreference.com/w/cpp/language/continue}{\lstinline!continue!} são bastante úteis em várias situações. A primeira, encerra as repetições e, a segunda, pula para uma nova repetição.
 \end{obs}
 
 \begin{exr}
-  Use \lstinline+while+ para imprimir os dez primeiros números ímpares.
+  Use \lstinline!while! para imprimir os dez primeiros números ímpares.
 \end{exr}
 
 \begin{exr}
   Crie uma função para a computação da soma de dois vetores $\pmb{x}, \pmb{y}\in\mathbb{R}^n$, com dado $n\geq 0$.
 \end{exr}
 
-\subsection{\lstinline+do ... while+}
+\begin{exr}
+  Use a instrução \lstinline!while! para escreva uma função que retorne o $n$-ésimo termo da função de Fibonacci{\fibonacci}, $n\geq 1$.
+\end{exr}
+
+\subsection{\texttt{do ... while}}
 
 \hl{Diferentemente da instrução {\lstinline!while!}, a {\lstinline!do ... while!} verifica a condição de repetição ao final do escopo do seu bloco computacional}.
 
@@ -701,68 +716,62 @@ int main()
   Faça um código com \lstinline+while+ para computar aproximação $x_{i}$, tal que $|x_{i}-x_{i-1}|<10^{-5}$.
 \end{exr}
 
-\subsubsection{for}
+\subsubsection{\texttt{for}}
 
-A estrutura \lstinline+for+ tem a sintaxe
+\hl{A estrutura {\lstinline+for+} tem a sintaxe}
 \begin{lstlisting}
-  for i in iteravel:
-      escopo
+for (init; condition; iter) {
+  block;
+}
 \end{lstlisting}
-onde, \lstinline+iteravel+ pode ser qualquer objeto de uma classe iterável (conjunto, $n$-upla, lista, dicionário, {\it string}). Os comandos dentro do escopo (determinado pela indentação) são repetidos para cada iterada \lstinline+i+. Por exemplo,
-\begin{lstlisting}
->>> for i in [0,1,2]:
-...     print(i)
-... 
-0
-1
-2
-\end{lstlisting}
+onde, \lstinline!init! é a instrução de inicialização, \lstinline+condition+ é o critério de parada, \lstinline+iter+ é a instrução do iterador.
 
-\subsubsection{range}
+\begin{ex}
+  O seguinte código computa a soma dos $10$ primeiros termos da progressão geométrica
+  \begin{equation}
+    a_i = 2^{-i},
+  \end{equation}
+  para $i = 0, 1, 2, \ldots$.
+\begin{lstlisting}
+#include <stdio.h>
+#include <math.h>
 
-A função {\python} \lstinline+range([start,]stop[,sep])+ é particularmente útil na construção de instruções \lstinline+for+. Ela cria um objeto de classe iterável de \lstinline+start+ (incluído) a \lstinline+stop+ (excluído), de elementos igualmente separados por \lstinline+sep+. Por padrão, \lstinline+start=0+, \lstinline+sep=1+ caso omitidos. Por exemplo,
-\begin{lstlisting}
->>> for i in range(1,6,2):
-...     print(i)
-... 
-1
-3
-5
+int main()
+{
+  double s = 0;
+  for (int i=0; i<10; ++i) {
+    s += pow(2., double(-i));
+  }
+  printf("s = %lf\n", s);
+  return 0;
+}
 \end{lstlisting}
-ou
-\begin{lstlisting}
->>> for i in range(3):
-...     print(i)
-... 
-0
-1
-2
-\end{lstlisting}
+\end{ex}
 
 \begin{exr}
-  Escreva uma função que retorne o $n$-ésimo termo da função de Fibonacci\footnote{Leonardo Fibonacci, 1170 - 1250, matemático italiano. Fonte: \href{https://pt.wikipedia.org/wiki/Leonardo\_Fibonacci}{Wikipédia}.}, $n\geq 1$. 
+  Use a instrução \lstinline!for! para escreva uma função que retorne o $n$-ésimo termo da função de Fibonacci{\fibonacci}, $n\geq 1$.
 \end{exr}
 
 \begin{exr}
-  Implemente uma função para computar o produto escalar de dois vetores de $n$ elementos. Assuma que os vetores estão alocados em listas.
+  Implemente uma função para computar o produto escalar de dois vetores de $n$ elementos. Use a instrução de repetição \lstinline!for! e assuma que os vetores estão alocados como um arranjo \lstinline!double!.
 \end{exr}
 
 \begin{exr}
-  Implemente uma função para computar a multiplicação de uma matriz $A$ $n\times n$ por um vetor coluna $x$ de $n$ elementos. Assuma que o vetor está alocada como uma lista e a matriz como uma lista de listas por linhas.
+  Implemente uma função para computar a multiplicação de uma matriz $A$ $n\times n$ por um vetor coluna $x$ de $n$ elementos. Use a instrução \lstinline!for! e assuma que o vetor e a matriz estejam alocadas como arranjos \lstinline!double!.
 \end{exr}
 
 \begin{exr}
-  Implemente uma função para computar a multiplicação de uma matriz $A$ $n\times m$ por uma matriz $B$ de $m\times n$. Assuma que as matrizes estão alocadas como listas de listas por linhas de cada matriz.
+  Implemente uma função para computar a multiplicação de uma matriz $A$ $n\times m$ por uma matriz $B$ de $m\times n$. Use a instrução \lstinline!for! e assuma que as matrizes estão alocadas como arranjos \lstinline+double+.
 \end{exr}
 
-\section{Elementos da computação matricial}\label{sec_mat}
+% \section{Elementos da computação matricial}\label{sec_mat}
 
-Nesta seção, vamos explorar a \href{https://numpy.org/}{NumPy} (Numerical Python), biblioteca para tratamento numérico de dados. Ela é extensivamente utilizada nos mais diversos campos da ciência e da engenharia. Aqui, vamos nos restringir a introduzir algumas de suas ferramentas para a computação matricial.
+% Nesta seção, vamos explorar a \href{https://numpy.org/}{NumPy} (Numerical Python), biblioteca para tratamento numérico de dados. Ela é extensivamente utilizada nos mais diversos campos da ciência e da engenharia. Aqui, vamos nos restringir a introduzir algumas de suas ferramentas para a computação matricial.
 
-Usualmente, a biblioteca é importada como segue
-\begin{lstlisting}
->>> import numpy as np
-\end{lstlisting}
+% Usualmente, a biblioteca é importada como segue
+% \begin{lstlisting}
+% >>> import numpy as np
+% \end{lstlisting}
 
 % \subsection{NumPy array}
 
