@@ -379,7 +379,7 @@ class Index:
         body += '<div class="col">'
         body += self.new_card(header = "Minicursos",
                               title = "C/C++ para Matemática",
-                              text = "Introdução à C++ para matemática",
+                              text = "Introdução às linguagens C/C++ para matemática",
                               badges = ["C/C++", "GSL"],
                               link = "MiniCpp/main.html",
                               color = "warning", status = "Novo")
