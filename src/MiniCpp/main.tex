@@ -58,7 +58,7 @@ Vamos \hl{implementar} nosso primeiro programa C/C++. \hl{Em geral, são três p
 \item \hlemph{Escrever o código}.
 
   Em seu IDE preferido, digite o código:
-\begin{lstlisting}[caption=ola.cc]
+\begin{lstlisting}[caption=ola.cc, label=cod:ola]
 #include <stdio.h>
 
 int main()
@@ -352,228 +352,417 @@ int main()
   Implemente uma instrução para computar o operador \lstinline+xor+ (ou exclusivo). Dadas duas afirmações \lstinline+A+ e \lstinline+B+, \lstinline+A xor B+ é \lstinline+true+ no caso de uma, e somente uma, das afirmações ser \lstinline+true+, caso contrário é \lstinline+false+.
 \end{exr}
 
-% \section{Função, ramificação e repetição}\label{sec_fun}
+\subsection{Arranjos}
 
-% Nesta seção, vamos introduzir funções e estruturas de ramificação e de repetição. Estes são procedimentos fundamentais na programação estruturada.
+\hl{Um \emph{arranjo}\footnote{Em inglês, \textit{array}} é uma sequência de dados do mesmo tipo}. Os elementos dos arranjos são indexados\footnote{O índice é um inteiro não negativo, sendo o primeiro elemento indexado por $0$ (zero).} e mutáveis (podemos ser alterados por nova atribuição).
 
-% \subsection{Definindo funções}
+\begin{ex}
+  No código abaixo, alocamos o ponto $P = (2, 3)$ e o vetor $\pmb{v} = (2.5, \pi, -1.)$ como arranjos.
+\begin{lstlisting}
+#include <stdio.h>
+#include <math.h>
 
-% Em {\python}, uma função é definida com a palavra-chave \lstinline+def+ seguida de seu nome e seus parâmetros encapsulados entre parênteses e por dois-pontos \lstinline+:+. Suas instruções formam o corpo da função, iniciam-se na linha abaixo e devem estar indentadas. A indentação define o escopo da função. Por exemplo, a seguinte função imprime o valor da função
-% \begin{equation}
-%   f(x) = 2x - 3
-% \end{equation}
-% \begin{lstlisting}
-% >>> def f(x):
-% ...     y = 2*x - 3
-% ...     print(y)
-% ... 
-% >>> f(2)
-% 1
-% \end{lstlisting}
-% Você pode protestar que \lstinline+f+ não é uma função e, sim, um procedimento, pois não retorna valor. Para uma função retornar um objeto, usamos a instrução \lstinline+return+. Por exemplo,
-% \begin{lstlisting}
-% >>> def f(x):
-% ...     y = 2*x - 3
-% ...     return y
-% ... 
-% >>> z = f(2)
-% >>> z
-% 1
-% \end{lstlisting}
+int main()
+{
+  // P = (2, 3)
+  int P[2] = {2, 3};
+  printf("P = (%d, %d)\n", P[0], P[1]);
+  
+  double v[3];
+  v[0] = 2.5;
+  v[1] = M_PI;
+  v[2] = -1.;
+  printf("v = (%lf, %lf, %lf)\n", v[0], v[1], v[2]);
+  
+  return 0;
+}
+\end{lstlisting}
+\end{ex}
 
-% \begin{obs}
-%   Para funções pequenas, pode-se utilizar a instrução \lstinline+lambda+ de funções anônimas. Por exemplo,
-%   \begin{lstlisting}
-%   >>> f = lambda x: 2*x - 3
-%   >>> f(3)
-%   3
-%   \end{lstlisting}
-% \end{obs}
+\begin{exr}
+  Escreva um código em que a(o) usuária(o) entra com um ponto $P = (x, y)$ e o programa informe se $P$ pertence ao disco determinado pela circunferência de equação $(x-1)^2 + y^2 = 4$. Use de um arranjo para alocar o ponto $P$.
+\end{exr}
 
-% \begin{obs}
-%   Consulte mais informações sobre a definição de funções em \href{https://docs.python.org/3/tutorial/controlflow.html#defining-functions}{Python Docs}.
-% \end{obs}
+\begin{exr}
+  Considere os vetores
+  \begin{align}
+    &\pmb{v} = (-1., 2., 1.)\\
+    &\pmb{w} = (1., -3., 2.).
+  \end{align}
+  Faça um código que aloca os vetores como arranjos e imprime o vetor soma $\pmb{v} + \pmb{w}$.
+\end{exr}
 
-% \begin{exr}
-%   Implemente uma função para computar as raízes de um polinômio de grau 1 $p(x) = ax + b$.
-% \end{exr}
+\begin{exr}
+  Considere a matriz
+  \begin{equation}
+    A =
+    \begin{vmatrix}
+      1. & -2.\\
+      3. & 3.
+    \end{vmatrix}.
+  \end{equation}
+  Faça um código que aloca a matriz como um arranjo bidimensional (um arranjo de arranjos) e compute seu determinante.
+\end{exr}
 
-% \begin{exr}
-%   Implemente uma função para computar as raízes de um polinômio de grau 2 $p(x) = ax^2 + bx + c$.
-% \end{exr}
+\section{Elementos da Programação Estruturada}\label{sec_progest}
 
-% \begin{exr}
-%   Implemente uma função que computa o produto escalar de dois vetores
-%   \begin{gather}
-%     x = (x_0, x_1, x_2),\\
-%     y = (y_0, y_1, y_2).
-%   \end{gather}
-%   Use listas para representar os vetores no {\python}.
-% \end{exr}
+\hl{C/C++ são linguagens procedurais}\footnote{C++ também é orientada-a-objetos.} e contém instruções para a \hlemph{programação estruturada}. Neste paradigma de programação, as computações são organizadas em sequências de blocos computacionais e, um bloco inicia sua computação somente após o bloco anterior tiver terminado. Contam com estruturas de \hlemph{ramificação} (seleção de blocos), \hlemph{repetição} de blocos e definição de \hlemph{funções/métodos} (sub-blocos computacionais).
 
-% \begin{exr}
-%   Implemente uma função que computa o determinante de matrizes $2\times 2$. Use lista de listas para representar as matrizes.
-% \end{exr}
+\subsection{Métodos/Funções}
 
-% \begin{exr}
-%   Implemente uma função que computa a multiplicação matrix-vetor $Ax$, com $A$ $2\times 2$ e $x$ um vetor coluna de dois elementos.
-% \end{exr}
+\hl{Um \emph{método} (ou \emph{função}) é um subprograma (ou subbloco computacional) que pode ser chamado/executado em qualquer parte do programa principal}. Todo código C/C++ inicia-se no método \lstinline+main()+, consulte o Código~\label{cod:ola}. A sintaxe de definição de um método é
+\begin{lstlisting}
+typeOut foo(typeIn0 x0, typeIn1 x1, ..., typeInN x2)
+{
+  typeOut out;
+  statment0;
+  statment1;
+  ...;
+  statmentN;
+  return out;
+}
+\end{lstlisting}
+Aqui, \lstinline+typeOut+ denota o tipo da saída, \lstinline+foo+ denota o identificador/nome do método, \lstinline+typeIn0 x1+, \lstinline+typeIn1 x2+, ..., \lstinline+typeInN x3+ são os tipos e identificadores dos parâmetros de entrada\footnote{Parâmetros de entrada são opcionais}. O escopo do método é delimitado entre chaves e pode conter qualquer instrução (\textit{statment}) C/C++. O método é encerrado\footnote{No encerramento do método o código retorna ao programa principal.} quando terminado seu escopo ou ao encontrar a instrução \lstinline+return+. Esta instrução,também, permite o retorno de um dado do mesmo tipo da saída do método.
 
-% \begin{exr}(Recursividade) Implemente uma função recursiva para computar o fatorial de um número natural $n$, i.e. $n!$.  
-% \end{exr}
+\begin{ex}
+  Vamos considerar a função
+  \begin{equation}
+    f(x) = 2x - 3.
+  \end{equation}
 
-% \subsection{Ramificação}
+  \begin{enumerate}[a)]
+  \item No código abaixo, o método $f$ computa a função e imprime seu valor\footnote{\lstinline+void+ é a instrução para ``no type''.}.
+\begin{lstlisting}[caption=method.cc]
+#include <stdio.h>
 
-% Uma estrutura de ramificação é uma instrução para a tomada de decisões durante a execução de um programa. No {\python}, está disponível a instrução \lstinline+if+. Consultemos o seguinte exemplo.
-% \begin{lstlisting}
-% def paridade(n):
-%     if (n%2 == 0):
-%         print('par')
-% \end{lstlisting}
-% Aqui, a função \lstinline+paridade+ recebe o valor \lstinline+n+. Se (\lstinline+if+) o resto da divisão de \lstinline+n+ por 2 é igual a zero (condição), então (\lstinline+:+) imprime a {\it string} \lstinline+par+.
+void f(double x)
+{
+  double y = 2.*x - 3.;
+  printf("f(%lf) = %lf\n", x, y);
+}
 
-% \begin{obs}
-%   A indentação determina o escopo de cada instrução \lstinline+if+.
-% \end{obs}
+int main()
+{
+  f(0.);
+  double x = -1.;
+  f(x);
+  double y = 2.;
+  f(y);
+  return 0;
+}      
+\end{lstlisting}
 
-% Também está disponível a instrução \lstinline+if-else+. Por exemplo,
-% \begin{lstlisting}
-% def paridade(n):
-%     if (n%2 == 0):
-%         print('par')
-%     else:
-%         print('impar')    
-% \end{lstlisting}
-% Agora, se (\lstinline+if+) a condição \lstinline!(n%2 == 0)! for verdadeira (\lstinline+True+), então imprime \lstinline+par+, senão (\lstinline+else+) imprime \lstinline+impar+.
+  \item Nesta versão do código, o método \lstinline+f+ retorna o valor computado da função $f$ e é o método principal \lstinline+main+ que imprime o resultado.
+\begin{lstlisting}
+#include <stdio.h>
 
-% Ainda, é possível ter instruções \lstinline+if-else+ encadeadas. Por exemplo,
-% \begin{lstlisting}
-% def paridade(n):
-%      if (n%2 == 0):
-%           print('eh divisivel por 2')
-%      elif (n%3 == 0):
-%           print('eh divisivel por 3')
-%      else:
-%           print('nao eh divisivel por 2 e 3')    
-% \end{lstlisting}
-% Observe que \lstinline+elif+ deve ser utilizado no lugar de \lstinline+else if+.
+double f(double x)
+{
+  return 2.*x - 3.;
+}
 
-% \begin{exr}
-%   Implemente uma função que recebe dois números $n$ e $m$ e imprime o maior deles.
-% \end{exr}
+int main()
+{
+  double y = f(0.);
+  printf("f(%lf) = %lf\n", 0., y);
+  printf("f(%lf) = %lf\n", -1., f(-1.));
+  double z = 2.;
+  printf("f(%lf) = %lf\n", z, f(z));
+  return 0;
+}
+\end{lstlisting}
+  \end{enumerate}  
+\end{ex}
 
-% \begin{exr}
-%   Implemente uma função que recebe os coeficientes de um polinômio
-%   \begin{equation}
-%     p(x) = ax^2 + bx + c
-%   \end{equation}
-%   e classifique-o como um polinômio de grau 0, 1 ou 2.
-% \end{exr}
+\begin{exr}
+  Implemente uma função para computar as raízes de um polinômio de grau 1 $p(x) = ax + b$. Assuma que $a\neq 0$.
+\end{exr}
 
-% \subsection{Repetição}
+\begin{exr}
+  Implemente uma função para computar as raízes reais de um polinômio de grau 2 $p(x) = ax^2 + bx + c$. Assuma que $p$ tenha raízes reais.
+\end{exr}
 
-% Estruturas de repetição são instruções que permitem que a execução repetida de uma região do código. São duas instruções disponível \lstinline+while+ e \lstinline+for+.
+\begin{exr}
+  Considerando vetores em $\mathbb{R}^3$
+  \begin{gather}
+    x = (x_1, x_2, x_3),\\
+    y = (y_1, y_2, y_3),
+  \end{gather}
+  implemente um código que contenha:
+  \begin{enumerate}[a)]
+  \item função para computação do vetor soma $\pmb{x}+\pmb{y}$.
+  \item função para computação do produto escalar $\pmb{x}\cdot\pmb{y}$.
+  \end{enumerate}
+\end{exr}
 
-% \subsubsection{while}
+\begin{exr}
+  Implemente uma função que computa o determinante de matrizes reais $2\times 2$. 
+\end{exr}
 
-% A sintaxe da instrução \lstinline+while+ é
-% \begin{lstlisting}
-% while expressao:
-%      comando 0
-%      .
-%      .
-%      .
-%      comando n
-% \end{lstlisting}
-% Isto é, enquanto (\lstinline+while+) a expressão (\lstinline+expressao+) for verdadeira, os comandos \lstinline+comando 0+ a \lstinline+comando n+ serão repetidamente executados em ordem. Por exemplo, o seguinte código computa a soma dos $10$ primeiros números naturais e, então imprime-a.
-% \begin{lstlisting}
-% n = 0
-% s = 0
-% while (n < 10):
-%     s += n
-%     n += 1
-% print(s)
-% \end{lstlisting}
+\begin{exr}
+  Implemente uma função que computa a multiplicação matrix-vetor $Ax$, com $A$ $2\times 2$ e $x$ um vetor coluna de dois elementos.
+\end{exr}
 
-% \begin{obs}
-%   As instruções de controle \lstinline+break+, \lstinline+continue+ são bastante úteis em várias situações. A primeira, encerra as repetições e, a segunda, pula para uma nova repetição. Consulte mais em \href{https://docs.python.org/3/tutorial/controlflow.html\#break-and-continue-statements-and-else-clauses-on-loops}{Python Docs}.
-% \end{obs}
+\begin{exr}(Recursividade) Implemente uma função recursiva para computar o fatorial de um número natural $n$, i.e. $n!$.  
+\end{exr}
 
-% \begin{exr}
-%   Use \lstinline+while+ para imprimir os dez primeiros números ímpares.
-% \end{exr}
+\subsection{Ramificação}
 
-% \begin{exr}
-%   Uma aplicação do Método Babilônico\footnote{Matemática Babilônica, matemática desenvolvida na Mesopotâmia, desde os Sumérios até a queda da Babilônia em 539 a.C.. Fonte: \href{https://pt.wikipedia.org/wiki/Matem\%C3\%A1tica\_babil\%C3\%B4nica}{Wikipédia}.} para a aproximação da solução da equação $x^2-2 = 0$, consiste na iteração
-%   \begin{gather}
-%     x_0 = 1,\\
-%     x_{i+1} = \frac{x_i}{2} + \frac{1}{x_i},\quad i=0,1,2,\ldots
-%   \end{gather}
-%   Faça um código com \lstinline+while+ para computar aproximação $x_{i}$, tal que $|x_{i}-x_{i-1}|<10^{-5}$.
-% \end{exr}
+Uma estrutura de ramificação é uma instrução para a tomada de decisões durante a execução de um programa. Nas linguagens C/C++ usa-se a sintaxe
+\begin{lstlisting}
+if (condition0) {
+  block0;
+} else if (condition1) {
+  block1;
+} else {
+  block2;
+}
+\end{lstlisting}
+A instrução \lstinline+if+ permite a execução do bloco computacional \lstinline+block0+ somente no caso de a \lstinline+condition0+ seja \lstinline+true+ (verdadeira). A instrução \lstinline+else if+ somente é verificada quando \lstinline+condition0 == false+. Neste caso, o \lstinline+block1+ é executado somente se \lstinline+condition1 == true+. Senão, \lstinline+block2+ é executado.
 
-% \subsubsection{for}
+\begin{ex}
+  Os seguintes códigos computam os zeros da função
+  \begin{equation}
+    f(x) = ax + b,
+  \end{equation}
+  para parâmetros informados por usuária(o).
+  \begin{enumerate}[a)]
+  \item Caso restrito a raiz real única.
+\begin{lstlisting}
+#include <stdio.h>
 
-% A estrutura \lstinline+for+ tem a sintaxe
-% \begin{lstlisting}
-%   for i in iteravel:
-%       escopo
-% \end{lstlisting}
-% onde, \lstinline+iteravel+ pode ser qualquer objeto de uma classe iterável (conjunto, $n$-upla, lista, dicionário, {\it string}). Os comandos dentro do escopo (determinado pela indentação) são repetidos para cada iterada \lstinline+i+. Por exemplo,
-% \begin{lstlisting}
-% >>> for i in [0,1,2]:
-% ...     print(i)
-% ... 
-% 0
-% 1
-% 2
-% \end{lstlisting}
+int main()
+{
+  double a,b;
+  printf("a = ");
+  scanf("%lf", &a);
+  printf("b = ");
+  scanf("%lf", &b);
 
-% \subsubsection{range}
+  if (a != 0.) {
+    double x = -b/a;
+    printf("x = %lf\n", x);
+  }
 
-% A função {\python} \lstinline+range([start,]stop[,sep])+ é particularmente útil na construção de instruções \lstinline+for+. Ela cria um objeto de classe iterável de \lstinline+start+ (incluído) a \lstinline+stop+ (excluído), de elementos igualmente separados por \lstinline+sep+. Por padrão, \lstinline+start=0+, \lstinline+sep=1+ caso omitidos. Por exemplo,
-% \begin{lstlisting}
-% >>> for i in range(1,6,2):
-% ...     print(i)
-% ... 
-% 1
-% 3
-% 5
-% \end{lstlisting}
-% ou
-% \begin{lstlisting}
-% >>> for i in range(3):
-% ...     print(i)
-% ... 
-% 0
-% 1
-% 2
-% \end{lstlisting}
+  return 0;
+}
+\end{lstlisting}
+    
+  \item Caso de raiz real única ou múltiplas.
+\begin{lstlisting}
+#include <stdio.h>
 
-% \begin{exr}
-%   Escreva uma função que retorne o $n$-ésimo termo da função de Fibonacci\footnote{Leonardo Fibonacci, 1170 - 1250, matemático italiano. Fonte: \href{https://pt.wikipedia.org/wiki/Leonardo\_Fibonacci}{Wikipédia}.}, $n\geq 1$. 
-% \end{exr}
+int main()
+{
+  double a,b;
+  printf("a = ");
+  scanf("%lf", &a);
+  printf("b = ");
+  scanf("%lf", &b);
 
-% \begin{exr}
-%   Implemente uma função para computar o produto escalar de dois vetores de $n$ elementos. Assuma que os vetores estão alocados em listas.
-% \end{exr}
+  if (a != 0.) {
+    double x = -b/a;
+    printf("x = %lf\n", x);
+  } else if ((a == 0.) && (b == 0.)) {
+    printf("Todo x real é zero da função.\n");
+  }
 
-% \begin{exr}
-%   Implemente uma função para computar a multiplicação de uma matriz $A$ $n\times n$ por um vetor coluna $x$ de $n$ elementos. Assuma que o vetor está alocada como uma lista e a matriz como uma lista de listas por linhas.
-% \end{exr}
+  return 0;
+}
+\end{lstlisting}
 
-% \begin{exr}
-%   Implemente uma função para computar a multiplicação de uma matriz $A$ $n\times m$ por uma matriz $B$ de $m\times n$. Assuma que as matrizes estão alocadas como listas de listas por linhas de cada matriz.
-% \end{exr}
+  \item Caso de raiz real única, ou múltiplas ou nenhuma.
+\begin{lstlisting}
+#include <stdio.h>
 
-% \section{Elementos da computação matricial}\label{sec_mat}
+int main()
+{
+  double a,b;
+  printf("a = ");
+  scanf("%lf", &a);
+  printf("b = ");
+  scanf("%lf", &b);
 
-% Nesta seção, vamos explorar a \href{https://numpy.org/}{NumPy} (Numerical Python), biblioteca para tratamento numérico de dados. Ela é extensivamente utilizada nos mais diversos campos da ciência e da engenharia. Aqui, vamos nos restringir a introduzir algumas de suas ferramentas para a computação matricial.
+  if (a != 0.) {
+    double x = -b/a;
+    printf("x = %lf\n", x);
+  }
 
-% Usualmente, a biblioteca é importada como segue
-% \begin{lstlisting}
-% >>> import numpy as np
-% \end{lstlisting}
+  return 0;
+}
+\end{lstlisting}
+  \end{enumerate}
+\end{ex}
+
+\begin{exr}
+  Implemente um código que contenha uma função que recebe dois números $n$ e $m$ e imprime o maior deles.
+\end{exr}
+
+\begin{exr}
+  Implemente um código que contenha uma função que recebe os coeficientes de um polinômio
+  \begin{equation}
+    p(x) = ax^2 + bx + c
+  \end{equation}
+  e classifique-o como um polinômio de grau 0, 1 ou 2.
+\end{exr}
+
+\begin{exr}
+  Implemente um código que contenha uma função para a computação das raízes de um polinômio de segundo grau.
+\end{exr}
+
+
+\subsection{Repetição}
+
+\hl{Estruturas de repetição são instruções que permitem a execução repetida de um bloco computacional}. São três instruções disponíveis \lstinline+while+, \lstinline+do ... while+ e \lstinline+for+.
+
+\subsubsection{\lstinline+while+}
+
+A \hl{sintaxe da instrução {\lstinline+while+}} é
+\begin{lstlisting}
+while (condition) {
+   block
+}
+\end{lstlisting}
+Isto é, enquanto (\lstinline+while+) a expressão \lstinline+condition == true+, o bloco computacional \lstinline+block+ é repetidamente executado. Ao final de cada execução, a condição é novamente verificada. Quando \lstinline+condition == false+, \lstinline+block+ não é executado e o código segue para a primeira instrução após o escopo do \lstinline+while+.
+
+\begin{ex}
+  O seguinte código computa a soma dos $10$ primeiros termos da progressão geométrica
+  \begin{equation}
+    a_i = 2^{-i},
+  \end{equation}
+  para $i = 0, 1, 2, \ldots$.
+
+\begin{lstlisting}[caption=while.cc]
+#include <stdio.h>
+#include <math.h>
+
+int main()
+{
+  int i = 0;
+  double s = 0.;
+  while (i < 10) {
+    s = s + pow(0.5, double(i));
+    i += 1;
+  }
+  printf("s = %lf\n", s);
+  return 0;
+}
+\end{lstlisting}
+\end{ex}
+
+
+\begin{obs}
+  As instruções de controle \href{https://en.cppreference.com/w/cpp/language/break}{\lstinline!break!}, \href{https://en.cppreference.com/w/cpp/language/continue}{\lstinline!continue!} são bastante úteis em várias situações. A primeira, encerra as repetições e, a segunda, pula para uma nova repetição.
+\end{obs}
+
+\begin{exr}
+  Use \lstinline+while+ para imprimir os dez primeiros números ímpares.
+\end{exr}
+
+\begin{exr}
+  Crie uma função para a computação da soma de dois vetores $\pmb{x}, \pmb{y}\in\mathbb{R}^n$, com dado $n\geq 0$.
+\end{exr}
+
+\subsection{\lstinline+do ... while+}
+
+\hl{Diferentemente da instrução {\lstinline!while!}, a {\lstinline!do ... while!} verifica a condição de repetição ao final do escopo do seu bloco computacional}.
+
+\begin{ex}
+  O seguinte código computa a soma dos $10$ primeiros termos da progressão geométrica
+  \begin{equation}
+    a_i = 2^{-i},
+  \end{equation}
+  para $i = 0, 1, 2, \ldots$.
+
+\begin{lstlisting}[caption=doWhile.cc]
+#include <stdio.h>
+#include <math.h>
+
+int main()
+{
+  int i = 0;
+  double s;
+  do {
+    s += pow(0.5, double(i));
+    i += 1;
+  } while (i < 10);
+  printf("s = %lf\n", s);
+  return 0;
+}
+\end{lstlisting}  
+\end{ex}
+
+\begin{exr}
+  Uma aplicação do Método Babilônico\footnote{Matemática Babilônica, matemática desenvolvida na Mesopotâmia, desde os Sumérios até a queda da Babilônia em 539 a.C.. Fonte: \href{https://pt.wikipedia.org/wiki/Matem\%C3\%A1tica\_babil\%C3\%B4nica}{Wikipédia}.} para a aproximação da solução da equação $x^2-2 = 0$, consiste na iteração
+  \begin{gather}
+    x_0 = 1,\\
+    x_{i+1} = \frac{x_i}{2} + \frac{1}{x_i},\quad i=0,1,2,\ldots
+  \end{gather}
+  Faça um código com \lstinline+while+ para computar aproximação $x_{i}$, tal que $|x_{i}-x_{i-1}|<10^{-5}$.
+\end{exr}
+
+\subsubsection{for}
+
+A estrutura \lstinline+for+ tem a sintaxe
+\begin{lstlisting}
+  for i in iteravel:
+      escopo
+\end{lstlisting}
+onde, \lstinline+iteravel+ pode ser qualquer objeto de uma classe iterável (conjunto, $n$-upla, lista, dicionário, {\it string}). Os comandos dentro do escopo (determinado pela indentação) são repetidos para cada iterada \lstinline+i+. Por exemplo,
+\begin{lstlisting}
+>>> for i in [0,1,2]:
+...     print(i)
+... 
+0
+1
+2
+\end{lstlisting}
+
+\subsubsection{range}
+
+A função {\python} \lstinline+range([start,]stop[,sep])+ é particularmente útil na construção de instruções \lstinline+for+. Ela cria um objeto de classe iterável de \lstinline+start+ (incluído) a \lstinline+stop+ (excluído), de elementos igualmente separados por \lstinline+sep+. Por padrão, \lstinline+start=0+, \lstinline+sep=1+ caso omitidos. Por exemplo,
+\begin{lstlisting}
+>>> for i in range(1,6,2):
+...     print(i)
+... 
+1
+3
+5
+\end{lstlisting}
+ou
+\begin{lstlisting}
+>>> for i in range(3):
+...     print(i)
+... 
+0
+1
+2
+\end{lstlisting}
+
+\begin{exr}
+  Escreva uma função que retorne o $n$-ésimo termo da função de Fibonacci\footnote{Leonardo Fibonacci, 1170 - 1250, matemático italiano. Fonte: \href{https://pt.wikipedia.org/wiki/Leonardo\_Fibonacci}{Wikipédia}.}, $n\geq 1$. 
+\end{exr}
+
+\begin{exr}
+  Implemente uma função para computar o produto escalar de dois vetores de $n$ elementos. Assuma que os vetores estão alocados em listas.
+\end{exr}
+
+\begin{exr}
+  Implemente uma função para computar a multiplicação de uma matriz $A$ $n\times n$ por um vetor coluna $x$ de $n$ elementos. Assuma que o vetor está alocada como uma lista e a matriz como uma lista de listas por linhas.
+\end{exr}
+
+\begin{exr}
+  Implemente uma função para computar a multiplicação de uma matriz $A$ $n\times m$ por uma matriz $B$ de $m\times n$. Assuma que as matrizes estão alocadas como listas de listas por linhas de cada matriz.
+\end{exr}
+
+\section{Elementos da computação matricial}\label{sec_mat}
+
+Nesta seção, vamos explorar a \href{https://numpy.org/}{NumPy} (Numerical Python), biblioteca para tratamento numérico de dados. Ela é extensivamente utilizada nos mais diversos campos da ciência e da engenharia. Aqui, vamos nos restringir a introduzir algumas de suas ferramentas para a computação matricial.
+
+Usualmente, a biblioteca é importada como segue
+\begin{lstlisting}
+>>> import numpy as np
+\end{lstlisting}
 
 % \subsection{NumPy array}
 
