@@ -375,12 +375,12 @@ class Index:
                               color = "warning", status = "Atualizando")
         body += '</div>'
 
-        # card: notas do Minicurso de C++ para Matemática
+        # card: notas do Minicurso de C/C++ para Matemática
         body += '<div class="col">'
         body += self.new_card(header = "Minicursos",
-                              title = "C++ para Matemática",
+                              title = "C/C++ para Matemática",
                               text = "Introdução à C++ para matemática",
-                              badges = ["C++", "GSL"],
+                              badges = ["C/C++", "GSL"],
                               link = "MiniCpp/main.html",
                               color = "warning", status = "Novo")
         body += '</div>'
