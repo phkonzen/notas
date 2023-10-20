@@ -2,10 +2,12 @@
 
 \chapter{Redes Informadas pela Física}\label{cap_pinns}
 \thispagestyle{fancy}
+[[tag:construcao]]
 
 \hlemph{Redes neurais informadas pela física} (PINNs, do inglês, \textit{physics-informed neural networks}) são métodos de \textit{deep learning} para a solução de equações diferenciais.
 
 \section{Problemas de Valores Iniciais}
+[[tag:construcao]]
 
 Consideramos um \hlemph{problema de valor inicial} (\hlemph{IVP}, do inglês, \textit{initial value problem})
 \begin{subequations}\label{eq:ivp}\hleq
@@ -17,6 +19,7 @@ Consideramos um \hlemph{problema de valor inicial} (\hlemph{IVP}, do inglês, \t
 com dada $g:\mathbb{R}^2\to\mathbb{R}$ e dados valor inicial $y_0\in\mathbb{R}$, tempos inicial $t_0\in\mathbb{R}$ e final $t_f\in\mathbb{R}$.
 
 \subsection{Euler PINN}
+[[tag:construcao]]
 
 A solução do IVP \eqref{eq:ivp} pode ser obtida por uma \hlemph{rede neural informada pela física} (PINN, do inglês, \textit{physics-informed neural network}) assumindo a seguinte aproximação de \href{https://notaspedrok.com.br/notas/MatematicaNumericaII/cap_pvi_sec_euler.html}{Euler explícita}
 \begin{subequations}\label{eq:ivp}\hleq
@@ -156,6 +159,7 @@ for epoch in range(nepochs):
 \end{lstlisting}
 
 \subsection{AD-PINN}
+[[tag:construcao]]
 
 Aqui nosso modelo PINN é novamnte uma \href{https://notaspedrok.com.br/notas/RedesNeuraisArtificiais/cap_mlp_sec_modelo.html}{perceptron multicamada} (MLP)
 \begin{equation}\hleq
@@ -287,351 +291,547 @@ for epoch in range(nepochs):
 \end{lstlisting}
 
 \subsection{Exercícios}
-
 [[tag:construcao]]
 
 \section{Aplicação: Equação de Laplace}\label{cap_mlp_sec_eqlaplace}
+[[tag:construcao]]
 
 Vamos criar uma MLP para resolver
-\begin{subequations}
+\begin{subequations}\label{cap_mlp_sec_eqlaplace:eq:probLaplace}
   \begin{align}
-    -\Delta u &= 0,\quad \pmb{x}\in D = (0, 1)^2,\\
-    u &= 0,\quad \pmb{x}\in\p D.
+    -\Delta u &= 0, ~\pmb{x}\in D = (0, 1)^2,\\
+    u &= u_{\text{bc}}, ~\pmb{x}\in\p D,
   \end{align}
 \end{subequations}
+com dada condição de contorno $u_0 = u_0(\pmb{x})$.
 
 Como exemplo, vamos considerar um problema com solução manufaturada
 \begin{equation}
   u(\pmb{x}) = x_1(1-x_1) - x_2(1-x_2).
 \end{equation}
 
-\subsection{Diferenças Finitas}
-
-% \lstinputlisting[caption=mlp\_eqlaplace.py, label=cap_mlp_sec_modelo:cod:mlp_eqlaplace]{./cap_mlp/dados/py_mlp_eqlaplace/main.py}
-\begin{lstlisting}[caption=mlp\_eqlaplace\_df.py, label=cap_mlp_sec_modelo:cod:mlp_eqlaplace_df]
+\begin{lstlisting}[caption=pyEqLaplace]
 import torch
 import matplotlib.pyplot as plt
 import random
 import numpy as np
 
 # modelo
-model = torch.nn.Sequential(
-    torch.nn.Linear(2,50),
-    torch.nn.Tanh(),
-    torch.nn.Linear(50,10),
-    torch.nn.Tanh(),
-    torch.nn.Linear(10,5),
-    torch.nn.Tanh(),
-    torch.nn.Linear(5,1)
-)
+## n camadas escondidas
+nh = 3
+## n neurônios por camada
+nn = 50
+## fun de ativação
+fh = torch.nn.Tanh()
+## arquitetura
+model = torch.nn.Sequential()
+model.add_module('layer_1', torch.nn.Linear(2,nn))
+model.add_module('fun_1', fh)
+for layer in range(2, nh):
+    model.add_module(f'layer_{layer}', torch.nn.Linear(nn,nn))
+    model.add_module(f'fun_{layer}', fh)
+model.add_module(f'layer_{nh}', torch.nn.Linear(nn,1))
 
 # SGD - (Stochastic) Gradient Descent
 optim = torch.optim.SGD(model.parameters(),
-                        lr = 1e-3,
-                        momentum = 0.9,
-                        dampening = 0.)
-
-# Solução esperada
-def u(x, y):
-    return a*x*(1-x) - a*y*(1-y)
+                        lr = 1e-2,
+                        momentum = 0.9)
+optim = torch.optim.Adam(model.parameters(),
+                        lr = 1e-2)
 
 
-def laplace_loss(X, U, h2, n, uc=u, p=1.):
-    # num de amostras
-    nc = 2*n + 2*(n-2)
-    ni = n**2 - nc
-
-    # loss interno
-    lin = 0.
-    for i in range(1,n-1):
-      for j in range(1,n-1):
-        s = j + i*n
-        l = (U[s-n, 0] - 2 * U[s, 0] + U[s+n, 0])/h2 # x
-        l += (U[s-1, 0] - 2 * U[s, 0] + U[s+1, 0])/h2 # y
-        lin += l**2
-    lin /= ni 
-
-    # loss contorno
-    lc = 0.
-    # 0 <= x <= 1 e y == 0
-    for i in range(n):
-        s = i*n
-        x = M[s,0]
-        y = M[s,1]
-        lc += (U[s,0] - uc(x,y))**2
-    # 0 <= x <= 1 e y == 1
-    for i in range(n):
-        s = n-1 + i*n
-        x = M[s,0]
-        y = M[s,1]
-        lc += (U[s,0] - uc(x,y))**2
-    # 0 == x e 0 < y < 1
-    for j in range(1, n-1):
-        s = j
-        x = M[s,0]
-        y = M[s,1]
-        lc += (U[s,0] - uc(x,y))**2
-    # 1 == x e 0 < y < 1
-    for j in range(1, n-1):
-        s = j + n*(n-1)
-        x = M[s,0]
-        y = M[s,1]
-        lc += (U[s,0] - uc(x,y))**2
-    lc *= p/nc
-    
-    loss = lin + lc
-    return loss
-
-    
-# dados do problema
-
-# collocation points
-a = 1
-n = 11
-ns = n**2
-h = 1./(n-1)
-h2 = h**2
-
-# malha
-x = torch.linspace(0, 1, n)
-y = torch.linspace(0, 1, n)
-
-M = torch.empty((ns, 2))
-s = 0
-for i, xx in enumerate(x):
-  for j, yy in enumerate(y):
-    M[s,0] = xx
-    M[s,1] = yy
-    s += 1
-
-# gráfico
-X, Y = np.meshgrid(x, y)
-U_esp = u(X, Y)
-
-# training
-nepochs = 10000
+# params treinamento
+## n épocas
+nepochs = 10001
+## freq output loss
 nout_loss = 100
-nout_plot = 500
+## stop criterion
+tol = 1e-4
 
+## n amostras por eixo
+ns = 101
+
+lloss = []
 for epoch in range(nepochs):
 
     # forward
-    U_est = model(M)
+    
+    ## internal pts samples
+    Xin = torch.rand((ns, 2), requires_grad=True)
+    Uin = model(Xin)
+
+    ## loss internal pts
+    D1Uin = torch.autograd.grad(
+        Uin, Xin,
+        grad_outputs=torch.ones_like(Uin),
+        retain_graph=True,
+        create_graph=True)[0]
+    D2Uin = torch.autograd.grad(
+        D1Uin, Xin,
+        grad_outputs=torch.ones_like(D1Uin),
+        retain_graph=True,
+        create_graph=True)[0]
+
+    lin = torch.mean((D2Uin[:,0] + D2Uin[:,1])**2)
+
+    ## bc 1
+    xx = torch.rand((ns, 1))
+    yy = torch.zeros((ns,1))
+    Xbc1 = torch.hstack((xx, yy))
+    Ubc1 = model(Xbc1)
+
+    ## loss bc 1
+    Uexp = xx*(1. - xx)
+    lbc1 = torch.mean((Ubc1 - Uexp)**2)
+
+    ## bc 3
+    xx = torch.rand((ns, 1))
+    yy = torch.ones((ns,1))
+    Xbc3 = torch.hstack((xx, yy))
+    Ubc3 = model(Xbc3)
+
+    ## loss bc 3
+    Uexp = xx*(1. - xx)
+    lbc3 = torch.mean((Ubc3 - Uexp)**2)
+
+    ## bc 2
+    xx = torch.ones((ns, 1))
+    yy = torch.rand((ns,1))
+    Xbc2 = torch.hstack((xx, yy))
+    Ubc2 = model(Xbc2)
+
+    ## loss bc 2
+    Uexp = yy*(yy - 1.)
+    lbc2 = torch.mean((Ubc2 - Uexp)**2)
+
+    ## bc 4
+    xx = torch.zeros((ns, 1))
+    yy = torch.rand((ns,1))
+    Xbc4 = torch.hstack((xx, yy))
+    Ubc4 = model(Xbc4)
+
+    ## loss bc 3
+    Uexp = yy*(yy - 1.)
+    lbc4 = torch.mean((Ubc4 - Uexp)**2)
 
     # loss function
-    loss = laplace_loss(M, U_est, h2, n, u, p=10.)
+    loss = lin + lbc1 + lbc2 + lbc3 + lbc4
 
-    if ((epoch % nout_loss) == 0):
+    lloss.append(loss.item())
+    
+    if (((epoch % nout_loss) == 0) or (loss.item() < tol)):
         print(f'{epoch}: loss = {loss.item():.4e}')
     
-    # output current solution
-    if ((epoch) % nout_plot == 0):
-        # verificação
+        # gráfico
         fig = plt.figure()
         ax = fig.add_subplot()
 
-        ns = 50
-        x1 = torch.linspace(0., 1., ns)
-        x2 = torch.linspace(0., 1., ns)
-        X1, X2 = torch.meshgrid(x1, x2)
+        npts = 50
+        xx = torch.linspace(0., 1., npts)
+        yy = torch.linspace(0., 1., npts)
+        X, Y = torch.meshgrid(xx, yy)
         # exact
-        Z_esp = torch.empty_like(X1)
-        for i,x in enumerate(x1):
-            for j,y in enumerate(x2):
-                Z_esp[i,j] = u(x, y)
-        c = ax.contour(X1, X2, Z_esp, levels=10, colors='white')
+        Uexp = X*(1. - X) - Y*(1. - Y)
+        c = ax.contour(X, Y, Uexp, levels=10, colors='white')
         ax.clabel(c)
 
-        X_plot = torch.cat((X1.reshape(-1,1),
-                            X2.reshape(-1,1)), dim=1)
-        Z_est = model(X_plot)
-        Z_est = Z_est.reshape((ns,ns))
-        cf = ax.contourf(X1, X2, Z_est.detach(), levels=10, cmap='coolwarm')
+        M = torch.hstack((X.reshape(-1,1),
+                          Y.reshape(-1,1)))
+        Uest = model(M).detach()
+        Uest = Uest.reshape((npts, npts))
+        cf = ax.contourf(X, Y, Uest, levels=10, cmap='coolwarm')
         plt.colorbar(cf)
         
         ax.grid()
-        ax.set_xlabel('$x_1$')
-        ax.set_ylabel('$x_2$')
-        plt.show()        
+        ax.set_xlabel('$x$')
+        ax.set_ylabel('$y$')
+        plt.title(f"epoch = {epoch}, loss = {loss.item():.4e}")
+        plt.savefig(f'results/sol_{epoch:0>6}.png', bbox_inches='tight')
+        plt.close()
+
+    if (loss.item() < tol):
+        break
 
     # backward
     optim.zero_grad()
     loss.backward()
     optim.step()
+
+
+fig = plt.figure()
+ax = fig.add_subplot()
+ax.plot(lloss)
+ax.set_yscale('log')
+plt.show()
 \end{lstlisting}
 
-\subsection{Autograd}
+\subsection{Preprocessamento}
+[[tag:construcao]]
 
-\begin{lstlisting}[caption=mlp\_eqlaplace\_ag.py, label=cap_mlp_sec_modelo:cod:mlp_eqlaplace_ag]
+Vamos assumir as seguintes mudanças de variáveis
+\begin{subequations}
+  \begin{align}
+    &\bar{x} = 2x - 1\\
+    &\bar{y} = 2y - 1.
+  \end{align}
+\end{subequations}
+Também, assumimos a notação $\bar{u}\left(\bar{\pmb{x}}\right) = u\left(\bar{\pmb{x}}(\pmb{x})\right)$.
+
+Então, segue que
+\begin{equation}
+  \begin{aligned}
+    \frac{\p\bar{u}}{\p\bar{x}} &= \frac{\p}{\p\bar{x}}u\left(\bar{\pmb{x}}(\pmb{x})\right)\\
+    &= \frac{\p u}{\p x}\frac{\p x}{\p \bar{x}}\\
+    &= \frac{1}{2}\frac{\p u}{\p x}.
+  \end{aligned}
+\end{equation}
+Também, temos
+\begin{equation}
+  \begin{aligned}
+    \frac{\p^2\bar{u}}{\p \bar{x}^2} &= \frac{\p}{\p\bar{x}}\left(\frac{\p\bar{u}}{\p\bar{x}}\right)\\
+    &= \frac{\p}{\p\bar{x}}\left(\frac{1}{2}\frac{\p u}{\p x}\right)\\
+    &= \frac{\p}{\p x}\left(\frac{1}{2}\frac{\p u}{\p x}\right)\frac{\p x}{\p \bar{x}}\\
+    &= \frac{1}{4}\frac{\p^2 u}{\p x^2}.
+  \end{aligned}
+\end{equation}
+Analogamente, temos
+\begin{equation}
+  \frac{\p\bar{u}}{\p\bar{y}} = \frac{1}{2}\frac{\p u}{\p y}
+\end{equation}
+e
+\begin{equation}
+  \frac{\p^2\bar{u}}{\p\bar{y}^2} = \frac{1}{4}\frac{\p^2 u}{\p y^2}.
+\end{equation}
+
+Na nova variável $\bar{\pmb{x}}$ o problema de Laplace \eqref{cap_mlp_sec_eqlaplace:eq:probLaplace} é equivalente a
+\begin{subequations}
+  \begin{align}
+    &\frac{\p^2\bar{u}}{\p\bar{x}^2} + \frac{\p^2\bar{u}}{\p\bar{y}^2} = 0, ~\bar{\pmb{x}}=(\bar{x}, \bar{y})\in (-1, 1)^2,\\
+    &\bar{u} = \bar{u}_0, ~\bar{\pmb{x}}\in\Gamma=\p D.
+  \end{align}
+\end{subequations}
+
+\begin{ex}
+\begin{lstlisting}[caption=pyEqLaplacePP]
 import torch
 import matplotlib.pyplot as plt
 import random
 import numpy as np
 
 # modelo
-model = torch.nn.Sequential(
-    torch.nn.Linear(2,50),
-    torch.nn.Tanh(),
-    torch.nn.Linear(50,10),
-    torch.nn.Tanh(),
-    torch.nn.Linear(10,5),
-    torch.nn.Tanh(),
-    torch.nn.Linear(5,1)
-)
+## n camadas escondidas
+nh = 3
+## n neurônios por camada
+nn = 50
+## fun de ativação
+fh = torch.nn.Tanh()
+## arquitetura
+model = torch.nn.Sequential()
+model.add_module('layer_1', torch.nn.Linear(2,nn))
+model.add_module('fun_1', fh)
+for layer in range(2, nh):
+    model.add_module(f'layer_{layer}', torch.nn.Linear(nn,nn))
+    model.add_module(f'fun_{layer}', fh)
+model.add_module(f'layer_{nh}', torch.nn.Linear(nn,1))
 
 # SGD - (Stochastic) Gradient Descent
 optim = torch.optim.SGD(model.parameters(),
-                        lr = 1e-3,
-                        momentum = 0.9,
-                        dampening = 0.)
+                        lr = 1e-2,
+                        momentum = 0.9)
+optim = torch.optim.Adam(model.parameters(),
+                        lr = 1e-2)
 
-# Solução esperada
-def u(x, y):
-    return a*x*(1-x) - a*y*(1-y)
-
-
-def laplace_loss(X, U, h2, n, uc=u, p=1.):
-    # num de amostras
-    nc = 2*n + 2*(n-2)
-    ni = n**2 - nc
-
-    # loss interno
-    lin = 0.
-    for i in range(1,n-1):
-      for j in range(1,n-1):
-        s = j + i*n
-        x = X[s:s+1,:].detach()
-        x.requires_grad = True
-        u = model(x)
-        grad_u = torch.autograd.grad(u, x,
-                                     create_graph = True,
-                                     retain_graph = True)[0]
-        u_x = grad_u[0,0]
-        u_y = grad_u[0,1]
-
-        u_xx = torch.autograd.grad(u_x, x,
-                                   create_graph = True,
-                                   retain_graph = True)[0][0,0]
-        u_yy = torch.autograd.grad(u_y, x,
-                                   create_graph = True,
-                                   retain_graph = True)[0][0,1]
-        lin = torch.add(lin, (u_xx + u_yy)**2)
-    lin /= ni 
-
-    # loss contorno
-    lc = 0.
-    # 0 <= x <= 1 e y == 0
-    for i in range(n):
-        s = i*n
-        x = M[s,0]
-        y = M[s,1]
-        lc += (U[s,0] - uc(x,y))**2
-    # 0 <= x <= 1 e y == 1
-    for i in range(n):
-        s = n-1 + i*n
-        x = M[s,0]
-        y = M[s,1]
-        lc += (U[s,0] - uc(x,y))**2
-    # 0 == x e 0 < y < 1
-    for j in range(1, n-1):
-        s = j
-        x = M[s,0]
-        y = M[s,1]
-        lc += (U[s,0] - uc(x,y))**2
-    # 1 == x e 0 < y < 1
-    for j in range(1, n-1):
-        s = j + n*(n-1)
-        x = M[s,0]
-        y = M[s,1]
-        lc += (U[s,0] - uc(x,y))**2
-    lc *= p/nc
-    
-    loss = lin + lc
-    return loss
-
-    
-# dados do problema
-
-# collocation points
-a = 1
-n = 11
-ns = n**2
-h = 1./(n-1)
-h2 = h**2
-
-# malha
-x = torch.linspace(0, 1, n)
-y = torch.linspace(0, 1, n)
-
-M = torch.empty((ns, 2))
-s = 0
-for i, xx in enumerate(x):
-  for j, yy in enumerate(y):
-    M[s,0] = xx
-    M[s,1] = yy
-    s += 1
-
-# gráfico
-X, Y = np.meshgrid(x, y)
-U_esp = u(X, Y)
-
-# training
-nepochs = 10000
+# params treinamento
+## n épocas
+nepochs = 10001
+## freq output loss
 nout_loss = 100
-nout_plot = 500
+## stop criterion
+tol = 1e-4
 
+## n amostras por eixo
+ns = 101
+
+lloss = []
 for epoch in range(nepochs):
 
     # forward
-    U_est = model(M)
+    
+    ## internal pts samples
+    Xin = 2.*torch.rand((ns, 2)) -1.
+    Xin.requires_grad=True
+    Uin = model(Xin)
+
+    ## loss internal pts
+    D1Uin = torch.autograd.grad(
+        Uin, Xin,
+        grad_outputs=torch.ones_like(Uin),
+        retain_graph=True,
+        create_graph=True)[0]
+    D2Uin = torch.autograd.grad(
+        D1Uin, Xin,
+        grad_outputs=torch.ones_like(D1Uin),
+        retain_graph=True,
+        create_graph=True)[0]
+
+    lin = torch.mean((D2Uin[:,0] + D2Uin[:,1])**2)
+
+    ## bc 1
+    xx = 2.*torch.rand((ns, 1)) - 1.
+    yy = -1.*torch.ones((ns,1))
+    Xbc1 = torch.hstack((xx, yy))
+    Ubc1 = model(Xbc1)
+
+    ## loss bc 1
+    xx = (xx + 1.)/2.;
+    Uexp = xx*(1. - xx)
+    lbc1 = torch.mean((Ubc1 - Uexp)**2)
+
+    ## bc 3
+    xx = 2.*torch.rand((ns, 1)) -1.
+    yy = torch.ones((ns,1))
+    Xbc3 = torch.hstack((xx, yy))
+    Ubc3 = model(Xbc3)
+
+    ## loss bc 3
+    xx = (xx + 1.)/2.;
+    Uexp = xx*(1. - xx)
+    lbc3 = torch.mean((Ubc3 - Uexp)**2)
+
+    ## bc 2
+    xx = torch.ones((ns, 1))
+    yy = 2.*torch.rand((ns,1)) -1.
+    Xbc2 = torch.hstack((xx, yy))
+    Ubc2 = model(Xbc2)
+
+    ## loss bc 2
+    yy = (yy + 1.)/2.;
+    Uexp = yy*(yy - 1.)
+    lbc2 = torch.mean((Ubc2 - Uexp)**2)
+
+    ## bc 4
+    xx = -1.*torch.ones((ns, 1))
+    yy = 2.*torch.rand((ns,1)) -1.
+    Xbc4 = torch.hstack((xx, yy))
+    Ubc4 = model(Xbc4)
+
+    ## loss bc 3
+    yy = (yy + 1.)/2.;
+    Uexp = yy*(yy - 1.)
+    lbc4 = torch.mean((Ubc4 - Uexp)**2)
 
     # loss function
-    loss = laplace_loss(M, U_est, h2, n, u, p=10.)
+    loss = lin + lbc1 + lbc2 + lbc3 + lbc4
 
-    if ((epoch % nout_loss) == 0):
+    lloss.append(loss.item())
+
+    if (((epoch % nout_loss) == 0) or (loss.item() < tol)):
         print(f'{epoch}: loss = {loss.item():.4e}')
     
-    # output current solution
-    if ((epoch) % nout_plot == 0):
-        # verificação
+        # gráfico
         fig = plt.figure()
         ax = fig.add_subplot()
 
-        ns = 50
-        x1 = torch.linspace(0., 1., ns)
-        x2 = torch.linspace(0., 1., ns)
-        X1, X2 = torch.meshgrid(x1, x2)
+        npts = 50
+        xx = torch.linspace(-1., 1., npts)
+        yy = torch.linspace(-1., 1., npts)
+        X, Y = torch.meshgrid(xx, yy)
         # exact
-        Z_esp = torch.empty_like(X1)
-        for i,x in enumerate(x1):
-            for j,y in enumerate(x2):
-                Z_esp[i,j] = u(x, y)
-        c = ax.contour(X1, X2, Z_esp, levels=10, colors='white')
+        Uexp = (X+1.)/2.*(1. - (X+1.)/2.) \
+            - (Y+1.)/2.*(1. - (Y+1.)/2.)
+        c = ax.contour(X, Y, Uexp, levels=10, colors='white')
         ax.clabel(c)
 
-        X_plot = torch.cat((X1.reshape(-1,1),
-                            X2.reshape(-1,1)), dim=1)
-        Z_est = model(X_plot)
-        Z_est = Z_est.reshape((ns,ns))
-        cf = ax.contourf(X1, X2, Z_est.detach(), levels=10, cmap='coolwarm')
+        M = torch.hstack((X.reshape(-1,1),
+                          Y.reshape(-1,1)))
+        Uest = model(M).detach()
+        Uest = Uest.reshape((npts, npts))
+        cf = ax.contourf(X, Y, Uest, levels=10, cmap='coolwarm')
         plt.colorbar(cf)
         
         ax.grid()
-        ax.set_xlabel('$x_1$')
-        ax.set_ylabel('$x_2$')
-        plt.show()        
+        ax.set_xlabel('$\\bar{x}$')
+        ax.set_ylabel('$\\bar{y}$')
+        plt.title(f"epoch = {epoch}, loss = {loss.item():.4e}")
+        plt.savefig(f'results/sol_{epoch:0>6}.png', bbox_inches='tight')
+        plt.close()
+
+    if (loss.item() < tol):
+        break
 
     # backward
     optim.zero_grad()
     loss.backward()
     optim.step()
+
+fig = plt.figure()
+ax = fig.add_subplot()
+ax.plot(lloss)
+ax.set_yscale('log')
+plt.show()
 \end{lstlisting}
+\end{ex}
+
+% \subsection{Diferenças Finitas}
+
+% % \lstinputlisting[caption=mlp\_eqlaplace.py, label=cap_mlp_sec_modelo:cod:mlp_eqlaplace]{./cap_mlp/dados/py_mlp_eqlaplace/main.py}
+% \begin{lstlisting}[caption=mlp\_eqlaplace\_df.py, label=cap_mlp_sec_modelo:cod:mlp_eqlaplace_df]
+% import torch
+% import matplotlib.pyplot as plt
+% import random
+% import numpy as np
+
+% # modelo
+% model = torch.nn.Sequential(
+%     torch.nn.Linear(2,50),
+%     torch.nn.Tanh(),
+%     torch.nn.Linear(50,10),
+%     torch.nn.Tanh(),
+%     torch.nn.Linear(10,5),
+%     torch.nn.Tanh(),
+%     torch.nn.Linear(5,1)
+% )
+
+% # SGD - (Stochastic) Gradient Descent
+% optim = torch.optim.SGD(model.parameters(),
+%                         lr = 1e-3,
+%                         momentum = 0.9,
+%                         dampening = 0.)
+
+% # Solução esperada
+% def u(x, y):
+%     return a*x*(1-x) - a*y*(1-y)
+
+
+% def laplace_loss(X, U, h2, n, uc=u, p=1.):
+%     # num de amostras
+%     nc = 2*n + 2*(n-2)
+%     ni = n**2 - nc
+
+%     # loss interno
+%     lin = 0.
+%     for i in range(1,n-1):
+%       for j in range(1,n-1):
+%         s = j + i*n
+%         l = (U[s-n, 0] - 2 * U[s, 0] + U[s+n, 0])/h2 # x
+%         l += (U[s-1, 0] - 2 * U[s, 0] + U[s+1, 0])/h2 # y
+%         lin += l**2
+%     lin /= ni 
+
+%     # loss contorno
+%     lc = 0.
+%     # 0 <= x <= 1 e y == 0
+%     for i in range(n):
+%         s = i*n
+%         x = M[s,0]
+%         y = M[s,1]
+%         lc += (U[s,0] - uc(x,y))**2
+%     # 0 <= x <= 1 e y == 1
+%     for i in range(n):
+%         s = n-1 + i*n
+%         x = M[s,0]
+%         y = M[s,1]
+%         lc += (U[s,0] - uc(x,y))**2
+%     # 0 == x e 0 < y < 1
+%     for j in range(1, n-1):
+%         s = j
+%         x = M[s,0]
+%         y = M[s,1]
+%         lc += (U[s,0] - uc(x,y))**2
+%     # 1 == x e 0 < y < 1
+%     for j in range(1, n-1):
+%         s = j + n*(n-1)
+%         x = M[s,0]
+%         y = M[s,1]
+%         lc += (U[s,0] - uc(x,y))**2
+%     lc *= p/nc
+    
+%     loss = lin + lc
+%     return loss
+
+    
+% # dados do problema
+
+% # collocation points
+% a = 1
+% n = 11
+% ns = n**2
+% h = 1./(n-1)
+% h2 = h**2
+
+% # malha
+% x = torch.linspace(0, 1, n)
+% y = torch.linspace(0, 1, n)
+
+% M = torch.empty((ns, 2))
+% s = 0
+% for i, xx in enumerate(x):
+%   for j, yy in enumerate(y):
+%     M[s,0] = xx
+%     M[s,1] = yy
+%     s += 1
+
+% # gráfico
+% X, Y = np.meshgrid(x, y)
+% U_esp = u(X, Y)
+
+% # training
+% nepochs = 10000
+% nout_loss = 100
+% nout_plot = 500
+
+% for epoch in range(nepochs):
+
+%     # forward
+%     U_est = model(M)
+
+%     # loss function
+%     loss = laplace_loss(M, U_est, h2, n, u, p=10.)
+
+%     if ((epoch % nout_loss) == 0):
+%         print(f'{epoch}: loss = {loss.item():.4e}')
+    
+%     # output current solution
+%     if ((epoch) % nout_plot == 0):
+%         # verificação
+%         fig = plt.figure()
+%         ax = fig.add_subplot()
+
+%         ns = 50
+%         x1 = torch.linspace(0., 1., ns)
+%         x2 = torch.linspace(0., 1., ns)
+%         X1, X2 = torch.meshgrid(x1, x2)
+%         # exact
+%         Z_esp = torch.empty_like(X1)
+%         for i,x in enumerate(x1):
+%             for j,y in enumerate(x2):
+%                 Z_esp[i,j] = u(x, y)
+%         c = ax.contour(X1, X2, Z_esp, levels=10, colors='white')
+%         ax.clabel(c)
+
+%         X_plot = torch.cat((X1.reshape(-1,1),
+%                             X2.reshape(-1,1)), dim=1)
+%         Z_est = model(X_plot)
+%         Z_est = Z_est.reshape((ns,ns))
+%         cf = ax.contourf(X1, X2, Z_est.detach(), levels=10, cmap='coolwarm')
+%         plt.colorbar(cf)
+        
+%         ax.grid()
+%         ax.set_xlabel('$x_1$')
+%         ax.set_ylabel('$x_2$')
+%         plt.show()        
+
+%     # backward
+%     optim.zero_grad()
+%     loss.backward()
+%     optim.step()
+% \end{lstlisting}
 
 \subsection{Exercícios}
-
 [[tag::construcao]]
 
 \section{Aplicação: Equação do Calor}\label{cap_mlp_sec_calor}
+[[tag:construcao]]
 
 Consideramos o problema
 \begin{subequations}\label{cap_mlp_sec_calor:eq:prob}
@@ -647,6 +847,7 @@ onde $f(t,x) = (\pi^2 - 1)e^{-t}\sen(\pi x)$ é a fonte. Este problema foi manuf
 \end{equation}
 
 \subsection{Diferenças Finitas}
+[[tag:construcao]]
 
 Assumimos a discretização no tempo $t^{(k)} = kh_t$, $k = 0, 1, 2, \dotsc, n_t$, com passo $h_t = 1/n_t$. Para a discretização no espaço, assumimos $x_{i} = -1 + ih_x$, $i = 0, 1, 2, \dotsc, n_x$, com passo $h_x = 2/n_x$. Ainda, denotando $u^{(k)}_i \approx u\left(t^{(k)}, x_i\right)$, usamos as seguintes fórmulas de diferenças finitas
 \begin{equation}
@@ -778,6 +979,7 @@ for epoch in range(nepochs):
 \end{lstlisting}
 
 \subsection{Diferenciação Automética}
+[[tag:construcao]]
 
 \begin{lstlisting}[caption=mlp\_calor\_autograd.py]
 import torch
