@@ -20,9 +20,9 @@ for layer in range(2, nh):
 model.add_module(f'layer_{nh}', torch.nn.Linear(nn,1))
 
 # SGD - (Stochastic) Gradient Descent
-optim = torch.optim.SGD(model.parameters(),
-                        lr = 1e-2,
-                        momentum = 0.9)
+# optim = torch.optim.SGD(model.parameters(),
+#                         lr = 1e-2,
+#                         momentum = 0.9)
 optim = torch.optim.Adam(model.parameters(),
                         lr = 1e-2)
 
