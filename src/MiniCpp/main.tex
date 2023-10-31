@@ -764,541 +764,179 @@ int main()
   Implemente uma função para computar a multiplicação de uma matriz $A$ $n\times m$ por uma matriz $B$ de $m\times n$. Use a instrução \lstinline!for! e assuma que as matrizes estão alocadas como arranjos \lstinline+double+.
 \end{exr}
 
-% \section{Elementos da computação matricial}\label{sec_mat}
+\section{Elementos da Computação Matricial}\label{sec_mat}
 
-% Nesta seção, vamos explorar a \href{https://numpy.org/}{NumPy} (Numerical Python), biblioteca para tratamento numérico de dados. Ela é extensivamente utilizada nos mais diversos campos da ciência e da engenharia. Aqui, vamos nos restringir a introduzir algumas de suas ferramentas para a computação matricial.
+\hl{{\gsl} (GNU Scientific Library) é uma biblioteca de métodos numéricos para C/C++}. É um software livre sobre a \textit{GNU General Public License} e está disponível em
+\begin{center}
+  \url{https://www.gnu.org/software/gsl/}.
+\end{center}
 
-% Usualmente, a biblioteca é importada como segue
-% \begin{lstlisting}
-% >>> import numpy as np
-% \end{lstlisting}
+A biblioteca fornece uma grande número de rotinas matemáticas para várias áreas da análise numérica. Aqui, vamos nos concentrar em uma rápida introdução à computação matricial.
 
-% \subsection{NumPy array}
+\subsection{Vetores}\label{sec_mat_subsec_vet}
 
-% Um \lstinline+array+ é uma tabela de valores (vetor, matriz ou multidimensional) e contém informação sobre os dados brutos, indexação e como interpretá-los. {\bf Os elementos são todos do mesmo tipo} (diferente de uma lista Python), referenciados pela propriedade \lstinline+dtype+. A indexação dos elementos pode ser feita por um \lstinline+tuple+ de inteiros não negativos, por booleanos, por outro \lstinline+array+ ou por números inteiros. O \lstinline+rank+ de um \lstinline+array+ é seu número de dimensões (chamadas de \lstinline+axes+\footnote{Do inglês, plural de {\it axis}, eixo.}). O \lstinline+shape+ é um \lstinline+tuple+ de inteiros que fornece seu tamanho (número de elementos) em cada dimensão. Sua inicialização pode ser feita usando-se listas simples ou encadeadas. Por exemplo,
-% \begin{lstlisting}
-% >>> a = np.array([1,3,-1,2])
-% >>> print(a)
-% [ 1  3 -1  2]
-% >>> a.dtype
-% dtype('int64')
-% >>> a.shape
-% (4,)
-% >>> a[2]
-% -1
-% >>> a[1:3]
-% array([ 3, -1])
-% \end{lstlisting}
-% temos um \lstinline+array+ de números inteiros com quatro elementos dispostos em um único \lstinline+axis+ (eixo). Podemos interpretá-lo como uma representação de um vetor linha ou coluna, i.e.
-% \begin{equation}
-%   a = (1, 3, -1, 2)
-% \end{equation}
-% vetor coluna ou $a^T$ vetor linha.
+A \hl{alocação de um vetor} no {\gsl} segue o estilo de \lstinline+malloc+ (alocação de memória) e \lstinline+free+ (liberação de memória).
 
-% Outro exemplo,
-% \begin{lstlisting}
-% >>> a = np.array([[1.0,2,3],[-3,-2,-1]])
-% >>> a.dtype
-% dtype('float64')
-% >>> a.shape
-% (2, 3)
-% >>> a[1,1]
-% -2.0
-% \end{lstlisting}
-% temos um \lstinline+array+ de números decimais (\lstinline+float+) dispostos em um arranjo com dois \lstinline+axes+ (eixos). O primeiro \lstinline+axis+ tem tamanho $2$ e o segundo tem tamanho $3$. Ou seja, podemos interpretá-lo como uma matriz de duas linhas e três colunas. Podemos fazer sua representação algébrica como
-% \begin{equation}
-%   a =
-%   \begin{bmatrix}
-%     1 & 2 & 3\\
-%     -3 & -2 & -1 
-%   \end{bmatrix}
-% \end{equation}
+\begin{ex}
+  No seguinte código, alocamos e imprimimos o seguinte vetor
+  \begin{equation}
+    \pmb{v} = (\sqrt{2}, 1, 3.5, \pi).
+  \end{equation}
 
-% \subsubsection{Inicialização de um array}\label{subsubsection:iniarray}
+\begin{lstlisting}[caption=vector.cc]
+#include <stdio.h>
 
-% O \href{https://numpy.org/}{NumPy} conta com úteis funções de inicialização de \lstinline+array+. Vejam algumas das mais frequentes:
-% \begin{itemize}
-% \item \lstinline+np.zeros()+: inicializa um \lstinline+array+ com todos seus elementos iguais a zero.
-%   \begin{lstlisting}
-%   >>> np.zeros(2)
-%   array([0., 0.])
-%   \end{lstlisting}
-% \item \lstinline+np.ones()+: inicializa um \lstinline+array+ com todos seus elementos iguais a $1$.
-%   \begin{lstlisting}
-%   >>> np.ones((3,2), dtype='int')
-%   array([[1, 1],
-%          [1, 1],
-%          [1, 1]])
-%   \end{lstlisting}
-% \item \lstinline+np.empty()+: inicializa um \lstinline+array+ sem alocar valores para seus elementos\footnote{Atenção! Os valores dos elementos serão dinâmicos conforme ``lixo'' da memória.}.
-%   \begin{lstlisting}
-%   >>> np.empty(3)
-%   array([4.9e-324, 1.5e-323, 2.5e-323])
-%   \end{lstlisting}
-% \item \lstinline+np.arange()+: inicializa um \lstinline+array+ com uma sequência de elementos\footnote{Similar a função Python \lstinline+range+.}.
-%   \begin{lstlisting}
-%   >>> np.arange(1,6,2)
-%   array([1, 3, 5])
-%   \end{lstlisting}
-% \item \lstinline+np.linspace(a, b[, num=n])+: inicializa um \lstinline+array+ como uma sequência de elementos que começa em \lstinline+a+, termina em \lstinline+b+ (incluídos) e contém \lstinline+n+ elementos igualmente espaçados.
-%   \begin{lstlisting}
-%   >>> np.linspace(0, 1, num=5)
-%   array([0.  , 0.25, 0.5 , 0.75, 1.  ])
-%   \end{lstlisting}
-% \end{itemize}
+// GSL const e funs matemáticas
+#include <gsl/gsl_math.h>
+// GSL vetores
+#include <gsl/gsl_vector.h>
 
-% \subsubsection{Manipulação de arrays}
+int main() {
+  // alocação de memória
+  gsl_vector *v = gsl_vector_alloc(4);
 
-% Outras duas funções importantes no tratamento de \lstinline+arrays+ são:
-% \begin{itemize}
-% \item \lstinline+arr.reshape()+: permite a alteração da forma de um \lstinline+array+.
-%   \begin{lstlisting}
-%   >>> a = np.array([-2,-1])
-%   >>> a
-%   array([-2, -1])
-%   >>> a.reshape(2,1)
-%   array([[-2],
-%          [-1]])
-%   \end{lstlisting}
+  // atribuição
+  gsl_vector_set(v, 0, sqrt(2.));
+  gsl_vector_set(v, 1, 1.);
+  gsl_vector_set(v, 2, 3.5);
+  gsl_vector_set(v, 3, M_PI);
 
-%    O \lstinline+arr.reshape()+ também permite a utilização de um coringa \lstinline+-1+ que será dinamicamente determinado de forma obter-se uma estrutura adequada. Por exemplo,
-%    \begin{lstlisting}
-%    >>> a = np.array([[1,2],[3,4]])
-%    >>> a
-%    array([[1, 2],
-%           [3, 4]])
-%    >>> a.reshape((-1,1))
-%    array([[1],
-%           [2],
-%           [3],
-%           [4]])
-%    \end{lstlisting}
-% \item \lstinline+arr.transpose()+: computa a transposta de uma matriz.
-%     \begin{lstlisting}
-%     >>> a = np.array([[1,2],[3,4]])
-%     >>> a
-%     array([[1, 2],
-%            [3, 4]])
-%     >>> a.transpose()
-%     array([[1, 3],
-%            [2, 4]])
-%     \end{lstlisting}
-%  \item \lstinline+np.concatenate()+: concatena \lstinline+arrays+.
-%    \begin{lstlisting}
-%    >>> a = np.array([1,2])
-%    >>> b = np.array([2,3])
-%    >>> c = np.concatenate((a,b))
-%    >>> c
-%    array([1, 2, 2, 3])
-%    >>> a = a.reshape((1,-1))
-%    >>> a.ndim
-%    2
-%    >>> b = b.reshape((1,-1))
-%    >>> b
-%    array([[2, 3]])
-%    >>> d = np.concatenate((a,b), axis=0)
-%    >>> d
-%    array([[1, 2],
-%           [2, 3]])
-%    \end{lstlisting}
-% \end{itemize}
+  // acesso e impressão
+  for (int i=0; i<4; ++i) {
+    printf("v_%d = %g\n", i, gsl_vector_get(v, i));
+  }
+  
+  // liberação de memória
+  gsl_vector_free(v);
+}
+\end{lstlisting}
 
-% \subsubsection{Operadores elemento-a-elemento}\label{subsubsection:ope-a-e}
+  A compilação desse código requer a lincagem com a biblioteca {\gsl}:
+\begin{lstlisting}
+$ gcc vetor.cc -lgsl -lgslcblas -lm
+\end{lstlisting}
+\end{ex}
 
-% Os operadores aritméticos disponível no Python atuam elemento-a-elemento nos \lstinline+arrays+. Por exemplo,
-% \begin{lstlisting}
-% >>> a = np.array([1,2])
-% >>> b = np.array([2,3])
-% >>> a+b
-% array([3, 5])
-% >>> a-b
-% array([-1, -1])
-% >>> b*a
-% array([2, 6])
-% >>> a**b
-% array([1, 8])
-% >>> 2*b
-% array([4, 6])
-% \end{lstlisting}
+\begin{obs}\normalfont{(\hl{Inicialização}.)}
+  Alternativamente, a alocação com o método
+\begin{lstlisting}
+gsl_vector *gsl_vector_calloc(size_t n)
+\end{lstlisting}
+  cria um vetor e inicializada todos os seus elementos como zero. Outros métodos de inicialização estão disponíveis, consulte \href{https://www.gnu.org/software/gsl/doc/html/vectors.html#initializing-vector-elements}{GSL Docs: Initializing vector elements}.
+\end{obs}
 
-% O \href{https://numpy.org/}{NumPy} também conta com várias funções matemáticas elementares que operam elemento-a-elemento em \lstinline+arrays+. Por exemplo,
-% \begin{lstlisting}
-% >>> a = np.array([np.pi, np.sqrt(2)])
-% >>> a
-% array([3.14159265, 1.41421356])
-% >>> np.sin(a)
-% array([1.22464680e-16, 9.87765946e-01])
-% >>> np.exp(a)
-% array([23.14069263,  4.11325038])
-% \end{lstlisting}
- 
-% \begin{obs}
-% O \href{https://numpy.org/}{NumPy} contém um série de outras funções práticas para a manipulação de \lstinline+arrays+. Consulte \href{https://numpy.org/doc/stable/user/absolute_beginners.html\#numpy-the-absolute-basics-for-beginners}{NumPy: the absolute basics for beginners}.  
-% \end{obs}
+\subsubsection{Operações com Vetores}
 
-% \subsection{Elementos da álgebra linear}
+\hl{Operações básicas envolvendo vetores} do {\gsl} estão disponíveis com os seguintes métodos\footnote{Mais detalhes, consulte \href{https://www.gnu.org/software/gsl/doc/html/vectors.html\#vector-operations}{GNU Docs: Vector operations}.}:
+\begin{itemize}
+\item \hl{{\lstinline!int gsl_vector_add(gsl_vector *a, const gsl_vector *b)!}}
 
-% O \href{https://numpy.org/}{NumPy} conta com um módulo de álgebra linear
-% \begin{lstlisting}
-% >>> from numpy import linalg
-% \end{lstlisting}
+  Computa a adição vetorial \lstinline+a + b+ e o resultado é armazenado no vetor \lstinline+a+.
 
-% \subsubsection{Vetores}
+\item \hl{{\lstinline!int gsl_vector_sub(gsl_vector *a, const gsl_vector *b)!}}
 
-% Um vetor podem ser representado usando um \lstinline+array+ de um eixo (dimensão) ou um com dois eixos, caso se queira diferenciá-lo entre um vetor linha ou coluna. Por exemplo, os vetores
-% \begin{gather}
-%   a = (2, -1, 7),\\
-%   b = (3, 1, 0)^T
-% \end{gather}
-% podem ser alocados com
-% \begin{lstlisting}
-% >>> x = np.array([2,-1,7])
-% >>> y = np.array([3,1,0])
-% \end{lstlisting}
-% Caso queira-se que $x$ siga um arranjo em coluna, pode-se modificado como segue
-% \begin{lstlisting}
-% >>> a = a.reshape((-1,1))
-% >>> a
-% array([[ 2],
-%        [-1],
-%        [ 7]])
-% \end{lstlisting}
+  Computa a subtração vetorial \lstinline!a - b! e o resultado é armazenado no vetor \lstinline!b!.
 
-% Como já vimos, o \href{https://numpy.org/}{NumPy} conta com operadores elemento-a-elemento que podem ser utilizados na álgebra envolvendo \lstinline+arrays+, logo também aplicáveis a vetores (consulte a Subseção \ref{subsubsection:ope-a-e}). Vamos, aqui, introduzir outras operações próprias deste tipo de objeto.
+\item \hl{{\lstinline!int gsl_vector_mul(gsl_vector *a, const gsl_vector *b)!}}
 
-% \begin{exr}
-%   Aloque cada um dos seguintes vetores como um \href{https://numpy.org/}{NumPy} \lstinline+array+:
-%   \begin{enumerate}
-%   \item[a)] $x = (1.2, -3.1, 4)$
-%   \item[b)] $y = x^T$
-%   \item[c)] $z = (\pi, \sqrt{2}, e^{-2})^T$
-%   \end{enumerate}
-% \end{exr}
+  Computa a multiplicação elemento-a-elemento \lstinline!a*b! e armazena o resultado no vetor \lstinline!a!.
 
-% \subsubsection{Produto escalar e norma}
+\item \hl{{\lstinline!int gsl_vector_div(gsl_vector *a, const gsl_vector *b)!}}
 
-% Dados dois vetores,
-% \begin{gather}
-%   x = (x_0, x_1, \dotsc, x_{n-1}),\\
-%   y = (y_0, y_1, \dotsc, y_{n-1})
-% \end{gather}
-% define-se o \emph{produto escalar} por
-% \begin{equation}
-%   x\cdot y = x_0y_0 + x_1y_1 + \cdots + x_{n-1}y_{n-1}
-% \end{equation}
-% Com o \href{https://numpy.org/}{NumPy}, podemos computá-lo com a função \lstinline+np.dot()+. Por exemplo,
-% \begin{lstlisting}
-% >>> x = np.array([-1, 0, 2, 4])
-% >>> y = np.array([0, 1, 1, -1])
-% >>> np.dot(x,y)
-% -2
-% \end{lstlisting}
+  Computa a divisão elemento-a-elemento \lstinline!a/b! e armazena o resultado no vetor \lstinline!a!.
 
-% A norma (euclidiana) de um vetor é definida por
-% \begin{equation}
-%   \|x\| = \sqrt{\sum_{i=0}^{n-1} x_i^2}.
-% \end{equation}
-% O \href{https://numpy.org/}{NumPy} conta com a função \lstinline+np.linalg.norm()+ para computá-la. Por exemplo,
-% \begin{lstlisting}
-%   >>> np.linalg.norm(y)
-%   1.7320508075688772
-% \end{lstlisting}
+\item \hl{{\lstinline!int gsl_vector_scale(gsl_vector *a, const double x)!}}
 
-% \begin{exr}
-%   Faça um código para computar o produto escalar $x\cdot y$ sendo
-%   \begin{gather}
-%     x = (1.2, \ln(2), 4),\\
-%     y = (\pi^2, \sqrt{3}, e)
-%   \end{gather}
-% \end{exr}
+  Computa a multiplicação por escalar \lstinline!x*a! e armazena o resultado no vetor \lstinline!a!.
 
+\item \hl{{\lstinline!int gsl_vector_add_constant(gsl_vector *a, const double x)!}}
 
-% \subsubsection{Matrizes}
+  Recomputa o vetor \lstinline!a! somando o escalar \lstinline!x! a cada um de seus elementos.
 
-% Uma matriz pode ser alocada como um \href{https://numpy.org/}{NumPy} \lstinline+array+ de dois eixos (dimensões). Por exemplo, as matrizes
-% \begin{gather}
-%   A =
-%   \begin{bmatrix}
-%     2 & -1 & 7\\
-%     3 & 1 & 0
-%   \end{bmatrix},\\
-%   B =
-%   \begin{bmatrix}
-%     4 & 0\\
-%     2 & 1\\
-%    -8 & 6
-%   \end{bmatrix}
-% \end{gather}
-% podem ser alocadas como segue
-% \begin{lstlisting}
-% >>> A = np.array([[2,-1,7],[3,1,0]])
-% >>> A
-% array([[ 2, -1,  7],
-%        [ 3,  1,  0]])
-% >>> B = np.array([[4,0],[2,1],[-8,6]])
-% >>> B
-% array([[ 4,  0],
-%        [ 2,  1],
-%        [-8,  6]])
-% \end{lstlisting}
+\item \hl{{\lstinline!double gsl_vector_sum(const gsl_vector *a)!}}
 
+  Retorna a soma dos elementos do vetor \lstinline!a!.
+\end{itemize}
 
-% Como já vimos, o \href{https://numpy.org/}{NumPy} conta com operadores elemento-a-elemento que podem ser utilizados na álgebra envolvendo \lstinline+arrays+, logo também aplicáveis a matrizes (consulte a Subseção \ref{subsubsection:ope-a-e}). Vamos, aqui, introduzir outras operações próprias deste tipo de objeto.
+\begin{ex}
+  No código abaixo, computamos $\pmb{w} = \alpha \pmb{u} + \pmb{v}$ para o escalar $\alpha = 2$ e os vetores
+  \begin{equation}
+    \begin{aligned}
+      &\pmb{u} = (1, -2, 0.5),\\
+      &\pmb{v} = (2, 1, -1.5).
+    \end{aligned}
+  \end{equation}
 
-% \begin{exr}
-%   Aloque cada uma das seguintes matrizes como um Numpy \lstinline+array+:
-%   \begin{enumerate}[a)]
-%   \item
-%     \begin{equation}
-%       A =
-%       \begin{bmatrix}
-%         -1 & 2\\
-%         2 & -4\\
-%         6 & 0
-%       \end{bmatrix}
-%     \end{equation}
-%   \item $B = A^T$ 
-%   \end{enumerate}
-% \end{exr}
+\begin{lstlisting}[caption=axpy.cc]
+#include <stdio.h>
 
-% \begin{exr}
-%   Seja
-%   \begin{lstlisting}
-%   >>> A = np.array([[2,1],[1,1],[-3,-2]])
-%   \end{lstlisting}
-%   Determine o formato (\lstinline+shape+) dos seguintes \lstinline+arrays+:
-%   \begin{enumerate}[a)]
-%   \item \lstinline+A[:,0]+
-%   \item \lstinline+A[:,0:1]+
-%   \item \lstinline+A[1:3,0]+
-%   \item \lstinline+A[1:3,0:1]+
-%   \item \lstinline+A[1:3,0:2]+
-%   \end{enumerate}
-% \end{exr}
+// GSL vetores
+#include <gsl/gsl_vector.h>
+// GSL BLAS
+#include <gsl/gsl_blas.h>
 
-% \subsubsection{Inicialização de matrizes}
+int main() {
 
-% Além das inicializações de \lstinline+arrays+ já estudadas na Subseção \ref{subsubsection:iniarray}, temos mais algumas que são particularmente úteis no caso de matrizes.
-% \begin{itemize}
-% \item \lstinline+np.eye(n)+: retorna a matriz identidade $n\times n$.
-%   \begin{lstlisting}
-%   >>> np.eye(3)
-%   array([[1., 0., 0.],
-%          [0., 1., 0.],
-%          [0., 0., 1.]])
-%    \end{lstlisting}
-%  \item \lstinline+np.diag(v)+: retorna uma matriz diagonal formada pela \lstinline+list v+.
-%    \begin{lstlisting}
-%    >>> np.diag([1,2,3])
-%    array([[1, 0, 0],
-%           [0, 2, 0],
-%           [0, 0, 3]])
-%    \end{lstlisting}
-%  \end{itemize}
+  // alpha
+  double alpha = 2.;
+  
+  // u
+  gsl_vector *u = gsl_vector_alloc(3);
+  gsl_vector_set(u, 0, 1.);
+  gsl_vector_set(u, 1, -2.);
+  gsl_vector_set(u, 2, 0.5);
 
-%  \begin{exr}
-%    Aloque a matriz escalar $C = [c_{ij}]_{i,j=0}^{99}$, sendo $c_{ii}=\pi$ e $c_{ij}=0$ para $i\neq j$.
-%  \end{exr}
+  // v
+  gsl_vector *v = gsl_vector_alloc(3);
+  gsl_vector_set(v, 0, 2.);
+  gsl_vector_set(v, 1, 1.);
+  gsl_vector_set(v, 2, -1.5);
 
-% \subsubsection{Multiplicação de matrizes}
+  // w = alpha*u + v
+  // alloc w
+  gsl_vector *w = gsl_vector_alloc(3);
+  // copy w = v
+  gsl_vector_memcpy(w, v);
+  // w = alpha*u + w
+  gsl_blas_daxpy(alpha, u, w);
+  
+  // imprime
+  for (int i=0; i<3; ++i) {
+    printf("w_%d = %g\n", i, gsl_vector_get(w, i));
+  }
+  
+  // liberação de memória
+  gsl_vector_free(v);
+}
+\end{lstlisting}
+\end{ex}
 
-% A multiplicação da matriz $A = [a_{ij}]_{i,j=0}^{n-1,l-1}$ pela matriz $B = [b_{ij}]_{i,j=0}^{l-1,m-1}$ e a matriz $C = AB = [c_{ij}]_{i,j=0}^{n-1,m-1}$ tal que
-% \begin{equation}
-%   c_{ij} = \sum_{k=0}^{l-1} a_{ik}b_{k,j}
-% \end{equation}
-% O \href{https://numpy.org/}{NumPy} tem a função \lstinline+np.matmul()+ para computar a multiplicação de matrizes. Por exemplo,
-% \begin{lstlisting}
-% >>> C = np.matmul(A,B)
-% >>> C
-% array([[-50,  41],
-%        [ 14,   1]])
-% \end{lstlisting}
+\begin{exr}
+  Faça um código para computar o produto escalar $\pmb{x}\cdot\pmb{y}$ dos vetores
+  \begin{align}
+    &\pmb{x} = (1.2, \ln(2), 4),\\
+    &\pmb{y} = (\pi^2, \sqrt{3}, e).
+  \end{align}
+  \begin{enumerate}[a)]
+  \item Crie sua própria função \lstinline+double dot(const gsl_vector *x, const gsl_vector *y)+ que recebe os vetores e retorna o produto escalar deles.
+  \item Use o método BLAS \href{https://www.gnu.org/software/gsl/doc/html/blas.html\#c.gsl_blas_dsdot}{\lstinline+gsl_blas_dsdot+}.
+  \end{enumerate}
+\end{exr}
 
-% \begin{obs}
-%   É importante notar que \lstinline+np.matmul(A,B)+ é a multiplicação de matrizes, enquanto que \lstinline+*+ consiste na multiplicação elemento a elemento. Alternativamente a \lstinline+np.matmul(A,B)+ pode-se usar \lstinline+A @ B+.
-% \end{obs}
+\begin{exr}
+  Faça um código para computar a norma $L^2$ do vetor
+  \begin{equation}
+    \pmb{x} = (1.2, \log_{10}^2(2), 0.5).
+  \end{equation}
+  \begin{enumerate}[a)]
+  \item Crie sua própria função \lstinline+double norm2(const gsl_vector *x)+ que recebe o vetor e retorna sua norma.
+  \item Use o método BLAS \href{https://www.gnu.org/software/gsl/doc/html/blas.html\#c.gsl_blas_dnrm2}{\lstinline+gsl_blas_dnrm2+}.
+  \end{enumerate}
+\end{exr}
 
-% \begin{exr}
-%   Aloque as matrizes
-%   \begin{gather}
-%     C =
-%     \begin{bmatrix}
-%       1 & 2 & -1 \\
-%       3 & 2 & 1 \\
-%       0 & -2 & -3
-%     \end{bmatrix}\\
-%     D =
-%     \begin{bmatrix}
-%       2 & 3 \\
-%       1 & -1 \\
-%       6 & 4
-%     \end{bmatrix}\\
-%     E =
-%     \begin{bmatrix}
-%       1 & 2 & 1 \\
-%       0 & -1 & 3
-%     \end{bmatrix}
-%   \end{gather}
-%   Então, se existirem, compute e forneça as dimensões das seguintes matrizes
-%   \begin{enumerate}[a)]
-%   \item $CD$
-%   \item $D^TE$
-%   \item $D^TC$
-%   \item $DE$
-%   \end{enumerate}
-% \end{exr}
+\subsection{Matrizes}\label{sec_mat_subsec_mat}
 
-% \subsubsection{Traço e Determinante de uma matriz}
-
-% O \href{https://numpy.org/}{NumPy} tem a função \lstinline+arr.trace()+ para computar o \emph{traço} de uma matriz (soma dos elementos de sua diagonal). Por exemplo,
-% \begin{lstlisting}
-% >>> A = np.array([[-1,2,0],[2,3,1],[1,2,-3]])
-% >>> A.trace()
-% -1
-% \end{lstlisting}
-% Já, o \emph{determinante} é fornecido no módulo \lstinline+np.linalg+. Por exemplo,
-% \begin{lstlisting}
-% >>> A = np.array([[-1,2,0],[2,3,1],[1,2,-3]])
-% >>> np.linalg.det(A)
-% 25.000000000000007
-% \end{lstlisting}
-
-% \begin{exr}
-%   Compute e verifique os traços e os determinantes das seguintes matrizes
-%   \begin{gather}
-%     C =
-%     \begin{bmatrix}
-%       -2 & 3 \\
-%       1 & 4
-%     \end{bmatrix}\\
-%     D =
-%     \begin{bmatrix}
-%       3 & 1 & -1 \\
-%       1 & 0 & 2 \\
-%       4 & 2 & -1
-%     \end{bmatrix}
-%   \end{gather}
-% \end{exr}
-
-% \subsubsection{Rank e inversa de uma matriz}
-
-% O \emph{rank} de uma matriz é o número de linhas ou colunas linearmente independentes. O \href{https://numpy.org/}{NumPy} conta com a função \lstinline+matrix_rank()+ para computá-lo. Por exemplo,
-% \begin{lstlisting}
-% >>> np.linalg.matrix_rank(np.eye(3))
-% 3
-% >>> A = np.array([[1,2,3],[-1,1,-1],[0,3,2]])
-% >>> np.linalg.matrix_rank(A)
-% 2
-% \end{lstlisting}
-
-% A inversa de uma matriz \emph{full rank} pode ser computada com a função \lstinline+np.linalg.inv()+. Por exemplo,
-% \begin{lstlisting}
-% >>> A = np.array([[1,2,3],[-1,1,-1],[1,3,2]])
-% >>> np.linalg.matrix_rank(A)
-% 3
-% >>> Ainv = np.linalg.inv(A)
-% >>> np.matmul(A,Ainv)
-% array([[ 1.00000000e+00,  0.00000000e+00,  0.00000000e+00],
-%        [ 1.11022302e-16,  1.00000000e+00,  2.22044605e-16],
-%        [-2.22044605e-16,  0.00000000e+00,  1.00000000e+00]])
-% \end{lstlisting}
-
-% \begin{exr}
-%   Compute, se possível, a matriz inversa de cada uma das seguintes matrizes
-%   \begin{gather}
-%     B =
-%     \begin{bmatrix}
-%       2 & -1\\
-%       -2 & 1
-%     \end{bmatrix}\\
-%     C =
-%     \begin{bmatrix}
-%       -2 & 0 & 1\\
-%       3 & 1 & -1\\
-%       2 & 1 & 0
-%     \end{bmatrix}
-%   \end{gather}
-%   Verifique suas respostas.
-% \end{exr}
-
-% \subsubsection{Autovalores e autovetores de uma matriz}
-
-% Um auto-par $(\lambda, v)$, $\lambda$ um escalar chamado de autovalor e $v\neq 0$ é um vetor chamado de autovetor, é tal que
-% \begin{equation}
-%   A\lambda = \lambda v.
-% \end{equation}
-% O \href{https://numpy.org/}{NumPy} tem a função \lstinline+np.linalg.eig()+ para computar os auto-pares de uma matriz. Por exemplo,
-% \begin{lstlisting}
-% >>> np.linalg.eig(np.eye(3))
-% (array([1., 1., 1.]), array([[1., 0., 0.],
-%        [0., 1., 0.],
-%        [0., 0., 1.]]))
-% \end{lstlisting}
-% Observamos que a função uma dupla, sendo o primeiro item um \lstinline+array+ contendo os autovalores (repetidos conforme suas multiplicidades) e o segundo item é a matriz dos autovetores, onde estes são suas colunas.
-
-% \begin{exr}
-%   Compute os auto-pares da matriz
-%   \begin{equation}
-%     A =
-%     \begin{bmatrix}
-%       1 & 3 & 2\\
-%       3 & 2 & -1\\
-%       2 & -1 & 1
-%     \end{bmatrix}.
-%   \end{equation}
-%   Então, verifique se, de fato, $A\lambda = \lambda v$ para cada auto-par $(\lambda, v)$ computado.
-% \end{exr}
-
-% \section{Gráficos}\label{sec_graf}
-
-% \href{https://matplotlib.org/}{Matplotlib} é uma biblioteca {\python} livre e gratuita para a visualização de dados. É muito utilizada para a criação de gráficos estáticos, animados ou iterativos. Aqui, vamos introduzir alguma de suas ferramentas básicas para gráficos.
-
-% Para utilizá-la, é necessário instalá-la. Pacotes de instalação estão disponíveis para os principais sistemas operacionais, consule a sua loja de {\it apps} ou \href{https://matplotlib.org/stable/users/installing.html}{Matplotlib Installation}. Para importá-la, usamos
-% \begin{lstlisting}
-% >>> import matplotlib.pyplot as plt
-% \end{lstlisting}
-
-% \begin{obs}
-%   Se você está usando um console {\python} remoto, você pode querer adicionar a seguinte linha de comando para que os gráficos sejam visualizados no próprio console.
-%   \begin{lstlisting}
-%     >>> %matplotlib inline
-%   \end{lstlisting}
-% \end{obs}
-
-% \begin{figure}[h]
-%   \centering
-%   \includegraphics[width=0.7\textwidth]{./data/sen}
-%   \caption{Esboço do gráfico da função $y=\sen(x)$ no intervalo $[-\pi,\pi]$.}
-%   \label{fig:sen}
-% \end{figure}
-
-% Gráficos bidimensionais podem ser criados com a função \lstinline+plt.plot(x,y)+, onde \lstinline+x+ e \lstinline+y+ são \lstinline+arrays+ que fornecem os pontos cartesianos $(x_i, y_i)$ a serem plotados. Por exemplo,
-% \begin{lstlisting}
-% >>> import matplotlib.pyplot as plt
-% >>> x = np.linspace(-np.pi, np.pi)
-% >>> y = np.cos(x)
-% >>> plt.plot(x,y)
-% [<matplotlib.lines.Line2D object at 0x7f99f578a370>]
-% >>> plt.show()
-% \end{lstlisting}
-% produz o seguinte esboço do gráfico da função $y=\sen(x)$ no intervalo $[-\pi,\pi]$. Consulte a Figura \ref{fig:sen}.
-
-
-% \begin{obs}
-%   Matplotlib é uma poderosa ferramenta para a visualização de gráficos. Consulte a galeria de exemplos no seu site oficial
-%   \begin{center}
-%     \url{https://matplotlib.org/stable/gallery/index.html}
-%   \end{center}
-% \end{obs}
-
-% \begin{exr}
-%   Crie um esboço do gráfico de cada uma das seguintes funções no intervalo indicado:
-%   \begin{enumerate}[a)]
-%   \item $y = \cos(x)$, $\left[0, 2\pi\right]$
-%   \item $y = x^2 - x + 1$, $[-2, 2]$
-%   \item $y = \tg\left(\frac{\pi}{2}x\right)$, $(-1, 1)$
-%   \end{enumerate}
-% \end{exr}
+[[tag:construcao]]
 
 \bibliography{main}
 \addcontentsline{toc}{section}{Referências Bibliográficas}
