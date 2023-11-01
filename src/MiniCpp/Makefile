@@ -6,9 +6,8 @@
 
 pdf: main.tex
 	cp config-book.knd config.knd
+	rm -f main.aux
 	pdflatex main
-	bibtex main
-	makeindex main
 	pdflatex main
 	pdflatex main
 
@@ -20,8 +19,6 @@ pdf: main.tex
 dvi: main.tex
 	cp config-book.knd config.knd
 	latex main
-	bibtex main
-	makeindex main
 	latex main
 	latex main
 	cp config-book.knd config.knd

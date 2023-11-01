@@ -22,9 +22,6 @@
 
 \maketitle
 
-%references
-\nocite{}
-
 \tableofcontents
 
 \section{Licença}\label{sec_licenca}
@@ -775,7 +772,7 @@ A biblioteca fornece uma grande número de rotinas matemáticas para várias ár
 
 \subsection{Vetores}\label{sec_mat_subsec_vet}
 
-A \hl{alocação de um vetor} no {\gsl} segue o estilo de \lstinline+malloc+ (alocação de memória) e \lstinline+free+ (liberação de memória).
+A alocação de um vetor no {\gsl} segue o estilo de \lstinline+malloc+ (alocação de memória) e \lstinline+free+ (liberação de memória). O \hl{suporte a vetores} requer a importação da biblioteca \hl{{\lstinline+gsl_vector.h+}}.
 
 \begin{ex}
   No seguinte código, alocamos e imprimimos o seguinte vetor
@@ -831,11 +828,11 @@ gsl_vector *gsl_vector_calloc(size_t n)
 \begin{itemize}
 \item \hl{{\lstinline!int gsl_vector_add(gsl_vector *a, const gsl_vector *b)!}}
 
-  Computa a adição vetorial \lstinline+a + b+ e o resultado é armazenado no vetor \lstinline+a+.
+  Computa a adição vetorial \lstinline!a + b! e o resultado é armazenado no vetor \lstinline+a+.
 
 \item \hl{{\lstinline!int gsl_vector_sub(gsl_vector *a, const gsl_vector *b)!}}
 
-  Computa a subtração vetorial \lstinline!a - b! e o resultado é armazenado no vetor \lstinline!b!.
+  Computa a subtração vetorial \lstinline!a - b! e o resultado é armazenado no vetor \lstinline!a!.
 
 \item \hl{{\lstinline!int gsl_vector_mul(gsl_vector *a, const gsl_vector *b)!}}
 
@@ -857,6 +854,13 @@ gsl_vector *gsl_vector_calloc(size_t n)
 
   Retorna a soma dos elementos do vetor \lstinline!a!.
 \end{itemize}
+
+\begin{obs}\normalfont{(\hl{Suporte BLAS}.)}
+  O {\gsl} também fornece suporte a biblioteca BLAS (\textit{Basic Linear Algebra Subprograms}) pelo \lstinline!gsl_blas.h!. Operações vetoriais estão disponíveis no nível 1 da biblioteca. Para mais informações e acesso à documentação sobre os métodos disponíveis, consulte
+  \begin{center}
+    \url{https://www.gnu.org/software/gsl/doc/html/blas.html}.
+  \end{center}
+\end{obs}
 
 \begin{ex}
   No código abaixo, computamos $\pmb{w} = \alpha \pmb{u} + \pmb{v}$ para o escalar $\alpha = 2$ e os vetores
@@ -936,9 +940,366 @@ int main() {
 
 \subsection{Matrizes}\label{sec_mat_subsec_mat}
 
+Assim como vetores, a alocação de matrizes no {\gsl} segue o estilo \lstinline!malloc! e \lstinline!free!. O \hl{suporte a matrizes} requer a importação da biblioteca \hl{{\lstinline+gsl_matrix.h+}}.
+
+\begin{ex}
+  No seguinte código, alocamos e imprimimos a matriz
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      1.5 & -1 & \pi & 2.3\\
+      \sqrt[3]{25} & 2.1 & -3.5 & 3\\
+      \log 15 & 0 & 2.5^3 & -1.7
+    \end{bmatrix}
+  \end{equation}
+
+\begin{lstlisting}[caption=matriz.cc]
+#include <stdio.h>
+
+// GSL
+#include <gsl/gsl_math.h>
+#include <gsl/gsl_matrix.h>
+
+int main()
+{
+  // alocação
+  gsl_matrix *A = gsl_matrix_alloc(3, 4);
+
+  // população
+  gsl_matrix_set(A, 0, 0, 1.5);
+  gsl_matrix_set(A, 0, 1, -1.);
+  gsl_matrix_set(A, 0, 2, M_PI);
+  gsl_matrix_set(A, 0, 3, 2.3);
+
+  gsl_matrix_set(A, 1, 0, cbrt(25.));
+  gsl_matrix_set(A, 1, 1, 2.1);
+  gsl_matrix_set(A, 1, 2, -3.5);
+  gsl_matrix_set(A, 1, 3, 3.);
+
+  gsl_matrix_set(A, 2, 0, log10(15.));
+  gsl_matrix_set(A, 2, 1, 0.);
+  gsl_matrix_set(A, 2, 2, pow(2.5, 3.));
+  gsl_matrix_set(A, 2, 3, -1.7);
+
+  // imprime
+  printf("A = \n");
+  for (int i=0; i<A->size1; ++i) {
+    for (int j=0; j<A->size2; ++j)
+      printf("%g ", gsl_matrix_get(A, i, j));
+    printf("\n");
+  }
+
+  gsl_matrix_free(A);
+  return 0;
+}
+\end{lstlisting}
+\end{ex}
+
+\begin{obs}\normalfont{(\hl{Inicialização de Matrizes}.)}
+  Matrizes podem ser inicializadas com todos os seus elementos nulos usando
+\begin{lstlisting}
+gsl_matrix *gsl_matrix_calloc(size_t n1, size_t n2)
+\end{lstlisting}
+  Outros métodos de inicialização também estão disponíveis, consulte
+  \begin{center}
+    \url{https://www.gnu.org/software/gsl/doc/html/vectors.html#initializing-matrix-elements}.
+  \end{center}
+\end{obs}
+
+\subsection{Operações Matriciais}
+
+O {\gsl} conta com os seguintes \hl{métodos de operações matriciais}\footnote{Consulte a lista completa em \href{https://www.gnu.org/software/gsl/doc/html/vectors.html\#matrix-operations}{GSL Docs: Matrix operations}.}:
+\begin{itemize}
+\item \hl{{\lstinline!int gsl_matrix_add(gsl_matrix *a, const gsl_matrix *b)!}}
+
+  Computa a adição matricial \lstinline!a + b! e armazena o resultado em \lstinline!a!.
+
+\item \hl{{\lstinline!int gsl_matrix_sub(gsl_matrix *a, const gsl_matrix *b)!}}
+
+  Computa a subtração matricial \lstinline!a - b! e armazena o resultado em \lstinline!a!.
+
+\item \hl{{\lstinline!int gsl_matrix_mul_elements(gsl_matrix *a, const gsl_matrix *b)!}}
+
+  Computa a multiplicação elemento-a-elemento \lstinline!a*b! e armazena o resultado em \lstinline!a!.
+
+\item \hl{{\lstinline!int gsl_matrix_div_elements(gsl_matrix *a, const gsl_matrix *b)!}}
+
+  Computa a divisão elemento-a-elemento \lstinline!a/b! e armazena o resultado em \lstinline!a!.
+
+\item \hl{{\lstinline!int gsl_matrix_scale(gsl_matrix *a, const double x)!}}
+
+  Computa a multiplicação por escalar \lstinline!x*a! e armazena o resultado em \lstinline!a!.
+
+\item \hl{{\lstinline!int gsl_matrix_add_constant(gsl_matrix *a, const double x)!}}
+
+  Recomputa a matriz \lstinline+a+ somando \lstinline+x+ a cada um de seus elementos.
+\end{itemize}
+
+\begin{obs}\normalfont{(\hl{Operações Matrix-Vetor e Matriz-Matriz}.)}
+  Na {\gsl}, \hl{operações matrix-vetor} estão disponíveis no suporte \href{https://www.gnu.org/software/gsl/doc/html/blas.html\#level-2}{BLAS de nível 2}. Já, operações matriz-matriz, no suporte \href{https://www.gnu.org/software/gsl/doc/html/blas.html\#level-2}{BLAS de nível 3}. Consulte a lista completa de métodos em
+  \begin{center}
+    \url{https://www.gnu.org/software/gsl/doc/html/blas.html\#blas-support}.
+  \end{center}
+\end{obs}
+
+\begin{ex}
+  O seguinte código verifica se $\pmb{x} = (-1, 1, -2)$ é solução do sistema linear
+  \begin{equation}
+    \begin{aligned}
+      &x_1 - x_2 + 2x_3 = -6\\
+      &2x_1 + x_2 - x_3 = 1\\
+      &-x_1 + x_2 + x_3 = 0
+  \end{aligned}
+\end{equation}
+
+\begin{lstlisting}[caption=sisLin.cc]
+#include <stdio.h>
+
+// GSL
+#include <gsl/gsl_math.h>
+#include <gsl/gsl_vector.h>
+#include <gsl/gsl_matrix.h>
+#include <gsl/gsl_blas.h>
+
+int main()
+{
+  // matriz dos coefs
+  gsl_matrix *A = gsl_matrix_alloc(3, 3);
+  
+  gsl_matrix_set(A, 0, 0, 1.);
+  gsl_matrix_set(A, 0, 1, -1.);
+  gsl_matrix_set(A, 0, 2, 2.);
+
+  gsl_matrix_set(A, 1, 0, 2.);
+  gsl_matrix_set(A, 1, 1, 1.);
+  gsl_matrix_set(A, 1, 2, -1.);
+
+  gsl_matrix_set(A, 2, 0, -1.);
+  gsl_matrix_set(A, 2, 1, 1.);
+  gsl_matrix_set(A, 2, 2, 1.);
+
+  // vetor dos termos consts
+  gsl_vector *b = gsl_vector_alloc(3);
+
+  gsl_vector_set(b, 0, -6.);
+  gsl_vector_set(b, 1, 1.);
+  gsl_vector_set(b, 2, 0.);
+
+  // vetor solução ?
+  gsl_vector *x = gsl_vector_alloc(3);
+
+  gsl_vector_set(x, 0, -1.);
+  gsl_vector_set(x, 1, 1.);
+  gsl_vector_set(x, 2, -2.);
+
+  // verificação
+  // y = Ax
+  gsl_vector *y = gsl_vector_alloc(3);
+  gsl_blas_dgemv(CblasNoTrans, 1., A, x, 0., y);
+
+  // y - b
+  gsl_vector_sub(y, b);
+  
+  if (gsl_blas_dnrm2(y) < 1e-14)
+    printf("x é solução do sistema.\n");
+  else
+    printf("x não é solução do sistema.\n");
+
+  gsl_matrix_free(A);
+  gsl_vector_free(b);
+  gsl_vector_free(x);
+  gsl_vector_free(y);
+  
+  return 0;
+}
+\end{lstlisting}
+\end{ex}
+
+\begin{exr}
+  Crie uma função para computar a norma de Frobenius de uma matriz $A$. Teste seu código com a matriz
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      -4 & -3 & -2\\
+      -1 & 0 & 1\\
+      2 & 3 & 4
+    \end{bmatrix}.
+  \end{equation}
+\end{exr}
+
+\begin{exr}
+  Faça um código para verificar se a matriz
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      1 & 0 & 0\\
+      1 & 3 & 1\\
+      1 & 2 & 0
+    \end{bmatrix}
+  \end{equation}
+  é inversa de
+  \begin{equation}
+    B =
+    \begin{bmatrix}
+      1 & 0 & 0\\
+      -0.5 & 0 & 0.5\\
+      0.5 & 1 & -1.5
+    \end{bmatrix}.
+  \end{equation}
+\end{exr}
+
+\subsection{Sistemas Lineares}
+
+A {\gsl} tem \hl{suporte à álgebra linear} pelo módulo \href{https://www.gnu.org/software/gsl/doc/html/linalg.html}{\lstinline!gsl_linalg.h!}. Métodos para a decomposição LU, QR, Cholesky entre tantos outros métodos estão disponíveis. Consulte a lista completa em
+\begin{center}
+  \url{https://www.gnu.org/software/gsl/doc/html/linalg.html\#linear-algebra}.
+\end{center}
+
+\begin{ex}
+  No seguinte código, computamos a solução do sistema
+  \begin{equation}
+    \begin{aligned}
+      &x_1 - x_2 + 2x_3 = -6\\
+      &2x_1 + x_2 - x_3 = 1\\
+      &-x_1 + x_2 + x_3 = 0
+    \end{aligned}
+  \end{equation}
+  pelo método LU.
+
+\begin{lstlisting}[caption=lu.cc]
+#include <stdio.h>
+
+// GSL
+#include <gsl/gsl_vector.h>
+#include <gsl/gsl_matrix.h>
+#include <gsl/gsl_linalg.h>
+
+int main()
+{
+  // matriz dos coefs
+  gsl_matrix *A = gsl_matrix_alloc(3, 3);
+  
+  gsl_matrix_set(A, 0, 0, 1.);
+  gsl_matrix_set(A, 0, 1, -1.);
+  gsl_matrix_set(A, 0, 2, 2.);
+
+  gsl_matrix_set(A, 1, 0, 2.);
+  gsl_matrix_set(A, 1, 1, 1.);
+  gsl_matrix_set(A, 1, 2, -1.);
+
+  gsl_matrix_set(A, 2, 0, -1.);
+  gsl_matrix_set(A, 2, 1, 1.);
+  gsl_matrix_set(A, 2, 2, 1.);
+
+  // vetor dos termos consts
+  gsl_vector *b = gsl_vector_alloc(3);
+
+  gsl_vector_set(b, 0, -6.);
+  gsl_vector_set(b, 1, 1.);
+  gsl_vector_set(b, 2, 0.);
+
+  // decomposição LU
+  // PA = LU
+  gsl_permutation *p = gsl_permutation_alloc(3);
+  int signum;
+  gsl_linalg_LU_decomp(A, p, &signum);
+
+  // solução
+  gsl_vector *x = gsl_vector_alloc(3);
+  gsl_linalg_LU_solve(A, p, b, x);
+
+  // imprime a solução
+  for (int i=0; i<3; ++i)
+    printf("x_%d = %g\n", i, gsl_vector_get(x, i));
+
+  gsl_matrix_free(A);
+  gsl_vector_free(b);
+  gsl_permutation_free(p);
+  gsl_vector_free(x);
+  
+  return 0;
+}
+\end{lstlisting}
+\end{ex}
+
+\begin{exr}\label{exr:sisLinInf}
+  Crie sua própria função para a computação da solução de sistemas triangulares inferiores. Verifique seu código para o sistema
+  \begin{equation}
+    \begin{aligned}
+      &-x_1 = 2\\
+      &-3x_1 + 2x_2 = -8\\
+      &-x_1 + x_2 - x_3 = 0
+    \end{aligned}
+  \end{equation}
+\end{exr}
+
+\begin{exr}\label{exr:sisLinSup}
+  Crie sua própria função para a computação da solução de um sistemas triangulares superiores. Verifique seu código para o sistema
+  \begin{equation}
+    \begin{aligned}
+      &2x_1 - x_2 + 2x_3 = 7\\
+      &2x_2 - x_3 = -3\\
+      &3x_3 = 3
+    \end{aligned}
+  \end{equation}
+\end{exr}
+
+\begin{exr}
+  Faça um código para resolver o sistema linear
+  \begin{equation}
+    \begin{aligned}
+      &x_1 - x_2 + 2x_3 = -6\\
+      &2x_1 + x_2 - x_3 = 1\\
+      &-x_1 + x_2 + x_3 = 0
+    \end{aligned}
+  \end{equation}
+  na sua forma matricial $A\pmb{x} = \pmb{b}$.
+  \begin{enumerate}[a)]
+  \item Use \lstinline+int gsl_linalg_LU_decomp(gsl_matrix *A, gsl_permutation *p, int *signum)+ para computar a decomposição $A = LU$, onde $A$ é a matriz de coeficientes do sistema.
+  \item Use sua função criada no Exercício~\ref{exr:sisLinInf} para resolver $L\pmb{y} = \pmb{b}$, onde $\pmb{b}$ o vetor dos termos constantes do sistema.
+  \item Use sua função criada no Exercício~\ref{exr:sisLinSup} para resolver $U\pmb{x} = \pmb{y}$.
+  \end{enumerate}
+\end{exr}
+
+\begin{exr}
+  Faça um código para computar a solução do sistema
+  \begin{equation}
+    \begin{aligned}
+      &2x_1 - x_2 = 0\\
+      &x_{i-1} - 6x_i + 4x_{i+1} = \sen(\pi i/[2(n-1)])\\
+      &x_{n-1} + x_n = 1
+    \end{aligned}
+  \end{equation}
+  para $i= 2, 3, \dotsc, n-1$, $n\geq 3$. Dica: use o método \href{https://www.gnu.org/software/gsl/doc/html/linalg.html#c.gsl_linalg_solve_tridiag}{\lstinline!gsl_linalg_solve_tridiag!}.
+\end{exr}
+
+\section{Elementos da Orientação-a-Objetos}
+
 [[tag:construcao]]
 
-\bibliography{main}
-\addcontentsline{toc}{section}{Referências Bibliográficas}
+
+% references
+\ifisbook
+\clearpage
+\phantomsection
+\addcontentsline{toc}{chapter}{\bibname}
+\fi
+
+\nocite{*}
+\begin{thebibliography}{99}
+
+\bibitem{GNUC}
+  The GNU C Reference Manual, \url{https://www.gnu.org/software/gnu-c-manual/gnu-c-manual.html}, Novembro, 2021.
+  
+\bibitem{GSL}
+  GNU Scientific Library, \url{https://www.gnu.org/software/gsl/doc/html/index.html}, Novembro, 2021.
+  
+\bibitem{Soffner}
+  Soffner, R.. Algoritmos e Programação em Linguagem C. Editora Saraiva, 2013. ISBN: 978-8502207530. \href{https://bit.ly/45VccHe}{Sabi{+}UFRGS}.
+
+\bibitem{Backes}
+  Backes, A.. Linguagem C: Completa e Descomplicada. LTC, 2. ed., 2018. ISBN: 978-8535291063. \href{Sabi{+}UFRGS}{https://bit.ly/46Vk7Wv}.
+  
+\end{thebibliography}
 
 \end{document}
