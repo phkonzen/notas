@@ -5,12 +5,19 @@
 
 \section{Interpolação e projeção}\label{cap_mef1d_sec_interproj}
 
-Seja dado um intervalo $I = [x_0, x_1]\subset\mathbb{R}$, $x_0\neq x_1$. O espaço vetorial das funções lineares em $I$ é definido por
-\begin{equation}
-  P_1(I) := \{v:~v(x)=c_0+c_1x,~x\in I,~c_0,c_1\in\mathbb{R}\}.
+Seja dado um intervalo $I = [x_0, x_1]\subset\mathbb{R}$, $x_0\neq x_1$. O \hlemph{espaço vetorial das funções lineares} em $I$ é definido por
+\begin{equation}\hleq
+  P_1(I) := \{v: ~v(x)=c_0+c_1x,~x\in I,~c_0,c_1\in\mathbb{R}\}.
 \end{equation}
-Observamos que dado $v\in P_1(I)$, temos que $v$ é unicamente determinada pelos valores $\alpha_0=v(x_0)$ e $\alpha_1=v(x_1)$. Como consequência, existe exatamente uma única função $v\in P_1(I)$ para quaisquer dados valores $\alpha_0$ e $\alpha_1$. Desta observação, introduzimos a chamada base nodal $\{\varphi_0, \varphi_1\}$ para $P_1(I)$, definida por
+Observamos que dado $v\in P_1(I)$, temos que $v$ é unicamente determinada pelos valores
 \begin{equation}
+  \begin{aligned}
+    &\alpha_0 = v(x_0),\\
+    &\alpha_1 = v(x_1).
+  \end{aligned}
+\end{equation}
+Como consequência, existe exatamente uma única função $v\in P_1(I)$ para quaisquer dados valores $\alpha_0$ e $\alpha_1$. Desta observação, introduzimos a chamada \hlemph{base nodal} (base lagrangiana\footnote{Consulte mais em \href{https://notaspedrok.com.br/notas/MatematicaNumericaI/cap_interp_sec_lagrange.html}{Notas de Aula: Matemática Numérica I: Interpolação de Lagrange}.}) $\{\varphi_0, \varphi_1\}$ para $P_1(I)$, definida por
+\begin{equation}\hleq
   \varphi_j(x_i) = \left\{
     \begin{array}{ll}
       1 &, i=j,\\
@@ -18,21 +25,37 @@ Observamos que dado $v\in P_1(I)$, temos que $v$ é unicamente determinada pelos
     \end{array}
 \right.,
 \end{equation}
-com $i,j=0,1$. Com esta base, toda função $v\in P_1(I)$ pode ser escrita como uma combinação linear das funções $\varphi_0$ e $\varphi_1$ com coeficientes $\alpha_0$ e $\alpha_1$ (\pmb{graus de liberdade}\index{graus de liberdade}), i.e.
-\begin{equation}
-  v(x) = \alpha_0\varphi_0(x) + \alpha_1\varphi_1(x_1).
+com $i,j=0, 1$. Consulte a Figura~\ref{fig:p1_0}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{./cap_mef1d/dados/fig_p1_0/fig}
+  \caption{Base nodal para o espaço $P_1([x_0, x_1])$.}
+  \label{fig:p1_0}
+\end{figure}
+
+Com esta base, toda função $v\in P_1(I)$ pode ser escrita como uma combinação linear das funções $\varphi_0$ e $\varphi_1$ com coeficientes $\alpha_0$ e $\alpha_1$ (\hlemph{graus de liberdade}), i.e.
+\begin{equation}\hleq
+  v(x) = \alpha_0\varphi_0(x) + \alpha_1\varphi_1(x).
 \end{equation}
 Além disso, observamos que
-\begin{equation}
-  \varphi_0(x) = \frac{x_1-x}{x_1-x_0},\quad \varphi_1(x)=\frac{x-x_0}{x_1-x_0}.
-\end{equation}
+\begin{align}
+  &\varphi_0(x) = \frac{x-x_1}{x_0-x_1},\\
+  &\varphi_1(x) = \frac{x-x_0}{x_1-x_0}.
+\end{align}
 
-Uma extensão do espaço $P_1(I)$ é o espaço das funções lineares por partes. Dado $I = [l_0, l_1]$, $l_0\neq l_1$, consideremos uma partição (\pmb{malha}\index{malha}) de $I$ com $n+1$ pontos $\mathcal{I} = \{l_0=x_0, x_1, \dotsc, x_n=l_1\}$ e, portanto, com $n$ subintervalos $I_i=[x_{i-1}, x_{i}]$ de comprimento $h_i = x_i-x_{i-1}$, $i=1, 2, \dotsc, n$. Na malha $\mathcal{I}$ definimos o seguinte espaço das funções lineares por partes
+
+
+Uma extensão do espaço $P_1(I)$ é o \hlemph{espaço das funções lineares por partes}. Dado $I = [l_0, l_1]$, $l_0\neq l_1$, consideremos uma partição (\hlemph{malha}) de $I$ com $n+1$ pontos
 \begin{equation}
+  \mathcal{I} = \{l_0=x_0, x_1, \dotsc, x_n=l_1\}
+\end{equation}
+e, portanto, com $n$ subintervalos $I_i=[x_{i-1}, x_{i}]$ de comprimento (\hlemph{tamanho da malha}) $h_i = x_i-x_{i-1}$, $i=1, 2, \dotsc, n$. Na malha $\mathcal{I}$ definimos o seguinte \emph{espaço das funções lineares por partes}
+\begin{equation}\hleq
   V_h := \{v:~v\in C^0(\mathcal{I}),~v|_{I_i}\in P_1(I_i),~i=1,2,\dotsc,n\}.
 \end{equation}
-Observamos que toda função $v\in V_h$ é unicamente determinadas por seus valores nodais $\{\alpha_i = v(x_i)\}_{i=0}^n$. Reciprocamente, todo conjunto de valores nodas $\{\alpha_i\}_{i=0}^n$ determina unicamente uma função $v\in V_h$. Desta observação, temos que os valores nodais determinam os graus de liberdade com a base nodal $\{\varphi_j\}_{j=0}^n$ para $V_h$ definida por
-\begin{equation}
+Observamos que \hl{toda função $v\in V_h$ é unicamente determinada por seus valores nodais $\{\alpha_i = v(x_i)\}_{i=0}^n$}. Reciprocamente, \hl{todo conjunto de valores nodas $\{\alpha_i\}_{i=0}^n$ determina unicamente uma função $v\in V_h$}. Desta observação, temos que os \hlemph{valores nodais determinam os graus de liberdade} com a base nodal $\{\varphi_j\}_{j=0}^n$ para $V_h$ definida por
+\begin{equation}\hleq
   \varphi_j(x_i) = \left\{
     \begin{array}{ll}
       1 &, i=j,\\
@@ -40,7 +63,11 @@ Observamos que toda função $v\in V_h$ é unicamente determinadas por seus valo
     \end{array}
 \right.,
 \end{equation}
-com $i,j=0,1,\dotsc,n$. Podemos verificar que
+com $i,j=0,1,\dotsc,n$. Ou seja, temos que
+\begin{equation}\hleq
+    v(x) = \sum_{j=0}^{n}\alpha_j\phi_j(x).
+\end{equation}
+Podemos verificar que
 \begin{equation}
   \varphi_i(x) = \left\{
     \begin{array}{ll}
@@ -50,19 +77,19 @@ com $i,j=0,1,\dotsc,n$. Podemos verificar que
     \end{array}
 \right.
 \end{equation}
-veja, Figura~\ref{fig:baselinear}. É notável que $\varphi_i(x)$ tem suporte compacto $I_i\cup I_{i+1}$.
+consulte, Figura~\ref{fig:baselinear}. É notável que $\varphi_i(x)$ tem suporte compacto $I_i\cup I_{i+1}$.
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=\textwidth]{./cap_mef1d/dados/fig_baselinear/fig_baselinear}
+  \includegraphics[width=0.7\textwidth]{./cap_mef1d/dados/fig_baselinear/fig}
   \caption{Base nodal para o espaço das funções lineares por parte.}
   \label{fig:baselinear}
 \end{figure}
 
 \subsection{Interpolação}
 
-A interpolação é uma das técnicas de aproximação de funções. Dada uma função contínua $f$ em $I=[x_0, x_1]$, definimos o \pmb{operador de interpolação linear}\index{operador!interpolação linear} $\pi: C^0(I)\to P_1(I)$ por
-\begin{equation}
+\hl{Interpolação é uma técnica de aproximação de funções}. Dada uma função contínua $f$ em $I=[x_0, x_1]$, definimos o \hlemph{operador de interpolação linear} $\pi: C^0(I)\to P_1(I)$ por
+\begin{equation}\hleq
   \pi f (x) = f(x_0)\varphi_0(x) + f(x_1)\varphi_1(x).
 \end{equation}
 Observamos que $\pi f$ é igual a $f$ nos nodos $x_0$ e $x_1$. 
@@ -70,20 +97,34 @@ Observamos que $\pi f$ é igual a $f$ nos nodos $x_0$ e $x_1$.
 \begin{ex}\label{ex:interp_lin}
   A Figura~\ref{fig:ex_interp_lin} ilustra a interpolação da função $f(x)=3\sen(2\pi x)$ no espaço $P_1([1/4, 3/4)]$. Neste caso
   \begin{equation}
-    \pi f(x) = f\left(\frac{1}{4}\right)\frac{3/4-x}{1/2} + f\left(\frac{3}{4}\right)\frac{x-1/4}{1/2}.
+    \pi f(x) = f\left(\frac{1}{4}\right)\frac{3/4-x}{1/2} + f\left(\frac{3}{4}\right)\frac{x-1/4}{1/2}
   \end{equation}
 
   \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.8\textwidth]{./cap_mef1d/dados/ex_interp_lin/ex_interp_lin}
+    \includegraphics[width=0.8\textwidth]{./cap_mef1d/dados/fig_ex_interp_lin/fig}
     \caption{Interpolação linear de $f(x)=3\sen(2\pi x)$ no espaço $P_1([1/4, 3/4])$.}
     \label{fig:ex_interp_lin}
   \end{figure}
 
-\ifispython
-Com o \fenics, podemos computar a função interpolada $\pi f$ com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/dados/ex_interp_lin/ex_interp_lin.py}{código}:
-\verbatiminput{./cap_mef1d/dados/ex_interp_lin/ex_interp_lin.py}
-\fi
+\begin{lstlisting}[caption=interp0.py]
+from dolfinx import fem, mesh, plot
+import numpy as np
+import matplotlib.pyplot as plt
+from mpi4py import MPI
+
+# malha
+msh = mesh.create_interval(MPI.COMM_WORLD,
+                           nx=1,
+                           points=np.array([0.25, 0.75]))
+
+# espaço
+V = fem.functionspace(msh, ('Lagrange', 1))
+
+# fun interpolada
+pif = fem.Function(V)
+pif.interpolate(lambda x: 3.*np.sin(2.*np.pi*x[0]))
+\end{lstlisting}
 \end{ex}
 
 Agora, vamos buscar medir o erro de interpolação, i.e. $f - \pi f$. Para tanto, podemos usar a norma $L^2$ definida por
@@ -211,6 +252,7 @@ O seguinte resultado fornece uma estimativa do erro de interpolação em relaç�
 \end{dem}
 
 \subsection{Projeção $L^2$}\label{subsec:projecao_1d}
+[[tag:revisar]]
 
 Dada uma função $f\in L^2(I)$, definimos o \emph{operador de projeção $L^2$}\index{operador de!projeção $L^2$} $P_h:L^2(I)\to V_h$ por
 \begin{equation}\label{eq:proj_def}
@@ -320,7 +362,8 @@ Com o \fenics, podemos computar os erros de projeção com o seguinte \href{http
 \fi
 \end{ex}
 
-\subsection*{Exercícios}
+\subsection{Exercícios}
+[[tag:revisar]]
 
 \begin{exer}
   Faça um código para verificar a segunda estimativa da Proposição~\ref{prop:interp_lin} no caso da interpolação da função $f(x) = 3\sen(2\pi x)$ no espaço $P_1$ das funções lineares.
@@ -336,6 +379,7 @@ Com o \fenics, podemos computar os erros de projeção com o seguinte \href{http
 \end{exer}
 
 \section{Problema modelo}\label{cap_mef1d_sec_modelo}
+[[tag:revisar]]
 
 Nesta seção, discutiremos sobre a aplicação do método de elementos finitos para o seguinte problema de valor de contorno: encontrar $u$ tal que
 \begin{align}
@@ -345,6 +389,7 @@ Nesta seção, discutiremos sobre a aplicação do método de elementos finitos 
 onde $f$ é uma função dada.
 
 \subsection{Formulação fraca}
+[[tag:revisar]]
 
 A derivação de um método de elementos finitos inicia-se da formulação fraca do problema em um espaço de funções apropriado. No caso do problema \eqref{eq:prob_eq}-\eqref{eq:prob_bc}, tomamos o espaço
 \begin{equation}
@@ -374,6 +419,7 @@ onde
 são chamadas de forma bilinear e forma linear, respectivamente.
 
 \subsection{Formulação de elementos finitos}
+[[tag:revisar]]
 
 Uma formulação de elementos finitos é um aproximação do problema fraco \eqref{eq:modelo_ffraca} em um espaço de dimensão finita. Aqui, vamos usar o espaço $V_{h,0}$ das funções lineares por partes em $I$ que satisfazem as condições de contorno, i.e.
 \begin{equation}
@@ -455,6 +501,7 @@ Com o \fenics, a computação do problema de elementos finitos pode ser feita co
 \end{ex}
 
 \subsection{Estimativa {\it a priori}}
+[[tag:revisar]]
 
 Existem dois tipos de estimativas do erro $e := u - u_h$. Estimativas {\it a priori}, são aqueles em que o erro é dado em relação da solução $u$, enquanto que nas estimativas {\it a posteriori} o erro é expresso em relação a solução de elementos finitos $u_h$.
 
@@ -525,6 +572,7 @@ Com o \fenics, a computação do problema de elementos finitos pode ser feita co
 \end{ex}
 
 \subsection{Estimativa {\it a posteriori}}
+[[tag:revisar]]
 
 Aqui, vamos obter uma estimativa a posteriori para o erro $e = u - u_h$ da solução de elementos finitos $u_h$ do problema \eqref{eq:prob_eq}-\eqref{eq:prob_bc}.
 
@@ -566,6 +614,7 @@ onde $\eta_i(u_h)$ é chamado de elemento residual e é dado por
 \end{obs}
 
 \subsection*{Exercícios}
+[[tag:revisar]]
 
 \begin{exer}\label{exer:dc}
   Obtenha uma aproximação por elementos finitos lineares por partes da solução de
@@ -582,6 +631,7 @@ onde $\eta_i(u_h)$ é chamado de elemento residual e é dado por
 
 
 \section{Condições de contorno}\label{cap_mef1d_sec_cc}
+[[tag:revisar]]
 
 Nesta seção, vamos discutir sobre soluções de elementos finitos para a equações diferencial
 \begin{equation}
@@ -590,6 +640,7 @@ Nesta seção, vamos discutir sobre soluções de elementos finitos para a equa�
 com diferentes condições de contorno.
 
 \subsection{Condições de Dirichlet}
+[[tag:revisar]]
 
 Consideremos o seguinte problema com condições de contorno de Dirichlet\footnote{Johann Peter Gustav Lejeune Dirichlet, 1805 - 1859, matemático alemão. Fonte: \href{https://en.wikipedia.org/wiki/Peter_Gustav_Lejeune_Dirichlet}{Wikipedia}.}: encontrar $u$ tal que
 \begin{align}
@@ -658,6 +709,7 @@ Com o \fenics, a computação do problema de elementos finitos pode ser feita co
 \end{ex}
 
 \subsection{Condições de Neumann}
+[[tag:revisar]]
 
 Consideremos o seguinte problema com condições de contorno de Neumann\footnote{Carl Gottfried Neumann, 1832 - 1925, matemático alemão. Fonte: \href{https://en.wikipedia.org/wiki/Carl_Neumann}{Wikipedia}.} homogênea em $x=L$: encontrar $u$ tal que
 \begin{align}
@@ -791,6 +843,7 @@ Com o \fenics, a computação do problema de elementos finitos pode ser feita co
 \end{ex} 
 
 \subsection{Condições de Robin}
+[[tag:revisar]]
 
 Consideremos o seguinte problema com condições de contorno de Robin\footnote{Victor Gustave Robin, 1855 - 1897, matemático francês. Fonte: \href{https://en.wikipedia.org/wiki/Victor_Robin}{Wikipedia}.}: encontrar $u$ tal que
 \begin{align}
@@ -865,7 +918,8 @@ Com o \fenics, a computação do problema de elementos finitos pode ser feita co
 \fi
 \end{ex}
 
-\subsection*{Exercícios}
+\subsection{Exercícios}
+[[tag:revisar]]
 
 \begin{exer}\label{exer:dcr}
   Considere o problema
@@ -882,6 +936,7 @@ Com o \fenics, a computação do problema de elementos finitos pode ser feita co
 \end{resp}
 
 \section{Malhas auto-adaptativas}\label{cap_mef1d_sec_adapt}
+[[tag:revisar]]
 
 Retornemos ao problema modelo \eqref{eq:prob_eq}-\eqref{eq:prob_bc}
 \begin{align}
@@ -948,7 +1003,8 @@ Com o \fenics, a computação do problema de elementos finitos pode ser feita co
 \fi
 \end{ex}
 
-\subsection*{Exercícios}
+\subsection{Exercícios}
+[[tag:revisar]]
 
 \begin{exer}\label{exer:modelo_refglobal}
   Use uma estratégia de sucessivos refinamentos globais para resolver o problema dado no Exemplo \ref{ex:modelo_adapt}. Compare seus resultados com aqueles obtidos no exemplo.
@@ -960,8 +1016,10 @@ Com o \fenics, a computação do problema de elementos finitos pode ser feita co
 \end{resp}
 
 \section{Seleção de aplicações}\label{cap_mef1d_sec_aps}
+[[tag:revisar]]
 
 \subsection{Sistemas de equações}
+[[tag:revisar]]
 
 Consideremos o seguinte problema de equações diferenciais ordinárias com valores de contorno
 \begin{align}
@@ -1020,7 +1078,6 @@ Com o \fenics, a computação do problema de elementos finitos pode ser feita co
 \fi
 \end{ex}
 
-\subsection*{Exercícios}
-
-\emconstrucao
+\subsection{Exercícios}
+[[tag:construcao]]
 
