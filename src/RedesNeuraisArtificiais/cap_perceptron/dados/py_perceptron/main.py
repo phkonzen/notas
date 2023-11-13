@@ -6,8 +6,11 @@ class Perceptron(torch.nn.Module):
         super().__init__()
         self.linear = torch.nn.Linear(2,1)
 
+    # propagação
     def forward(self, x):
+        # pré-ativação
         z =  self.linear(x)
+        # saída
         y = torch.sign(z)
         return y
 

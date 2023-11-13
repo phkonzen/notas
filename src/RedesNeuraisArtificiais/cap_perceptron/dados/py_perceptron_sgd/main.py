@@ -18,7 +18,7 @@ model = Perceptron()
 # treinamento
 
 ## optimizador
-optim = torch.optim.SGD(model.parameters(), lr=1e-1)
+optim = torch.optim.SGD(model.parameters(), lr=5e-1)
 
 ## função erro
 loss_fun = torch.nn.MSELoss()

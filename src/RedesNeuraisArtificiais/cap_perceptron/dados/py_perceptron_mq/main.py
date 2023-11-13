@@ -1,7 +1,6 @@
 import torch
 
 # modelo
-
 class Perceptron(torch.nn.Module):
     def __init__(self):
         super().__init__()
@@ -38,8 +37,8 @@ print(y_train)
 # treinamento
 
 ## matriz
-M = torch.cat((X_train,
-               torch.ones((ns,1))), dim=1)
+M = torch.hstack((X_train,
+                  torch.ones((ns,1))))
 ## solucão M.Q.
 c = torch.linalg.lstsq(M, y_train)[0]
 with torch.no_grad():

@@ -17,7 +17,7 @@ model = Perceptron()
 # treinamento
 
 ## optimizador
-optim = torch.optim.SGD(model.parameters(), lr=1e-1)
+optim = torch.optim.SGD(model.parameters(), lr=5e-1)
 
 ## função erro
 loss_fun = torch.nn.MSELoss()
@@ -36,7 +36,7 @@ print("y_train = ")
 print(y_train)
 
 ## num max épocas
-nepochs = 5000
+nepochs = 1000
 tol = 1e-3
 
 for epoch in range(nepochs):
