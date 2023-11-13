@@ -177,16 +177,9 @@ class Index:
 
         # anúncio
         body += '<div class="carousel-item">'
-        body += self.add_anuncio(text = 'ENMC/ECTM 2023 - 25-27/Out',
-                                 link = 'https://enmc.ccam.uesc.br',
-                                 status = 'danger')
-        body += '</div>'
-
-        # anúncio
-        body += '<div class="carousel-item">'
         body += self.add_anuncio(text = 'IV JMMA 2023: 15-17/Nov',
                                  link = 'https://sites.google.com/view/jmma-ufsm/',
-                                 status = 'warning')
+                                 status = 'danger')
         body += '</div>'
 
         # anúncio
@@ -230,7 +223,7 @@ class Index:
         body += self.new_card(header = "Notas de Aula",
                               title = "Método dos Elementos Finitos",
                               text = "Introdução ao método dos elementos finitos",
-                              badges = ["Python", "FEniCS"],
+                              badges = ["Python", "FEniCSx"],
                               link = "MetodoElementosFinitos/main.html",
                               color = "warning", status = "Atualizando")
         body += '</div>'
