@@ -7,7 +7,7 @@
 pdf: main.tex
 	cp config-book.knd config.knd
 	pdflatex main
-	bibtex main
+#	bibtex main
 	makeindex main
 	pdflatex main
 	pdflatex main
@@ -20,7 +20,7 @@ pdf: main.tex
 dvi: main.tex
 	cp config-book.knd config.knd
 	latex main
-	bibtex main
+#	bibtex main
 	makeindex main
 	latex main
 	latex main
@@ -38,7 +38,7 @@ main.html: main.tex
 	rm -rvf ./html
 	mkdir -p ./html
 	cp -rvf ../fonts html/
-	latexml main.tex | latexmlpost \
+	latexml --includestyles main.tex | latexmlpost \
         --splitat=section -splitnaming=label \
 	--css=../main.css \
 	--css="./fonts/cmun-serif.css" \
