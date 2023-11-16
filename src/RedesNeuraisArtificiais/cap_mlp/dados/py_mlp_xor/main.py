@@ -2,25 +2,23 @@ import torch
 
 # modelo
 
-model = torch.nn.Sequential(
-    torch.nn.Linear(2,2),
-    torch.nn.Tanh(),
-    torch.nn.Linear(2,1)
-    )
+model = torch.nn.Sequential()
+model.add_module('layer_1', torch.nn.Linear(2,2))
+model.add_module('fun_1', torch.nn.Tanh())
+model.add_module('layer_2', torch.nn.Linear(2,1))
+
 
 # treinamento
 
 ## optimizador
-optim = torch.optim.SGD(model.parameters(), lr=1e-2)
-
-## função erro
-loss_fun = torch.nn.MSELoss()
+optim = torch.optim.SGD(model.parameters(),
+                        lr=5e-1)
 
 ## dados de treinamento
 X_train = torch.tensor([[1., 1.],
-                  [1., -1.],
-                  [-1., 1.],
-                  [-1., -1.]])
+                        [1., -1.],
+                        [-1., 1.],
+                        [-1., -1.]])
 y_train = torch.tensor([-1., 1., 1., -1.]).reshape(-1,1)
 
 print("\nDados de treinamento")
@@ -38,8 +36,8 @@ for epoch in range(nepochs):
     # forward
     y_est = model(X_train)
 
-    # erro
-    loss = loss_fun(y_est, y_train)
+    # função erro
+    loss = torch.mean((y_est - y_train)**2)
 
     print(f'{epoch}: {loss.item():.4e}')
 

@@ -2,12 +2,10 @@
 
 \chapter{Perceptron Multicamadas}\label{cap_mlp}
 \thispagestyle{fancy}
-[[tag:construcao]]
 
 \section{Modelo MLP}\label{cap_mlp_sec_modelo}
-[[tag:construcao]]
 
-\hl{Uma Perceptron Multicamadas (MLP, do inglês, \textit{Multilayer Perceptron}) é um tipo de Rede Neural Artificial formada por composições de camadas de perceptrons}. Consulte a Figura \ref{cap_mlp_sec_modelo}.
+\hl{Uma Perceptron Multicamadas (MLP, do inglês, \textit{Multilayer Perceptron}) é um tipo de Rede Neural Artificial formada por composições de camadas de perceptrons}. Consultamos a Figura \ref{cap_mlp_sec_modelo}.
 
 \begin{figure}[H]
   \centering
@@ -16,26 +14,25 @@
   \label{fig:cap_mlp_sec_modelo:fig:mlp}
 \end{figure}
 
-\hl{Denotamos uma MLP de $n$ camadas por}
+Denotamos uma \hl{MLP de $n_l$ camadas} por
 \begin{equation}\hleq
-  \pmb{y} = \mathcal{N}\left(\pmb{x}; \left(W^{(l)}, \pmb{b}^{(l)}, f^{(l)}\right)_{l=1}^{n}\right),
+  \pmb{y} = \mathcal{N}\left(\pmb{x}; \left(W^{(l)}, \pmb{b}^{(l)}, f^{(l)}\right)_{l=1}^{n_l}\right),
 \end{equation}
-onde $\left(W^{(l)}, \pmb{b}^{(l)}, f^{(l)}\right)$ é a tripa de \emph{pesos}, \emph{\textit{biases}} e \emph{função de ativação} da $l$-ésima camada da rede, $l=1, 2, \dotsc, n$.
+onde $\left(W^{(l)}, \pmb{b}^{(l)}, f^{(l)}\right)$ é a tripa de \hlemph{pesos}, \hlemph{\textit{biases}} e \hlemph{função de ativação} da $l$-ésima camada da rede, $l=1, 2, \dotsc, n_l$.
 
-\hl{A saída da rede é calculada por iteradas composições das camadas}, i.e.
+\hl{A \emph{saída} da rede é calculada por iteradas composições das camadas}, i.e.
 \begin{equation}\hleq
   \pmb{a}^{(l)} = f^{(l)}\underbrace{\left(W^{(l)}\pmb{a}^{(l-1)} + \pmb{b}^{(l-1)}\right)}_{\pmb{z}^{(l)}},
 \end{equation}
-para $l= 1, 2, \dotsc, n$, denotando $\pmb{a}^{(0)} := \pmb{x}$ e $\pmb{a}^{(n)} := \pmb{y}$.
+para $l= 1, 2, \dotsc, n_l$, denotando a \hlemph{entrada} por $\pmb{x} =: \pmb{a}^{(0)}$ e a \hlemph{saída} por $\pmb{y} =: \pmb{a}^{(n_l)}$.
 
 \subsection{Treinamento}\label{cap_mlp_sec_modelo:ssec:treinamento}
-[[tag:construcao]]
 
 Fornecido um \emph{conjunto de treinamento} $\{\pmb{x}^{(s)}, \pmb{y}^{(s)}\}_{s=1}^{n_s}$, com $n_s$ amostras, \hl{o treinamento da rede consiste em resolver o problema de minimização}
 \begin{equation}\hleq
   \min_{(W,\pmb{b})}\varepsilon\left(\tilde{\pmb{y}}^{(s)}, \pmb{y}^{(s)}\right)
 \end{equation}
-onde $\varepsilon$ é uma dada \emph{função erro} (em inglês, \textit{loss function}) e $\tilde{\pmb{y}}^{(s)}$, $\pmb{y}^{(s)}$ são as saídas estimada e esperada da $l$-ésima amostra, respectivamente.
+onde $\varepsilon$ é uma dada \emph{função erro} (em inglês, \textit{loss function}) e $\tilde{\pmb{y}}^{(s)}$, $\pmb{y}^{(s)}$ são as saídas estimada e esperada da $s$-ésima amostra, respectivamente.
 
 \hl{O problema de minimização pode ser resolvido por um }\href{https://notaspedrok.com.br/notas/MatematicaNumericaAvancada/cap\_otimizacao_sec_minimi.html}{\hl{Método de Declive}} e, de forma geral, consiste em:
 \begin{enumerate}
@@ -45,28 +42,27 @@ onde $\varepsilon$ é uma dada \emph{função erro} (em inglês, \textit{loss fu
   \item $\displaystyle (W, \pmb{b}) \leftarrow (W, \pmb{b}) - l_r\pmb{d}\left(\nabla_{W,\pmb{b}} \varepsilon\right)$
   \end{enumerate}
 \end{enumerate}
-onde, $n_e$ é o \emph{número de épocas}, $l_r$ é uma dada \emph{taxa de aprendizagem} (em inglês, \textit{learning rate})) e o vetor direção $\pmb{d} = \pmb{d}\left(\nabla_{W,\pmb{b}} \varepsilon\right)$, onde
+onde, $n_e$ é o \emph{número de épocas}, $l_r$ é uma dada \emph{taxa de aprendizagem} (em inglês, \textit{learning rate})) e $\pmb{d} = \pmb{d}\left(\nabla_{W,\pmb{b}} \varepsilon\right)$ é o vetor direção, onde
 \begin{equation}\hleq
-  \nabla_{W,\pmb{b}} \varepsilon := \left(\frac{\p\varepsilon}{\p W}, \frac{\p\varepsilon}{\p\pmb{b}}\right).
+  \nabla_{W, \pmb{b}} \varepsilon := \left(\frac{\p\varepsilon}{\p W}, \frac{\p\varepsilon}{\p\pmb{b}}\right).
 \end{equation}
 
-\hl{O cálculo dos gradientes pode ser feito \emph{de trás para frente}} (em inglês, \textit{backward}), i.e. para os pesos da última camada, temos
+\hl{O cálculo dos gradientes pode ser feito por \emph{retropropagação}} (em inglês, \textit{backward}). Para os pesos da última camada, temos
 \begin{align}
-  \hleq{\frac{\p\varepsilon}{\p W^{(n)}}} &\hleq{= \frac{\p\varepsilon}{\p\pmb{y}}\frac{\p\pmb{y}}{\p\pmb{z^{(n)}}}\frac{\p\pmb{z^{(n)}}}{\p W^{(n)}}},\\
-                             &= \frac{\p\varepsilon}{\p\pmb{y}}f'\left(W^{(n)}\pmb{a}^{(n-1)}+\pmb{b}^{(n)}\right)\pmb{a}^{(n-1)}.
+  \hleq{\frac{\p\varepsilon}{\p W^{(n_l)}}} &\hleq{= \frac{\p\varepsilon}{\p\pmb{y}}\frac{\p\pmb{y}}{\p\pmb{z^{(n_l)}}}\frac{\p\pmb{z^{(n_l)}}}{\p W^{(n_l}}}  \\
+                             &= \frac{\p\varepsilon}{\p\pmb{y}}f'\left(W^{(n_l)}\pmb{a}^{(n_l-1)}+\pmb{b}^{(n_l)}\right)\pmb{a}^{(n_l-1)}.
 \end{align}
 Para os pesos da penúltima, temos
 \begin{align}
-  \hleq{\frac{\p\varepsilon}{\p W^{(n-1)}}} &\hleq{= \frac{\p\varepsilon}{\p\pmb{y}}\frac{\p\pmb{y}}{\p\pmb{z^{(n)}}}\frac{\p\pmb{z^{(n)}}}{\p W^{(n-1)}}},\\
-                                     &= \frac{\p\varepsilon}{\p\pmb{y}}f'\left(\pmb{z}^{(n)}\right)\frac{\p\pmb{z}^{(n)}}{\p\pmb{a}^{(n-1)}}\frac{\p\pmb{a}^{(n-1)}}{\p\pmb{z}^{(n-1)}}\frac{\p\pmb{z}^{(n-1)}}{\p W^{(n-1)}}\\
-                                     &= \frac{\p\varepsilon}{\p\pmb{y}}f'\left(\pmb{z}^{(n)}\right)W^{(n)}f'\left(\pmb{z}^{(n-1)}\right)\pmb{a}^{(n-2)}
+  \hleq{\frac{\p\varepsilon}{\p W^{(n_l-1)}}} &\hleq{= \frac{\p\varepsilon}{\p\pmb{y}}\frac{\p\pmb{y}}{\p\pmb{z^{(n_l)}}}\frac{\p\pmb{z^{(n_l)}}}{\p W^{(n_l-1)}}},\\
+                                     &= \frac{\p\varepsilon}{\p\pmb{y}}f'\left(\pmb{z}^{(n_l)}\right)\frac{\p\pmb{z}^{(n_l)}}{\p\pmb{a}^{(n_l-1)}}\frac{\p\pmb{a}^{(n_l-1)}}{\p\pmb{z}^{(n_l-1)}}\frac{\p\pmb{z}^{(n_l-1)}}{\p W^{(n_l-1)}}\\
+                                     &= \frac{\p\varepsilon}{\p\pmb{y}}f'\left(\pmb{z}^{(n_l)}\right)W^{(n_l)}f'\left(\pmb{z}^{(n_l-1)}\right)\pmb{a}^{(n_l-2)}
 \end{align}
 e assim, sucessivamente para as demais camadas da rede. \hl{Os gradientes em relação aos \textit{biases} podem ser analogamente calculados}.
 
 \subsection{Aplicação: Problema de Classificação \texttt{XOR}}
-[[tag:construcao]]
 
-Vamos desenvolver uma MLP que faça a operação $\texttt{xor}$ (ou exclusivo). I.e, receba como entrada dois valores lógicos $A_1$ e $A_2$ (V, verdadeiro ou F, falso) e forneça como saída o valor lógico $R = A_1 \texttt{xor} A_2$. Consultamos a seguinte tabela verdade:
+Vamos desenvolver uma MLP que faça a operação $\texttt{xor}$ (ou exclusivo). A rede recebe como entrada dois valores lógicos $A_1$ e $A_2$ (V, verdadeiro ou F, falso) e fornece como saída o valor lógico $R = A_1 \texttt{xor} A_2$. Consultamos a tabela verdade:
 
 \begin{center}
   \begin{tabular}{cc|c}
@@ -91,25 +87,20 @@ Assumindo $V = 1$ e $F = -1$, podemos modelar o problema tendo entradas $\pmb{x}
 \end{center}
 
 \subsubsection{Modelo}
-[[tag:construcao]]
 
 Vamos usar uma MLP de estrutura $2-2-1$ e com funções de ativação $f^{(1)}(\pmb{x}) = \tanh(\pmb{x})$ e $f^{(2)}(\pmb{x}) = id(\pmb{x})$. Ou seja, nossa rede tem duas entradas, uma \emph{camada escondida} com 2 unidades (função de ativação tangente hiperbólica) e uma camada de saída com uma unidade (função de ativação identidade).
 
 \subsubsection{Treinamento}
 
-[[tag:construcao]]
-
 Para o treinamento, vamos usar a função \hl{\emph{erro quadrático médio}} (em inglês, \textit{mean squared error})
 \begin{equation}\hleq
   \varepsilon := \frac{1}{n_s}\sum_{s=1}^{n_s}\left|\tilde{y}^{(s)} - y^{(s)}\right|^2,
 \end{equation}
-onde os valores estimados $\tilde{y}^{(s)} = \mathcal{N}\left(\pmb{x}^{(s)}\right)$ e $\left\{\pmb{x}^{(s)}, y^{(s)}\right\}_{s=1}^{n_s}$, $n_s=4$, conforme na tabela acima.
+onde $\tilde{y}^{(s)} = \mathcal{N}\left(\pmb{x}^{(s)}\right)$ são os valores estimados e $\left\{\pmb{x}^{(s)}, y^{(s)}\right\}_{s=1}^{n_s}$, $n_s=4$, o conjunto de treinamento conforme na tabela acima.
 
 \subsubsection{Implementação}
 
-[[tag:construcao]]
-
-O seguinte código implementa a MLP e usa o \hl{Método do Gradiente Descendente (DG) no algoritmo de treinamento}.
+O seguinte código implementa a \hl{MLP com Método do Gradiente Descendente (DG) como otimizador do algoritmo de treinamento}.
 
 % \lstinputlisting[caption=mlp\_xor.py, label=cap_mlp_sec_modelo:cod:mlp_xor]{./cap_mlp/dados/py_mlp_xor/main.py}
 \begin{lstlisting}[caption=mlp\_xor.py, label=cap_mlp_sec_modelo:cod:mlp_xor]
@@ -117,25 +108,23 @@ import torch
 
 # modelo
 
-model = torch.nn.Sequential(
-    torch.nn.Linear(2,2),
-    torch.nn.Tanh(),
-    torch.nn.Linear(2,1)
-    )
+model = torch.nn.Sequential()
+model.add_module('layer_1', torch.nn.Linear(2,2))
+model.add_module('fun_1', torch.nn.Tanh())
+model.add_module('layer_2', torch.nn.Linear(2,1))
+
 
 # treinamento
 
 ## optimizador
-optim = torch.optim.SGD(model.parameters(), lr=1e-2)
-
-## função erro
-loss_fun = torch.nn.MSELoss()
+optim = torch.optim.SGD(model.parameters(),
+                        lr=5e-1)
 
 ## dados de treinamento
 X_train = torch.tensor([[1., 1.],
-                  [1., -1.],
-                  [-1., 1.],
-                  [-1., -1.]])
+                        [1., -1.],
+                        [-1., 1.],
+                        [-1., -1.]])
 y_train = torch.tensor([-1., 1., 1., -1.]).reshape(-1,1)
 
 print("\nDados de treinamento")
@@ -153,8 +142,8 @@ for epoch in range(nepochs):
     # forward
     y_est = model(X_train)
 
-    # erro
-    loss = loss_fun(y_est, y_train)
+    # função erro
+    loss = torch.mean((y_est - y_train)**2)
 
     print(f'{epoch}: {loss.item():.4e}')
 
@@ -175,7 +164,39 @@ print(f'y_est = {y}')
 
 \subsection{Exercícios}
 
-[[tag::construcao]]
+\begin{exer}
+  Faça uma nova versão do Código~\label{cod:cap_mlp_sec_modelo:cod:mlp_xor}, de forma que a MLP tenha tangente hiperbólica como função de ativação na sua saída.
+\end{exer}
+
+\begin{exer}
+  Faça uma nova versão do Código~\label{cod:cap_mlp_sec_modelo:cod:mlp_xor} usando o método do gradiente estocástico (SGD) como otimizador no algoritmo de treinamento.
+\end{exer}
+
+\begin{exer}
+  Crie uma MLP para emular a operação lógica $\land$ (\texttt{e-lógico}). No treinamento, use como otimizador:
+  \begin{enumerate}[a)]
+  \item Método GD.
+  \item Método SGD.
+  \end{enumerate}
+\end{exer}
+
+\begin{exer}
+  Crie uma MLP para emular a operação lógica $\lor$ (\texttt{ou-lógico}). No treinamento, use como otimizador:
+  \begin{enumerate}[a)]
+  \item Método GD.
+  \item Método SGD.
+  \end{enumerate}
+\end{exer}
+
+\begin{exer}
+  Considere uma MLP com $n_l=3$ camadas escondidas. Sendo $\varepsilon$ uma dada função erro, calcule:
+  \begin{enumerate}
+  \item $\displaystyle \frac{\p\varepsilon}{\p W^{n_l-2}}$.
+  \item $\displaystyle \frac{\p\varepsilon}{\p \pmb{b}^{n_l-2}}$.
+  \end{enumerate}
+\end{exer}
+
+
 
 \section{Aplicação: Problema de Classificação Binária}\label{cap_mlp_sec_classbin}
 
@@ -376,46 +397,46 @@ plt.show()
 
 \section{Aplicação: Aproximação de Funções}\label{cap_mlp_sec_apfun}
 
-[[tag:construcao]]
-
-\hl{Redes Perceptron Multicamadas (MLP) são aproximadoras universais}. Nesta seção, vamos aplicá-las na aproximação de funções uni- e bidimensionais.
+\hl{Redes Perceptron Multicamadas (MLPs) são aproximadoras universais}. Nesta seção, vamos aplicá-las na aproximação de funções uni- e bidimensionais.
 
 \subsection{Função unidimensional}
 
-[[tag:construcao]]
-
-Vamos criar uma MLP para aproximar a função gaussiana
+Vamos criar uma MLP para aproximar a função
 \begin{equation}
-  y = e^{-x^2},
+  y = \sen(\pi x),
 \end{equation}
 para $x\in [-1,1]$.
 
-% \lstinputlisting[caption=mlp\_gaussiana\_1d.py, label=cap_mlp_sec_modelo:cod:mlp_gaussiana_1d]{./cap_mlp/dados/py_mlp_gaussiana_1d/main.py}
-\begin{lstlisting}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{cap_mlp/dados/fig_mlp_apfun_1d/fig}
+  \caption{Aproximação da MLP da função $y = \sen(\pi x)$.}
+  \label{fig:mlp_mlp_apfun_1d}
+\end{figure}
+
+\begin{lstlisting}[caption=mlp\_apfun\_1d]
 import torch
 import matplotlib.pyplot as plt
 
 # modelo
 
-model = torch.nn.Sequential(
-    torch.nn.Linear(1,25),
-    torch.nn.Tanh(),
-    torch.nn.Linear(25,1)
-    )
+model = torch.nn.Sequential()
+model.add_module('layer_1', torch.nn.Linear(1,25))
+model.add_module('fun_1', torch.nn.Tanh())
+model.add_module('layer_2', torch.nn.Linear(25,25))
+model.add_module('fun_2', torch.nn.Tanh())
+model.add_module('layer_3', torch.nn.Linear(25,1))
 
 # treinamento
 
 ## fun obj
-fobj = lambda x: torch.exp(-x**2)
+fun = lambda x: torch.sin(torch.pi*x)
 a = -1.
 b = 1.
 
 ## optimizador
 optim = torch.optim.SGD(model.parameters(),
-                        lr=1e-2, momentum=0.9)
-
-## função erro
-loss_fun = torch.nn.MSELoss()
+                        lr=1e-1, momentum=0.9)
 
 ## num de amostras por época
 ns = 100
@@ -424,28 +445,37 @@ nepochs = 5000
 ## tolerância
 tol = 1e-5
 
+## amostras de validação
+X_val = torch.linspace(a, b, steps=100).reshape(-1,1)
+y_vest = fun(X_val)
+
 for epoch in range(nepochs):
 
     # amostras
     X_train = (a - b) * torch.rand((ns,1)) + b
-    y_train = fobj(X_train)
+    y_train = fun(X_train)
     
     # forward
     y_est = model(X_train)
 
     # erro
-    loss = loss_fun(y_est, y_train)
+    loss = torch.mean((y_est - y_train)**2)
 
     print(f'{epoch}: {loss.item():.4e}')
-
-    # critério de parada
-    if (loss.item() < tol):
-        break
 
     # backward
     optim.zero_grad()
     loss.backward()
     optim.step()
+
+    # validação
+    y_val = model(X_val)
+    loss_val = torch.mean((y_val - y_vest)**2)
+    print(f"\tloss_val = {loss_val.item():.4e}")
+    
+    # critério de parada
+    if (loss_val.item() < tol):
+        break
 
 
 # verificação
@@ -453,10 +483,10 @@ fig = plt.figure()
 ax = fig.add_subplot()
 
 x = torch.linspace(a, b,
-                   steps=50).reshape(-1,1)
+                   steps=100).reshape(-1,1)
 
-y_esp = fobj(x)
-ax.plot(x, y_esp, label='fobj')
+y_esp = fun(x)
+ax.plot(x, y_esp, label='fun')
 
 y_est = model(x)
 ax.plot(x, y_est.detach(), label='model')
@@ -472,14 +502,13 @@ plt.show()
 
 [[tag:construcao]]
 
-Vamos criar uma MLP para aproximar a função gaussiana
+Vamos criar uma MLP para aproximar a função
 \begin{equation}
-  y = e^{-(x_1^2 + x_2^2)},
+  z = \sen(\pi x)\sen(\pi y),
 \end{equation}
-para $\pmb{x} = (x_1, x_2)\in [-1,1]^2$.
+para $(x, y) \in [-1, 1]^2$.
 
-% \lstinputlisting[caption=mlp\_gaussiana\_2d.py, label=cap_mlp_sec_modelo:cod:mlp_gaussiana_2d]{./cap_mlp/dados/py_mlp_gaussiana_2d/main.py}
-\begin{lstlisting}
+\begin{lstlisting}[caption=mlp_apfun_2d]
 import torch
 import matplotlib.pyplot as plt
 
@@ -578,6 +607,22 @@ plt.show()
 \subsection{Exercícios}
 
 [[tag::construcao]]
+
+\begin{exer}
+  Crie uma MLP para aproximar a função gaussiana
+  \begin{equation}
+    y = e^{-x^2}
+  \end{equation}
+  para $x\in [-1, 1]$.
+\end{exer}
+
+\begin{exer}
+  Crie uma MLP para aproximar a função gaussiana
+  \begin{equation}
+    z = e^{-(x^2 + y^2)}
+  \end{equation}
+  para $(x, y) \in [-1, 1]^2$.
+\end{exer}
 
 \section{Diferenciação Automática}\label{cap_mlp_sec_autograd}
 

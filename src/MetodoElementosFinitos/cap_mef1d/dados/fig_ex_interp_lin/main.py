@@ -1,11 +1,15 @@
 from dolfinx import fem, mesh, plot
+import pyvista
 import numpy as np
 import matplotlib.pyplot as plt
 from mpi4py import MPI
 
+plt.rc('text', usetex=True)
+plt.rc('text.latex', preamble=r'\usepackage{amsmath}\usepackage{amssymb}')
+
 # malha
 msh = mesh.create_interval(MPI.COMM_WORLD,
-                           nx=1,
+                           nx=3,
                            points=np.array([0.25, 0.75]))
 
 # espaço
@@ -20,7 +24,7 @@ fig = plt.figure(dpi=300)
 ax = fig.add_subplot()
 xx = np.linspace(0.25, 0.75)
 ax.plot(xx, 3.*np.sin(2.*np.pi*xx), label="$f$")
-ax.plot([0.25, 0.75], pif.x.array.real, marker="o", label="$\pi f$")
+ax.plot(msh.geometry.x[:,0:1], pif.x.array.real, marker="o", label="$\pi f$")
 ax.grid()
 ax.set_xlabel("$x$")
 ax.set_ylabel("$y$")
