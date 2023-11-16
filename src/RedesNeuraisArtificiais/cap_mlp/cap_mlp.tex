@@ -500,113 +500,123 @@ plt.show()
 
 \subsection{Função bidimensional}
 
-[[tag:construcao]]
-
 Vamos criar uma MLP para aproximar a função
 \begin{equation}
-  z = \sen(\pi x)\sen(\pi y),
+  y = \sen(\pi x_1)\sen(\pi x_2),
 \end{equation}
-para $(x, y) \in [-1, 1]^2$.
+para $(x_1, x_2) \in [-1, 1]^2$.
 
-\begin{lstlisting}[caption=mlp_apfun_2d]
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{cap_mlp/dados/fig_mlp_apfun_2d/fig}
+  \caption{Aproximação MLP da função $y = \sen(\pi x_1)\sen(\pi x_2)$. Linhas: isolinhas da função. Mapa de cores: MLP. }
+  \label{fig:mlp_apfun_2d}
+\end{figure}
+
+\begin{lstlisting}[caption=mlp\_apfun\_2d]
 import torch
 import matplotlib.pyplot as plt
 
 # modelo
-
-model = torch.nn.Sequential(
-    torch.nn.Linear(2,50),
-    torch.nn.Tanh(),
-    torch.nn.Linear(50,25),
-    torch.nn.Tanh(),
-    torch.nn.Linear(25,5),
-    torch.nn.Tanh(),
-    torch.nn.Linear(5,1)
-    )
+nh = 25
+model = torch.nn.Sequential()
+model.add_module('layer_1', torch.nn.Linear(2,nh))
+model.add_module('fun_1', torch.nn.Tanh())
+model.add_module('layer_2', torch.nn.Linear(nh,nh))
+model.add_module('fun_2', torch.nn.Tanh())
+model.add_module('layer_3', torch.nn.Linear(nh,nh))
+model.add_module('fun_3', torch.nn.Tanh())
+model.add_module(f'layer_4', torch.nn.Linear(nh,1))
 
 # treinamento
 
 ## fun obj
-a = -1.
-b = 1.
-def fobj(x):
-    y = torch.exp(-x[:,0]**2 - x[:,1]**2)
-    return y.reshape(-1,1)
+def fun(x1, x2):
+    return torch.sin(torch.pi*x1) * \
+           torch.sin(torch.pi*x2)
+
+x1_a = -1.
+x1_b = 1
+
+x2_a = -1.
+x2_b = 1.
+
 
 ## optimizador
 optim = torch.optim.SGD(model.parameters(),
-                        lr=1e-1, momentum=0.9)
+                        lr=5e-2, momentum=0.9)
 
-## função erro
-loss_fun = torch.nn.MSELoss()
-
-## num de amostras por eixo por época
-ns = 100
+## num de amostras por época
+ns = 10
 ## num max épocas
-nepochs = 5000
+nepochs = 50000
 ## tolerância
-tol = 1e-5
+tol = 1e-4
+
+## amostras de validação
+n_val = 50
+x1 = torch.linspace(x1_a, x1_b, steps=n_val)
+x2 = torch.linspace(x2_a, x2_b, steps=n_val)
+X1_val, X2_val = torch.meshgrid(x1, x2, indexing='ij')
+X_val = torch.hstack((X1_val.reshape(n_val**2,1),
+                      X2_val.reshape(n_val**2,1)))
+Y_vest = fun(X1_val, X2_val).reshape(-1,1)
 
 for epoch in range(nepochs):
 
     # amostras
-    x0 = (a - b) * torch.rand(ns) + b
-    x1 = (a - b) * torch.rand(ns) + b
-    X0, X1 = torch.meshgrid(x0, x1)
-    X_train = torch.cat((X0.reshape(-1,1),
-                         X1.reshape(-1,1)),
-                        dim=1)
-    y_train = fobj(X_train)
+    x1 = (x1_b - x1_a) * torch.rand(ns) + x1_a
+    x2 = (x2_b - x2_a) * torch.rand(ns) + x2_a
+    X1, X2 = torch.meshgrid(x1, x2, indexing='ij')
+    X_train = torch.hstack((X1.reshape(-1,1),
+                            X2.reshape(-1,1)))
+    Y_train = fun(X1, X2).reshape(-1,1)
+    
     
     # forward
-    y_est = model(X_train)
+    Y_est = model(X_train)
 
     # erro
-    loss = loss_fun(y_est, y_train)
+    loss = torch.mean((Y_est - Y_train)**2)
 
-    print(f'{epoch}: {loss.item():.4e}')
-
-    # critério de parada
-    if (loss.item() < tol):
-        break
+    if (epoch % 100 == 0):
+        print(f'{epoch}: {loss.item():.4e}')
 
     # backward
     optim.zero_grad()
     loss.backward()
     optim.step()
 
+    # validação
+    if (epoch % 100 == 0):
+        Y_val = model(X_val)
+        loss_val = torch.mean((Y_val - Y_vest)**2)
 
-# verificação
+        print(f"\tloss_val = {loss_val.item():.4e}")
+    
+        # critério de parada
+        if (loss_val.item() < tol):
+            break
+
+
+# # verificação
 fig = plt.figure()
 ax = fig.add_subplot()
 
-n = 50
-x0 = torch.linspace(a, b, steps=n)
-x1 = torch.linspace(a, b, steps=n)
-X0, X1 = torch.meshgrid(x0, x1)
-X = torch.cat((X0.reshape(-1,1),
-               X1.reshape(-1,1)),
-              dim=1)
+Y_vest = Y_vest.reshape((n_val, n_val))
+Y_val = Y_val.detach().reshape((n_val, n_val))
 
-y_esp = fobj(X)
-Y = y_esp.reshape((n,n))
-levels = torch.linspace(0., 1., 10)
-c = ax.contour(X0, X1, Y, levels=levels, colors='white')
-ax.clabel(c)
+levels=10
+ax.contour(X1_val, X2_val, Y_vest, levels=levels, colors='white')
+cb = ax.contourf(X1_val, X2_val, Y_val, levels=levels)
+plt.colorbar(cb)
 
-y_est = model(X)
-Y = y_est.reshape((n,n))
-ax.contourf(X0, X1, Y.detach(), levels=levels)
-
-ax.grid()
-ax.set_xlabel('x_1')
-ax.set_ylabel('x_2')
+ax.set_xlabel('$x_1$')
+ax.set_ylabel('$x_2$')
 plt.show()
 \end{lstlisting}
 
 \subsection{Exercícios}
-
-[[tag::construcao]]
 
 \begin{exer}
   Crie uma MLP para aproximar a função gaussiana
@@ -617,11 +627,27 @@ plt.show()
 \end{exer}
 
 \begin{exer}
+  Crie uma MLP para aproximar a função $y = \sin(x)$ para $x\in [-\pi, \pi]$.
+\end{exer}
+
+\begin{exer}
+  Crie uma MLP para aproximar a função $y = \sin(x) + \cos(x)$ para $x\in [0, 2\pi]$.
+\end{exer}
+
+\begin{exer}
   Crie uma MLP para aproximar a função gaussiana
   \begin{equation}
     z = e^{-(x^2 + y^2)}
   \end{equation}
   para $(x, y) \in [-1, 1]^2$.
+\end{exer}
+
+\begin{exer}
+  Crie uma MLP para aproximar a função $y = \sin(x_1)\cos(x_2)$ para $(x_1, x_2)\in [0, \pi]\times [-\pi, 0]$.
+\end{exer}
+
+\begin{exer}
+  Crie uma MLP para aproximar a função $y = \sin(x_1) + \cos(x_2)$ para $(x_1, x_2)\in [-2\pi, 2\pi]$.
 \end{exer}
 
 \section{Diferenciação Automática}\label{cap_mlp_sec_autograd}
