@@ -652,8 +652,6 @@ plt.show()
 
 \section{Diferenciação Automática}\label{cap_mlp_sec_autograd}
 
-[[tag:construcao]]
-
 \hl{\emph{Diferenciação automática} é um conjunto de técnicas para a computação de derivadas numéricas em um programa de computador}. Explora-se o fato de que um programa computacional executa uma sequência de operações aritméticas e funções elementares, podendo-se computar a derivada por aplicações da \hl{regra da cadeia}.
 
 {\pytorch} computa o gradiente (derivada) de uma função a partir de seu grafo computacional. Os gradientes são computados por retropropagação. Por exemplo, para a computação do gradiente
@@ -702,6 +700,37 @@ primeiramente, propaga-se a entrada $x_0$ pela função computacional $f$, obten
     \caption{Grafo computacional para a diferenciação automática.}
     \label{fig:autograd_f1d}
   \end{figure}
+
+\begin{lstlisting}[caption=mlp\_autograd\_1d]
+import torch
+from torch import pi, pi, sin, cos
+import matplotlib.pyplot as plt
+
+# input
+x = torch.linspace(-1., 1., steps=50)
+x.requires_grad = True
+
+# forward
+y = sin(pi*x)
+
+# backward
+dydx = torch.autograd.grad(y, x,
+                           retain_graph = True,
+                           create_graph = True,
+                           grad_outputs = torch.ones_like(x))[0]
+
+# gráfico
+x = x.detach()
+y = y.detach()
+dydx = dydx.detach()
+plt.plot(x, y, ls='-', label='f')
+plt.plot(x, pi*cos(pi*x), ls='-', label='df/dx')
+plt.plot(x, dydx, ls='--', label='autograd')
+
+plt.grid()
+plt.legend()
+plt.show()
+\end{lstlisting}
 \end{ex}
 
 Uma RNA é uma composição de funções definidas por parâmetros (pesos e \textit{biases}). O treinamento de uma RNA ocorre em duas etapas\footnote{Para mais detalhes, consulte a Subseção \ref{cap_mlp_sec_modelo:ssec:treinamento}.}:
@@ -709,8 +738,6 @@ Uma RNA é uma composição de funções definidas por parâmetros (pesos e \tex
 \item \hl{\emph{Propagação (\textit{forward})}}: os dados de entrada são propagados para todas as funções da rede, produzindo a saída estimada.
 \item \hl{\emph{Retropropagação (\textit{backward})}}: a computação do gradiente do erro\footnote{Medida da diferença entre o valor estimado e o valor esperado.} em relação aos parâmetros da rede é realizado coletando as derivadas (gradientes) das funções da rede. Pela regra da cadeia, essa coleta é feita a partir da camada de saída em direção a camada de entrada da rede.
 \end{enumerate}
-
-A \hl{Diferenciação Automática (\emph{Autograd}, do inglês, \textit{Automatic Gradient}) consiste na computação de derivadas a partir da regra da cadeia em uma estrutura computacional composta de funções elementares}. Esse é o caso \hl{em RNAs, a computação do gradiente da saída da rede em relação a sua entrada pode ser feita de forma similar à computação do gradiente do erro em relação aos seus parâmetros}.
 
 \subsection{Autograd Perceptron}
 

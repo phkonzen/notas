@@ -6,671 +6,644 @@
 
 \hlemph{Redes neurais informadas pela física} (PINNs, do inglês, \textit{physics-informed neural networks}) são métodos de \textit{deep learning} para a solução de equações diferenciais.
 
-\section{Problemas de Valores Iniciais}
-[[tag:construcao]]
+% \section{Problemas de Valores Iniciais}
+% [[tag:construcao]]
 
-Consideramos um \hlemph{problema de valor inicial} (\hlemph{IVP}, do inglês, \textit{initial value problem})
-\begin{subequations}\label{eq:ivp}\hleq
-  \begin{align}
-    &y'(t) = g\left(t, y(t)\right), ~t_0 < t < t_f,\\
-    &y(t_0) = y_0,
-  \end{align}
-\end{subequations}
-com dada $g:\mathbb{R}^2\to\mathbb{R}$ e dados valor inicial $y_0\in\mathbb{R}$, tempos inicial $t_0\in\mathbb{R}$ e final $t_f\in\mathbb{R}$.
+% Consideramos um \hlemph{problema de valor inicial} (\hlemph{IVP}, do inglês, \textit{initial value problem})
+% \begin{subequations}\label{eq:ivp}\hleq
+%   \begin{align}
+%     &y'(t) = g\left(t, y(t)\right), ~t_0 < t < t_f,\\
+%     &y(t_0) = y_0,
+%   \end{align}
+% \end{subequations}
+% com dada $g:\mathbb{R}^2\to\mathbb{R}$ e dados valor inicial $y_0\in\mathbb{R}$, tempos inicial $t_0\in\mathbb{R}$ e final $t_f\in\mathbb{R}$.
 
-\subsection{Euler PINN}
-[[tag:construcao]]
+% \subsection{Euler PINN}
+% [[tag:construcao]]
 
-A solução do IVP \eqref{eq:ivp} pode ser obtida por uma \hlemph{rede neural informada pela física} (PINN, do inglês, \textit{physics-informed neural network}) assumindo a seguinte aproximação de \href{https://notaspedrok.com.br/notas/MatematicaNumericaII/cap_pvi_sec_euler.html}{Euler explícita}
-\begin{subequations}\label{eq:ivp}\hleq
-  \begin{align}
-    &y^{(s+1)} = y^{(s)} + h_tg\left(t^{(s)}, y^{(s)}\right), ~0\leq s\leq n_t-1,\\
-    &y^{(0)} = y_0,
-  \end{align}
-\end{subequations}
-onde $y^{(s)} \approx y\left(t^{(s)}\right)$, nos tempos discretos $t^{(s)} = t_0 + sh_t$, com passo $h_t=(t_t-t_0)/n_t$, $s = 0, 1, 2, \dotsc, n_t$.
+% A solução do IVP \eqref{eq:ivp} pode ser obtida por uma \hlemph{rede neural informada pela física} (PINN, do inglês, \textit{physics-informed neural network}) assumindo a seguinte aproximação de \href{https://notaspedrok.com.br/notas/MatematicaNumericaII/cap_pvi_sec_euler.html}{Euler explícita}
+% \begin{subequations}\label{eq:ivp}\hleq
+%   \begin{align}
+%     &y^{(s+1)} = y^{(s)} + h_tg\left(t^{(s)}, y^{(s)}\right), ~0\leq s\leq n_t-1,\\
+%     &y^{(0)} = y_0,
+%   \end{align}
+% \end{subequations}
+% onde $y^{(s)} \approx y\left(t^{(s)}\right)$, nos tempos discretos $t^{(s)} = t_0 + sh_t$, com passo $h_t=(t_t-t_0)/n_t$, $s = 0, 1, 2, \dotsc, n_t$.
 
-Nosso modelo PINN é uma \href{https://notaspedrok.com.br/notas/RedesNeuraisArtificiais/cap_mlp_sec_modelo.html}{perceptron multicamada} (MLP)
-\begin{equation}\hleq
-  \tilde{y} = \mathcal{N}\left(t; \left\{W^{(l)}, \pmb{b}^{(l)}, \pmb{f}^{(l)}\right\}_{l=1}^{n_h+1}\right),
-\end{equation}
-de dada arquitetura $1 - n_n\times n_h - 1$, i.e. uma entrada, $n_h$ camadas escondidas, cada com $n_n$ neurônios e uma saída. A entrada é o valor do tempo $t$ e a saída é $\tilde{y} = \mathcal{N}(t) \approx y(t)$, a estimativa da solução do IVP \eqref{eq:ivp}. Escolhidas as funções de ativação $\pmb{f}^{(l)}$, $l = 1, 2, \dotsc, n_h+1$, o treinamento da PINN consiste em resolver o seguinte problema de minimização
-\begin{equation}\hleq
-  \min_{\left\{W^{(l)}, \pmb{b}^{(l)}\right\}_{l=1}^{n_h+1}} \frac{1}{n_s}\sum_{s=0}^{n_s-1}\left|\mathcal{R}^{(s)}\right|^2 + p_p\left|\tilde{y}^{(0)} - y_0\right|^2,
-\end{equation}
-onde $p_p>0$ é um dado \hlemph{parâmetro de penalização} e $\mathcal{R}^{(s)}$ é o \hlemph{resíduo}
-\begin{equation}\hleq
-  \mathcal{R}^{(s)} := \frac{y^{(s+1)} - y^{(s)}}{h_t} - h_tg\left(t^{(s)}, y^{(s)}\right).
-\end{equation}
+% Nosso modelo PINN é uma \href{https://notaspedrok.com.br/notas/RedesNeuraisArtificiais/cap_mlp_sec_modelo.html}{perceptron multicamada} (MLP)
+% \begin{equation}\hleq
+%   \tilde{y} = \mathcal{N}\left(t; \left\{W^{(l)}, \pmb{b}^{(l)}, \pmb{f}^{(l)}\right\}_{l=1}^{n_h+1}\right),
+% \end{equation}
+% de dada arquitetura $1 - n_n\times n_h - 1$, i.e. uma entrada, $n_h$ camadas escondidas, cada com $n_n$ neurônios e uma saída. A entrada é o valor do tempo $t$ e a saída é $\tilde{y} = \mathcal{N}(t) \approx y(t)$, a estimativa da solução do IVP \eqref{eq:ivp}. Escolhidas as funções de ativação $\pmb{f}^{(l)}$, $l = 1, 2, \dotsc, n_h+1$, o treinamento da PINN consiste em resolver o seguinte problema de minimização
+% \begin{equation}\hleq
+%   \min_{\left\{W^{(l)}, \pmb{b}^{(l)}\right\}_{l=1}^{n_h+1}} \frac{1}{n_s}\sum_{s=0}^{n_s-1}\left|\mathcal{R}^{(s)}\right|^2 + p_p\left|\tilde{y}^{(0)} - y_0\right|^2,
+% \end{equation}
+% onde $p_p>0$ é um dado \hlemph{parâmetro de penalização} e $\mathcal{R}^{(s)}$ é o \hlemph{resíduo}
+% \begin{equation}\hleq
+%   \mathcal{R}^{(s)} := \frac{y^{(s+1)} - y^{(s)}}{h_t} - h_tg\left(t^{(s)}, y^{(s)}\right).
+% \end{equation}
 
-\begin{ex}
-  Consideramos o seguinte IVP
-  \begin{subequations}
-    \begin{align}
-      &y'(t) = \sin(t) - y, ~0 < t < 1,\\
-      &y(0) = \frac{1}{2}.
-    \end{align}
-  \end{subequations}
-\end{ex}
+% \begin{ex}
+%   Consideramos o seguinte IVP
+%   \begin{subequations}
+%     \begin{align}
+%       &y'(t) = \sin(t) - y, ~0 < t < 1,\\
+%       &y(0) = \frac{1}{2}.
+%     \end{align}
+%   \end{subequations}
+% \end{ex}
 
-\begin{lstlisting}[caption=pyEulerPINN.py]
-import torch
-from scipy.integrate import quad
+% \begin{lstlisting}[caption=pyEulerPINN.py]
+% import torch
+% from scipy.integrate import quad
 
-# model
-## num hidden layers
-nh = 2
-## num neurons per hidden layer
-nn = 50
-## activation fun in hidden layers
-fh = torch.nn.Tanh()
-## model architecture
-model = torch.nn.Sequential()
-model.add_module('layer_1', torch.nn.Linear(1,nn))
-model.add_module('fun_1', fh)
-for l in range(2, nh):
-    model.add_module(f'layer_{l}', torch.nn.Linear(nn,nn))
-    model.add_module(f'fun_{l}', fh)
-model.add_module(f'layer_{nh}', torch.nn.Linear(nn,1))
+% # model
+% ## num hidden layers
+% nh = 2
+% ## num neurons per hidden layer
+% nn = 50
+% ## activation fun in hidden layers
+% fh = torch.nn.Tanh()
+% ## model architecture
+% model = torch.nn.Sequential()
+% model.add_module('layer_1', torch.nn.Linear(1,nn))
+% model.add_module('fun_1', fh)
+% for l in range(2, nh):
+%     model.add_module(f'layer_{l}', torch.nn.Linear(nn,nn))
+%     model.add_module(f'fun_{l}', fh)
+% model.add_module(f'layer_{nh}', torch.nn.Linear(nn,1))
 
-# IVP params
+% # IVP params
 
-## init time
-t0 = 0.
-## init condition
-y0 = 0.5
-## final time
-tf = 1.
+% ## init time
+% t0 = 0.
+% ## init condition
+% y0 = 0.5
+% ## final time
+% tf = 1.
 
-## num of time samples
-ns = 10
-## time step
-ht = (tf - t0)/ns
-## time samples
-ts = torch.linspace(t0, tf, ns+1).reshape(-1,1)
+% ## num of time samples
+% ns = 10
+% ## time step
+% ht = (tf - t0)/ns
+% ## time samples
+% ts = torch.linspace(t0, tf, ns+1).reshape(-1,1)
 
-## rhs
-def g(t, y):
-    return y + torch.sin(t)
+% ## rhs
+% def g(t, y):
+%     return y + torch.sin(t)
 
-# training
-## num of epochs
-nepochs = 10000
-## output loss freq
-eout = 100
-## tolerance
-tol = 1e-4
-## early-stop
-n_iter_no_change = 100
+% # training
+% ## num of epochs
+% nepochs = 10000
+% ## output loss freq
+% eout = 100
+% ## tolerance
+% tol = 1e-4
+% ## early-stop
+% n_iter_no_change = 100
 
-## optimizer
-optim = torch.optim.Adam(model.parameters(), lr=1e-3)
+% ## optimizer
+% optim = torch.optim.Adam(model.parameters(), lr=1e-3)
 
-# training loop
-count_no_change = 0
-best_loss = 1e38
-for epoch in range(nepochs):
+% # training loop
+% count_no_change = 0
+% best_loss = 1e38
+% for epoch in range(nepochs):
 
-    # forward
-    yy = model(ts)
+%     # forward
+%     yy = model(ts)
 
-    # loss
-    ## t>0
-    lup = torch.mean(((yy[1:] - yy[:-1])/ht \
-                      - g(ts[:-1], yy[:-1]))**2)
-    ## t = 0
-    lic = (yy[0] - y0)**2
+%     # loss
+%     ## t>0
+%     lup = torch.mean(((yy[1:] - yy[:-1])/ht \
+%                       - g(ts[:-1], yy[:-1]))**2)
+%     ## t = 0
+%     lic = (yy[0] - y0)**2
 
-    loss_train = lup + lic        
+%     loss_train = lup + lic        
 
-    # backward
-    optim.zero_grad()
-    loss_train.backward()
-    optim.step()
+%     # backward
+%     optim.zero_grad()
+%     loss_train.backward()
+%     optim.step()
 
-    # validation
-    ys = model(ts).detach()
-    yv = torch.empty_like(ys)
-    yv[0] = y0
-    for s in range(1,ns+1):
-        yv[s] = yv[s-1] + quad(lambda t: g(torch.tensor([[t]]),
-                                      model(torch.tensor([[t]])).detach()),
-                               ts[s-1], ts[s])[0]
-    loss_valid = torch.mean((ys - yv)**2)
+%     # validation
+%     ys = model(ts).detach()
+%     yv = torch.empty_like(ys)
+%     yv[0] = y0
+%     for s in range(1,ns+1):
+%         yv[s] = yv[s-1] + quad(lambda t: g(torch.tensor([[t]]),
+%                                       model(torch.tensor([[t]])).detach()),
+%                                ts[s-1], ts[s])[0]
+%     loss_valid = torch.mean((ys - yv)**2)
 
-    if (loss_valid < best_loss):
-        torch.save(model, 'model.pt')
-        best_loss = loss_valid
-        count_no_change = 0
-    else:
-        count_no_change += 1
+%     if (loss_valid < best_loss):
+%         torch.save(model, 'model.pt')
+%         best_loss = loss_valid
+%         count_no_change = 0
+%     else:
+%         count_no_change += 1
 
-    if ((epoch % eout == 0) or (count_no_change == 0)):
-        msg = f'{epoch}: train = {loss_train.item():.4e}, valid = {loss_valid.item():.4e}'
-        if (count_no_change == 0):
-            msg += ' (best)'
-        print(msg)
+%     if ((epoch % eout == 0) or (count_no_change == 0)):
+%         msg = f'{epoch}: train = {loss_train.item():.4e}, valid = {loss_valid.item():.4e}'
+%         if (count_no_change == 0):
+%             msg += ' (best)'
+%         print(msg)
 
-    if ((best_loss < tol) or (count_no_change > n_iter_no_change)):
-        break
+%     if ((best_loss < tol) or (count_no_change > n_iter_no_change)):
+%         break
 
-    if (loss_train < tol):
-        break
-\end{lstlisting}
+%     if (loss_train < tol):
+%         break
+% \end{lstlisting}
 
-\subsection{AD-PINN}
-[[tag:construcao]]
+% \subsection{AD-PINN}
+% [[tag:construcao]]
 
-Aqui nosso modelo PINN é novamnte uma \href{https://notaspedrok.com.br/notas/RedesNeuraisArtificiais/cap_mlp_sec_modelo.html}{perceptron multicamada} (MLP)
-\begin{equation}\hleq
-  \tilde{y} = \mathcal{N}\left(t; \left\{W^{(l)}, \pmb{b}^{(l)}, \pmb{f}^{(l)}\right\}_{l=1}^{n_h+1}\right),
-\end{equation}
-de dada arquitetura $1 - n_n\times n_h - 1$, i.e. uma entrada, $n_h$ camadas escondidas, cada com $n_n$ neurônios e uma saída. A entrada é o valor do tempo $t$ e a saída é $\tilde{y} = \mathcal{N}(t) \approx y(t)$, a estimativa da solução do IVP \eqref{eq:ivp}. Escolhidas as funções de ativação $\pmb{f}^{(l)}$, $l = 1, 2, \dotsc, n_h+1$, o treinamento da PINN consiste em resolver o seguinte problema de minimização
-\begin{equation}\hleq
-  \min_{\left\{W^{(l)}, \pmb{b}^{(l)}\right\}_{l=1}^{n_h+1}} \frac{1}{n_s}\sum_{s=0}^{n_s-1}\left|\mathcal{R}^{(s)}\right|^2 + p_p\left|\tilde{y}^{(0)} - y_0\right|^2,
-\end{equation}
-onde $p_p>0$ é um dado \hlemph{parâmetro de penalização} e $\mathcal{R}^{(s)}$ é o \hlemph{resíduo}
-\begin{equation}\hleq
-  \mathcal{R}^{(s)} := y'^{(s)} - h_tg\left(t^{(s)}, y^{(s)}\right),
-\end{equation}
-com $y'^{(s)} \approx y'\left(t^{(s)}\right)$ computada por diferenciação automática da MLP.
+% Aqui nosso modelo PINN é novamnte uma \href{https://notaspedrok.com.br/notas/RedesNeuraisArtificiais/cap_mlp_sec_modelo.html}{perceptron multicamada} (MLP)
+% \begin{equation}\hleq
+%   \tilde{y} = \mathcal{N}\left(t; \left\{W^{(l)}, \pmb{b}^{(l)}, \pmb{f}^{(l)}\right\}_{l=1}^{n_h+1}\right),
+% \end{equation}
+% de dada arquitetura $1 - n_n\times n_h - 1$, i.e. uma entrada, $n_h$ camadas escondidas, cada com $n_n$ neurônios e uma saída. A entrada é o valor do tempo $t$ e a saída é $\tilde{y} = \mathcal{N}(t) \approx y(t)$, a estimativa da solução do IVP \eqref{eq:ivp}. Escolhidas as funções de ativação $\pmb{f}^{(l)}$, $l = 1, 2, \dotsc, n_h+1$, o treinamento da PINN consiste em resolver o seguinte problema de minimização
+% \begin{equation}\hleq
+%   \min_{\left\{W^{(l)}, \pmb{b}^{(l)}\right\}_{l=1}^{n_h+1}} \frac{1}{n_s}\sum_{s=0}^{n_s-1}\left|\mathcal{R}^{(s)}\right|^2 + p_p\left|\tilde{y}^{(0)} - y_0\right|^2,
+% \end{equation}
+% onde $p_p>0$ é um dado \hlemph{parâmetro de penalização} e $\mathcal{R}^{(s)}$ é o \hlemph{resíduo}
+% \begin{equation}\hleq
+%   \mathcal{R}^{(s)} := y'^{(s)} - h_tg\left(t^{(s)}, y^{(s)}\right),
+% \end{equation}
+% com $y'^{(s)} \approx y'\left(t^{(s)}\right)$ computada por diferenciação automática da MLP.
 
-\begin{ex}
-  Consideramos o seguinte IVP
-  \begin{subequations}
-    \begin{align}
-      &y'(t) = \sin(t) - y, ~0 < t < 1,\\
-      &y(0) = \frac{1}{2}.
-    \end{align}
-  \end{subequations}
-\end{ex}
+% \begin{ex}
+%   Consideramos o seguinte IVP
+%   \begin{subequations}
+%     \begin{align}
+%       &y'(t) = \sin(t) - y, ~0 < t < 1,\\
+%       &y(0) = \frac{1}{2}.
+%     \end{align}
+%   \end{subequations}
+% \end{ex}
 
-\begin{lstlisting}[caption=pyEulerPINN.py]
-import torch
-from scipy.integrate import quad
+% \begin{lstlisting}[caption=pyEulerPINN.py]
+% import torch
+% from scipy.integrate import quad
 
-# model
-## num hidden layers
-nh = 2
-## num neurons per hidden layer
-nn = 50
-## activation fun in hidden layers
-fh = torch.nn.Tanh()
-## model architecture
-model = torch.nn.Sequential()
-model.add_module('layer_1', torch.nn.Linear(1,nn))
-model.add_module('fun_1', fh)
-for l in range(2, nh):
-    model.add_module(f'layer_{l}', torch.nn.Linear(nn,nn))
-    model.add_module(f'fun_{l}', fh)
-model.add_module(f'layer_{nh}', torch.nn.Linear(nn,1))
+% # model
+% ## num hidden layers
+% nh = 2
+% ## num neurons per hidden layer
+% nn = 50
+% ## activation fun in hidden layers
+% fh = torch.nn.Tanh()
+% ## model architecture
+% model = torch.nn.Sequential()
+% model.add_module('layer_1', torch.nn.Linear(1,nn))
+% model.add_module('fun_1', fh)
+% for l in range(2, nh):
+%     model.add_module(f'layer_{l}', torch.nn.Linear(nn,nn))
+%     model.add_module(f'fun_{l}', fh)
+% model.add_module(f'layer_{nh}', torch.nn.Linear(nn,1))
 
-# IVP params
+% # IVP params
 
-## init time
-t0 = 0.
-## init condition
-y0 = 0.5
-## final time
-tf = 1.
+% ## init time
+% t0 = 0.
+% ## init condition
+% y0 = 0.5
+% ## final time
+% tf = 1.
 
-## num of time samples
-ns = 10
-## time step
-ht = (tf - t0)/ns
-## time samples
-ts = torch.linspace(t0, tf, ns+1).reshape(-1,1)
+% ## num of time samples
+% ns = 10
+% ## time step
+% ht = (tf - t0)/ns
+% ## time samples
+% ts = torch.linspace(t0, tf, ns+1).reshape(-1,1)
 
-## rhs
-def g(t, y):
-    return y + torch.sin(t)
+% ## rhs
+% def g(t, y):
+%     return y + torch.sin(t)
 
-# training
-## num of epochs
-nepochs = 10000
-## output loss freq
-eout = 100
-## tolerance
-tol = 1e-4
-## early-stop
-n_iter_no_change = 100
+% # training
+% ## num of epochs
+% nepochs = 10000
+% ## output loss freq
+% eout = 100
+% ## tolerance
+% tol = 1e-4
+% ## early-stop
+% n_iter_no_change = 100
 
-## optimizer
-optim = torch.optim.Adam(model.parameters(), lr=1e-3)
+% ## optimizer
+% optim = torch.optim.Adam(model.parameters(), lr=1e-3)
 
-# training loop
-count_no_change = 0
-best_loss = 1e38
-for epoch in range(nepochs):
+% # training loop
+% count_no_change = 0
+% best_loss = 1e38
+% for epoch in range(nepochs):
 
-    # forward
-    yy = model(ts)
+%     # forward
+%     yy = model(ts)
 
-    # loss
-    ## t>0
-    lup = torch.mean(((yy[1:] - yy[:-1])/ht \
-                      - g(ts[:-1], yy[:-1]))**2)
-    ## t = 0
-    lic = (yy[0] - y0)**2
+%     # loss
+%     ## t>0
+%     lup = torch.mean(((yy[1:] - yy[:-1])/ht \
+%                       - g(ts[:-1], yy[:-1]))**2)
+%     ## t = 0
+%     lic = (yy[0] - y0)**2
 
-    loss_train = lup + lic        
+%     loss_train = lup + lic        
 
-    # backward
-    optim.zero_grad()
-    loss_train.backward()
-    optim.step()
+%     # backward
+%     optim.zero_grad()
+%     loss_train.backward()
+%     optim.step()
 
-    # validation
-    ys = model(ts).detach()
-    yv = torch.empty_like(ys)
-    yv[0] = y0
-    for s in range(1,ns+1):
-        yv[s] = yv[s-1] + quad(lambda t: g(torch.tensor([[t]]),
-                                      model(torch.tensor([[t]])).detach()),
-                               ts[s-1], ts[s])[0]
-    loss_valid = torch.mean((ys - yv)**2)
+%     # validation
+%     ys = model(ts).detach()
+%     yv = torch.empty_like(ys)
+%     yv[0] = y0
+%     for s in range(1,ns+1):
+%         yv[s] = yv[s-1] + quad(lambda t: g(torch.tensor([[t]]),
+%                                       model(torch.tensor([[t]])).detach()),
+%                                ts[s-1], ts[s])[0]
+%     loss_valid = torch.mean((ys - yv)**2)
 
-    if (loss_valid < best_loss):
-        torch.save(model, 'model.pt')
-        best_loss = loss_valid
-        count_no_change = 0
-    else:
-        count_no_change += 1
+%     if (loss_valid < best_loss):
+%         torch.save(model, 'model.pt')
+%         best_loss = loss_valid
+%         count_no_change = 0
+%     else:
+%         count_no_change += 1
 
-    if ((epoch % eout == 0) or (count_no_change == 0)):
-        msg = f'{epoch}: train = {loss_train.item():.4e}, valid = {loss_valid.item():.4e}'
-        if (count_no_change == 0):
-            msg += ' (best)'
-        print(msg)
+%     if ((epoch % eout == 0) or (count_no_change == 0)):
+%         msg = f'{epoch}: train = {loss_train.item():.4e}, valid = {loss_valid.item():.4e}'
+%         if (count_no_change == 0):
+%             msg += ' (best)'
+%         print(msg)
 
-    if ((best_loss < tol) or (count_no_change > n_iter_no_change)):
-        break
+%     if ((best_loss < tol) or (count_no_change > n_iter_no_change)):
+%         break
 
-    if (loss_train < tol):
-        break
-\end{lstlisting}
+%     if (loss_train < tol):
+%         break
+% \end{lstlisting}
 
-\subsection{Exercícios}
-[[tag:construcao]]
+% \subsection{Exercícios}
+% [[tag:construcao]]
 
-\section{Aplicação: Equação de Laplace}\label{cap_mlp_sec_eqlaplace}
+\section{Aplicação: Equação de Poisson}\label{cap_mlp_sec_eqpoisson}
 [[tag:construcao]]
 
 Vamos criar uma MLP para resolver
 \begin{subequations}\label{cap_mlp_sec_eqlaplace:eq:probLaplace}
   \begin{align}
-    -\Delta u &= 0, ~\pmb{x}\in D = (0, 1)^2,\\
-    u &= u_{\text{bc}}, ~\pmb{x}\in\p D,
+    &-\Delta u = f, ~\pmb{x}\in D = (-1, 1)^2,\\
+    &u = 0, ~\pmb{x}\in\p D,
   \end{align}
 \end{subequations}
-com dada condição de contorno $u_0 = u_0(\pmb{x})$.
-
-Como exemplo, vamos considerar um problema com solução manufaturada
+com dada fonte
 \begin{equation}
-  u(\pmb{x}) = x_1(1-x_1) - x_2(1-x_2).
+  f(x1, x2) = \pi^2\sen(\pi x_1)\sen(\pi x_2).
+\end{equation}
+Neste caso, a solução analítica é conhecida
+\begin{equation}
+  u(x1, x2) = \sen(\pi x_1)\sen(\pi x_2). 
 \end{equation}
 
-\begin{lstlisting}[caption=pyEqLaplace]
+
+\begin{lstlisting}[caption=py\_pinn\_poisson]
 import torch
+from torch import pi, sin
 import matplotlib.pyplot as plt
-import random
-import numpy as np
 
 # modelo
-## n camadas escondidas
-nh = 3
-## n neurônios por camada
-nn = 50
-## fun de ativação
-fh = torch.nn.Tanh()
-## arquitetura
+nn = 25
 model = torch.nn.Sequential()
 model.add_module('layer_1', torch.nn.Linear(2,nn))
-model.add_module('fun_1', fh)
-for layer in range(2, nh):
-    model.add_module(f'layer_{layer}', torch.nn.Linear(nn,nn))
-    model.add_module(f'fun_{layer}', fh)
-model.add_module(f'layer_{nh}', torch.nn.Linear(nn,1))
+model.add_module('fun_1', torch.nn.Tanh())
+model.add_module('layer_2', torch.nn.Linear(nn,nn))
+model.add_module('fun_2', torch.nn.Tanh())
+model.add_module('layer_3', torch.nn.Linear(nn,nn))
+model.add_module('fun_3', torch.nn.Tanh())
+model.add_module('layer_4', torch.nn.Linear(nn,1))
 
-# SGD - (Stochastic) Gradient Descent
-optim = torch.optim.SGD(model.parameters(),
-                        lr = 1e-2,
-                        momentum = 0.9)
-optim = torch.optim.Adam(model.parameters(),
-                        lr = 1e-2)
+# otimizador
+optim = torch.optim.SGD(model.parameters(), #lr=1e-3)
+                        lr = 1e-3, momentum=0.9)
 
+# fonte
+def f(x1, x2):
+    return 2.*pi**2*sin(pi*x1)*sin(pi*x2)
 
-# params treinamento
-## n épocas
-nepochs = 10001
-## freq output loss
-nout_loss = 100
-## stop criterion
-tol = 1e-4
+# treinamento
+ns = 25
+nepochs = 50000
+tol = 1e-3
 
-## n amostras por eixo
-ns = 101
-
-lloss = []
 for epoch in range(nepochs):
 
     # forward
+    x1 = 2.*torch.rand(ns) - 1.
+    x2 = 2.*torch.rand(ns) - 1.
+    X1, X2 = torch.meshgrid(x1, x2, indexing='ij')
+    X = torch.hstack((X1.reshape(-1,1),
+                      X2.reshape(-1,1)))
+    X.requires_grad = True
+
+    U = model(X)
+
+    # gradientes
+    D1U = torch.autograd.grad(
+        U, X,
+        grad_outputs=torch.ones_like(U),
+        retain_graph=True,
+        create_graph=True)[0]
+    D2UX1 =  torch.autograd.grad(
+        D1U[:,0:1], X,
+        grad_outputs=torch.ones_like(D1U[:,0:1]),
+        retain_graph=True,
+        create_graph=True)[0]
+    D2UX2 =  torch.autograd.grad(
+        D1U[:,1:2], X,
+        grad_outputs=torch.ones_like(D1U[:,1:2]),
+        retain_graph=True,
+        create_graph=True)[0]
+
+    # fonte
+    F = f(X1, X2).reshape(-1,1)
+
+    # loss
     
-    ## internal pts samples
-    Xin = torch.rand((ns, 2), requires_grad=True)
-    Uin = model(Xin)
+    # pts internos
+    lin = torch.mean((F + D2UX1[:,0:1] + D2UX2[:,1:2])**2)
 
-    ## loss internal pts
-    D1Uin = torch.autograd.grad(
-        Uin, Xin,
-        grad_outputs=torch.ones_like(Uin),
-        retain_graph=True,
-        create_graph=True)[0]
-    D2Uin = torch.autograd.grad(
-        D1Uin, Xin,
-        grad_outputs=torch.ones_like(D1Uin),
-        retain_graph=True,
-        create_graph=True)[0]
-
-    lin = torch.mean((D2Uin[:,0] + D2Uin[:,1])**2)
-
-    ## bc 1
-    xx = torch.rand((ns, 1))
-    yy = torch.zeros((ns,1))
-    Xbc1 = torch.hstack((xx, yy))
+    # contornos
+    ## c.c. 1
+    Xbc1 = torch.hstack((X1.reshape(-1,1),
+                         -torch.ones((ns**2,1))))
     Ubc1 = model(Xbc1)
+    lbc1 = torch.mean(Ubc1**2)
 
-    ## loss bc 1
-    Uexp = xx*(1. - xx)
-    lbc1 = torch.mean((Ubc1 - Uexp)**2)
-
-    ## bc 3
-    xx = torch.rand((ns, 1))
-    yy = torch.ones((ns,1))
-    Xbc3 = torch.hstack((xx, yy))
+    ## c.c. 3
+    Xbc3 = torch.hstack((X1.reshape(-1,1),
+                         torch.ones((ns**2,1))))
     Ubc3 = model(Xbc3)
-
-    ## loss bc 3
-    Uexp = xx*(1. - xx)
-    lbc3 = torch.mean((Ubc3 - Uexp)**2)
-
-    ## bc 2
-    xx = torch.ones((ns, 1))
-    yy = torch.rand((ns,1))
-    Xbc2 = torch.hstack((xx, yy))
-    Ubc2 = model(Xbc2)
-
-    ## loss bc 2
-    Uexp = yy*(yy - 1.)
-    lbc2 = torch.mean((Ubc2 - Uexp)**2)
-
-    ## bc 4
-    xx = torch.zeros((ns, 1))
-    yy = torch.rand((ns,1))
-    Xbc4 = torch.hstack((xx, yy))
+    lbc3 = torch.mean(Ubc3**2)
+    
+    ## c.c. 4
+    Xbc4 = torch.hstack((-torch.ones((ns**2,1)),
+                         X2.reshape(-1,1)))
     Ubc4 = model(Xbc4)
+    lbc4 = torch.mean(Ubc4**2)
 
-    ## loss bc 3
-    Uexp = yy*(yy - 1.)
-    lbc4 = torch.mean((Ubc4 - Uexp)**2)
+    ## c.c. 2
+    Xbc2 = torch.hstack((torch.ones((ns**2,1)),
+                         X2.reshape(-1,1)))
+    Ubc2 = model(Xbc2)
+    lbc2 = torch.mean(Ubc2**2)
 
-    # loss function
     loss = lin + lbc1 + lbc2 + lbc3 + lbc4
 
-    lloss.append(loss.item())
-    
-    if (((epoch % nout_loss) == 0) or (loss.item() < tol)):
+    if ((epoch % 100 == 0) or (loss.item() == 0)):
         print(f'{epoch}: loss = {loss.item():.4e}')
-    
-        # gráfico
-        fig = plt.figure()
-        ax = fig.add_subplot()
-
-        npts = 50
-        xx = torch.linspace(0., 1., npts)
-        yy = torch.linspace(0., 1., npts)
-        X, Y = torch.meshgrid(xx, yy)
-        # exact
-        Uexp = X*(1. - X) - Y*(1. - Y)
-        c = ax.contour(X, Y, Uexp, levels=10, colors='white')
-        ax.clabel(c)
-
-        M = torch.hstack((X.reshape(-1,1),
-                          Y.reshape(-1,1)))
-        Uest = model(M).detach()
-        Uest = Uest.reshape((npts, npts))
-        cf = ax.contourf(X, Y, Uest, levels=10, cmap='coolwarm')
-        plt.colorbar(cf)
-        
-        ax.grid()
-        ax.set_xlabel('$x$')
-        ax.set_ylabel('$y$')
-        plt.title(f"epoch = {epoch}, loss = {loss.item():.4e}")
-        plt.savefig(f'results/sol_{epoch:0>6}.png', bbox_inches='tight')
-        plt.close()
 
     if (loss.item() < tol):
         break
 
-    # backward
     optim.zero_grad()
     loss.backward()
     optim.step()
 
+# verificação
+def exact(x1, x2):
+    return sin(pi*x1)*sin(pi*x2)
 
-fig = plt.figure()
-ax = fig.add_subplot()
-ax.plot(lloss)
-ax.set_yscale('log')
+ns = 50
+x1 = torch.linspace(-1, 1, steps=ns)
+x2 = torch.linspace(-1, 1, steps=ns)
+X1, X2 = torch.meshgrid(x1, x2, indexing='ij')
+
+Uexp = exact(X1, X2)
+
+X = torch.hstack((X1.reshape(-1,1),
+                  X2.reshape(-1,1)))
+Uest = model(X).detach().reshape((ns, ns))
+
+levels = 10
+cb = plt.contourf(X1, X2, Uest, levels=levels)
+plt.contour(X1, X2, Uexp, levels=levels, colors='white')
+plt.colorbar(cb)
 plt.show()
 \end{lstlisting}
 
-\subsection{Preprocessamento}
-[[tag:construcao]]
+% \subsection{Preprocessamento}
+% [[tag:construcao]]
 
-Vamos assumir as seguintes mudanças de variáveis
-\begin{subequations}
-  \begin{align}
-    &\bar{x} = 2x - 1\\
-    &\bar{y} = 2y - 1.
-  \end{align}
-\end{subequations}
-Também, assumimos a notação $\bar{u}\left(\bar{\pmb{x}}\right) = u\left(\bar{\pmb{x}}(\pmb{x})\right)$.
+% Vamos assumir as seguintes mudanças de variáveis
+% \begin{subequations}
+%   \begin{align}
+%     &\bar{x} = 2x - 1\\
+%     &\bar{y} = 2y - 1.
+%   \end{align}
+% \end{subequations}
+% Também, assumimos a notação $\bar{u}\left(\bar{\pmb{x}}\right) = u\left(\bar{\pmb{x}}(\pmb{x})\right)$.
 
-Então, segue que
-\begin{equation}
-  \begin{aligned}
-    \frac{\p\bar{u}}{\p\bar{x}} &= \frac{\p}{\p\bar{x}}u\left(\bar{\pmb{x}}(\pmb{x})\right)\\
-    &= \frac{\p u}{\p x}\frac{\p x}{\p \bar{x}}\\
-    &= \frac{1}{2}\frac{\p u}{\p x}.
-  \end{aligned}
-\end{equation}
-Também, temos
-\begin{equation}
-  \begin{aligned}
-    \frac{\p^2\bar{u}}{\p \bar{x}^2} &= \frac{\p}{\p\bar{x}}\left(\frac{\p\bar{u}}{\p\bar{x}}\right)\\
-    &= \frac{\p}{\p\bar{x}}\left(\frac{1}{2}\frac{\p u}{\p x}\right)\\
-    &= \frac{\p}{\p x}\left(\frac{1}{2}\frac{\p u}{\p x}\right)\frac{\p x}{\p \bar{x}}\\
-    &= \frac{1}{4}\frac{\p^2 u}{\p x^2}.
-  \end{aligned}
-\end{equation}
-Analogamente, temos
-\begin{equation}
-  \frac{\p\bar{u}}{\p\bar{y}} = \frac{1}{2}\frac{\p u}{\p y}
-\end{equation}
-e
-\begin{equation}
-  \frac{\p^2\bar{u}}{\p\bar{y}^2} = \frac{1}{4}\frac{\p^2 u}{\p y^2}.
-\end{equation}
+% Então, segue que
+% \begin{equation}
+%   \begin{aligned}
+%     \frac{\p\bar{u}}{\p\bar{x}} &= \frac{\p}{\p\bar{x}}u\left(\bar{\pmb{x}}(\pmb{x})\right)\\
+%     &= \frac{\p u}{\p x}\frac{\p x}{\p \bar{x}}\\
+%     &= \frac{1}{2}\frac{\p u}{\p x}.
+%   \end{aligned}
+% \end{equation}
+% Também, temos
+% \begin{equation}
+%   \begin{aligned}
+%     \frac{\p^2\bar{u}}{\p \bar{x}^2} &= \frac{\p}{\p\bar{x}}\left(\frac{\p\bar{u}}{\p\bar{x}}\right)\\
+%     &= \frac{\p}{\p\bar{x}}\left(\frac{1}{2}\frac{\p u}{\p x}\right)\\
+%     &= \frac{\p}{\p x}\left(\frac{1}{2}\frac{\p u}{\p x}\right)\frac{\p x}{\p \bar{x}}\\
+%     &= \frac{1}{4}\frac{\p^2 u}{\p x^2}.
+%   \end{aligned}
+% \end{equation}
+% Analogamente, temos
+% \begin{equation}
+%   \frac{\p\bar{u}}{\p\bar{y}} = \frac{1}{2}\frac{\p u}{\p y}
+% \end{equation}
+% e
+% \begin{equation}
+%   \frac{\p^2\bar{u}}{\p\bar{y}^2} = \frac{1}{4}\frac{\p^2 u}{\p y^2}.
+% \end{equation}
 
-Na nova variável $\bar{\pmb{x}}$ o problema de Laplace \eqref{cap_mlp_sec_eqlaplace:eq:probLaplace} é equivalente a
-\begin{subequations}
-  \begin{align}
-    &\frac{\p^2\bar{u}}{\p\bar{x}^2} + \frac{\p^2\bar{u}}{\p\bar{y}^2} = 0, ~\bar{\pmb{x}}=(\bar{x}, \bar{y})\in (-1, 1)^2,\\
-    &\bar{u} = \bar{u}_0, ~\bar{\pmb{x}}\in\Gamma=\p D.
-  \end{align}
-\end{subequations}
+% Na nova variável $\bar{\pmb{x}}$ o problema de Laplace \eqref{cap_mlp_sec_eqlaplace:eq:probLaplace} é equivalente a
+% \begin{subequations}
+%   \begin{align}
+%     &\frac{\p^2\bar{u}}{\p\bar{x}^2} + \frac{\p^2\bar{u}}{\p\bar{y}^2} = 0, ~\bar{\pmb{x}}=(\bar{x}, \bar{y})\in (-1, 1)^2,\\
+%     &\bar{u} = \bar{u}_0, ~\bar{\pmb{x}}\in\Gamma=\p D.
+%   \end{align}
+% \end{subequations}
 
-\begin{ex}
-\begin{lstlisting}[caption=pyEqLaplacePP]
-import torch
-import matplotlib.pyplot as plt
-import random
-import numpy as np
+% \begin{ex}
+% \begin{lstlisting}[caption=pyEqLaplacePP]
+% import torch
+% import matplotlib.pyplot as plt
+% import random
+% import numpy as np
 
-# modelo
-## n camadas escondidas
-nh = 3
-## n neurônios por camada
-nn = 50
-## fun de ativação
-fh = torch.nn.Tanh()
-## arquitetura
-model = torch.nn.Sequential()
-model.add_module('layer_1', torch.nn.Linear(2,nn))
-model.add_module('fun_1', fh)
-for layer in range(2, nh):
-    model.add_module(f'layer_{layer}', torch.nn.Linear(nn,nn))
-    model.add_module(f'fun_{layer}', fh)
-model.add_module(f'layer_{nh}', torch.nn.Linear(nn,1))
+% # modelo
+% ## n camadas escondidas
+% nh = 3
+% ## n neurônios por camada
+% nn = 50
+% ## fun de ativação
+% fh = torch.nn.Tanh()
+% ## arquitetura
+% model = torch.nn.Sequential()
+% model.add_module('layer_1', torch.nn.Linear(2,nn))
+% model.add_module('fun_1', fh)
+% for layer in range(2, nh):
+%     model.add_module(f'layer_{layer}', torch.nn.Linear(nn,nn))
+%     model.add_module(f'fun_{layer}', fh)
+% model.add_module(f'layer_{nh}', torch.nn.Linear(nn,1))
 
-# SGD - (Stochastic) Gradient Descent
-optim = torch.optim.SGD(model.parameters(),
-                        lr = 1e-2,
-                        momentum = 0.9)
-optim = torch.optim.Adam(model.parameters(),
-                        lr = 1e-2)
+% # SGD - (Stochastic) Gradient Descent
+% optim = torch.optim.SGD(model.parameters(),
+%                         lr = 1e-2,
+%                         momentum = 0.9)
+% optim = torch.optim.Adam(model.parameters(),
+%                         lr = 1e-2)
 
-# params treinamento
-## n épocas
-nepochs = 10001
-## freq output loss
-nout_loss = 100
-## stop criterion
-tol = 1e-4
+% # params treinamento
+% ## n épocas
+% nepochs = 10001
+% ## freq output loss
+% nout_loss = 100
+% ## stop criterion
+% tol = 1e-4
 
-## n amostras por eixo
-ns = 101
+% ## n amostras por eixo
+% ns = 101
 
-lloss = []
-for epoch in range(nepochs):
+% lloss = []
+% for epoch in range(nepochs):
 
-    # forward
+%     # forward
     
-    ## internal pts samples
-    Xin = 2.*torch.rand((ns, 2)) -1.
-    Xin.requires_grad=True
-    Uin = model(Xin)
+%     ## internal pts samples
+%     Xin = 2.*torch.rand((ns, 2)) -1.
+%     Xin.requires_grad=True
+%     Uin = model(Xin)
 
-    ## loss internal pts
-    D1Uin = torch.autograd.grad(
-        Uin, Xin,
-        grad_outputs=torch.ones_like(Uin),
-        retain_graph=True,
-        create_graph=True)[0]
-    D2Uin = torch.autograd.grad(
-        D1Uin, Xin,
-        grad_outputs=torch.ones_like(D1Uin),
-        retain_graph=True,
-        create_graph=True)[0]
+%     ## loss internal pts
+%     D1Uin = torch.autograd.grad(
+%         Uin, Xin,
+%         grad_outputs=torch.ones_like(Uin),
+%         retain_graph=True,
+%         create_graph=True)[0]
+%     D2Uin = torch.autograd.grad(
+%         D1Uin, Xin,
+%         grad_outputs=torch.ones_like(D1Uin),
+%         retain_graph=True,
+%         create_graph=True)[0]
 
-    lin = torch.mean((D2Uin[:,0] + D2Uin[:,1])**2)
+%     lin = torch.mean((D2Uin[:,0] + D2Uin[:,1])**2)
 
-    ## bc 1
-    xx = 2.*torch.rand((ns, 1)) - 1.
-    yy = -1.*torch.ones((ns,1))
-    Xbc1 = torch.hstack((xx, yy))
-    Ubc1 = model(Xbc1)
+%     ## bc 1
+%     xx = 2.*torch.rand((ns, 1)) - 1.
+%     yy = -1.*torch.ones((ns,1))
+%     Xbc1 = torch.hstack((xx, yy))
+%     Ubc1 = model(Xbc1)
 
-    ## loss bc 1
-    xx = (xx + 1.)/2.;
-    Uexp = xx*(1. - xx)
-    lbc1 = torch.mean((Ubc1 - Uexp)**2)
+%     ## loss bc 1
+%     xx = (xx + 1.)/2.;
+%     Uexp = xx*(1. - xx)
+%     lbc1 = torch.mean((Ubc1 - Uexp)**2)
 
-    ## bc 3
-    xx = 2.*torch.rand((ns, 1)) -1.
-    yy = torch.ones((ns,1))
-    Xbc3 = torch.hstack((xx, yy))
-    Ubc3 = model(Xbc3)
+%     ## bc 3
+%     xx = 2.*torch.rand((ns, 1)) -1.
+%     yy = torch.ones((ns,1))
+%     Xbc3 = torch.hstack((xx, yy))
+%     Ubc3 = model(Xbc3)
 
-    ## loss bc 3
-    xx = (xx + 1.)/2.;
-    Uexp = xx*(1. - xx)
-    lbc3 = torch.mean((Ubc3 - Uexp)**2)
+%     ## loss bc 3
+%     xx = (xx + 1.)/2.;
+%     Uexp = xx*(1. - xx)
+%     lbc3 = torch.mean((Ubc3 - Uexp)**2)
 
-    ## bc 2
-    xx = torch.ones((ns, 1))
-    yy = 2.*torch.rand((ns,1)) -1.
-    Xbc2 = torch.hstack((xx, yy))
-    Ubc2 = model(Xbc2)
+%     ## bc 2
+%     xx = torch.ones((ns, 1))
+%     yy = 2.*torch.rand((ns,1)) -1.
+%     Xbc2 = torch.hstack((xx, yy))
+%     Ubc2 = model(Xbc2)
 
-    ## loss bc 2
-    yy = (yy + 1.)/2.;
-    Uexp = yy*(yy - 1.)
-    lbc2 = torch.mean((Ubc2 - Uexp)**2)
+%     ## loss bc 2
+%     yy = (yy + 1.)/2.;
+%     Uexp = yy*(yy - 1.)
+%     lbc2 = torch.mean((Ubc2 - Uexp)**2)
 
-    ## bc 4
-    xx = -1.*torch.ones((ns, 1))
-    yy = 2.*torch.rand((ns,1)) -1.
-    Xbc4 = torch.hstack((xx, yy))
-    Ubc4 = model(Xbc4)
+%     ## bc 4
+%     xx = -1.*torch.ones((ns, 1))
+%     yy = 2.*torch.rand((ns,1)) -1.
+%     Xbc4 = torch.hstack((xx, yy))
+%     Ubc4 = model(Xbc4)
 
-    ## loss bc 3
-    yy = (yy + 1.)/2.;
-    Uexp = yy*(yy - 1.)
-    lbc4 = torch.mean((Ubc4 - Uexp)**2)
+%     ## loss bc 3
+%     yy = (yy + 1.)/2.;
+%     Uexp = yy*(yy - 1.)
+%     lbc4 = torch.mean((Ubc4 - Uexp)**2)
 
-    # loss function
-    loss = lin + lbc1 + lbc2 + lbc3 + lbc4
+%     # loss function
+%     loss = lin + lbc1 + lbc2 + lbc3 + lbc4
 
-    lloss.append(loss.item())
+%     lloss.append(loss.item())
 
-    if (((epoch % nout_loss) == 0) or (loss.item() < tol)):
-        print(f'{epoch}: loss = {loss.item():.4e}')
+%     if (((epoch % nout_loss) == 0) or (loss.item() < tol)):
+%         print(f'{epoch}: loss = {loss.item():.4e}')
     
-        # gráfico
-        fig = plt.figure()
-        ax = fig.add_subplot()
+%         # gráfico
+%         fig = plt.figure()
+%         ax = fig.add_subplot()
 
-        npts = 50
-        xx = torch.linspace(-1., 1., npts)
-        yy = torch.linspace(-1., 1., npts)
-        X, Y = torch.meshgrid(xx, yy)
-        # exact
-        Uexp = (X+1.)/2.*(1. - (X+1.)/2.) \
-            - (Y+1.)/2.*(1. - (Y+1.)/2.)
-        c = ax.contour(X, Y, Uexp, levels=10, colors='white')
-        ax.clabel(c)
+%         npts = 50
+%         xx = torch.linspace(-1., 1., npts)
+%         yy = torch.linspace(-1., 1., npts)
+%         X, Y = torch.meshgrid(xx, yy)
+%         # exact
+%         Uexp = (X+1.)/2.*(1. - (X+1.)/2.) \
+%             - (Y+1.)/2.*(1. - (Y+1.)/2.)
+%         c = ax.contour(X, Y, Uexp, levels=10, colors='white')
+%         ax.clabel(c)
 
-        M = torch.hstack((X.reshape(-1,1),
-                          Y.reshape(-1,1)))
-        Uest = model(M).detach()
-        Uest = Uest.reshape((npts, npts))
-        cf = ax.contourf(X, Y, Uest, levels=10, cmap='coolwarm')
-        plt.colorbar(cf)
+%         M = torch.hstack((X.reshape(-1,1),
+%                           Y.reshape(-1,1)))
+%         Uest = model(M).detach()
+%         Uest = Uest.reshape((npts, npts))
+%         cf = ax.contourf(X, Y, Uest, levels=10, cmap='coolwarm')
+%         plt.colorbar(cf)
         
-        ax.grid()
-        ax.set_xlabel('$\\bar{x}$')
-        ax.set_ylabel('$\\bar{y}$')
-        plt.title(f"epoch = {epoch}, loss = {loss.item():.4e}")
-        plt.savefig(f'results/sol_{epoch:0>6}.png', bbox_inches='tight')
-        plt.close()
+%         ax.grid()
+%         ax.set_xlabel('$\\bar{x}$')
+%         ax.set_ylabel('$\\bar{y}$')
+%         plt.title(f"epoch = {epoch}, loss = {loss.item():.4e}")
+%         plt.savefig(f'results/sol_{epoch:0>6}.png', bbox_inches='tight')
+%         plt.close()
 
-    if (loss.item() < tol):
-        break
+%     if (loss.item() < tol):
+%         break
 
-    # backward
-    optim.zero_grad()
-    loss.backward()
-    optim.step()
+%     # backward
+%     optim.zero_grad()
+%     loss.backward()
+%     optim.step()
 
-fig = plt.figure()
-ax = fig.add_subplot()
-ax.plot(lloss)
-ax.set_yscale('log')
-plt.show()
-\end{lstlisting}
-\end{ex}
+% fig = plt.figure()
+% ax = fig.add_subplot()
+% ax.plot(lloss)
+% ax.set_yscale('log')
+% plt.show()
+% \end{lstlisting}
+% \end{ex}
 
 % \subsection{Diferenças Finitas}
 
@@ -828,7 +801,20 @@ plt.show()
 % \end{lstlisting}
 
 \subsection{Exercícios}
-[[tag::construcao]]
+
+\begin{exer}
+  Crie uma MLP para resolver
+  \begin{align}
+    &-\Delta u = 0, ~\pmb{x}\in D = (0, 1)^2,\\
+    &u(x_1, 0) = x1(1-x_1), 0 \leq x_1 \leq 1,\\
+    &u(1, x_2) = x2(1-x_2), 0 < x_2 \leq 1,\\
+    &u(x_1, 1) = x1(1-x_1), 0 \leq x_1 < 1,\\
+    &u(0, x_2) = x2(1-x_2), 0 < x_2 < 1.
+  \end{align}
+\end{exer}
+\begin{resp}
+  Dica: solução analítica $u(x_1, x_2) = x_1(1-x_1) - x_2(1-x_2)$.
+\end{resp}
 
 \section{Aplicação: Equação do Calor}\label{cap_mlp_sec_calor}
 [[tag:construcao]]
