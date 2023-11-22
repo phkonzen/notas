@@ -34,6 +34,7 @@ def fem_fun_eval(x, f, msh):
 
   points_on_proc = np.array(points_on_proc, dtype=np.float64)
   f_values = f.eval(points_on_proc, cells)
+  print(f_values)
   return f_values.reshape(-1)
 
 n=5
