@@ -654,84 +654,121 @@ plt.show()
 
 \hl{\emph{Diferenciação automática} é um conjunto de técnicas para a computação de derivadas numéricas em um programa de computador}. Explora-se o fato de que um programa computacional executa uma sequência de operações aritméticas e funções elementares, podendo-se computar a derivada por aplicações da \hl{regra da cadeia}.
 
-{\pytorch} computa o gradiente (derivada) de uma função a partir de seu grafo computacional. Os gradientes são computados por retropropagação. Por exemplo, para a computação do gradiente
+{\pytorch} computa o \hl{\emph{gradiente} (derivada) de uma função $f:\mathbb{R}^n\to\mathbb{R}$ a partir de seu \emph{grafo computacional}}. Os gradientes são computados por retropropagação. Por exemplo, para a computação do gradiente
 \begin{equation}
-  \left.\frac{d f}{d x}\right|_{x = x_0},
+  \nabla_{\pmb{x}}f(\pmb{x_0}) = \left.\frac{d f}{d \pmb{x}}\right|_{\pmb{x} = \pmb{x_0}},
 \end{equation}
-primeiramente, propaga-se a entrada $x_0$ pela função computacional $f$, obtendo-se $y = f(x_0)$. Então, o gradiente é computado por retropopagação.
+primeiramente, propaga-se a entrada $\pmb{x_0}$ pela função computacional $f$, obtendo-se $y = f(\pmb{x_0})$. Então, o gradiente é computado por retropropagação.
 
-\begin{ex}
+\begin{ex}\label{ex:mlp_autograd_df1d}
   Consideramos a função $f(x) = \sen(\pi x)$ e vamos computar
   \begin{equation}
-    \left.\frac{d f}{d x}\right|_{x=0}
+    f'(x_0) = \left.\frac{d f}{d x}\right|_{x=0}
   \end{equation}
   por diferenciação automática.
 
-  Pela regra da cadeia
+  Antes, observamos que, pela regra da cadeia, denotamos $u = \pi x$ e calculamos
   \begin{align}
-    \frac{df}{dx} &= \sen'(\pi x)\cdot [\pi x]'\\
-                  &= \cos(\pi x)\cdot \pi \\
+    \frac{df}{dx} &= {\color{blue}\frac{d}{du}\sen(u)}\cdot{\color{red}\frac{d u}{dx}}\\
+                  &= {\color{blue}\cos(u)}\cdot{\color{red}\pi} \\
                   &= \pi\cos(\pi x)
   \end{align}
-
-  Primeiramente, observamos que a computação de $f(x)$ pode ser representada pelo grafo de propagação mostrado na Figura~\ref{fig:autograd_f1d}. Para a computação do gradiente, adicionamos uma variável fictícia $z = y$. Na retropropagação, computamos
-  \begin{enumerate}[1.]
-  \item
-    \begin{equation}
-      \frac{dz}{dy} = 1
-    \end{equation}
-  \item
-    \begin{align}
-      \frac{dz}{du} &= \frac{d}{du}\left[\sen(u)\right]\frac{dz}{dy}\\
-                    &= \cos(u)\\
-                    &= \cos(\pi x)
-    \end{align}
-  \item
-    \begin{align}
-      \frac{dz}{dx} &= \frac{d}{dx}\left[\pi x\right]\frac{dz}{du}\\
-                    &= \pi\cos(\pi x).
-    \end{align}
-  \end{enumerate}
-  
 
   \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{cap_mlp/dados/fig_autograd_f1d/fig}
-    \caption{Grafo computacional para a diferenciação automática.}
+    \caption{Grafo computacional da diferenciação automática de $f(x) = \sen(\pi x)$.}
     \label{fig:autograd_f1d}
+  \end{figure}  
+
+  Agora, observamos que a computação de $f(x)$ pode ser representada pelo grafo de propagação mostrado na Figura~\ref{fig:autograd_f1d}. Para a computação do gradiente, adicionamos uma variável fictícia $z = y$. Na retropropagação, computamos
+  \begin{subequations}
+    \begin{align}
+      &\pmb{a.} ~\frac{dz}{dy} = 1\\
+      &\pmb{b.} ~\frac{dz}{du} = {\color{blue}\frac{dy}{du}}{\color{red}\frac{dz}{dy}}\nonumber\\
+      &\qquad\;\, = {\color{blue}\frac{d}{du}\left[\sen(u)\right]}\cdot {\color{red}1}\nonumber\\
+      &\qquad\;\, = \cos(u)\\
+      &\pmb{c.} ~\frac{dz}{dx} = {\color{blue}\frac{du}{dx}}{\color{red}\frac{dz}{du}}\\
+      &\qquad\;\, = {\color{blue}\frac{d}{dx}[\pi x]}{\color{red}\cos(u)}\\
+      &\qquad\;\, = \pi\cos(\pi x) = \frac{dy}{dx}.
+    \end{align}
+  \end{subequations}
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{cap_mlp/dados/ex_mlp_autograd_df1d/fig}
+    \caption{Comparação entre as diferenciações analítica ($f'$) e automática (autograd).}
+    \label{fig:ex_mlp_autograd_df1d}
   \end{figure}
 
-\begin{lstlisting}[caption=mlp\_autograd\_1d]
+\begin{lstlisting}[caption=mlp\_autograd\_df1d, label=cod:ex_mlp_atograd_df1d]
 import torch
-from torch import pi, pi, sin, cos
-import matplotlib.pyplot as plt
 
 # input
-x = torch.linspace(-1., 1., steps=50)
+x = torch.linspace(-1., 1., steps=50).reshape(-1,1)
+# requires grad
 x.requires_grad = True
 
-# forward
-y = sin(pi*x)
+# output
+y = torch.sin(torch.pi*x)
 
-# backward
-dydx = torch.autograd.grad(y, x,
-                           retain_graph = True,
-                           create_graph = True,
-                           grad_outputs = torch.ones_like(x))[0]
+# compute gradients
+y.backward(gradient=torch.ones_like(y))
 
-# gráfico
-x = x.detach()
-y = y.detach()
-dydx = dydx.detach()
-plt.plot(x, y, ls='-', label='f')
-plt.plot(x, pi*cos(pi*x), ls='-', label='df/dx')
-plt.plot(x, dydx, ls='--', label='autograd')
-
-plt.grid()
-plt.legend()
-plt.show()
+# dy/dx
+dydx = x.grad
 \end{lstlisting}
 \end{ex}
+
+A computação do gradiente também acaba por construir um novo grafo (consulte Figura~\ref{fig:autograd_f1d}). Este, por sua vez, pode ser usado para a computação da diferenciação automática de segunda ordem, i.e. para a derivação de segunda ordem.
+
+\begin{ex}\label{ex:mlp_autograd_d2f1d}
+  Consideramos a função $y = \sen(\pi x)$. No exemplo anterior, computamos $dy/dx = \pi\cos(\pi x)$ por diferenciação automática. No Código~\ref{cod:ex_mlp_atograd_df1d}, os gradientes foram computados com o comando
+\begin{lstlisting}
+y.backward(gradient=torch.ones_like(y))
+dudx = x.grad
+\end{lstlisting}
+  Alternativamente, podemos usar
+\begin{lstlisting}
+dydx = torch.autograd.grad(
+    y, x,
+    grad_outputs=torch.ones_like(y),
+    retain_graph=True,
+    create_graph=True)[0]
+\end{lstlisting}
+  Este comando computa $dy/dx$, mas avisa o {\pytorch} que os grafos computacionais sejam mantidos e que um novo grafo seja gerado da retropropagação. Com isso, podemos computar o gradiente do gradiente, como no código abaixo.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{cap_mlp/dados/ex_mlp_autograd_d2f1d/fig}
+    \caption{Comparação entre as diferenciações analítica ($f'$, $f''$) e automática (dydx, d2ydx2).}
+    \label{fig:ex_mlp_autograd_d2f1d}
+  \end{figure}  
+
+\begin{lstlisting}[caption=mlp\_autograd\_d2f1d]
+import torch
+
+# input
+x = torch.linspace(-1., 1., steps=50).reshape(-1,1)
+# requires grad
+x.requires_grad = True
+
+# output
+y = torch.sin(torch.pi*x)
+
+# compute gradients
+dydx = torch.autograd.grad(
+    y, x,
+    grad_outputs=torch.ones_like(y),
+    retain_graph=True,
+    create_graph=True)[0]
+
+d2ydx2 = torch.autograd.grad(
+    dydx, x,
+    grad_outputs=torch.ones_like(dydx))[0]
+\end{lstlisting}
+\end{ex}
+
 
 Uma RNA é uma composição de funções definidas por parâmetros (pesos e \textit{biases}). O treinamento de uma RNA ocorre em duas etapas\footnote{Para mais detalhes, consulte a Subseção \ref{cap_mlp_sec_modelo:ssec:treinamento}.}:
 \begin{enumerate}[1.]
@@ -739,159 +776,53 @@ Uma RNA é uma composição de funções definidas por parâmetros (pesos e \tex
 \item \hl{\emph{Retropropagação (\textit{backward})}}: a computação do gradiente do erro\footnote{Medida da diferença entre o valor estimado e o valor esperado.} em relação aos parâmetros da rede é realizado coletando as derivadas (gradientes) das funções da rede. Pela regra da cadeia, essa coleta é feita a partir da camada de saída em direção a camada de entrada da rede.
 \end{enumerate}
 
-\subsection{Autograd Perceptron}
-
-[[tag:construcao]]
-
-Para um Perceptron\footnote{Consulte o Capítulo \ref{cap_perceptron} para mais informações sobre o Perceptron.}
-\begin{subequations}
-  \begin{align}
-    \tilde{y} &= \mathcal{N}\left(\pmb{x}, (\pmb{w}, b)\right)\\
-              &= f\underbrace{(\pmb{w}\cdot\pmb{x} + b)}_{z}
-  \end{align}
-\end{subequations}
-temos que o gradiente da saída $y$ em relação à entrada $\pmb{x}$ pode ser computada como segue
-\begin{subequations}
-  \begin{align}
-    \frac{\p \tilde{y}}{\p\pmb{x}} &= \frac{\p f}{\p z}\frac{\p z}{\p\pmb{x}}\\
-                                   &= f'(z)\pmb{w}
-  \end{align}
-\end{subequations}
-
-\begin{ex}
-  Vamos treinar um Perceptron com função de ativação $f(z) = z$
-  \begin{subequations}
-    \begin{align}
-      \tilde{y} &= \mathcal{N}(x; (w,b))\\
-                &= wx + b
-    \end{align}
-  \end{subequations}
-  que se ajusta ao conjunto de pontos\footnote{Consulte o Exercício \ref{cap_perceptron_sec_train:exer:ajuste}.}
-  \begin{center}
-    \begin{tabular}{l|ll}
-      s & $x^{(s)}$ & $y^{(s)}$\\\hline
-      1 & 0.5 & 1.2\\
-      2 & 1.0 & 2.1\\
-      3 & 1.5 & 2.6\\
-      4 & 2.0 & 3.6\\\hline
-    \end{tabular}
-  \end{center}
-  Uma vez treinado com função erro MSE\footnote{MSE, Erro Quadrático Médio.}, espera-se que o Perceptron corresponda a reta de mínimos quadrados\footnote{Para mais informações sobre essa aplicação, consulte a Subseção \ref{cap_perceptron_sec_unit:ssec:regr}.}
-  \begin{equation}
-    y = 1.54x + 0.45
-  \end{equation}
-  Portanto, espera-se que
-  \begin{equation}
-    \frac{\p \tilde{y}}{\p x} = 1.54.
-  \end{equation}
-
-\begin{lstlisting}[caption=autograd\_percep.py]
-import torch
-
-# modelo
-model = torch.nn.Linear(1,1)
-
-# treinamento
-
-## optimizador
-optim = torch.optim.SGD(model.parameters(),
-                        lr=1e-1)
-
-## função erro
-loss_fun = torch.nn.MSELoss()
-
-## dados de treinamento
-X_train = torch.tensor([[0.5],
-                        [1.0],
-                        [1.5],
-                        [2.0]])
-y_train = torch.tensor([[1.2],
-                        [2.1],
-                        [2.6],
-                        [3.6]])
-
-## num max épocas
-nepochs = 5000
-nstop = 10
-
-cstop = 0
-loss_min = torch.finfo().max
-for epoch in range(nepochs):
-
-    # forward
-    y_est = model(X_train)
-
-    # erro
-    loss = loss_fun(y_est, y_train)
-
-    # critério de parada
-    if (loss.item() >= loss_min):
-        cstop += 1
-    else:
-        loss_min = loss.item()
-        cstop = 0
-
-    print(f'{epoch}: {loss.item():.4e}, '\
-          + f'cstop = {cstop}/{nstop}')
-
-    if (cstop == nstop):
-        break
-
-    # backward
-    optim.zero_grad()
-    loss.backward()
-    optim.step()
-
-
-# verificação
-print(f'w = {model.weight}')
-print(f'b = {model.bias}')
-
-# autograd dy/dx
-
-## forward
-x = torch.tensor([[1.]],
-                 requires_grad=True)
-y = model(x)
-
-## backward
-y.backward()
-dydx = x.grad
-print(f'dy/dx = {dydx}')
-\end{lstlisting}
-\end{ex}
-
 \subsection{Autograd MLP}
-
-[[tag:construcao]]
 
 Os conceitos de diferenciação automática (\emph{autograd}) são diretamente estendidos para redes do tipo Perceptron Multicamadas (MLP, do inglês, \textit{Multilayer Perceptron}). No seguinte exemplo, exploramos o fato de MLPs serem aproximadoras universais e avaliamos a derivada de uma MLP na aproximação de uma função.
 
-\begin{ex}\label{cap_mlp_sec_autograd:ex:fun1d}
+\begin{ex}\label{ex_mlp_autograd_apfun1d}
   Vamos criar uma MLP
   \begin{equation}
     \tilde{y} = \mathcal{N}\left(x; \left(W^{(l)}, \pmb{b}^{(l)}, f^{(l)}\right)_{l=1}^{n}\right),
   \end{equation}
-  que aproxima a função $y = \sen(\pi x)$ para $x\in [-1, 1]$
+  que aproxima a função
+  \begin{equation}
+    y = \sen(\pi x), ~x\in [-1, 1].
+  \end{equation}
+  Em seguida, computamos, por diferenciação automática, o gradiente
+  \begin{equation}
+    \frac{d\tilde{y}}{dx} = \nabla_x\mathcal{N}(x)
+  \end{equation}
+  e comparamos com o resultado esperado
+  \begin{equation}
+    \frac{dy}{dx} = \pi\cos(\pi x).
+  \end{equation}
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{cap_mlp/dados/ex_mlp_autograd_apfun1d/fig}
+    \caption{Comparação da diferenciação automática da MLP com a derivada analítica $f'(x)=\pi\cos(\pi x)$.}
+    \label{fig:mlp_autograd_apfun1d}
+  \end{figure}
   
-\begin{lstlisting}[caption=autograd\_fun1d.py]
+\begin{lstlisting}[caption=mlp\_autograd\_apfun1d.py]
 import torch
-import matplotlib.pyplot as plt
+from torch import nn
+from torch import autograd
 
 # modelo
 
-model = torch.nn.Sequential(
-    torch.nn.Linear(1,50),
-    torch.nn.Tanh(),
-    torch.nn.Linear(50,25),
-    torch.nn.Tanh(),
-    torch.nn.Linear(25,1)
-    )
+model = torch.nn.Sequential()
+model.add_module('layer_1', torch.nn.Linear(1,25))
+model.add_module('fun_1', torch.nn.Tanh())
+model.add_module('layer_2', torch.nn.Linear(25,25))
+model.add_module('fun_2', torch.nn.Tanh())
+model.add_module('layer_3', torch.nn.Linear(25,1))
 
 # treinamento
 
 ## fun obj
-fobj = lambda x: torch.sin(torch.pi*x)
+fun = lambda x: torch.sin(torch.pi*x)
 a = -1.
 b = 1.
 
@@ -899,75 +830,53 @@ b = 1.
 optim = torch.optim.SGD(model.parameters(),
                         lr=1e-1, momentum=0.9)
 
-## função erro
-loss_fun = torch.nn.MSELoss()
-
 ## num de amostras por época
 ns = 100
 ## num max épocas
-nepochs = 10000
+nepochs = 5000
 ## tolerância
 tol = 1e-5
+
+## amostras de validação
+X_val = torch.linspace(a, b, steps=100).reshape(-1,1)
+y_vest = fun(X_val)
 
 for epoch in range(nepochs):
 
     # amostras
     X_train = (a - b) * torch.rand((ns,1)) + b
-    y_train = fobj(X_train)
+    y_train = fun(X_train)
     
     # forward
     y_est = model(X_train)
 
     # erro
-    loss = loss_fun(y_est, y_train)
+    loss = torch.mean((y_est - y_train)**2)
 
-    lr = optim.param_groups[-1]['lr']
-    print(f'{epoch}: loss = {loss.item():.4e}, lr = {lr:.4e}')
-
-    # critério de parada
-    if ((loss.item() < tol) or (lr <= 1e-7)):
-        break
+    print(f'{epoch}: {loss.item():.4e}')
 
     # backward
     optim.zero_grad()
     loss.backward()
     optim.step()
-\end{lstlisting}
 
-  \begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{./cap_mlp/dados/fig_autograd_fun1d/fig}
-    \caption{Comparação da autograd da MLP com a derivada exata $f'(x)=\pi\cos(\pi x)$ para o Exemplo \ref{cap_mlp_sec_autograd:ex:fun1d}.}
-    \label{cap_mlp_sec_autograd:fig:fun1d}
-  \end{figure}
+    # validação
+    y_val = model(X_val)
+    loss_val = torch.mean((y_val - y_vest)**2)
+    print(f"\tloss_val = {loss_val.item():.4e}")
+    
+    # critério de parada
+    if (loss_val.item() < tol):
+        break
 
-  Uma vez treinada, nossa MLP é uma aproximadora da função seno, i.e. $\tilde{y} \approx \sen(\pi x)$. Usando de autograd podemos computar $\tilde{y}' \approx \pi\cos(\pi x)$. O código abaixo, computa $d\tilde{y}/dx$ a partir da rede e produz o gráfico da figura acima.
-
-\begin{lstlisting}
-# verificação
-fig = plt.figure()
-ax = fig.add_subplot()
-
-xx = torch.linspace(a, b,
-                    steps=50).reshape(-1,1)
-# y' = cos(x)
-dy_esp = torch.pi*torch.cos(torch.pi*xx)
-ax.plot(xx, dy_esp, label="$f'(x) = \\pi\cos(\\pi x)$")
-
-# model autograd
-dy_est = torch.empty_like(xx)
-for i,x in enumerate(xx):
-    x.requires_grad = True
-    y = model(x)
-    y.backward()
-    dy_est[i] = x.grad
-ax.plot(xx, dy_est, label='$d\\tilde{y}/dx$')
-
-ax.legend()
-ax.grid()
-ax.set_xlabel('$x$')
-ax.set_ylabel('$y$')
-plt.show()
+# autograd MLP
+X_val.requires_grad = True
+# forward
+y_val = model(X_val)
+# gradient
+dydx = autograd.grad(
+    y_val, X_val,
+    grad_outputs=torch.ones_like(y_val))[0]
 \end{lstlisting}
 \end{ex}
 
