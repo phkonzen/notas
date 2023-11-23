@@ -87,45 +87,54 @@ consulte, Figura~\ref{fig:baselinear}. É notável que $\varphi_i(x)$ tem suport
 \end{figure}
 
 \subsection{Interpolação}
-[[tag:revisao]]
+[[tag:revisar]]
 
-\hl{Interpolação é uma técnica de aproximação de funções}. Dada uma função contínua $f$ em $I=[x_0, x_1]$, definimos o \hlemph{operador de interpolação linear} $\pi: C^0(I)\to P_1(I)$ por
+\hl{Interpolação é uma técnica de aproximação de funções}. Dada uma função contínua $f$ em $I=[l_0, l_1]$, definimos o \hlemph{operador de interpolação linear} $\pi: C^0(I)\to V_h$ por
 \begin{equation}\hleq
-  \pi f (x) = f(x_0)\varphi_0(x) + f(x_1)\varphi_1(x).
+  \pi f (x) = \sum_{j=0}^{n}f(x_j)\varphi_j(x)
 \end{equation}
-Observamos que $\pi f$ é igual a $f$ nos nodos $x_0$ e $x_1$. 
+Observamos que $\pi f$ é igual a $f$ nos nodos $x_j$, $j=0, 1, 2, \dotsc, n$. 
 
-\begin{ex}\label{ex:interp_lin}
-  A Figura~\ref{fig:ex_interp_lin} ilustra a interpolação da função $f(x)=3\sen(2\pi x)$ no espaço $P_1([1/4, 3/4)]$. Neste caso
-  \begin{equation}
-    \pi f(x) = f\left(\frac{1}{4}\right)\frac{3/4-x}{1/2} + f\left(\frac{3}{4}\right)\frac{x-1/4}{1/2}
-  \end{equation}
+\begin{ex}\label{ex:mef1d_interp_lin}
+  A Figura~\ref{fig:ex_mef1d_interp_lin} ilustra a interpolação da função $f(x)=3\sen(2\pi x)$ no espaço de elementos finitos $V_h$ das funções lineares por partes com $5$ células.
 
   \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{./cap_mef1d/dados/fig_ex_interp_lin/fig}
-    \caption{Interpolação linear de $f(x)=3\sen(2\pi x)$ no espaço $P_1([1/4, 3/4])$.}
-    \label{fig:ex_interp_lin}
+    \includegraphics[width=0.8\textwidth]{./cap_mef1d/dados/ex_mef1d_interp_lin/fig}
+    \caption{Interpolação linear de $f(x)=3\sen(2\pi x)$ no espaço de elementos finitos $V$.}
+    \label{fig:ex_mef1d_interp_lin}
   \end{figure}
 
 
-\begin{lstlisting}[caption=interp0.py]
-from dolfinx import fem, mesh, plot
+\begin{lstlisting}[caption=mef1d\_interp\_lin]
+from dolfinx import fem, mesh
+import ufl
 import numpy as np
-import matplotlib.pyplot as plt
 from mpi4py import MPI
+import matplotlib.pyplot as plt
 
 # malha
-msh = mesh.create_interval(MPI.COMM_WORLD,
-                           nx=1,
-                           points=np.array([0.25, 0.75]))
+l0 = 0.25
+l1 = 0.75
+domain = mesh.create_interval(MPI.COMM_WORLD,
+                              nx = 5,
+                              points = [l0, l1])
+x = ufl.SpatialCoordinate(domain)
 
 # espaço
-V = fem.functionspace(msh, ('Lagrange', 1))
+V = fem.FunctionSpace(domain, ('P', 1))
 
-# fun interpolada
+# fun
+def fun(x, mod):
+    return 3.*mod.sin(2.*mod.pi*x)
+
+x = ufl.SpatialCoordinate(domain)
+f_expr = fem.Expression(fun(x[0], ufl),
+                        V.element.interpolation_points())
+
+# interpolação
 pif = fem.Function(V)
-pif.interpolate(lambda x: 3.*np.sin(2.*np.pi*x[0]))
+pif.interpolate(f_expr)
 \end{lstlisting}
 \end{ex}
 
@@ -144,7 +153,7 @@ e a \pmb{desigualdade de Cauchy-Schwarz}\index{desigualdade!de Cauchy-Schwarz}\f
 para qualquer funções $v,w\in L^2(I)$.
 
 \begin{prop}\normalfont(Erro da interpolação linear)\label{prop:interp_lin}
-  O interpolador $\pi f$ satisfaz as estimativas
+  O interpolador $\pi f:C^0(I)\to P_1(I)$ satisfaz as estimativas
   \begin{align}
     \|f-\pi f\|_{L^2(I)} &\leq Ch^2\|f''\|_{L^2(I)},\\
     \|(f-\pi f)'\|_{L^2(I)} &\leq Ch\|f''\|_{L^2(I)},
@@ -215,10 +224,7 @@ Por fim, de \eqref{eq:prop_pif_1} e de \eqref{eq:prop_pif_0}, obtemos a primeira
 % \end{ex}
 
 
-Vamos, agora, generalizar o resultado da Proposição \ref{prop:interp_lin} para a interpolação no espaço $V_h$ das funções lineares por parte. Dada uma função contínua $f$ em $I = [l_0, l_1]$, definimos o operador interpolador $\pi: C^0(I)\to V_h$ na malha $\mathcal{I}$ de $I$ por
-\begin{equation}
-  \pi f(x) = \sum_{i=0}^{n}f(x_i)\varphi_i(x).
-\end{equation}
+Vamos, agora, generalizar o resultado da Proposição \ref{prop:interp_lin} para a interpolação no espaço $V_h$ das funções lineares por parte.
 
 % \begin{ex}\label{ex:interp_linpartes}
 %   A Figura~\ref{fig:ex_interp_linpartes} ilustra a interpolação da função $f(x)=3\sen(2\pi x)$ no espaço $V_h$ das funções lineares por partes em uma malha uniforme do intervalo $I=[1/4, 3/4]$ com $n=4$ subintervalos ($5$ pontos). 
@@ -254,6 +260,7 @@ O seguinte resultado fornece uma estimativa do erro de interpolação em relaç�
 \end{dem}
 
 \subsection{Projeção $L^2$}\label{subsec:projecao_1d}
+[[tag:revisar]]
 
 Dada uma função $f\in L^2(I)$, definimos o \hlemph{operador de projeção $L^2$} $P_h:L^2(I)\to V_h$ por
 \begin{equation}\label{eq:proj_def}\hleq
@@ -296,20 +303,44 @@ Ou seja, \hl{a projeção $L^2$ de $f$ no espaço $V_h$ é}
 \end{equation}
 \hl{onde $\xi = (\xi_0, \xi_1, \dotsc, \xi_n)$ é solução do sistema {\eqref{eq:proj_sis}}}.
 
-\begin{ex}\label{ex:proj}
-  A Figura~\ref{fig:ex_proj} ilustra a projeção $L^2$ da função $f(x)=3\sen(2\pi x)$ no espaço $V_h$ das funções lineares por partes em uma malha uniforme do intervalo $I=[1/4, 3/4]$ com $n=4$ subintervalos ($5$ pontos). 
+\begin{ex}\label{ex:mef1d_proj}
+  A Figura~\ref{fig:ex_mef1d_proj} ilustra a projeção $L^2$ da função $f(x)=3\sen(2\pi x)$ no espaço $V_h$ das funções lineares por partes em uma malha uniforme do intervalo $I=[1/4, 3/4]$ com $n=4$ subintervalos ($5$ células).
 
   \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.8\textwidth]{./cap_mef1d/dados/ex_proj/ex_proj}
-    \caption{Projeção $L^2$ de $f(x)=3\sen(2\pi x)$ no espaço $V_h$ das funções lineares por partes sobre uma malha com $5$ pontos.}
-    \label{fig:ex_proj}
+    \includegraphics[width=0.8\textwidth]{./cap_mef1d/dados/ex_mef1d_proj/fig}
+    \caption{Projeção $L^2$ de $f(x)=3\sen(2\pi x)$ no espaço $V_h$ das funções lineares por partes sobre uma malha com $5$ células.}
+    \label{fig:ex_mef1d_proj}
   \end{figure}
 
-\ifispython
-Com o \fenics, podemos computar $P_h f$ com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/dados/ex_proj/ex_proj.py}{código}:
-\verbatiminput{./cap_mef1d/dados/ex_proj/ex_proj.py}
-\fi
+\begin{lstlisting}[caption=ex\_mef1d\_proj.py]
+from dolfinx import fem, mesh
+from dolfinx.fem.petsc import LinearProblem
+import ufl
+from mpi4py import MPI
+
+# malha
+l0 = 0.25
+l1 = 0.75
+domain = mesh.create_interval(MPI.COMM_WORLD,
+                              nx=5,
+                              points=[l0, l1])
+x = ufl.SpatialCoordinate(domain)
+
+# espaço
+V = fem.functionspace(domain, ("P", 1))
+
+# fun
+f = 3.*ufl.sin(2.*ufl.pi*x[0])
+
+# project f
+u = ufl.TrialFunction(V)
+v = ufl.TestFunction(V)
+a =  ufl.dot(u, v) * ufl.dx
+L = ufl.dot(f, v) * ufl.dx
+problem = LinearProblem(a, L, bcs=[])
+Phf = problem.solve()
+\end{lstlisting}
 \end{ex}
 
 O próximo teorema mostra que $P_h f$ é a função que melhor aproxima $f$ dentre todas as funções do espaço $V_h$.
@@ -348,21 +379,21 @@ O próximo teorema fornece uma estimativa {\it a-priori} do erro $\|f-P_h f\|_{L
   \end{align}
 \end{dem}
 
-\begin{ex}\label{ex:esterro_proj}
-  A Figura \ref{fig:ex_esterro_proj} mostra a evolução do erro na norma $L^2$ da projeção de $f(x)=3\sen(2\pi x)$ no espaço $V_h$ em malhas uniformes de $h=10^{-5}, 10^{-4}, \cdots, 10^{-1}$ no intervalo $[1/4, 3/4]$.
+% \begin{ex}\label{ex:esterro_proj}
+%   A Figura \ref{fig:ex_esterro_proj} mostra a evolução do erro na norma $L^2$ da projeção de $f(x)=3\sen(2\pi x)$ no espaço $V_h$ em malhas uniformes de $h=10^{-5}, 10^{-4}, \cdots, 10^{-1}$ no intervalo $[1/4, 3/4]$.
 
-  \begin{figure}[h!]
-    \centering
-    \includegraphics[width=0.8\textwidth]{./cap_mef1d/dados/ex_esterro_proj/ex_esterro_proj}
-    \caption{Erro de interpolação de $f(x)=3\sen(2\pi x)$ no espaço $V_h$.}
-    \label{fig:ex_esterro_proj}
-  \end{figure}
+%   \begin{figure}[h!]
+%     \centering
+%     \includegraphics[width=0.8\textwidth]{./cap_mef1d/dados/ex_esterro_proj/ex_esterro_proj}
+%     \caption{Erro de interpolação de $f(x)=3\sen(2\pi x)$ no espaço $V_h$.}
+%     \label{fig:ex_esterro_proj}
+%   \end{figure}
 
-\ifispython
-Com o \fenics, podemos computar os erros de projeção com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/dados/ex_esterro_proj/ex_esterro_proj.py}{código}:
-\verbatiminput{./cap_mef1d/dados/ex_esterro_proj/ex_esterro_proj.py}
-\fi
-\end{ex}
+% \ifispython
+% Com o \fenics, podemos computar os erros de projeção com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/dados/ex_esterro_proj/ex_esterro_proj.py}{código}:
+% \verbatiminput{./cap_mef1d/dados/ex_esterro_proj/ex_esterro_proj.py}
+% \fi
+% \end{ex}
 
 \subsection{Exercícios}
 [[tag:revisar]]
@@ -383,7 +414,7 @@ Com o \fenics, podemos computar os erros de projeção com o seguinte \href{http
 \section{Problema modelo}\label{cap_mef1d_sec_modelo}
 [[tag:revisar]]
 
-Nesta seção, discutiremos sobre a aplicação do método de elementos finitos para o seguinte problema de valor de contorno: encontrar $u$ tal que
+Nesta seção, discutimos sobre a aplicação do método de elementos finitos para o seguinte problema de valor de contorno: encontrar $u$ tal que
 \begin{align}
   -u'' &= f,\quad x\in I=[0,L],\label{eq:prob_eq}\\
   u(0) &= u(L) = 0,\label{eq:prob_bc}
@@ -466,7 +497,7 @@ $\xi = (\xi_1,\xi_2,\dotsc,\xi_{n-1})$ é o vetor das incógnitas e $b = (b_{i})
   b_i = L(\varphi_i) = \int_If \varphi_i\,dx.
 \end{equation}
 
-\begin{ex}\label{ex:modelo}
+\begin{ex}\label{ex:mef1d_modelo}
   Consideremos o problema \eqref{eq:prob_eq}-\eqref{eq:prob_bc} com $f\equiv 1$ e $L=1$, i.e.
   \begin{align}
     -u'' &= 1,\quad x\in I=[0,1],\label{eq:ex_modelo_eq}\\
@@ -491,15 +522,50 @@ A Figura \ref{fig:ex_modelo} apresenta o esboço dos gráficos da solução anal
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.8\textwidth]{./cap_mef1d/dados/ex_modelo/ex_modelo}
-  \caption{Esboço dos gráficos das soluções referentes ao Exemplo \ref{ex:modelo}.}
-  \label{fig:ex_modelo}
+  \includegraphics[width=0.8\textwidth]{./cap_mef1d/dados/ex_mef1d_modelo/fig}
+  \caption{Esboço dos gráficos das soluções referentes ao Exemplo~\ref{ex:mef1d_modelo}.}
+  \label{fig:ex_mef1d_modelo}
 \end{figure}
 
-\ifispython
-Com o \fenics, a computação do problema de elementos finitos pode ser feita com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/dados/ex_modelo/ex_modelo.py}{código}:
-\verbatiminput{./cap_mef1d/dados/ex_modelo/ex_modelo.py}
-\fi
+\begin{lstlisting}[caption=ex\_mef1d\_modelo.py]
+from mpi4py import MPI
+
+# malha
+from dolfinx import mesh
+domain = mesh.create_unit_interval(MPI.COMM_WORLD,
+                                   nx = 5)
+# espaço
+from dolfinx import fem
+V = fem.functionspace(domain, ('P', 1))
+
+# condição de contorno
+import numpy as np
+uD = fem.Function(V)
+uD.interpolate(lambda x: np.full(x.shape[1], 0.))
+
+tdim = domain.topology.dim
+fdim = tdim - 1
+domain.topology.create_connectivity(fdim, tdim)
+boundary_facets = mesh.exterior_facet_indices(domain.topology)
+boundary_dofs = fem.locate_dofs_topological(V, fdim,
+                                            boundary_facets)
+bc = fem.dirichletbc(uD, boundary_dofs)
+
+# problema mef
+import ufl
+from dolfinx import default_scalar_type
+from dolfinx.fem.petsc import LinearProblem
+u = ufl.TrialFunction(V)
+v = ufl.TestFunction(V)
+
+f = fem.Constant(domain, default_scalar_type(1.))
+
+a = ufl.dot(ufl.grad(u), ufl.grad(v)) * ufl.dx
+L = f * v * ufl.dx
+
+problem = LinearProblem(a, L, bcs=[bc])
+uh = problem.solve()
+\end{lstlisting}
 \end{ex}
 
 \subsection{Estimativa {\it a priori}}
