@@ -294,23 +294,44 @@
 % [[tag:construcao]]
 
 \section{Aplicação: Equação de Poisson}\label{cap_mlp_sec_eqpoisson}
-[[tag:construcao]]
 
-Vamos criar uma MLP para resolver
-\begin{subequations}\label{cap_mlp_sec_eqlaplace:eq:probLaplace}
+Vamos criar uma \hl{MLP para resolver o problema de Poisson}{\poisson}
+\begin{subequations}\label{cap_mlp_sec_eqlaplace:eq:prob}
   \begin{align}
-    &-\Delta u = f, ~\pmb{x}\in D = (-1, 1)^2,\\
-    &u = 0, ~\pmb{x}\in\p D,
+    &\hleq -\Delta u = f, ~\pmb{x}\in \mathcal{D} = (-1, 1)^2,\label{cap_mlp_sec_eqpoisson:eq:eqPossion}\\
+    &\hleq u = 0, ~\pmb{x}\in\p D,\label{cap_mlp_sec_eqpoisson:eq:cc}
   \end{align}
 \end{subequations}
-com dada fonte
+com fonte dada
 \begin{equation}
   f(x_1, x_2) = \pi^2\sen(\pi x_1)\sen(\pi x_2).
 \end{equation}
-Neste caso, a solução analítica é conhecida
-\begin{equation}
-  u(x_1, x_2) = \sen(\pi x_1)\sen(\pi x_2). 
+
+No treinamento, vamos usar a \hl{função erro baseada no resíduo da equação de Poisson} \eqref{cap_mlp_sec_eqpoisson:eq:eqPossion} \hl{e nas condições de contorno} \eqref{cap_mlp_sec_eqpoisson:eq:cc}. Mais especificamente, assumimos a função erro
+\begin{equation}\hleq
+  \varepsilon := \underbrace{\frac{1}{n_{s,in}}\sum_{s=1}^{n_{s,in}} \left|\mathcal{R}\left(\tilde{u}^{(s)}\right)\right|^2}_{\text{resíduo}} + \underbrace{\frac{1}{n_{s,cc}}\sum_{s=1}^{n_{s,cc}} \left|\tilde{u}^{s}\right|^2}_{\text{c.c.}},
 \end{equation}
+onde o resíduo é definido por
+\begin{equation}\hleq
+  \mathcal{R}\left(\tilde{u}^{(s)}\right) := f + \Delta\tilde{u}^{(s)}.
+\end{equation}
+A cada época, conjuntos de pontos $\left\{\pmb{x}^{(s)}\right\}_{s=1}^{n_{s,in}}\subset\mathcal{D}$ e $\left\{\pmb{x}^{(s)}\right\}_{s=1}^{n_{s,cc}}\subset\p\mathcal{D}$ são randomicamente gerados com distribuição uniforme.
+
+\begin{obs}
+  O problema de Poisson \eqref{cap_mlp_sec_eqpoisson:eq:prob} tem solução analítica
+  \begin{equation}
+    u(x_1, x_2) = \sen(\pi x_1)\sen(\pi x_2).
+  \end{equation}
+  É importante observar que o treinamento da MLP não depende de conhecermos a solução. Aqui, vamos usá-la apenas para compararmos a solução MLP com a analítica.
+\end{obs}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{cap_pinns/dados/py_pinn_poisson/fig}
+  \caption{Aproximação MLP da função solução do problema de Poisson \eqref{cap_mlp_sec_eqpoisson:eq:prob}. Linhas: isolinhas da solução analítica. Mapa de cores: solução MLP. Estrelas: pontos de treinamentos na última época.}
+  \label{fig:mlp_apfun_2d}
+\end{figure}
+
 
 
 \begin{lstlisting}[caption=py\_pinn\_poisson]

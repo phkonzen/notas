@@ -1,16 +1,15 @@
 import torch
-import matplotlib.pyplot as plt
 
 # modelo
-nh = 25
+nn = 50
 model = torch.nn.Sequential()
-model.add_module('layer_1', torch.nn.Linear(2,nh))
+model.add_module('layer_1', torch.nn.Linear(2,nn))
 model.add_module('fun_1', torch.nn.Tanh())
-model.add_module('layer_2', torch.nn.Linear(nh,nh))
+model.add_module('layer_2', torch.nn.Linear(nn,nn))
 model.add_module('fun_2', torch.nn.Tanh())
-model.add_module('layer_3', torch.nn.Linear(nh,nh))
+model.add_module('layer_3', torch.nn.Linear(nn,nn))
 model.add_module('fun_3', torch.nn.Tanh())
-model.add_module(f'layer_4', torch.nn.Linear(nh,1))
+model.add_module(f'layer_4', torch.nn.Linear(nn,1))
 
 # treinamento
 
@@ -28,10 +27,10 @@ x2_b = 1.
 
 ## optimizador
 optim = torch.optim.SGD(model.parameters(),
-                        lr=5e-2, momentum=0.9)
+                        lr=1e-1, momentum=0.9)
 
 ## num de amostras por época
-ns = 10
+ns = 20
 ## num max épocas
 nepochs = 50000
 ## tolerância
@@ -49,11 +48,10 @@ Y_vest = fun(X1_val, X2_val).reshape(-1,1)
 for epoch in range(nepochs):
 
     # amostras
-    x1 = (x1_b - x1_a) * torch.rand(ns) + x1_a
-    x2 = (x2_b - x2_a) * torch.rand(ns) + x2_a
-    X1, X2 = torch.meshgrid(x1, x2, indexing='ij')
-    X_train = torch.hstack((X1.reshape(-1,1),
-                            X2.reshape(-1,1)))
+    X1 = (x1_b - x1_a) * torch.rand(ns**2, 1) + x1_a
+    X2 = (x2_b - x2_a) * torch.rand(ns**2, 1) + x2_a
+    # X1, X2 = torch.meshgrid(x1, x2, indexing='ij')
+    X_train = torch.hstack((X1, X2))
     Y_train = fun(X1, X2).reshape(-1,1)
     
     
@@ -83,18 +81,32 @@ for epoch in range(nepochs):
             break
 
 
-# # verificação
+# verificação
+
+import matplotlib.pyplot as plt
+plt.rcParams.update({
+    'text.usetex': True,
+    'font.family': 'Computer Modern Serif',
+    'font.size': 14
+    })
+
 fig = plt.figure()
 ax = fig.add_subplot()
 
 Y_vest = Y_vest.reshape((n_val, n_val))
+Y_val = model(X_val)
 Y_val = Y_val.detach().reshape((n_val, n_val))
 
-levels=10
-ax.contour(X1_val, X2_val, Y_vest, levels=levels, colors='white')
-cb = ax.contourf(X1_val, X2_val, Y_val, levels=levels)
+levels = torch.linspace(-1., 1., steps=10)
+ax.contour(X1_val, X2_val, Y_vest, 
+           levels=levels, colors='white')
+cb = ax.contourf(X1_val, X2_val, Y_val, 
+                 levels=levels, extend='both')
+ax.scatter(X1.reshape(-1), X2.reshape(-1), 
+           s=5, marker='*', color='red')
 plt.colorbar(cb)
 
 ax.set_xlabel('$x_1$')
 ax.set_ylabel('$x_2$')
-plt.show()
+plt.savefig('fig.png', bbox_inches='tight')
+plt.savefig('fig.pdf', bbox_inches='tight')

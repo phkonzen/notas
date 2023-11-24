@@ -5,36 +5,36 @@
 
 \section{Modelo MLP}\label{cap_mlp_sec_modelo}
 
-\hl{Uma Perceptron Multicamadas (MLP, do inglês, \textit{Multilayer Perceptron}) é um tipo de Rede Neural Artificial formada por composições de camadas de perceptrons}. Consultamos a Figura \ref{cap_mlp_sec_modelo}.
+\hl{Uma perceptron multicamadas (MLP, do inglês, \textit{multilayer perceptron}) é um tipo de rede neural artificial formada por composições de camadas de perceptrons}. Consultamos a Figura \ref{cap_mlp_sec_modelo}.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{./cap_mlp/dados/fig_mlp/fig}
-  \caption{Estrutura de uma rede do tipo Perceptron Multicamadas (MLP).}
+  \includegraphics[width=0.9\textwidth]{./cap_mlp/dados/fig_mlp/fig}
+  \caption{Arquitetura de uma rede do tipo perceptron multicamadas (MLP).}
   \label{fig:cap_mlp_sec_modelo:fig:mlp}
 \end{figure}
 
 Denotamos uma \hl{MLP de $n_l$ camadas} por
 \begin{equation}\hleq
-  \pmb{y} = \mathcal{N}\left(\pmb{x}; \left(W^{(l)}, \pmb{b}^{(l)}, f^{(l)}\right)_{l=1}^{n_l}\right),
+  \pmb{y} = \mathcal{N}\left(\pmb{x}; \left(W^{(l)}, \pmb{b}^{(l)}, f^{(l)}\right)_{l=1}^{n_h+1}\right),
 \end{equation}
-onde $\left(W^{(l)}, \pmb{b}^{(l)}, f^{(l)}\right)$ é a tripa de \hlemph{pesos}, \hlemph{\textit{biases}} e \hlemph{função de ativação} da $l$-ésima camada da rede, $l=1, 2, \dotsc, n_l$.
+onde $\left(W^{(l)}, \pmb{b}^{(l)}, f^{(l)}\right)$ é a tripa de \hlemph{pesos}, \hlemph{\textit{biases}} e \hlemph{função de ativação} da $l$-ésima camada da rede, $l=1, 2, \dotsc, n_h+1$. Uma rede com essa arquitetura é dita ter uma \emph{camada de entrada}, $n_h$ \emph{camadas escondidas} e uma \emph{camada de saída}.
 
 \hl{A \emph{saída} da rede é calculada por iteradas composições das camadas}, i.e.
 \begin{equation}\hleq
-  \pmb{a}^{(l)} = f^{(l)}\underbrace{\left(W^{(l)}\pmb{a}^{(l-1)} + \pmb{b}^{(l-1)}\right)}_{\pmb{z}^{(l)}},
+  \pmb{a}^{(l)} = f^{(l)}\underbrace{\left(W^{(l)}\pmb{a}^{(l-1)} + \pmb{b}^{(l)}\right)}_{\pmb{z}^{(l)}},
 \end{equation}
-para $l= 1, 2, \dotsc, n_l$, denotando a \hlemph{entrada} por $\pmb{x} =: \pmb{a}^{(0)}$ e a \hlemph{saída} por $\pmb{y} =: \pmb{a}^{(n_l)}$.
+para $l= 1, 2, \dotsc, n_h+1$, denotando a \hlemph{entrada} por $\pmb{x} =: \pmb{a}^{(0)}$ e a \hlemph{saída} por $\pmb{y} =: \pmb{a}^{(n_h+1)}$.
 
 \subsection{Treinamento}\label{cap_mlp_sec_modelo:ssec:treinamento}
 
-Fornecido um \emph{conjunto de treinamento} $\{\pmb{x}^{(s)}, \pmb{y}^{(s)}\}_{s=1}^{n_s}$, com $n_s$ amostras, \hl{o treinamento da rede consiste em resolver o problema de minimização}
+Em um treinamento supervisionado, tem-se um dado \emph{conjunto de treinamento} $\{\pmb{x}^{(s)}, \pmb{y}^{(s)}\}_{s=1}^{n_s}$, com $n_s$ amostras. \hl{O treinamento da rede consiste em resolver o problema de minimização}
 \begin{equation}\hleq
-  \min_{(W,\pmb{b})}\varepsilon\left(\tilde{\pmb{y}}^{(s)}, \pmb{y}^{(s)}\right)
+  \min_{(W,\pmb{b})}\left\{\varepsilon := \frac{1}{n_s}\sum_{s=1}^{n_s} \varepsilon^{(s)}\left(\tilde{\pmb{y}}^{(s)}, \pmb{y}^{(s)}\right)\right\}
 \end{equation}
-onde $\varepsilon$ é uma dada \emph{função erro} (em inglês, \textit{loss function}) e $\tilde{\pmb{y}}^{(s)}$, $\pmb{y}^{(s)}$ são as saídas estimada e esperada da $s$-ésima amostra, respectivamente.
+onde $\varepsilon$ é uma dada \emph{função erro} (em inglês, \hl{\textit{loss function}}) e $\varepsilon^{(s)}$ é uma medida do erro da \emph{saída estimada} $\tilde{\pmb{y}}^{(s)}$ da \emph{saída esperada} $\pmb{y}^{(s)}$.
 
-\hl{O problema de minimização pode ser resolvido por um }\href{https://notaspedrok.com.br/notas/MatematicaNumericaAvancada/cap\_otimizacao_sec_minimi.html}{\hl{Método de Declive}} e, de forma geral, consiste em:
+\hl{O problema de minimização pode ser resolvido por um }\href{https://notaspedrok.com.br/notas/MatematicaNumericaAvancada/cap\_otimizacao_sec_minimi.html}{\hl{método de declive}} e, de forma geral, consiste em:
 \begin{enumerate}
 \item $W, \pmb{b}$ aproximações iniciais.
 \item Para $e\leftarrow 1, \dotsc, n_e$:
@@ -43,22 +43,23 @@ onde $\varepsilon$ é uma dada \emph{função erro} (em inglês, \textit{loss fu
   \end{enumerate}
 \end{enumerate}
 onde, $n_e$ é o \emph{número de épocas}, $l_r$ é uma dada \emph{taxa de aprendizagem} (em inglês, \textit{learning rate})) e $\pmb{d} = \pmb{d}\left(\nabla_{W,\pmb{b}} \varepsilon\right)$ é o vetor direção, onde
-\begin{equation}\hleq
-  \nabla_{W, \pmb{b}} \varepsilon := \left(\frac{\p\varepsilon}{\p W}, \frac{\p\varepsilon}{\p\pmb{b}}\right).
-\end{equation}
+\begin{align}
+  \hleq\nabla_{W, \pmb{b}} \varepsilon &\hleq := \left(\frac{\p\varepsilon}{\p W}, \frac{\p\varepsilon}{\p\pmb{b}}\right)\\
+  &\hleq = \frac{1}{ns}\sum_{s=1}^{n_s}\left(\frac{\p\varepsilon^{(s)}}{\p W}, \frac{\p\varepsilon^{(s)}}{\p\pmb{b}}\right)
+\end{align}
 
-\hl{O cálculo dos gradientes pode ser feito por \emph{retropropagação}} (em inglês, \textit{backward}). Para os pesos da última camada, temos
+\hl{O cálculo dos gradientes pode ser feito por \emph{retropropagação}} (em inglês, \textit{backward}). Para os pesos da última camada, temos\footnote{Com um cero abuso de linguagem devido à álgebra matricial envolvida.}
 \begin{align}
-  \hleq{\frac{\p\varepsilon}{\p W^{(n_l)}}} &\hleq{= \frac{\p\varepsilon}{\p\pmb{y}}\frac{\p\pmb{y}}{\p\pmb{z^{(n_l)}}}\frac{\p\pmb{z^{(n_l)}}}{\p W^{(n_l}}}  \\
-                             &= \frac{\p\varepsilon}{\p\pmb{y}}f'\left(W^{(n_l)}\pmb{a}^{(n_l-1)}+\pmb{b}^{(n_l)}\right)\pmb{a}^{(n_l-1)}.
+  \hleq{\frac{\p\varepsilon^{(s)}}{\p W^{(n_h+1)}}} &\hleq{= \frac{\p\varepsilon^{(s)}}{\p\pmb{y}}\frac{\p\pmb{y}}{\p\pmb{z}^{(n_h+1)}}\frac{\p\pmb{z}^{(n_h+1)}}{\p W^{(n_h+1)}}}  \\
+                             &= \frac{\p\varepsilon^{(s)}}{\p\pmb{y}}f'\left(W^{(n_h+1)}\pmb{a}^{(n_h)}+\pmb{b}^{(n_h+1)}\right)\pmb{a}^{(n_h)}.
 \end{align}
-Para os pesos da penúltima, temos
+Para os pesos da penúltima camada, temos
 \begin{align}
-  \hleq{\frac{\p\varepsilon}{\p W^{(n_l-1)}}} &\hleq{= \frac{\p\varepsilon}{\p\pmb{y}}\frac{\p\pmb{y}}{\p\pmb{z^{(n_l)}}}\frac{\p\pmb{z^{(n_l)}}}{\p W^{(n_l-1)}}},\\
-                                     &= \frac{\p\varepsilon}{\p\pmb{y}}f'\left(\pmb{z}^{(n_l)}\right)\frac{\p\pmb{z}^{(n_l)}}{\p\pmb{a}^{(n_l-1)}}\frac{\p\pmb{a}^{(n_l-1)}}{\p\pmb{z}^{(n_l-1)}}\frac{\p\pmb{z}^{(n_l-1)}}{\p W^{(n_l-1)}}\\
-                                     &= \frac{\p\varepsilon}{\p\pmb{y}}f'\left(\pmb{z}^{(n_l)}\right)W^{(n_l)}f'\left(\pmb{z}^{(n_l-1)}\right)\pmb{a}^{(n_l-2)}
+  \hleq{\frac{\p\varepsilon^{(s)}}{\p W^{(n_h)}}} &\hleq{= \frac{\p\varepsilon}{\p\pmb{y}}\frac{\p\pmb{y}}{\p\pmb{z}^{(n_h+1)}}\frac{\p\pmb{z}^{(n_h+1)}}{\p W^{(n_h)}}},\\
+                                     &= \frac{\p\varepsilon^{(s)}}{\p\pmb{y}}f'\left(\pmb{z}^{(n_h+1)}\right)\frac{\p\pmb{z}^{(n_h+1)}}{\p\pmb{a}^{(n_h)}}\frac{\p\pmb{a}^{(n_h)}}{\p\pmb{z}^{(n_h)}}\frac{\p\pmb{z}^{(n_h)}}{\p W^{(n_h)}}\\
+                                     &= \frac{\p\varepsilon^{(s)}}{\p\pmb{y}}f'\left(\pmb{z}^{(n_h+1)}\right)W^{(n_h+1)}f'\left(\pmb{z}^{(n_h)}\right)\pmb{a}^{(n_h-1)}
 \end{align}
-e assim, sucessivamente para as demais camadas da rede. \hl{Os gradientes em relação aos \textit{biases} podem ser analogamente calculados}.
+e assim, sucessivamente para as demais camadas da rede. \hl{Os gradientes em relação aos \textit{biases} podem ser calculados de forma análoga}.
 
 \subsection{Aplicação: Problema de Classificação \texttt{XOR}}
 
@@ -399,7 +400,7 @@ plt.show()
 
 \hl{Redes Perceptron Multicamadas (MLPs) são aproximadoras universais}. Nesta seção, vamos aplicá-las na aproximação de funções uni- e bidimensionais.
 
-\subsection{Função unidimensional}
+\subsection{Função unidimensional}\label{mlp_apfun_1d}
 
 Vamos criar uma MLP para aproximar a função
 \begin{equation}
@@ -498,123 +499,112 @@ ax.set_ylabel('y')
 plt.show()
 \end{lstlisting}
 
-\subsection{Função bidimensional}
+\subsection{Função bidimensional}\label{mlp_apfun_2d}
 
-Vamos criar uma MLP para aproximar a função
-\begin{equation}
+Vamos criar uma \hl{MLP para aproximar a função bidimensional}
+\begin{equation}\hleq
   y = \sen(\pi x_1)\sen(\pi x_2),
 \end{equation}
-para $(x_1, x_2) \in [-1, 1]^2$.
+para $(x_1, x_2) \in \mathcal{D} := [-1, 1]^2$.
+
+Vamos usar uma \hlemph{arquitetura de rede} $2 - n_n\times 3 - 1$ (duas entradas, 3 camadas escondidas com $n_n$ neurônios e uma saída). Nas $n_h=3$ camadas escondidas, vamos usar a \hl{\emph{tangente hiperbólica} como função de ativação}.
+
+Para o treinamento, vamos usar o \hl{\emph{erro médio quadrático} como função erro}
+\begin{equation}\hleq
+  \varepsilon = \frac{1}{n_s}\sum_{s=1}^{n_s}|\tilde{y}^{(s)} - y^{(s)}|^2,
+\end{equation}
+onde, a cada época, $n_s$ pontos randômicos\footnote{Em uma distribuição uniforme.} $\left\{\pmb{x}^{(s)}\right\}\subset \mathcal{D}$ são usados para gerar o conjunto de treinamento $\left\{\left(\pmb{x}^{(s)}, y^{(s)}\right)\right\}_{s=1}^{n_s}$. 
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.8\textwidth]{cap_mlp/dados/fig_mlp_apfun_2d/fig}
-  \caption{Aproximação MLP da função $y = \sen(\pi x_1)\sen(\pi x_2)$. Linhas: isolinhas da função. Mapa de cores: MLP. }
+  \includegraphics[width=0.8\textwidth]{cap_mlp/dados/py_mlp_apfun_2d/fig}
+  \caption{Aproximação MLP da função $y = \sen(\pi x_1)\sen(\pi x_2)$. Linhas: isolinhas da função. Mapa de cores: MLP. Estrelas: pontos de treinamentos na última época.}
   \label{fig:mlp_apfun_2d}
 \end{figure}
 
 \begin{lstlisting}[caption=mlp\_apfun\_2d]
-import torch
-import matplotlib.pyplot as plt
+  import torch
 
-# modelo
-nh = 25
-model = torch.nn.Sequential()
-model.add_module('layer_1', torch.nn.Linear(2,nh))
-model.add_module('fun_1', torch.nn.Tanh())
-model.add_module('layer_2', torch.nn.Linear(nh,nh))
-model.add_module('fun_2', torch.nn.Tanh())
-model.add_module('layer_3', torch.nn.Linear(nh,nh))
-model.add_module('fun_3', torch.nn.Tanh())
-model.add_module(f'layer_4', torch.nn.Linear(nh,1))
-
-# treinamento
-
-## fun obj
-def fun(x1, x2):
-    return torch.sin(torch.pi*x1) * \
-           torch.sin(torch.pi*x2)
-
-x1_a = -1.
-x1_b = 1
-
-x2_a = -1.
-x2_b = 1.
-
-
-## optimizador
-optim = torch.optim.SGD(model.parameters(),
-                        lr=5e-2, momentum=0.9)
-
-## num de amostras por época
-ns = 10
-## num max épocas
-nepochs = 50000
-## tolerância
-tol = 1e-4
-
-## amostras de validação
-n_val = 50
-x1 = torch.linspace(x1_a, x1_b, steps=n_val)
-x2 = torch.linspace(x2_a, x2_b, steps=n_val)
-X1_val, X2_val = torch.meshgrid(x1, x2, indexing='ij')
-X_val = torch.hstack((X1_val.reshape(n_val**2,1),
-                      X2_val.reshape(n_val**2,1)))
-Y_vest = fun(X1_val, X2_val).reshape(-1,1)
-
-for epoch in range(nepochs):
-
-    # amostras
-    x1 = (x1_b - x1_a) * torch.rand(ns) + x1_a
-    x2 = (x2_b - x2_a) * torch.rand(ns) + x2_a
-    X1, X2 = torch.meshgrid(x1, x2, indexing='ij')
-    X_train = torch.hstack((X1.reshape(-1,1),
-                            X2.reshape(-1,1)))
-    Y_train = fun(X1, X2).reshape(-1,1)
-    
-    
-    # forward
-    Y_est = model(X_train)
-
-    # erro
-    loss = torch.mean((Y_est - Y_train)**2)
-
-    if (epoch % 100 == 0):
-        print(f'{epoch}: {loss.item():.4e}')
-
-    # backward
-    optim.zero_grad()
-    loss.backward()
-    optim.step()
-
-    # validação
-    if (epoch % 100 == 0):
-        Y_val = model(X_val)
-        loss_val = torch.mean((Y_val - Y_vest)**2)
-
-        print(f"\tloss_val = {loss_val.item():.4e}")
-    
-        # critério de parada
-        if (loss_val.item() < tol):
-            break
-
-
-# # verificação
-fig = plt.figure()
-ax = fig.add_subplot()
-
-Y_vest = Y_vest.reshape((n_val, n_val))
-Y_val = Y_val.detach().reshape((n_val, n_val))
-
-levels=10
-ax.contour(X1_val, X2_val, Y_vest, levels=levels, colors='white')
-cb = ax.contourf(X1_val, X2_val, Y_val, levels=levels)
-plt.colorbar(cb)
-
-ax.set_xlabel('$x_1$')
-ax.set_ylabel('$x_2$')
-plt.show()
-\end{lstlisting}
+  # modelo
+  nn = 50
+  model = torch.nn.Sequential()
+  model.add_module('layer_1', torch.nn.Linear(2,nn))
+  model.add_module('fun_1', torch.nn.Tanh())
+  model.add_module('layer_2', torch.nn.Linear(nn,nn))
+  model.add_module('fun_2', torch.nn.Tanh())
+  model.add_module('layer_3', torch.nn.Linear(nn,nn))
+  model.add_module('fun_3', torch.nn.Tanh())
+  model.add_module(f'layer_4', torch.nn.Linear(nn,1))
+  
+  # treinamento
+  
+  ## fun obj
+  def fun(x1, x2):
+      return torch.sin(torch.pi*x1) * \
+             torch.sin(torch.pi*x2)
+  
+  x1_a = -1.
+  x1_b = 1
+  
+  x2_a = -1.
+  x2_b = 1.
+  
+  
+  ## optimizador
+  optim = torch.optim.SGD(model.parameters(),
+                          lr=1e-1, momentum=0.9)
+  
+  ## num de amostras por época
+  ns = 20
+  ## num max épocas
+  nepochs = 50000
+  ## tolerância
+  tol = 1e-4
+  
+  ## amostras de validação
+  n_val = 50
+  x1 = torch.linspace(x1_a, x1_b, steps=n_val)
+  x2 = torch.linspace(x2_a, x2_b, steps=n_val)
+  X1_val, X2_val = torch.meshgrid(x1, x2, indexing='ij')
+  X_val = torch.hstack((X1_val.reshape(n_val**2,1),
+                        X2_val.reshape(n_val**2,1)))
+  Y_vest = fun(X1_val, X2_val).reshape(-1,1)
+  
+  for epoch in range(nepochs):
+  
+      # amostras
+      X1 = (x1_b - x1_a) * torch.rand(ns**2, 1) + x1_a
+      X2 = (x2_b - x2_a) * torch.rand(ns**2, 1) + x2_a
+      # X1, X2 = torch.meshgrid(x1, x2, indexing='ij')
+      X_train = torch.hstack((X1, X2))
+      Y_train = fun(X1, X2).reshape(-1,1)
+      
+      
+      # forward
+      Y_est = model(X_train)
+  
+      # erro
+      loss = torch.mean((Y_est - Y_train)**2)
+  
+      if (epoch % 100 == 0):
+          print(f'{epoch}: {loss.item():.4e}')
+  
+      # backward
+      optim.zero_grad()
+      loss.backward()
+      optim.step()
+  
+      # validação
+      if (epoch % 100 == 0):
+          Y_val = model(X_val)
+          loss_val = torch.mean((Y_val - Y_vest)**2)
+  
+          print(f"\tloss_val = {loss_val.item():.4e}")
+      
+          # critério de parada
+          if (loss_val.item() < tol):
+              break
+  \end{lstlisting}
 
 \subsection{Exercícios}
 
