@@ -177,13 +177,6 @@ class Index:
 
         # anúncio
         body += '<div class="carousel-item">'
-        body += self.add_anuncio(text = 'IV JMMA 2023: 15-17/Nov',
-                                 link = 'https://sites.google.com/view/jmma-ufsm/',
-                                 status = 'danger')
-        body += '</div>'
-
-        # anúncio
-        body += '<div class="carousel-item active">'
         body += self.add_anuncio(text = 'PPGMAp/UFRGS: Mestrado & Doutorado',
                                  link = 'https://www.ufrgs.br/ppgmap',
                                  status = 'primary')
@@ -195,7 +188,29 @@ class Index:
                                  link = 'http://www.ufrgs.br/ime',
                                  status = 'primary')
         body += '</div>'
-  
+
+        # anúncio
+        body += '<div class="carousel-item active">'
+        body += self.add_anuncio(text = 'ICIPE 2024: Full papers 22-12-23',
+                                 link = 'https://icipe2024.org/',
+                                 status = 'warning')
+        body += '</div>'
+
+        # anúncio
+        body += '<div class="carousel-item">'
+        body += self.add_anuncio(text = 'V CBJME 2024',
+                                 link = 'https://sites.google.com/view/jovensufmg2024',
+                                 status = 'primary')
+        body += '</div>'
+
+        # anúncio
+        body += '<div class="carousel-item">'
+        body += self.add_anuncio(text = 'XLIII CNMAC 2024',
+                                 link = 'http://www.cnmac.org.br/novo/index.php/CNMAC',
+                                 status = 'primary')
+        body += '</div>'
+
+
         body += '</div>'
         body += '</div>'
 
