@@ -6,12 +6,16 @@ domain = mesh.create_unit_interval(MPI.COMM_WORLD,
                                    nx = 5)
 # espaço
 from dolfinx import fem
-V = fem.functionspace(domain, ('P', 2))
+V = fem.functionspace(domain, ('P', 1))
 
 # condição de contorno
 import numpy as np
 uD = fem.Function(V)
-uD.interpolate(lambda x: np.full(x.shape[1], 0.))
+def dirichlet_bc(x):
+    y = np.full(x.shape[1], 0.5)
+    y[x[0,:] > 0.5] = 1.
+    return y
+uD.interpolate(dirichlet_bc)
 
 tdim = domain.topology.dim
 fdim = tdim - 1
@@ -45,3 +49,4 @@ filename = results_folder / "u"
 with io.XDMFFile(domain.comm, filename.with_suffix(".xdmf"), "w") as xdmf:
     xdmf.write_mesh(domain)
     xdmf.write_function(uh)
+

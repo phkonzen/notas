@@ -6,20 +6,19 @@ domain = mesh.create_unit_interval(MPI.COMM_WORLD,
                                    nx = 5)
 # espaço
 from dolfinx import fem
-V = fem.functionspace(domain, ('P', 2))
+V = fem.functionspace(domain, ('P', 1))
 
-# condição de contorno
+# c.c. dirichlet
 import numpy as np
+from dolfinx.fem import dirichletbc, locate_dofs_geometrical
 uD = fem.Function(V)
 uD.interpolate(lambda x: np.full(x.shape[1], 0.))
 
-tdim = domain.topology.dim
-fdim = tdim - 1
-domain.topology.create_connectivity(fdim, tdim)
-boundary_facets = mesh.exterior_facet_indices(domain.topology)
-boundary_dofs = fem.locate_dofs_topological(V, fdim,
-                                            boundary_facets)
-bc = fem.dirichletbc(uD, boundary_dofs)
+def boundary_D(x):
+    return np.isclose(x[0], 0.)
+
+dofs_D = locate_dofs_geometrical(V, boundary_D)
+bc = dirichletbc(uD, dofs_D)
 
 # problema mef
 import ufl

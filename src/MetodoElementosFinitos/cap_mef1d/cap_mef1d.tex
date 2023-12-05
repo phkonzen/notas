@@ -606,7 +606,7 @@ onde $u$ é a solução de \eqref{eq:modelo_ffraca}.
   \end{align}
 \end{dem}
 
-\begin{teo}\normalfont{(\hl{Estimativa \textit{a priori}})}
+\begin{teo}\normalfont{(\hl{Estimativa \textit{a priori}}.)}
   O erro em se aproximar a solução $u$ de \eqref{eq:modelo_ffraca} pela solução de elementos finitos $u_h$ dada por \eqref{eq:modelo_fem} satisfaz a seguinte estimativa {\it a priori}
 \begin{equation}
   \|(u-u_h)'\|_{L^2(I)}^2 \leq C\sum_{i=1}^n h_i^2\|u''\|_{L^2(I_i)}^2.
@@ -701,23 +701,23 @@ onde $\eta_i(u_h)$ é chamado de elemento residual e é dado por
 \section{Condições de contorno}\label{cap_mef1d_sec_cc}
 [[tag:revisar]]
 
-Nesta seção, vamos discutir sobre soluções de elementos finitos para a equações diferencial
-\begin{equation}
+Nesta seção, vamos discutir sobre \hl{soluções de elementos finitos para a equações diferencial}
+\begin{equation}\hleq
   -u'' = f,\quad x\in I=[0, L],
 \end{equation}
-com diferentes condições de contorno.
+\hl{com diferentes condições de contorno}.
 
 \subsection{Condições de Dirichlet}
 [[tag:revisar]]
 
-Consideremos o seguinte problema com condições de contorno de Dirichlet\footnote{Johann Peter Gustav Lejeune Dirichlet, 1805 - 1859, matemático alemão. Fonte: \href{https://en.wikipedia.org/wiki/Peter_Gustav_Lejeune_Dirichlet}{Wikipedia}.}: encontrar $u$ tal que
+Consideremos o seguinte \hl{problema com condições de contorno de Dirichlet}{\dirichlet}: encontrar $u$ tal que
 \begin{align}
   &-u'' = f,\quad \forall x\in I=[0, L],\label{eq:cc_d_eq}\\
   &u(0) = u_0,\quad u(L) = u_L,\label{eq:cc_d_bc}
 \end{align}
 com $u_0$, $u_L$ e $f$ dados.
 
-Tomando uma função teste $v\in V_0=H^1_0(I):=\{v\in H^1(I);~v(0)=v(L)=0\}$ e multiplicando-a em \eqref{eq:cc_d_eq}, obtemos
+Tomando uma função teste $v\in \hleq{V_0 := H^1_0(I):=\{v\in H^1(I);~v(0)=v(L)=0\}}$ e multiplicando-a em \eqref{eq:cc_d_eq}, obtemos
 \begin{equation}
   - \int_I u''v\,dx = \int_I fv\,dx.
 \end{equation}
@@ -725,8 +725,8 @@ Aplicando a integração por partes, temos
 \begin{equation}
   \int_I u'v'\,dx = \int_I fv\,dx.
 \end{equation}
-Desta forma, definimos o seguinte problema fraco associado: encontrar $u\in V := \{v\in H^1(I);~v(0)=u_0,~v(L)=v_L\}$ tal que
-\begin{align}
+Desta forma, definimos o seguinte \hlemph{problema fraco} associado: encontrar $u\in \hleq{V := \{v\in H^1(I);~v(0)=u_0,~v(L)=v_L\}}$ tal que
+\begin{align}\hleq
   a(u,v) = L(v),\quad\forall v\in V_0,
 \end{align}
 onde $a(u,v)$ é a forma bilinear
@@ -738,7 +738,7 @@ e $L(v)$ é a forma linear
   L(v) = \int_I fv\,dx.
 \end{equation}
 
-\begin{ex}\label{ex:cc_d}
+\begin{ex}\label{ex:mef1d_dirichlet}
   Consideremos o problema
   \begin{align}
     &-u'' = 1,\quad x\in I=[0,1],\label{eq:ex_cc_d_eq}\\
@@ -752,7 +752,8 @@ Para obtermos uma aproximação de elementos finitos, consideramos o seguinte pr
 \end{equation}
 para todo $v\in V_0 = \{v\in H^1(I);~v(0)=v(1)=0\}$, onde
 \begin{align}
-  a(u, v) &= \int_I u'v'\,dx,\quad L(v) &= \int_I fv\,dx.
+  &a(u, v) = \int_I u'v'\,dx,\\
+  &L(v) = \int_I fv\,dx.
 \end{align}
 
 Então, o problema de elementos finitos no espaço das funções lineares por partes lê-se: encontrar $u_h\in V_h = \{v\in P_1(I);~v(0)=1/2,~v(1)=1\}$ tal que
@@ -761,30 +762,79 @@ Então, o problema de elementos finitos no espaço das funções lineares por pa
 \end{equation}
 para todo $v_h\in V_{h,0} = \{v\in H^1(I);~v(0)=v(1)=0\}$.
 
-A Figura \ref{fig:ex_cc_d} apresenta o esboço dos gráficos da solução analítica $u$ e da sua aproximação de elementos finitos $u_h$, esta construída no espaço dos polinômios lineares por partes sobre uma malha uniforme de $5$ células.
+% A Figura \ref{fig:ex_cc_d} apresenta o esboço dos gráficos da solução analítica $u$ e da sua aproximação de elementos finitos $u_h$, esta construída no espaço dos polinômios lineares por partes sobre uma malha uniforme de $5$ células.
 
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width=0.8\textwidth]{./cap_mef1d/dados/ex_cc_d/ex_cc_d}
-  \caption{Esboço dos gráficos das soluções referentes ao Exemplo \ref{ex:cc_d}.}
-  \label{fig:ex_cc_d}
-\end{figure}
+% \begin{figure}[h!]
+%   \centering
+%   \includegraphics[width=0.8\textwidth]{./cap_mef1d/dados/ex_cc_d/ex_cc_d}
+%   \caption{Esboço dos gráficos das soluções referentes ao Exemplo \ref{ex:cc_d}.}
+%   \label{fig:ex_cc_d}
+% \end{figure}
 
-\ifispython
-Com o \fenics, a computação do problema de elementos finitos pode ser feita com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/dados/ex_cc_d/ex_cc_d.py}{código}:
-\verbatiminput{./cap_mef1d/dados/ex_cc_d/ex_cc_d.py}
-\fi
+\begin{lstlisting}[caption=ex\_mef1d\_dirichlet.py]
+from mpi4py import MPI
+
+# malha
+from dolfinx import mesh
+domain = mesh.create_unit_interval(MPI.COMM_WORLD,
+                                   nx = 5)
+# espaço
+from dolfinx import fem
+V = fem.functionspace(domain, ('P', 1))
+
+# condição de contorno
+import numpy as np
+uD = fem.Function(V)
+def dirichlet_bc(x):
+    y = np.full(x.shape[1], 0.5)
+    y[x[0,:] > 0.5] = 1.
+    return y
+uD.interpolate(dirichlet_bc)
+
+tdim = domain.topology.dim
+fdim = tdim - 1
+domain.topology.create_connectivity(fdim, tdim)
+boundary_facets = mesh.exterior_facet_indices(domain.topology)
+boundary_dofs = fem.locate_dofs_topological(V, fdim,
+                                            boundary_facets)
+bc = fem.dirichletbc(uD, boundary_dofs)
+
+# problema mef
+import ufl
+from dolfinx import default_scalar_type
+from dolfinx.fem.petsc import LinearProblem
+u = ufl.TrialFunction(V)
+v = ufl.TestFunction(V)
+
+f = fem.Constant(domain, default_scalar_type(1.))
+
+a = ufl.dot(ufl.grad(u), ufl.grad(v)) * ufl.dx
+L = f * v * ufl.dx
+
+problem = LinearProblem(a, L, bcs=[bc])
+uh = problem.solve()
+
+# armazena para visualização (paraview)
+from dolfinx import io
+from pathlib import Path
+results_folder = Path("results")
+results_folder.mkdir(exist_ok=True, parents=True)
+filename = results_folder / "u"
+with io.XDMFFile(domain.comm, filename.with_suffix(".xdmf"), "w") as xdmf:
+    xdmf.write_mesh(domain)
+    xdmf.write_function(uh)
+\end{lstlisting}
 \end{ex}
 
 \subsection{Condições de Neumann}
 [[tag:revisar]]
 
-Consideremos o seguinte problema com condições de contorno de Neumann\footnote{Carl Gottfried Neumann, 1832 - 1925, matemático alemão. Fonte: \href{https://en.wikipedia.org/wiki/Carl_Neumann}{Wikipedia}.} homogênea em $x=L$: encontrar $u$ tal que
-\begin{align}
+Consideremos o seguinte problema com condições de contorno de Neumann{\neumann} homogênea em $x=L$: encontrar $u$ tal que
+\begin{align}\hleq
   &-u'' = f,\quad \forall x\in I=[0, L],\label{eq:cc_n_eq}\\
   &u(0) = u_0,\quad u'(L) = 0,\label{eq:cc_n_bc}
 \end{align}
-com $u_0$ e $f$ dados.
+com $u_0$ e $f$ dados. Trata-se de um \hl{problema com condição de contorno de Dirichlet} à esquerda \hl{e condição de contorno de Neumann}{\neumann} homogênea à direita.
 
 Tomando uma função teste $v\in V:=\{v\in H^1(I);~v(0)=0\}$ e multiplicando-a em \eqref{eq:cc_n_eq}, obtemos
 \begin{equation}
@@ -826,19 +876,65 @@ Então, considerando elementos lineares por partes, temos o seguinte problema de
   a(u_h, v_h) = L(v_h),\quad\forall v_h\in V_h.
 \end{equation}
 
-A Figura \ref{fig:ex_cc_n} apresenta o esboço dos gráficos da solução analítica $u$ e da sua aproximação de elementos finitos $u_h$, esta construída no espaço dos polinômios lineares por partes sobre uma malha uniforme de $5$ células.
+% A Figura \ref{fig:ex_cc_n} apresenta o esboço dos gráficos da solução analítica $u$ e da sua aproximação de elementos finitos $u_h$, esta construída no espaço dos polinômios lineares por partes sobre uma malha uniforme de $5$ células.
 
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width=0.8\textwidth]{./cap_mef1d/dados/ex_cc_n/ex_cc_n}
-  \caption{Esboço dos gráficos das soluções referentes ao Exemplo \ref{ex:cc_n}.}
-  \label{fig:ex_cc_n}
-\end{figure}
+% \begin{figure}[h!]
+%   \centering
+%   \includegraphics[width=0.8\textwidth]{./cap_mef1d/dados/ex_cc_n/ex_cc_n}
+%   \caption{Esboço dos gráficos das soluções referentes ao Exemplo \ref{ex:cc_n}.}
+%   \label{fig:ex_cc_n}
+% \end{figure}
 
-\ifispython
-Com o \fenics, a computação do problema de elementos finitos pode ser feita com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/dados/ex_cc_n/ex_cc_n.py}{código}:
-\verbatiminput{./cap_mef1d/dados/ex_cc_n/ex_cc_n.py}
-\fi
+\begin{lstlisting}[caption=ex\_mef1d\_neumann.py]
+from mpi4py import MPI
+
+# malha
+from dolfinx import mesh
+domain = mesh.create_unit_interval(MPI.COMM_WORLD,
+                                   nx = 5)
+# espaço
+from dolfinx import fem
+V = fem.functionspace(domain, ('P', 1))
+
+# c.c. dirichlet
+import numpy as np
+from dolfinx.fem import dirichletbc, locate_dofs_geometrical
+uD = fem.Function(V)
+uD.interpolate(lambda x: np.full(x.shape[1], 0.))
+
+def boundary_D(x):
+    return np.isclose(x[0], 0.)
+
+dofs_D = locate_dofs_geometrical(V, boundary_D)
+bc = dirichletbc(uD, dofs_D)
+
+# problema mef
+import ufl
+from dolfinx import default_scalar_type
+from dolfinx.fem.petsc import LinearProblem
+u = ufl.TrialFunction(V)
+v = ufl.TestFunction(V)
+
+f = fem.Constant(domain, default_scalar_type(1.))
+
+a = ufl.dot(ufl.grad(u), ufl.grad(v)) * ufl.dx
+L = f * v * ufl.dx
+
+problem = LinearProblem(a, L, bcs=[bc])
+uh = problem.solve()
+
+# armazena para visualização (paraview)
+from dolfinx import io
+from pathlib import Path
+results_folder = Path("results")
+results_folder.mkdir(exist_ok=True, parents=True)
+filename = results_folder / "u"
+with io.XDMFFile(domain.comm, filename.with_suffix(".xdmf"), "w") as xdmf:
+    xdmf.write_mesh(domain)
+    xdmf.write_function(uh)
+
+\end{lstlisting}
+
 \end{ex}
 
 Agora, consideremos o seguinte problema com condições de Neumann não-homogênea em $x=L$: encontrar $u$ tal que
@@ -895,20 +991,71 @@ Então, consideramos o seguinte problema de elementos finitos associado: encontr
   a(u_h, v_h) = L(v_h),\quad\forall v_h\in V_h.
 \end{equation}
 
-A Figura \ref{fig:ex_cc_n2} apresenta o esboço dos gráficos da solução analítica $u$ e da sua aproximação de elementos finitos $u_h$, esta construída no espaço dos polinômios lineares por partes sobre uma malha uniforme de $5$ células.
+% A Figura \ref{fig:ex_cc_n2} apresenta o esboço dos gráficos da solução analítica $u$ e da sua aproximação de elementos finitos $u_h$, esta construída no espaço dos polinômios lineares por partes sobre uma malha uniforme de $5$ células.
 
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width=0.8\textwidth]{./cap_mef1d/dados/ex_cc_n2/ex_cc_n2}
-  \caption{Esboço dos gráficos das soluções referentes ao Exemplo \ref{ex:cc_n2}.}
-  \label{fig:ex_cc_n2}
-\end{figure}
+% \begin{figure}[h!]
+%   \centering
+%   \includegraphics[width=0.8\textwidth]{./cap_mef1d/dados/ex_cc_n2/ex_cc_n2}
+%   \caption{Esboço dos gráficos das soluções referentes ao Exemplo \ref{ex:cc_n2}.}
+%   \label{fig:ex_cc_n2}
+% \end{figure}
 
-\ifispython
-Com o \fenics, a computação do problema de elementos finitos pode ser feita com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/dados/ex_cc_n2/ex_cc_n2.py}{código}:
-\verbatiminput{./cap_mef1d/dados/ex_cc_n2/ex_cc_n2.py}
-\fi
-\end{ex} 
+\begin{lstlisting}[caption=ex\_mef1d\_neumann\_nh.py]
+from mpi4py import MPI
+
+# malha
+from dolfinx import mesh
+domain = mesh.create_unit_interval(MPI.COMM_WORLD,
+                                   nx = 5)
+# espaço
+from dolfinx import fem
+V = fem.functionspace(domain, ('P', 1))
+
+# c.c. dirichlet
+import numpy as np
+from dolfinx.fem import dirichletbc, locate_dofs_geometrical
+uD = fem.Function(V)
+uD.interpolate(lambda x: np.full(x.shape[1], 0.))
+
+def boundary_D(x):
+    return np.isclose(x[0], 0.)
+
+dofs_D = locate_dofs_geometrical(V, boundary_D)
+bc = dirichletbc(uD, dofs_D)
+
+# problema mef
+import ufl
+from dolfinx import default_scalar_type
+from dolfinx.fem.petsc import LinearProblem
+u = ufl.TrialFunction(V)
+v = ufl.TestFunction(V)
+
+f = fem.Constant(domain, default_scalar_type(1.))
+g = fem.Constant(domain, default_scalar_type(1.))
+
+a = ufl.dot(ufl.grad(u), ufl.grad(v)) * ufl.dx
+L = f * v * ufl.dx
+L += g * v * ufl.ds
+
+problem = LinearProblem(a, L, bcs=[bc])
+uh = problem.solve()
+
+# armazena para visualização (paraview)
+from dolfinx import io
+from pathlib import Path
+results_folder = Path("results")
+results_folder.mkdir(exist_ok=True, parents=True)
+filename = results_folder / "u"
+with io.XDMFFile(domain.comm, filename.with_suffix(".xdmf"), "w") as xdmf:
+    xdmf.write_mesh(domain)
+    xdmf.write_function(uh)
+\end{lstlisting}
+
+% \ifispython
+% Com o \fenics, a computação do problema de elementos finitos pode ser feita com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef1d/dados/ex_cc_n2/ex_cc_n2.py}{código}:
+% \verbatiminput{./cap_mef1d/dados/ex_cc_n2/ex_cc_n2.py}
+% \fi
+% \end{ex} 
 
 \subsection{Condições de Robin}
 [[tag:revisar]]
