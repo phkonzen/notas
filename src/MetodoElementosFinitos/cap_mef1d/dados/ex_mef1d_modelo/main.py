@@ -6,7 +6,7 @@ domain = mesh.create_unit_interval(MPI.COMM_WORLD,
                                    nx = 5)
 # espaço
 from dolfinx import fem
-V = fem.functionspace(domain, ('P', 2))
+V = fem.functionspace(domain, ('P', 1))
 
 # condição de contorno
 import numpy as np
