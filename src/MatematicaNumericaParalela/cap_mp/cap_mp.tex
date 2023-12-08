@@ -3,19 +3,16 @@
 \chapter{Multiprocessamento (MP)}\label{cap_mp}
 \thispagestyle{fancy}
 
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
-
 Neste capítulo, vamos estudar aplicações da computação paralela em arquitetura de memória compartilhada. Para tanto, vamos usar códigos C/C++ com a API {\omp}.
 
 \section{Olá, Mundo!}\label{sec_ola_cap_mp}
+\badge[yellow]{Em revisão}
 
 \begin{flushright}
   \href{https://archive.org/details/mp_ola}{[Vídeo]} | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
 \end{flushright}
 
-A computação paralela com MP inicia-se por uma instância de processamento \emph{master thread}. Todas as instâncias de processamento disponíveis (\emph{threads}) leem e escrevem variáveis compartilhadas. A ramificação ({\it fork}) do processo entre os {\it threads} disponíveis é feita por instrução explícita no início de uma região paralela do código. Ao final da região paralela, todos os {\it threads} sincronizam-se ({\it join}) e o processo segue apenas com o {\it thread master}. Veja a Figura \ref{fig:mpwf}.
+A computação paralela com MP inicia-se por uma instância de processamento \emph{master thread}. Todas as instâncias de processamento disponíveis (\emph{threads}) leem e escrevem variáveis compartilhadas. A ramificação ({\it fork}) do processo entre os \textit{threads} disponíveis é feita por instrução explícita no início de uma região paralela do código. Ao final da região paralela, todos os \textit{threads} sincronizam-se ({\it join}) e o processo segue apenas com o {\it thread master}. Veja a Figura \ref{fig:mpwf}.
 
 \begin{figure}[H]
   \centering
@@ -51,7 +48,7 @@ Na linha 4, o API {\omp} é incluído no código. A região paralela vale dentro
 \begin{verbatim}
 # pragma omp parallel
 \end{verbatim}
-i.e., entre as linhas 9 e 15. Em paralelo, cada {\it thread} registra seu número de identificação na variável interira \lstinline+id+, veja a linha 12. Na linha 14, escrevem a saudação, identificando-se.
+i.e., entre as linhas 9 e 15. Em paralelo, cada \textit{thread} registra seu número de identificação na variável interira \lstinline+id+, veja a linha 12. Na linha 14, escrevem a saudação, identificando-se.
 
 Para compilar este código, digite no terminal
 \begin{lstlisting}[language=bash]
@@ -70,23 +67,20 @@ Processo 3, olá!
 Processo 1, olá!
 Processo 2, olá!
 \end{lstlisting}
-A saída irá depender do número de {\it threads} disponíveis na máquina e a ordem dos {\it threads} pode variar a cada execução. Execute o código várias vezes e analise as saídas!
+A saída irá depender do número de \textit{threads} disponíveis na máquina e a ordem dos \textit{threads} pode variar a cada execução. Execute o código várias vezes e analise as saídas!
 
 \begin{obs}
-  As variáveis declaradas dentro de uma região paralela são privadas de cada {\it thread}. As variáveis declaradas fora de uma região paralela são compartilhadas, sendo acessíveis por todos os {\it threads}.
+  As variáveis declaradas dentro de uma região paralela são privadas de cada \textit{thread}. As variáveis declaradas fora de uma região paralela são compartilhadas, sendo acessíveis por todos os \textit{threads}.
 \end{obs}
 
-\subsection*{Exercícios resolvidos}
-
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
+\subsection{Exercícios resolvidos}
+\badge[yellow]{Em revisão}
 
 \begin{exeresol}
-  O número de instâncias de processamento pode ser alterado pela variável do sistema \verb+OMP_NUM_THREADS+. Altere o número de {\it threads} para 2 e execute o Código \ref{lst:ola}.
+  O número de instâncias de processamento pode ser alterado pela variável do sistema \verb+OMP_NUM_THREADS+. Altere o número de \textit{threads} para 2 e execute o Código \ref{lst:ola}.
 \end{exeresol}
 \begin{resol}
-  Para alterar o número de {\it threads}, pode-se digitar no terminal
+  Para alterar o número de \textit{threads}, pode-se digitar no terminal
 \begin{lstlisting}[language=bash,numbers=none]
 $ export OMP_NUM_THREADS=2
 \end{lstlisting}
@@ -102,7 +96,7 @@ Olá, processo 1
 \end{resol}
 
 \begin{exeresol}
-  Escreva um código MP para ser executado com 2 {\it threads}. O {\it master thread} deve ler dois números em ponto flutuante. Então, em paralelo, um dos {\it threads} deve calcular a soma dos dois números e o outro thread deve calcular o produto.
+  Escreva um código MP para ser executado com 2 \textit{threads}. O {\it master thread} deve ler dois números em ponto flutuante. Então, em paralelo, um dos \textit{threads} deve calcular a soma dos dois números e o outro thread deve calcular o produto.
 \end{exeresol}
 \begin{resol}
   \begin{lstlisting}[caption=sp.cc]
@@ -141,29 +135,22 @@ int main(int argc, char *argv[]) {
   \end{lstlisting}
 \end{resol}
 
-\subsection*{Exercícios}
-
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
+\subsection{Exercícios}
+\badge[yellow]{Em revisão}
 
 \begin{exer}
-  Defina um número de {\it threads} maior do que o disponível em sua máquina. Então, rode o Código \ref{lst:ola} e analise a saída. O que você observa?
-\end{exer}
-
-\begin{exer}
-  Modifique o Código \ref{lst:ola} de forma que cada {\it thread} escreva na tela ``Processo ID de NP, olá!'', onde ID é a identificação do {\it thread} e NP é o número total de {\it threads} disponíveis. O número total de {\it threads} pode ser obtido com a função {\omp}
+  Modifique o Código \ref{lst:ola} de forma que cada \textit{thread} escreva na tela ``Processo ID de NP, olá!'', onde ID é a identificação do \textit{thread} e NP é o número total de \textit{threads} disponíveis. O número total de \textit{threads} pode ser obtido com a função {\omp}
 \begin{lstlisting}[numbers=none]
 omp_get_num_threads()
 \end{lstlisting}
 \end{exer}
 
 \begin{exer}
-  Faça um código MP para ser executado com 2 threads. O {\it master thread} deve ler dois números $a$ e $b$ não nulos em ponto flutuante. Em paralelo, um dos {\it thread} de computar $a-b$ e o outro deve computar $a/b$. Por fim, o {\it master thread} deve escrever $(a-b) + (a/b)$.
+  Defina um número de \textit{threads} maior do que o disponível em sua máquina. Então, rode o Código \ref{lst:ola} e analise a saída. O que você observa?
 \end{exer}
 
-\begin{exer}\label{exer:cc_exer_dot}
-  Escreva um código MP para computar o produto escalar entre dois vetores de $n$ elementos. Inicialize todos os elementos com números randômicos em ponto flutuante. Ainda, o código deve ser escrito para um número arbitrário $m\geq 1$ de instâncias de processamento.
+\begin{exer}
+  Faça um código MP para ser executado com 2 threads. O {\it master thread} deve ler dois números $a$ e $b$ não nulos em ponto flutuante. Em paralelo, um dos \textit{thread} deve computar $a-b$ e o outro deve computar $a/b$. Por fim, o {\it master thread} deve escrever $(a-b) + (a/b)$.
 \end{exer}
 
 \begin{exer}\label{exer:cc_exer_Ax}
@@ -175,16 +162,10 @@ omp_get_num_threads()
 \end{exer}
 
 \section{Construtores básicos}\label{cap_mp_sec_cb}
-
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
+\badge[yellow]{Em revisão}
 
 \subsection{Variáveis privadas e variáveis compartilhadas}
-
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
+\badge[yellow]{Em revisão}
 
 Vamos analisar o seguinte código.
 
@@ -197,7 +178,7 @@ Processo 2/4
 Processo 3/4
 Processo 3/4
 \end{verbatim}
-Isto ocorre por uma situação de \emph{condição de corrida} (\emph{race condition}) entre os {\it threads}. As variáveis \verb+tid+ e \verb+nt+ foram declaradas antes da região paralela e, desta forma, são \emph{variáveis compartilhadas} (\emph{shared variables}) entre todos os {\it threads} na região paralela. Os locais na memória em que estas as variáveis estão alocadas é o mesmo para todos os {\it threads}.
+Isto ocorre por uma situação de \emph{condição de corrida} (\emph{race condition}) entre os \textit{threads}. As variáveis \verb+tid+ e \verb+nt+ foram declaradas antes da região paralela e, desta forma, são \emph{variáveis compartilhadas} (\emph{shared variables}) entre todos os \textit{threads} na região paralela. Os locais na memória em que estas as variáveis estão alocadas é o mesmo para todos os \textit{threads}.
 
 A condição de corrida ocorre na linha 11. No caso da saída acima, as instâncias de processamento 1 e 3 entraram em uma condição de corrida no registro da variável \verb+tid+.
 
@@ -205,7 +186,7 @@ A condição de corrida ocorre na linha 11. No caso da saída acima, as instânc
   Devemos estar sempre atentos a uma possível condição de corrida. Este é um erro comum no desenvolvimento de códigos em paralelo.
 \end{obs}
 
-Para evitarmos a condição de corrida, precisamos tornar a variável \verb+tid+ privada na região paralela. I.e., cada {\it thread} precisa ter uma variável \verb+tid+ privada. Podemos fazer isso alterando a linha 9 do código para
+Para evitarmos a condição de corrida, precisamos tornar a variável \verb+tid+ privada na região paralela. I.e., cada \textit{thread} precisa ter uma variável \verb+tid+ privada. Podemos fazer isso alterando a linha 9 do código para
 \begin{verbatim}
 #pragma omp parallel private(tid)
 \end{verbatim}
@@ -227,22 +208,19 @@ Faça a alteração e verifique!
 \end{obs}
 
 \subsection{Laço e Redução}
-
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
+\badge[yellow]{Em revisão}
 
 Vamos considerar o problema de computar
 \begin{equation}
   s = \sum_{i=0}^{999999991} 1
 \end{equation}
-em paralelo com $np$ {\it threads}. Começamos analisando o seguinte código.
+em paralelo com $np$ \textit{threads}. Começamos analisando o seguinte código.
 
 \lstinputlisting[title={Código: soma0.cc}]{cap_mp/dados/cc_soma/soma0.cc}
 
 Ao executarmos este código com $nt > 1$, vamos ter saídas erradas. Verifique! Qual o valor esperado?
 
-O erro do código está na \emph{condição de corrida} ({\it race condition}) na linha 21. Esta é uma operação, ao ser iniciada por um {\it thread}, precisa ser terminada pelo {\it thread} antes que outro possa iniciá-la. Podemos fazer adicionando o construtor
+O erro do código está na \emph{condição de corrida} ({\it race condition}) na linha 21. Esta é uma operação, ao ser iniciada por um \textit{thread}, precisa ser terminada pelo \textit{thread} antes que outro possa iniciá-la. Podemos fazer adicionando o construtor
 \begin{verbatim}
 #pragma omp critical
 \end{verbatim}
@@ -260,7 +238,7 @@ Esta abordagem evita a condição de corrida e fornece a resposta esperada. No e
   reduz a performance do código e só deve ser usada quando realmente necessária.
 \end{obs}
 
-Uma alternativa é alocar as somas parciais de cada {\it thread} em uma variável privada e, ao final, somar as partes computadas. Isto pode ser feito com o seguinte código. Verifique!
+Uma alternativa é alocar as somas parciais de cada \textit{thread} em uma variável privada e, ao final, somar as partes computadas. Isto pode ser feito com o seguinte código. Verifique!
 
 \lstinputlisting[title={Código: soma2.cc}]{cap_mp/dados/cc_soma/soma2.cc}
 
@@ -268,7 +246,7 @@ Este último código pode ser simplificado usando o construtor
 \begin{verbatim}
 #pragma omp for
 \end{verbatim}
-Com este construtor, o laço do somatório pode ser automaticamente distribuindo entre os {\it threads}. Verifique o seguinte código!
+Com este construtor, o laço do somatório pode ser automaticamente distribuindo entre os \textit{threads}. Verifique o seguinte código!
 
 \lstinputlisting[title={Código: somafor.cc}]{cap_mp/dados/cc_soma/somafor.cc}
 
@@ -285,44 +263,35 @@ ao construtor que inicializa a região paralela. Verifique o seguinte código!
 \end{obs}
 
 \subsection{Sincronização}
+\badge[yellow]{Em revisão}
 
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
-
-A sincronização dos {\it threads} deve ser evitada sempre que possível, devido a perda de performance em códigos paralelos. Atenção, ela ocorre implicitamente no término da região paralela!
+A sincronização dos \textit{threads} deve ser evitada sempre que possível, devido a perda de performance em códigos paralelos. Atenção, ela ocorre implicitamente no término da região paralela!
 
 \subsubsection{Barreira}
+\badge[yellow]{Em revisão}
 
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
-
-No seguinte código, o {\it thread} 1 é atrasado em 1 segundo, de forma que ele é o último a imprimir. Verifique!
+No seguinte código, o \textit{thread} 1 é atrasado em 1 segundo, de forma que ele é o último a imprimir. Verifique!
 
 \lstinputlisting[title={Código: sinc0.cc}]{cap_mp/dados/cc_sinc/sinc0.cc}
 
-Agora, podemos forçar a sincronização dos {\it threads} usando o construtor
+Agora, podemos forçar a sincronização dos \textit{threads} usando o construtor
 \begin{verbatim}
 #pragma omp barrier
 \end{verbatim}
-em uma determinada linha do código. Por exemplo, podemos fazer todos os {\it threads} esperarem pelo {\it thread} 1 no código acima. Veja a seguir o código modificado. Teste!
+em uma determinada linha do código. Por exemplo, podemos fazer todos os \textit{threads} esperarem pelo \textit{thread} 1 no código acima. Veja a seguir o código modificado. Teste!
 
 \lstinputlisting[title={Código: sinc1.cc}]{cap_mp/dados/cc_sinc/sinc1.cc}
 
 \subsubsection{Seção}
+\badge[yellow]{Em revisão}
 
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
-
-O construtor \verb+sections+ pode ser usado para determinar seções do código que deve ser executada de forma serial apenas uma vez por um único {\it thread}. Verifique o seguinte código.
+O construtor \verb+sections+ pode ser usado para determinar seções do código que deve ser executada de forma serial apenas uma vez por um único \textit{thread}. Verifique o seguinte código.
 
 \lstinputlisting[title={Código: secao.cc}]{cap_mp/dados/cc_secao/secao0.cc}
 
-No código acima, o primeiro {\it thread} que alcançar a linha 19 é o único a executar a seção 1 e, o primeiro que alcançar a linha 25 é o único a executar a seção 2.
+No código acima, o primeiro \textit{thread} que alcançar a linha 19 é o único a executar a seção 1 e, o primeiro que alcançar a linha 25 é o único a executar a seção 2.
 
-Observe que ocorre a sincronização implícita de todos os {\it threads} ao final do escopo \verb+sections+. Isso pode ser evitado usando a cláusula \verb+nowait+, i.e. alterando a linha 16 para
+Observe que ocorre a sincronização implícita de todos os \textit{threads} ao final do escopo \verb+sections+. Isso pode ser evitado usando a cláusula \verb+nowait+, i.e. alterando a linha 16 para
 \begin{verbatim}
 # pragma omp sections nowait
 \end{verbatim}
@@ -345,11 +314,8 @@ Isto é equivalente a escrever
   #pragma omp section
 \end{verbatim}
 
-\subsection*{Exercícios Resolvidos}
-
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
+\subsection{Exercícios Resolvidos}
+\badge[yellow]{Em revisão}
 
 \begin{exeresol}\label{exeresol:produto_escalar}
   Escreva um código MP para computar o produto escalar entre dois vetores de $n$ pontos flutuantes randômicos.
@@ -361,7 +327,7 @@ Isto é equivalente a escrever
 \end{resol}
 
 \begin{exeresol}\label{exeresol:cc_AxSecoes}
-  Faça um código MP para computar a multiplicação de uma matriz $A$ $n\times n$ por um vetor de $n$ elementos (pontos flutuantes randômicos). Utilize o construtor \verb+omp sections+ para distribuir a computação entre somente dois {\it threads}.
+  Faça um código MP para computar a multiplicação de uma matriz $A$ $n\times n$ por um vetor de $n$ elementos (pontos flutuantes randômicos). Utilize o construtor \verb+omp sections+ para distribuir a computação entre somente dois \textit{threads}.
 \end{exeresol}
 \begin{resol}
   A solução é dada no código a seguir.
@@ -369,11 +335,8 @@ Isto é equivalente a escrever
   \lstinputlisting[title={Código: AxSecoes.cc}]{cap_mp/dados/cc_AxSecoes/AxSecoes.cc}
 \end{resol}
 
-\subsection*{Exercícios}
-
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
+\subsection{Exercícios}
+\badge[yellow]{Em revisão}
 
 \begin{exer}
   Considere o seguinte código
@@ -405,22 +368,52 @@ Isto é equivalente a escrever
 \end{exer}
 
 \begin{exer}\label{exer:cc_Ax}
-  Escreva um código MP para computar a multiplicação de uma matriz $A$ $n\times n$ por um vetor $x$ de $n$ elementos (pontos flutuantes randômicos). Faça o código de forma a suportar uma arquitetura com $n_p \geq 1$ {\it threads}. 
+  Escreva um código MP para computar a multiplicação de uma matriz $A$ $n\times n$ por um vetor $x$ de $n$ elementos (pontos flutuantes randômicos). Faça o código de forma a suportar uma arquitetura com $n_p \geq 1$ \textit{threads}. 
 \end{exer}
 
 \begin{exer}
-  Escreva um código MP para computar o produto de duas matrizes $n\times n$ de pontos flutuantes randômicos. Utilize o construtor \verb+omp sections+ para distribuir a computação entre somente dois {\it threads}. 
+  Escreva um código MP para computar o produto de duas matrizes $n\times n$ de pontos flutuantes randômicos. Utilize o construtor \verb+omp sections+ para distribuir a computação entre somente dois \textit{threads}. 
 \end{exer}
 
 \begin{exer}
-  Escreva um código MP para computar o produto de duas matrizes $n\times n$ de pontos flutuantes randômicos. Faça o código de forma a suportar uma arquitetura com $n_p \geq 1$ {\it threads}.
+  Escreva um código MP para computar o produto de duas matrizes $n\times n$ de pontos flutuantes randômicos. Faça o código de forma a suportar uma arquitetura com $n_p \geq 1$ \textit{threads}.
 \end{exer}
+
+\section{Aplicação: Computação Matricial}\label{cap_mp_sec_cm}
+\badge[yellow]{Em construção}
+
+\subsection{Exercícios}
+\badge[yellow]{Em construção}
+
+\section{Aplicação: Sistema Linear}\label{cap_mp_sec_sl}
+\badge[yellow]{Em construção}
+
+\subsection{Exercícios}
+\badge[yellow]{Em construção}
+
+\section{Aplicação: Equação de Poisson}\label{cap_mp_sec_poisson}
+\badge[yellow]{Em construção}
+
+\subsection{Exercícios}
+\badge[yellow]{Em construção}
+
+\section{Aplicação: Equação do Calor}\label{cap_mp_sec_calor}
+\badge[yellow]{Em construção}
+
+\subsection{Exercícios}
+\badge[yellow]{Em construção}
+
+\section{Aplicação: Equação de Burgers}\label{cap_mp_sec_burgers}
+\badge[yellow]{Em construção}
+
+\subsection{Exercícios}
+\badge[yellow]{Em construção}
+
+
+%%%%%% OLD %%%%%%
 
 \section{Resolução de Sistema Linear Triangular}\label{cap_mp_sec_sistria}
-
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
+\badge[red]{Em remoção}
 
 Nesta seção, vamos discutir sobre a uma implementação em paralelo do método da substituição para a resolução de sistemas triangulares. Primeiramente, vamos considerar $A$ uma matriz triangular inferior quadrada de dimensões $n\times n$, i.e. $A=[a_{i,j}]_{i,j=0}^{n-1}$ com $a_{i,j}=0$ para $i<j$. Ainda, vamos considerar que $A$ é invertível.
 
@@ -476,7 +469,7 @@ O código MP C/C++ que apresentaremos a seguir, faz uso do construtor \verb+thre
 \begin{verbatim}
 #pragma omp threadprivate(list)
 \end{verbatim}
-Este construtor permite que a lista de variáveis (estáticas) \verb+list+ seja privada para cada {\it thread} e seja compartilhada entre as regiões paralelas. Por exemplo:
+Este construtor permite que a lista de variáveis (estáticas) \verb+list+ seja privada para cada \textit{thread} e seja compartilhada entre as regiões paralelas. Por exemplo:
 \begin{verbatim}
 x = 0
 #pragma omp parallel private(x)
@@ -500,11 +493,8 @@ Segue o código paralelo para a resolução direta do sistema triangular inferio
 
 \lstinputlisting[title={Código: sistria1dcol.cc}]{cap_mp/dados/cc_sistria/sistria1dcol.cc}
 
-\subsection*{Exercícios resolvidos}
-
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
+\subsection{Exercícios resolvidos}
+\badge[red]{Em remoção}
 
 \begin{exeresol}\label{exeresol:mp_sistria_1drow}
   Seja $Ax = b$ um sistema triangular inferior de dimensões $n\times n$. O seguinte pseudocódigo paralelo é uma alternativa ao apresentado acima. Por que este pseudocódigo é mais lento que o anterior?
@@ -526,7 +516,7 @@ Segue o código paralelo para a resolução direta do sistema triangular inferio
   \end{enumerate}
 \end{exeresol}
 \begin{resol}
-  Este código tem um número de operações semelhante ao anterior, seu desempenho é afetado pelo chamado compartilhamento falso ({\it false sharing}). Este é um fenômeno relacionado ao uso ineficiente da memória {\it cache} de cada {\it thread}. O último laço deste pseudocódigo faz sucessivas atualizações do vetor $b$, o que causa sucessivos recarregamentos de partes do vetor $b$ da memória RAM para a memória {\it cache} de cada um dos {\it threads}. Verifique!
+  Este código tem um número de operações semelhante ao anterior, seu desempenho é afetado pelo chamado compartilhamento falso ({\it false sharing}). Este é um fenômeno relacionado ao uso ineficiente da memória {\it cache} de cada \textit{thread}. O último laço deste pseudocódigo faz sucessivas atualizações do vetor $b$, o que causa sucessivos recarregamentos de partes do vetor $b$ da memória RAM para a memória {\it cache} de cada um dos \textit{threads}. Verifique!
 \end{resol}
 
 \begin{exeresol}
@@ -543,7 +533,7 @@ Segue o código paralelo para a resolução direta do sistema triangular inferio
   \end{gather}
   onde, $k=0,\dotsc,n-1$ e $\delta_{i,j}$ denota o Delta de Kronecker. Ou seja, o cálculo de $A^{-1}$ pode ser feito pela resolução de $n$ sistemas triangulares inferiores tendo $A$ como matriz de seus coeficientes.
 
-  Para construirmos um pseudocódigo MP, podemos distribuir os sistemas lineares a entre os {\it threads} disponíveis. Então, cada {\it thread} resolve em serial seus sistemas. Segue o pseudocódigo, sendo $x_k=(x_{1,k},\dotsc,x_{n-1,k})$ e $b_k = (\delta_{1,k},\dotsc,\delta_{n-1,k})$.
+  Para construirmos um pseudocódigo MP, podemos distribuir os sistemas lineares a entre os \textit{threads} disponíveis. Então, cada \textit{thread} resolve em serial seus sistemas. Segue o pseudocódigo, sendo $x_k=(x_{1,k},\dotsc,x_{n-1,k})$ e $b_k = (\delta_{1,k},\dotsc,\delta_{n-1,k})$.
   \begin{enumerate}
   \item Região paralela
     \begin{enumerate}
@@ -555,11 +545,8 @@ Segue o código paralelo para a resolução direta do sistema triangular inferio
   \end{enumerate}
 \end{resol}
 
-\subsection*{Exercícios}
-
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
+\subsection{Exercícios}
+\badge[red]{Em remoção}
 
 \begin{exer}
   Implemente um código MP do pseudocódigo discutido no ER \ref{exeresol:mp_sistria_1drow}. Compare o tempo computacional com o do código \verb+sistria1dcol.cc+.
@@ -578,10 +565,7 @@ Segue o código paralelo para a resolução direta do sistema triangular inferio
 \end{exer}
 
 \section{Decomposição LU}\label{cap_mp_sec_lu}
-
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
+\badge[red]{remoção}
 
 Nesta seção, vamos discutir sobre a paralelização da decomposição LU para matrizes. A decomposição $LU$ de uma matriz $A$ com dimensões $n\times n$ é
 \begin{equation}
@@ -611,11 +595,8 @@ O seguinte código é uma versão paralela da decomposição LU. A matriz $A$ é
 
 \lstinputlisting[title={Código: parallelLU.cc}]{cap_mp/dados/cc_lu/parallelLU.cc}
 
-\subsection*{Exercícios Resolvidos}
-
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
+\subsection{Exercícios Resolvidos}
+\badge[red]{Em remoção}
 
 \begin{exeresol}\label{exeresol:AxbLU}
   Faça um código MP para computar a solução de um sistema linear $Ax=b$ usando a decomposição LU. Assuma $A$ uma matriz simétrica $n\times n$ de elementos randômicos, assim como os elementos do vetor $b$.
@@ -662,11 +643,8 @@ O seguinte código é uma versão paralela da decomposição LU. A matriz $A$ é
   O aumento no tempo computacional se deve ao mau uso da memória {\it cache} dos processadores. A leitura de um elemento da matriz, aloca no {\it cache} uma sequência de elementos próximos na mesma linha. Ao escrever em um destes elementos, a alocação do {\it cache} é desperdiçada, forçando o {\it cache} a ser atualizado. Note que o código \verb+parallelLU.cc+ requer menos atualizações do {\it cache} que o código \verb+parallelLU2.cc+.
 \end{resol}
 
-\subsection*{Exercícios}
-
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
+\subsection{Exercícios}
+\badge[red]{Em remoção}
 
 \begin{exer}\label{exer:AxbLU}
   Implemente o código MP discutido no ER \ref{exeresol:AxbLU}.
@@ -689,10 +667,7 @@ O seguinte código é uma versão paralela da decomposição LU. A matriz $A$ é
 \end{exer}
 
 \section{Métodos iterativos para Sistemas Lineares}\label{cap_mp_sec_mitsislin}
-
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
+\badge[red]{Em remoção}
 
 Nesta seção, vamos discutir sobre a paralelização MP de alguns métodos iterativos para sistemas lineares
 \begin{equation}
@@ -701,10 +676,7 @@ Nesta seção, vamos discutir sobre a paralelização MP de alguns métodos iter
 com $A = [a_{i,j}]_{i,j=0}^{n-1}$, $x = (x_i)_{i=0}^{n-1}$ e $b=(b_i)_{i=0}^{n-1}$.
 
 \subsection{Método de Jacobi}\label{subsec:mp_mitsislin_Jacobi}
-
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
+\badge[red]{Em remoção}
 
 Nós podemos escrever a $i$-ésima equação do sistema $Ax = b$ como
 \begin{equation}
@@ -745,10 +717,7 @@ onde $\text{tol}$ é a tolerância.
 \lstinputlisting[title={Código: pJacobi.cc}]{cap_mp/dados/cc_Jacobi/pJacobi.cc}
 
 \subsection{Método {\it tipo} Gauss-Seidel}\label{subsec:mp_mitsislin_GS}
-
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
+\badge[red]{Em remoção}
 
 No algoritmo serial, observamos que ao calcularmos $x_i$ pela iteração de Jacobi\eqref{eq:mp_iterJacobi}, as incógnitas $x_j$, $j<i$, já foram atualizadas. Isto motivo o método de Gauss-Seidel, cujo algoritmo é descrito no seguinte pseudocódigo:
 \begin{enumerate}
@@ -796,10 +765,7 @@ A implementação MP do pseudocódigo acima é apresentada no código abaixo. Os
 \lstinputlisting[title={Código: pGSL.cc}]{cap_mp/dados/cc_GS/pGSL.cc}
 
 \subsection{Método do Gradiente Conjugado}
-
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
+\badge[red]{Em remoção}
 
 O Método do Gradiente Conjugado pode ser utilizado na resolução de sistemas lineares $Ax = b$, onde $A$ é uma matriz simétrica e positiva definida. No caso de sistemas em gerais, o método pode ser utilizado para resolver o sistema equivalente $A'Ax = A'b$, onde $A$ é uma matriz inversível, com $A'$ denotando a transposta de $A$.
 
@@ -822,11 +788,8 @@ Uma versão MP deste método pode ser implementada pela distribuição em parale
 
 \lstinputlisting[title={Código: pGC.cc}]{cap_mp/dados/cc_GC/pGC.cc}
 
-\subsection*{Exercícios Resolvidos}
-
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
+\subsection{Exercícios Resolvidos}
+\badge[red]{Em remoção}
 
 \begin{exeresol}\label{exeresol:mp_mitsislin_inv}
   Faça uma implementação MP para computar a inversa de uma matriz $A$ usando o Método de Gauss-Seidel. Assuma que $A$ seja uma matriz estritamente diagonal dominante de dimensões $n\times n$ ($n$ grande).
@@ -873,11 +836,8 @@ Uma versão MP deste método pode ser implementada pela distribuição em parale
   A implementação MP do Método JOR pode ser feita de forma análoga a do Método de Jacobi (veja o código \verb+pJacobi.cc+ na Subseção \ref{subsec:mp_mitsislin_Jacobi}). A implementação fica como exercício E \ref{exer:mp_mitsislin_JOR}.
 \end{resol}
 
-\subsection*{Exercícios}
-
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
+\subsection{Exercícios}
+\badge[red]{Em remoção}
 
 \begin{exer}\label{exer:mp_mitsislin_JOR}
   Complete o ER \ref{exeresol:mp_mitsislin_JOR}.
@@ -912,10 +872,7 @@ Uma versão MP deste método pode ser implementada pela distribuição em parale
 \end{exer}
 
 \section{Métodos iterativos para problemas não lineares}\label{cap_mp_sec_itnl}
-
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
+\badge[red]{Em remoção}
 
 Vamos considerar um sistema de equações não lineares
 \begin{equation}\label{eq:mp_sisnl}
@@ -924,10 +881,7 @@ Vamos considerar um sistema de equações não lineares
 onde $x=(x_1,x_2,\dotsc,x_n)\in\mathbb{R}^n$ e $F:\mathbb{R}^n\mapsto \mathbb{R}^n$, $n\geq 1$.
 
 \subsection{Método de Newton}
-
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
+\badge[red]{Em remoção}
 
 Supondo que $F$ é duas vezes diferenciável, a solução de \eqref{eq:mp_sisnl} pode ser computada pela iteração de Newton:
 \begin{gather}
@@ -954,10 +908,7 @@ Desta forma, a cada iteração de Newton $t$, devemos computar a solução do si
 No caso de um sistema de grande porte e uma vez computada $s(t)$, a atualização \eqref{eq:mp_newton_up} também pode ser trivialmente paralelizada. Ainda, as computações da função objetivo $F$ e de sua jacobiana $J_F$ também são paralelizáveis.
 
 \subsection{Método do acorde}
-
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
+\badge[red]{Em remoção}
 
 Em problemas de grande porte, o cálculo da jacobina $J_F$ é, em muitos casos, o passo computacionalmente mais custoso na aplicação do método de Newton. Uma alternativa é o chamado método do acorde, no qual a jacobiana é computada apenas na iteração inicial. Segue a iteração deste método
 \begin{gather}
@@ -983,10 +934,7 @@ Além das paralelizações triviais na computação de \eqref{eq:mp_acorde_jac} 
 onde $t=0, 1, 2, \ldots$.
 
 \subsection{Métodos {\it quasi}-Newton}
-
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
+\badge[red]{Em remoção}
 
 Baseados em aproximações na computação do passo de Newton
 \begin{equation}
@@ -1027,11 +975,8 @@ de forma aproximada. No contexto de métodos iterativos para sistemas lineares, 
 
 Do ponto de vista de paralelização em MP, estas variantes do método de Newton apresentam potenciais e requerem  cuidados similares ao método original.
 
-\subsection*{Exercícios}
-
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
+\subsection{Exercícios}
+\badge[red]{Em remoção}
 
 \begin{exer}
   Implemente um código MP para computar a solução de
