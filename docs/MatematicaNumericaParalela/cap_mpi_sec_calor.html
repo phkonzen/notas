@@ -2,8 +2,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>3.5 Aplicação: Equação do calor‣ Capítulo 3 Computação paralela e distribuída (MPI) ‣ Matemática Numérica Paralela</title>
-<!--Generated on Tue Oct 17 13:44:09 2023 by LaTeXML (version 0.8.6) http://dlmf.nist.gov/LaTeXML/.-->
-<!--Document created on 17 de outubro de 2023.-->
+<!--Generated on Fri Dec  8 12:30:22 2023 by LaTeXML (version 0.8.6) http://dlmf.nist.gov/LaTeXML/.-->
+<!--Document created on 8 de dezembro de 2023.-->
 
 <link rel="stylesheet" href="LaTeXML.css" type="text/css">
 <link rel="stylesheet" href="ltx-book.css" type="text/css">
@@ -75,7 +75,9 @@
 <h1 class="ltx_title ltx_title_section">
 <span class="ltx_tag ltx_tag_section">3.5 </span>Aplicação: Equação do calor <small><a href="../contato.html"><i class="fas fa-envelope"></i></a></small></h1>
 
-
+<div id="p1" class="ltx_para">
+<p class="ltx_p"><span class="badge text-bg-warning">Em revisão</span></p>
+</div>
 <div id="p2" class="ltx_para">
 <p class="ltx_p">Nesta seção, vamos construir um código MPI para a resolução da equação do calor pelo método das diferenças finitas. Como um caso teste, vamos considerar a equação do calor</p>
 <table id="eq:mpi_calor_eq" class="ltx_equation ltx_eqn_table">
@@ -138,7 +140,8 @@
 <p class="ltx_p">onde <math id="p3.m5" class="ltx_Math" alttext="u(t_{0},x)=u(0,x)" display="inline"><mrow><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><msub><mi>t</mi><mn>0</mn></msub><mo>,</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mn>0</mn><mo>,</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></math>, dada pela condição inicial (<a href="#eq:mpi_calor_ci" title="(3.17) ‣ 3.5 Aplicação: Equação do calor ‣ Capítulo 3 Computação paralela e distribuída (MPI) ‣ Matemática Numérica Paralela" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.17</span></a>).</p>
 </div>
 <div id="p4" class="ltx_para">
-<p class="ltx_p">Agora, vamos denotar <math id="p4.m1" class="ltx_Math" alttext="x_{i}=ih_{x}" display="inline"><mrow><msub><mi>x</mi><mi>i</mi></msub><mo>=</mo><mrow><mi>i</mi><mo>⁢</mo><msub><mi>h</mi><mi>x</mi></msub></mrow></mrow></math>, <math id="p4.m2" class="ltx_Math" alttext="i=0,1,2,\dotsc,I" display="inline"><mrow><mi>i</mi><mo>=</mo><mrow><mn>0,1,2</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mi>I</mi></mrow></mrow></math>, onde <math id="p4.m3" class="ltx_Math" alttext="h_{x}=1/I" display="inline"><mrow><msub><mi>h</mi><mi>x</mi></msub><mo>=</mo><mrow><mn>1</mn><mo>/</mo><mi>I</mi></mrow></mrow></math> é o tamanho da malha (passo espacial). Então, usando a aproximação por diferenças finitas centrais de ordem 2, obtemos</p>
+<p class="ltx_p">Agora, vamos denotar <math id="p4.m1" class="ltx_Math" alttext="x_{i}=ih_{x}" display="inline"><mrow><msub><mi>x</mi><mi>i</mi></msub><mo>=</mo><mrow><mi>i</mi><mo>⁢</mo><msub><mi>h</mi><mi>x</mi></msub></mrow></mrow></math>, <math id="p4.m2" class="ltx_Math" alttext="i=0,1,2,\dotsc,I" display="inline"><mrow><mi>i</mi><mo>=</mo><mrow><mn>0,1,2</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mi>I</mi></mrow></mrow></math>, onde <math id="p4.m3" class="ltx_Math" alttext="h_{x}=1/I" display="inline"><mrow><msub><mi>h</mi><mi>x</mi></msub><mo>=</mo><mrow><mn>1</mn><mo>/</mo><mi>I</mi></mrow></mrow></math> é o tamanho da malha (passo espacial). Então, usando a aproximação por diferenças finitas centrais de ordem 2, obtemos
+</p>
 <table id="Ch3.E19" class="ltx_equation ltx_eqn_table">
 
 <tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
@@ -752,10 +755,13 @@
 <div id="p12" class="ltx_para">
 <p class="ltx_p">As últimas comunicações também ocorrem de forma cíclica, começando pelo envio de <math id="p12.m1" class="ltx_Math" alttext="u^{0}_{i_{p}+1}" display="inline"><msubsup><mi>u</mi><mrow><msub><mi>i</mi><mi>p</mi></msub><mo>+</mo><mn>1</mn></mrow><mn>0</mn></msubsup></math> pelo processo <math id="p12.m2" class="ltx_Math" alttext="n_{p}-1" display="inline"><mrow><msub><mi>n</mi><mi>p</mi></msub><mo>-</mo><mn>1</mn></mrow></math> (linhas 81-83) e o recebimento de <math id="p12.m3" class="ltx_Math" alttext="u^{0}_{f_{p}+1}" display="inline"><msubsup><mi>u</mi><mrow><msub><mi>f</mi><mi>p</mi></msub><mo>+</mo><mn>1</mn></mrow><mn>0</mn></msubsup></math> pelo processo <math id="p12.m4" class="ltx_Math" alttext="n_{p}-2" display="inline"><mrow><msub><mi>n</mi><mi>p</mi></msub><mo>-</mo><mn>2</mn></mrow></math> (linhas 73-75). Em sequência, ocorrem as comunicações entre o processo <math id="p12.m5" class="ltx_Math" alttext="n_{p}-2" display="inline"><mrow><msub><mi>n</mi><mi>p</mi></msub><mo>-</mo><mn>2</mn></mrow></math> e o processo <math id="p12.m6" class="ltx_Math" alttext="n_{p}-3" display="inline"><mrow><msub><mi>n</mi><mi>p</mi></msub><mo>-</mo><mn>3</mn></mrow></math>, entre o <math id="p12.m7" class="ltx_Math" alttext="n_{p}-3" display="inline"><mrow><msub><mi>n</mi><mi>p</mi></msub><mo>-</mo><mn>3</mn></mrow></math> e o <math id="p12.m8" class="ltx_Math" alttext="n_{p}-4" display="inline"><mrow><msub><mi>n</mi><mi>p</mi></msub><mo>-</mo><mn>4</mn></mrow></math>, até o término das comunicações entre o processo 1 (linhas 76-77) e o processo 0 (linhas 63-65).</p>
 </div>
-<section id="SSx1" class="ltx_subsection">
-<h2 class="ltx_title ltx_title_subsection">Exercícios <small><a href="../contato.html"><i class="fas fa-envelope"></i></a></small></h2>
+<section id="SS1" class="ltx_subsection">
+<h2 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">3.5.1 </span>Exercícios <small><a href="../contato.html"><i class="fas fa-envelope"></i></a></small></h2>
 
-
+<div id="SS1.p1" class="ltx_para">
+<p class="ltx_p"><span class="badge text-bg-warning">Em revisão</span></p>
+</div>
 <div id="exer:mpi_calor_sa" class="ltx_theorem ltx_theorem_exer">
 <h6 class="ltx_title ltx_runin ltx_title_theorem">
 <span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Exercício 3.5.1</span></span><span class="ltx_text ltx_font_bold">.</span>
@@ -779,7 +785,8 @@
 <span class="ltx_tag ltx_tag_theorem"><span class="ltx_text ltx_font_bold">Exercício 3.5.2</span></span><span class="ltx_text ltx_font_bold">.</span>
 </h6>
 <div id="Thmexer2.p1" class="ltx_para">
-<p class="ltx_p">Modifique o código <code class="ltx_verbatim ltx_font_typewriter">calor.cc</code> acima, de forma que a cada iteração <math id="Thmexer2.p1.m1" class="ltx_Math" alttext="m" display="inline"><mi>m</mi></math> no tempo, seja impresso na tela o valor do funcional</p>
+<p class="ltx_p">Modifique o código <code class="ltx_verbatim ltx_font_typewriter">calor.cc</code> acima, de forma que a cada iteração <math id="Thmexer2.p1.m1" class="ltx_Math" alttext="m" display="inline"><mi>m</mi></math> no tempo, seja impresso na tela o valor do funcional
+</p>
 <table id="Ch3.E34" class="ltx_equation ltx_eqn_table">
 
 <tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
@@ -789,7 +796,7 @@
 <td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation ltx_align_right">(3.34)</span></td>
 </tr>
 </table>
-<p class="ltx_p">Valide os resultados por comparação com a solução analítica (veja o Exercício (<a href="#exer:mpi_calor_sa" title="Exercício 3.5.1. ‣ Exercícios ‣ 3.5 Aplicação: Equação do calor ‣ Capítulo 3 Computação paralela e distribuída (MPI) ‣ Matemática Numérica Paralela" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.5.1</span></a>)).</p>
+<p class="ltx_p">Valide os resultados por comparação com a solução analítica (veja o Exercício (<a href="#exer:mpi_calor_sa" title="Exercício 3.5.1. ‣ 3.5.1 Exercícios ‣ 3.5 Aplicação: Equação do calor ‣ Capítulo 3 Computação paralela e distribuída (MPI) ‣ Matemática Numérica Paralela" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3.5.1</span></a>)).</p>
 </div>
 </div>
 <div id="Thmexer3" class="ltx_theorem ltx_theorem_exer">
@@ -846,7 +853,7 @@
 <p class="ltx_p">onde, <math id="Thmexer5.p1.m1" class="ltx_Math" alttext="u=u(t,x)" display="inline"><mrow><mi>u</mi><mo>=</mo><mrow><mi>u</mi><mo>⁢</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo>,</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></math>.</p>
 </div>
 </div>
-<div id="SSx1.p2" class="ltx_para">
+<div id="SS1.p2" class="ltx_para">
 <p class="ltx_p">
 </p>
 </div>
@@ -857,11 +864,11 @@
 <div>
 <a href="cap_mpi_sec_redu.html" title="3.4 Reduções ‣ Capítulo 3 Computação paralela e distribuída (MPI) ‣ Matemática Numérica Paralela" class="ltx_ref" rel="prev"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">3.4 </span>Reduções</span></a><a href="bib.html" title="Referências ‣ Matemática Numérica Paralela" class="ltx_ref" rel="bibliography"><span class="ltx_text ltx_ref_title">Referências</span></a><a href="bib.html" title="Referências ‣ Matemática Numérica Paralela" class="ltx_ref" rel="next"><span class="ltx_text ltx_ref_title">Referências</span></a>
 </div>
-<div class="ltx_page_logo"><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />O texto acima está sob Licença <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR">Creative Commons Atribuição-CompartilhaIgual 4.0 Internacional</a>. Generated  on Tue Oct 17 13:44:09 2023 by <a href="http://dlmf.nist.gov/LaTeXML/">LaTeXML <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg==" alt="[LOGO]"></a>
+<div class="ltx_page_logo"><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />O texto acima está sob Licença <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR">Creative Commons Atribuição-CompartilhaIgual 4.0 Internacional</a>. Generated  on Fri Dec  8 12:30:22 2023 by <a href="http://dlmf.nist.gov/LaTeXML/">LaTeXML <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg==" alt="[LOGO]"></a>
 </div></footer>
 </div>
 <div class="card" id="rodape" style="">
-  <div class="card-footer text-left">
+  <div class="card-footer text-end">
     <a href="../contato.html"><i class="fas fa-envelope"></i></a> | <a href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i></a> | <a href="https://archive.org/details/notas-de-aula"><i class="fas fa-building-columns"></i></a> | <a href="https://www.youtube.com/channel/UCwutHKlKLgVj6IkFSUFBqoA"><i class="fab fa-youtube"></i></a> | <a href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i></a>
   </div> <!-- div class="card" -->
 </div> <!-- div class="card-footer text-right" -->
