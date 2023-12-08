@@ -269,13 +269,26 @@ class Notas:
                     page = page.replace('</h1>',link_to_src+'</h1>')
                     page = page.replace('</h2>',link_to_src+'</h2>')
 
-                    # tag:revisar
-                    page = page.replace('[[tag:revisar]]',
-                                        '<span class="badge text-bg-warning">Necessita revisão!</span>')
+                    # tags
 
-                    # tag:contrucao
+                    ## tag:remover (badge)
+                    page = page.replace('[[tag:remover]]',
+                                        '<span class="badge text-bg-danger">A ser removido!</span>')
+                    page = page.replace('[[badge:Em remoção]]',
+                                        '<span class="badge text-bg-danger">Em remoção</span>')
+                    
+                    ## tag:revisar (badge)
+                    page = page.replace('[[tag:revisar]]',
+                                        '<span class="badge text-bg-warning">Em revisão</span>')
+                    page = page.replace('[[badge:Em revisão]]',
+                                        '<span class="badge text-bg-warning">Em revisão</span>')
+
+
+                    ## tag:contrucao (badge)
                     page = page.replace('[[tag:construcao]]',
-                                        '<span class="badge text-bg-danger">Em construção ...</span>')
+                                        '<span class="badge text-bg-warning">Em construção</span>')
+                    page = page.replace('[[badge:Em construção]]',
+                                        '<span class="badge text-bg-warning">Em construção</span>')
 
                     # mídia com YouTube
                     i1 = page.find('[YouTube]')
