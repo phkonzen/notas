@@ -400,10 +400,316 @@ Isto é equivalente a escrever
 \section{Aplicação: Equação do Calor}\label{cap_mp_sec_calor}
 \badge[yellow]{Em construção}
 
+Vamos considerar a equação do Calor com dadas condições inicial e de contorno
+\begin{subequations}
+  \begin{align}
+    &u_t = \alpha u_{xx} + f, ~(t,x)\in (0,t_f)\times(a, b),\\
+    &u(0,x) = u^0(x), ~x\in[a,b],\\
+    &u(t,a)=u(t,b)=0,      
+  \end{align}
+\end{subequations}
+com dado $\alpha>0$ e fonte $f$.
+
+\subsection{Formulação Explícita}
+
+Assumimos uma discretização no tempo com $n_t$ passos $t^{(k)} = k h_t$, de tamanho $h_t = t_f/n_t$, $k = 0, 1, \dotsc, n_t$. Denotando $u^{(k)}(x) \approx u\left(t^{(k)},x\right)$, temos o esquema de Euler explícito
+\begin{subequations}
+  \begin{equation}
+    u^{(0)} = u^0(x),
+  \end{equation}
+  \begin{equation}
+    \begin{aligned}
+      &u^{(k+1)} = u^{(k)} + h_t\left[\alpha u^{(k)}_{xx} + f^{(k)}(x)\right],\\
+      &u^{(k+1)}(a)=u^{(k+1)}(t,b)=0.
+    \end{aligned}
+  \end{equation}
+\end{subequations}
+
+Agora, assumimos uma malha espacial com $n_x+1$ nodos $x_i = a + ih_x$, de tamanho $h_x=(b-a)/n_x$, $i = 0, 1, \dotsc, n_x$, e denotando $u^{(k)}_i \approx u\left(t^{(k)},x_i\right)$ e usando a fórmula de diferenças finitas central, obtemos o esquema iterativo
+\begin{subequations}\label{cap_mp_sec_calor:eq:euler_explicito}
+  \begin{align}
+    &u^{(0)}_i = u^0(x_i), ~\forall i,\\
+    &u^{(k+1)}_i = u^{(k)}_i + ru^{(k)}_{i-1} - 2ru^{(k)}_i + ru^{(k)}_{i+1} + h_tf^{(k)}_i,\\
+    &u^{(k+1)}_0=u^{(k+1)}_{n_x}=0,
+  \end{align}
+\end{subequations}
+onde $r := \alpha h_t/h_x^2$.
+
+\begin{obs}
+  O esquema de Euler explícito \eqref{cap_mp_sec_calor:eq:euler_explicito} requer a seguinte condição de estabilidade
+  \begin{equation}\label{cap_mp_sec_calor:eq:estabilidade}
+    \frac{h_t}{h_x^2}\leq \frac{1}{2}.
+  \end{equation}
+\end{obs}
+
+\begin{ex}
+  Consideramos o seguinte problema de calor
+  \begin{subequations}\label{cap_mp_sec_calor:eq:ex_calor}
+    \begin{align}
+      &u_t = u_{xx} + (\pi^2-1)e^{-t}\sen(\pi x), ~(t,x)\in(0,1)^2,\\
+      &u(0,x) = \sen(\pi x), ~x\in[0,1],\\
+      &u(t,0)=u(t,1)=0.
+    \end{align}
+  \end{subequations}
+
+  \begin{lstlisting}[caption=ex\_mlp\_calor\_explicito.cc]
+    #include <stdio.h>
+    #include <stdlib.h>
+    
+    #include <omp.h>
+    
+    #include <math.h>
+    #include <gsl/gsl_vector.h>
+    
+    // fonte
+    double f(double t, double x) {
+      return (M_PI*M_PI-1.) * 
+             exp(-t) * sin(M_PI * x);
+    }
+    
+    int main()
+    {
+      // parâmetros no tempo
+      double tf = 1.;
+      int nt = 1000;
+      double ht = tf / nt;
+    
+      // parâmetros no espaço
+      int nx = 10;
+      double hx = 1./nx;
+    
+      // malha
+      gsl_vector *x = gsl_vector_alloc(nx+1);
+      #pragma omp parallel for
+      for (int i = 0; i <= nx; i++) {
+        gsl_vector_set(x, i, i*hx);
+      }
+    
+      gsl_vector *u0 = gsl_vector_alloc(nx+1);
+      gsl_vector *u = gsl_vector_calloc(nx+1);
+    
+      // inicialização
+      double t = 0.;
+      #pragma omp parallel for
+      for (int i = 0; i <= nx; i++) {
+        gsl_vector_set(u0, i, 
+                        sin(M_PI *
+                        gsl_vector_get(x, i)));
+      }
+    
+      // armazena malha
+      FILE *fx = fopen("results/x.dat", "wb");
+      gsl_vector_fwrite(fx, x);
+      fclose(fx);
+    
+      // armazena solução
+      char str[21];
+      sprintf(str, "results/u_%06d.dat", 0);
+      printf("t = %g, [%s]\n", t, str);
+    
+      FILE *fu = fopen(str, "wb");
+      gsl_vector_fwrite(fu, u0);
+      fclose(fu);
+    
+      #pragma omp parallel
+      {
+        // iteração no tempo
+        for (int k=0; k < nt; k++) {
+          #pragma omp single
+          t += ht;
+    
+          #pragma omp for
+          for (int i=1; i < nx; i++) {
+            gsl_vector_set(u, i,
+                            gsl_vector_get(u0, i) +
+                            ht/(hx*hx) * (gsl_vector_get(u0, i+1) - 2*gsl_vector_get(u0, i) + gsl_vector_get(u0, i-1)) + ht * 
+                            f(t-ht, gsl_vector_get(x, i)));
+          }
+    
+          #pragma omp single
+          {
+            sprintf(str, "results/u_%06d.dat", k+1);
+            printf("t = %g, [%s]\n", t, str);
+            fu = fopen(str, "wb");
+            gsl_vector_fwrite(fu, u0);
+            fclose(fu);
+            
+            // u0 = u
+            gsl_vector_memcpy(u0, u);
+          }
+    
+        }
+      }
+      
+      gsl_vector_free(x);
+      gsl_vector_free(u);
+      gsl_vector_free(u0);
+      return 0;
+    }     
+  \end{lstlisting}
+\end{ex}
+
+\subsection{Formulação Implícita}
+
+A condição de estabilidade \eqref{cap_mp_sec_calor:eq:estabilidade} pode ser contornada aplicando-se o esquema de Euler implícito
+\begin{subequations}\label{cap_mp_sec_calor:eq:euler_implicito}
+  \begin{align}
+    &u^{(0)}_i = u^0(x_i), ~\forall i,\\
+    &- ru^{(k+1)}_{i-1} + (2r+1)u^{(k+1)}_i - ru^{(k+1)}_{i+1} = u^{(k)}_i + h_tf^{(k+1)}_i,\\
+    &u^{(k+1)}_0=u^{(k+1)}_{n_x}=0,
+  \end{align}
+\end{subequations}
+onde $r := \alpha h_t/h_x^2$.
+
+\begin{ex}
+  Implementamos o esquema de Euler implícito \eqref{cap_mp_sec_calor:eq:euler_implicito} para o problema de calor \eqref{cap_mp_sec_calor:eq:ex_calor} do exemplo anterior. No código abaixo, o sistema linear em cada iteração é computado com o método de Jacobi.
+
+\begin{lstlisting}[caption=ex\_mlp\_calor\_implicito.cc]
+#include <stdio.h>
+#include <stdlib.h>
+
+#include <omp.h>
+
+#include <math.h>
+#include <gsl/gsl_vector.h>
+#include <gsl/gsl_blas.h>
+
+// fonte
+double f(double t, double x) {
+  return (M_PI*M_PI-1.) * 
+         exp(-t) * sin(M_PI * x);
+}
+
+int main()
+{
+  // parâmetros no tempo
+  double tf = 1.;
+  int nt = 100;
+  double ht = tf / nt;
+
+  // parâmetros no espaço
+  int nx = 10;
+  double hx = 1./nx;
+
+  // parâmetros Jacobi
+  int maxit = 1000;
+  double tol = 1.49e-8;
+
+  // auxiliar
+  double r = ht/(hx*hx);
+
+  // malha
+  gsl_vector *x = gsl_vector_alloc(nx+1);
+  #pragma omp parallel for
+  for (int i = 0; i <= nx; i++) {
+    gsl_vector_set(x, i, i*hx);
+  }
+
+  gsl_vector *u0 = gsl_vector_alloc(nx+1);
+  gsl_vector *u = gsl_vector_calloc(nx+1);
+
+  // auxiliares
+  double norm;
+  gsl_vector *u00 = gsl_vector_alloc(nx+1);
+  gsl_vector *diff = gsl_vector_calloc(nx+1);
+
+  // inicialização
+  double t = 0.;
+  #pragma omp parallel for
+  for (int i = 0; i <= nx; i++) {
+    gsl_vector_set(u0, i, 
+                    sin(M_PI *
+                    gsl_vector_get(x, i)));
+  }
+  
+  // u00 = u0
+  gsl_vector_memcpy(u00, u0);
+
+  // armazena malha
+  FILE *fx = fopen("results/x.dat", "wb");
+  gsl_vector_fwrite(fx, x);
+  fclose(fx);
+
+  // armazena solução
+  char str[21];
+  sprintf(str, "results/u_%06d.dat", 0);
+  printf("t = %g, [%s]\n", t, str);
+
+  FILE *fu = fopen(str, "wb");
+  gsl_vector_fwrite(fu, u0);
+  fclose(fu);
+
+  #pragma omp parallel
+  {
+    // iteração no tempo
+    for (int k=0; k < nt; k++) {
+
+      #pragma omp single
+      {
+        t += ht;
+        printf("%d: t = %g\n", k+1, t);
+      }
+
+      // iteração de Jacobi
+      for (int it=0; it < maxit; it++) {
+
+        #pragma omp for
+        for (int i=1; i < nx; i++) {
+          gsl_vector_set(u, i, 1./(2.*r + 1.) *
+                             (r * (gsl_vector_get(u00, i-1) + 
+                                   gsl_vector_get(u00, i+1)) +
+                             gsl_vector_get(u0, i) +
+                             + ht * f(t, gsl_vector_get(x, i))));
+                          
+          gsl_vector_set(diff, i, gsl_vector_get(u, i) -
+                                  gsl_vector_get(u00, i));
+        }
+
+        #pragma omp single
+        {
+          norm = gsl_blas_dnrm2(diff);
+          printf("\t%d: norm=%.2e\n", it, norm);
+
+          gsl_vector_memcpy(u00, u);
+        }
+
+        if (norm < tol) {
+            break;
+        }
+
+      }
+
+      #pragma omp single
+      {
+        sprintf(str, "results/u_%06d.dat", k+1);
+        printf("t = %g, [%s]\n", t, str);
+        fu = fopen(str, "wb");
+        gsl_vector_fwrite(fu, u0);
+        fclose(fu);
+        
+        // u0 = u
+        gsl_vector_memcpy(u0, u);
+      }
+
+    }
+    
+  }
+  
+  gsl_vector_free(x);
+  gsl_vector_free(u);
+  gsl_vector_free(u0);
+  gsl_vector_free(u00);
+  gsl_vector_free(diff);
+
+  return 0;
+}
+\end{lstlisting}
+\end{ex}
+
 \subsection{Exercícios}
 \badge[yellow]{Em construção}
 
-\section{Aplicação: Equação de Burgers}\label{cap_mp_sec_burgers}
+\section{Aplicação: Equação de Fisher}\label{cap_mp_sec_fisher}
 \badge[yellow]{Em construção}
 
 \subsection{Exercícios}
@@ -415,7 +721,7 @@ Isto é equivalente a escrever
 \section{Resolução de Sistema Linear Triangular}\label{cap_mp_sec_sistria}
 \badge[red]{Em remoção}
 
-Nesta seção, vamos discutir sobre a uma implementação em paralelo do método da substituição para a resolução de sistemas triangulares. Primeiramente, vamos considerar $A$ uma matriz triangular inferior quadrada de dimensões $n\times n$, i.e. $A=[a_{i,j}]_{i,j=0}^{n-1}$ com $a_{i,j}=0$ para $i<j$. Ainda, vamos considerar que $A$ é invertível.
+Nesta seção, vamos discutir sobre a uma implementação em paralelo do método da substituição para a resolução de sistemas triangulares. Primeiramente, vamos considerar $A$ uma matriz triangular inferior quadrada de dimensões $n\times n$, i.e. $A=[a_{i,j}]_{i,j=0}^{n-1}$ com $a_{i,j}=0$ para $i<j$. Ainda, vamos coniderar que $A$ é invertível.
 
 Neste caso, um sistema linear $Ax = b$ pode ser escrito na seguinte forma algébrica
 \begin{gather}
