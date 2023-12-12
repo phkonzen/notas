@@ -1449,6 +1449,95 @@ for k in range(nt):
 \subsection{Exercícios}
 [[tag:construcao]]
 
+
+\section{Aplicação: Equação de Fisher}\label{cap_mef1d_sec_fisher}
+\badge[yellow]{Em construção}
+
+Consideramos a \emph{equação de Fisher}{\fisher} com dadas condição inicial e condições de contorno de Neumann{\neumann}
+\begin{subequations}\label{cap_mef1d_sec_fisher:eq:prob}
+  \begin{align}
+    &u_t = u_{xx} + u(1-u), ~(t,x)\in (0,t_f]\times (0,1),\\
+    &u(0, x) = u_0(x), x\in [0,1],\\
+    &u_x(t,0) = u_x(t,1) = 0, ~t\in [0,t_f].
+  \end{align}
+\end{subequations}
+
+\subsection{Discretização do Tempo}
+
+Consideramos os $n_t+1$ tempos discretos $t^{(k)} = k h_t$, passo no tempo $h_t = t_f/n_t$, $k = 0, 1, 2, \dotsc, n_t$. Seguindo esquema $\theta$ denotando $u^{(k)} \approx u\left(t^{(k)}, x\right)$, o problema \eqref{cap_mef1d_sec_fisher:eq:prob} pode ser aproximado pela iteração
+\begin{subequations}\label{cap_mef1d_sec_fisher:eq:theta}
+  \begin{align}
+    &\frac{u^{(k+1)} - u^{(k)}}{h_t} = \theta \left[u^{(k+1)}_{xx} + u^{(k+1)}\left(1-u^{(k+1})\right)\right]\nonumber\\
+    &\qquad\qquad\qquad\;\; (1-\theta) \left[u^{(k)}_{xx} + + u^{(k)}\left(1-u^{(k)}\right)\right],\\
+    &u_x^{(k+1)}(0) = u_x^{(k+1)}(1) = 0,
+  \end{align}
+\end{subequations}
+onde $u^{(0)} = u_0$. 
+
+\begin{obs}\normalfont{(Esquema $\theta$.)}
+  O esquema $\theta$ e um forma robusta de escrever diferentes esquemas de discretização em uma única expressão:
+  \begin{itemize}
+    \item $\theta = 0.$: Euler explícito.
+    \item $\theta = 1.$: Euler implícito.
+    \item $\theta = 0.5$: Crank-Nicolson.
+  \end{itemize}
+\end{obs}
+
+Por simplificação da notação, vamos suprimir o super-índice $k$, denotando $u^{(k+1)} := u$, $u^{(k)} = u^0$. Com isso e rearranjando os termos, cada iteração \eqref{cap_mef1d_sec_fisher:eq:theta} se resume ao seguinte problema de valores de contorno
+\begin{subequations}\label{cap_mef1d_sec_fisher:eq:theta-iter}
+  \begin{align}
+    &\frac{1}{h_t}u - \frac{1}{h_t}u^0 - \theta\left[u_xx + u(1-u)\right]\nonumber\\
+    &\qquad\qquad - (1-\theta)\left[u^0_xx + u^0(1-u^0)\right],\\
+    &u_x(0) = u_x(1) = 0.
+  \end{align}
+\end{subequations}
+
+\subsection{Formulação de Elementos Finitos}
+\badge[yellow]{Em Revisão}
+
+A formulação fraca do problema \eqref{cap_mef1d_sec_fisher:eq:theta-iter} consiste em: encontrar $u\in V := H^1[0,1]$ tal que
+\begin{equation}
+  F(u;v) = 0, ~\forall v\in V,
+\end{equation}
+onde
+\begin{equation}
+  \begin{aligned}
+    & F(u; v) := \int_0^1 \frac{1}{h_t}u\,dx - \int_0^1 \frac{1}{h_t}u^0\,dx\\
+    &\qquad + \theta\int_0^1 u_xv_x\,dx - \theta\int_0^1 u(1-u)v\,dx\\
+    &\qquad + (1-\theta)\int_0^1 u^0_x v_x\,dx - (1-\theta)\int_0^1 u^0(1-u^0)v\,dx.
+  \end{aligned}
+\end{equation}
+
+Então, assumindo uma malha com $n_x$ células $I_i = [x_i, x_{i+1}]$ de tamanho $h_x = 1/n_x$ e nodos $x_i = (i-1)h_x$, $i = 0, 1, 2, \dotsc, n_x$, escolhemos o espaço de elementos finitos
+\begin{equation}
+  V_h := \{v\in C^0([a,b]): ~v|_{I_i}\in P_1(I_i), ~i=0,1,\dotsc,n_x\}.
+\end{equation}
+Com isso, a formulação de elementos finitos do problema \eqref{cap_mef1d_sec_fisher:eq:theta-iter} consiste em: encontrar $u_h\in V_h$ tal que
+\begin{equation}\label{cap_mp_sec_fisher:eq:fem}
+  F(u_h; v) = 0, ~\forall v_h\in V_h.
+\end{equation}
+
+\begin{obs}
+  O problema \eqref{cap_mp_sec_fisher:eq:fem} consiste em um sistema de equações não-lineares.
+\end{obs}
+
+\begin{ex}
+  Consideramos a equação de Fisher com condições inicial e de contorno
+  \begin{subequations}
+    \begin{align}
+      &u_t = u_{xx} + u(1-u), ~t\in(0,t_f)\times(0,1),\\
+      &u(0,x) = \cos(\pi x), ~x\in[0,1],\\
+      &u_x(t,0)=u_x(t,1)=0, ~t\in[0,t_f].
+    \end{align}
+  \end{subequations}
+
+  \badge[yellow]{Em construção}
+\end{ex}
+
+\subsection{Exercícios}
+\badge[yellow]{Em construção}
+
+
 \section{Seleção de Aplicações}\label{cap_mef1d_sec_aps}
 [[tag:revisar]]
 
