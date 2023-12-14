@@ -14,39 +14,6 @@ class Notas:
     def __init__(self):
         raise ValueError("Você não devia estar aqui!!!")
 
-    # def tags2pdf(self, srcPath):
-    #     print(f'tags2pdf: affecting {srcPath}')
-    #     pages = []
-    #     for (dirpath, dirnames, filenames) in os.walk(srcPath):
-    #         pages.extend(filenames)
-    #         break
-
-    #     print(pages)
-        
-    #     for p in pages:
-    #         fn,ext = os.path.splitext(p)
-    #         if (ext == '.tex'):
-    #             print(f'tags2pdf: affecting {srcPath}/{p}')
-    #             #lê a página atual
-    #             f = open(srcPath+"/"+p,'r')
-    #             page = f.read()
-    #             f.close()
-
-    #             # tag:revisar
-    #             page = page.replace('[[tag:revisar]]',
-    #                                 '[Necessita revisão!]')
-
-    #             # tag:construcao
-    #             page = page.replace('[[tag:construcao]]',
-    #                                 '[Em construção ...]')
-                
-    #             #sobrescreve a página com as alterações
-    #             f = open(srcPath+"/"+p,'w')
-    #             f.write(page)
-    #             f.close()
-    #     raise ValueError('oi')
-
-
     def goodies(self,htmldir,titulo_notas,srcref):
 
         # adiciona goodies.css
@@ -273,7 +240,7 @@ class Notas:
 
                     ## tag:remover (badge)
                     page = page.replace('[[tag:remover]]',
-                                        '<span class="badge text-bg-danger">A ser removido!</span>')
+                                        '<span class="badge text-bg-danger">Em remoção</span>')
                     page = page.replace('[[badge:Em remoção]]',
                                         '<span class="badge text-bg-danger">Em remoção</span>')
                     
@@ -282,8 +249,7 @@ class Notas:
                                         '<span class="badge text-bg-warning">Em revisão</span>')
                     page = page.replace('[[badge:Em revisão]]',
                                         '<span class="badge text-bg-warning">Em revisão</span>')
-
-
+                    
                     ## tag:contrucao (badge)
                     page = page.replace('[[tag:construcao]]',
                                         '<span class="badge text-bg-warning">Em construção</span>')
