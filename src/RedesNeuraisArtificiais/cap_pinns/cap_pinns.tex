@@ -819,7 +819,7 @@ A cada época, conjuntos de pontos $\left\{\pmb{x}^{(s)}\right\}_{s=1}^{n_{s,in}
 \end{resp}
 
 \section{Aplicação: Equação do Calor}\label{cap_mlp_sec_calor}
-[[tag:construcao]]
+\badgeConstrucao
 
 Consideramos o problema
 \begin{subequations}\label{cap_mlp_sec_calor:eq:prob}
@@ -833,141 +833,6 @@ onde $f(t,x) = (\pi^2 - 1)e^{-t}\sen(\pi x)$ é a fonte. Este problema foi manuf
 \begin{equation}
   u(t,x) = e^{-t}\sen(\pi x).
 \end{equation}
-
-% \subsection{Diferenças Finitas}
-% [[tag:construcao]]
-
-% Assumimos a discretização no tempo $t^{(k)} = kh_t$, $k = 0, 1, 2, \dotsc, n_t$, com passo $h_t = 1/n_t$. Para a discretização no espaço, assumimos $x_{i} = -1 + ih_x$, $i = 0, 1, 2, \dotsc, n_x$, com passo $h_x = 2/n_x$. Ainda, denotando $u^{(k)}_i \approx u\left(t^{(k)}, x_i\right)$, usamos as seguintes fórmulas de diferenças finitas
-% \begin{equation}
-%   u_t\left(t^{(k)}, x_i\right) \approx \frac{u_i^{(k)} - u_i^{(k-1)}}{h_t},\\
-% \end{equation}
-% para $0<k<n_t$, $0\leq i\leq n_x$ e
-% \begin{equation}
-%   u_{xx}\left(t^{(k)}, x_i\right) \approx \frac{u_{i-1}^{(k)} - 2u_i^{(k)} + u_{i+1}^{(k)}}{h_x^2},\\
-% \end{equation}
-% para $0\leq k\leq n_t$ e $0 < i < n_x$.
-
-% \begin{figure}[H]
-%   \centering
-%   \includegraphics[width=0.8\textwidth]{./cap_mlp/dados/fig_mlp_calor/fig}
-%   \caption{Soluções RNA (linhas brancas) \textit{versus} analítica (cores de face) para o Problema \ref{cap_mlp_sec_calor:eq:prob}.}
-%   \label{cap_mlp_sec_calor:fig:rna_calor}
-% \end{figure}
-
-% \begin{lstlisting}[caption=mlp\_calor.py]
-% import torch
-% from torch import pi, sin, exp
-% import matplotlib.pyplot as plt
-
-% # modelo
-% model = torch.nn.Sequential(
-%     torch.nn.Linear(2,500),
-%     torch.nn.ELU(),
-%     torch.nn.Linear(500,500),
-%     torch.nn.ELU(),
-%     torch.nn.Linear(500,500),
-%     torch.nn.ELU(),
-%     torch.nn.Linear(500,1)
-% )
-
-% # otimizador
-% optim = torch.optim.SGD(model.parameters(),
-%                         lr = 1e-2, momentum = 0.9)
-% scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optim)
-
-% # amostras
-% nt = 10
-% ht = 1./nt
-% tt = torch.linspace(0., 1., nt+1)
-% nx = 20
-% hx = 2./nx
-% xx = torch.linspace(-1., 1., nx+1)
-% T, X = torch.meshgrid(tt, xx,
-%                       indexing='ij')
-% Uesp = torch.empty_like(T)
-% nsamples = (nt+1)*(nx+1)
-% M = torch.empty((nsamples, 2))
-% s = 0
-% for i,t in enumerate(tt):
-%     for j,x in enumerate(xx):
-%         Uesp[i,j] = exp(-t)*sin(pi*x)
-%         M[s,0] = t
-%         M[s,1] = x
-%         s += 1
-
-% # treinamento
-% nepochs = 10001
-% tol = 1e-5
-% nout = 100
-
-% for epoch in range(nepochs):
-
-%     # forward
-%     Uest = model(M)
-
-%     # loss
-%     ## c.i.
-%     lci = torch.tensor([0.])
-%     for j,x in enumerate(xx):
-%         s = j
-%         assert(M[s,1] == x)
-%         uesp = sin(pi*x)
-%         lci += (Uest[s] - uesp)**2
-%     ## pts internos
-%     lin = torch.tensor([0.])
-%     for i in range(1,nt+1):
-%         for j in range(1,nx):
-%             s = j + i*(nx+1)
-%             # u_t
-%             l = (Uest[s] - Uest[s-nx-1])/ht
-%             # u_xx
-%             l -= (Uest[s-1] - 2*Uest[s] + Uest[s+1])/hx**2
-%             # f
-%             l -= (pi**2 - 1.)*exp(-M[s,0])*sin(pi*M[s,1])
-%             lin += l**2
-%     ## c.c.
-%     lcc = torch.tensor([0.])
-%     for i,t in enumerate(tt[1:]):
-%         # x = 0
-%         s = i*(nx+1)
-%         lcc += Uest[s]**2
-%         # x = 1
-%         s = nx + i*(nx+1)
-%         lcc += Uest[s]**2
-
-%     loss = (lci + lin + lcc)/nsamples
-
-%     lr = optim.param_groups[-1]['lr']
-%     print(f'{epoch}: loss = {loss.item():.4e}, lr = {lr:.4e}')
-
-%     # output
-%     if ((epoch % nout == 0) or (loss.item() < tol)):
-%         plt.close()
-%         fig = plt.figure(dpi=300)
-%         ax = fig.add_subplot()
-%         cb = ax.contourf(T, X, Uesp,
-%                          levels=10)
-%         fig.colorbar(cb)
-%         cl = ax.contour(T, X, Uest.detach().reshape(nt+1,nx+1),
-%                         levels=10, colors='white')
-%         ax.clabel(cl, fmt='%.1f')
-%         ax.set_xlabel('$t$')
-%         ax.set_ylabel('$x$')
-%         plt.title(f'{epoch}: loss = {loss.item():.4e}, lr = {lr:.4e}')
-%         plt.savefig(f'./results/sol_{epoch:0>6}.png')
-
-%     if (loss.item() < tol):
-%         break
-    
-%     # backward
-%     scheduler.step(loss)
-%     optim.zero_grad()
-%     loss.backward()
-%     optim.step()
-% \end{lstlisting}
-
-% \subsection{Diferenciação Automética}
-% [[tag:construcao]]
 
 \begin{lstlisting}[caption=mlp\_calor\_autograd.py]
 import torch
@@ -1120,3 +985,207 @@ for epoch in range(nepochs):
     if ((loss.item() < tol) or (lr < 1e-6)):
         break
 \end{lstlisting}
+
+
+\section{PINN com Parâmetro a Determinar}\label{cap_pinns_sec_param}
+\badgeConstrucao
+
+Vamos considerar uma \hlemph{equação diferencial}
+\begin{equation}\label{cap_pinns_sec_param:eq:ed}\hleq
+  L(u;\lambda) = f, ~\pmb{x}\in D\subset\mathbb{R}^n,
+\end{equation}
+onde $L$ é um operador em funções $u = u(\pmb{x})$, $\lambda\in\mathbb{R}$ é um \hlemph{parâmetro a determinar} e $f$ uma dada função fonte. Assumimos conhecidas condições inicial e de contorno, bem como um \hlemph{conjunto de amostras}
+\begin{equation}\hleq
+  \mathcal{D} := \left\{\left(\pmb{x}^{(s)},u^{(s)}\right)\right\}_{s=1}^{n_s},
+\end{equation}
+com $\pmb{x}^{(s)}\in D$ e $u^{(s)} = u\left(\pmb{x}^{(s)}\right)$.
+
+Uma rede informada pela física (\hlemph{PINN}, do inglês, \textit{Physics-informed neural network}) \hlemph{com parâmetro a determinar} é uma rede neural
+\begin{equation}\hleq
+  \tilde{u} = \mathcal{N}(\pmb{x};\lambda),
+\end{equation}
+em que $\tilde{u}$ é a solução estimada do modelo dado pela equação diferencial \eqref{cap_pinns_sec_param:eq:ed} com dadas condições inicial e de contorno, em que \hl{o parâmetro $\lambda$ é estimado tal que}
+\begin{equation}
+  \tilde{u}^{(s)} \approx u^{(s)}, ~\left(\pmb{x}^{(s)},u^{(s)}
+\right)\in\mathcal{D}.
+\end{equation}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{cap_pinns/dados/fig_pinns_param/fig}
+  \caption{Esquema de uma PINN $\tilde{u} = \mathcal{N}(\pmb{x};\lambda)$.}
+  \label{cap_pinns_sec_param:fig:pinn}
+\end{figure}
+
+Considerando uma rede do tipo perceptron multicamadas (MLP, do inglês, \textit{multilayer perceptron}, consulte Fig.~\ref{cap_pinns_sec_param:fig:pinn}), seus pesos e \textit{biases} são treinados em conjunto com parâmetro $\lambda$ de forma a minimizar a \hlemph{função de perda}
+\begin{equation}\hleq
+  \begin{aligned}
+    &\varepsilon_\lambda := \underbrace{\frac{1}{n_{\text{in}}}\sum_{s=1}^{n_{\text{in}}}\left|\mathcal{R}_\lambda\left(\pmb{x}_{\text{in}}^{(s)}\right)\right|^2}_{\text{pts. internos}}\\
+    &\quad + \underbrace{\frac{1}{n_{\text{cc}}}\sum_{s=1}^{n_{\text{cc}}}\left|\tilde{u}_{\text{cc}}-u_{\text{cc}}\right|^2}_{\text{c.i. \& c.c.}}\\
+    &\quad + \underbrace{\frac{p}{n_s}\sum_{s=1}^{n_s}\left|\tilde{u}^{(s)}-u^{(s)}\right|^2}_{\text{amostras}},
+  \end{aligned}
+\end{equation}
+onde $p\geq 0$ é uma \emph{penalidade} e
+\begin{equation}
+  \mathcal{R}_\lambda(\pmb{x}) := f - L(u;\lambda)
+\end{equation}
+é o \emph{resíduo} de \eqref{cap_pinns_sec_param:eq:ed}.
+
+\begin{ex}\label{cap_pinns_sec_param:ex:fisher}
+  Consideramos a equação de Fisher{\fisher}
+  \begin{equation}
+    u_t = u_xx + \lambda u(1-u), ~(t,x)\in(0,t_f)\times(0,1),
+  \end{equation}
+  com o parâmetro $\lambda>0$ a determinar. Assumimos dadas condição inicial
+  \begin{equation}
+    u(0,x) = \frac{1}{\left(1+e^x\right)^2}, ~x\in[0,1],
+  \end{equation}
+  e condições de contorno
+  \begin{align}
+    &u_x(t,0) = \frac{1}{\left(1+e^{-\frac{5}{6}\lambda t}\right)^2},\\
+    &u_x(t,0) = \frac{1}{\left(1+e^{\sqrt{\frac{\lambda}{6}}-\frac{5}{6}\lambda t}\right)^2}.
+  \end{align}
+  
+  Este problema tem solução analítica \cite{Agirseven2010a}
+  \begin{equation}
+    u_a(t,x) = \frac{1}{\left(1+e^{\sqrt{\frac{\lambda}{6}}x-\frac{5}{6}\lambda t}\right)^2}.
+  \end{equation}
+
+  Como exemplo de aplicação de uma PINN com parâmetro a determinar, vamos assumir o seguinte conjunto de amostras
+  \begin{equation}
+    \mathcal{D} = \left\{\left(\left(t^{(s)},x^{(s)}\right),u^{(s)}\right)\right\}_{s=1}^{n_s},
+  \end{equation}
+  com $\left(t^{(s)},x^{(s)}\right)\in\{0.1, 0.2, 0.3\}\times\{0.25,0.5,0.75\}$ e $u^{(s)} = u_a\left(t^{(s)},x^{(s)}\right)$.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{cap_pinns/dados/ex_pinn_fisher/fig}
+    \caption{Solução PINN \textit{versus} analítica para $\lambda = 6$.}
+  \end{figure}
+
+\begin{lstlisting}[caption=ex\_pinn\_fisher.py]
+import torch
+
+# modelo
+nh = 4
+nn = 50
+fun = torch.nn.Tanh()
+model = torch.nn.Sequential()
+model.add_module('layer_1', torch.nn.Linear(2, nn))
+model.add_module('fun_1', fun)
+for l in range(2, nh+1):
+    model.add_module(f'layer_{l}', torch.nn.Linear(nn, nn))
+    model.add_module(f'fun_{l}', fun)
+model.add_module(f'layer_{nh+1}', torch.nn.Linear(nn, 1))
+
+# parâmetro
+rgn = [5., 7]
+model.lmbda = torch.nn.Parameter(
+    data=(rgn[1]-rgn[0])*torch.rand(1)+rgn[0])
+
+# otimizador
+optim = torch.optim.Adam(model.parameters(), lr=0.001)
+
+# parâmetros do problema
+tf = 1.
+
+# solução analítica
+lmbda = torch.tensor([6.])
+def ua(t,x, lmbda=lmbda):
+    return 1./(1.+torch.exp(torch.sqrt(lmbda/6.)*x-5./6*lmbda*t))**2
+
+# condição inicial
+def u0(x, lmbda=lmbda):
+    return 1./(1.+torch.exp(torch.sqrt(lmbda/6)*x))**2
+
+# amostras
+ts = torch.tensor([0.1, 0.2, 0.3])
+xs = torch.tensor([0.25, 0.5, 0.75])
+T, X = torch.meshgrid(ts, xs, indexing='ij')
+Ss = torch.hstack((T.reshape(-1,1), X.reshape(-1,1)))
+Us_exp = ua(T, X).reshape(-1,1)
+
+# treinamento
+nepochs = 50000
+tol = 1e-5
+
+eout = 100
+
+sin = 50
+penalty = 1e1
+
+for epoch in range(nepochs):
+
+    # forward
+
+    ## pts internos
+    tsin = tf*torch.rand(sin, 1)
+    xsin = torch.rand(sin, 1)
+    Sin = torch.hstack((tsin, xsin))
+    Sin.requires_grad = True
+
+    Uin = model(Sin)
+
+    ## loss pts internos
+    DUin = torch.autograd.grad(
+        Uin, Sin, 
+        torch.ones_like(Uin), 
+        create_graph=True,
+        retain_graph=True)[0]
+    Uin_t = DUin[:,0:1]
+    Uin_x = DUin[:,1:2]
+
+    Uin_xx = torch.autograd.grad(
+        Uin_x, Sin,
+        torch.ones_like(Uin_x),
+        create_graph=True,
+        retain_graph=True)[0][:,1:2]
+    
+    
+    lin = torch.mean((Uin_t - Uin_xx \
+                      - model.lmbda*Uin*(1-Uin))**2)
+    
+    ## cond. inicial
+    S0 = torch.hstack((torch.zeros_like(xsin), xsin))
+
+    U0 = model(S0)
+
+    ## loss cond. inicial
+    l0 = torch.mean((U0 - u0(xsin))**2)
+
+    ## cond. de contorno
+    Sbc0 = torch.hstack((tsin, torch.zeros_like(xsin)))
+    Sbc1 = torch.hstack((tsin, torch.ones_like(xsin)))
+    Sbc = torch.vstack((Sbc0, Sbc1))
+
+    Ubc_exp = ua(Sbc[:,0:1],Sbc[:,1:2])
+    Ubc_est = model(Sbc)
+
+    ## loss cond. de contorno    
+    lbc = torch.mean((Ubc_est - Ubc_exp)**2)
+
+    ## amostras
+    Us_est = model(Ss)
+
+    ## loss amostras
+    ls = torch.mean((Us_est - Us_exp)**2)
+
+    ## loss total
+    loss = lin + l0 + lbc + penalty*ls 
+
+    if ((epoch % eout == 0) or (loss.item() < tol)):
+        print(f'epoch: {epoch}, '\
+              + f'loss={loss.item():.4e}, '\
+              + f'lmbda={model.lmbda.item():.3f}')
+    
+    if (loss.item() < tol):
+        break
+        
+    optim.zero_grad()
+    loss.backward()
+    optim.step()  
+\end{lstlisting}
+\end{ex}
+
+\subsection{Exercícios}
+\badgeConstrucao
