@@ -304,15 +304,15 @@ class Index:
                               color = "primary", status = "")
         body += '</div>'
 
-        # card: notas de aula de Matemática numérica
-        body += '<div class="col">'
-        body += self.new_card(header = "Notas de Aula",
-                              title = "Matemática Numérica",
-                              text = "Métodos e técnicas de cálculo numérico",
-                              badges = ["Octave"],
-                              link = "MatematicaNumerica/main.html",
-                              color = "secondary", status = "Antigo")
-        body += '</div>'
+        # # card: notas de aula de Matemática numérica
+        # body += '<div class="col">'
+        # body += self.new_card(header = "Notas de Aula",
+        #                       title = "Matemática Numérica",
+        #                       text = "Métodos e técnicas de cálculo numérico",
+        #                       badges = ["Octave"],
+        #                       link = "MatematicaNumerica/main.html",
+        #                       color = "secondary", status = "Antigo")
+        # body += '</div>'
 
         # card: notas de aula de Matemática Numérica I
         body += '<div class="col">'
