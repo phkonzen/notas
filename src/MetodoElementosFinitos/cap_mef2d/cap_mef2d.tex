@@ -1,9 +1,9 @@
 %Este trabalho está licenciado sob a Licença Atribuição-CompartilhaIgual 4.0 Internacional Creative Commons. Para visualizar uma cópia desta licença, visite http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR ou mande uma carta para Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
 
-\chapter{Método de elementos finitos em 2D}\label{cap_mef2d}
+\chapter{Problemas Bidimensionais}\label{cap_mef2d}
 \thispagestyle{fancy}
 
-\section{Malha e espaço}\label{cap_mef2d_sec_malha}
+\section{Malha e Espaço}\label{cap_mef2d_sec_malha}
 \badgeRevisar
 
 \subsection{Malha}
@@ -13,9 +13,51 @@ Seja $\Omega\subset \mathbb{R}^2$ um domínio limitado com fronteira $\p\Omega$ 
 
 Classicamente as células $K$ são escolhidas como triângulos. \hl{O comprimento do maior lado da célula $K$ define o chamado \emph{tamanho local da malha} $h_K$}. O \hl{\emph{tamanho global da malha} é definida por $h = \max_{K\in\mathcal{K}} h_K$}.
 
-Uma \hlemph{malha} é dita \hl{\emph{regular} quando existe uma constante $c_0 > 0$ tal que $c_K > c_0$ para todo $K\in\mathcal{K}$, sendo $c_K := h_K/d_K$ e $d_K$ o diâmetro do circulo inscrito em $K$}. Esta condição significa que os triângulos $K$ da malha não podem ter ângulos muito grandes nem muito pequenos. \hl{Ao longo do texto}, a menos que especificado o contrário, \hl{assumiremos trabalhar com \emph{malhas regulares}}.
+Uma \hlemph{malha} é dita \hl{\emph{regular} quando existe uma constante $c_0 > 0$ tal que $c_K > c_0$ para todo $K\in\mathcal{K}$, sendo $c_K := d_K/h_K$ e $d_K$ o diâmetro do circulo inscrito em $K$}. Esta condição significa que os triângulos $K$ da malha não podem ter ângulos muito grandes nem muito pequenos. \hl{Ao longo do texto}, a menos que especificado o contrário, \hl{assumiremos trabalhar com \emph{malhas regulares}}.
 
-\subsection{Espaço dos polinômios lineares por partes}
+\begin{ex}\label{cap_mef2d_sec_malha:ex:malha}
+ O seguinte código, gera uma malha uniforme no domínio $\Omega = [0, 1]^2$.
+
+ \begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{./cap_mef2d/dados/ex_malha/fig}
+  \caption{Esboço de uma malha triangular no domínio $D = [0, 1]^2$.}
+  \label{cap_mef2d_sec_malha:fig:ex_malha}
+\end{figure}
+
+ 
+\begin{lstlisting}[caption=ex\_malha.py]
+from mpi4py import MPI
+from dolfinx import mesh
+
+# malha triangular
+domain = mesh.create_unit_square(MPI.COMM_WORLD, 
+                                  nx = 5, ny = 5)
+
+# gráfico da malha
+import pyvista
+# pyvista.set_jupyter_backend('static')
+print(pyvista.global_theme.jupyter_backend)
+
+from dolfinx import plot
+pyvista.start_xvfb()
+tdim = domain.topology.dim
+topology, cell_types, geometry = plot.vtk_mesh(domain, tdim)
+grid = pyvista.UnstructuredGrid(topology, cell_types, geometry)
+
+plotter = pyvista.Plotter()
+plotter.add_mesh(grid, show_edges=True)
+plotter.view_xy()
+pyvista.OFF_SCREEN=True
+if not pyvista.OFF_SCREEN:
+    plotter.show()
+else:
+    figure = plotter.screenshot("malha.png")  
+\end{lstlisting}
+\end{ex}
+
+
+\subsection{Espaço de Polinômios Lineares}
 \badgeRevisar
 
 Seja $K$ um triângulo e seja \hl{$P_1(K)$ o \emph{espaço dos polinômios lineares} em $K$}, i.e.
@@ -92,20 +134,51 @@ Notamos que \hl{cada função base $\varphi_j$ é contínua, polinômio linear p
 \end{equation}
 onde $\alpha_i = v(N_i)$, $i=0, 1, \ldots, n_p$, são os valores nodais de $v$.
 
-\begin{ex}\label{ex:malha}
-  A Figura \ref{fig:ex_malha} mostra o esboço de uma malha triangular no domínio $D = [0, 1]\times [0, 1]$.
+\begin{ex}\label{cap_mef2d_sec_malha:ex:espaço}
+No seguinte código, alocamos um espaço de elementos finitos $V_h$ sobre uma malha regular no domínio $\Omega=[0,1]^2$. Ainda, uma função $u_h\in V_h$ é alocada com valores nodais
+\begin{equation}
+  u(\pmb{x}) = \sen(\pi x_0)\sen(\pi x_1).
+\end{equation}
 
-  \begin{figure}[h!]
-    \centering
-    \includegraphics[width=0.7\textwidth]{./cap_mef2d/dados/ex_malha/fig_ex_malha}
-    \caption{Esboço de uma malha triangular no domínio $D = [0, 1]\times [0, 1]$.}
-    \label{fig:ex_malha}
-  \end{figure}
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\textwidth]{./cap_mef2d/dados/ex_espaco/fig}
+  \caption{Esboço de uma função no espaço $V_h$ com valores nodais $u(\pmb{x}) = \sen(\pi x_0)\sen(\pi x_1)$.}
+\end{figure}
 
-% \ifispython
-% Com o \fenics, podemos gerar esta malha com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef2d/dados/ex_malha/ex_malha.py}{código}:
-% \verbatiminput{./cap_mef2d/dados/ex_malha/ex_malha.py}
-% \fi
+\begin{lstlisting}
+from mpi4py import MPI
+from dolfinx import mesh
+
+# malha
+domain = mesh.create_unit_square(MPI.COMM_WORLD, 5, 5)
+
+from dolfinx import fem
+
+# espaço de elementos finitos
+V = fem.functionspace(domain, ("P",1))
+
+# função do espaço V
+uh = fem.Function(V)
+
+# valor nodais
+from numpy import sin, pi
+for i,x in enumerate(domain.geometry.x):
+  uh.x.array[i] = sin(pi*x[0])*sin(pi*x[1])
+
+# gráfico
+u_topology, u_cell_types, u_geometry = plot.vtk_mesh(V)
+u_grid = pyvista.UnstructuredGrid(u_topology, u_cell_types, u_geometry)
+u_grid.point_data["u"] = uh.x.array.real
+u_grid.set_active_scalars("u")
+u_plotter = pyvista.Plotter()
+u_plotter.add_mesh(u_grid, show_edges=True)
+u_plotter.view_xy()
+if not pyvista.OFF_SCREEN:
+  u_plotter.show()
+else:
+  figure = u_plotter.screenshot("u.png")
+\end{lstlisting}
 \end{ex}
 
 \section{Interpolação e projeção}\label{cap_mef2d_sec_interp}
