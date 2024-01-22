@@ -3,7 +3,9 @@
 // API MPI
 #include <mpi.h>
 
-int main(int argc, char** argv) {
+#include <gsl/gsl_cblas.h>
+
+int main() {
   // Inicializa o MPI
   MPI_Init(NULL, NULL);
 

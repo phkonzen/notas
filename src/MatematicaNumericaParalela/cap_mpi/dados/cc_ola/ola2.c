@@ -3,7 +3,7 @@
 // API MPI
 #include <mpi.h>
 
-int main(int argc, char** argv) {
+int main() {
 
   // Inicializa o MPI
   MPI_Init(NULL, NULL);
@@ -17,11 +17,9 @@ int main(int argc, char** argv) {
   MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
 
   // Escreve mensagem
-  printf('Olá! Eu sou o processo %s %d/%d.\n',
-	 processor_name, world_rank, world_size);
+  printf("Olá! Eu sou o processo %d/%d.\n",
+	        world_rank, world_size);
 
   // Finaliza o MPI
   MPI_Finalize();
-
-  return 0;
 }

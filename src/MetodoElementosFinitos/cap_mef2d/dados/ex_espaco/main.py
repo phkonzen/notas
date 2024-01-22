@@ -18,6 +18,8 @@ for i,x in enumerate(domain.geometry.x):
   uh.x.array[i] = sin(pi*x[0])*sin(pi*x[1])
 
 # gráfico
+import pyvista
+from dolfinx import plot
 u_topology, u_cell_types, u_geometry = plot.vtk_mesh(V)
 u_grid = pyvista.UnstructuredGrid(u_topology, u_cell_types, u_geometry)
 u_grid.point_data["u"] = uh.x.array.real

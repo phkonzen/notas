@@ -181,7 +181,10 @@ else:
 \end{lstlisting}
 \end{ex}
 
-\section{Interpolação e projeção}\label{cap_mef2d_sec_interp}
+\subsection{Exercícios}
+\badgeConstrucao
+
+\section{Interpolação}\label{cap_mef2d_sec_interp}
 \badgeRevisar
 
 \subsection{Interpolação}
@@ -193,6 +196,94 @@ Dada uma função contínua $f$ em um triângulo $K$ com nodos $N_i$, $i=0, 1, 2
 \end{equation}
 Logo, temos $\pi f(N_i) = f(N_i)$ para todo $i=0, 1, 2$.
 
+\begin{ex}\label{cap_mef2d_sec_interp:ex:interp2d}
+  Consideramos a função
+  \begin{equation}
+    u(x_0, x_1) = \sen(\pi x_0)\cos(\pi x_1)
+  \end{equation}
+  defina no domínio $D = [0,1]^2$. O seguinte código computa a interpolação de $f$ no espaço de elementos finitos $V_h$ sobre uma malha uniforme de $16\times 16$ triângulos. Com ele, graficamos a função interpolada $u_h\in V_h$ e a função $u$. Consulte a Fig.~\ref{cap_mef2d_sec_interp:fig:interp2d}.
+
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{cap_mef2d/dados/ex_interp/fig}
+    \caption{Gráfico de comparação função interpolada $u_h\in V_h$ (gráfico de contornos em cores) e da função original $u$ (isolinhas) referentes ao Exemplo~\ref{cap_mef2d_sec_interp:ex:interp2d}.}
+    \label{cap_mef2d_sec_interp:fig:interp2d}
+  \end{figure}
+
+\begin{lstlisting}[caption=interp2d.py, label=cap_mef2d_sec_interp:cod:interp2d]
+from mpi4py import MPI
+from dolfinx import mesh
+
+# malha
+domain = mesh.create_unit_square(MPI.COMM_WORLD, 16, 16)
+
+from dolfinx import fem
+
+# espaço de elementos finitos
+V = fem.functionspace(domain, ("P",1))
+
+# função do espaço V
+uh = fem.Function(V)
+
+# interpolate
+import numpy as np
+def u(x, mod=np):
+    return mod.sin(mod.pi*x[0])*mod.sin(mod.pi*x[1])
+
+uh.interpolate(lambda x: u(x))
+
+# eval fun
+from dolfinx import geometry
+
+def fun_eval(u, points,
+             domain=domain):
+  u_values = []
+  bb_tree = geometry.bb_tree(domain, domain.topology.dim)
+  cells = []
+  points_on_proc = []
+  # Find cells whose bounding-box collide with the the points
+  cell_candidates = geometry.compute_collisions_points(bb_tree, 
+                                                       points.T)
+  # Choose one of the cells that contains the point
+  colliding_cells = geometry.compute_colliding_cells(domain, 
+                                                     cell_candidates, 
+                                                     points.T)
+  for i, point in enumerate(points.T):
+    if len(colliding_cells.links(i)) > 0:
+      points_on_proc.append(point)
+      cells.append(colliding_cells.links(i)[0])
+
+  points_on_proc = np.array(points_on_proc, dtype=np.float64)
+  u_values = u.eval(points_on_proc, cells)
+  return u_values
+
+# gráfico
+import numpy as np
+nx = ny = 101
+xx0 = np.linspace(0., 1., nx)
+xx1 = np.linspace(0., 1., ny)
+X0, X1 = np.meshgrid(xx0, xx1, indexing='ij')
+points = np.zeros((3, nx*ny))
+points[0] = X0.reshape(-1)
+points[1] = X1.reshape(-1)
+
+yh = fun_eval(uh, points)
+Yh = yh.reshape((nx,ny))
+
+import matplotlib.pyplot as plt
+
+fig = plt.figure()
+ax = fig.add_subplot()
+levels=10
+cb = ax.contourf(X0, X1, Yh, levels = levels)
+fig.colorbar(cb)
+Y = u([X0, X1])
+cl = ax.contour(X0, X1, Y, levels = levels, colors='w')
+ax.clabel(cl)
+plt.show()
+\end{lstlisting}
+\end{ex}
+
 Afim de determinarmos estimativas para o erro de interpolação, precisamos da chamada derivada total de primeira ordem
 \begin{equation}
   Df = \left(\left|\frac{\p f}{\p x_0}\right|^2 + \left|\frac{\p f}{\p x_1}\right|^2\right)^{1/2},
@@ -202,7 +293,7 @@ e da derivada total de segunda ordem
   D^2f = \left(\left|\frac{\p^2 f}{\p x_0^2}\right|^2 + \left|\frac{\p^2 f}{\p x_0\p x_1}\right|^2 + \left|\frac{\p^2 f}{\p x_1^2}\right|^2\right)^{1/2}.
 \end{equation}
 
-\begin{prop}\normalfont{(Erro da interpolação no espaço linear)}\label{prop:interpl}
+\begin{prop}\normalfont{(\hl{Erro da interpolação no espaço linear}.)}\label{prop:interpl}
   A interpolação $\pi f$ satisfaz as seguintes estimativas
   \begin{align}
     \|f - \pi f\|_{L^2(K)} &\leq Ch_K^2\|D^2f\|_{L^2(K)},\label{eq:interpl_0}\\
@@ -222,28 +313,59 @@ A interpolação no espaço $V_h$ de uma dada função $f$ no domínio $\Omega$ 
   \pi f = \sum_{i=0}^{n_p-1} f(N_i)\varphi_i.
 \end{equation}
 
-\begin{prop}\normalfont{(Erro da interpolação no espaço contínuo linear por partes)}\label{prop:interpc}
+\begin{prop}\normalfont{(\hl{Erro da interpolação no espaço contínuo linear por partes}.)}\label{prop:interpc}
   O interpolador $\pi f\in V_h$ satisfaz as seguintes estimativas
   \begin{align}
-    \|f - \pi f\|_{L^2(\Omega)}^2 &\leq C\sum_{K\in\mathcal{K}} h_K^4\|D^2 f\|_{L^2(K)}^2,\label{eq:interpc_0}\\
-    \|D(f - \pi f)\|_{L^2(\Omega)}^2 &\leq C\sum_{K\in\mathcal{K}} h_K^2\|D^2 f\|_{L^2(K)}^2,\label{eq:interpc_1}.
+    &\|f - \pi f\|_{L^2(\Omega)}^2 \leq C\sum_{K\in\mathcal{K}} h_K^4\|D^2 f\|_{L^2(K)}^2,\label{eq:interpc_0}\\
+    &\|D(f - \pi f)\|_{L^2(\Omega)}^2 \leq C\sum_{K\in\mathcal{K}} h_K^2\|D^2 f\|_{L^2(K)}^2,\label{eq:interpc_1}.
   \end{align}
 \end{prop}
 \begin{dem}
   Demonstração análoga a Proposição \ref{prop:interp_linpartes}.
 \end{dem}
 
-\ifispython
-\begin{ex}\label{ex:interp}
-Consideremos a função $f(x_0,x_1) = \sen(\pi x_0)\cos(\pi x_1)$ definida no domínio $D = [0, 1]\times [0, 1]$. O seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef2d/dados/ex_interp/ex_interp.py}{código} computa a interpolação de $f$ no espaço $V_h$ sobre uma malha triangular uniforme.
+\begin{obs}\normalfont{(\hl{Taxa de convergência}.)}
+  A taxa de convergência (ou ordem de truncamento) do erro de interpolação é definida como a potência do $h$ na estimativa \eqref{eq:interpc_0}. Esta taxa pode ser computacionalmente estimada. De fato, o erro de interpolação para uma dada malha $i$ tem a forma $\varepsilon_i \approx Ch_i^{r}$. Conhecendo $\varepsilon_{i-1} \approx Ch_{i-1}^{r}$ para uma outra malha $i-1$, podemos resolver para $r$, obtendo a estimativa
+  \begin{equation}\label{cap_mef2d_sec_interp:eq:conv_est}
+    r \approx \frac{\ln{\varepsilon_i/\varepsilon_{i-1}}}{\ln{h_i/h_{i-1}}}.
+  \end{equation}
+\end{obs}
 
-\verbatiminput{./cap_mef2d/dados/ex_interp/ex_interp.py}
+\begin{ex}\label{cap_mef2d_sec_interp:ex:interp_err}
+  Consideramos a interpolação feita no Exemplo~\ref{cap_mef2d_sec_interp:ex:interp2d}. Aqui, computamos o erro de interpolação na norma $L^2$, i.e.
+  \begin{equation}
+    \varepsilon = \|u_h - u\|_{L^2(\Omega)}
+  \end{equation}
+  para diferentes refinamentos de malha. 
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{cap_mef2d/dados/ex_interp_err/fig}
+    \caption{Tamanho da malha $h$ \textit{versus} erro de interpolação na norma $L^2$ referente ao Exemplo~\ref{cap_mef2d_sec_interp:ex:interp_err}.}
+  \end{figure}
+
+  Na Tabela~\ref{cap_mef2d_sec_interp:tab:interp_err}, temos o número de células e seu tamanho $h$, o erro de interpolação $\varepsilon$ e a estimativa da taxa de convergência dada por \eqref{cap_mef2d_sec_interp:eq:conv_est}.
+
+  \begin{table}[H]
+    \centering
+    \caption{Erro de interpolação referente ao Exemplo~\ref{cap_mef2d_sec_interp:ex:interp_err}.}
+    \begin{tabular}{cr|rr}\toprule
+      \#células & $h$ & $\epsilon$ & $r$ \\\midrule
+      $4\times 4$ & $3.5\times 10^{-1}$ & $6.0\times 10^{-2}$ & -x-\\
+      $8\times 8$ & $1.8\times 10^{-1}$ & $1.6\times 10^{-2}$ & 1.91\\
+      $16\times 16$ & $8.8\times 10^{-2}$ & $3.9\times 10^{-3}$ & 2.04 \\
+      $32\times 32$ & $4.4\times 10^{-2}$ & $9.8\times 10^{-4}$ & 1.99\\
+      $64\times 64$ & $2.2\times 10^{-2}$ & $2.4e\times 10^{-4}$ & 2.03\\\bottomrule
+    \end{tabular}
+    \label{cap_mef2d_sec_interp:tab:interp_err}
+  \end{table}
 \end{ex}
-\fi
 
-\subsection{Projeção $L^2$}
+\subsection{Exercícios}
+\badgeConstrucao
+
+\section{Projeção $L^2$}\label{cap_mef2d_sec_proj}
 \badgeRevisar
-
 
 A projeto $L^2$ no espaço $V_h$ de uma dada uma função $f\in L^2(\Omega)$  é denotada por $P_hf\in V_h$ e definida por
 \begin{equation}
@@ -290,10 +412,6 @@ Consideremos a função $f(x_0,x_1) = \sen(\pi x_0)\cos(\pi x_1)$ definida no do
 
 \subsection{Exercícios}
 \badgeRevisar
-
-\begin{exer}
-  Verifique computacionalmente a Proposição \ref{prop:interpc} no caso da função $f(x_0,x_1) = \sen(\pi x_0)\cos(\pi x_1)$ interpolada sobre uma malha triangular uniforme sobre o domínio $D = [0, 1]\times [0, 1]$.
-\end{exer}
 
 \begin{exer}
   Verifique computacionalmente a estimativa \eqref{eq:erro_projec_2d} no caso da função $f(x_0,x_1) = \sen(\pi x_0)\cos(\pi x_1)$ projetada sobre uma malha triangular uniforme sobre o domínio $D = [0, 1]\times [0, 1]$.
