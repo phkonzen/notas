@@ -187,9 +187,6 @@ else:
 \section{Interpolação}\label{cap_mef2d_sec_interp}
 \badgeRevisar
 
-\subsection{Interpolação}
-\badgeRevisar
-
 Dada uma função contínua $f$ em um triângulo $K$ com nodos $N_i$, $i=0, 1, 2$, sua interpolação linear $\pi f \in P_1(K)$ é definida por
 \begin{equation}
   \pi f = \sum_{i=0}^3 f(N_i)\varphi_i.
@@ -364,51 +361,89 @@ A interpolação no espaço $V_h$ de uma dada função $f$ no domínio $\Omega$ 
 \subsection{Exercícios}
 \badgeConstrucao
 
-\section{Projeção $L^2$}\label{cap_mef2d_sec_proj}
+\section{Projeção}\label{cap_mef2d_sec_proj}
 \badgeRevisar
 
-A projeto $L^2$ no espaço $V_h$ de uma dada uma função $f\in L^2(\Omega)$  é denotada por $P_hf\in V_h$ e definida por
-\begin{equation}
-  \int_\Omega (f-P_hf)v\,dx = 0,~\forall v\in V_h.
+\hl{A \emph{projeção} $L^2$ no espaço $V_h$ de uma dada uma função $u\in L^2(\Omega)$ \emph{é denotada por} $P_hu\in V_h$ \emph{e definida por}}
+\begin{equation}\hleq
+  \int_\Omega (u-P_hu)v\,dx = 0,~\forall v\in V_h.
 \end{equation}
 
-Analogamente a projeção em uma dimensão (veja Subseção \ref{subsec:projecao_1d}), a projeção
-\begin{equation}
-  P_h f = \sum_{j=0}^{n_p-1} \xi_j\varphi_j,
+Analogamente a projeção em uma dimensão (consulte Subseção \ref{subsec:projecao_1d}), a projeção é dada por
+\begin{equation}\hleq
+  P_h u = \sum_{j=0}^{n_p-1} \xi_j\varphi_j,
 \end{equation}
-onde $\xi_j$ satisfaz o sistema linear
-\begin{equation}
+com $\pmb{\xi} = (\xi_j)_{j=0}^{n_p-1}$ satisfazendo o sistema linear
+\begin{equation}\hleq
   M\pmb{\xi} = \pmb{b},
 \end{equation}
-onde $M = [m_{i,j}]_{i,j=0}^{n_p-1}$ é a matriz de massa com
-\begin{equation}
+onde $M = [m_{i,j}]_{i,j=0}^{n_p-1}$ é a \emph{matriz de massa} com
+\begin{equation}\hleq
   m_{i,j} = \int_{\Omega} \varphi_i\varphi_j\,dx
 \end{equation}
-e $\pmb{b} = (b_1,~b_2,~\dotsc,~b_{n_p-1})$ é o vetor de carga com
-\begin{equation}
-  b_i = \int_\Omega f\varphi_i\,dx.
+e $\pmb{b} = (b_1,~b_2,~\dotsc,~b_{n_p-1})$ é o \emph{vetor de carga} com
+\begin{equation}\hleq
+  b_i = \int_\Omega u\varphi_i\,dx.
 \end{equation}
 
-Também, vale o resultado análogo da melhor aproximação (veja \ref{teo:melhor_aprox}), i.e.
-\begin{equation}
-  \|f-P_hf\|_{L^2(\Omega)} \leq \|f - v\|_{L^2(\Omega)},\quad\forall v\in V_h.
+Também, vale o resultado análogo da \hlemph{melhor aproximação} (consulte Teorema~\ref{teo:melhor_aprox}), i.e.
+\begin{equation}\hleq
+  \|u-P_hu\|_{L^2(\Omega)} \leq \|u - v\|_{L^2(\Omega)},\quad\forall v\in V_h.
 \end{equation}
-E, portanto, também temos a estimativa análoga para o erro de projeção (veja \ref{teo:erro_proj_1d})
-\begin{equation}
-  \|f-P_hf\|_{L^2(\Omega)}^2 \leq C\sum_{K\in\mathcal{K}} h_K^4\|D^2 f\|_{L^2(K)}^2.
+E, portanto, também temos a estimativa análoga para o \hlemph{erro de projeção} (condulte Teorema~\ref{teo:erro_proj_1d})
+\begin{equation}\hleq
+  \|u-P_hu\|_{L^2(\Omega)}^2 \leq C\sum_{K\in\mathcal{K}} h_K^4\|D^2 u\|_{L^2(K)}^2.
 \end{equation}
 Tomando o tamanho global da malha, temos
-\begin{equation}\label{eq:erro_projec_2d}
+\begin{equation}\label{eq:erro_projec_2d}\hleq
   \|f-P_hf\|_{L^2(\Omega)} \leq Ch^2\|D^2 f\|_{L^2(K)}.
 \end{equation}
 
-\ifispython
-\begin{ex}\label{ex:projec}
-Consideremos a função $f(x_0,x_1) = \sen(\pi x_0)\cos(\pi x_1)$ definida no domínio $D = [0, 1]\times [0, 1]$. O seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MetodoElementosFinitos/cap_mef2d/dados/ex_projec/ex_projec.py}{código} computa a projeção de $f$ no espaço $V_h$ sobre uma malha triangular uniforme.
+\begin{ex}\label{cap_mef2d_sec_proj:ex:proj}
+Consideramos a função $u(x_0,x_1) = \sen(\pi x_0)\cos(\pi x_1)$ definida no domínio $D = [0, 1]\times [0, 1]$. código computa a projeção de $u$ no espaço $V_h$ sobre uma malha triangular uniforme.
+\begin{lstlisting}
+from mpi4py import MPI
+from dolfinx import mesh
 
-\verbatiminput{./cap_mef2d/dados/ex_projec/ex_projec.py}
+# malha
+domain = mesh.create_unit_square(MPI.COMM_WORLD, 16, 16)
+
+from dolfinx import fem
+
+# espaço de elementos finitos
+Vh = fem.functionspace(domain, ("P",1))
+
+# função do espaço V
+uh = fem.Function(Vh)
+
+# projeção
+import ufl
+from dolfinx.fem.petsc import LinearProblem
+def uex(x, mod=ufl):
+    return mod.sin(mod.pi*x[0])*mod.sin(mod.pi*x[1])
+
+x = ufl.SpatialCoordinate(domain)
+u = ufl.TrialFunction(Vh)
+v = ufl.TestFunction(Vh)
+a = ufl.dot(u,v)*ufl.dx
+L = uex(x)*v*ufl.dx
+problem = LinearProblem(a, L, bcs=[])
+Phu = problem.solve()
+
+# saída (paraview)
+from dolfinx import io
+from pathlib import Path
+results_folder = Path("results")
+results_folder.mkdir(exist_ok=True, parents=True)
+filename = results_folder / "phu"
+Phu.name = "Phu"
+with io.VTXWriter(domain.comm, filename.with_suffix(".bp"), [Phu]) as vtx:
+    vtx.write(0.0)
+with io.XDMFFile(domain.comm, filename.with_suffix(".xdmf"), "w") as xdmf:
+    xdmf.write_mesh(domain)
+    xdmf.write_function(Phu, 0.0)
+\end{lstlisting}
 \end{ex}
-\fi
 
 \subsection{Exercícios}
 \badgeRevisar

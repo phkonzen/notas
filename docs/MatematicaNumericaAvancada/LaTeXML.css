@@ -29,10 +29,11 @@
 .ltx_page_footer:before {
     content:"."; display:block; height:0; clear:both; visibility:hidden; }
 
-.ltx_page_logo     { font-size:80%; margin-top: 5px; clear:both; float:right; }
-.ltx_page_logo a   { font-variant: small-caps; }
+.ltx_page_logo     { font-size:90%; margin-top: 5px; clear:both; float:right; }
+a.ltx_LaTeXML_logo { text-decoration: none; }
 .ltx_page_logo img { vertical-align:-3px; }
-
+.ltx_page_navbar .ltx_LaTeXML_logo,
+.ltx_page_logo .ltx_LaTeXML_logo { font-size:110%; }
 /* if shown */
 .ltx_page_navbar li { white-space:nowrap; display:block; overflow:hidden; }
 /* If ref got turned into span, it's "this section"*/
@@ -52,8 +53,9 @@
 .ltx_runin { display:inline; }
 .ltx_runin:after { content:" "; }
 .ltx_runin + .ltx_para,
-.ltx_runin + .ltx_para p,
-.ltx_runin + p { display:inline; }
+.ltx_runin + .ltx_para p:first-child,
+.ltx_runin + p:first-child {
+    display:inline; }
 
 .ltx_outdent { margin-left: -2em; }
 
@@ -88,16 +90,81 @@
 /*======================================================================
   Para level */
 .ltx_float {
-    margin: 1ex 3em 1ex 3em; }
-td.ltx_subfigure,
-td.ltx_subtable,
-td.ltx_subfloat { width:50%; }
+    margin: 1ex clamp(1em, 4.5%, 3em) 1ex clamp(1em, 4.5%, 3em); }
+
+/* Multiple subfigures via flexbox */
+.ltx_flex_figure {
+  display: flex;
+  flex-flow: row wrap;
+  width: auto;
+  max-width: 60rem;
+  position: relative;
+  justify-content: center;
+  align-items: baseline;
+  object-fit: contain;
+  margin-bottom: 1rem;
+}
+
+.ltx_flex_size_1,
+.ltx_flex_size_1 .ltx_tabular,
+.ltx_flex_size_1 .ltx_graphics {
+  max-width:60rem;
+}
+.ltx_flex_size_2,
+.ltx_flex_size_2 .ltx_tabular,
+.ltx_flex_size_2 .ltx_graphics {
+  max-width: calc(0.44*60rem);
+}
+.ltx_flex_size_3,
+.ltx_flex_size_3 .ltx_tabular,
+.ltx_flex_size_3 .ltx_graphics {
+  max-width: calc(0.30*60rem);
+}
+.ltx_flex_size_4,
+.ltx_flex_size_4 .ltx_tabular,
+.ltx_flex_size_4 .ltx_graphics {
+  max-width: calc(0.24*60rem);
+}
+/*Default: More than 4 items, tricky.
+  quite often intended to auto-reflow... */
+.ltx_flex_size_many,
+.ltx_flex_size_many .ltx_tabular,
+.ltx_flex_size_many .ltx_graphics {
+  max-width: calc(0.24*60rem);
+}
+
+/* flex row breaks */
+.ltx_flex_figure .ltx_flex_break {
+  flex-basis: 100%;
+  height: 0;
+}
+
+/* layout preference */
+.ltx_flex_figure .ltx_subgraphics,
+.ltx_flex_figure .ltx_subfigure,
+.ltx_flex_figure .ltx_subfloat,
+.ltx_flex_figure .ltx_subtable {
+  flex: 1 1 0px;
+  margin: 0.1rem;
+}
+.ltx_subgraphics, .ltx_subfigure, .ltx_subtable, .ltx_subfloat {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.ltx_subgraphics > .ltx_figure,
+.ltx_subfigure > .ltx_figure,
+.ltx_subtable > .ltx_figure,
+.ltx_subfloat > .ltx_figure {
+  margin:0em;
+}
+
 /* theorems, figure, tables, floats captions.. */
 /*======================================================================
  Blocks, Lists, Floats */
 .ltx_p,
 .ltx_quote,
 .ltx_block,
+.ltx_logical-block,
 .ltx_para {
     display: block; }
 
@@ -123,7 +190,12 @@ td.ltx_subfloat { width:50%; }
 .ltx_td.ltx_align_justify,  .ltx_th.ltx_align_justify { white-space:normal; }
 
 .ltx_tabular .ltx_tabular { width:100%; }
-.ltx_inline-block { display:inline-block; }
+.ltx_inline-block,
+.ltx_inline-logical-block { display:inline-block; }
+
+/* tabbing is always a standalone paragraph-level construct */
+.ltx_tabular.ltx_tabbing { 
+  display: table; }
 
 /* avoid padding when aligning adjacent columns, e.g. for split decimals */
 .ltx_norightpad { padding-right:0!important; }
@@ -162,18 +234,25 @@ table.ltx_eqn_eqnarray tr.ltx_eqn_lefteqn + tr td.ltx_align_right { min-width:2e
     display:block; }
 .ltx_itemize .ltx_item,
 .ltx_enumerate .ltx_item {
-    display: list-item; }
+    display: list-item; white-space:nowrap; }
 
 /* Position the tag to look like a normal item bullet. */
 li.ltx_item > .ltx_tag {
     display:inline-block; margin-left:-1.5em; min-width:1.5em;
     text-align:right; }
-.ltx_item .ltx_tag + .ltx_para,
-.ltx_item .ltx_tag + .ltx_para .ltx_p  { display:inline; }
+.ltx_item .ltx_tag + .ltx_para {
+    display:inline-block; vertical-align:top;}
+.ltx_item .ltx_tag + .ltx_para .ltx_p  {
+    display:inline; }
+.ltx_item > .ltx_para > .ltx_p:first-child {
+    text-indent:0em; }
+
+.ltx_item > .ltx_para > .ltx_p { margin-top:0em; margin-bottom:0em; }
+dd.ltx_item { margin-bottom:0.5em; }
 
 /* NOTE: Need to try harder to get runin appearance? */
 dl.ltx_description dt { margin-right:0.5em; float:left;
-                    font-weight:bold; font-size:95%; }
+                        font-weight:bold; font-size:95%; }
 dl.ltx_description dd { margin-left:5em; }
 dl.ltx_description dl.ltx_description dd { margin-left:3em; }
 
@@ -183,7 +262,7 @@ dl.ltx_description dl.ltx_description dd { margin-left:3em; }
 
 /* Bibliographies */
 .ltx_bibliography dt { margin-right:0.5em; float:left; }
-.ltx_bibliography dd { margin-left:3em; }
+.ltx_bibliography dd { margin-left: clamp(1em, 4.5%, 3em); }
 /*.ltx_biblist { list-style-type:none; }*/
 .ltx_bibitem { list-style-type:none; }
 .ltx_bibitem .ltx_tag { font-weight:bold; margin-left:-2em; width:3em; }
@@ -206,6 +285,7 @@ dl.ltx_description dl.ltx_description dd { margin-left:3em; }
 .ltx_float .ltx_listing {
     margin: 0; }
 .ltx_listingline { white-space:nowrap; min-height:1em; }
+.ltx_lst_space { white-space: pre; }
 .ltx_lst_numbers_left .ltx_listingline .ltx_tag {
     background-color:transparent;
     margin-left:-3em; width:2.5em;
@@ -220,7 +300,9 @@ dl.ltx_description dl.ltx_description dd { margin-left:3em; }
     position:absolute; left:0em;
     max-width:0em; text-align:right; }
 */
-.ltx_parbox {text-indent:0em; }
+.ltx_parbox {
+    text-indent:0em;
+    display: inline-block; }
 
 /* NOTE that it is CRITICAL to put position:relative outside & absolute inside!!
    I wish I understood why!
@@ -233,7 +315,9 @@ dl.ltx_description dl.ltx_description dd { margin-left:3em; }
     display:block;
     position:absolute;bottom:0pt;left:0pt; }
 .ltx_transformed_inner > .ltx_p {text-indent:0em; margin:0; padding:0; }
+
 /* If simulating a table (html5), try to get rowspan to work...sorta? */
+span.ltx_tabular { position:relative; }
 span.ltx_rowspan { position:absolute; top:0; bottom:0; }
 
 /* by default, p doesn't indent */
@@ -275,9 +359,23 @@ span.ltx_rowspan { position:absolute; top:0; bottom:0; }
 .ltx_td,
 .ltx_th      { display:table-cell; }
 
-.ltx_framed  { border:1px solid black;}
 .ltx_tabular .ltx_td,
 .ltx_tabular .ltx_th { padding:0.1em 0.5em; }
+.ltx_tabular .ltx_td.ltx_nopad_l,
+.ltx_tabular .ltx_th.ltx_nopad_l { padding-left:0; }
+.ltx_tabular .ltx_td.ltx_nopad_r,
+.ltx_tabular .ltx_th.ltx_nopad_r { padding-right:0; }
+
+/* min-height does NOT apply to tr! */
+.ltx_tabular .ltx_tr td:first-child::after,
+.ltx_tabular .ltx_tr th:first-child::after {
+   content: "";
+   display: inline-block;
+   vertical-align: top;
+   min-height: 1em;
+}
+
+
 /* regular lines */
 .ltx_border_t  { border-top:1px solid black; }
 .ltx_border_r  { border-right:1px solid black; }
@@ -294,6 +392,8 @@ span.ltx_rowspan { position:absolute; top:0; bottom:0; }
 .ltx_border_B  { border-bottom:1px solid gray; }
 .ltx_border_L  { border-left:1px solid gray; }
 /* Framing */
+.ltx_framed    { padding:3pt; }
+span.ltx_framed       { display:inline-block; text-indent:0; } /* avoid padding/margin collapse */
 .ltx_framed_rectangle { border-style:solid; border-width:1px; }
 .ltx_framed_top       { border-top-style:solid; border-top-width:1px; }
 .ltx_framed_left      { border-left-style:solid; border-left-width:1px; }
@@ -304,6 +404,8 @@ span.ltx_rowspan { position:absolute; top:0; bottom:0; }
                         border-bottom-style:solid; border-bottom-width:1px; }
 .ltx_framed_leftright { border-left-style:solid; border-left-width:1px;
                         border-right-style:solid; border-right-width:1px; }
+
+.ltx_rule { vertical-align: bottom; height: 0.4pt; width: 0.4pt; }
 
 /*======================================================================
  Misc */
@@ -326,11 +428,13 @@ span.ltx_rowspan { position:absolute; top:0; bottom:0; }
 .ltx_note:hover .ltx_note_content,
 .ltx_note .ltx_note_content:hover {
    display:block; position:absolute; z-index:10; }
+.ltx_note.ltx_marginpar_left { display:none; }
 
 .ltx_ERROR        { color:red; }
 .ltx_rdf          { display:none; }
 .ltx_missing      { color:red;}
 .ltx_nounicode    { color:red; }
+.ltx_nodisplay    { display:none; }
 /*======================================================================
  SVG (pgf/tikz ?) basics */
 
@@ -358,6 +462,22 @@ span.ltx_rowspan { position:absolute; top:0; bottom:0; }
 .ltx_font_smallcaps  { font-variant: small-caps; font-style:normal; }
 .ltx_font_oldstyle   { font-variant-numeric: oldstyle-nums; }
 .ltx_font_mathcaligraphic { font-family: "Lucida Calligraphy", "Zapf Chancery","URW Chancery L"; }
+/* Fallbacks for when content+mathvariant cannot be mapped to Unicode */
+.ltx_mathvariant_italic        { font-style: italic; }
+.ltx_mathvariant_bold          { font-weight: bold; }
+.ltx_mathvariant_bold-italic   { font-style: italic; font-weight: bold; }
+.ltx_mathvariant_sans-serif             { font-family: sans-serif; }
+.ltx_mathvariant-bold-sans-serif        { font-family: sans-serif; font-weight: bold; }
+.ltx_mathvariant-sans-serif-italic      { font-family: sans-serif; font-style: italic; }
+.ltx_mathvariant-bold-sans-serif-italic { font-family: sans-serif; font-style: italic; font-weight: bold; }
+.ltx_mathvariant_monospace     { font-family: monospace; }
+/* Can we say anything generic about double-struck, script or fraktur ? */
+.ltx_mathvariant_double-struck { font-weight: bold; }
+.ltx_mathvariant_script        { font-family: "Lucida Calligraphy", "Zapf Chancery","URW Chancery L", cursive; }
+.ltx_mathvariant_bold-script   { font-family: "Lucida Calligraphy", "Zapf Chancery","URW Chancery L", cursive; font-weight: bold; }
+.ltx_mathvariant-fraktur       { }/* ??? */
+.ltx_mathvariant_bold-fraktur  { font-weight: bold; }
+
 /*
 
 .ltx_font_mathscript { ? }
@@ -379,3 +499,11 @@ cite                 { font-style: normal; }
     transform: scaleY(-1); }
 
 /* .ltx_phantom handled in xslt */
+
+.ltx_minipage {
+  align-self: normal;
+  display: inline-block;
+}
+.ltx_minipage > .ltx_graphics {
+  max-width:100%;
+}

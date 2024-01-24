@@ -9,6 +9,7 @@ Modificado: 03/2023
 
 #pacotes do Python
 import os
+import sys
 from multiprocessing import Pool
 
 #classes
@@ -92,7 +93,7 @@ def build(id):
 
 #região paralelizada
 if __name__ == '__main__':
-    p = Pool()
+    p = Pool(processes=2)
     p.map(build,[api,
                  ci,
                  ead,
