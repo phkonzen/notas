@@ -176,10 +176,10 @@ class Index:
         body += '<div class="carousel-inner">'
 
         # anúncio
-        body += '<div class="carousel-item">'
-        body += self.add_anuncio(text = 'PPGMAp/UFRGS: Mestrado & Doutorado',
-                                 link = 'https://www.ufrgs.br/ppgmap',
-                                 status = 'primary')
+        body += '<div class="carousel-item active">'
+        body += self.add_anuncio(text = 'PPGMAp/UFRGS: Chamada Aluna(o) Especial 24/1',
+                                 link = 'https://www.ufrgs.br/ppgmap/?page_id=447',
+                                 status = 'warning')
         body += '</div>'
 
         # anúncio
@@ -187,13 +187,6 @@ class Index:
         body += self.add_anuncio(text = 'IME/UFRGS: Instituto de Matemática e Estatística',
                                  link = 'http://www.ufrgs.br/ime',
                                  status = 'primary')
-        body += '</div>'
-
-        # anúncio
-        body += '<div class="carousel-item active">'
-        body += self.add_anuncio(text = 'ICIPE 2024: Full papers 22-12-23',
-                                 link = 'https://icipe2024.org/',
-                                 status = 'warning')
         body += '</div>'
 
         # anúncio
