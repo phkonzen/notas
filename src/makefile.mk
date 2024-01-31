@@ -22,11 +22,12 @@ html: main.tex
 	cp -rvf ../fonts html/
 	latexml main.tex | latexmlpost \
         --splitat=section -splitnaming=label \
-	--css=../main.css \
-	--css="./fonts/cmun-serif.css" \
-	--format=html \
-	--javascript='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=MML_SVG' \
-	--dest=html/main.html -
+		--includestyles
+		--css=../main.css \
+		--css="./fonts/cmun-serif.css" \
+		--format=html \
+		--javascript='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=MML_SVG' \
+		--dest=html/main.html -
 	cp config-book.knd config.knd
 
 ########################################
@@ -34,8 +35,9 @@ html: main.tex
 ########################################
 
 epub: main.tex
+	cp config-epub.knd config.knd
+	latexmlc main.tex --dest=main.epub --includestyles
 	cp config-book.knd config.knd
-	latexmlc main.tex --dest=main.epub
 
 
 ########################################

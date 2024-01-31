@@ -7,6 +7,7 @@
 
 \newif\ifisbook         % O layout será book?
 \newif\ifishtml         % O layout será html?
+\newif\ifisepub         % O layout será epub?
 
 \newif\ifisoctave       % Códigos em octave?
 \newif\ifispython       % Códigos em python
@@ -28,7 +29,6 @@
 \usepackage[latin1,utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[portuguese]{babel}
-%\usepackage[fixlanguage]{babelbib}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %   Bibliografia
@@ -36,26 +36,15 @@
 \bibliographystyle{abbrv}
 
 %%%% copy and paste from PDF (correctly) %%%%
-% \usepackage{upquote}
 \usepackage{lmodern}
 \usepackage{textcomp}
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% %   Parágrafos sem indentação
+% %   Parágrafos e indentação
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% \newlength\tindent
-% \setlength{\tindent}{\parindent}
-\usepackage{parskip}
+% \usepackage{parskip}
 \usepackage{indentfirst}
-\setlength{\parindent}{1em}
-% \renewcommand{\indent}{\hspace*{\tindent}}
-
-\usepackage{fancyhdr}
-\pagestyle{fancy}
-\fancyhead[R]{\thepage}
-%\renewcommand{\headrulewidth}{0pt}
-%\fancyfoot[RE,RO]{\thepage}
-\fancyfoot[C]{{\small \href{https://notaspedrok.com.br}{Notas de Aula - Pedro Konzen} */* \href{https://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR}{Licença CC-BY-SA 4.0}}}
+% \setlength{\parindent}{1em}
 
 %%%% no blank pages between chapters %%%%
 \let\cleardoublepage\clearpage
@@ -79,9 +68,6 @@
 \usepackage{caption}
 \usepackage{subcaption}
 
-%\usepackage{graphics}
-%\usepackage{caption}
-
 %%%% links %%%%
 \usepackage[hyphens,spaces,obeyspaces]{url}
 \usepackage[pdfborder={0 0 0 [0 0]},colorlinks=true,linkcolor=blue,citecolor=blue,filecolor=blue,urlcolor=blue]{hyperref}
@@ -89,16 +75,17 @@
 % colors
 \usepackage{xcolor}
 
-
 %%%% code insert (verbatim) %%%%
 \usepackage{verbatim}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
 \usepackage{listings}
 \lstset { %
+  backgroundcolor=\color{backcolour},
   keywordstyle=\color{blue},
   linewidth=\textwidth,
   numbers=left,
-  numberstyle=\small,
-  stepnumber=1,    
+  numberstyle=\tiny,
+  stepnumber=1,
   firstnumber=1,
   numberfirstline=true,
   extendedchars=true,
@@ -139,7 +126,6 @@
 %%%% index %%%%
 \usepackage{makeidx}
 
-
 %%%% miscellaneous %%%%
 \usepackage{multicol}
 \usepackage{multirow}
@@ -154,15 +140,18 @@
 % MACROS E NOVOS COMANDOS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% % highlight
+% highlight & emphasis
 \usepackage{soulutf8}
-\newcommand{\hleq}[1]{\color{blue}#1}
-%\newcommand{\hl}[1]{\colorbox{yellow}{#1}}
 
-%emphasis \emph
+\newcommand{\hleq}[1]{\color{blue}#1}
 \DeclareTextFontCommand{\emph}{\bfseries}
+
 \newcommand{\hlemph}[1]{\hl{\textbf{#1}}}
 
+% \usepackage{realboxes}
+% \newcommand{\hlcode}[1]{\Colorbox{yellow}{#1}}
+
+% math funs & ops
 \newcommand{\arc}{\operatorname{arc}}
 \newcommand{\arctg}{\operatorname{arctg}}
 \newcommand{\cotg}{\operatorname{cotg}}
@@ -250,7 +239,6 @@
 
 \newcommand{\burgers}{\footnote{Jan Burgers, 1895 - 1981, físico neerlandês. Fonte: \href{https://pt.wikipedia.org/wiki/Jan_Burgers}{Wikipédia}.}}
 
-
 \newcommand{\cauchy}{\footnote{Augustin-Louis Cauchy, 1789-1857, matemático francês. Fonte: \href{https://pt.wikipedia.org/wiki/Augustin-Louis_Cauchy}{Wikipédia}.}}
 
 \newcommand{\cotes}{\footnote{Roger Cotes, 1682 - 1716, matemático inglês. Fonte: \href{https://pt.wikipedia.org/wiki/Roger_Cotes}{Wikipédia}.}}
@@ -269,8 +257,9 @@
 
 \newcommand{\fisher}{\footnote{Ronald Aylmer Fisher, 1890-1962, biólogo inglês. Fonte: \href{https://pt.wikipedia.org/wiki/Leonardo_Fibonacci}{Wikipédia}.}}
 
-
 \newcommand{\gauss}{\footnote{Johann Carl Friedrich Gauss, 1777 - 1855, matemático alemão. Fonte: \href{https://pt.wikipedia.org/wiki/Carl_Friedrich_Gauss}{Wikipédia}.}}
+
+\newcommand{\green}{\footnote{George Green, 1793 - 1841, matemático britânico. Fonte: \href{https://en.wikipedia.org/wiki/George_Green_(mathematician)}{Wikipedia}.}}
 
 \newcommand{\jacobi}{\footnote{Carl Gustav Jakob Jacobi, 1804 - 1851, matemático alemão. Fonte: \href{https://pt.wikipedia.org/wiki/Carl_Gustav_Jakob_Jacobi}{Wikipédia}.}}
 
@@ -336,10 +325,128 @@
 \newtheorem{exeresol}{ER}[section]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% + INTRUCOES PARA O FORMATO LIVRO
+% + INTRUCOES PARA O FORMATO PDF
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \ifisbook
-\input ../preambulo_book.tex
+
+% backgound grid
+% \usepackage[grid, gridunit=pt, gridcolor=gray!10, subgridcolor=blue!5]{eso-pic}
+\usepackage[grid, gridBG=true, gridunit=pt, gridcolor=blue!10, subgridcolor=blue!5]{eso-pic}
+% \usepackage[colorgrid=true]{eso-pic}
+
+% allow page breaks in equation enviroments
+\allowdisplaybreaks
+
+% fancy header and footnotes
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead[R]{\thepage}
+\fancyfoot[C]{{\small \href{https://notaspedrok.com.br}{Notas de Aula - Pedro Konzen} */* \href{https://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR}{Licença CC-BY-SA 4.0}}}
+
+
+% badges
+\usepackage[most]{tcolorbox}
+\newtcbox{\badge}[1][red]{
+  on line, 
+  arc=2pt,
+  colback=#1,
+  colframe=#1,
+  fontupper=\color{black},
+  % boxrule=1pt, 
+  % boxsep=0pt,
+  left=3pt,
+  right=3pt,
+  top=2pt,
+  bottom=2pt
+}
+
+\newcommand{\badgeConstrucao}{\badge[yellow]{Em construção}}
+\newcommand{\badgeRevisar}{\badge[yellow]{Em revisão}}
+\newcommand{\badgeRemover}{\badge[red]{Em remoção}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Exercises and Answers %%%%
+
+% exerícios para notas de aula
+\usepackage[answerdelayed,lastexercise]{exercise}
+\renewcommand{\ExerciseName}{E.}
+\usepackage{chngcntr}
+\counterwithin{Exercise}{section}
+\counterwithin{Answer}{section}
+\renewcommand{\ExerciseHeader}{\noindent\textbf{\ExerciseName\ExerciseHeaderNB.}~}
+\renewcommand{\AnswerHeader}{\textbf{\ExerciseName\ExerciseHeaderNB.}~}
+\newenvironment{exer}{\begin{Exercise}}{\end{Exercise}}
+\newenvironment{resp}{\begin{Answer}}{\end{Answer}}
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newenvironment{resol}
+{{\bfseries Solução.}}
+{
+  \begin{flushright}
+    $\Diamond$
+  \end{flushright}
+}
+
+\fi
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% + INTRUCOES PARA O FORMATO EPUB
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ifisepub
+
+% allow page breaks in equation enviroments
+\allowdisplaybreaks
+
+% badges
+\usepackage[most]{tcolorbox}
+\newtcbox{\badge}[1][red]{
+  on line, 
+  arc=2pt,
+  colback=#1,
+  colframe=#1,
+  fontupper=\color{black},
+  % boxrule=1pt, 
+  % boxsep=0pt,
+  left=3pt,
+  right=3pt,
+  top=2pt,
+  bottom=2pt
+}
+
+\newcommand{\badgeConstrucao}{\badge[yellow]{Em construção}}
+\newcommand{\badgeRevisar}{\badge[yellow]{Em revisão}}
+\newcommand{\badgeRemover}{\badge[red]{Em remoção}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Exercises and Answers %%%%
+
+% exerícios para notas de aula
+\usepackage[answerdelayed,lastexercise]{exercise}
+\renewcommand{\ExerciseName}{E.}
+\usepackage{chngcntr}
+\counterwithin{Exercise}{section}
+\counterwithin{Answer}{section}
+\renewcommand{\ExerciseHeader}{\noindent\textbf{\ExerciseName\ExerciseHeaderNB.}~}
+\renewcommand{\AnswerHeader}{\textbf{\ExerciseName\ExerciseHeaderNB.}~}
+\newenvironment{exer}{\begin{Exercise}}{\end{Exercise}}
+\newenvironment{resp}{\begin{Answer}}{\end{Answer}}
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newenvironment{resol}
+{{\bfseries Solução.}}
+{
+  \begin{flushright}
+    $\Diamond$
+  \end{flushright}
+}
+
 \fi
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

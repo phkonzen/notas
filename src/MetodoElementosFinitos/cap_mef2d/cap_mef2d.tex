@@ -456,54 +456,64 @@ with io.XDMFFile(domain.comm, filename.with_suffix(".xdmf"), "w") as xdmf:
   Verifique computacionalmente a estimativa \eqref{eq:erro_projec_2d} no caso da função $f(x_0,x_1) = \sen(\pi x_0)\cos(\pi x_1)$ projetada sobre uma malha triangular uniforme sobre o domínio $D = [0, 1]\times [0, 1]$.
 \end{exer}
 
-\section{Problema modelo}\label{cap_mef2d_sec_probmodelo}
+\section{Problema Modelo}\label{cap_mef2d_sec_probmodelo}
 \badgeRevisar
 
-Nesta seção, apresentaremos a aplicação do método de elementos finitos para a equação de Poisson\footnote{Siméon Denis Poisson, 1781 - 1840, matemático francês. Fonte: \href{https://en.wikipedia.org/wiki/Sim\%C3\%A9on_Denis_Poisson}{Wikipedia}.} com condições de Dirichlet\footnote{Johann Peter Gustav Lejeune Dirichlet, 1805 - 1859, matemático alemão. Fonte: \href{https://en.wikipedia.org/wiki/Peter_Gustav_Lejeune_Dirichlet}{Wikipedia}.}, i.e.: encontrar $u$ tal que
-\begin{align}
-  -\Delta u &= f,~x\in\Omega,\label{eq:mef2d_pm_eq}\\
-  u &= 0,~x\in\p\Omega,\label{eq:mef2d_pm_bc}
+Nesta seção, aplicamos do \emph{método de elementos finitos para a equação de Poisson}{\poisson} com condições de Dirichlet{\dirichlet}. Mais precisamente, definimos o chamdo \hlemph{problema forte}: encontrar $u$ tal que
+\begin{align}\hleq
+  &-\Delta u = f, ~x\in\Omega:=[0,1]^2,\label{eq:mef2d_pm_eq}\\
+  &u = 0, ~x\in\p\Omega,\label{eq:mef2d_pm_bc}
 \end{align}
-onde $\Delta = \p^2/\p x_0^2 + \p^2/\p x_1^2$ é o operador de Laplace\footnote{Pierre-Simon, marquis de Laplace, 1749 - 1827, matemático francês. Fonte: \href{https://en.wikipedia.org/wiki/Pierre-Simon_Laplace}{Wikipedia}.} e $f$ é uma função dada.
+onde $\Delta = \p^2/\p x_0^2 + \p^2/\p x_1^2$ é o operador de Laplace{\laplace} e $f$ é uma função dada.
 
-\subsection{Formulação variacional}
+\subsection{Formulação Fraca}
 \badgeRevisar
 
-A aplicação do método de elementos finitos é construída sobre a formulação fraca do problema \eqref{eq:mef2d_pm_eq}-\eqref{eq:mef2d_pm_bc}. Para obtermos esta, multiplicamos \eqref{eq:mef2d_pm_eq} por uma função teste $v$ em um espaço adequado $V_0$ e integramos no domínio $\Omega$, i.e.
+\hl{A aplicação do método de elementos finitos é construída sobre a \emph{formulação fraca} do problema} \eqref{eq:mef2d_pm_eq}-\eqref{eq:mef2d_pm_bc}. Para a obtermos, multiplicamos \eqref{eq:mef2d_pm_eq} por uma função teste $v$ em um espaço adequado $V_0$ e integramos no domínio $\Omega$, obtendo
 \begin{equation}
-  - \int_\Omega \Delta uv\,dx = \int_\Omega fv\,dx.
+  - \int_\Omega \Delta u\,v\,dx = \int_\Omega fv\,dx.
 \end{equation}
-Então, usando a fórmula de Green\footnote{George Green, 1793 - 1841, matemático britânico. Fonte: \href{https://en.wikipedia.org/wiki/George_Green_(mathematician)}{Wikipedia}.}, obtemos
+Então, no lado esquerdo, aplicamos a fórmula de Green{\green}
 \begin{equation}
-  \int_\Omega \nabla u\cdot\nabla v\,dx - \int_{\p\Omega} n\cdot\nabla uv\,ds.
+  \int_\Omega \Delta u\,v\,dx = -\int_\Omega \nabla u\cdot\nabla v\,dx + \int_{\p\Omega} \pmb{n}\cdot\nabla u\,v\,ds.
 \end{equation}
-Então, observando critérios de regularidade e a condição de contorno \eqref{eq:mef2d_pm_bc}, escolhemos
+donde temos
 \begin{equation}
-  V_0 := \{v\in H^1(\Omega):~v|_{\p\Omega}=0\}.
+  \int_\Omega \nabla u\cdot\nabla v\,dx - \int_{\p\Omega} \pmb{n}\cdot\nabla uv\,ds = \int_\Omega fv\,dx.
+\end{equation}
+
+Então, observando critérios de regularidade e a condição de contorno \eqref{eq:mef2d_pm_bc}, escolhemos o \hlemph{espaço teste}
+\begin{equation}\hleq
+  V_0 := \{v\in H^1(\Omega): ~v|_{\p\Omega}=0\}.
 \end{equation}
 Lembramos que $H^1(\Omega) = \{v:~\|v\|_{L^2(\Omega)}+\|\nabla v\|_{L^2(\Omega)}<\infty\}$.
 
-Com isso, temos o seguinte problema fraco associado a \eqref{eq:mef2d_pm_eq}-\eqref{eq:mef2d_pm_bc}: encontrar $u\in V_0$ tal que
-\begin{equation}\label{eq:mef2d_probfraco}
+Com isso, temos o seguinte \hl{\emph{problema fraco} associado} a \eqref{eq:mef2d_pm_eq}-\eqref{eq:mef2d_pm_bc}: encontrar $u\in V_0$ tal que
+\begin{equation}\label{eq:mef2d_probfraco}\hleq
   a(u,v) = L(v),~\forall v\in V_0,
 \end{equation}
-onde $a(u, v)$ é chamada de forma bilinear e definida por
-\begin{equation}
+onde $a(u, v)$ é chamada de \hlemph{forma bilinear} e definida por
+\begin{equation}\hleq
   a(u,v) := \int_\Omega \nabla u\cdot\nabla v\,dx
 \end{equation}
-e $L(v)$ é chamada de forma linear e definida por
-\begin{equation}
+e $L(v)$ é chamada de \hlemph{forma linear} e definida por
+\begin{equation}\hleq
   L(v) := \int_\Omega fv\,dx.
 \end{equation}
 
-\subsection{Formulação de elementos finitos}
+\subsection{Formulação de Elementos Finitos}
 \badgeRevisar
 
-A formulação de elementos finitos é obtida da formulação fraca \eqref{eq:mef2d_probfraco} pela aproximação do espaço teste $V_0$ por uma espaço de dimensão finita. Tomando uma triangulação $\mathcal{K}\subset\Omega$ e considerando o espaço contínuo dos polinômios lineares por partes
-\begin{equation}
+\hl{A \emph{formulação de elementos finitos} é obtida da formulação fraca {\eqref{eq:mef2d_probfraco}} pela aproximação do espaço teste $V_0$ por uma espaço de dimensão finita}. Tomando uma triangulação $\mathcal{K}\subset\Omega$ e considerando o espaço contínuo dos polinômios lineares por partes
+\begin{equation}\hleq
   V_h := \{v:~v\in C^0(\Omega), v|_K\in P_1(K)~\forall K\in\mathcal{K}\},
 \end{equation}
-assumimos também o subconjunto $V_{h,0}:= \{v\in V_h:~v|_{\p\Omega}=0\}$.
+assumimos o espaço de elementos finitos
+\begin{equation}
+  V_{h,0}:= \{v\in V_h:~v|_{\p\Omega}=0\}.
+\end{equation}
+  
+\end{equation}
 
 Com isso, temos o seguinte problema de elementos finitos associado \eqref{eq:mef2d_probfraco}: encontrar $u_h\in V_{h,0}$ tal que
 \begin{equation}\label{eq:mef2d_probfem}
