@@ -5,7 +5,7 @@
 ########################################
 
 pdf: main.tex
-	cp config-book.knd config.knd
+	cp ../config-book.knd config.knd
 	pdflatex main
 	pdflatex main
 	pdflatex main
@@ -16,28 +16,27 @@ pdf: main.tex
 ########################################
 
 html: main.tex
-	cp config-html.knd config.knd
+	cp ../config-html.knd config.knd
 	rm -rvf ./html
 	mkdir -p ./html
 	cp -rvf ../fonts html/
-	latexml main.tex | latexmlpost \
+	latexmlc main.tex \
         --splitat=section -splitnaming=label \
-		--includestyles
+		--includestyles \
 		--css=../main.css \
 		--css="./fonts/cmun-serif.css" \
 		--format=html \
 		--javascript='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=MML_SVG' \
 		--dest=html/main.html -
-	cp config-book.knd config.knd
+	cp ../config-book.knd config.knd
 
 ########################################
 # FORMATO EPUB
 ########################################
 
 epub: main.tex
-	cp config-epub.knd config.knd
+	cp ../config-book.knd config.knd
 	latexmlc main.tex --dest=main.epub --includestyles
-	cp config-book.knd config.knd
 
 
 ########################################
@@ -49,6 +48,8 @@ all: main.tex
 	make pdf
 	make clean
 	make html
+	make clean
+	make epub
 
 
 .PHONY: clean
