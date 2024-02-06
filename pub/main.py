@@ -14,7 +14,7 @@ from multiprocessing import Pool
 
 #classes
 from index import *
-from politica import *
+from infos import *
 from sitemap import *
 # from analisematematicai import *
 from algoritmosprogramacaoi import *
@@ -55,8 +55,8 @@ index = Index(odir)
 index.build()
 
 #politica.html
-politica = Politica(odir)
-politica.build()
+infos = Infos(odir)
+infos.build()
 
 #contato.html
 os.system('cp contato.html '+odir+'/')
@@ -93,7 +93,7 @@ def build(id):
 
 #região paralelizada
 if __name__ == '__main__':
-    p = Pool(processes=2)
+    p = Pool(processes=4)
     p.map(build,[api,
                  ci,
                  ead,

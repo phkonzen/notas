@@ -4,8 +4,8 @@ all: main.py
 Index: mainIndex.py
 	python3 mainIndex.py
 
-Politica: mainPolitica.py
-	python3 mainPolitica.py
+Infos: mainInfos.py
+	python3 mainInfos.py
 
 AlgoritmosProgramacaoI: mainAlgoritmosProgramacaoI.py
 	python3 mainAlgoritmosProgramacaoI.py

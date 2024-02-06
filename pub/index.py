@@ -3,7 +3,7 @@
 index.html
 
 Autor: Pedro H A Konzen - 05/2018
-Modificado: 03/2023
+Modificado: 02/2024
 '''
 
 import os
@@ -26,11 +26,6 @@ class Index:
         head += '<title>Notas de Aula</title>'
         head += '<meta name="author" content="Pedro H A Konzen">'
         head += '<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">'
-
-        # # bootstrap 5.1.3
-        # head += '<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">'
-        # head += '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">'
-        # head += '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>'
 
         # bootstrap 5.3.0
         head += '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">'
@@ -129,7 +124,6 @@ class Index:
         body += '<div class="collapse navbar-collapse" id="navbarNav">'
         body += '<ul class="navbar-nav">'
         body += '<li class="nav-item"><a class="nav-link active" href="index.html"><i class="fas fa-home"></i> Início</a></li>'
-        # body += '<li class="nav=item"><a class="nav-link" href="https://colab.research.google.com/github/phkonzen/notas/blob/master/notas.ipynb">Google Colab</a></li>'
         body += '<li class="nav-item dropdown">'
         body += '<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">'
         body += 'Contato'
@@ -140,7 +134,8 @@ class Index:
         body += '</div><!-- div class="dropdown-menu" aria-labelledby="navbarDropdown" -->'
         body += '</li> <!-- li class="nav-item dropdown" -->'
         body += '<li class="nav-item"><a class="nav-link" href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i> Repo</a></li>'
-        body += '<li class="nav-item"><a class="nav-link" href="./politica.html">Política de dados</a></li>'
+        body += '<li class="nav-item"><a class="nav-link" href="./infos.html#colabore"><i class="fa-solid fa-heart" style="color:red;"></i> Colabore</a></li>'
+        body += '<li class="nav-item"><a class="nav-link" href="./infos.html#politica">Política de dados</a></li>'
         body += '</ul>'
         body += '</div><!-- /.navbar-collapse -->'
         body += '</div><!-- /.container-fluid -->'

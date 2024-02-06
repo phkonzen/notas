@@ -4,7 +4,7 @@
 Classe das notas de aula.
 
 Autor: Pedro H A Konzen - 05/2018
-Modificado: 03/2023
+Modificado: 02/2024
 '''
 
 import os
@@ -63,11 +63,11 @@ class Notas:
         text += 'border-color: green;'        
         text += '}'
 
-        text += '.ltx_lst_numbers_left .ltx_listingline .ltx_tag {'
-        text += 'margin-left: 0em;'
-        text += 'text-align: right;'
-        text += 'position: relative;'
-        text += '}'
+        # text += '.ltx_lst_numbers_left .ltx_listingline .ltx_tag {'
+        # text += 'margin-left: 0em;'
+        # text += 'text-align: right;'
+        # text += 'position: relative;'
+        # text += '}'
 
         text += '.ltx_graphics {'
         text += 'max-width: 100%;'
@@ -93,10 +93,6 @@ class Notas:
         head = ''
         
         head += '<meta name="author" content="Pedro H A Konzen"/>'
-
-        # # BootstrapCDN v.5.1
-        # head += '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">'
-        # head += '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>'
 
         # bootstrap 5.3.0
         head += '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">'
@@ -134,7 +130,7 @@ class Notas:
 
         # colab alert
         f = open('colab_alert.html','r')
-        aux = f.read().replace('./contato.html','../contato.html')
+        aux = f.read().replace('./infos.html','../infos.html')
         aux = aux.replace('<!-- subs:screen_rotation_icon -->',
                           '<span class="material-symbols-outlined m-0">screen_rotation</span>')
         body += aux
@@ -142,7 +138,7 @@ class Notas:
 
         # general alert
         f = open('general_alert.html','r')
-        body += f.read().replace('./politica.html','../politica.html')
+        body += f.read().replace('./infos.html','../infos.html')
         f.close()
 
         
@@ -170,7 +166,8 @@ class Notas:
         body += '</div><!-- div class="dropdown-menu" aria-labelledby="navbarDropdown" -->'
         body += '</li> <!-- li class="nav-item dropdown" -->'
         body += '<li class="nav-item"><a class="nav-link" href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i> Repo</a></li>'
-        body += '<li class="nav-item"><a class="nav-link" href="../politica.html">Política de dados</a></li>'
+        body += '<li class="nav-item"><a class="nav-link" href="../infos.html#colabore"><i class="fa-solid fa-heart" style="color:red;"></i> Colabore</a></li>'
+        body += '<li class="nav-item"><a class="nav-link" href="../infos.html#politica">Política de dados</a></li>'
         body += '</ul>'
         body += '</div><!-- /.navbar-collapse -->'
         body += '</div><!-- /.container-fluid -->'

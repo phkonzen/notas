@@ -1,13 +1,13 @@
 #!/usr/bin/python3
 '''
-politica.html
+infos.html
 
-Autor: Pedro H A Konzen - 05/2021
+Autor: Pedro H A Konzen - 02/2024
 '''
 
 import os
 
-class Politica:
+class Infos:
     
     def __init__(self,odir):
         self.odir = odir
@@ -22,13 +22,9 @@ class Politica:
         head = '<head>'
         
         head += '<meta charset="utf-8">'
-        head += '<title>Notas de aula - Política de Uso de Dados</title>'
+        head += '<title>Notas de aula - Informações</title>'
         head += '<meta name="author" content="Pedro H A Konzen"/>'
         head += '<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">'
-
-        # # bootstrap 5.1.3
-        # head += '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">'
-        # head += '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>'
 
         # bootstrap 5.3.0
         head += '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">'
@@ -69,14 +65,13 @@ class Politica:
         body += '<!-- begin: navbar -->'
         body += '<nav class="navbar navbar-dark bg-primary mb-1">'
         body += '<div class="container-fluid">'
-        body += '<a class="navbar-brand" href="main.html">Notas de Aula<br/><small>Política de Dados</small></a>'
+        body += '<a class="navbar-brand" href="main.html">Notas de Aula<br/><small>Informações</small></a>'
         body += '<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">'
         body += '<span class="navbar-toggler-icon"></span>'
         body += '</button>'
         body += '<div class="collapse navbar-collapse" id="navbarNav">'
         body += '<ul class="navbar-nav">'
         body += '<li class="nav-item"><a class="nav-link" href="index.html"><i class="fas fa-home"></i> Início</a></li>'
-        # body += '<li class="nav=item"><a class="nav-link" href="https://colab.research.google.com/github/phkonzen/notas/blob/master/notas.ipynb">Google Colab</a></li>'
         body += '<li class="nav-item dropdown">'
         body += '<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">'
         body += 'Contato'
@@ -87,7 +82,8 @@ class Politica:
         body += '</div><!-- div class="dropdown-menu" aria-labelledby="navbarDropdown" -->'
         body += '</li> <!-- li class="nav-item dropdown" -->'
         body += '<li class="nav-item"><a class="nav-link" href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i> Repo</a></li>'
-        body += '<li class="nav-item"><a class="nav-link active" href="./politica.html">Política de Dados</a></li>'
+        body += '<li class="nav-item"><a class="nav-link active" href="./infos.html#colabore"><i class="fa-solid fa-heart" style="color:red;"></i> Colabore</a></li>'
+        body += '<li class="nav-item"><a class="nav-link" href="./infos.html#politica">Política de Dados</a></li>'
         body += '</ul>'
         body += '</div><!-- /.navbar-collapse -->'
         body += '</div><!-- /.container-fluid -->'
@@ -100,7 +96,24 @@ class Politica:
         
         #miolo
 
-        body += '<h3 class="mt-1">Política de uso de dados</h3>'
+        ## Como Colaborar
+        body += '<h3 id="colabore" class="mt-3"><i class="fa-solid fa-heart" style="color:red;"></i> Colabore</h3>'
+        body += '<p>Há várias formas de colaborar com as <a href="./main.html">Notas de Aula</a>:</p>'
+        body += '<ul>'
+        body += '<li>Envie <strong>avisos de erro</strong> ou <strong>sugestões</strong> usando o <a href="./contato.html"><i class="fas fa-envelope"></i> Formulário de Contato</a> do site.</li>'
+        body += '<li>Envie <strong>avisos de erro</strong> ou <strong>sugestões</strong> abrindo um novo <strong><i>Issue</i></strong> ou colaborando em um já aberto no <a href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i> GitHub Repo</a> do site.</li>'
+        body += '<li>Siga as Notas de Aula nas redes sociais e compartilhe!  <i class="far fa-smile-wink"></i>'
+        body += '<ul>'
+        body += '<li>Instagram: <a href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i> notas.pedrok</a></li>'
+        body += '<li>YouTube: <a href="https://www.youtube.com/channel/UCwutHKlKLgVj6IkFSUFBqoA"><i class="fab fa-youtube"></i> notas.pedrok</a></li>'
+        body += '<li>GitHub: <a href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i> phkonzen/notas</a></li>'
+        body += '</ul>'
+        body += '</li>'
+        body += '</ul>'
+
+        ## Política de uso de dados
+        body += '<hr>'
+        body += '<h3 id="politica" class="mt-3">Política de Uso de Dados</h3>'
 
         body += '<p>Ao nagevar por este site, você concorda estar ciente da coleta de dados pela utilização de <i>cookies</i> e tecnologias semelhantes. O administrador deste <i>site</i> tem acesso apenas a dados anonimizados e agrupados, sendo estes utilizados para fins de melhorar a experiência de navegação dos usuários do <i>site</i>. Eventualmente, estes dados poderão ser utilizados na publicidade do <i>site</i>.</p>'
 
@@ -108,7 +121,7 @@ class Politica:
 
         body += '<p>Este é um cookie usado para coletar dados referente aos acesso ao site para serem analisados pela ferramenta <a href="https://marketingplatform.google.com/about/analytics/?hl=en_US">Google Analytics</a>. Para mais informações, vise o site da ferramenta: <a href="https://marketingplatform.google.com/about/analytics">https://marketingplatform.google.com/about/analytics</a>.</p>'
 
-        body += '<h4 class="mt-1">Formulário de contato</h4>'
+        body += '<h4 class="mt-1">Formulário de Contato</h4>'
 
         body += '<p>Ao utilizar o formulário de contato o usuário enviará os dados fornecidos para o e-mail do administrador deste <i>site</i>. O formulário utiliza a ferramenta <a href="https://formspree.io">Formspree</a>. Para mais informações, visite o <i>site</i>: <a href="https://formspree.io">https://formspree.io</a>.</p>'
 
@@ -140,6 +153,6 @@ class Politica:
         self.empty_page()
         self.add_head()
         self.add_body()
-        f = open(self.odir + '/politica.html','w')
+        f = open(self.odir + '/infos.html','w')
         f.write(self.page)
         f.close()
