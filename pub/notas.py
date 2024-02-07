@@ -146,7 +146,7 @@ class Notas:
         body += '<!-- begin: navbar -->'
         body += '<nav class="navbar navbar-dark bg-primary mb-1">'
         body += '<div class="container-fluid">'
-        body += '<a class="navbar-brand" href="main.html">Notas de Aula<br/><small>'+titulo_notas+'</small></a>'
+        body += '<a class="navbar-brand" href="main.html">NotasPedroK<br/><small>'+titulo_notas+'</small></a>'
         body += '<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">'
         body += '<span class="navbar-toggler-icon"></span>'
         body += '</button>'

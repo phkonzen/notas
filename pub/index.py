@@ -23,7 +23,7 @@ class Index:
         head = '<head>'
         
         head += '<meta charset="utf-8">'
-        head += '<title>Notas de Aula</title>'
+        head += '<title>NotasPedroK</title>'
         head += '<meta name="author" content="Pedro H A Konzen">'
         head += '<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">'
 
@@ -117,7 +117,7 @@ class Index:
         body += '<!-- begin: navbar -->'
         body += '<nav class="navbar navbar-dark bg-primary mb-1">'
         body += '<div class="container-fluid">'
-        body += '<a class="navbar-brand" href="main.html">Notas de Aula<br/><small>Início</small></a>'
+        body += '<a class="navbar-brand" href="index.html">NotasPedroK<br/><small>Início</small></a>'
         body += '<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">'
         body += '<span class="navbar-toggler-icon"></span>'
         body += '</button>'

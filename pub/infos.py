@@ -22,7 +22,7 @@ class Infos:
         head = '<head>'
         
         head += '<meta charset="utf-8">'
-        head += '<title>Notas de aula - Informações</title>'
+        head += '<title>NotasPedroK - Informações</title>'
         head += '<meta name="author" content="Pedro H A Konzen"/>'
         head += '<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">'
 
@@ -65,7 +65,7 @@ class Infos:
         body += '<!-- begin: navbar -->'
         body += '<nav class="navbar navbar-dark bg-primary mb-1">'
         body += '<div class="container-fluid">'
-        body += '<a class="navbar-brand" href="infos.html">Notas de Aula<br/><small>Informações</small></a>'
+        body += '<a class="navbar-brand" href="infos.html">NotasPedroK<br/><small>Informações</small></a>'
         body += '<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">'
         body += '<span class="navbar-toggler-icon"></span>'
         body += '</button>'
@@ -98,14 +98,16 @@ class Infos:
 
         ## Como Colaborar
         body += '<h3 id="colabore" class="mt-3"><i class="fa-solid fa-heart" style="color:red;"></i> Colabore</h3>'
-        body += '<p>Há várias <strong>formas de colaborar</strong> com as <a href="./main.html">Notas de Aula</a>!</p>'
+        body += '<p>'
+        body += 'Há várias <strong>formas de colaborar</strong> com os materiais do site.'
+        body += '</p>'
         body += '<ul>'
         body += '<li>Envie <strong>avisos de erro</strong> ou <strong>sugestões</strong>...'
         body += '<ul>'
         body += '<li>usando o <a href="./contato.html"><i class="fas fa-envelope"></i> Formulário de Contato</a> do site.</li>'
         body += '<li>abrindo um novo <strong><i>Issue</i></strong> ou colaborando em um já aberto no <a href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i> GitHub Repo</a> do site.</li>'
         body += '</ul>'
-        body += '<li><strong>Siga</strong> as Notas de Aula nas redes sociais <strong>e compartilhe</strong>!  <i class="far fa-smile-wink"></i>'
+        body += '<li><strong>Siga</strong> NotasPedroK nas redes sociais <strong>e compartilhe</strong>!  <i class="far fa-smile-wink"></i>'
         body += '<ul>'
         body += '<li>Instagram: <a href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i> notas.pedrok</a></li>'
         body += '<li>YouTube: <a href="https://www.youtube.com/channel/UCwutHKlKLgVj6IkFSUFBqoA"><i class="fab fa-youtube"></i> notas.pedrok</a></li>'
