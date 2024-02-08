@@ -220,69 +220,6 @@ class Index:
                               color = "warning", status = "Atualizando")
         body += '</div>'
 
-        # card: Redes Neurais Artificiais
-        body += '<div class="col">'
-        body += self.new_card(header = "Notas de Aula",
-                              title = "Redes Neurais Artificiais",
-                              text = "Introdução às Redes Neurais Artificiais",
-                              badges = ["Python", "PyTorch"],
-                              link = "RedesNeuraisArtificiais/main.html",
-                              color = "warning", status = "Novo")
-        body += '</div>'
-
-
-        # card: Método de Elementos Finitos
-        body += '<div class="col">'
-        body += self.new_card(header = "Notas de Aula",
-                              title = "Método dos Elementos Finitos",
-                              text = "Introdução ao método dos elementos finitos",
-                              badges = ["Python", "FEniCSx"],
-                              link = "MetodoElementosFinitos/main.html",
-                              color = "warning", status = "Atualizando")
-        body += '</div>'
-
-        # card: notas de aula de Matemática Numérica Paralela
-        body += '<div class="col">'
-        body += self.new_card(header = "Notas de Aula",
-                              title = "Matemática Numérica Paralela",
-                              text = "Introdução à computação paralela a métodos numéricos",
-                              badges = ["C/C++", "OpenMP", "OpenMPI"],
-                              link = "MatematicaNumericaParalela/main.html",
-                              color = "warning", status = "Atualizando")
-        body += '</div>'
-
-
-        # card: Geometria analítica
-        body += '<div class="col">'
-        body += self.new_card(header = "Notas de Aula",
-                              title = "Geometria Analítica",
-                              text = "Introdução a geometria analítica",
-                              badges = [],
-                              link = "GeometriaAnalitica/main.html",
-                              color = "warning", status = "Atualizando")
-        body += '</div>'
-
-        # card: Vetores
-        body += '<div class="col">'
-        body += self.new_card(header = "Notas de Aula",
-                              title = "Vetores",
-                              text = "Vetores no espaço euclidiano tridimensional",
-                              badges = [],
-                              link = "Vetores/main.html",
-                              color = "warning", status = "Atualizando")
-        body += '</div>'
-
-        # card: notas de aula de Matemática Numérica II
-        body += '<div class="col">'
-        body += self.new_card(header = "Notas de Aula",
-                              title = "Matemática Numérica II",
-                              text = "Introdução a métodos numéricos para o cálculo de funções e resolução de equações diferenciais",
-                              badges = ["Python", "NumPy"],
-                              link = "MatematicaNumericaII/main.html",
-                              color = "warning", status = "Atualizando")
-        body += '</div>'
-
-
         # card: notas de aula de Cálculo I
         body += '<div class="col">'
         body += self.new_card(header = "Notas de Aula",
@@ -314,24 +251,14 @@ class Index:
         body += '</div>'
 
 
-        # # card: notas de aula de Matemática numérica
-        # body += '<div class="col">'
-        # body += self.new_card(header = "Notas de Aula",
-        #                       title = "Matemática Numérica",
-        #                       text = "Métodos e técnicas de cálculo numérico",
-        #                       badges = ["Octave"],
-        #                       link = "MatematicaNumerica/main.html",
-        #                       color = "secondary", status = "Antigo")
-        # body += '</div>'
-
-        # card: notas de aula de Matemática Numérica I
+        # card: Geometria analítica
         body += '<div class="col">'
         body += self.new_card(header = "Notas de Aula",
-                              title = "Matemática Numérica I",
-                              text = "Introdução a métodos numéricos para resolução de equações e para aproximação de funções",
-                              badges = ["Python", "NumPy"],
-                              link = "MatematicaNumericaI/main.html",
-                              color = "primary", status = "")
+                              title = "Geometria Analítica",
+                              text = "Introdução a geometria analítica",
+                              badges = [],
+                              link = "GeometriaAnalitica/main.html",
+                              color = "warning", status = "Atualizando")
         body += '</div>'
 
         # card: notas de aula de Matemática Numérica Avançada
@@ -344,7 +271,46 @@ class Index:
                               color = "primary", status = "")
         body += '</div>'
 
-        
+        # card: notas de aula de Matemática Numérica I
+        body += '<div class="col">'
+        body += self.new_card(header = "Notas de Aula",
+                              title = "Matemática Numérica I",
+                              text = "Introdução a métodos numéricos para resolução de equações e para aproximação de funções",
+                              badges = ["Python", "NumPy"],
+                              link = "MatematicaNumericaI/main.html",
+                              color = "primary", status = "")
+        body += '</div>'
+
+        # card: notas de aula de Matemática Numérica II
+        body += '<div class="col">'
+        body += self.new_card(header = "Notas de Aula",
+                              title = "Matemática Numérica II",
+                              text = "Introdução a métodos numéricos para o cálculo de funções e resolução de equações diferenciais",
+                              badges = ["Python", "NumPy"],
+                              link = "MatematicaNumericaII/main.html",
+                              color = "warning", status = "Atualizando")
+        body += '</div>'
+
+        # card: notas de aula de Matemática Numérica Paralela
+        body += '<div class="col">'
+        body += self.new_card(header = "Notas de Aula",
+                              title = "Matemática Numérica Paralela",
+                              text = "Introdução à computação paralela a métodos numéricos",
+                              badges = ["C/C++", "OpenMP", "OpenMPI"],
+                              link = "MatematicaNumericaParalela/main.html",
+                              color = "primary", status = "")
+        body += '</div>'
+
+        # card: Método de Elementos Finitos
+        body += '<div class="col">'
+        body += self.new_card(header = "Notas de Aula",
+                              title = "Método dos Elementos Finitos",
+                              text = "Introdução ao método dos elementos finitos",
+                              badges = ["Python", "FEniCSx"],
+                              link = "MetodoElementosFinitos/main.html",
+                              color = "primary", status = "")
+        body += '</div>'
+
         # card: Pré-Cálculo
         body += '<div class="col">'
         body += self.new_card(header = "Notas de Aula",
@@ -354,6 +320,27 @@ class Index:
                               link = "PreCalculo/main.html",
                               color = "primary", status = "")
         body += '</div>'
+
+        # card: Redes Neurais Artificiais
+        body += '<div class="col">'
+        body += self.new_card(header = "Notas de Aula",
+                              title = "Redes Neurais Artificiais",
+                              text = "Introdução às Redes Neurais Artificiais",
+                              badges = ["Python", "PyTorch"],
+                              link = "RedesNeuraisArtificiais/main.html",
+                              color = "warning", status = "Novo")
+        body += '</div>'
+
+        # card: Vetores
+        body += '<div class="col">'
+        body += self.new_card(header = "Notas de Aula",
+                              title = "Vetores",
+                              text = "Vetores no espaço euclidiano tridimensional",
+                              badges = [],
+                              link = "Vetores/main.html",
+                              color = "warning", status = "Atualizando")
+        body += '</div>'
+
 
         body += '</div> <!-- div class=row-->'
 
@@ -370,7 +357,7 @@ class Index:
                               text = "Introdução à Python para matemática",
                               badges = ["Python", "NumPy", "Matplotlib"],
                               link = "MiniPython/main.html",
-                              color = "warning", status = "Atualizando")
+                              color = "primary", status = "")
         body += '</div>'
 
         # card: notas do Minicurso de C/C++ para Matemática
@@ -380,7 +367,7 @@ class Index:
                               text = "Introdução às linguagens C/C++ para matemática",
                               badges = ["C/C++", "GSL"],
                               link = "MiniCpp/main.html",
-                              color = "warning", status = "Novo")
+                              color = "primary", status = "")
         body += '</div>'
 
         # card: Mini Cálculo com Python
