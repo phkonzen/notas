@@ -1,4 +1,4 @@
-# Notas de aula
+# NotasPedroK
 
 Este é o repositório o site [NotasPedroK](https://www.notaspedrok.com.br/notas), plataforma em que compartilho minhas notas de aula. 
 
