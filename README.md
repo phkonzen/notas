@@ -1,8 +1,21 @@
 # Notas de aula
 
-Este é o repositório de minhas notas de aula. Por uma educação livre, o material das notas é disponível de forma gratuita e sob licença [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR).
+Este é o repositório o site [NotasPedroK](https://www.notaspedrok.com.br/notas), plataforma em que compartilho minhas notas de aula. 
 
-**Colabore!** Ajude informando **erros** ou dando **sugestões**.
+Por uma educação livre, o material do site está disponível sob licença [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR). Consulte-a para mais informações sobre liberade e restrições de uso.
+
+**Colabore!** Há várias formas de colaborar com os materios do site!
+
+* Avise de erros ou dê sugestões ...
+
+    * abrindo um novo _Issue_ ou colaborando em um já existente.
+    * usando o [formulário de contato](https://notaspedrok.com.br/notas/contato.html) disponível no chat.
+
+* Nos siga, compartilhe e nos contate em nossas redes sociais:
+
+    * Instagra: [@notas.pedrok](https://www.instagram.com/notas.pedrok/)
+    * YouTube: [notas.pedrok](https://www.youtube.com/channel/UCwutHKlKLgVj6IkFSUFBqoA)
+    * GitHub: [phkonzen/notas](https://github.com/phkonzen/notas)
 
 ## Pastas
 
