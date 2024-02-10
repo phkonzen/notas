@@ -23,7 +23,6 @@ html: main.tex
 	latexmlc main.tex \
         --splitat=section -splitnaming=label \
 		--includestyles \
-		--css=../main.css \
 		--css="./fonts/cmun-serif.css" \
 		--format=html \
 		--javascript='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=MML_SVG' \
@@ -35,8 +34,11 @@ html: main.tex
 ########################################
 
 epub: main.tex
-	cp ../config-book.knd config.knd
-	latexmlc main.tex --dest=main.epub --includestyles
+	cp ../notas.css . 
+	latexmlc main.tex \
+			 --dest=main.epub \
+			 --includestyles \
+			 --css=notas.css
 
 
 ########################################
