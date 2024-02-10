@@ -7,9 +7,8 @@
 
 \subsection{Arquivo Texto}
 
-\hl{Um \emph{arquivo texto} usualmente é identificado com a extensão {\lstinline+.txt+} e contém uma {\lstinline+string+}}, i.e. uma coleção de caracteres.
+\hl{Um \emph{arquivo texto} usualmente é identificado com a extensão {\lstinline+.txt+} e contém uma {\lstinline+string+}}, i.e. uma coleção de caracteres. Consideramos que o seguinte arquivo:
 
-Vamos considerar que o seguinte arquivo
 \begin{lstlisting}[caption = foo.txt, label=cap_ag_sec_arq:cod:foo.txt]
 '''
 Tabela de valores de
@@ -22,6 +21,7 @@ n, x, y
 3, 2.0, 0.6931
 4, 2.5, 0.9163
 \end{lstlisting}
+
 O nome deste aquivo é \lstinline+foo.txt+. Baixe-o e salve-o com o mesmo nome em uma pasta de sua área de usuário no sistema de seu computador.
 
 \subsubsection{Leitura}
@@ -35,15 +35,18 @@ Um vez aberto a \hlemph{leitura do arquivo} pode ser feita com métodos específ
 Por fim, precisamos \hlemph{fechar o arquivo}, o que pode ser feito com o método {\lstinline+f.close()+}.
 
 Por exemplo, consideramos o seguinte código
+
 \begin{lstlisting}
 fl = open('foo.txt', 'r')
 texto = fl.read()
 fl.close()
 print(texto)
 \end{lstlisting}
+
 Na primeira linha, o código: 1. abre o arquivo \lstinline+foo.txt+\footnote{Aqui, é considerado que o arquivo está na mesma pasta em que o código está sendo executado.}, 2. lê o aquivo inteiro, 3. fecha-o e, 4. imprime o conteúdo lido. No código, \lstinline+texto+ é uma \lstinline+string+ que pode ser manipulada com os métodos e técnicas na Seção~\ref{cap_lingua_sec_string}.
 
 Alternativamente, pode-se fazer a \hlemph{leitura linha-por-linha} do arquivo, como segue
+
 \begin{lstlisting}
 fl = open('foo.txt', 'r')
 for linha in fl:
@@ -56,6 +59,7 @@ fl.close()
 \hl{A \emph{escrita de um arquivo} consiste em exportar dados/informações de um código/programa para um arquivo de dados}. Para tanto: 1. abrimos o arquivo no código com o comando \lstinline+open(file, mode='w')+ (\lstinline+'w'+, do inglês, \textit{write}); 2. usamos um método de escrita, por exemplo, \lstinline+f.write()+ para escrever no arquivo; 3. fechamos o arquivo com \lstinline+f.close()+.
 
 Por exemplo, o seguinte código escreve o arquivo \lstinline+foo.txt+ (consulte o Código~\ref{cap_ag_sec_arq:cod:foo.txt}).
+
 \begin{lstlisting}[caption=foo.py, label=cap_ag_sec_arq:cod:foo.py]
 import numpy as np
 # abre o arq
@@ -81,6 +85,7 @@ Observamos que abertura de arquivo no modo \lstinline+mode='w'+ sobrescreve o ar
 
 \begin{ex}
   Vamos fazer um código que adiciona uma nova entrada na tabela de valores do arquivo \lstinline+foot.txt+, disponível no Código~\ref{cap_ag_sec_arq:cod:foo.txt}. A nova entrada, corresponde ao valor de $y = \ln(3.0)$.
+
 \begin{lstlisting}
 import numpy as np
 # abre o arq
@@ -91,6 +96,7 @@ fl.write(f'5, {x:.1f}, {y:.4f}\n')
 # fecha o arq
 fl.close()
 \end{lstlisting}
+
 \end{ex}
 
 \subsection{Arquivo Binário}\label{cap_ag_sec_arq:ssec:arqbin}
@@ -103,6 +109,7 @@ Em um arquivo binário, os dados são escritos como registros binários, i.e. pr
 
 \begin{ex}
   Vamos escrever uma versão binária \lstinline+'foo.pk'+ do arquivo texto \lstinline+foo.txt+ trabalho acima. Para tanto, precisamos organizar os dados em um único objeto {\python}. Aqui, usamos um \lstinline+dict+ para organizar a informação e, então, salvar em arquivo binário.
+
 \begin{lstlisting}[caption=foo.bin, label=cap_ag_sec_arq:cod:foo.bin]
 import numpy as np
 import pickle
@@ -120,11 +127,13 @@ pickle.dump(data, fl)
 # fecha arquivo
 fl.close()
 \end{lstlisting}
+
 \end{ex}
 
 \subsubsection{Leitura}
 
 A leitura de um arquivo binário requer conhecer a estrutura dos dados alocados. No caso de um arquivo \lstinline+pickle+, a leitura pode ser feita com a função \lstinline+pickle.load()+. Por exemplo, o arquivo \lstinline+foo.bin+ (criado no Código~\ref{cap_ag_sec_arq:cod:foo.bin}) pode ser lido como segue
+
 \begin{lstlisting}
 fl = open('foo.bin', 'rb')
 data = pickle.load(fl)
@@ -139,6 +148,8 @@ print(data)
 \subsection{Escrita e Leitura com {\numpy}}
 
 \hl{O {\numpy} contém a função {\lstinline+np.save(fn, arr)+} para escrita no arquivo binário {\lstinline+fn+} um arranjo {\lstinline+arr+}}. Por padrão, a extensão \lstinline+.npy+ é usada. Por exemplo,
+
+
 \begin{lstlisting}
 import numpy as np
 xx = np.arange(1., 3., 0.5)
@@ -148,6 +159,7 @@ np.save('foo.npy', data)
 \end{lstlisting}
 
 A leitura de um arquivo \lstinline+.npy+ pode ser feita com a função \lstinline+np.load(fn)+, que retorna o arranjo lido a partir do arquivo binário \lstinline+fn+. Por exemplo,
+
 \begin{lstlisting}
 import numpy as np
 data = np.load('foo.npy')
@@ -164,6 +176,7 @@ print(data)
   \end{enumerate}
 \end{exer}
 \begin{resp}
+
 \begin{lstlisting}
 fin = open('foo.txt')
 fout = open('novo.txt', 'w')
@@ -173,6 +186,7 @@ for i, linha in enumerate(fin):
 fin.close()
 fout.close()
 \end{lstlisting}
+
 \end{resp}
 
 \begin{exer}\label{cap_ag_sec_arq:exer:tabela}
@@ -201,6 +215,7 @@ fout.close()
 
 \begin{exer}
   Baixe para seu computador o seguinte arquivo texto.
+
 \begin{lstlisting}[caption=mat.txt]
 '''
 Matriz A
@@ -209,7 +224,8 @@ Matriz A
 2, 1, 3,
 -3, -1, -2
 \end{lstlisting}
-  Este arquivo contém os elementos da matriz $A = [a_{i,j}]_{i,j=1}^{3,3}$. Desenvolva um código que leia este arquivo, aloque a matriz $A$ associada e, então, calcule e imprima o valor de seu determinante, i.e. $\det(A)$.
+
+Este arquivo contém os elementos da matriz $A = [a_{i,j}]_{i,j=1}^{3,3}$. Desenvolva um código que leia este arquivo, aloque a matriz $A$ associada e, então, calcule e imprima o valor de seu determinante, i.e. $\det(A)$.
 \end{exer}
 \begin{resp}
   Dica: use o método \href{https://docs.python.org/3/library/stdtypes.html#str.split}{\lstinline+str.split()+}.
@@ -242,6 +258,7 @@ Matriz A
 \section{Gráficos}\label{cap_ag_sec_graf}
 
 Vamos usar o pacote computacional {\matplotlib} para a elaboração de gráficos de funções. Usualmente, vamos utilizar os seguintes módulos {\python}
+
 \begin{lstlisting}
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -279,6 +296,7 @@ ax.plot([-0.5, 0, 1],
 # display
 plt.show()
 \end{lstlisting}
+
 \end{ex}
 
 No caso de curvas, podemos usamos um número adequado de pontos de forma que os segmentos de linhas ficam imperceptíveis a olho nu.
@@ -324,6 +342,7 @@ ax.plot(x, (x-2)**3+2)
 # display
 plt.show()
 \end{lstlisting}
+
 \end{ex}
 
 \subsection{Eixos}
@@ -373,6 +392,7 @@ plt.savefig('fig.png', bbox_inches='tight')
 plt.savefig('fig.pdf', bbox_inches='tight')
 plt.show()
 \end{lstlisting}
+
 \end{ex}
 
 \subsection{Elementos Gráficos}
@@ -445,6 +465,7 @@ plt.savefig('fig.png', bbox_inches='tight')
 plt.savefig('fig.pdf', bbox_inches='tight')
 plt.show()
 \end{lstlisting}
+
 \end{ex}
 
 \subsection{Textos e Anotações}
@@ -529,6 +550,7 @@ plt.savefig('fig.png', bbox_inches='tight')
 plt.savefig('fig.pdf', bbox_inches='tight')
 plt.show()
 \end{lstlisting}
+
 \end{ex}
 
 \subsection{Exercícios}

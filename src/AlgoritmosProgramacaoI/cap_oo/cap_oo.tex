@@ -8,6 +8,7 @@ Programação Orientação a Objetos (POO) é um paradigma de programação base
 \section{Classe e Objeto}\label{cap_ob_sec_class}
 
 \hl{Uma \emph{classe} é uma forma de estrutura que permite a alocação conjunta de dados e funções}. Em {\python}, a sintaxe de definição de uma classe é
+
 \begin{lstlisting}
 class NomeDaClasse:
     <bloco-0>
@@ -15,7 +16,9 @@ class NomeDaClasse:
     ...
     <bloco-2>
 \end{lstlisting}
+
 Usualmente, \hl{os blocos de programação consistem de definições de funções (métodos)}. Por exemplo,
+
 \begin{lstlisting}
 class MinhaClasse:
     def digaOla(self):
@@ -24,9 +27,11 @@ class MinhaClasse:
 obj = MinhaClasse()
 obj.digaOla()
 \end{lstlisting}
+
 Neste código, temos a definição da classe \lstinline+MinhaClasse+ (linhas 1-3). Esta classe contém o método \lstinline+MinhaClasse.digaOla()+ (linhas 2-3). Obrigatoriamente, \hl{na definição de um método de uma classe deve conter o primeiro parâmetro {\lstinline+self+}}. Um objeto desta classe\footnote{Uma nova instância da classe.} e identificado por \lstinline+obj+ é alocado na linha 5. Na linha 6, este objeto chama seu método \lstinline+obj.digaOla()+.
 
 O método especial \lstinline+__init__()+ é executado na construção de cada nova instância da classe (objeto da classe). Por exemplo,
+
 \begin{lstlisting}
 class Brasileira:
     pais = 'Brasil'
@@ -43,10 +48,12 @@ x.digaOla()
 y = Brasileira('Beltrane')
 y.digaOla()
 \end{lstlisting}
+
 Aqui, o atributo \lstinline+Brasileira.pais+ é compartilhada entre todas as instâncias da classe (objetos), enquanto que \lstinline+Brasileira.nome+ é um atributo de cada objeto. O método \lstinline+__init()__+ (linhas 3-4) é executada no momento da criação de cada nova instância (linhas 11 e 13).
 
 \begin{ex}\label{cap_oo_sec_class:ex:triangulo}
   No seguinte código, começamos a definição de uma classe para a manipulação de triângulos.
+
 \begin{lstlisting}[caption=classTriangulo.py, label=cap_poo_sec_class:cod:classTriangulo]
 import matplotlib.pyplot as plt
 
@@ -89,6 +96,7 @@ tria = Triangulo((0., 0.),
                  (1., 1.))
 tria.plot()
 \end{lstlisting}
+
 \end{ex}
 
 \subsection{Exercícios}
@@ -97,6 +105,7 @@ tria.plot()
   Considere o Código~\ref{cap_poo_sec_class:cod:classTriangulo}. Adicione o método \lstinline+calcLados()+, que computa e aloca o comprimento de cada lado do triângulo.
 \end{exer}
 \begin{resp}
+
 \begin{lstlisting}
 import numpy as np
 import matplotlib.pyplot as plt
@@ -124,12 +133,14 @@ class Triangulo:
         self.c = np.sqrt((self.A[0]-self.B[0])**2\
                          + (self.A[1]-self.B[1])**2)
 \end{lstlisting}
+
 \end{resp}
 
 \begin{exer}
   Considere o Código~\ref{cap_poo_sec_class:cod:classTriangulo}. Adicione o método \lstinline+calcPerimetro()+, que computa e retorna o valor do perímetro do triângulo.
 \end{exer}
 \begin{resp}
+
 \begin{lstlisting}
 import numpy as np
 import matplotlib.pyplot as plt
@@ -143,6 +154,7 @@ class Triangulo:
 
     ...
 \end{lstlisting}
+
 \end{resp}
 
 \begin{exer}
@@ -194,6 +206,7 @@ class Triangulo:
 \section{Herança}\label{cap_oo_sec_her}
 
 \hl{Na programação orientada-a-objetos, \emph{herança} consiste na definição de uma classe derivada a partir de uma dada classe base}. A sintaxe de definição de uma classe derivada é
+
 \begin{lstlisting}
 class ClasseDerivada(ClasseBase):
     bloco-0
@@ -201,7 +214,9 @@ class ClasseDerivada(ClasseBase):
     ...
     bloco-n
 \end{lstlisting}
+
 \hl{A classe derivada herda todos os atributos da classe base}. Por exemplo, consideramos o seguinte código
+
 \begin{lstlisting}
 class ClasseBase:
     def __init__(self, nome):
@@ -218,6 +233,7 @@ obj = ClasseDerivada('Fulane')
 obj.digaOi()
 obj.digaTchau()
 \end{lstlisting}
+
 Nas linhas 1-6, a classe base é definida contendo dois métodos: \lstinline+self.__init__()+ chamado na criação de um objeto da classe (uma instância) e, \lstinline+self.digaOi()+ que imprime uma saudação. A classe derivada é definida nas linhas 8-10, ela herda os atributos da classe base e contém um novo método \lstinline+self.digaTchau()+, que imprime uma mensagem de despedida.
 
 A criação de uma instância (objeto) de uma classe derivada é feita da mesma forma que de uma classe base. \hl{A referência a um atributo do objeto é, primeiramente, buscada na classe derivada e, se não encontrada, é buscada na classe base}. Este regra aplica-se recursivamente se a classe base também é derivada de outra classe. \hl{Isso permite que uma classe derivada sobreponha atributos de sua classe base}.
@@ -228,6 +244,7 @@ O método \href{https://docs.python.org/3/library/functions.html#super}{\lstinli
 
 \begin{ex}
   Vamos criar uma classe para manipular triângulo isósceles. Para tanto, vamos derivá-la a partir da classe \lstinline+Triangulo+ definida no Exemplo~\ref{cap_oo_sec_class:ex:triangulo}. Vamos assumir que os triângulos isósceles têm vértices $\Delta ABC$ com lados $b = AC$ e $a = BC$ de mesmo tamanho.
+
 \begin{lstlisting}[caption=classTrianguloIsosceles.py, label=cap_oo_sec_her:cod:classTrianguloIsosceles]
 import numpy as np
 import matplotlib.pyplot as plt
@@ -289,10 +306,12 @@ tria = TrianguloIsosceles((1,0),
 tria.plot()
 tria.calcLados()
 \end{lstlisting}
+
 \end{ex}
 
 \begin{obs}\normalfont{(\hl{Herança Múltipla}.)}
   {\python} suporta a herança múltipla de classes. A sintaxe é
+
 \begin{lstlisting}
 class ClasseDerivada(Base1, Base2, ..., BraseN):
     bloco-0
@@ -300,7 +319,8 @@ class ClasseDerivada(Base1, Base2, ..., BraseN):
     ...
     bloco-m
 \end{lstlisting}
-  Quando um objeto da classe derivada faz uma referência a um atributo, este é procurado de forma sequencial (e recursiva, caso uma das classe bases seja também uma classe derivada) começando por essa e, caso não encontrado, buscando-se nas classes \lstinline+Base1+, \lstinline+Base2+, ..., \lstinline+BaseN+.
+  
+Quando um objeto da classe derivada faz uma referência a um atributo, este é procurado de forma sequencial (e recursiva, caso uma das classe bases seja também uma classe derivada) começando por essa e, caso não encontrado, buscando-se nas classes \lstinline+Base1+, \lstinline+Base2+, ..., \lstinline+BaseN+.
 \end{obs}
 
 \subsection{Exercícios}
@@ -309,6 +329,7 @@ class ClasseDerivada(Base1, Base2, ..., BraseN):
   No Código~\ref{cap_oo_sec_her:cod:classTrianguloIsosceles}, adicione à classe \lstinline+Triangulo+ o método \lstinline+Triangulo.perimetro()+ que computa, aloca e retorna o valor do perímetro do triângulo. Então, sobreponha o método à classe \lstinline+TrianguloIsosceles+. Teste seu código para diferentes triângulos.
 \end{exer}
 \begin{resp}
+
 \begin{lstlisting}
 class Triangulo:
     def __init(self,A,B,C)__:
@@ -330,12 +351,14 @@ class TrianguloIsosceles(Triangulo):
         return self.p
     ...
 \end{lstlisting}
+
 \end{resp}
 
 \begin{exer}\label{cap_oo_sec_her:exer:retangulo}
   Implemente uma classe \lstinline+Retangulo(largura, altura)+ para a manipulação de retângulos de \lstinline+largura+ e \lstinline+altura+ dadas. Equipe sua classe com métodos para o cálculo do perímetro, da diagonal e da área de retângulo. Então, implemente a classe derivada \lstinline+Quadrado(lado)+ para a manipulação de quadrados de \lstinline+lado+ dado. Teste sua implementação para diferentes retângulos e quadrados.
 \end{exer}
 \begin{resp}
+
 \begin{lstlisting}
 import math as m
 
@@ -360,6 +383,7 @@ class Quadrado(Retangulo):
     def __init__(self,lado):
         super().__init__(lado,lado)
 \end{lstlisting}
+
 \end{resp}
 
 \begin{exer}
@@ -374,6 +398,7 @@ class Quadrado(Retangulo):
 \end{exer}
 \begin{resp}
   Dica:
+
 \begin{lstlisting}
 ...
 class Triangulo:
@@ -397,6 +422,7 @@ class TrianguloEquilatero(TrianguloIsosceles):
    def area(self):
       ...
 \end{lstlisting}
+
 \end{resp}
 
 \begin{exer}
