@@ -102,7 +102,7 @@ class Infos:
         body += 'Há várias <strong>formas de colaborar</strong> com os materiais do site.'
         body += '</p>'
         body += '<ul>'
-        body += '<li>Envie <strong>avisos de erro</strong> ou <strong>sugestões</strong>...'
+        body += '<li>Envie um comentarário avisando de erros, sugestões, críticas ...'
         body += '<ul>'
         body += '<li>usando o <a href="./contato.html"><i class="fas fa-envelope"></i> Formulário de Contato</a> do site.</li>'
         body += '<li>abrindo um novo <strong><i>Issue</i></strong> ou colaborando em um já aberto no <a href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i> GitHub Repo</a> do site.</li>'

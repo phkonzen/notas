@@ -23,6 +23,9 @@ index.build()
 #fonts
 os.system('cp -rvf fonts '+odir+'/')
 
+#fontawesome
+os.system('cp -rvf fontawesome '+odir+'/')
+
 #contato.html
 os.system('cp contato.html '+odir+'/')
 

@@ -192,9 +192,19 @@ class Notas:
 
         body_end += '</body>'
 
-        #enxerta no __footer__
-        foot = '<div class="ltx_page_logo">'
-        foot += '<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />O texto acima está sob Licença <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR">Creative Commons Atribuição-CompartilhaIgual 4.0 Internacional</a>. '
+        #enxerta no __footer
+
+        # formulário de contato
+        footer_top = ''
+        footer_top = '<hr/>'
+        footer_top += '<h2 class="mt-2">Comentário</h2>'
+        footer_top += '<p>Envie aqui seu comentário. As informações preenchidas são tratadas de forma privada e são enviadas por e-mail apenas para o desenvolvedor do site. Consulte a <a href="../infos.html#politica">Política de Use de Dados</a> para mais informações. Aproveito para agradecer a todas/os que de forma assídua ou esporádica contribuem enviando correções, sugestões e críticas! <i class="far fa-smile"></i></p>'
+        f = open('formulario.html', 'r')
+        footer_top += f.read()
+        f.close()
+
+        footer_bottom = ''
+        footer_bottom += '<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />O texto acima está sob Licença <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR">Creative Commons Atribuição-CompartilhaIgual 4.0 Internacional</a>. '
 
         pages = []
         for (dirpath, dirnames, filenames) in os.walk(htmldir):
@@ -219,7 +229,6 @@ class Notas:
                 #modifica o __body__ (bottom)
                 page = page.replace('</body>',body_end)
 
-                #cria botões de link para contato
                 if (fn != 'main'):
                     src_fname = fn
                     if (fn[0:4] == 'cap_'):
@@ -227,11 +236,12 @@ class Notas:
                         if (pos != -1):
                             src_fname = fn[0:pos]
 
-                    link_to_src = ' <small><a href="../contato.html">'
-                    link_to_src += '<i class="fas fa-envelope"></i></a></small>'
+                # #cria botões de link para contato
+                #     link_to_src = ' <small><a href="../contato.html">'
+                #     link_to_src += '<i class="fas fa-envelope"></i></a></small>'
 
-                    page = page.replace('</h1>',link_to_src+'</h1>')
-                    page = page.replace('</h2>',link_to_src+'</h2>')
+                #     page = page.replace('</h1>',link_to_src+'</h1>')
+                #     page = page.replace('</h2>',link_to_src+'</h2>')
 
                     # tags
 
@@ -420,7 +430,10 @@ class Notas:
                     paux = page.find('ltx_theorem_resp')
                     
                 #modifica o __footer__
-                page = page.replace('<div class="ltx_page_logo">',foot)
+                page = page.replace('<footer class="ltx_page_footer">',
+                                    footer_top + '<footer class="ltx_page_footer">')
+                page = page.replace('<div class="ltx_page_logo">',
+                                    footer_bottom + '<div class="ltx_page_logo">')
 
                                
                 #sobrescreve a página com as alterações
