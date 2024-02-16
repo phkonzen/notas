@@ -20,10 +20,12 @@ html: main.tex
 	rm -rvf ./html
 	mkdir -p ./html
 	cp -rvf ../fonts html/
+	cp ../notas.css ./html/
 	latexmlc main.tex \
         --splitat=section -splitnaming=label \
 		--includestyles \
 		--css="./fonts/cmun-serif.css" \
+		--css="./notas.css" \
 		--format=html \
 		--javascript='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=MML_SVG' \
 		--dest=html/main.html -
