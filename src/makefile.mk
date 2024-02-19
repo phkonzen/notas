@@ -31,20 +31,9 @@ html: main.tex
 		--dest=html/main.html -
 	cp ../config-book.knd config.knd
 
-########################################
-# FORMATO EPUB
-########################################
-
-epub: main.tex
-	cp ../notas.css . 
-	latexmlc main.tex \
-			 --dest=main.epub \
-			 --includestyles \
-			 --css=notas.css
-
 
 ########################################
-# TODOS AS VERSÕES EM FORMATO PDF
+# TODOS AS VERSÕES
 ########################################
 
 all: main.tex
@@ -52,8 +41,6 @@ all: main.tex
 	make pdf
 	make clean
 	make html
-	make clean
-	make epub
 
 
 .PHONY: clean

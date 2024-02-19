@@ -30,5 +30,4 @@ ax.plot([0.5], [0], marker='o', color='red')
 
 ax.set_xlim((-0.5, 2.1))
 ax.set_ylim((-2.1, 3.1))
-fig.savefig('fig.pdf')
 fig.savefig('fig.png')
