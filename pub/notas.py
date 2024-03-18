@@ -12,7 +12,10 @@ import os
 class Notas:
 
     def __init__(self):
-        raise ValueError("Você não devia estar aqui!!!")
+        self.srcdir = ''
+        self.odir = ''
+        self.ebook = ''
+
 
     def goodies(self,htmldir,titulo_notas,srcref):
 
@@ -112,6 +115,10 @@ class Notas:
         text += 'max-widtth: 100vw;'
         text += '}'
 
+        text += '.ltx_ref {'
+        text += 'margin: 0.25rem;'
+        text += '}'
+
         f.write(text)
         f.close()
         
@@ -201,7 +208,7 @@ class Notas:
         body += '<!-- end: navbar -->'
 
         # redes sociais
-        body += '<p class="text-left mb-0"><a href="./contato.html"><i class="fas fa-envelope"></i></a> | <a href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i></a> | <a href="https://archive.org/details/notas-de-aula"><i class="fas fa-building-columns"></i></a> | <a href="https://www.youtube.com/channel/UCwutHKlKLgVj6IkFSUFBqoA"><i class="fab fa-youtube"></i></a> | <a href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i></a></p>'
+        body += '<p class="text-left mb-0"><a href="./contato.html"><i class="fas fa-envelope"></i></a> | <a href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i></a> | <a href="https://archive.org/details/notas-de-aula"><i class="fas fa-building-columns"></i></a> | <a href="https://www.youtube.com/channel/UCwutHKlKLgVj6IkFSUFBqoA"><i class="fab fa-youtube"></i></a> | <a href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i></a> | <a href="https://www.amazon.com.br/dp/B0CW18N6T5"><i class="fab fa-amazon"></i></a></p>'
         
         #enxerta no __body__ (bottom)
         body_end = ''
@@ -255,6 +262,14 @@ class Notas:
                 #modifica o __body__ (bottom)
                 page = page.replace('</body>',body_end)
 
+                merchant = '<p class="m-1" style="text-align: center">'
+                merchant += '<i class="fa-solid fa-heart" style="color: red;"></i> '
+                merchant += '<a href="'+self.ebook+'">Compre o livro deste material aqui!</a>'
+                merchant += '</p>'
+
+                if ((fn == 'main') and (self.ebook != '')):
+                    page = page.replace('<div class="ltx_page_main">', f'{merchant}<div class="ltx_page_main">')
+
                 if (fn != 'main'):
                     src_fname = fn
                     if (fn[0:4] == 'cap_'):
@@ -262,12 +277,14 @@ class Notas:
                         if (pos != -1):
                             src_fname = fn[0:pos]
 
-                # #cria botões de link para contato
-                #     link_to_src = ' <small><a href="../contato.html">'
-                #     link_to_src += '<i class="fas fa-envelope"></i></a></small>'
-
+                        # book merchant
+                        if (self.ebook != ''):
+                            page = page.replace('</h1>',f'</h1>{merchant}')
+    
                 #     page = page.replace('</h1>',link_to_src+'</h1>')
                 #     page = page.replace('</h2>',link_to_src+'</h2>')
+                            
+                
 
                     # tags
 

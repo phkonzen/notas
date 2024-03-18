@@ -15,6 +15,7 @@ from notas import *
 class PreCalculo(Notas):
     
     def __init__(self,srcdir,odir):
+        super().__init__()
         self.srcdir = srcdir
         self.odir = odir
         

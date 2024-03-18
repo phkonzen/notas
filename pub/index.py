@@ -3,7 +3,7 @@
 index.html
 
 Autor: Pedro H A Konzen - 05/2018
-Modificado: 02/2024
+Modificado: 03/2024
 '''
 
 import os
@@ -53,7 +53,9 @@ class Index:
         self.page = self.page.replace('</html>',head)
         self.page += '</html>'
 
-    def new_card(self, header, title, text, badges, link, color, status=""):
+    def new_card(self, header, title, 
+                 text, badges, link, color, 
+                 status="", ebook=""):
         card = ""
         card += f'<div class="card border-{color} mb-3" style="width: 21rem;">'
         card += f'<div class="card-header text-bg-{color} d-flex justify-content-between">{header} '
@@ -71,9 +73,19 @@ class Index:
         for i,b in enumerate(badges):
             card += f'<span class="badge bg-secondary m-1">{b}</span>'
         card += '</p>'
-        card += '<div class="d-flex justify-content-end">'
-        card += f'<a href="{link}" class="btn btn-{color} stretched-link d-flex align-items-end">'
-        card += 'Abrir'
+        # buttons
+
+        if (ebook != ""):
+            card += '<div class="d-flex justify-content-between">'
+            card += f'<a href="{ebook}" class="btn btn-warning d-flex justify-content-between align-items-center">'
+            card += '<i class="fa-solid fa-heart" style="color: red;"></i>'
+            card += '<span class="m-1"><p class="mb-0" style="font-size: 75%;">Comprar</p><p class="mt-0 mb-0">Livro</p></span>'
+        else:
+            card += '<div class="d-flex justify-content-end">'
+
+        card += f'<a href="{link}" class="btn btn-warning d-flex align-self-end justify-content-between align-items-center">'
+        card += '<i class="fa-solid fa-book-open-reader" style="color: green;"></i>'
+        card += '<span class="m-1"><p class="mb-0" style="font-size: 75%;">Acesso</p><p class="mt-0 mb-0">Livre</p></span>'
         card += '</a>'
         card += '</div>'
         card += '</div>'
@@ -217,7 +229,8 @@ class Index:
                               text = "Introdução aos algoritmos de programação de computadores",
                               badges = ["Python", "NumPy", "Matplotlib"],
                               link = "AlgoritmosProgramacaoI/main.html",
-                              color = "warning", status = "Atualizando")
+                              color = "warning", status = "Atualizando",
+                              ebook="https://a.co/d/eRjID1A")
         body += '</div>'
 
         # card: notas de aula de Cálculo I
