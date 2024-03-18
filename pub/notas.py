@@ -223,8 +223,8 @@ class Notas:
         # formulário de contato
         footer_top = ''
         footer_top = '<hr/>'
-        footer_top += '<h2 class="mt-2">Comentário</h2>'
-        footer_top += '<p>Envie aqui seu comentário. As informações preenchidas são tratadas de forma privada e são enviadas por e-mail apenas para o desenvolvedor do site. Consulte a <a href="../infos.html#politica">Política de Use de Dados</a> para mais informações. Aproveito para agradecer a todas/os que de forma assídua ou esporádica contribuem enviando correções, sugestões e críticas! <i class="far fa-smile"></i></p>'
+        footer_top += '<h3 class="mt-2"><i class="fa-solid fa-heart" style="color:red;"></i> Envie seu comentário</h3>'
+        footer_top += '<p>As informações preenchidas são enviadas por e-mail para o desenvolvedor do site e tratadas de forma privada. Consulte a <a href="../infos.html#politica">Política de Use de Dados</a> para mais informações. Aproveito para agradecer a todas/os que de forma assídua ou esporádica contribuem enviando correções, sugestões e críticas! <i class="far fa-smile"></i></p>'
         f = open('formulario.html', 'r')
         footer_top += f.read()
         f.close()
