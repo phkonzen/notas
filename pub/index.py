@@ -193,9 +193,9 @@ class Index:
 
         # anúncio
         body += '<div class="carousel-item active">'
-        body += self.add_anuncio(text = 'XLIII CNMAC 2024: Submissões 15/Março',
+        body += self.add_anuncio(text = 'XLIII CNMAC 2024: Submissões 31/Março',
                                  link = 'http://www.cnmac.org.br/novo/index.php/CNMAC',
-                                 status = 'warning')
+                                 status = 'danger')
         body += '</div>'
 
 
