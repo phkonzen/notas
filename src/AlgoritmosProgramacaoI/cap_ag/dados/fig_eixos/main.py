@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # figure
-fig = plt.figure()
+fig = plt.figure(dpi=300)
 # axis
 ax = fig.add_subplot()
 # -2 <= x < -0.5
@@ -27,5 +27,4 @@ ax.set_ylabel('y')
 ax.grid()
 # display
 plt.savefig('fig.png', bbox_inches='tight')
-plt.savefig('fig.pdf', bbox_inches='tight')
 plt.show()

@@ -19,5 +19,7 @@ p.extend(q)
 p.xlabel = '$x$'
 p.ylabel = '$y$'
 p.legend = True
-p.save('fig.pdf')
-p.save('fig.png')
+p.show()
+
+fig = p._backend.fig
+fig.savefig('fig.png', dpi=300, bbox_inches='tight')

@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # figure
-fig = plt.figure()
+fig = plt.figure(dpi=300)
 # axis
 ax = fig.add_subplot()
 
@@ -50,5 +50,4 @@ ax.grid()
 ax.legend()
 # display
 plt.savefig('fig.png', bbox_inches='tight')
-plt.savefig('fig.pdf', bbox_inches='tight')
 plt.show()
