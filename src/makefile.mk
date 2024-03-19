@@ -32,6 +32,7 @@ html: main.tex
 	cp ../config-book.knd config.knd
 
 
+
 ########################################
 # TODOS AS VERSÕES
 ########################################
