@@ -35,7 +35,7 @@ class MiniPython(Notas):
         #html
         self.make_html()
         self.goodies(self.srcdir+'/MiniPython/html',\
-                         'Minicurso de Python para Matemática', 'MiniPython')
+                         'Python para Matemática', 'MiniPython')
         os.system('rm -rvf '+self.odir+'/MiniPython')
         os.system('mv '+self.srcdir+'/MiniPython/html'\
                       +' '+self.odir+'/MiniPython')
