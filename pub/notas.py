@@ -61,7 +61,7 @@ class Notas:
         text += '}'
 
         text += '.ltx_verbatim {'
-        text += 'font-size: 1.15em;'
+        text += 'font-size: 1em;'
         text += '}'
 
         text += '.ltx_listing {'
@@ -72,7 +72,7 @@ class Notas:
         text += 'display:block;'
         text += 'margin: 1ex 0em 1ex 0em;'
         text += 'text-align: left;'
-        text += 'font-size: 1.15em;'
+        text += 'font-size: 1em;'
         text += '}'
 
         text += '.ltx_lstlisting {'
