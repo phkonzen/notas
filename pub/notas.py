@@ -60,14 +60,19 @@ class Notas:
         text += 'border-color: red;'      
         text += '}'
 
+        text += '.ltx_verbatim {'
+        text += 'font-size: 1.15em;'
+        text += '}'
+
         text += '.ltx_listing {'
         text += 'overflow-x:none;'
-        text += 'border-style: dotted;'
-        text += 'border-width: 2px 0px;'
-        text += 'border-color: green;'
+        # text += 'border-style: dotted;'
+        # text += 'border-width: 2px 0px;'
+        # text += 'border-color: green;'
         text += 'display:block;'
         text += 'margin: 1ex 0em 1ex 0em;'
         text += 'text-align: left;'
+        text += 'font-size: 1.15em;'
         text += '}'
 
         text += '.ltx_lstlisting {'
