@@ -159,7 +159,7 @@ $ python3 /caminho/ola.py
 
 \subsection{Classes de Objetos Básicos}
 
-\hl{{\python} é uma \emph{linguagem} de programação \emph{dinâmica} em que as variáveis são declaradas automaticamente ao receberem um valor (ou dado)}. Por exemplo, consideramos as seguintes instruções
+\hl{{\python} é uma \emph{linguagem} de programação \emph{dinâmica} em que as variáveis/objetos são declaradas/os automaticamente ao receberem um valor/dado}. Por exemplo, consideramos as seguintes instruções
 
 \begin{lstlisting}
 x = 2
@@ -501,188 +501,266 @@ False
   Implemente uma instrução para computar o operador \texttt{xor} (ou exclusivo). Dadas duas afirmações \texttt{A} e \texttt{B}, \texttt{A xor B} é {\PYTHONTrue} no caso de uma, e somente uma, das afirmações ser {\PYTHONFalse}, caso contrário é {\PYTHONFalse}.
 \end{exr}
 
-%%% ESTOU AQUI %%%
 
-\subsection{Conjuntos}
+\subsection{\texttt{set}}
 
-{\python} tem conjuntos finitos como um tipo básico de variável. Um conjunto é uma coleção de itens \emph{não ordenada} e \emph{imutável} e \emph{não admite itens duplicados}. Por exemplo,
+\hl{Um {\PYTHONset} em {\python} é uma \emph{coleção de objetos} \emph{não ordenada}, \emph{imutável} e \emph{não admite itens duplicados}}. Por exemplo,
 
 \begin{lstlisting}
->>> a = {1, 2, 3}
->>> type(a)
-<class 'set'>
->>> b = set((2, 1, 3, 3))
->>> b
-{1, 2, 3}
->>> a == b
-True
->>> # conjunto vazio
->>> e = set()
+a = {1, 2, 3}
+type(a)  
 \end{lstlisting}
 
-aloca o conjunto $a = \{1,2, 3\}$. Note que o conjunto $b$ é igual a $a$. Observamos que o conjunto vazio deve ser construído com a instrução \lstinline+set()+ e não com \lstinline+{}+\footnote{Isso constrói um dicionário vazio, como introduziremos logo mais.}.
+\begin{verbatim}
+  <class 'set'>
+\end{verbatim}
 
-\begin{obs}
-  A função {\python} \lstinline+len+ retorna o número de elementos de um conjunto. Por exemplo,
+\begin{lstlisting}
+b = set((2, 1, 3, 3))
+print(b)
+\end{lstlisting}
+
+\begin{verbatim}
+  {1, 2, 3}
+\end{verbatim}
+
+\begin{lstlisting}
+a == b
+\end{lstlisting}
+
+\begin{verbatim}
+True
+\end{verbatim}
+
+\begin{lstlisting}
+# conjunto vazio
+e = set()  
+\end{lstlisting}
+
+Acima, alocamos o conjunto $a = \{1,2, 3\}$. Note que o conjunto $b$ é igual a $a$. Observamos que o conjunto vazio deve ser construído com a instrução \texttt{set()} e não com \lstinline+{}+\footnote{Isso constrói um dicionário vazio, como estudaremos logo mais.}.
+
+\begin{obs}\normalfont{(\hl{Tamanho de uma Coleção de Objetos}.)}
+  A função {\PYTHONlen} retorna o número de elementos de uma coleção de objetos. Por exemplo,
   
 \begin{lstlisting}
->>> len(a)
-3
+len(a)
 \end{lstlisting}
+
+\begin{verbatim}
+3
+\end{verbatim}
 
 \end{obs}
 
-Operadores envolvendo conjuntos:
+\emph{Operadores envolvendo conjuntos}:
 \begin{itemize}
-\item[] \lstinline+-+: diferença entre conjuntos;
-\item[] \lstinline+|+: união de conjuntos;
-\item[] \lstinline+&+: interseção de conjuntos;
-\item[] \lstinline+^+: diferença simétrica;
+\item[] \lstinline+-+ \hl{diferença entre conjuntos}
+\item[] \lstinline+|+ \hl{união de conjuntos}
+\item[] \lstinline+&+ \hl{interseção de conjuntos}
+\item[] \lstinline+^+ \hl{diferença simétrica}
 \end{itemize}
 
 \begin{ex}
-  Sejam os conjuntos
+  Os conjuntos
   \begin{gather}
     A = \{2, \pi, -0.25, 3, \text{'banana'}\},\\
     B = \{\text{'laranja'}, 3, \operatorname{arc cos}(-1), -1\}
   \end{gather}
-  Compute
-  \begin{enumerate}[a)]
-  \item $A\setminus B$
-  \item $A\cup B$
-  \item $A\cap B$
-  \item $A\Delta B = (A\setminus B) \cup (B\setminus A)$
-  \end{enumerate}
-
-  \noindent{\bf Resolução.} Começamos alocando os conjuntos como segue
+  podem ser alocados como \texttt{sets}
 
 \begin{lstlisting}
->>> import math
->>> A = {2, math.pi, -0.25, 3, 'banana'}
->>> B = {'laranja', 3, math.acos(-1), -1}
+import math
+A = {2, math.pi, -0.25, 3, 'banana'}
+B = {'laranja', 3, math.acos(-1), -1}
 \end{lstlisting}
-  
+    
+e, então, podemos computar:
+
   \begin{enumerate}[a)]
   \item $A\setminus B$
-  
+
 \begin{lstlisting}
->>> A - B
+a = A - B
+print(a)
+\end{lstlisting}
+
+\begin{verbatim}
 {-0.25, 2, 'banana'}
-\end{lstlisting}
+\end{verbatim}
 
   \item $A\cup B$
-  
+
 \begin{lstlisting}
->>> A | B
-{-0.25, 2, 3, 3.141592653589793, \
-'laranja', 'banana', -1}
+b =  A | B
+print(b)
 \end{lstlisting}
+
+\begin{verbatim}
+{-0.25, 2, 3, 3.141592653589793, 'laranja', 'banana', -1}
+\end{verbatim}
+    
   \item $A\cap B$
-
-\begin{lstlisting}
->>> A & B
-{3, 3.141592653589793}
-\end{lstlisting}
-
-  \item $A\Delta B$
   
 \begin{lstlisting}
->>> A ^ B
-{-0.25, 2, 'laranja', 'banana', -1}
+c = A & B
+print(c)
 \end{lstlisting}
+
+\begin{verbatim}
+{3, 3.141592653589793}
+\end{verbatim}
+    
+
+  \item $A\Delta B = (A\setminus B) \cup (B\setminus A)$
+  
+\begin{lstlisting}
+d = A ^ B
+print(d)
+\end{lstlisting}
+
+
+\begin{verbatim}
+{-0.25, 2, 'laranja', 'banana', -1}
+\end{verbatim}
 
 \end{enumerate}
+
 \end{ex}
 
-\begin{obs}\label{obs:compreensão_de_conjuntos}
-  {\python} disponibiliza a sintaxe de compreensão de conjuntos. Por exemplo,
+\begin{exr}
+  Aloque como {\PYTHONset} cada um dos seguintes conjuntos:
+  \begin{enumerate}[a)]
+    \item O conjunto $A$ dos números $-12 \leq n \leq 6$ e que são divisíveis pares.
+    \item O conjunto $B$ dos números $-12 < n \leq 6$ e que são divisíveis por 3.
+  \end{enumerate}
+  Então, compute o subconjunto de $A$ e $B$ que contém apenas os números divisíveis por $2$ e $3$.
+\end{exr}
+
+\begin{obs}\normalfont{(\hl{Compreensão de \texttt{sets}}.)}\label{obs:compreensão_de_conjuntos}
+  {\python} disponibiliza a sintaxe de compreensão de \texttt{sets}. Por exemplo,
 
 \begin{lstlisting}
->>> {x for x in A if type(x) == str}
-{'banana'}
+C = {x for x in A if type(x) == str}
+print(C)
 \end{lstlisting}
+
+\begin{verbatim}
+{'banana'}
+\end{verbatim}
 
 \end{obs}
 
 \begin{exr}
   Considere o conjunto
   \begin{equation}
-    Z = \{-3, -2, -1, 0, 1, 2, 3\}.
+    Z = \{-4, -3, -2, -1, 0, 1, 2, 3, 4\}.
   \end{equation}
-  Faça um código {\python} para extrair o subconjunto dos números pares do conjunto $Z$.
+  Faça um código {\python} para extrair o subconjunto $\mathcal{P}$ dos números pares do conjunto $Z$. Depois, modefique-o para extrair o subconjunto $\mathcal{I}$ dos números ímpares. Dica: use de compreensão de \texttt{sets}.
 \end{exr}
 
 \subsection{\texttt{tuple}}
 
-Em {\python} $n$-uplas ({\it tuples}) é uma sequência de objetos, i.e. {\bf uma coleção ordenada}, {\bf indexada} e {\bf imutável}. Por exemplo, na sequência temos um par, uma tripla e uma quadrupla
+Em {\python}, \hl{{\PYTHONtuple} é uma coleção ordenada e imutável de objetos}. Por exemplo, na sequência alocamos um par, uma tripla e uma quadrupla ordenada usando \texttt{tuples}.
 
 \begin{lstlisting}
->>> a = (1, 2)
->>> a
-(1, 2)
->>> b = -1, 1, 0
-(-1, 1, 0)
->>> c = (0.5, 'laranja', {2, -1}, 2)
->>> c
-(0.5, 'laranja', {2, -1}, 2)
->>> len(c)
-4
+a = (1, 2)
+print(a, type(a))
 \end{lstlisting}
+
+\begin{verbatim}
+(1, 2) <class 'tuple'>
+\end{verbatim}
+
+\begin{lstlisting}
+b = -1, 1, 0
+print(b, len(b))
+\end{lstlisting}
+
+\begin{verbatim}
+(-1, 1, 0) 3
+\end{verbatim}
+
+\begin{lstlisting}
+c = (0.5, 'laranja', {2, -1}, 2)
+print(c)
+\end{lstlisting}
+
+\begin{verbatim}
+(0.5, 'laranja', {2, -1}, 2)
+\end{verbatim}
 
 Os elementos de um \lstinline+tuple+ são indexados, o índice $0$ corresponde ao primeiro elemento, o índice $1$ ao segundo elemento e assim por diante. Desta forma é possível o acesso direto a um elemento de um \lstinline+tuple+ usando-se sua posição. Por exemplo,
 
 \begin{lstlisting}
->>> c[2]
+print(c[2])
+\end{lstlisting}
+
+\begin{verbatim}
 {2, -1}
-\end{lstlisting}
+\end{verbatim}
 
-Pode-se também extrair uma fatia (um subconjunto) usando-se a notação \lstinline+:+. Por exemplo,
+Pode-se também extrair uma fatia (um subconjunto) usando-se a notação
+\texttt{:}. Por exemplo,
 
 \begin{lstlisting}
->>> c[1:3]
+d = c[1:3]
+print(d)
+\end{lstlisting}
+
+\begin{verbatim}
 ('laranja', {2, -1})
-\end{lstlisting}
+\end{verbatim}
+
+\emph{Operadores básicos}:
 
 \begin{itemize}
-\item Operadores básicos:
-
-\begin{itemize}
-  \item[] \lstinline-+-: concatenação
+\item[] \lstinline-+- \hl{concatenação}
 
 \begin{lstlisting}
->>> (1, 2) + (3, 4, 5)
+a = (1, 2) + (3, 4, 5)
+print(a)
+\end{lstlisting}
+
+\begin{verbatim}
 (1, 2, 3, 4, 5)
-\end{lstlisting}
+\end{verbatim}
 
-    \item[] \lstinline+*+: repetição
+\item[] \lstinline+*+ \hl{repetição}
 
 \begin{lstlisting}
->>> (1, 2) * 2
+b = (1, 2) * 2
+\end{lstlisting}
+
+\begin{verbatim}
 (1, 2, 1, 2)
-\end{lstlisting}
+\end{verbatim}
 
-    \item[] \lstinline+in+: pertencimento
+\item[] \lstinline+in+ \hl{pertencimento}
 
 \begin{lstlisting}
->>> 1 in (-1, 0, 1, 2)
-True
+c =  1 in (-1, 0, 1, 2)
 \end{lstlisting}
 
-  \end{itemize}
+\begin{verbatim}
+True
+\end{verbatim}
+
 \end{itemize}
 
 \begin{exr}
-  Aloque os conjuntos
+  Use \texttt{sets} para alocar os conjuntos
   \begin{align}
     &A = \{-1, 0, 2\},\\
     &B = \{2, 3, 5\}.
   \end{align}
-  Então, compute o produto cartesiano $A\times B=\{(a,b):~a\in A, b\in B\}$. Qual o número de elementos da $A\times B$? Dica: use a sintaxe de compreensão de conjuntos (consulte a Observação \ref{obs:compreensão_de_conjuntos}).
+  Então, compute o produto cartesiano $A\times B=\{(a,b):~a\in A, b\in B\}$. Qual o número de elementos da $A\times B$? Dica: use a sintaxe de compreensão de \texttt{sets} (consulte a Observação \ref{obs:compreensão_de_conjuntos}).
 \end{exr}
 
 \begin{exr}
-  Aloque o gráfico discreto da função\footnote{O gráfico de uma função restrito a um conjunto $A$ é o conjunto $\operatorname{G}(f)|_{A} = \{(x,y):~x\in A, y=f(x)\}$.} $f(x) = x^2$ para $x=0, \frac{1}{2}, 1, 2$. Dica: use a sintaxe de compreensão de conjuntos (consulte a Observação \ref{obs:compreensão_de_conjuntos}).
+  Aloque o gráfico discreto da função\footnote{O gráfico de uma função restrita a um conjunto $A$ é o conjunto $\operatorname{G}(f)|_{A} = \{(x,y):~x\in A, y=f(x)\}$.} $f(x) = x^2$ para $x=0, \frac{1}{2}, 1, 2$. Dica: use a sintaxe de compreensão de conjuntos (consulte a Observação \ref{obs:compreensão_de_conjuntos}).
 \end{exr}
+
+%%% ESTOU AQUI %%%
 
 \subsection{Listas}
 
