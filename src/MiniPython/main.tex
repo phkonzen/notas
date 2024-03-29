@@ -760,125 +760,170 @@ True
   Aloque o gráfico discreto da função\footnote{O gráfico de uma função restrita a um conjunto $A$ é o conjunto $\operatorname{G}(f)|_{A} = \{(x,y):~x\in A, y=f(x)\}$.} $f(x) = x^2$ para $x=0, \frac{1}{2}, 1, 2$. Dica: use a sintaxe de compreensão de conjuntos (consulte a Observação \ref{obs:compreensão_de_conjuntos}).
 \end{exr}
 
-%%% ESTOU AQUI %%%
+\subsection{\texttt{list}}
 
-\subsection{Listas}
-
-O tipo {\python} \lstinline+list+ permite alocar em uma única variável uma lista de itens ordenada. Por exemplo, observemos as seguintes listas
+\hl{Um {\PYTHONlist} é uma uma coleção de objetos \emph{indexada} e \emph{mutável}}. Por exemplo,
 
 \begin{lstlisting}
->>> x = [-1, 2, -3, -5]
->>> type(x)
-<class 'list'>
->>> y = ['a', 'b', 'a']
->>> y
-['a', 'b', 'a']
->>> vazia = []
->>> len(x)
+x = [-1, 2, -3, -5]
+print(x, type(x))
+\end{lstlisting}
+
+\begin{verbatim}
+  [-1, 2, -3, -5] <class 'list'>
+\end{verbatim}
+
+\begin{lstlisting}
+y = [1, 1, 'oi', 2.5]
+print(y)
+\end{lstlisting}
+
+\begin{verbatim}
+[1, 1, 'oi', 2.5]
+\end{verbatim}
+
+\begin{lstlisting}
+vazia = []
+print(len(vazia))
+print(len(y))
+\end{lstlisting}
+
+\begin{verbatim}
+0
 4
-\end{lstlisting}
+\end{verbatim}
 
-Os elementos de uma lista são indexados, o índice $0$ corresponde ao primeiro elemento, o índice $1$ ao segundo elemento e assim por diante. Desta forma é possível o acesso direto a um elemento de uma lista usando-se sua posição. Por exemplo,
-
-\begin{lstlisting}
->>> x[0]
--1
->>> y[2] = 'c'
->>> y
-['a', 'b', 'c']
-\end{lstlisting}
-
-Pode-se fazer um corte de elementos de uma lista usando o operador \lstinline+:+. Por exemplo,
+Os elementos de um {\PYTHONlist} são indexados de forma análoga a um {\PYTHONtuple}, o índice $0$ corresponde ao primeiro elemento, o índice $1$ ao segundo elemento e assim por diante. Bem como, o índice $-1$ corresponde ao último elemento, o $-2$ ao penúltimo e segue. Por exemplo,
 
 \begin{lstlisting}
->>> x = [1,2,-1,3,-2]
->>> x[2:5]
-[-1, 3, -2]
+x[-1] = 3.14
+print('x[0] = ', x[0])
+print(x = ', x)
 \end{lstlisting}
 
-Operadores básicos:
-\begin{itemize}
-\item[] \lstinline-+-: concatenação
+\begin{verbatim}
+x[0] = 1
+x = [-1, 2, -3, 3.14]
+\end{verbatim}
 
 \begin{lstlisting}
->>> [1, 2] + [3, 4, 5]
+x[:3] = [10, -20]
+print(x)
+\end{lstlisting}
+
+\begin{verbatim}
+[10, -20, -3, 3.14]
+\end{verbatim}
+
+\hl{Os operadores básicos de concatenação e de repetição também estão disponíveis para um {\PYTHONlist}}. Por exemplo,
+
+\begin{lstlisting}
+x = [1,2] + [3, 4, 5]
+print(x)
+y = [1,2]*2
+print(y)
+\end{lstlisting}
+
+\begin{verbatim}
 [1, 2, 3, 4, 5]
-\end{lstlisting}
-
-  \item[] \lstinline+*+: repetição
-
-\begin{lstlisting}
->>> [1, 2] * 2
 [1, 2, 1, 2]
-\end{lstlisting}
-
-\item[] \lstinline+in+: pertencimento
-
-\begin{lstlisting}
->>> 1 in [-1, 0, 1, 2]
-True
-\end{lstlisting}
-
-\end{itemize}
+\end{verbatim}
 
 \begin{obs}
-  Listas contam com várias funções prontas para a execução de diversas tarefas práticas como, por exemplo, inserir/deletar itens, contar ocorrências, ordenar itens, etc. Consulte \href{https://docs.python.org/3/tutorial/datastructures.html#more-on-lists}{Python Docs}.
+  {\PYTHONlist} conta com várias funções prontas para a execução de diversas tarefas práticas como, por exemplo, inserir/deletar itens, contar ocorrências, ordenar itens, etc. Consulte na web \href{https://docs.python.org/3/tutorial/datastructures.html#more-on-lists}{Python Docs: More on Lists}.
 \end{obs}
 
-\begin{obs}(Alocação {\it versus} cópia)
-  Estude o seguinte exemplo
+\begin{obs}\normalfont{(\hl{Alocação \textit{versus} Cópia}.)}
+  Estudamos o seguinte exemplo
 
 \begin{lstlisting}
->>> x = [2, 3, 1]
->>> y = x
->>> y[1] = 0
->>> x
-[2, 0, 1]
+x = [2, 3, 1]
+y = x
+y[1] = 0
+print('x =', x)
 \end{lstlisting}
 
-  Notamos que \lstinline+y+ aponta para o mesmo endereço de memória de \lstinline+x+. Para copiar uma lista e alocá-la em um novo endereço de memória, deve-se usar a função \lstinline+list.copy()+, como segue
+\begin{verbatim}
+x = [2, 0, 1]
+\end{verbatim}
+
+  \hl{Em {\python}, dados têm identificação única}. Logo, neste exemplo, $x$ e $y$ apontam para o mesmo endereço de memória. Modificar $y$ é também modificar $x$ e vice-e-versa. Para desassociar $y$ de $x$, $y$ precisa receber uma cópia de $x$, como segue
 
 \begin{lstlisting}
->>> x = [2, 3, 1]
->>> y = x.copy()
->>> y[1] = 0
->>> x
-[2, 3, 1]
->>> y
-[2, 0, 1]
+x = [2, 3, 1]
+print('id(x) =', id(x))
+y = x.copy()
+print('id(y) =', id(y))
+y[1] = 0
+print('x =', x)
+print('y =', y)
 \end{lstlisting}
 
+\begin{verbatim}
+id(x) = 140476759980864
+id(y) = 140476760231360
+x = [2, 3, 1]
+y = [2, 0, 1]
+\end{verbatim}
+
+\end{obs}
+
+\begin{obs}\normalfont{(\hl{Anexar ou Estender}.)}
+  Um {\PYTHONlist} tem tamanho dinâmico, premitindo a anexação de um novo item ou sua estensão. A anexação de um item pode ser feita com o método {\PYTHONlistDOTappend}, equanto que a extensão é feita com {\PYTHONlistDOTextend}. Por exemplo, com o {\PYTHONlistDOTappend} temos
+
+\begin{lstlisting}
+l = [1, 2]
+l.append((3,4)))
+print(l)
+\end{lstlisting}
+
+\begin{verbatim}
+[1, 2, (3, 4)]
+\end{verbatim}
+
+Equanto, que com o {\PYTHONlistDOTextend} obtemos
+
+\begin{lstlisting}
+l = [1, 2]
+l.extend((3,4)))
+print(l)
+\end{lstlisting}
+  
+\begin{verbatim}
+[1, 2, 3, 4]
+\end{verbatim}
+  
 \end{obs}
 
 \begin{exr}
-  Implemente uma lista para alocar os primeiros 5 elementos da sequência de Fibonacci\footnote{Leonardo Fibonacci, 1170 - 1250, matemático italiano. Fonte: \href{https://pt.wikipedia.org/wiki/Leonardo\_Fibonacci}{Wikipédia}.}.
+  A solução de
+  \begin{equation}
+    x^2 - 2 = 0
+  \end{equation}
+  pode ser aproximada pela iteração\footnote{Iteração do método babilônico. Saiba mais em \href{https://pt.wikipedia.org/wiki/Raiz_quadrada\#M\%C3\%A9todo_babil\%C3\%B4nico}{Wikipédia: Raiz quadrada}.}
+  \begin{align}
+    &x_0 = 1,\\
+    &x_{i+1} = \frac{1}{2}\left(x_{i} + \frac{2}{x_i}\right)
+  \end{align}
+  para $i = 0, 1, 2, \ldots$. Aloque uma lista com as quatro primeiras iteradas, i.e. $[x_0, x_1, x_2, x_3, x_4]$. Dica: use {\PYTHONlistDOTappend}.
 \end{exr}
 
 \begin{exr}
-  Uma aplicação do Método Babilônico\footnote{Matemática Babilônica, matemática desenvolvida na Mesopotâmia, desde os Sumérios até a queda da Babilônia em 539 a.C.. Fonte: \href{https://pt.wikipedia.org/wiki/Matem\%C3\%A1tica\_babil\%C3\%B4nica}{Wikipédia}.} para a aproximação da solução da equação $x^2-2 = 0$, consiste na iteração
-  \begin{gather}
-    x_0 = 1,\\
-    x_{i+1} = \frac{x_i}{2} + \frac{1}{x_i},\quad i=0,1,2,\ldots
-  \end{gather}
-  Implemente uma lista para alocar as quatro primeiras aproximações da solução, i.e. $x_0$, $x_1$, $x_2$, $x_3$.
-\end{exr}
-
-\begin{exr}
-  Aloque os seguintes vetores como listas no {\python}
-  \begin{gather}
+  Aloque cada um dos seguintes vetores como um {\PYTHONlist}:
+  \begin{align}
     x = (-1, 3, -2),\\
     y = (4, -2, 0).
-  \end{gather}
+  \end{align}
   Então, compute
   \begin{enumerate}[a)]
   \item $x+y$
   \item $x\cdot y$
   \end{enumerate}
-  Dica: use uma compreensão de lista e os métodos {\python} \href{https://docs.python.org/3/library/functions.html#zip}{\lstinline+zip+} e \href{https://docs.python.org/3/library/functions.html?highlight=sum#sum}{\lstinline+sum+}.
+  Dica: use uma compreensão de lista e os métodos {\PYTHONzip} e {\PYTHONsum}.
 \end{exr}
 
 \begin{exr}
-  Uma matriz pode ser alocada como uma lista de listas {\python}, alocando cada linha como uma lista e a matriz como a lista destas listas. Por exemplo, a matriz
+  Uma matriz pode ser alocada como um encadeamento de \texttt{lists}. Por exemplo, a matriz
   \begin{equation}
     M =
     \begin{bmatrix}
@@ -886,7 +931,7 @@ True
       2 & 3
     \end{bmatrix}
   \end{equation}
-  pode ser alocada como a seguinte lista de listas
+  pode ser alocada como a seguinte {\PYTHONlist}
 
 \begin{lstlisting}
 >>> M = [[1,-2],[2,3]]
@@ -894,7 +939,7 @@ True
 [[1, -2], [2, 3]]
 \end{lstlisting}
 
-  Use listas para alocar a matriz
+  Use {\PYTHONlist} para alocar a matriz
   \begin{equation}
     A =
     \begin{bmatrix}
@@ -903,51 +948,49 @@ True
       3 & -1 & -2
     \end{bmatrix}
   \end{equation}
-  e o vetor coluna
+  e o vetor
   \begin{equation}
     x = (2, -3, 1),
   \end{equation}
   então compute $Ax$.
 \end{exr}
 
-%revisão
-\subsection{Dicionários}
+\subsection{\texttt{dict}}
 
-Em {\python} um dicionário é um mapeamento objeto a objeto, cada par (\verb+chave:valor+) é separado por uma vírgula. Por exemplo,
-
-\begin{lstlisting}
->>> a = {'nome': 'triangulo', 'perimetro': 3.2}
->>> a
-{'nome': 'triangulo', 'perimetro': 3.2}
->>> b = {1: 2.71, (1,2): 2, 'a': {1,0,-1}}
->>> b
-{1: 2.71, (1, 2): 2, 'a': {0, 1, -1}}
->>> d = {1: 'a', 'b': 2, 1.4: -1, 2: 'b'}
->>> d
-{1: 'a', 'b': 2, 1.4: -1, 2: 'b'}
-\end{lstlisting}
-
-O acesso a um item do dicionário é feito usando-se sua \emph{chave}. Por exemplo,
+Um {\PYTHONdict} é um mapeamento de objetos (um dicionário), em que cada item é um par \texttt{chave:valor}. Por exemplo,
 
 \begin{lstlisting}
->>> d['b']
-2
->>> d[1.4] = 1
->>> d
-{1: 'a', 'b': 2, 1.4: 1, 2: 'b'}
+a = {'nome': 'triangulo', 'perimetro': 3.2}
+print(a, type(a))
 \end{lstlisting}
+
+\begin{verbatim}
+{'nome': 'triangulo', 'perimetro': 3.2} <class 'dict'>
+\end{verbatim}
+
+
+O acesso a um item do dicionário pode ser feito por sua chave, por exemplo,
+
+\begin{lstlisting}
+a['nome'] = 'triângulo'
+print(a[nome])
+\end{lstlisting}
+
+\begin{verbatim}
+'triângulo'
+\end{verbatim}
 
 Pode-se adicionar um novo par, simplesmente, atribuindo valor a uma nova chave. Por exemplo,
 
 \begin{lstlisting}
->>> d[1.5] = 0
->>> d
-{1: 'a', 'b': 2, 1.4: 1, 2: 'b', 1.5: 0}
+a['vértices'] = {'A': (0,0), 'B': (3,0), 'C': (0,4)}
+print('vétice B =', a['vértices']['B'])
 \end{lstlisting}
 
-\begin{obs}
-  Consulte sobre mais sobre dicionários em \href{https://docs.python.org/3/tutorial/datastructures.html#dictionaries}{Python Docs}.
-\end{obs}
+\begin{verbatim}
+vértice B = (3,0)
+\end{verbatim}
+
 
 \begin{exr}
   Considere a função afim
@@ -965,7 +1008,9 @@ Pode-se adicionar um novo par, simplesmente, atribuindo valor a uma nova chave. 
   Implemente um dicionário para alocar suas raízes, vértice e interseção com o eixo $y$.
 \end{exr}
 
-\section{Função, ramificação e repetição}\label{sec_fun}
+%%% ESTOU AQUI %%%
+
+\section{Elementos da Programação Estruturada}\label{sec_progest}
 
 Nesta seção, vamos introduzir funções e estruturas de ramificação e de repetição. Estes são procedimentos fundamentais na programação estruturada.
 
