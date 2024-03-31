@@ -488,6 +488,8 @@ class Notas:
                 f = open(htmldir+"/"+p,'w')
                 f.write(page)
                 f.close()
-                        
+
+        # make index.html
+        os.system('cp ' + htmldir+'/main.html ' + htmldir+'/index.html')
 
         

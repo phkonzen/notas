@@ -268,7 +268,7 @@ class Index:
         body += '<div class="col">'
         body += self.new_card(header = "Notas de Aula",
                               title = "Geometria Analítica",
-                              text = "Introdução a geometria analítica",
+                              text = "Introdução à geometria analítica",
                               badges = [],
                               link = "GeometriaAnalitica/main.html",
                               color = "warning", status = "Atualizando")

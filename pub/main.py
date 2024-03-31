@@ -4,7 +4,7 @@ Constroi/atualiza o __site__
 das notas de aula.
 
 Autor: Pedro H A Konzen - 05/2018
-Modificado: 03/2023
+Modificado: 03/2024
 '''
 
 #pacotes do Python
@@ -21,7 +21,7 @@ from algoritmosprogramacaoi import *
 from calculoi import *
 from ead import *
 from edo import *
-from matematicanumerica import *
+# from matematicanumerica import *
 from matematicanumericai import *
 from matematicanumericaii import *
 from matematicanumericaparalela import *
@@ -74,7 +74,7 @@ api = AlgoritmosProgramacaoI(srcdir,odir)
 ci = CalculoI(srcdir,odir)
 ead = EaD(srcdir,odir)
 edo = EDO(srcdir,odir)
-mn = MatematicaNumerica(srcdir,odir)
+# mn = MatematicaNumerica(srcdir,odir)
 mni = MatematicaNumericaI(srcdir,odir)
 mnii = MatematicaNumericaII(srcdir,odir)
 mnp = MatematicaNumericaParalela(srcdir,odir)
@@ -98,7 +98,7 @@ if __name__ == '__main__':
                  ci,
                  ead,
                  edo,
-                 mn,
+#                 mn,
                  mni,
                  mnii,
                  mnp,
