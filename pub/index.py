@@ -183,9 +183,23 @@ class Index:
         body += '<div class="carousel-inner">'
 
         # anúncio
+        body += '<div class="carousel-item active">'
+        body += self.add_anuncio(text = 'PPG Matemática Aplicada: Edital Doutorado 2024',
+                                 link = 'https://www.ufrgs.br/ppgmap/?page_id=63',
+                                 status = 'warning')
+        body += '</div>'
+
+        # anúncio
         body += '<div class="carousel-item">'
-        body += self.add_anuncio(text = 'PPG Matemática Aplicada: Mestrado & Doutorado',
-                                 link = 'http://www.ufrgs.br/ppgmap',
+        body += self.add_anuncio(text = 'V CBJME 2024: Submissões até 17/Mai',
+                                 link = 'https://sites.google.com/view/jovensufmg2024',
+                                 status = 'primary')
+        body += '</div>'
+
+        # anúncio
+        body += '<div class="carousel-item">'
+        body += self.add_anuncio(text = 'XLIII CNMAC 2024: 16-20/Set',
+                                 link = 'http://www.cnmac.org.br/novo/index.php/CNMAC',
                                  status = 'primary')
         body += '</div>'
 
@@ -196,19 +210,6 @@ class Index:
                                  status = 'primary')
         body += '</div>'
 
-        # anúncio
-        body += '<div class="carousel-item active">'
-        body += self.add_anuncio(text = 'V CBJME 2024',
-                                 link = 'https://sites.google.com/view/jovensufmg2024',
-                                 status = 'primary')
-        body += '</div>'
-
-        # anúncio
-        body += '<div class="carousel-item active">'
-        body += self.add_anuncio(text = 'XLIII CNMAC 2024: Submissões 31/Março',
-                                 link = 'http://www.cnmac.org.br/novo/index.php/CNMAC',
-                                 status = 'danger')
-        body += '</div>'
 
 
         body += '</div>'
