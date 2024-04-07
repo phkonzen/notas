@@ -108,16 +108,22 @@ class Notas:
         text += 'height: auto;'
         text += '}'
 
+        # equations
         text += '.ltx_eqn_center_padleft {'
-        text += 'display: inherit;'
+        # text += 'width: 0px;'
+        text += 'min-width: 0px;'
         text += '}'
 
-        text += '.ltx_eqn_center_padright {'
-        text += 'width: 2em;'
-        text += '}'
+        # text += '.ltx_eqn_center_padleft {'
+        # text += 'display: inherit;'
+        # text += '}'
+
+        # text += '.ltx_eqn_center_padright {'
+        # text += 'width: 2em;'
+        # text += '}'
 
         text += '.ltx_tabular {'
-        text += 'max-widtth: 100vw;'
+        text += 'max-width: 100%;'
         text += '}'
 
         text += '.ltx_ref {'
