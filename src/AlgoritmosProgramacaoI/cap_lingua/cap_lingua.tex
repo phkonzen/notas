@@ -2031,15 +2031,24 @@ print(resp1 or resp2)
 
 \section{Sequência de Caracteres}\label{cap_lingua_sec_string}
 
-Dados em formato texto também são comumente manipulados em programação. \hl{Um texto é interpretado como uma cadeia/sequência de caracteres, chamada de \texttt{string}}. Para entrarmos com uma letra, palavra ou texto (uma \texttt{string}), precisamos usar aspas (simples \lstinline+' '+ ou duplas \lstinline+" "+). Por exemplo,
+Dados em formato texto também são comumente manipulados em programação. \hl{Um texto é interpretado como uma cadeia/\emph{sequência de caracteres}\footnote{Caractere é qualquer letra, símbolo, sinal ou dígito representado em forma escrita.}, chamada de \texttt{string}}. Para entrarmos com uma letra, palavra ou texto (uma \texttt{string}), precisamos usar aspas (simples \lstinline+' '+ ou duplas \lstinline+" "+). Por exemplo,
 
 \begin{lstlisting}
->>> s = 'Olá, mundo!'
->>> print(s)
-Olá, mundo!
->>> type(s)
-<class 'str'>
+s = 'Olá, mundo!'
+print(s)
 \end{lstlisting}
+
+\begin{verbatim}
+Olá, mundo!  
+\end{verbatim}
+
+\begin{lstlisting}
+type(s)
+\end{lstlisting}
+
+\begin{verbatim}
+<class 'str'>
+\end{verbatim}
 
 Uma \hl{\texttt{string} é um conjunto \emph{indexado} e \emph{imutável} de caracteres.} O primeiro caractere está na posição $0$, o segundo na posição $1$ e assim por diante. Por exemplo,
 \begin{equation}
@@ -2048,105 +2057,153 @@ Uma \hl{\texttt{string} é um conjunto \emph{indexado} e \emph{imutável} de car
 Observamos que o espaço também é um caractere. O tamanho da \texttt{string} (número total de caracteres) pode ser obtido com o método {\PYTHONlen}, por exemplo
 
 \begin{lstlisting}
->>> len(s)
-11
+len(s)
 \end{lstlisting}
+
+\begin{verbatim}
+11
+\end{verbatim}
 
 A referência a um caractere de uma dada \texttt{string} é feito usando-se seu identificador seguido do índice de sua posição entre colchetes. Por exemplo,
 
 \begin{lstlisting}
->>> s[6]
-'u'
+s[6]
 \end{lstlisting}
+
+\begin{verbatim}
+'u'
+\end{verbatim}
 
 Podemos, ainda, \hl{acessar fatias}\footnote{Em inglês, \textit{slice}.}\hl{ da sequência usando o operador \texttt{:}}\footnote{{\lstinline+x[start:stop:step]+}, padrão {\lstinline+start=0+}, {\lstinline+stop=len(x)+}, {\lstinline+step=1+.}}, por exemplo,
 
 \begin{lstlisting}
->>> s[:3]
-'Olá'
+s[:3]
 \end{lstlisting}
+
+\begin{verbatim}
+'Olá'
+\end{verbatim}
 
 ou seja, os caracteres da posição $0$ à posição $2$ (um antes do índice $3$). Também podemos tomar uma fatia entre posições, por exemplo,
 
 \begin{lstlisting}
->>> s[5:10]
-'mundo'
+s[5:10]
 \end{lstlisting}
+
+\begin{verbatim}
+'mundo'
+\end{verbatim}
 
 o que nos fornece a fatia de caracteres que inicia na posição $5$ e termina na posição $9$. Ou ainda,
 
 \begin{lstlisting}
->>> s[6:]
-'undo!'
+s[6:]
 \end{lstlisting}
+
+\begin{verbatim}
+'undo!'
+\end{verbatim}
 
 Também, pode-se controlar o passo do fatiamento, por exemplo
 
 \begin{lstlisting}
->>> 'laura'[::2]
-'lua'
+'laura'[::2]
 \end{lstlisting}
+
+\begin{verbatim}
+'lua'
+\end{verbatim}
 
 Em {\python}, exitem diversas \hl{formas de escrever \texttt{strings}}:
 \begin{itemize}
 \item \hlemph{aspas simples}
 
 \begin{lstlisting}[xrightmargin=2.5em]
->>> 'permitem aspas "duplas" embutidas'
-'permitem aspas "duplas" embutidas'
+print('permitem aspas "duplas" embutidas')
 \end{lstlisting}
+
+\begin{verbatim}
+permitem aspas "duplas" embutidas
+\end{verbatim}
 
 \item \hlemph{aspas duplas}
 
 \begin{lstlisting}[xrightmargin=2.5em]
->>> "permitem aspas 'simples' embutidas"
-"permitem aspas 'simples' embutidas"
+print("permitem aspas 'simples' embutidas")
 \end{lstlisting}
+
+\begin{verbatim}
+permitem aspas 'simples' embutidas
+\end{verbatim}
 
 \item \hlemph{aspas triplas}
 
 \begin{lstlisting}[xrightmargin=2.5em]
->>> '''
-... permitem
-...   "diversas"
-... linhas
-... '''
-'\npermitem\n  "diversas"\nlinhas\n'
->>> """
-... permitem
-...   'diversas'
-... linhas
-... """
-"\npermitem\n  'diversas'\nlinhas\n"
+print('''
+permitem
+"diversas"
+linhas
+''')
 \end{lstlisting}
+
+\begin{verbatim}
+permitem
+"diversas"
+linhas  
+\end{verbatim}
+
+\begin{lstlisting}
+print("""
+permitem
+'diversas'
+linhas
+""")
+\end{lstlisting}
+
+\begin{verbatim}
+permitem
+'diversas'
+linhas  
+\end{verbatim}
+  
 \end{itemize}
 
-\texttt{strings} em {\python} usam o padrão \href{https://home.unicode.org/}{Unicode}, que nos permite manipular textos de forma muito próxima da linguagem natural. Alguns caracteres especiais úteis são:
+Em {\python}, \texttt{strings} usam o padrão \href{https://home.unicode.org/}{Unicode}, que permite manipular textos de forma muito próxima da linguagem natural. Alguns caracteres especiais úteis são:
 \begin{itemize}
 \item \lstinline+'\n'+ \hlemph{nova linha}
 
 \begin{lstlisting}[xrightmargin=2.5em]
->>> print('Uma nova\nlinha')
-Uma nova
-linha
+print('Uma nova\nlinha')
 \end{lstlisting}
+
+\begin{verbatim}
+Uma nova
+linha  
+\end{verbatim}
 
 \item \lstinline+'\t'+ \hlemph{tabulação}
 
 \begin{lstlisting}[xrightmargin=2.5em]
->>> print('Uma nova\n\t linha com tabulação')
-Uma nova
- 	 linha com tabulação
+print('Uma nova\n\t linha com tabulação')
 \end{lstlisting}
+
+\begin{verbatim}
+Uma nova
+  linha com tabulação
+\end{verbatim}
 \end{itemize}
 
 \begin{obs}\normalfont{(\hl{\textit{Raw string}}.)}
   Caso seja necessário imprimir os caracteres unicode especiais \lstinline+'\\n'+, \lstinline+'\\t'+, entre outros, pode-se usar \textit{raw strings}. Por exemplo,
 
 \begin{lstlisting}
->>> print(r'Aqui, o \n não quebra a linha!')
-Aqui, o \n não quebra a linha!
+print(r'Aqui, o \n não quebra a linha!')
 \end{lstlisting}
+
+\begin{verbatim}
+Aqui, o \n não quebra a linha!
+\end{verbatim}
+
 \end{obs}
 
 \subsection{Formatação de \texttt{strings}}\label{cap_lingua_sec_string:subsec:format}
@@ -2154,34 +2211,45 @@ Aqui, o \n não quebra a linha!
 Em {\python}, \hl{\texttt{strings} formatadas} são identificadas com a letra \lstinline+f+ no início. Elas \hl{aceitam o uso de identificadores} com valores predefinidos. Os identificadores são \hl{embutidos com} o uso de \hl{chaves} \lstinline+{}+ (\textit{placeholder}). Por exemplo,
 
 \begin{lstlisting}
->>> nome = 'Fulane'
->>> f'Olá, {nome}!'
-'Olá, Fulane!'
+nome = 'Fulane'
+print(f'Olá, {nome}!')
 \end{lstlisting}
+
+\begin{verbatim}
+'Olá, Fulane!'
+\end{verbatim}
 
 Há várias \hl{especificações de formatação} disponíveis\footnote{Consulte na \textit{web} por \href{https://docs.python.org/3/library/string.html\#format-specification-mini-language}{Python Docs:String: Format Specification Mini-Language} para uma lista completa.}:
 \begin{itemize}
 \item \lstinline+'d'+ \hlemph{número inteiro}
 
 \begin{lstlisting}[xrightmargin=2.5em]
->>> print(f'10/3 é igual a {10//3:d} e \
-... resta {10%3:d}.')
-10/3 é igual a 3 e resta 1.
+print(f'10/3 é igual a {10//3:d} e resta {10%3:d}.')
 \end{lstlisting}
+
+\begin{verbatim}
+10/3 é igual a 3 e resta 1.
+\end{verbatim}
 
 \item \lstinline+'f'+ \hlemph{número decimal}
 
 \begin{lstlisting}[xrightmargin=2.5em]
->>> print(f'13/7 é aproximadamente {13/7:.3f}')
-13/7 é aproximadamente 1.857
+print(f'13/7 é aproximadamente {13/7:.3f}')
 \end{lstlisting}
+
+\begin{verbatim}
+13/7 é aproximadamente 1.857
+\end{verbatim}
 
 \item \lstinline+'e'+ \hlemph{notação científica normalizada}
 
 \begin{lstlisting}[xrightmargin=2.5em]
->>> print(f'103/7 é aproximadamente {103/7:.3e}')
-103/7 é aproximadamente 1.471e+01
+print(f'103/7 é aproximadamente {103/7:.3e}')
 \end{lstlisting}  
+
+\begin{verbatim}
+103/7 é aproximadamente 1.471e+01
+\end{verbatim}
 
 \end{itemize}
 
@@ -2192,24 +2260,33 @@ Em {\python}, há uma grande variedade disponível de \hl{métodos para a manipu
 \item \lstinline*+* \hlemph{concatenação}
 
 \begin{lstlisting}[xrightmargin=2.5em]
->>> s = 'Olá, mundo!'
->>> s[:5] + 'Fulane!'
-'Olá, Fulane!'
+s = 'Olá, mundo!'
+s[:5] + 'Fulane!'
 \end{lstlisting}
+
+\begin{verbatim}
+'Olá, Fulane!'
+\end{verbatim}
 
 \item \lstinline+*+ \hlemph{repetição}
 
 \begin{lstlisting}[xrightmargin=2.5em]
->>> 'ha'*3
-'hahaha'
+'ha'*3
 \end{lstlisting}
+
+\begin{verbatim}
+'hahaha'
+\end{verbatim}
 
 \item \lstinline+in+ \hlemph{pertence}
 
 \begin{lstlisting}[xrightmargin=2.5em]
->>> 'mar' in 'amarelo'
-True
+'mar' in 'amarelo'
 \end{lstlisting}
+
+\begin{verbatim}
+True
+\end{verbatim}
 
 \end{itemize}
 
@@ -2218,35 +2295,58 @@ True
 O método {\PYTHONinput} pode ser usado para a \hl{entrada de \texttt{string}} via teclado. Por exemplo,
 
 \begin{lstlisting}
->>> s = input('Digite seu nome.\n')
-Digite seu nome.
-Fulane
->>> s
-'Fulane'
+s = input('Digite seu nome: ')
+print(f'Olá, {s}.')
 \end{lstlisting}
 
-A instrução da linha 1 pede para que a variável \lstinline+s+ receba a \texttt{string} a ser digitada pela(o) usuária(o). A \texttt{string} entre parênteses é informativa, o comando {\PYTHONinput}, imprime esta mensagem e fica aguardado que uma nova \texttt{string} seja digitada. Quando o usuário pressiona \lstinline+<ENTER>+, a \texttt{string} digitada é alocada na variável \lstinline+s+.
+\begin{verbatim}
+Digite seu nome: Fulane
+Olá, Fulane.
+\end{verbatim}
+
+A instrução da linha 1 pede para que a variável \lstinline+s+ receba a \texttt{string} a ser digitada por usuária(o). A \texttt{string} entre parênteses é informativa, o comando {\PYTHONinput}, imprime esta mensagem e fica aguardado que uma nova \texttt{string} seja digitada. Quando o usuário pressiona \lstinline+<ENTER>+, a \texttt{string} digitada é alocada na variável \lstinline+s+.
 
 \subsubsection{Conversão de Classes de Dados}
 
 A \hl{conversão entre classes de dados} é possível e é feita por métodos próprios de cada classe. Por exemplo,
 
 \begin{lstlisting}
->>> # int -> str
->>> str(101)
-'101'
->>> # str -> int
->>> int('23')
-23
->>> # int -> float
->>> float(1)
-1.0
->>> # float -> int
->>> int(-2.9)
--2
+# int -> str
+str(101)
 \end{lstlisting}
 
-\hl{Atenção! Na conversão de {\PYTHONfloat} para \PYTHONint, fica-se apenas com a parte inteiro do número}.
+\begin{verbatim}
+'101'
+\end{verbatim}
+
+\begin{lstlisting}
+  # str -> int
+  int('23')
+\end{lstlisting}
+
+\begin{verbatim}
+23
+\end{verbatim}
+
+\begin{lstlisting}
+# int -> float
+float(1)  
+\end{lstlisting}
+
+\begin{verbatim}
+1.0
+\end{verbatim}
+
+\begin{lstlisting}
+# float -> int
+int(-2.9)
+\end{lstlisting}
+
+\begin{verbatim}
+-2
+\end{verbatim}
+
+\hl{Atenção! Na conversão de {\PYTHONfloat} para \PYTHONint, fica-se apenas com a parte inteira do número}.
 
 \begin{obs}
   O método {\PYTHONinput} permite a entrada de \texttt{strings}, que podem ser convertidas para outras classes de dados. Com isso, pode-se obter a entrada via teclado destes dados.
@@ -2254,10 +2354,6 @@ A \hl{conversão entre classes de dados} é possível e é feita por métodos pr
 
 \begin{ex}
   O seguinte código, computa a área de um triângulo com base e altura fornecidas por usuária(o).
-
-\ifisbook
-\vspace{0.2cm}
-\fi
 
 \begin{lstlisting}
 # entrada de dados
@@ -2277,6 +2373,23 @@ print(f'é igual a {area:e}')
 \end{ex}
 
 \subsection{Exercícios}
+
+\begin{exer}
+  Com base na linguagem {\python}, complete as lacunas.
+  \begin{enumerate}[a)]
+    % a)
+    \item \underline{\phantom{Caractere}} é qualquer letra, símbolo, sinal ou dígito representado em forma escrita.
+    % b)
+    \item \texttt{String} é uma sequência \underline{\phantom{caracteres}}.
+    % c)
+    \item Usam-se \underline{\phantom{aspas}} para a entrada de \texttt{strings}.
+    % d)
+    \item O caractere especial \underline{\phantom{\lstinline{'\n'}}} insere uma nova linha, enquanto que o \lstinline{'\t'} insere uma \underline{\phantom{tabulação}}.
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  a) caractere. b) sequência de caracteres. c) aspas. d) \lstinline{'\n'}; tabulação.
+\end{resp}
 
 \begin{exer}
   Aloque a palavra \textit{traitor} em uma variável $x$. Use de indexação por referência para:
@@ -2306,7 +2419,7 @@ Sem implementá-lo, o que é impresso?
 \end{resp}
 
 \begin{exer}
-  Desenvolva um contador de letras de palavras. Ou seja, crie um código que forneça o número de letras de uma palavra fornecida por um(a) usuário(a).
+  Desenvolva um contador de letras de palavras. Ou seja, crie um código que forneça o número de letras de uma palavra fornecida por usuário(a).
 \end{exer}
 \begin{resp}
 
@@ -2318,7 +2431,7 @@ print(f'A palavra {s} tem {len(s)} letras.')
 \end{resp}
 
 \begin{exer}
-  Desenvolva um código que compute a área de um quadrado de lado fornecido pela(o) usuária(o). Assuma que o lado é dado em centímetros e a área deve ser impressa em metros, usando notação decimal com $2$ dígitos depois da vírgula.
+  Desenvolva um código que compute a área de um quadrado de lado fornecido por usuária(o). Assumindo que o lado é dado em centímetros, a área deve ser impressa em metros, usando notação decimal com $2$ dígitos depois da vírgula.
 \end{exer}
 \begin{resp}
 
@@ -2331,18 +2444,22 @@ print(f'O quadrado de lado {lado:e} cm tem área {area:.2f} m.')
 \end{resp}
 
 \begin{exer}
-  Desenvolva um código que verifica se um número é divisível por outro. Ou seja, a(o) usuária entra com dois números inteiros e o código imprime verdadeiro ({\PYTHONTrue}) ou ({\PYTHONFalse}) conforme a divisibilidade de $x$ por $y$.
+  Desenvolva um código que verifica se um número é divisível por outro. Ou seja, a(o) usuária(o) entra com dois números inteiros e o código imprime verdadeiro ({\PYTHONTrue}) ou ({\PYTHONFalse}) conforme a divisibilidade de $x$ por $y$.
 \end{exer}
 \begin{resp}
 
 \begin{lstlisting}
 x = int(input('Digite um número inteiro:\n'))
-y = int(input('Digite outro número inteiro:\n'))
+y = int(input('Digite outro número inteiro não nulo:\n'))
 print(f'{x} é divisível por {y}?')
 print(f'{x%y==0}')
 \end{lstlisting}
 
 \end{resp}
+
+\begin{exer}
+  Desenvolva um código que computa a área de um triângulo de base e altura informadas por usuária(o). O resultado deve ser impresso em notação científica normalizada com três dígitos.
+\end{exer}
 
 \ifisbook
 \subsubsection{Respostas}
