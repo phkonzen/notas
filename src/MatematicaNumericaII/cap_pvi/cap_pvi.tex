@@ -1569,7 +1569,7 @@ Assumimos uma discretização uniforme no tempo $t^{(k)} = t_0 + kh$, com tamanh
 \end{equation}
 \hl{A ideia é aproximar a integral por uma quadratura de Newton}{\newton}\hl{-Cotes}{\cotes}. Das regras\footnote{Consulte as \href{https://notaspedrok.com.br/notas/MatematicaNumericaII/cap_integr_sec_NC.html}{Notas de Aula: Matemática Numérica II: Integração: Regras de Newton-Cotes}.}, temos
 \begin{equation}\label{cap_pvi_sec_passo_mult:eq:quad}
-  \int_{t^{(k-j)}}^{t^{k+i}} f(s,y(s))\,ds \approx \sum_{l=1}^{m} f\left(s^{(l)},y(s^{(l)})\right)w^{(l)},
+  \int_{t^{(k-j)}}^{t^{(k+i)}} f(s,y(s))\,ds \approx \sum_{l=1}^{m} f\left(s^{(l)},y(s^{(l)})\right)w^{(l)},
 \end{equation}
 onde $s^{(l)}$ são os nodos e $w^{(l)}$ os pesos da quadratura, $l = 1, 2, \dotsc, m$.
 
@@ -1579,25 +1579,25 @@ onde $s^{(l)}$ são os nodos e $w^{(l)}$ os pesos da quadratura, $l = 1, 2, \dot
 \begin{equation}
   y\left(t^{(k+1)}\right) = y\left(t^{(k)}\right) + \int_{t^{(k)}}^{t^{(k+1)}} f(s,y(s))\,ds.
 \end{equation}
-Aplicando as regras de Newton-Cotes, escolhemos os nodos de quadratura $s_l = t^{(k-l+1)}$, $l = 1, 2, \dotsc, m$, e, então
+Aplicando as regras de Newton-Cotes, escolhemos os nodos de quadratura $s^{(l)} = t^{(k-l+1)}$, $l = 1, 2, \dotsc, m$, e, então
 \begin{equation}
-  \int_{t^{(k)}}^{t^{k+1}} f(x,y(x))\,dx \approx \sum_{l=1}^{m} f\left(s_l,y(s_l)\right)w_l,
+  \int_{t^{(k)}}^{t^{(k+1)}} f(s,y(s))\,ds \approx \sum_{l=1}^{m} f\left(s^{(l)},y(s^{(l)})\right)w^{(l)},
 \end{equation}
 e
 \begin{equation}
-  w_l = \int_{t^{(k)}}^{t^{(k+1)}} \prod_{\overset{p=1}{p\neq l}}^m \frac{s-s^{(p)}}{s^{(l)}-x^{(p)}}\,ds.
+  w^{(l)} = \int_{t^{(k)}}^{t^{(k+1)}} \prod_{\overset{p=1}{p\neq l}}^m \frac{s-s^{(p)}}{s^{(l)}-s^{(p)}}\,ds.
 \end{equation}
 Agora, fazendo a mudança de variável $u=\left(s - t^{(k)}\right)/h$, obtemos
 \begin{equation}
-  w_l = h\int_{0}^{1} \prod_{\overset{p=1}{p\neq l}}^m \frac{u+p-1}{p-l}\,du
+  w^{(l)} = h\int_{0}^{1} \prod_{\overset{p=1}{p\neq l}}^m \frac{u+p-1}{p-l}\,du
 \end{equation}
 Donde, obtemos o seguinte esquema numérico
 \begin{equation}\label{cap_pvi_sec_passo_mult:eq:mult_passo_iter}
-  y^{(k+1)} = y^{(k)} + h\sum_{l=1}^m w_{l}f(t^{(k-l+1)},y^{(k-l+1)}),
+  y^{(k+1)} = y^{(k)} + h\sum_{l=1}^m w^{(l)}f(t^{(k-l+1)},y^{(k-l+1)}),
 \end{equation}
 onde
 \begin{equation}
-  w_l = \int_{0}^{1} \prod_{\overset{p=1}{p\neq l}}^m \frac{s+p-1}{p-l}\,ds.\label{cap_pvi_sec_passo_mult:eq:mult_passo_pesos}
+  w^{(l)} = \int_{0}^{1} \prod_{\overset{p=1}{p\neq l}}^m \frac{s+p-1}{p-l}\,ds.\label{cap_pvi_sec_passo_mult:eq:mult_passo_pesos}
 \end{equation}
 
 \begin{obs}\normalfont{\hl{(Ordem de Truncamento.)}}
@@ -1608,11 +1608,11 @@ onde
 
 Tomando $m=2$ em \eqref{cap_pvi_sec_passo_mult:eq:mult_passo_pesos}, temos
 \begin{equation}
-  c_1 = \int_0^1 s+1\,ds = \frac{3}{2}
+  w^{(1)} = \int_0^1 s+1\,ds = \frac{3}{2}
 \end{equation}
 e
 \begin{equation}
-  c_2 = \int_0^1 -s\,ds = -\frac{1}{2}.
+  w^{(2)} = \int_0^1 -s\,ds = -\frac{1}{2}.
 \end{equation}
 Então, de \eqref{cap_pvi_sec_passo_mult:eq:mult_passo_iter} temos a \hl{iteração do \emph{método de Adams-Bashforth de $2$ passos}}:
 \begin{equation}\label{cap_pvi_sec_passo_mult:eq:iter_ab2}\hleq
