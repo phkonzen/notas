@@ -316,7 +316,30 @@ class Notas:
                                         '<span class="badge text-bg-warning">Em construção</span>')
                     page = page.replace('[[badge:Em construção]]',
                                         '<span class="badge text-bg-warning">Em construção</span>')
+                    
+                    # YouTube embed video
+                    i1 = page.find('[[youtube:&lt;')
+                    # print('YouTube Not Found: ', i1)
+                    while (i1 != -1):
+                        f1 = page.index('&gt;]]', i1)
+                        yurl = page[i1+14:f1]
+                        
+                        print('YouTube: ', yurl)
+                        
+                        inc = '<iframe width="560" height="315" src="'
+                        inc += yurl
+                        inc += '" title="YouTube video player" frameborder="0"' 
+                        inc += 'allow="accelerometer; autoplay; clipboard-write;' 
+                        inc += 'encrypted-media; gyroscope; picture-in-picture; web-share"'
+                        inc += 'referrerpolicy="strict-origin-when-cross-origin"'
+                        inc += 'allowfullscreen></iframe>'
 
+                        rplc = page[i1:f1+6]
+                        # print(rplc, inc)
+                        page = page.replace(rplc, inc)
+                        
+                        i1 = page.find('[[youtube:<')
+                    
                     # mídia com YouTube
                     i1 = page.find('[YouTube]')
                     while (i1 != -1):
