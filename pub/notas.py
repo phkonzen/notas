@@ -326,13 +326,17 @@ class Notas:
                         
                         print('YouTube: ', yurl)
                         
-                        inc = '<iframe width="560" height="315" src="'
-                        inc += yurl
-                        inc += '" title="YouTube video player" frameborder="0"' 
+                        inc = '<div class="d-flex justify-content-center">'
+                        inc += '<iframe width="560" height="315"'
+                        inc += 'style="max-width:100%; height:100%; aspect-ratio:16/9;"'
+                        # inc += 'style="max-width:90%; height:auto;"' 
+                        inc += 'src="' +  yurl + '"'
+                        inc += 'title="YouTube video player" frameborder="0"' 
                         inc += 'allow="accelerometer; autoplay; clipboard-write;' 
                         inc += 'encrypted-media; gyroscope; picture-in-picture; web-share"'
                         inc += 'referrerpolicy="strict-origin-when-cross-origin"'
                         inc += 'allowfullscreen></iframe>'
+                        inc += '</div>'
 
                         rplc = page[i1:f1+6]
                         # print(rplc, inc)
