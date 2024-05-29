@@ -322,15 +322,15 @@ class Notas:
                     # print('YouTube Not Found: ', i1)
                     while (i1 != -1):
                         f1 = page.index('&gt;]]', i1)
-                        yurl = page[i1+14:f1]
+                        yid = page[i1+14:f1]
                         
-                        print('YouTube: ', yurl)
+                        print('YouTube: ', yid)
                         
                         inc = '<div class="d-flex justify-content-center">'
                         inc += '<iframe width="560" height="315"'
                         inc += 'style="max-width:100%; height:100%; aspect-ratio:16/9;"'
                         # inc += 'style="max-width:90%; height:auto;"' 
-                        inc += 'src="' +  yurl + '"'
+                        inc += 'src="https://www.youtube.com/embed/' +  yid + '"'
                         inc += 'title="YouTube video player" frameborder="0"' 
                         inc += 'allow="accelerometer; autoplay; clipboard-write;' 
                         inc += 'encrypted-media; gyroscope; picture-in-picture; web-share"'
@@ -342,7 +342,7 @@ class Notas:
                         # print(rplc, inc)
                         page = page.replace(rplc, inc)
                         
-                        i1 = page.find('[[youtube:<')
+                        i1 = page.find('[[youtube:&lt;')
                     
                     # mídia com YouTube
                     i1 = page.find('[YouTube]')
