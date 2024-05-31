@@ -191,8 +191,15 @@ class Index:
 
         # anúncio
         body += '<div class="carousel-item">'
-        body += self.add_anuncio(text = 'V CBJME 2024: Submissões até 17/Mai',
-                                 link = 'https://sites.google.com/view/jovensufmg2024',
+        body += self.add_anuncio(text = 'IMSE 2024: Submissões até 30/Jun',
+                                 link = 'https://www.even3.com.br/16th-international-conference-on-integral-methods-in-science-and-engineering-447097/',
+                                 status = 'primary')
+        body += '</div>'
+
+        # anúncio
+        body += '<div class="carousel-item">'
+        body += self.add_anuncio(text = 'XXVII ENMC 2024: Submissões até 25/Jul',
+                                 link = 'https://enmc.ccam.uesc.br/',
                                  status = 'primary')
         body += '</div>'
 
