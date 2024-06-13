@@ -10,6 +10,16 @@ pdf: main.tex
 	pdflatex main
 	pdflatex main
 
+########################################
+# FORMATO LIVRO PDF (Draft)
+########################################
+
+pdf-draft: main.tex
+	cp ../config-book-draft.knd config.knd
+	pdflatex main
+	pdflatex main
+	pdflatex main
+
 
 ########################################
 # FORMATO HTML
