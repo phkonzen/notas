@@ -184,6 +184,13 @@ class Index:
 
         # anúncio
         body += '<div class="carousel-item active">'
+        body += self.add_anuncio(text = 'PPG Matemática Aplicada: Seleção Mestrado 2024/02',
+                                 link = 'https://www.ufrgs.br/ppgmap/?p=1705',
+                                 status = 'danger')
+        body += '</div>'
+
+        # anúncio
+        body += '<div class="carousel-item">'
         body += self.add_anuncio(text = 'PPG Matemática Aplicada: Edital Doutorado 2024',
                                  link = 'https://www.ufrgs.br/ppgmap/?page_id=63',
                                  status = 'warning')
@@ -191,8 +198,15 @@ class Index:
 
         # anúncio
         body += '<div class="carousel-item">'
-        body += self.add_anuncio(text = 'IMSE 2024: Submissões até 30/Jun',
+        body += self.add_anuncio(text = 'IMSE 2024: 5-9/Ago',
                                  link = 'https://www.even3.com.br/16th-international-conference-on-integral-methods-in-science-and-engineering-447097/',
+                                 status = 'primary')
+        body += '</div>'
+
+        # anúncio
+        body += '<div class="carousel-item">'
+        body += self.add_anuncio(text = 'ERMAC-SP (Regional 8) 2024: 28-30/Ago',
+                                 link = 'https://sites.google.com/view/ermac-regional8/home',
                                  status = 'primary')
         body += '</div>'
 
