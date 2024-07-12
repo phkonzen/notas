@@ -1263,3 +1263,106 @@ for epoch in range(nepochs):
 %     com coeficiente de difusão $\lambda>0$ a determinar. 
 %   \end{subequations}
 % \end{ex}
+
+\section{Integração de Funções}\label{cap_pinns_sec_integr}
+\badgeConstrucao
+
+O objetivo, aqui, é de treinarmos uma RNA para a computação da integral de uma função $f:\mathbb{R}\to\mathbb{R}$ em um dado intervalo [a, b]. Mais precisamente, vamos treinar uma MLP $\mathcal{N}$ tal que
+\begin{equation}
+  \int_a^x f(u)\,du \approx \mathcal{N}(x).
+\end{equation}
+Do teorema fundamental do cálculo, temos que
+\begin{equation}
+  \mathcal{N}(x) = \mathcal{N}(a) + \int_{a}^x f(u)\,du
+\end{equation}
+com
+\begin{equation}
+  \mathcal{N}'(x) = f(x),
+\end{equation}
+sendo arbitrário o valor de $\mathcal{N}(a)$.
+
+Logo, escolhendo um valor arbitrário para $\mathcal{N}(a)$, podemos treinar $\mathcal{N}$ com base na função de perda
+\begin{equation}
+  \varepsilon = \frac{1}{n_s}\sum_{s=1}^{n_s}\left|\mathcal{N}'(x_s) - f(x_s)\right|^2.
+\end{equation}
+
+\begin{ex}
+  Vamos treinar uma rede para a computação de
+  \begin{equation}
+    \int_0^x \cos(\pi u)\,du.
+  \end{equation}
+
+\begin{lstlisting}
+import torch
+
+# modelo
+## n camadas escondidas
+nh = 2
+## n neurônios por camada
+nn = 50
+## fun de ativação
+fh = torch.nn.Tanh()
+## arquitetura
+model = torch.nn.Sequential()
+model.add_module('layer_1', torch.nn.Linear(1,nn))
+model.add_module('fun_1', fh)
+for layer in range(2, nh+1):
+    model.add_module(f'layer_{layer}', torch.nn.Linear(nn,nn))
+    model.add_module(f'fun_{layer}', fh)
+model.add_module(f'layer_{nh+1}', torch.nn.Linear(nn,1))
+
+# otimizador
+optim = torch.optim.Adam(model.parameters(),
+                        lr = 1e-2)
+
+# treinamento
+ns = 100
+nepochs = 10000
+nout_loss = 100
+tol = 1e-5
+
+for epoch in range(nepochs):
+
+  # samples
+  X = 2.*torch.rand((ns,1)) - 1.
+
+  f_exp = torch.cos(torch.pi*X)
+
+  # forward
+  X.requires_grad = True
+  F = model(X)
+
+  f_est = torch.autograd.grad(
+    F, X,
+    grad_outputs=torch.ones_like(F),
+    retain_graph=True,
+    create_graph=True)[0]
+
+  # loss
+  loss = torch.mean((f_exp - f_est)**2)
+
+  if ((epoch % nout_loss) == 0):
+    print(f'epoch {epoch}: loss = {loss.item():.4e}')
+
+  if (loss.item() < tol):
+    print('onvergiu')
+    break
+
+  optim.zero_grad()
+  loss.backward()
+  optim.step()  
+\end{lstlisting}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=4.5in]{./cap_pinns/dados/ex_integr/fig.jpg}
+  \caption{Computação da primitiva de $\cos(\pi x)$ no intervalo de $[-1, 1]$. Linha contínua: valores esperados $y = \frac{1}{\pi}\sen(\pi x)$, para $C = 0$. Linha tracejada: valores estimados $y = \mathcal{N}(x)$.}
+  \label{cap_pinns_sec_integr:fig:ex_integr}
+\end{figure}
+
+  Neste caso, podemos verificar a solução, uma vez que
+  \begin{equation}
+    \int_{-1}^{x} \cos(\pi u)\,du = \frac{1}{\pi}\sen(\pi x) + C,
+  \end{equation}
+  onde $C$ é uma constante arbitrária. Na Figura~\ref{cap_pinns_sec_integr:fig:ex_integr}, temos uma comparação entre o resultado estimado pela rede e o esperado. Observamos que a cada treinamento, a rede pode fornecer uma primitiva diferente.
+\end{ex}
