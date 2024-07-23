@@ -1,6 +1,6 @@
-# Diretório: VetoresGeometriaAnalitica/cap_scoord
+# ../cap_estudo
 
-Este diretório contém o código fonte do capítulo "Sistema de coordenadas".
+Este diretório contém o código fonte do capítulo "Retas e Planos".
 
 ## Licença
 

@@ -1,4 +1,6 @@
-# Diretório: VetoresGeometriaAnalitica/cap_er
+# ../cap_er
+
+**DEPRECATED!!!**
 
 Este diretório contém o código fonte do capítulo "Estudo de retas".
 
