@@ -1,4 +1,6 @@
-# Diretório: VetoresGeometriaAnalitica/cap_ep
+# ../cap_ep
+
+**DEPRECATED!!!**
 
 Este diretório contém o código fonte do capítulo "Estudo de planos".
 
