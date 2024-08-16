@@ -184,10 +184,11 @@ class Index:
 
         # anúncio
         body += '<div class="carousel-item active">'
-        body += self.add_anuncio(text = 'PPG Matemática Aplicada: Seleção Mestrado 2024/02',
-                                 link = 'https://www.ufrgs.br/ppgmap/?p=1705',
+        body += self.add_anuncio(text = 'Concurso IME/UFRGS: Inscrições 21/Ago - 04/Set',
+                                 link = 'https://www.ufrgs.br/progesp/?page_id=43903',
                                  status = 'danger')
         body += '</div>'
+
 
         # anúncio
         body += '<div class="carousel-item">'
