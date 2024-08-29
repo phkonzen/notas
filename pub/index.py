@@ -197,26 +197,6 @@ class Index:
                                  status = 'warning')
         body += '</div>'
 
-        # anúncio
-        body += '<div class="carousel-item">'
-        body += self.add_anuncio(text = 'IMSE 2024: 5-9/Ago',
-                                 link = 'https://www.even3.com.br/16th-international-conference-on-integral-methods-in-science-and-engineering-447097/',
-                                 status = 'primary')
-        body += '</div>'
-
-        # anúncio
-        body += '<div class="carousel-item">'
-        body += self.add_anuncio(text = 'ERMAC-SP (Regional 8) 2024: 28-30/Ago',
-                                 link = 'https://sites.google.com/view/ermac-regional8/home',
-                                 status = 'primary')
-        body += '</div>'
-
-        # anúncio
-        body += '<div class="carousel-item">'
-        body += self.add_anuncio(text = 'XXVII ENMC 2024: Submissões até 25/Jul',
-                                 link = 'https://enmc.ccam.uesc.br/',
-                                 status = 'primary')
-        body += '</div>'
 
         # anúncio
         body += '<div class="carousel-item">'
@@ -231,8 +211,6 @@ class Index:
                                  link = 'http://www.ufrgs.br/ime',
                                  status = 'primary')
         body += '</div>'
-
-
 
         body += '</div>'
         body += '</div>'
