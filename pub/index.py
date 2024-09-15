@@ -230,7 +230,7 @@ class Index:
                               text = "Introdução aos algoritmos de programação de computadores",
                               badges = ["Python", "NumPy", "Matplotlib"],
                               link = "AlgoritmosProgramacaoI/main.html",
-                              color = "warning", status = "Atualizando",
+                              color = "primary", status = "",
                               ebook="https://a.co/d/eRjID1A")
         body += '</div>'
 
@@ -272,7 +272,7 @@ class Index:
                               text = "Introdução à geometria analítica",
                               badges = [],
                               link = "GeometriaAnalitica/main.html",
-                              color = "warning", status = "Atualizando")
+                              color = "primary", status = "")
         body += '</div>'
 
         # card: notas de aula de Matemática Numérica Avançada
@@ -282,7 +282,7 @@ class Index:
                               text = "Tópicos de métodos numéricos avançados",
                               badges = ["Python", "NumPy", "SciPy", "Matplotlib"],
                               link = "MatematicaNumericaAvancada/main.html",
-                              color = "primary", status = "")
+                              color = "warning", status = "Atualizando")
         body += '</div>'
 
         # card: notas de aula de Matemática Numérica I
@@ -292,7 +292,7 @@ class Index:
                               text = "Introdução a métodos numéricos para resolução de equações e para aproximação de funções",
                               badges = ["Python", "NumPy"],
                               link = "MatematicaNumericaI/main.html",
-                              color = "primary", status = "")
+                              color = "warning", status = "Atualizando")
         body += '</div>'
 
         # card: notas de aula de Matemática Numérica II
@@ -352,7 +352,7 @@ class Index:
                               text = "Vetores no espaço euclidiano tridimensional",
                               badges = [],
                               link = "Vetores/main.html",
-                              color = "warning", status = "Atualizando")
+                              color = "primary", status = "")
         body += '</div>'
 
 
