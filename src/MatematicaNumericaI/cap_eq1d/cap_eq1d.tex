@@ -1,7 +1,6 @@
 %Este trabalho está licenciado sob a Licença Atribuição-CompartilhaIgual 4.0 Internacional Creative Commons. Para visualizar uma cópia desta licença, visite http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR ou mande uma carta para Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
 
-\chapter{Equação com uma Incógnita}\label{cap_eq1d}\index{zeros de!funções}
-\thispagestyle{fancy}
+\chapter{Equação com uma Incógnita}\label{cap_eq1d}
 
 Neste capítulo, discutiremos sobre métodos numéricos para resolver equações com uma incógnita real. Observamos que toda equação pode ser reescrita na seguinte forma equivalente
 \begin{equation}\label{eq:zero_fun}
@@ -13,7 +12,7 @@ Os métodos numéricos que abordaremos ao longo deste capítulo são descritos p
 
 \section{Método da Bisseção}\label{cap_eq1d_sec_bissec}
 
-O \hl{Método da Bisseção explora o fato de que toda função contínua $f$ com $f(a)\cdot f(b) < 0$} (i.e., $f(a)$ e $f(b)$ tem sinais diferentes) \hl{tem pelo menos um zero no intervalo $(a, b)$}\footnote{Esta é uma consequência imediata do Teorema do Valor Intermediário.}.
+O \hl{Método da Bisseção explora o fato de que toda função contínua $f$ com $f(a)\cdot f(b) < 0$} (i.e., $f(a)$ e $f(b)$ tem sinais diferentes) \hl{tem pelo menos um zero no intervalo $(a, b)$}\endnote{Esta é uma consequência imediata do Teorema do Valor Intermediário.}.
 
 \begin{ex}\label{cap_eq1d_sec_bissec:ex:bis_intro}
   Consideramos o problema de resolver a equação
@@ -30,7 +29,7 @@ Este problema é equivalente a encontrar os zeros da seguinte função
          &+ \frac{\pi}{4}x^2 + \frac{5\pi^2}{16}x + \frac{3\pi^3}{64}.
   \end{aligned}
 \end{equation}
-Os zeros exatos\footnote{O problema foi construído para que tivesse estas soluções.} desta função são $x_1=3\pi/4\approx 2,3562$ e $x_2=x_3=-\pi/4\approx -0,78540$ (consulte a Figura \ref{cap_eq1d_sec_bissec:fig:bis_intro}).
+Os zeros exatos\endnote{O problema foi construído para que tivesse estas soluções.} desta função são $x_1=3\pi/4\approx 2,3562$ e $x_2=x_3=-\pi/4\approx -0,78540$ (consulte a Figura \ref{cap_eq1d_sec_bissec:fig:bis_intro}).
 
 \begin{figure}[H]
   \centering
@@ -39,7 +38,7 @@ Os zeros exatos\footnote{O problema foi construído para que tivesse estas solu�
   \label{cap_eq1d_sec_bissec:fig:bis_intro}
 \end{figure}
 
-Observamos que esta função é contínua e que, por exemplo, $f(-2)>0$ e $f(3)<0$, logo $f(-2)\cdot f(3) < 0$ e, de fato, $f$ tem pelo menos um zero\footnote{De fato, $f$ tem três zeros no intervalo $(-2, 3)$.} no intervalo $(-2, 3)$.
+Observamos que esta função é contínua e que, por exemplo, $f(-2)>0$ e $f(3)<0$, logo $f(-2)\cdot f(3) < 0$ e, de fato, $f$ tem pelo menos um zero\endnote{De fato, $f$ tem três zeros no intervalo $(-2, 3)$.} no intervalo $(-2, 3)$.
 \end{ex}
 
 Consideramos, então, uma função $f$ contínua tal que $f(a)\cdot f(b) < 0$. O \hl{Método da Bisseção é iterativo}, a primeira aproximação para uma solução de $f(x)=0$ é tomada como o ponto médio do intervalo $(a, b)$, i.e.
@@ -83,27 +82,28 @@ Do esboço de seu gráfico (Figura \ref{cap_eq1d_sec_bissec:fig:bis_intro}), obs
 \end{table}
 
 \begin{lstlisting}
-  import numpy as np
+import numpy as np
 
-  f = lambda x: np.sin(x+np.pi/4)**2 \
-      - x**3 + np.pi/4*x**2 + 5*np.pi**2/16*x \
-      + 3*np.pi**3/64
+f = lambda x: np.sin(x+np.pi/4)**2 \
+  - x**3 + np.pi/4*x**2 + 5*np.pi**2/16*x \
+  + 3*np.pi**3/64
 
-  a = 2
-  b = 3
+a = 2
+b = 3
+x = (a + b)/2
+print(f"0: a={a:.4f}, b={b:.4f}, x={x:.4f}")
+for k in range(9):
+  s = np.sign(f(a)*f(x))
+  if (s == -1):
+    b = x
+  elif (s == 1):
+    a = x
+  else:
+    break
   x = (a + b)/2
-  print(f"0: a={a:.4f}, b={b:.4f}, x={x:.4f}")
-  for k in range(9):
-      s = np.sign(f(a)*f(x))
-      if (s == -1):
-          b = x
-      elif (s == 1):
-          a = x
-      else:
-          break
-      x = (a + b)/2
-      print(f"{k+1}: a={a:.4f}, b={b:.4f}, x={x:.4f}")
+  print(f"{k+1}: a={a:.4f}, b={b:.4f}, x={x:.4f}")
 \end{lstlisting}
+
 \end{ex}
 
 \subsection{Análise Numérica}
@@ -146,7 +146,7 @@ Em geral, \hl{quando maior o valor de $\alpha$, mais rapidamente é a convergên
   Seja $f:[a, b]\to\mathbb{R}$ função contínua com $f(a)\cdot f(b) < 0$. Então, o \hl{Método da Bisseção é globalmente convergente}.
 \end{teo}
 \begin{dem}
-  Seja $(x^{(k)})_{k=1}^\infty$ a sequência de aproximações\footnote{Caso, $f\left(a^{(k)}\right)=0$ ou $f\left(a^{(b)}\right)=0$, então assumimos que $a^{(k+i)} = a^{(k)}$ ou $b^{(k+i)} = b^{(k)}$, conforme o caso, para $i=1,2,3,\ldots$.} do Método da Bisseção. Por construção, temos
+  Seja $(x^{(k)})_{k=1}^\infty$ a sequência de aproximações\endnote{Caso, $f\left(a^{(k)}\right)=0$ ou $f\left(a^{(b)}\right)=0$, então assumimos que $a^{(k+i)} = a^{(k)}$ ou $b^{(k+i)} = b^{(k)}$, conforme o caso, para $i=1,2,3,\ldots$.} do Método da Bisseção. Por construção, temos
   \begin{align}
     \left|x^{(k)} - x^{(k-1)}\right| &\leq b^{(k-1)}-a^{(k-1)}\\
                                      &\leq \frac{b^{(k-2)}-a^{(k-2)}}{2}\\
@@ -200,13 +200,13 @@ O \hl{Teorema~{\ref{cap_eq1d_sec_bissec:teo:convp}} nos garante a convergência 
 
 \subsubsection{Convergência e Exatidão}
 
-Dada uma \hl{função contínua e estritamente monótona}\footnote{Função estritamente crescente ou estritamente decrescente, exclusivamente.} \hl{$f:[a, b]\to\mathbb{R}$ com $f(a)\cdot f(b) < 0$}, temos que o Método da Bisseção converge para o zero de $f$ em $[a, b]$.
+Dada uma \hl{função contínua e estritamente monótona}\endnote{Função estritamente crescente ou estritamente decrescente, exclusivamente.} \hl{$f:[a, b]\to\mathbb{R}$ com $f(a)\cdot f(b) < 0$}, temos que o Método da Bisseção converge para o zero de $f$ em $[a, b]$.
 
 \begin{teo}\label{cap_eq1d_sec_bissec:teo:bissece}
   Seja $f:[a, b]\to\mathbb{R}$ função contínua e estritamente monótona com $f(a)\cdot f(b) < 0$. Então, o \hl{Método da Bisseção converge para o zero de $f$ em $[a, b]$}.
 \end{teo}
 \begin{dem}
-  Das hipóteses temos que $f$ tem um único zero $x^*$ em $(a, b)$. Seja $(x^{(k)})_{k=1}^\infty$ a sequência de aproximações\footnote{Caso, $f\left(a^{(k)}\right)=0$ ou $f\left(a^{(b)}\right)=0$, então assumimos que $a^{(k+i)} = a^{(k)}$ ou $b^{(k+i)} = b^{(k)}$, conforme o caso, para $i=1,2,3,\ldots$.} do Método da Bisseção. Por construção, temos
+  Das hipóteses temos que $f$ tem um único zero $x^*$ em $(a, b)$. Seja $(x^{(k)})_{k=1}^\infty$ a sequência de aproximações\endnote{Caso, $f\left(a^{(k)}\right)=0$ ou $f\left(a^{(b)}\right)=0$, então assumimos que $a^{(k+i)} = a^{(k)}$ ou $b^{(k+i)} = b^{(k)}$, conforme o caso, para $i=1,2,3,\ldots$.} do Método da Bisseção. Por construção, temos
   \begin{align}
     |x^{(k)} - x^{*}| &\leq \frac{b^{(k)}-a^{(k)}}{2}\\
                       &\leq \frac{b^{(k-1)}-a^{(k-1)}}{2^2}\\
@@ -265,7 +265,7 @@ onde, $x^* = x_1 = 3\pi/4$. Observamos que este resultado é consistente com a e
   \end{equation}
 \end{obs}
 
-\subsection{Zeros de multiplicidade par}
+\subsection{Zeros de Multiplicidade Par}
 
 Sejam \hl{$f$ uma função suave e $x^*$ um zero de multiplicidade par de $f$}. Observamos que o \hl{Método da Bisseção não é diretamente aplicável} para aproximar $x^*$. Isto ocorre, pois, neste caso, $x^*$ será um ponto de mínimo ou de máximo local de $f$, não havendo pontos $a$ e $b$ próximos de $x^*$ tal que $f(a)\cdot f(b) < 0$.
 
@@ -374,7 +374,7 @@ no intervalo $(0,55, ~0,65)$. Forneça a aproximação computada com $7$ dígito
 \end{resp}
 
 \begin{exer}
-  Aplique o Método da Bisseção para encontrar o ponto crítico\footnote{Definimos que $x$ é ponto crítico de uma dada $f$, quando $f'(x) = 0$ ou $\nexists f'(x)$.} de
+  Aplique o Método da Bisseção para encontrar o ponto crítico\endnote{Definimos que $x$ é ponto crítico de uma dada $f$, quando $f'(x) = 0$ ou $\nexists f'(x)$.} de
   \begin{equation}
     f(x) = (1-x^2)e^{-x^2}
   \end{equation}
@@ -383,6 +383,13 @@ no intervalo $(0,55, ~0,65)$. Forneça a aproximação computada com $7$ dígito
 \begin{resp}
   $1,4142\E+0$
 \end{resp}
+
+\ifisbook
+\subsubsection{Respostas}
+\shipoutAnswer
+\fi
+
+%%% SECTION %%%
 
 \section{Método da Falsa Posição}\label{cap_eq1d_sec_falsapos}
 
@@ -442,22 +449,22 @@ no intervalo $(0, 3)$. A tabela abaixo mostra os resultados obtidos da aplicaç�
 import numpy as np
 
 f = lambda x: np.sin(x+np.pi/4)**2 \
-    - x**3 + np.pi/4*x**2 + 5*np.pi**2/16*x \
-    + 3*np.pi**3/64
+  - x**3 + np.pi/4*x**2 + 5*np.pi**2/16*x \
+  + 3*np.pi**3/64
 
 a = 2.
 b = 3.
 for k in range(10):
-    x = a - (b-a)/(f(b)-f(a))*f(a)
-    print(f"{k+1}: {x:.4f}")
+  x = a - (b-a)/(f(b)-f(a))*f(a)
+  print(f"{k+1}: {x:.4f}")
 
-    s = np.sign(f(a)*f(x))
-    if (s == -1):
-        b = x
-    elif (s == 1):
-        a = x
-    else:
-        break
+  s = np.sign(f(a)*f(x))
+  if (s == -1):
+    b = x
+  elif (s == 1):
+    a = x
+  else:
+    break
 \end{lstlisting}
 \end{ex}
 
@@ -522,12 +529,19 @@ no intervalo $(0,55, ~0,65)$. Forneça a aproximação computada com $7$ dígito
 \end{resp}
 
 \begin{exer}
-  Aplique o Método da Falsa Posição para encontrar o ponto crítico\footnote{Definimos que $x$ é ponto crítico de uma dada $f$, quando $f'(x) = 0$ ou $\nexists f'(x)$.} de
+  Aplique o Método da Falsa Posição para encontrar o ponto crítico\endnote{Definimos que $x$ é ponto crítico de uma dada $f$, quando $f'(x) = 0$ ou $\nexists f'(x)$.} de
   \begin{equation}
     f(x) = (1-x^2)e^{-x^2}
   \end{equation}
   no intervalo $(0, 2)$. Obtenha o resultado com precisão de $5$ dígitos significativos por arredondamento.
 \end{exer}
+
+\ifisbook
+\subsubsection{Respostas}
+\shipoutAnswer
+\fi
+
+%%% SECTION %%%
 
 \section{Iteração de Ponto Fixo}\label{cap_eq1d_sec_pfixo}
 
@@ -644,7 +658,7 @@ com $k=0,1,2,\ldots$.
 
 Este último exemplo mostra que a iteração do ponto fixo nem sempre é convergente. Antes de vermos condições suficientes para a convergência, vejamos sua interpretação geométrica.
 
-\subsection{Interpretação geométrica}
+\subsection{Interpretação Geométrica}
 
 A Figura \ref{cap_eq1d_sec_pfixo:fig:pfixo_interp} apresenta o caso de uma iteração de ponto fixo convergente. As iterações iniciam-se no ponto $x^{(0)}$ e seguem para $x^{(1)} = g(x^{(0)})$ e $x^{(2)} = g(x^{(1)})$.
 
@@ -757,8 +771,8 @@ import numpy as np
 
 # fun obj
 f = lambda x: np.sin(x+np.pi/4)**2 \
-    - x**3 + np.pi/4*x**2 + 5*np.pi**2/16*x \
-    + 3*np.pi**3/64
+  - x**3 + np.pi/4*x**2 + 5*np.pi**2/16*x \
+  + 3*np.pi**3/64
 
 # param
 alpha = -0.1
@@ -769,11 +783,12 @@ g = lambda x: x - alpha*f(x)
 x0 = 2.6
 print(f'\n{1}: {x0:.4f}')
 for k in range(4):
-    x = g(x0)
-    nd = np.fabs(x-x0)
-    print(f'{k+1}: {x:.4f}, {nd:.1e}')
-    x0 = x
+  x = g(x0)
+  nd = np.fabs(x-x0)
+  print(f'{k+1}: {x:.4f}, {nd:.1e}')
+  x0 = x
 \end{lstlisting}
+
 \end{ex}
 
 \subsection{Exercícios}
@@ -892,16 +907,23 @@ no intervalo $(0,55, ~0,65)$. Forneça a aproximação computada com $7$ dígito
 \end{resp}
 
 \begin{exer}
-  Use o Método da Iteração de Ponto Fixo para encontrar o ponto crítico\footnote{Definimos que $x$ é ponto crítico de uma dada $f$, quando $f'(x) = 0$ ou $\nexists f'(x)$.} de
+  Use o Método da Iteração de Ponto Fixo para encontrar o ponto crítico\endnote{Definimos que $x$ é ponto crítico de uma dada $f$, quando $f'(x) = 0$ ou $\nexists f'(x)$.} de
   \begin{equation}
     f(x) = (1-x^2)e^{-x^2}
   \end{equation}
   no intervalo $(0, 2)$. Obtenha o resultado com precisão de $5$ dígitos significativos por arredondamento.
 \end{exer}
 
+\ifisbook
+\subsubsection{Respostas}
+\shipoutAnswer
+\fi
+
+%%% SECTION %%%
+
 \section{Método de Steffensen}\label{cap_eq1d_sec_Steffensen}
 
-O método de Steffensen\footnote{Johan Frederik Steffensen, 1873 - 1961, matemático e estatístico dinamarquês. Fonte: \href{https://pt.wikipedia.org/wiki/Johan_Frederik_Steffensen}{Wikipédia}.} é uma \hl{aplicação do método de aceleração de convergência $\Delta^2$ de Aitken}\footnote{Alexander Aitken, 1895 - 1967, matemático neozelandês. Fonte: \href{https://pt.wikipedia.org/wiki/Alexander_Aitken}{Wikipédia}.} \hl{à iteração de ponto fixo}.
+O método de Steffensen\endnote{Johan Frederik Steffensen, 1873 - 1961, matemático e estatístico dinamarquês. Fonte: \href{https://pt.wikipedia.org/wiki/Johan_Frederik_Steffensen}{Wikipédia}.} é uma \hl{aplicação do método de aceleração de convergência $\Delta^2$ de Aitken}\endnote{Alexander Aitken, 1895 - 1967, matemático neozelandês. Fonte: \href{https://pt.wikipedia.org/wiki/Alexander_Aitken}{Wikipédia}.} \hl{à iteração de ponto fixo}.
 
 \subsection{Acelerador $\Delta^2$ de Aitken}
 
@@ -963,8 +985,8 @@ import numpy as np
 
 # fun obj
 f = lambda x: np.sin(x+np.pi/4)**2 \
-    - x**3 + np.pi/4*x**2 + 5*np.pi**2/16*x \
-    + 3*np.pi**3/64
+  - x**3 + np.pi/4*x**2 + 5*np.pi**2/16*x \
+  + 3*np.pi**3/64
 
 # fun pto fixo
 alpha = -0.05
@@ -973,12 +995,13 @@ g = lambda x: x - alpha*f(x)
 x0 = 2.6
 print(f'\n1: {x0:.4f}')
 for k in range(7):
-    x1 = g(x0)
-    x2 = g(x1)
-    x = x0 - (x1-x0)**2/(x2-2*x1+x0)
-    print(f'\n{k+2}: {x1:.4f}, {x:.4f}')
-    x0 = x1
+  x1 = g(x0)
+  x2 = g(x1)
+  x = x0 - (x1-x0)**2/(x2-2*x1+x0)
+  print(f'\n{k+2}: {x1:.4f}, {x:.4f}')
+  x0 = x1
 \end{lstlisting}
+
 \end{ex}
 
 \subsection{Análise Numérica}
@@ -1065,8 +1088,8 @@ import numpy as np
 
 # fun obj
 f = lambda x: np.sin(x+np.pi/4)**2 \
-    - x**3 + np.pi/4*x**2 + 5*np.pi**2/16*x \
-    + 3*np.pi**3/64
+  - x**3 + np.pi/4*x**2 + 5*np.pi**2/16*x \
+  + 3*np.pi**3/64
 
 # fun pto fixo
 alpha = -0.05
@@ -1075,13 +1098,14 @@ g = lambda x: x - alpha*f(x)
 x0 = 2.6
 print(f'\n1: {x0:.4f}')
 for k in range(3):
-    x1 = g(x0)
-    x2 = g(x1)
-    x = x0 - (x1-x0)**2/(x2-2*x1+x0)
-    nd = np.fabs(x-x0)
-    print(f'\n{k+2}: {x:.4f}, {nd:.1e}')
-    x0 = x
+  x1 = g(x0)
+  x2 = g(x1)
+  x = x0 - (x1-x0)**2/(x2-2*x1+x0)
+  nd = np.fabs(x-x0)
+  print(f'\n{k+2}: {x:.4f}, {nd:.1e}')
+  x0 = x
 \end{lstlisting}
+
 \end{ex}
 
 \subsection*{Exercícios}
@@ -1138,12 +1162,19 @@ no intervalo $(0,55, ~0,65)$. Forneça a aproximação computada com $7$ dígito
 \end{resp}
 
 \begin{exer}
-  Use o Método de Steffensen para encontrar o ponto crítico\footnote{Definimos que $x$ é ponto crítico de uma dada $f$, quando $f'(x) = 0$ ou $\nexists f'(x)$.} de
+  Use o Método de Steffensen para encontrar o ponto crítico\endnote{Definimos que $x$ é ponto crítico de uma dada $f$, quando $f'(x) = 0$ ou $\nexists f'(x)$.} de
   \begin{equation}
     f(x) = (1-x^2)e^{-x^2}
   \end{equation}
   no intervalo $(0, 2)$. Obtenha o resultado com precisão de $5$ dígitos significativos por arredondamento.
 \end{exer}
+
+\ifisbook
+\subsubsection{Respostas}
+\shipoutAnswer
+\fi
+
+%%% SECTION %%%
 
 \section{Método de Newton}\label{cap_eq1d_sec_newton}
 
@@ -1166,7 +1197,7 @@ Esta última expressão nos indica que \hl{dada uma aproximação $\tilde{x}$ do
 \end{equation}
 \hl{aproxima $x^*$ com um erro da ordem de $|x^*-\tilde{x}|^2$}.
 
-Estas observações nos levam a \hl{\emph{iteração de Newton}}\footnote{Sir Isaac Newton, matemático e físico inglês, 1642 - 1726/27. Fonte: \href{https://en.wikipedia.org/wiki/Isaac_Newton}{Wikipedia}.}\index{iteração de!Newton}
+Estas observações nos levam a \hl{\emph{iteração de Newton}}\endnote{Sir Isaac Newton, matemático e físico inglês, 1642 - 1726/27. Fonte: \href{https://en.wikipedia.org/wiki/Isaac_Newton}{Wikipedia}.}\index{iteração de!Newton}
 \begin{align}
   \hleq{x^{(0)}} &\hleq{= \text{aprox. inicial}},\\
   \hleq{x^{(k+1)}} &\hleq{= x^{(k)} - \frac{f(x^{(k)})}{f'(x^{(k)})}},\label{cap_eq1d_sec_newton:eq:Newton_iteracao}
@@ -1212,11 +1243,11 @@ import numpy as np
 
 # fun obj
 f = lambda x: np.sin(x+np.pi/4)**2 \
-    - x**3 + np.pi/4*x**2 + 5*np.pi**2/16*x \
-    + 3*np.pi**3/64
+  - x**3 + np.pi/4*x**2 + 5*np.pi**2/16*x \
+  + 3*np.pi**3/64
 
 fl = lambda x: 2*np.sin(x+np.pi/4)*np.cos(x+np.pi/4) \
-    -3*x**2 + np.pi/2*x + 5*np.pi**2/16
+  -3*x**2 + np.pi/2*x + 5*np.pi**2/16
 
 # aprox. inicial
 x0 = 2.6
@@ -1224,10 +1255,11 @@ print(f'0: {x0:.4e}')
 
 # iterações
 for k in range(4):
-    x = x0 - f(x0)/fl(x0)
-    print(f'{k+1}: {x:.4e}')
-    x0 = x
+  x = x0 - f(x0)/fl(x0)
+  print(f'{k+1}: {x:.4e}')
+  x0 = x
 \end{lstlisting}
+
 \end{ex}
 
 \begin{obs}
@@ -1236,7 +1268,7 @@ for k in range(4):
     x^{k+1} &= g(x^{(k)})\\
             &:= x^{(k)} -\alpha f(x)\label{cap_eq1d_sec_pfixo:eq:Newton_pfixo}
   \end{align}
-tem taxa de convergência\footnote{Supondo verdadeiras as demais hipóteses do Teorema~\ref{cap_eq1d_sec_pfixo:teo:pfixo}.}
+tem taxa de convergência\endnote{Supondo verdadeiras as demais hipóteses do Teorema~\ref{cap_eq1d_sec_pfixo:teo:pfixo}.}
 \begin{equation}
   |x^{(k+1)}-x^{(k)}| \leq K |x^{(k)}-x^{(k-1)}|,
 \end{equation}
@@ -1247,7 +1279,7 @@ com $K$ tal que $|g'(x)| = |1 - \alpha f'(x)| < K < 1$. Isto nos indica que a me
 de forma que \eqref{cap_eq1d_sec_pfixo:eq:Newton_pfixo} coincide com a iteração de \eqref{cap_eq1d_sec_newton:eq:Newton_iteracao}.
 \end{obs}
 
-\subsection{Interpretação geométrica}
+\subsection{Interpretação Geométrica}
 
 Dadas uma aproximação $x^{(k)}$ de um zero de uma função $f$, a iteração de Newton fornece uma nova aproximação $x^{(k+1)}$ com
 \begin{equation}
@@ -1270,7 +1302,7 @@ e a equação \eqref{cap_eq1d_sec_newton:eq:Newton_geointerp} nos informa que em
   \label{cap_eq1d_sec_newton:fig:Newton_geointerp}
 \end{figure}
 
-Destas observações, concluímos que \hl{a iterada $x^{(k+1)}$ do método de Newton corresponde ao ponto de interseção da reta tangente ao gráfico da $f$ pelo ponto $(x^{k}, f(x^{k}))$ com o eixo das abscissas}\footnote{Eixo $x$.}. Consulte a Figura~\ref{cap_eq1d_sec_newton:fig:Newton_geointerp}.
+Destas observações, concluímos que \hl{a iterada $x^{(k+1)}$ do método de Newton corresponde ao ponto de interseção da reta tangente ao gráfico da $f$ pelo ponto $(x^{k}, f(x^{k}))$ com o eixo das abscissas}\endnote{Eixo $x$.}. Consulte a Figura~\ref{cap_eq1d_sec_newton:fig:Newton_geointerp}.
 
 \begin{ex}\label{cap_eq1d_sec_newton:ex:Newton_init}
   Consideremos que o método de Newton seja usado para aproximarmos o zero de
@@ -1304,7 +1336,7 @@ Observemos que esta função tem $x=1$ como seu único zero. Agora, se escolherm
 Embora ambas aproximações iniciais estão a mesma distância da solução $x=1$, quando tomamos $x^{(0)}=1,5$ as iterações irão divergir, como podemos observar da interpretação geométrica dada na Figura \ref{cap_eq1d_sec_newton:fig:ex_Newton_init}.
 \end{ex}
 
-\subsection{Análise de convergência}
+\subsection{Análise de Convergência}
 
 Seja $x^*$ o zero de uma dada função \hl{$f$ duas vezes continuamente diferenciável com $f'(x)\neq 0$} para todo $x\in [x^*-\varepsilon_0, x^*+\varepsilon_0]$ para algum $\varepsilon_0>0$. Seja, também, $(x^{(k)})_{k=0}^\infty$ a sequência das iteradas de Newton
 \begin{equation}\label{eq:newton_iter1}
@@ -1336,7 +1368,7 @@ Segue, então, que se $x^{(0)}\in (x^*-\varepsilon, x^* + \varepsilon)$ para alg
 \end{equation}
 então $x^{(1)}\in (x^*-\varepsilon, x^*+\varepsilon)$.
 
-Logo, por indução matemática\footnote{Veja o exercício \ref{ex:Newton_analise_conv}.}, temos que \hl{o método de Newton tem ordem de convergência quadrática}
+Logo, por indução matemática\endnote{Veja o exercício \ref{ex:Newton_analise_conv}.}, temos que \hl{o método de Newton tem ordem de convergência quadrática}
 \begin{equation}\label{eq:Newton_taxa_quadratica}
   \hleq{|x^{(k+1)}-x^*| \leq C|x^{(k)}-x^{*}|^{\pmb{2}}},
 \end{equation}
@@ -1372,7 +1404,7 @@ Logo, por indução matemática\footnote{Veja o exercício \ref{ex:Newton_analis
 
 \end{ex}
 
-\subsection{Zeros múltiplos}\index{zeros múltiplos}
+\subsection{Zeros Múltiplos}\index{zeros múltiplos}
 
 Na análise de convergência acima foi necessário assumir que $f'(x) \neq 0$ para todo $x$ em uma vizinha do zero $x^*$ da função $f$. Isto não é possível no caso de $x^*$ ser um zero duplo pois, então, $f'(x^*) = 0$. Neste caso, podemos aplicar o método de Newton a $f'(x)$, a qual tem $x^*$ como um zero simples.
 
@@ -1480,7 +1512,7 @@ no intervalo $(0,55, ~0,65)$ com precisão de $10^{-5}$.
   \begin{enumerate}[a)]
   \item[a)] a iteração de Newton para $f$.
   \item[b)] a iteração de Newton para $f'$.
-  \item[c)] a iteração modificada de Newton\footnote{Equação~\eqref{cap_eq1d_sec_newton:eq:iter_newton_zero_multiplo}.} para $f$.
+  \item[c)] a iteração modificada de Newton\endnote{Equação~\eqref{cap_eq1d_sec_newton:eq:iter_newton_zero_multiplo}.} para $f$.
   \end{enumerate}
   Qual a melhor abordagem? Justifique sua resposta.
 \end{exer}
@@ -1504,9 +1536,16 @@ no intervalo $(0,55, ~0,65)$ com precisão de $10^{-5}$.
   Complete a demonstração por indução matemática de que o método de Newton tem taxa de convergência quadrática.
 \end{exer}
 
+\ifisbook
+\subsubsection{Respostas}
+\shipoutAnswer
+\fi
+
+%%% SECTION %%%
+
 \section{Método da Secante}\label{cap_eq1d_sec_secante}
 
-\hl{O Método da Secante é um método tipo de Newton}. Observamos que para duas aproximações $x^{(k)}$ e $x^{(k-1)}$ suficientemente próximas, temos\footnote{Razão fundamental do Cálculo.}
+\hl{O Método da Secante é um método tipo de Newton}. Observamos que para duas aproximações $x^{(k)}$ e $x^{(k-1)}$ suficientemente próximas, temos\endnote{Razão fundamental do Cálculo.}
 \begin{equation}
   f'(x^{(k)}) \approx \frac{f(x^{(k)})-f(x^{(k-1)})}{x^{(k)}-x^{(k-1)}}.
 \end{equation}
@@ -1549,8 +1588,8 @@ import numpy as np
 
 # fun obj
 f = lambda x: np.sin(x+np.pi/4)**2 \
-    - x**3 + np.pi/4*x**2 + 5*np.pi**2/16*x \
-    + 3*np.pi**3/64
+  - x**3 + np.pi/4*x**2 + 5*np.pi**2/16*x \
+  + 3*np.pi**3/64
 
 # aprox. iniciais
 x0 = 2.6
@@ -1559,11 +1598,12 @@ print(f'\n0: {x0:.4f}, {x1:.4f}')
 
 # iterações
 for k in range(5):
-    x = x1 - f(x1)*(x1-x0)/(f(x1)-f(x0))
-    x0 = x1
-    x1 = x
-    print(f'{k+1}: {x0:.4f}, {x1:.4f}, {np.fabs(x1-x0):.1e}')
+  x = x1 - f(x1)*(x1-x0)/(f(x1)-f(x0))
+  x0 = x1
+  x1 = x
+  print(f'{k+1}: {x0:.4f}, {x1:.4f}, {np.fabs(x1-x0):.1e}')
 \end{lstlisting}
+
 \end{ex}
 
 \subsection{Interpretação Geométrica}
@@ -1687,30 +1727,31 @@ no intervalo $[0,55, ~0,65]$ com precisão de $10^-5$.
 \end{resp}
 bootstra
 \begin{exer}
-  Use o Método da Secante para encontrar o ponto crítico\footnote{Definimos que $x$ é ponto crítico de uma dada $f$, quando $f'(x) = 0$ ou $\nexists f'(x)$.} de
+  Use o Método da Secante para encontrar o ponto crítico\endnote{Definimos que $x$ é ponto crítico de uma dada $f$, quando $f'(x) = 0$ ou $\nexists f'(x)$.} de
   \begin{equation}
     f(x) = (1-x^2)e^{-x^2}
   \end{equation}
   no intervalo $[0, 2]$. Obtenha o resultado com precisão de $5$ dígitos significativos por arredondamento.
 \end{exer}
 
+\ifisbook
+\subsubsection{Respostas}
+\shipoutAnswer
+\fi
+
+%%% SECTION %%%
+
 \section{Raízes de Polinômios}\label{cap_eq1d_sec_raizes}\index{raízes de!polinômios}
+\badgeRevisar
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
-
-Nesta seção, veremos como o método de Newton pode ser aplicado de forma robusta a polinômios com o auxílio do método de Horner\footnote{William George Horner, matemático britânico, 1786 - 1837. Fonte: \href{https://en.wikipedia.org/wiki/William_George_Horner}{Wikipedia}}. A questão central é que dado um polinômio de grau $n$ escrito na forma
+Nesta seção, veremos como o método de Newton pode ser aplicado de forma robusta a polinômios com o auxílio do método de Horner\endnote{William George Horner, matemático britânico, 1786 - 1837. Fonte: \href{https://en.wikipedia.org/wiki/William_George_Horner}{Wikipedia}}. A questão central é que dado um polinômio de grau $n$ escrito na forma
 \begin{equation}
   p(x) = a_{1}x^n + a_{2}x^{n-1} + \cdots + a_nx + a_{n+1},
 \end{equation}
 o procedimento de avaliá-lo em um ponto requer $n!n$ multiplicações e $n$ adições. Desta forma, a aplicação do método de Newton para obter as raízes de $p$ torna-se computacionalmente custosa, por requer a avaliação de $p$ e de sua derivada a cada iteração. Agora, o método de Horner nos permite avaliar $p$ em um ponto qualquer usando apenas $n$ multiplicações e $n$ adições, reduzindo enormemente o custo computacional.
 
 \subsection{Método de Horner}\index{método de!Horner}
-
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
+\badgeRevisar
 
 Sejam dados um número $x_0$ e um polinômio de grau $n$
 \begin{equation}\label{eq:Horner_poli}
@@ -1775,10 +1816,7 @@ donde temos que $p'(x_0) = q(x_0)$. Com isso, para computarmos $p'(x_0)$ podemos
 \end{obs}
 
 \subsection{Método de Newton-Horner}
-
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
+\badgeRevisar
 
 A implementação do método de Newton a polinômios pode ser feita de forma robusta com o auxílio do método de Horner. Dado um polinômio $p$ e uma aproximação inicial $x^{(1)}$ para uma de suas raízes reais, a iteração de Newton consiste em
 \begin{equation}
@@ -1807,18 +1845,11 @@ na qual podemos utilizar o método de Horner para computar $p(x^{(k)})$ e $p'(x^
   \end{tabular}
 \end{table}
 
-
-% \ifisoctave
-% No \verb+GNU Octave+, a implementação do método de Newton para polinômios (com a aplicação do método de Horner, veja Observação \ref{obs:Horner_polider}) pode ser feita com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/ex_poli_Newton/ex_poli_Newton.m}{código}:
-% \verbatiminput{./cap_eq1d/dados/ex_poli_Newton/ex_poli_Newton.m}
-% \fi
 \end{ex}
 
-\subsection*{Exercícios}
+\subsection{Exercícios}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
+\badgeRevisar
 
 \begin{exer}
   Use o método de Newton-Horner para computar a aproximação da raiz de $p(x) = x^3 - 3x^2 + 4$ no intervalo $[1,3]$. Observe que $p$ tem um zero duplo deste intervalo.
@@ -1829,3 +1860,10 @@ na qual podemos utilizar o método de Horner para computar $p(x^{(k)})$ e $p'(x^
   % \fi
   $2$
 \end{resp}
+
+\ifisbook
+\subsubsection{Respostas}
+\shipoutAnswer
+\fi
+
+%%% SECTION %%%

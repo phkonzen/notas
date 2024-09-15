@@ -1,7 +1,6 @@
 %Este trabalho está licenciado sob a Licença Atribuição-CompartilhaIgual 4.0 Internacional Creative Commons. Para visualizar uma cópia desta licença, visite http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR ou mande uma carta para Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
 
 \chapter{Métodos para Sistemas Lineares}\label{cap_sislin}
-\thispagestyle{fancy}
 
 Neste capítulo, discutimos sobre métodos diretos para a resolução de sistemas lineares de $n$-equações com $n$-incógnitas. Isto é, sistemas que podem ser escritos na seguinte \hl{\emph{forma algébrica}}
 \begin{subequations}
@@ -130,15 +129,14 @@ Antes de estudarmos como podemos computar a decomposição LU de uma matriz, vam
 import numpy as np
 
 def solSisTriaInf(A, b):
-    n = b.size
-    x = np.zeros_like(b)
-    for i in range(n):
-        x[i] = b[i]
-        for j in range(i):
-            x[i] -= A[i,j]*x[j]
-        x[i] /= A[i,i]
-    return x
-    
+  n = b.size
+  x = np.zeros_like(b)
+  for i in range(n):
+    x[i] = b[i]
+    for j in range(i):
+      x[i] -= A[i,j]*x[j]
+    x[i] /= A[i,i]
+  return x    
 
 # mat coefficientes
 A = np.array([[1., 0., 0.],
@@ -152,6 +150,7 @@ b = np.array([2., -8., 0.])
 x = solSisTriaInf(A, b)
 print(x)
 \end{lstlisting}
+
 \end{ex}
 
 \begin{obs}\normalfont{(\hl{Número de operações em ponto flutuante}.)}
@@ -211,14 +210,14 @@ print(x)
 import numpy as np
 
 def solSisTriaSup(A, b):
-    n = b.size
-    x = np.zeros_like(b)
-    for i in range(n-1,-1,-1):
-        x[i] = b[i]
-        for j in range(n-1,i,-1):
-            x[i] -= A[i,j]*x[j]
-        x[i] /= A[i,i]
-    return x
+  n = b.size
+  x = np.zeros_like(b)
+  for i in range(n-1,-1,-1):
+    x[i] = b[i]
+    for j in range(n-1,i,-1):
+      x[i] -= A[i,j]*x[j]
+    x[i] /= A[i,i]
+  return x
     
 
 # mat coefficientes
@@ -233,6 +232,7 @@ b = np.array([7., -3., 3.])
 x = solSisTriaSup(A, b)
 print(x)
 \end{lstlisting}
+
 \end{ex}
 
 \begin{obs}\normalfont{(\hl{Número de operações em ponto flutuante}.)}
@@ -442,20 +442,20 @@ Isso completa a decomposição, sendo $L := L^{(3)}$ e $U := U^{(3)}$.
 import numpy as np
 
 def lu(A):
-    # num. de linhas
-    n = A.shape[0]
+  # num. de linhas
+  n = A.shape[0]
 
-    # inicialização
-    U = A.copy()
-    L = np.eye(n)
+  # inicialização
+  U = A.copy()
+  L = np.eye(n)
 
-    # decomposição
-    for i in range(n-1):
-        for j in range(i+1,n):
-            L[j,i] = U[j,i]/U[i,i]
-            U[j,i:] -= L[j,i]*U[i,i:]
+  # decomposição
+  for i in range(n-1):
+    for j in range(i+1,n):
+        L[j,i] = U[j,i]/U[i,i]
+        U[j,i:] -= L[j,i]*U[i,i:]
 
-    return L, U
+  return L, U
 
 # matriz
 A = np.array([[-1., 2., -2.],
@@ -464,6 +464,7 @@ A = np.array([[-1., 2., -2.],
 
 L, U = lu(A)
 \end{lstlisting}
+
 \end{ex}
 
 \begin{obs}\normalfont{(\hl{Número de operações em ponto flutuante}.)}
@@ -558,6 +559,7 @@ y = solSisTriaInf(L, b)
 # 3. Ux = y
 x = solSisTriaSup(U, y)
 \end{lstlisting}
+
 \end{ex}
 
 \subsection{Fatoração LU com Pivotamento Parcial}
@@ -685,27 +687,27 @@ Com essa, iniciamos o procedimento de decomposição LU com $PA = L^{(0)}U^{(0)}
 import numpy as np
 
 def lup(A):
-    # num. de linhas
-    n = A.shape[0]
+  # num. de linhas
+  n = A.shape[0]
 
-    # inicialização
-    U = A.copy()
-    L = np.eye(n)
-    P = np.eye(n)
+  # inicialização
+  U = A.copy()
+  L = np.eye(n)
+  P = np.eye(n)
 
-    # decomposição
-    for i in range(n-1):
-        # permutação de linhas
-        p = i + np.argmax(np.fabs(U[i:,i]))
-        P[[i,p]] = P[[p,i]]
-        U[[i,p]] = U[[p,i]]
-        L[[i,p],:i] = L[[p,i],:i]
-        # eliminação gaussiana
-        for j in range(i+1,n):
-            L[j,i] = U[j,i]/U[i,i]
-            U[j,i:] -= L[j,i]*U[i,i:]
+  # decomposição
+  for i in range(n-1):
+    # permutação de linhas
+    p = i + np.argmax(np.fabs(U[i:,i]))
+    P[[i,p]] = P[[p,i]]
+    U[[i,p]] = U[[p,i]]
+    L[[i,p],:i] = L[[p,i],:i]
+    # eliminação gaussiana
+    for j in range(i+1,n):
+      L[j,i] = U[j,i]/U[i,i]
+      U[j,i:] -= L[j,i]*U[i,i:]
 
-    return P, L, U
+  return P, L, U
 
 # matriz
 A = np.array([[-1., 2, -2],
@@ -714,6 +716,7 @@ A = np.array([[-1., 2, -2],
 
 P, L, U = lup(A)
 \end{lstlisting}
+
 \end{ex}
 
 \begin{ex}
@@ -783,9 +786,10 @@ P, L, U = lup(A)
 y = solSisTriaInf(L, P@b)
 x = solSisTriaSup(U, y)
 \end{lstlisting}
+
 \end{ex}
 
-\subsection*{Exercícios}
+\subsection{Exercícios}
 
 \begin{exer}
   Seja a matriz
@@ -926,15 +930,17 @@ x = solSisTriaSup(U, y)
 \end{exer}
 \begin{resp}
   Dica: A matriz de Vandermonde pode ser alocada com o seguinte código:
+
 \begin{lstlisting}
 import numpy as np
 x = np.array([1.,2,3])
 n = x.size
 V = np.ones((n,n))
 for i in range(n-1):
-    V[:,i] = x**(n-1-i)
+  V[:,i] = x**(n-1-i)
 print(V)
 \end{lstlisting}
+
 \end{resp}
 
 \begin{exer}
@@ -986,6 +992,12 @@ print(V)
   \end{enumerate}
 \end{resp}
 
+\ifisbook
+\subsubsection{Respostas}
+\shipoutAnswer
+\fi
+
+%%% SECTION %%%
 
 \section{Norma e Número de Condicionamento}\label{cap_sislin_sec_ncond}
 
@@ -1047,6 +1059,7 @@ v = np.array([-1., 2., 0., 1.])
 norm_v = npla.norm(v)
 print(f'\n||v|| = {norm_v}')
 \end{lstlisting}
+
   \end{enumerate}
 \end{ex}
 
@@ -1180,6 +1193,7 @@ nupnv = npla.norm(u) + npla.norm(v)
 print('\nu.v <= ||u||.||v||?')
 print(nupv <= nupnv)
 \end{lstlisting}
+
 \end{ex}
 
 \subsubsection{Norma de Matrizes}
@@ -1188,7 +1202,7 @@ print(nupv <= nupnv)
 \begin{equation}\hleq
   \|A\|_2 := \sup_{\pmb{x}\in\mathbb{R}^n, \|\pmb{x}\|=1} \|A\pmb{x}\|.
 \end{equation}
-Pode-se mostrar que\footnote{Consulte \cite[Section 1.3-3]{Ralston2001a} para informações sobre a demonstração.}
+Pode-se mostrar que\endnote{Consulte \cite[Section 1.3-3]{Ralston2001a} para informações sobre a demonstração.}
 \begin{equation}
   \|A\|_2 = \sqrt{\lambda_{max}(A^TA)},
 \end{equation}
@@ -1217,7 +1231,8 @@ Esta é uma generalização da norma euclidiana para vetores e \hl{é equivalent
   \begin{equation}
     \|A\| = 10,5768\E+0.
   \end{equation}
-\begin{lstlisting}
+
+  \begin{lstlisting}
 import numpy as np
 import numpy.linalg as npla
 A = np.array([[1., -1., 2.],
@@ -1226,6 +1241,7 @@ A = np.array([[1., -1., 2.],
 norm_A = npla.norm(A)
 print(norm_A)
 \end{lstlisting}
+
 \end{ex}
 
 
@@ -1279,11 +1295,8 @@ print(norm_A)
   \end{enumerate}
 \end{ex}
 
-\subsection{Número de condicionamento}
-
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
+\subsection{Número de Condicionamento}
+\badgeRevisar
 
 \hl{O número de condicionamento de uma matriz é uma medida referente a propagação de erros que ocorre da sua aplicação}. Mais especificamente, assumamos que seja dada uma matriz invertível $A = [a_{ij}]_{i,j=1}^{n,n}$, um vetor $\pmb{x}\in\mathbb{R}^n$ e uma perturbação $\pmb{\delta_x}\in\mathbb{R}^n$. Além disso, sejam
 \begin{align}
@@ -1334,7 +1347,8 @@ temos que \hl{$\kappa(A) \geq 1$ e quanto maior, mais mal condicionada é a matr
       \end{bmatrix},
     \end{equation}
     cujo número de condicionamento é $\kappa(A) = 13,997$.
-\begin{lstlisting}
+
+    \begin{lstlisting}
 import numpy as np
 import numpy.linalg as npla
 A = np.array([[1., -1., 2.],
@@ -1358,7 +1372,8 @@ print(f'cond(A) = {cond_A}')
       \kappa(B) = 1,5811\times 10^{14},
     \end{equation}
     o que indica que $B$ é uma matriz mal condicionada.
-\begin{lstlisting}
+
+    \begin{lstlisting}
 import numpy as np
 import numpy.linalg as npla
 A = np.array([[1., 0., 0.],
@@ -1367,6 +1382,7 @@ A = np.array([[1., 0., 0.],
 cond_A = npla.cond(A, 'fro')
 print(f'cond(A) = {cond_A:.4e}')
 \end{lstlisting}
+
   \end{enumerate}
 \end{ex}
 
@@ -1534,6 +1550,13 @@ print(f'cond(A) = {cond_A:.4e}')
 \begin{resp}
   Dica: use as propriedades da norma de vetores.
 \end{resp}
+
+\ifisbook
+\subsubsection{Respostas}
+\shipoutAnswer
+\fi
+
+%%% SECTION %%%
 
 
 % \section{Método de eliminação gaussiana com pivotamento parcial com escala}\label{cap_sislin_sec_egauss_pivo}
@@ -1804,6 +1827,7 @@ T = -npla.inv(D) @ (L + U)
 # vetor de Jacobi
 c = npla.inv(D) @ b
 \end{lstlisting}
+
 \end{ex}
 
 A \hl{forma matricial das iterações de Jacobi} consiste em
@@ -1863,35 +1887,37 @@ import numpy.linalg as npla
 def jacobi(A, b, x0, maxiter = 100,
            tol=4.9e-8, atol=4.9e-8):
     
-    n = b.size
-    info = -1
+  n = b.size
+  info = -1
 
-    x = np.empty_like(x0)
+  x = np.empty_like(x0)
+  nres = npla.norm(A@x - b)
+  print(f'\n{0}: {x0}, {nres:.1e}')
+  
+  # iterações
+  for k in range(maxiter):
+    for i in  range(n):
+      x[i] = b[i]
+      # x[i] -= np.dot(A[i,:i], x0[:i])
+      for j in range(i):
+          x[i] -= A[i,j]*x0[j]
+      # x[i] -= np.dot(A[i,i+1:], x0[i+1:])
+      for j in range(i+1,n):
+          x[i] -= A[i,j]*x0[j]
+      x[i] /= A[i,i]
+    # critério de parada
     nres = npla.norm(A@x - b)
-    print(f'\n{0}: {x0}, {nres:.1e}')
-    
-    # iterações
-    for k in range(maxiter):
-        for i in  range(n):
-            x[i] = b[i]
-            # x[i] -= np.dot(A[i,:i], x0[:i])
-            for j in range(i):
-                x[i] -= A[i,j]*x0[j]
-            # x[i] -= np.dot(A[i,i+1:], x0[i+1:])
-            for j in range(i+1,n):
-                x[i] -= A[i,j]*x0[j]
-            x[i] /= A[i,i]
-        # critério de parada
-        nres = npla.norm(A@x - b)
-        print(f'{k+1}: {x}, {nres:.1e}')
-        if (nres <= max(tol*npla.norm(b), atol)):
-            info = 0
-            break
-        x0 = x.copy()
+    print(f'{k+1}: {x}, {nres:.1e}')
+    if (nres <= max(tol*npla.norm(b), atol)):
+      info = 0
+      break
+    x0 = x.copy()
 
-    return x, info
+  return x, info
 \end{lstlisting}
+
 A aplicação de Jacobi pode, então, ser feita como segue:
+
 \begin{lstlisting}
 # sistema
 A = np.array([[-4., 2., -1.],
@@ -1903,6 +1929,7 @@ b = np.array([-11., -7., 0.])
 x0 = np.zeros_like(b)
 x, info = jacobi(A, b, x0)
 \end{lstlisting}
+
 \end{ex}
 
 \subsection{Método de Gauss-Seidel}
@@ -1974,34 +2001,35 @@ import numpy.linalg as npla
 def gs(A, b, x0, maxiter = 100,
        tol=4.9e-8, atol=4.9e-8):
     
-    n = b.size
-    info = -1
+  n = b.size
+  info = -1
 
-    x = np.empty_like(x0)
+  x = np.empty_like(x0)
+  nres = npla.norm(A@x - b)
+  print(f'\n{0}: {x0}, {nres:.1e}')
+  
+  # iterações
+  for k in range(maxiter):
+    for i in  range(n):
+      x[i] = b[i]
+      # x[i] -= np.dot(A[i,:i], x[:i])
+      for j in range(i):
+          x[i] -= A[i,j]*x[j]
+      # x[i] -= np.dot(A[i,i+1:], x0[i+1:])
+      for j in range(i+1,n):
+          x[i] -= A[i,j]*x0[j]
+      x[i] /= A[i,i]
+    # critério de parada
     nres = npla.norm(A@x - b)
-    print(f'\n{0}: {x0}, {nres:.1e}')
-    
-    # iterações
-    for k in range(maxiter):
-        for i in  range(n):
-            x[i] = b[i]
-            # x[i] -= np.dot(A[i,:i], x[:i])
-            for j in range(i):
-                x[i] -= A[i,j]*x[j]
-            # x[i] -= np.dot(A[i,i+1:], x0[i+1:])
-            for j in range(i+1,n):
-                x[i] -= A[i,j]*x0[j]
-            x[i] /= A[i,i]
-        # critério de parada
-        nres = npla.norm(A@x - b)
-        print(f'{k+1}: {x}, {nres:.1e}')
-        if (nres <= max(tol*npla.norm(b), atol)):
-            info = 0
-            break
-        x0 = x.copy()
+    print(f'{k+1}: {x}, {nres:.1e}')
+    if (nres <= max(tol*npla.norm(b), atol)):
+      info = 0
+      break
+    x0 = x.copy()
 
-    return x, info
+  return x, info
 \end{lstlisting}
+
 \end{ex}
 
 \subsection{Análise Numérica}
@@ -2017,7 +2045,7 @@ para $k=1, 2, \ldots$, com $x^{(0)}$ uma aproximação inicial dada, $T$ e $c$ a
   \begin{equation}
     \pmb{x}^{(k+1)} = T\pmb{x}^{(k)} + \pmb{c},
   \end{equation}
-  converge para a solução única de $\pmb{x} = T\pmb{x} + \pmb{c}$ se, e somente se, \hl{$\rho(T) < 1$}\footnote{$\rho(T)$ é o raio espectral da matriz $T$, i.e. o máximo dos módulos dos autovalores de $T$.}.
+  converge para a solução única de $\pmb{x} = T\pmb{x} + \pmb{c}$ se, e somente se, \hl{$\rho(T) < 1$}\endnote{$\rho(T)$ é o raio espectral da matriz $T$, i.e. o máximo dos módulos dos autovalores de $T$.}.
 \end{teo}
 \begin{dem}
   Veja \cite[Cap. 7, Sec. 7.3]{Burden2016a}.
@@ -2075,6 +2103,7 @@ TG = -npla.inv(L+D) @ U
 rho_TG = max(np.abs(npla.eigvals(TG)))
 print(f'rho(T_G) = {rho_TG:.2f}')
 \end{lstlisting}
+
 \end{ex}
 
 \begin{obs}{\normalfont{\hl{(Matriz estritamente diagonal dominante.)}}}
@@ -2197,10 +2226,16 @@ para todo $i = 1, 2, \ldots, n$, então \hl{ambos os métodos de Jacobi e de Gau
   $\pmb{x} = (0, 0,75, 1, 0,75, 0)$
 \end{resp}
 
+\ifisbook
+\subsubsection{Respostas}
+\shipoutAnswer
+\fi
+
+%%% SECTION %%%
 
 \section{Método do Gradiente}\label{cap_sislin_sec_metg}
 
-Começamos observando que se \hl{$A$ é uma matriz $n\times n$ positiva definida}\footnote{$A$ é simétrica e $\pmb{x}^TA\pmb{x} > 0$ para todo $\pmb{x}\neq 0$.}, \hl{temos que $\pmb{x}\in\mathbb{R}^n$ é solução de}
+Começamos observando que se \hl{$A$ é uma matriz $n\times n$ positiva definida}\endnote{$A$ é simétrica e $\pmb{x}^TA\pmb{x} > 0$ para todo $\pmb{x}\neq 0$.}, \hl{temos que $\pmb{x}\in\mathbb{R}^n$ é solução de}
 \begin{equation}\label{cap_sislin_sec_metg:eq:metg_sislin}
   A\pmb{x} = \pmb{b}
 \end{equation}
@@ -2315,25 +2350,25 @@ import numpy.linalg as npla
 def mg(A, b, x0, alpha=1e-2,
        maxiter=100, atol=1.49e-8, rtol=1.49e-8):
     
-    n = b.size
-    x = x0.copy()
+  n = b.size
+  x = x0.copy()
+  res = b - A@x
+  nres = npla.norm(res)
+  print(f'0: {x}, nres = {nres:.1e}')
+  info = -1
+  for k in range(maxiter):
+    x = x + alpha*res
+    
     res = b - A@x
     nres = npla.norm(res)
-    print(f'0: {x}, nres = {nres:.1e}')
-    info = -1
-    for k in range(maxiter):
-        x = x + alpha*res
-        
-        res = b - A@x
-        nres = npla.norm(res)
 
-        print(f'{k+1}: {x}, nres = {nres:.1e}')
+    print(f'{k+1}: {x}, nres = {nres:.1e}')
 
-        if (nres <= max(atol, rtol*npla.norm(b))):
-            info = 0
-            break
+    if (nres <= max(atol, rtol*npla.norm(b))):
+        info = 0
+        break
 
-    return x, info
+  return x, info
             
 # matriz coefs
 A = np.array([[2., -1., 0., 0.],
@@ -2348,9 +2383,10 @@ x0 = np.zeros_like(b)
 
 x, info = mg(A, b, x0, alpha=0.5)
 \end{lstlisting}
+
 \end{ex}
 
-\subsection{Escolha do passo}
+\subsection{Escolha do Passo}
 
 Para a escolha do passo, podemos usar o \emph{Método da Pesquisa Linear}. A ideia é escolher o passo $\alpha^{(k)}$ tal que
 \begin{equation}\hleq
@@ -2411,27 +2447,27 @@ import numpy.linalg as npla
 def mg_pl(A, b, x0,
        maxiter=100, atol=1.49e-8, rtol=1.49e-8):
     
-    n = b.size
-    x = x0.copy()
+  n = b.size
+  x = x0.copy()
+  res = b - A@x
+  alpha = np.dot(res, res)/np.dot(res, A@res)
+  nres = npla.norm(res)
+  print(f'0: {x}, alpha = {alpha}, nres = {nres:.1e}')
+  info = -1
+  for k in range(maxiter):
+    x = x + alpha*res
+    
     res = b - A@x
     alpha = np.dot(res, res)/np.dot(res, A@res)
     nres = npla.norm(res)
-    print(f'0: {x}, alpha = {alpha}, nres = {nres:.1e}')
-    info = -1
-    for k in range(maxiter):
-        x = x + alpha*res
-        
-        res = b - A@x
-        alpha = np.dot(res, res)/np.dot(res, A@res)
-        nres = npla.norm(res)
 
-        print(f'{k+1}: {x}, alpha = {alpha}, nres = {nres:.1e}')
+    print(f'{k+1}: {x}, alpha = {alpha}, nres = {nres:.1e}')
 
-        if (nres <= max(atol, rtol*npla.norm(b))):
-            info = 0
-            break
+    if (nres <= max(atol, rtol*npla.norm(b))):
+      info = 0
+      break
 
-    return x, info
+  return x, info
             
 # matriz coefs
 A = np.array([[2., -1., 0., 0.],
@@ -2446,9 +2482,10 @@ x0 = np.zeros_like(b)
 
 x, info = mg_pl(A, b, x0)
 \end{lstlisting}
+
 \end{ex}
 
-\subsection*{Exercícios}
+\subsection{Exercícios}
 
 \begin{exer}\label{cap_sislin_sec_metg:exer:mg0}
   Considere o sistema linear $A\pmb{x} = \pmb{b}$ com
@@ -2567,6 +2604,12 @@ x, info = mg_pl(A, b, x0)
   com, $\pmb{r} := b - A\pmb{x}$ o resíduo do sistema $A\pmb{x} = \pmb{b}$.
 \end{exer}
 
+\ifisbook
+\subsubsection{Respostas}
+\shipoutAnswer
+\fi
+
+%%% SECTION %%%
 
 \section{Método do Gradiente Conjugado}\label{cap_sislin_sec_metgc}
 
@@ -2575,7 +2618,7 @@ x, info = mg_pl(A, b, x0)
   \pmb{x}^{(0)} &= \text{aprox. inicial},\\
   \pmb{x}^{(k+1)} &= \pmb{x}^{(k)} + \alpha^{(k)}\pmb{d}^{(k)}.
 \end{align}
-onde $\pmb{d}^{(k)}$ é o vetor direção na $k$-ésima iterada. No Método do Gradiente, o vetor direção é $\pmb{d}^{(k)} = \pmb{r}^{(k)}:= \pmb{b} - A\pmb{x}^{(k)}$. Aqui, as direções escolhidas são tomadas conjugadas duas-a-duas\footnote{São ortogonais em relação ao produto interno induzido por $A$, $<\pmb{u}, \pmb{v}>_A := \pmb{u}\cdot A\pmb{v}$.}. Isto nos leva a \hl{\emph{iteração do Método do Gradiente Conjugado}}:
+onde $\pmb{d}^{(k)}$ é o vetor direção na $k$-ésima iterada. No Método do Gradiente, o vetor direção é $\pmb{d}^{(k)} = \pmb{r}^{(k)}:= \pmb{b} - A\pmb{x}^{(k)}$. Aqui, as direções escolhidas são tomadas conjugadas duas-a-duas\endnote{São ortogonais em relação ao produto interno induzido por $A$, $<\pmb{u}, \pmb{v}>_A := \pmb{u}\cdot A\pmb{v}$.}. Isto nos leva a \hl{\emph{iteração do Método do Gradiente Conjugado}}:
 \begin{align}
   \hleq\pmb{x}^{(0)} &\hleq = \text{aprox. inicial},\\
   \hleq\pmb{d}^{(0)} &\hleq = \pmb{r}^{(0)},\\
@@ -2640,31 +2683,31 @@ import numpy.linalg as npla
 def mgc(A, b, x0,
        maxiter=100, atol=1.49e-8, rtol=1.49e-8):
     
-    n = b.size
-    x = x0.copy()
-    r = b - A@x
-    d = r.copy()
+  n = b.size
+  x = x0.copy()
+  r = b - A@x
+  d = r.copy()
+  nr = npla.norm(r)
+  print(f'0: {x}, nr = {nr:.1e}')
+  info = -1
+  for k in range(maxiter):
+    rdr = np.dot(r, r)
+    Ad = A@d
+    alpha = rdr/np.dot(d,Ad)
+    x = x + alpha*d
+
+    r = r - alpha*Ad
+    beta = np.dot(r,r)/rdr
+    d = r + beta*d
+
     nr = npla.norm(r)
-    print(f'0: {x}, nr = {nr:.1e}')
-    info = -1
-    for k in range(maxiter):
-        rdr = np.dot(r, r)
-        Ad = A@d
-        alpha = rdr/np.dot(d,Ad)
-        x = x + alpha*d
+    print(f'{k+1}: {x}, nr = {nr:.1e}')
 
-        r = r - alpha*Ad
-        beta = np.dot(r,r)/rdr
-        d = r + beta*d
+    if (nr <= max(atol, rtol*npla.norm(b))):
+      info = 0
+      break
 
-        nr = npla.norm(r)
-        print(f'{k+1}: {x}, nr = {nr:.1e}')
-
-        if (nr <= max(atol, rtol*npla.norm(b))):
-            info = 0
-            break
-
-    return x, info
+  return x, info
             
 # matriz coefs
 A = np.array([[2., -1., 0., 0.],
@@ -2679,9 +2722,10 @@ x0 = np.zeros_like(b)
 
 x, info = mgc(A, b, x0)
 \end{lstlisting}
+
 \end{ex}
 
-\subsection*{Exercícios}
+\subsection{Exercícios}
 
 \begin{exer}
   Considere o sistema linear $A\pmb{x} = \pmb{b}$ com
@@ -2818,6 +2862,12 @@ x, info = mgc(A, b, x0)
   \end{tabular}
 \end{resp}
 
+\ifisbook
+\subsubsection{Respostas}
+\shipoutAnswer
+\fi
+
+%%% SECTION %%%
 
 % \section{Eliminação gaussiana}\label{cap_sislin_sec_egauss}
 

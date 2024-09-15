@@ -1,7 +1,6 @@
 %Este trabalho está licenciado sob a Licença Atribuição-CompartilhaIgual 4.0 Internacional Creative Commons. Para visualizar uma cópia desta licença, visite http://creativecommons.org/licenses/by-sa/4.0/ ou mande uma carta para Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
 
 \chapter{Aproximação por Mínimos Quadrados}\label{cap_ajuste}
-\thispagestyle{fancy}
 
 \section{Problemas Lineares}\label{cap_ajuste_sec_prob_lin}
 
@@ -137,6 +136,7 @@ A[:,2] = np.ones_like(xx)
 p = npla.solve(A.T@A, A.T@yy)
 print(p)
 \end{lstlisting}  
+
 \end{ex}
 
 
@@ -195,6 +195,7 @@ def f(x, c=c):
         + c[2]
     return y
 \end{lstlisting}
+
 \end{ex}
 
 \begin{ex}\normalfont{(\hl{Um problema não linear}.)}\label{cap_ajuste_sec_prob_lin:ex:mq_nlin0}
@@ -264,7 +265,7 @@ Este teorema nos fornece uma condição suficiente para a existência (e unicida
   c = (A^TA)^{-1}A^Ty.
 \end{equation}
 
-\subsection*{Exercícios}
+\subsection{Exercícios}
 
 \begin{exer}
   Determine a reta $y = c_1x + c_2$ que melhor se ajusta, no sentido de mínimos quadrados, aos pontos
@@ -324,12 +325,16 @@ Por fim, compute a norma $L^2$ do resíduo, i.e. $\|r(c)\|_2$.
 \begin{resp}
   $c_1 = 2.10131\E{+0}$, $c_2 = -9.73859\E{-1}$, $c_3 = 1.25521\E{+0}$
 \end{resp}
-   
-\section{Problemas não lineares}\label{cap_ajuste_sec_prob_nlin}
 
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
+\ifisbook
+\subsubsection{Respostas}
+\shipoutAnswer
+\fi
+
+%%% SECTION %%%
+   
+\section{Problemas Não Lineares}\label{cap_ajuste_sec_prob_nlin}
+\badgeRevisar
 
 Um problema não linear de mínimos quadrados consiste em ajustar uma dada função $f(x;c)$ que dependa não linearmente dos parâmetros $c = (c_1, c_2, \dotsc, c_m)$, $m\geq 1$, a um dado conjunto de $n\geq m$ pontos $\{(x_i, y_i)\}_{i=1}^n$. Mais especificamente, buscamos resolver o seguinte problema de minimização
 \begin{equation}\label{eq:prob_nlin_mq}
@@ -459,10 +464,7 @@ Observamos que a solução obtida no exemplo anterior (Exemplo~\ref{ex:mqnl_newt
 O emprego do método de Newton para o problema de mínimos quadrados tem a vantagem da taxa de convergência quadrática, entretanto requer a computação das derivadas parciais de segunda ordem do resíduo. Na sequência discutimos alternativas comumente empregadas.
 
 \subsection{Método de Gauss-Newton}
-
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
+\badgeRevisar
 
 O método de Gauss-Newton é uma técnica iterativa que aproxima o problema não linear de mínimos quadrados \eqref{eq:prob_nlin_mq} por uma sequência de problemas lineares. Para seu desenvolvimento, começamos de uma aproximação inicial $c^{(1)} = (c_1^{(1)}, c_2^{(1)}, \dotsc, c_m^{(1)})$ dos parâmetros que queremos ajustar. Também, assumindo que a $n$-ésima iterada $c^{(k)}$ é conhecida, faremos uso da aproximação de primeira ordem de $f(x,c)$ por polinômio de Taylor, i.e.
 \begin{equation}
@@ -536,10 +538,7 @@ Com isso, dada uma aproximação inicial $c^{(1)}$, a \emph{iteração do métod
 O método de Gauss-Newton pode ser lentamente convergente para problemas muito não lineares ou com resíduos grandes. Nesse caso, métodos de Gauss-Newton com amortecimento são alternativas robustas~\cite{Bjorck1996a,Nocedal2006a}. Na sequência, introduziremos um destes métodos, conhecido como método de Levenberg-Marquardt.
 
 \subsection{Método de Levenberg-Marquardt}
-
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
+\badgeRevisar
 
 O método de Levenberg-Marquardt é uma variação do método de Gauss-Newton no qual a direção de busca $\delta^{(n)}$ é obtida da solução do seguinte problema regularizado
 \begin{equation} \label{eq:mq_gn0}
@@ -608,11 +607,8 @@ A taxa de convergência das iterações de Levenberg-Marquardt é sensível a es
 % \fi
 \end{ex}
 
-\subsection*{Exercícios}
-
-\begin{flushleft}
-  [[tag:revisar]]
-\end{flushleft}
+\subsection{Exercícios}
+\badgeRevisar
 
 \begin{exer}\label{exer:mqnl_GN}
   Use o método de Gauss-Newton para ajustar, no sentido de mínimos quadrados e com precisão de $10^{-4}$, a curva $y = c_1e^{c_2(x-c_3)^2}$ aos pontos
@@ -645,3 +641,10 @@ Use as condições iniciais:
   % \fi
   a)  $c_1 = 2,69971\E{+0}$, $c_2 = -1,44723\E{+0}$, $c_3 = 1.24333\E{+0}$; b) $c_1 = 2,69971\E{+0}$, $c_2 = -1,44723\E{+0}$, $c_3 = 1.24333\E{+0}$
 \end{resp}
+
+\ifisbook
+\subsubsection{Respostas}
+\shipoutAnswer
+\fi
+
+%%% SECTION %%%

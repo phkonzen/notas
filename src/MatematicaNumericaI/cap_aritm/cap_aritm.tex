@@ -1,18 +1,16 @@
 %Este trabalho está licenciado sob a Licença Atribuição-CompartilhaIgual 4.0 Internacional Creative Commons. Para visualizar uma cópia desta licença, visite http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR ou mande uma carta para Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
 
 \chapter{Aritmética de Máquina}\label{cap_aritm}
-\thispagestyle{fancy}
 
 \begin{lstlisting}
-  >>> 0.1 + 0.2 == 0.3
-  False
+0.1 + 0.2 == 0.3
 \end{lstlisting}
 
-\section{Sistema de Numeração Posicional}\label{cap_aritm_sec_sisnumpos}
+\begin{verbatim}
+False
+\end{verbatim}
 
-\begin{flushright}
-  [YouTube] | [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
+\section{Sistema de Numeração Posicional}\label{cap_aritm_sec_sisnumpos}
 
 Cotidianamente, usamos o sistema de numeração posicional na base decimal. Por exemplo, temos
 \begin{equation}
@@ -33,7 +31,7 @@ cujos os dígitos $d_i \in \{0, 1, 2, 3, 4, 5, 6, 7, 8, 9\}$, $i=n, \dotsc, 2, 1
     := \pm \left(d_n\times b^n + \cdots + d_2\times b^2 + d_1\times b^1 + d_0\times b^0\right. \\
       \left. + d_{-1}\times b^{-1} + d_{-2}\times b^{-2} + d_{-3}\times b^{-3} + \cdots\right),
   \end{gather}
-onde os dígitos $d_i\in\{0, 1, \dotsc, {\color{blue}b}-1\}$\footnote{Para bases $b\geq 11$, usamos a representação dos dígitos maiores ou iguais a 10 por letras maiúsculas do alfabeto latino, i.e. $A=10$, $B=11$, $C=12$ e assim por diante.}, $i=n, \dotsc, 2, 1, 0, -1, -2, -3, \ldots$.
+onde os dígitos $d_i\in\{0, 1, \dotsc, {\color{blue}b}-1\}$\endnote{Para bases $b\geq 11$, usamos a representação dos dígitos maiores ou iguais a 10 por letras maiúsculas do alfabeto latino, i.e. $A=10$, $B=11$, $C=12$ e assim por diante.}, $i=n, \dotsc, 2, 1, 0, -1, -2, -3, \ldots$.
 \end{defn}
 
 \begin{ex}\normalfont{(Representação binária)}\label{ex:base_binaria}
@@ -45,11 +43,14 @@ onde os dígitos $d_i\in\{0, 1, \dotsc, {\color{blue}b}-1\}$\footnote{Para bases
     = 26,625.
   \end{gather}
 
-  \begin{lstlisting}
-    >>> 1*2**4 + 1*2**3 + 0*2**2 + 1*2**1 + 0*2**0 + \
-    ... 1*2**-1 + 0*2**-2 + 1*2**-3
-    26.625
-  \end{lstlisting}
+\begin{lstlisting}
+1*2**4 + 1*2**3 + 0*2**2 + 1*2**1 + 0*2**0 +
+1*2**-1 + 0*2**-2 + 1*2**-3
+\end{lstlisting}
+
+\begin{verbatim}
+  26.625
+\end{verbatim}
 \end{ex}
 
 \subsection{Mudança de Base}
@@ -76,10 +77,13 @@ Então, separamos sua parte inteira $I = d_nd_{n-1}d_{n-2}\ldots d_0$ e sua part
       = 26,625.
     \end{gather}
 
-    \begin{lstlisting}
-      >>> 2**4 + 2**3 + 2 + 2**-1 + 2**-3
-      26.625
-    \end{lstlisting}
+\begin{lstlisting}
+2**4 + 2**3 + 2 + 2**-1 + 2**-3
+\end{lstlisting}
+
+\begin{verbatim}
+26.625
+\end{verbatim}
 
   \item $b=10 \to 4$.
     Primeiramente, decompomos $26,625$ em sua parte inteira $I = 26$ e em sua parte fracionária $0,625$. Então, ao fazermos sucessivas divisões de $I$ por $b=4$, obtemos:
@@ -91,14 +95,14 @@ Então, separamos sua parte inteira $I = d_nd_{n-1}d_{n-2}\ldots d_0$ e sua part
         &= (122)_4.
     \end{align}
 
-    \begin{lstlisting}
-      I = int(26.625)
-      d_int = []
-      while (I != 0):
-        d_int.insert(0, I % 4)
-        I //= 4
-      print('(',*d_int,')_4',sep="")
-    \end{lstlisting}
+\begin{lstlisting}
+I = int(26.625)
+d_int = []
+while (I != 0):
+  d_int.insert(0, I % 4)
+  I //= 4
+print('(',*d_int,')_4',sep="")
+\end{lstlisting}
     
     Agora, para a parte fracionária, usamos sucessivas multiplicações de $F$ por $b=4$, obtendo:
     \begin{align}
@@ -109,23 +113,26 @@ Então, separamos sua parte inteira $I = d_nd_{n-1}d_{n-2}\ldots d_0$ e sua part
         &= (0,22)_{4}.
     \end{align}
 
-    \begin{lstlisting}
-      F = 26.625 % 1
-      d_fra = []
-      while (F != 0):
-        F *= 4
-        d_fra.append(int(F))
-        F %= 1
-      print('(0,',*d_fra,')_4',sep="")
-    \end{lstlisting}
+\begin{lstlisting}
+F = 26.625 % 1
+d_fra = []
+while (F != 0):
+  F *= 4
+  d_fra.append(int(F))
+  F %= 1
+print('(0,',*d_fra,')_4',sep="")
+\end{lstlisting}
   \end{enumerate}
 
   Por fim, dos passos 1. e 2., temos $(11010,101)_2 = (122,22)_4$.
 
-  \begin{lstlisting}
-    >>> print('(',*d_int,',',*d_fra,')_4', sep='')
-    (122,22)_4
-  \end{lstlisting}
+\begin{lstlisting}
+print('(',*d_int,',',*d_fra,')_4', sep='')
+\end{lstlisting}
+
+\begin{verbatim}
+(122,22)_4
+\end{verbatim}
 \end{ex}
 
 \subsection{Exercícios Resolvidos}
@@ -144,38 +151,54 @@ Então, separamos sua parte inteira $I = d_nd_{n-1}d_{n-2}\ldots d_0$ e sua part
   \begin{enumerate}[a)]
   \item $(\stackrel{4}{1}~\stackrel{3}{0}~\stackrel{2}{1}~\stackrel{1}{0}\stackrel{0}{1})_2$
 
-    \begin{lstlisting}
-      >>> 0b10101
-      21
-    \end{lstlisting}
+\begin{lstlisting}
+0b10101
+\end{lstlisting}
+
+\begin{verbatim}
+21
+\end{verbatim}
 
   \item $(\stackrel{0}{0},\stackrel{-1}{~\,4}~\stackrel{-2}{~\,3}~\stackrel{-3}{~\,2}~\stackrel{-4}{~\,1})_5$
 
-    \begin{lstlisting}
-      >>> 4*5**-1+3*5**-2+2*5**-3+5**-4
-      0.9376000000000001
-    \end{lstlisting}
+\begin{lstlisting}
+4*5**-1+3*5**-2+2*5**-3+5**-4
+\end{lstlisting}
+
+\begin{verbatim}
+0.9376000000000001
+\end{verbatim}
   
   \item $(\stackrel{1}{2}~\stackrel{0}{3},\stackrel{-1}{~\,5})_8$
 
-    \begin{lstlisting}
-      >>> 0o235 / 8**1
-      19.625
-    \end{lstlisting}
+\begin{lstlisting}
+0o235 / 8**1
+\end{lstlisting}
+
+\begin{verbatim}
+19.625
+\end{verbatim}
 
   \item $(\stackrel{2}{A}~\stackrel{1}{2}~\stackrel{0}{A})_{11}$
 
-    \begin{lstlisting}
-      >>> int('A2A', 11)
-      1242
-    \end{lstlisting}
+\begin{lstlisting}
+int('A2A', 11)
+\end{lstlisting}
+
+\begin{verbatim}
+1242
+\end{verbatim}
 
   \item $(\stackrel{3}{B}~\stackrel{2}{E}~\stackrel{1}{B}~\stackrel{0}{E})_{16}$
 
-    \begin{lstlisting}
-      >>> 0xBEBE
-      48830
-    \end{lstlisting}
+\begin{lstlisting}
+0xBEBE
+\end{lstlisting}
+
+\begin{verbatim}
+48830
+\end{verbatim}
+
   \end{enumerate}
 \end{resol}
 
@@ -192,27 +215,32 @@ Então, separamos sua parte inteira $I = d_nd_{n-1}d_{n-2}\ldots d_0$ e sua part
   \begin{enumerate}[a)]
 
   \item $203 \to$ base 2
-    Usando o método {\python} \lstinline+bin+, obtemos
+    Usando o método {\python} \texttt{bin}, obtemos
 
-    \begin{lstlisting}
-      >>> bin(203)
-      '0b11001011'
-    \end{lstlisting}
+\begin{lstlisting}
+bin(203)
+\end{lstlisting}
+
+\begin{verbatim}
+'0b11001011'
+\end{verbatim}
     ou seja, $203 = (11001011)_2$.
 
   \item $0,671875 \to$ base 2.
 
     Executando o código
-    \begin{lstlisting}
-      F = 0.671875
-      digs = []
-      while (F != 0):
-        F *= 2
-        digs.append(int(F))
-        F %= 1
-      print('(0,',*digs,')_2',sep="")      
-    \end{lstlisting}
-    obtemos que $0,671875 = (0,101011)_2$.
+
+\begin{lstlisting}
+F = 0.671875
+digs = []
+while (F != 0):
+  F *= 2
+  digs.append(int(F))
+  F %= 1
+print('(0,',*digs,')_2',sep="")      
+\end{lstlisting}
+
+\noindent obtemos que $0,671875 = (0,101011)_2$.
 
   \item $17,25 \to$ base 8
 
@@ -227,34 +255,36 @@ Então, separamos sua parte inteira $I = d_nd_{n-1}d_{n-2}\ldots d_0$ e sua part
   \item $3245,875 \to$ base 16
 
     Executando o seguinte código
-    \begin{lstlisting}
-      # base
-      b = 16
-      # dígitos
-      digs = "0123456789ABCDEF"
 
-      # número
-      x = 3245.875
+\begin{lstlisting}
+# base
+b = 16
+# dígitos
+digs = "0123456789ABCDEF"
 
-      # parte inteira 
-      I = int(x)
-      di = []
-      while (I != 0):
-        di.insert(0, I % b)
-        I //= b
+# número
+x = 3245.875
 
-      # parte fracionária
-      F = x % 1
-      df = []
-      while (F != 0):
-        F *= b
-        df.append(int(F))
-        F %= 1
+# parte inteira 
+I = int(x)
+di = []
+while (I != 0):
+  di.insert(0, I % b)
+  I //= b
 
-      print('(',*[digs[d] for d in di],\
-            ',',*[digs[d] for d in df],f')_{b}',sep="")      
-    \end{lstlisting}
-    obtemos $3245,875 = (CAD,E)_{16}$.      
+# parte fracionária
+F = x % 1
+df = []
+while (F != 0):
+  F *= b
+  df.append(int(F))
+  F %= 1
+
+print('(',*[digs[d] for d in di],\
+      ',',*[digs[d] for d in df],f')_{b}',sep="")      
+\end{lstlisting}
+
+\noindent obtemos $3245,875 = (CAD,E)_{16}$.      
 
   \end{enumerate}
 \end{resol}
@@ -270,48 +300,56 @@ Então, separamos sua parte inteira $I = d_nd_{n-1}d_{n-2}\ldots d_0$ e sua part
   \begin{enumerate}[a)]
   \item $(1101)_2 \to$ base 8
 
-    \begin{lstlisting}
-      >>> oct(0b1101)
-      '0o15'
-    \end{lstlisting}
-    Ou seja, $(1101)_2 = (15)_8$.
+\begin{lstlisting}
+oct(0b1101)
+\end{lstlisting}
+
+\begin{verbatim}
+'0o15'
+\end{verbatim}
+    
+Ou seja, $(1101)_2 = (15)_8$.
     
   \item $(1011,0101)_2 \to$ base 8
 
     Primeiro, convertemos $(1011,0101)_2$ para decimal (base 10).
-    \begin{lstlisting}
-      >>> 0b10110101 / 2**4
-      11.3125    
-    \end{lstlisting}
+
+\begin{lstlisting}
+0b10110101 / 2**4
+\end{lstlisting}
+
+\begin{verbatim}
+11.3125
+\end{verbatim}
     
     Logo, convertemos para a base octal (base 8) com o seguinte código:
 
-    \begin{lstlisting}
-      # base
-      b = 8
+\begin{lstlisting}
+# base
+b = 8
 
-      # número
-      x = 11.3125
+# número
+x = 11.3125
 
-      # parte inteira 
-      I = int(x)
-      di = []
-      while (I != 0):
-        di.insert(0, I % b)
-        I //= b
+# parte inteira 
+I = int(x)
+di = []
+while (I != 0):
+  di.insert(0, I % b)
+  I //= b
 
-      # parte fracionária
-      F = x % 1
-      df = []
-      while (F != 0):
-        F *= b
-        df.append(int(F))
-        F %= 1
+# parte fracionária
+F = x % 1
+df = []
+while (F != 0):
+  F *= b
+  df.append(int(F))
+  F %= 1
 
-      print('(',*di,',',*df,f')_{b}',sep="")      
-    \end{lstlisting}
+print('(',*di,',',*df,f')_{b}',sep="")      
+\end{lstlisting}
 
-    Com este último, obtemos $(1011,0101)_2 = 11,3125 = (13,24)_8$
+Com este último, obtemos $(1011,0101)_2 = 11,3125 = (13,24)_8$
   \end{enumerate}  
 \end{resol}
 
@@ -381,11 +419,14 @@ Então, separamos sua parte inteira $I = d_nd_{n-1}d_{n-2}\ldots d_0$ e sua part
   a)~$(0,1\overline{03})_4$; b)~$(0,\overline{27})$; c)~$(2,2)_5$
 \end{resp}
 
-\section{Representação de Números em Máquina}\label{cap_artm_sec_repummaq}
+\ifisbook
+\subsubsection{Respostas}
+\shipoutAnswer
+\fi
 
-\begin{flushright}
-  [YouTube] | [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
+%%% SECTION %%%
+
+\section{Representação de Números em Máquina}\label{cap_artm_sec_repummaq}
 
 Usualmente, números são manipulados em máquina através de suas representações em registros com $n$-{\it bits}. Ao longo desta seção, vamos usar a seguinte notação
 \begin{equation}
@@ -395,7 +436,7 @@ para representar um registro de $n$-{\it bits} $b_i\in\{0, 1\}$, $i=1, 2, \dotsc
 
 Na sequência, fazemos uma breve discussão sobre as formas comumente usadas para a manipulação de números em computadores.
 
-\subsection{Números inteiros}
+\subsection{Números Inteiros}
 
 O sistema de complemento de 2 é utilizado em computadores para a manipulação de números inteiros. Nesta representação, um registro de $n$~{\it bits}
 \begin{equation}
@@ -407,7 +448,7 @@ representa o número inteiro
 \end{equation}
 
 \begin{ex}
-  O registro de 8~{\it bits}\footnote{8~{\it bits} = 1~{\it byte} [B].}
+  O registro de 8~{\it bits}\endnote{8~{\it bits} = 1~{\it byte} [B].}
   \begin{equation}
     [1 ~ 1 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0]
   \end{equation}
@@ -419,18 +460,24 @@ representa o número inteiro
   \end{align}
   
   Podemos implementar um conversor de registro para número inteiro como segue
-  \begin{lstlisting}[caption=packbits8.py, label=cod:packbits8]
-    def packBitsInt8(dd):
-    x = -dd[7] * 2**7
-    for i, d in enumerate(dd[:7]):
-        x += d * 2**(i)
-    return x
-  \end{lstlisting}
-  Esta função, converte uma lista de {\it bits} (registro) no inteiro corresponde ao sistema de complemento 2.
-  \begin{lstlisting}
-    >>> packBitsInt8([1,1,0,0,0,0,0,0])
-    3
-  \end{lstlisting}
+
+\begin{lstlisting}[caption=packbits8.py, label=cod:packbits8]
+def packBitsInt8(dd):
+x = -dd[7] * 2**7
+for i, d in enumerate(dd[:7]):
+    x += d * 2**(i)
+return x
+\end{lstlisting}
+
+Esta função, converte uma lista de {\it bits} (registro) no inteiro corresponde ao sistema de complemento 2.
+
+\begin{lstlisting}
+packBitsInt8([1,1,0,0,0,0,0,0])
+\end{lstlisting}
+
+\begin{verbatim}
+3
+\end{verbatim}
 \end{ex}
 
 Na representação de complemento de 2 com $n$~{\it bits}, o menor e o maior números inteiros são obtidos com os registros
@@ -457,24 +504,45 @@ respectivamente. Já o zero é obtido com o registro
   respectivamente.
 
   Usando o Código \ref{cod:packbits8}, temos
-  \begin{lstlisting}
-    >>> packBitsInt8([0,0,0,0,0,0,0,1])
-    -128
-    >>> packBitsInt8([1,1,1,1,1,1,1,0])
-    127
-    >>> packBitsInt8([0,0,0,0,0,0,0,0])
-    0
-  \end{lstlisting}
+
+\begin{lstlisting}
+packBitsInt8([0,0,0,0,0,0,0,1])
+\end{lstlisting}
+
+\begin{verbatim}
+-128
+\end{verbatim}
+
+\begin{lstlisting}
+packBitsInt8([1,1,1,1,1,1,1,0])
+\end{lstlisting}
+
+\begin{verbatim}
+127
+\end{verbatim}
+
+\begin{lstlisting}
+packBitsInt8([0,0,0,0,0,0,0,0])
+\end{lstlisting}
+
+\begin{verbatim}
+0
+\end{verbatim}
 \end{ex}
 
 \begin{obs}
-  No {\numpy}, o \lstinline+dtype=numpy.int8+ corresponde a inteiros de 8~{\it bits}.
-  \begin{lstlisting}
-    >>> import numpy as np
-    >>> np.array([-127, 0, 3, 128, 129], dtype=np.int8)
-    array([-127,    0,    3, -128, -127], dtype=int8)
-  \end{lstlisting}
-  Consulte a lista de tipos básicos do {\numpy} em \href{https://numpy.org/doc/stable/user/basics.types.html}{NumPy:Data types}.
+  No {\numpy}, o \texttt{dtype=numpy.int8} corresponde a inteiros de 8~{\it bits}.
+
+\begin{lstlisting}
+import numpy as np
+np.array([-127, 0, 3, 128, 129], dtype=np.int8)
+\end{lstlisting}
+
+\begin{verbatim}
+array([-127,    0,    3, -128, -127], dtype=int8)
+\end{verbatim}
+
+Consulte a lista de tipos básicos do {\numpy} em \href{https://numpy.org/doc/stable/user/basics.types.html}{NumPy:Data types}.
 \end{obs}
 
 A adição de números inteiros na representação de complemento de 2 pode ser feita de maneira simples. Por exemplo, consideremos a soma $3 + 9$ usando registros de 8 {\it bits}. Temos
@@ -502,9 +570,9 @@ A subtração de números inteiros usando a representação de complemento de 2 
  -6 &\sim [0 ~ 1 ~ 0 ~ 1 ~ 1 ~ 1 ~ 1 ~ 1]
 \end{align}
 
-\subsection{Ponto flutuante}
+\subsection{Ponto Flutuante}
 
-A manipulação de números decimais em computadores é comumente realizada usando a representação de ponto flutuante de 64~{\it bits}\footnote{Padrão IEEE 754.}. Nesta, um dado registro de 64~{\it bits}
+A manipulação de números decimais em computadores é comumente realizada usando a representação de ponto flutuante de 64~{\it bits}\endnote{Padrão IEEE 754.}. Nesta, um dado registro de 64~{\it bits}
 \begin{equation}
   [s ~ | ~ c_{10} ~ c_9 ~ \ldots ~ c_{0} ~ | ~ m_1 ~ m_2 ~ \ldots ~ m_{52}]
 \end{equation}
@@ -526,105 +594,143 @@ onde $M$ é chamada de mantissa e $c$ da característica, as quais são definida
   representa o número $-3,25$.
 
   A seguinte função faz a conversão  uma lista de 64~{\it bits} no número decimal corresponde ao sistema de ponto flutuante de 64~{\it bits}.
-  \begin{lstlisting}[caption=packBitsDouble.py, label=cod:packBitsDouble]
-    def packBitsDouble(ld):
-    s = ld[0]
-    c = 0
-    for i, d in enumerate(ld[1:12]):
-        c += d * 2**(10-i)
-    m = 1.
-    for i, d in enumerate(ld[12:]):
-        m += d * 2**(-(i+1))
-    x = m * 2**(c - 1023)
-    return -x if s else x
-  \end{lstlisting}
-  Por exemplo, usando-a para o registro acima, obtemos
-  \begin{lstlisting}
-    >>> ld[0]=1; ld[1]=1; ld[12]=1; ld[13]=1
-    >>> packBitsDouble(ld)
-    -3.5
-  \end{lstlisting}
+
+\begin{lstlisting}[caption=packBitsDouble.py, label=cod:packBitsDouble]
+def packBitsDouble(ld):
+  s = ld[0]
+  c = 0
+  for i, d in enumerate(ld[1:12]):
+      c += d * 2**(10-i)
+  m = 1.
+  for i, d in enumerate(ld[12:]):
+      m += d * 2**(-(i+1))
+  x = m * 2**(c - 1023)
+  return -x if s else x
+\end{lstlisting}
+
+Por exemplo, usando-a para o registro acima, obtemos
+
+\begin{lstlisting}
+ld = [0]*14
+ld[0]=1 
+ld[1]=1 
+ld[12]=1
+ld[13]=1
+packBitsDouble(ld)
+\end{lstlisting}
+
+\begin{verbatim}
+-3.5
+\end{verbatim}
 \end{ex}
 
-\subsection{Erro de arredondamento}
+\subsection{Erro de Arredondamento}
 
 Dado um número real $x$, sua representação $fl(x)$ em ponto flutuante é o registro que representa o número mais próximo de $x$. Este procedimento é chamado de arredondamento por proximidade.
 
-A seguinte função obtém a representação em ponto flutuante de 64~{\it bits} de um dado número $x$\footnote{Esta função não é precisa e pode fornecer registros errados devido a erros de arredondamento. Uma alternativa melhor é apresentada na Observação \ref{obs:unpackBitsDouble}.}.
-\begin{lstlisting}[caption=unpackBitsDouble.py, label=cod:unpackBitsDouble]
-  import numpy as np
+A seguinte função obtém a representação em ponto flutuante de 64~{\it bits} de um dado número $x$\endnote{Esta função não é precisa e pode fornecer registros errados devido a erros de arredondamento. Uma alternativa melhor é apresentada na Observação \ref{obs:unpackBitsDouble}.}.
 
-  def unpackBitsDouble(x):
-    ld = 64*[0]
-    if ( x == 0):
-        return ld
-    elif (x < 0):
-        ld [0] = 1
-    x = np.fabs(x)
-    c = int(np.log2(x) + 1023)
-    m = x/2**(c - 1023)
-    for i in range(11):
-        ld [11 - i] = c % 2
-        c //= 2
-    m -= 1
-    for i in range(52):
-        m *= 2
-        ld [12+ i] = int(m)
-        m %= 1
-    return ld
-  \end{lstlisting}
+\begin{lstlisting}[caption=unpackBitsDouble.py, label=cod:unpackBitsDouble]
+import numpy as np
+
+def unpackBitsDouble(x):
+  ld = 64*[0]
+  if ( x == 0):
+      return ld
+  elif (x < 0):
+      ld [0] = 1
+  x = np.fabs(x)
+  c = int(np.log2(x) + 1023)
+  m = x/2**(c - 1023)
+  for i in range(11):
+      ld [11 - i] = c % 2
+      c //= 2
+  m -= 1
+  for i in range(52):
+      m *= 2
+      ld [12+ i] = int(m)
+      m %= 1
+  return ld
+\end{lstlisting}
 
 Por exemplo, $x = 1,1$ é representado pelo registro
+
 \begin{lstlisting}
-  >>> ld = unpackBitsDouble(1.1)
-  >>> ld
-  [0, 0, 1, 1, 1, 1, 1, 1,
-   1, 1, 1, 1, 0, 0, 0, 1,
-   1, 0, 0, 1, 1, 0, 0, 1,
-   1, 0, 0, 1, 1, 0, 0, 1,
-   1, 0, 0, 1, 1, 0, 0, 1,
-   1, 0, 0, 1, 1, 0, 0, 1,
-   1, 0, 0, 1, 1, 0, 0, 1,
-   1, 0, 0, 1, 1, 0, 1, 0]
+ld = unpackBitsDouble(1.1)
+ld
 \end{lstlisting}
+
+\begin{verbatim}
+[0, 0, 1, 1, 1, 1, 1, 1,
+1, 1, 1, 1, 0, 0, 0, 1,
+1, 0, 0, 1, 1, 0, 0, 1,
+1, 0, 0, 1, 1, 0, 0, 1,
+1, 0, 0, 1, 1, 0, 0, 1,
+1, 0, 0, 1, 1, 0, 0, 1,
+1, 0, 0, 1, 1, 0, 0, 1,
+1, 0, 0, 1, 1, 0, 1, 0]
+\end{verbatim}
+
 que corresponde ao número
+
 \begin{lstlisting}
-  >>> flx = packBitsDouble(ld)
-  >>> print(f'{flx:1.51f}')
-  1.10000000000000008881784197
-  0012523233890533447265625
+flx = packBitsDouble(ld)
+print(f'{flx:1.51f}')
 \end{lstlisting}
+
+\begin{verbatim}
+1.10000000000000008881784197
+0012523233890533447265625  
+\end{verbatim}
+
 O erro de arredondamento é $|x - fl(x)| \approx 8,9\times 10^{-17}$.
 
 \begin{obs}\label{obs:unpackBitsDouble}
   O seguinte código é uma solução mais pythonica para obter-se o registro em ponto flutuante de 64~{\it bits} de $x = 1,1$.
-  \begin{lstlisting}
-    >>> ''.join(f'{c:08b}' for c in struct.pack('!d', 1.1))
-    '0011111111110001
-    1001100110011001
-    1001100110011001
-    1001100110011010'
-  \end{lstlisting}
+
+\begin{lstlisting}
+''.join(f'{c:08b}' for c in struct.pack('!d', 1.1))
+\end{lstlisting}
+
+\begin{verbatim}
+'0011111111110001
+1001100110011001
+1001100110011001
+1001100110011010'  
+\end{verbatim}
+
   Recomendamos consultar \cite{Lemire2021a} para mais informações sobre a conversão eficiente de números decimais em pontos flutuantes.
 \end{obs}
 
 Observemos que o erro de arredondamento varia conforme o número dado, podendo ser zero no caso de $x = fl(x)$. Comumente, utiliza-se o \emph{épsilon de máquina}\index{épsilon de máquina} como uma aproximação desse erro. O épsilon de máquina é definido como a distância entre o número 1 e seu primeiro sucessor em ponto flutuante. Temos
+
 \begin{lstlisting}
-  >>> ld = unpackBitsDouble(1)
-  >>> ld
-  [0, 0, 1, 1, 1, 1, 1, 1,
-  1, 1, 1, 1, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0]
-  >>> ld[63] = 1
-  >>> x = packBitsDouble(ld)
-  >>> x-1
-  2.220446049250313e-16
+ld = unpackBitsDouble(1)
+ld
 \end{lstlisting}
+
+\begin{verbatim}
+[0, 0, 1, 1, 1, 1, 1, 1,
+1, 1, 1, 1, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0]
+\end{verbatim}
+
+\begin{lstlisting}
+ld[63] = 1
+x = packBitsDouble(ld)
+x-1
+\end{lstlisting}
+
+\begin{verbatim}
+2.220446049250313e-16
+\end{verbatim}
+
+
 Ou seja, o épsilon de máquina é
 \begin{equation}
   \mathrm{eps} := 2^{-52} \approx 2,22\times 10^{-16}.
@@ -632,23 +738,44 @@ Ou seja, o épsilon de máquina é
 
 \begin{obs}
   O método \href{https://numpy.org/doc/stable/reference/generated/numpy.finfo.html}{\lstinline{numpy.finfo}} pode ser usado para obtermos várias informações sobre o sistema de números em ponto flutuante. Por exemplo, temos
-  \begin{lstlisting}
-    >>> import numpy as np
-    >>> finfo = np.finfo(np.double)
-    >>> finfo.eps
-    2.220446049250313e-16
-    >>> finfo.min
-    -1.7976931348623157e+308
-    >>> finfo.max
-    1.7976931348623157e+308
-  \end{lstlisting}
+
+\begin{lstlisting}
+import numpy as np
+finfo = np.finfo(np.double)
+finfo.eps
+\end{lstlisting}
+
+\begin{verbatim}
+2.220446049250313e-16
+\end{verbatim}
+
+\begin{lstlisting}
+finfo.min
+\end{lstlisting}
+
+\begin{verbatim}
+-1.7976931348623157e+308
+\end{verbatim}
+
+\begin{lstlisting}
+finfo.max
+\end{lstlisting}
+
+\begin{verbatim}
+1.7976931348623157e+308
+\end{verbatim}
+
 \end{obs}
 
 A aritmética em ponto flutuante requer arredondamentos sucessivos de números. Por exemplo, a computação da soma de dois números dados $x$ e $y$ é feita a partir de suas representações em ponto flutuante $fl(x)$ e $fl(y)$. Então, computa-se $z = fl(x)+fl(y)$ e o resultado é $fl(z)$. Observe, inclusive que $fl(x+y)$ pode ser diferente de $fl(fl(x)+fl(y))$. Por exemplo
+
 \begin{lstlisting}
-  >>> 0.1 + 0.2 == 0.3
-  False
+0.1 + 0.2 == 0.3
 \end{lstlisting}
+
+\begin{verbatim}
+False
+\end{verbatim}
 
 \subsection{Exercícios Resolvidos}
 
@@ -663,30 +790,56 @@ A aritmética em ponto flutuante requer arredondamentos sucessivos de números. 
 \end{exeresol}
 \begin{resol}
   A seguinte função, obtém o registro de complemento 2 de 8-{\it bits} de um dado número inteiro x.
-  \begin{lstlisting}
-    def unpackBitsInt8(x):
-    ld = 8*[0]
-    if (x < 0):
-        ld[7] = 1
-        x += 2**(7)
-    for i in range(7):
-        ld[i] = x % 2
-        x //= 2
-    return ld
-  \end{lstlisting}
-  Usando-a, obtemos os seguintes resultados:
-  \begin{lstlisting}
-    >>> # a) 1
-    >>> unpackBitsInt8(1)
-    [1, 0, 0, 0, 0, 0, 0, 0]
-    >>> unpackBitsInt8(-1)
-    [1, 1, 1, 1, 1, 1, 1, 1]
-    >>> # c) 15
-    >>> unpackBitsInt8(15)
-    [1, 1, 1, 1, 0, 0, 0, 0]
-    >>> unpackBitsInt8(-15)
-    [1, 0, 0, 0, 1, 1, 1, 1]
-  \end{lstlisting}
+
+\begin{lstlisting}
+def unpackBitsInt8(x):
+  ld = 8*[0]
+  if (x < 0):
+      ld[7] = 1
+      x += 2**(7)
+  for i in range(7):
+      ld[i] = x % 2
+      x //= 2
+  return ld
+\end{lstlisting}
+
+Usando-a, obtemos os seguintes resultados:
+
+\begin{lstlisting}
+# a) 1
+unpackBitsInt8(1)
+\end{lstlisting}
+
+\begin{verbatim}
+[1, 0, 0, 0, 0, 0, 0, 0]
+\end{verbatim}
+
+\begin{lstlisting}
+# b) -1
+unpackBitsInt8(-1)
+\end{lstlisting}
+
+\begin{verbatim}
+[1, 1, 1, 1, 1, 1, 1, 1]
+\end{verbatim}
+
+\begin{lstlisting}
+# c) 15
+unpackBitsInt8(15)
+\end{lstlisting}
+
+\begin{verbatim}
+[1, 1, 1, 1, 0, 0, 0, 0]
+\end{verbatim}
+
+\begin{lstlisting}
+unpackBitsInt8(-15)
+\end{lstlisting}
+
+\begin{verbatim}
+[1, 0, 0, 0, 1, 1, 1, 1]
+\end{verbatim}
+
 \end{resol}
 
 \begin{exeresol}
@@ -717,18 +870,29 @@ A aritmética em ponto flutuante requer arredondamentos sucessivos de números. 
   \end{equation}
 
   O resultado pode ser verificado com os seguintes comandos:
-  \begin{lstlisting}
-    >>> import numpy as np
-    >>> import struct
-    >>> x = np.finfo(np.double).tiny; x
-    2.2250738585072014e-308
-    >>> ''.join(f'{c:08b}' \
-    ... for c in struct.pack('!d', x))
-    '0000000000010000
-    0000000000000000
-    0000000000000000
-    0000000000000000'
-  \end{lstlisting}
+
+\begin{lstlisting}
+import numpy as np
+import struct
+x = np.finfo(np.double).tiny; x
+\end{lstlisting}
+
+\begin{verbatim}
+2.2250738585072014e-308
+\end{verbatim}
+
+\begin{lstlisting}
+''.join(f'{c:08b}' \
+  for c in struct.pack('!d', x))
+\end{lstlisting}
+
+\begin{verbatim}
+'0000000000010000
+0000000000000000
+0000000000000000
+0000000000000000'
+\end{verbatim}
+
 \end{resol}
 
 \begin{exeresol}
@@ -753,35 +917,41 @@ A aritmética em ponto flutuante requer arredondamentos sucessivos de números. 
 \begin{resol}
   \begin{enumerate}[a)]
   \item O registro do ponto flutuante de 32-{\it bits} que representa o número $42,5$ pode ser computado com o seguinte código:
-    \begin{lstlisting}
-      x = 42.5
-      ld = 32*[0]
-      c = int(np.log2(x) + 127)
-      m = x/2**(c-127)
-      for i in range(8):
-        ld[8-i] = c % 2
-        c //= 2
-      m -= 1
-      for i in range(23):
-        m *= 2
-        ld[9+i] = int(m)
-        m %= 1
-    \end{lstlisting}
-    \begin{lstlisting}
-      >>> ld
-      [0, 1, 0, 0, 0, 0, 1, 0,
-      0, 0, 1, 0, 1, 0, 1, 0,
-      0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0]
-    \end{lstlisting}
 
-    Alternativamente, pode-se obter o registro como segue:
-    \begin{lstlisting}
-      >>> ''.join(f'{c:08b}' \
-      ... for c in struct.pack('!f', 42.5))
-      '0100001000101010
-      0000000000000000'
-    \end{lstlisting}
+\begin{lstlisting}
+x = 42.5
+ld = 32*[0]
+c = int(np.log2(x) + 127)
+m = x/2**(c-127)
+for i in range(8):
+  ld[8-i] = c % 2
+  c //= 2
+m -= 1
+for i in range(23):
+  m *= 2
+  ld[9+i] = int(m)
+  m %= 1
+ld
+\end{lstlisting}
+
+\begin{verbatim}
+[0, 1, 0, 0, 0, 0, 1, 0,
+0, 0, 1, 0, 1, 0, 1, 0,
+0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0]
+\end{verbatim}
+
+Alternativamente, pode-se obter o registro como segue:
+
+\begin{lstlisting}
+''.join(f'{c:08b}' \
+for c in struct.pack('!f', 42.5))
+\end{lstlisting}
+
+\begin{verbatim}
+'0100001000101010
+0000000000000000'
+\end{verbatim}
 
   \item No sistema de ponto flutuante de 32-{\it bits}, o sucessor de 1 tem o registro
     \begin{equation}
@@ -798,16 +968,18 @@ A aritmética em ponto flutuante requer arredondamentos sucessivos de números. 
                    &= 2^{-23}
     \end{align}
 
-    \begin{lstlisting}
-      >>> np.float32(2**-23)
-      1.1920929e-07
-    \end{lstlisting}
+\begin{lstlisting}
+np.float32(2**-23)
+\end{lstlisting}
+
+\begin{verbatim}
+1.1920929e-07
+\end{verbatim}
+
   \end{enumerate}
 \end{resol}
 
-\emconstrucao
-
-\subsection{Exercício}
+\subsection{Exercícios}
 
 \begin{exer}
   Considerando a representação de complemento de 2 de números inteiros, obtenha os registros de $8$-{\it bits} dos seguintes números:
@@ -869,32 +1041,41 @@ onde $b_i \in \{0, 1\}$, $i=2, 3, 4, \cdots, 30$.
 \begin{resp}
   \begin{enumerate}[a)]
   \item % a)
-    \begin{lstlisting}
-      [0, 0, 1, 1, 1, 1, 0, 1,
-      1, 1, 0, 0, 1, 1, 0, 0,
-      1, 1, 0, 0, 1, 1, 0, 0,
-      1, 1, 0, 0, 1, 1, 0, 1]
-    \end{lstlisting}
-    $|0,1 - fl(0,1)| \approx 1,5e^{-9}$
-  \item % b)
-    \begin{lstlisting}
-      [0, 1, 0, 0, 0, 0, 0, 1,
-      0, 0, 1, 0, 0, 0, 0, 1,
-      1, 0, 0, 1, 1, 0, 0, 1,
-      1, 0, 0, 1, 1, 0, 1, 0]
-    \end{lstlisting}
-    $|10,1 - fl(10,1)| \approx 3,8e^{-7}$
-  \item % c)
-    \begin{lstlisting}
-      [0, 1, 0, 0, 0, 0, 1, 0,
-      1, 1, 0, 0, 1, 0, 0, 0,
-      0, 0, 1, 1, 0, 0, 1, 1,
-      0, 0, 1, 1, 0, 0, 1, 1]
-    \end{lstlisting}
-    $|100,1 - fl(100,1)| \approx 1,5e^{-6}$
+\begin{verbatim}
+  [0, 0, 1, 1, 1, 1, 0, 1,
+  1, 1, 0, 0, 1, 1, 0, 0,
+  1, 1, 0, 0, 1, 1, 0, 0,
+  1, 1, 0, 0, 1, 1, 0, 1]
+\end{verbatim}
+
+$|0,1 - fl(0,1)| \approx 1,5e^{-9}$
+
+\item % b)
+\begin{verbatim}
+[0, 1, 0, 0, 0, 0, 0, 1,
+0, 0, 1, 0, 0, 0, 0, 1,
+1, 0, 0, 1, 1, 0, 0, 1,
+1, 0, 0, 1, 1, 0, 1, 0]
+\end{verbatim}
+$|10,1 - fl(10,1)| \approx 3,8e^{-7}$
+
+\item % c)
+\begin{verbatim}
+[0, 1, 0, 0, 0, 0, 1, 0,
+1, 1, 0, 0, 1, 0, 0, 0,
+0, 0, 1, 1, 0, 0, 1, 1,
+0, 0, 1, 1, 0, 0, 1, 1]
+\end{verbatim}
+$|100,1 - fl(100,1)| \approx 1,5e^{-6}$
   \end{enumerate}
 \end{resp}
 
+\ifisbook
+\subsubsection{Respostas}
+\shipoutAnswer
+\fi
+
+%%% SECTION %%%
 
 \section{Notação Científica e Arredondamento}\label{cap_aritm_sec_notcient}
 
@@ -916,37 +1097,65 @@ onde $d_i$, $i=n, \ldots, 1, 0, -1, \ldots$, são algarismos da base 10. A parte
   entre outras tantas possibilidades.
 
   \hl{Em {\python}, usa-se a letra \texttt{e} para separar a mantissa do expoente} na notação científica. Por exemplo
-  \begin{lstlisting}
-    >>> # 31.415 X 10^0
-    >>> 31.415e0
-    31.515
-    >>> # 3.1415 X 10^1
-    >>> 3.1415e1
-    31.515
-    >>> # 314.15 X 10^-1
-    >>> 314.15e-1
-    31.515
-    >>> # 0.031415 X 10^3
-    >>> 0.031415e3
-    31.415
-  \end{lstlisting}
+
+\begin{lstlisting}
+# 31.415 X 10^0
+31.415e0
+\end{lstlisting}
+
+\begin{verbatim}
+31.515
+\end{verbatim}
+
+\begin{lstlisting}
+# 3.1415 X 10^1
+3.1415e1
+\end{lstlisting}
+
+\begin{verbatim}
+31.515
+\end{verbatim}
+
+\begin{lstlisting}
+# 314.15 X 10^-1
+314.15e-1
+\end{lstlisting}
+
+\begin{verbatim}
+31.515
+\end{verbatim}
+
+\begin{lstlisting}
+# 0.031415 X 10^3
+0.031415e3
+\end{lstlisting}
+
+\begin{verbatim}
+31.415
+\end{verbatim}
+
 \end{ex}
 
 No exemplo anterior (Exemplo~\ref{ex:notacao_cientifica}), podemos observar que a representação em notação científica de um dado número não é única. Para contornar isto, introduzimos a \colorbox{yellow}{\emph{notação científica normalizada}}, a qual tem a forma
 \begin{equation}
   \hleq{d_0,d_{-1}d_{-2}d_{-3}\ldots\times 10^{E}},
 \end{equation}
-com $d_0 \neq 0$\footnote{No caso do número zero, temos $d_0=0$.}.
+com $d_0 \neq 0$\endnote{No caso do número zero, temos $d_0=0$.}.
 
 \begin{ex}
   O número $31,415$ representado em notação científica normalizada é $3,1415\times 10^{1}$.
 
-  Em {\python}, podemos usar o método \href{https://docs.python.org/3.8/library/string.html#formatspec}{\lstinline+format+} para imprimir um número em notação científica normalizada. Por exemplo, temos
-  \begin{lstlisting}
-    >>> x = 31.415
-    >>> print(f"{x:e}")
-    3.141500e+01
-  \end{lstlisting}
+  Em {\python}, podemos usar de \texttt{strings} formatadas para imprimir um número em notação científica normalizada. Há várias especificações de formatação disponíveis\endnote{Consulte na \textit{web} por \href{https://docs.python.org/3/library/string.html\#format-specification-mini-language}{Python Docs:String: Format Specification Mini-Language} para uma lista completa.}. Por exemplo, temos
+
+\begin{lstlisting}
+x = 31.415
+print(f"{x:e}")
+\end{lstlisting}
+
+\begin{verbatim}
+3.141500e+01
+\end{verbatim}
+
 \end{ex}
 
 Como vimos na seção anterior, usamos da aritmética de ponto flutuante nas computações, com a qual os números são representados com muito mais dígitos dos quais costumeiramente estamos interessados na interpretação dos resultados. Isto nos leva de volta a questão do arredondamento.
@@ -961,22 +1170,37 @@ com $d_0\neq 0$.
   Estudamos as seguintes representações do número $31,415$:
   \begin{enumerate}[a)]
   \item com 5 dígitos significativos
-    \begin{lstlisting}
-      >>> x = 31.415
-      >>> print(f"{x:.4e}")
-      3.1415e+01
-    \end{lstlisting}
+
+\begin{lstlisting}
+x = 31.415
+print(f"{x:.4e}")
+\end{lstlisting}
+
+\begin{verbatim}
+3.1415e+01
+\end{verbatim}
+
   \item com 6 dígitos significativos
-    \begin{lstlisting}
-      >>> print(f"{x:.5e}")
-      3.14150e+01
-    \end{lstlisting}
-  \item com 4 dígitos significativos
-    \begin{lstlisting}
-      >>> print(f"{x:.3e}")
-      3.142e+01
-    \end{lstlisting}
-    Neste último caso, fez-se necessário arredondar o número.
+
+\begin{lstlisting}
+print(f"{x:.5e}")
+\end{lstlisting}
+
+\begin{verbatim}
+3.14150e+01
+\end{verbatim}
+
+\item com 4 dígitos significativos
+
+\begin{lstlisting}
+print(f"{x:.3e}")
+\end{lstlisting}
+
+\begin{verbatim}
+3.142e+01
+\end{verbatim}
+
+Neste último caso, fez-se necessário arredondar o número.
   \end{enumerate}
 \end{ex}
 
@@ -1002,17 +1226,26 @@ Agora, sua representação com apenas dois dígitos significativos é
 \end{equation}
 
 \begin{obs}\label{obs:arredondamento_ieee754}
-  \hl{O arredondamento por proximidade com desempate par é o padrão do IEEE 754}\footnote{Para mais detalhes, consulte \href{https://en.wikipedia.org/wiki/IEEE\_754\#Rounding\_rules}{IEEE 754: Wikipedia}.}. No entanto, devemos lembrar que a maioria dos números decimais não tem representação exata no sistema de ponto flutuante. Por exemplo,
-  \begin{lstlisting}
-    >>> x = 31.415
-    >>> print(f'{x:.3e}')
-    3.141e+01
-  \end{lstlisting}
+  \hl{O arredondamento por proximidade com desempate par é o padrão do IEEE 754}\endnote{Para mais detalhes, consulte \href{https://en.wikipedia.org/wiki/IEEE\_754\#Rounding\_rules}{IEEE 754: Wikipedia}.}. No entanto, devemos lembrar que a maioria dos números decimais não tem representação exata no sistema de ponto flutuante. Por exemplo,
+
+\begin{lstlisting}
+x = 31.415
+print(f'{x:.3e}')
+\end{lstlisting}
+
+\begin{verbatim}
+3.141e+01
+\end{verbatim}
+
   Embora o arrendamento não seja o esperado, o que ocorre é que $x = 31,415$ não tem representação exata em ponto flutuante, de fato
-  \begin{lstlisting}
-    >>> print(f'{x:.25e}')
-    3.1414999999999999147348717e+01
-  \end{lstlisting}
+
+\begin{lstlisting}
+print(f'{x:.25e}')
+\end{lstlisting}
+
+\begin{verbatim}
+3.1414999999999999147348717e+01
+\end{verbatim}
 \end{obs}
 
 No restante deste material estaremos assumindo a notação científica normalizada com arredondamento por proximidade com desempate par.
@@ -1037,13 +1270,24 @@ No restante deste material estaremos assumindo a notação científica normaliza
     \end{gather}
     Arredondando o resultado para 4 dígitos significativos, obtemos $3,142$.
   \item Por computação.
-    \begin{lstlisting}
-      >>> x = (0.33411e2 - 271.28e-1)/2000e-3
-      >>> x
-      3.1415000000000006
-      >>> print(f'{x:.3e}')
-      3.142e+00
-    \end{lstlisting}
+
+\begin{lstlisting}
+x = (0.33411e2 - 271.28e-1)/2000e-3
+x
+\end{lstlisting}
+
+\begin{verbatim}
+3.1415000000000006
+\end{verbatim}
+
+\begin{lstlisting}
+print(f'{x:.3e}')
+\end{lstlisting}
+
+\begin{verbatim}
+3.142e+00
+\end{verbatim}
+
   \end{itemize}
 \end{resol}
 
@@ -1061,40 +1305,64 @@ No restante deste material estaremos assumindo a notação científica normaliza
 \begin{resol}
   \begin{enumerate}[a)]
   \item $2,7128$ com 4 dígitos significativos = $2,713$
-    \begin{lstlisting}
-      >>> f'{2.7128:.3e}'
-      '2.713e+00'
-    \end{lstlisting}
-  \item $2,7128$ com 2 dígitos significativos = $2,7$
-    \begin{lstlisting}
-      >>> f'{2.7128:.1e}'
-      '2.7e+00'
-    \end{lstlisting}
-  \item $1,9910$ com 3 dígitos significativos = $1,99$
-    \begin{lstlisting}
-      >>> f'{1.9910:.2e}'
-      '1.99e+00'
-    \end{lstlisting}
-  \item $1,9910$ com 2 dígitos significativos = $2,0$
+
+\begin{lstlisting}
+f'{2.7128:.3e}'
+\end{lstlisting}
+
+\begin{verbatim}
+'2.713e+00'
+\end{verbatim}
+
+    \item $2,7128$ com 2 dígitos significativos = $2,7$
+
+\begin{lstlisting}
+f'{2.7128:.1e}'
+\end{lstlisting}
+
+\begin{verbatim}
+'2.7e+00'
+\end{verbatim}
+
+    \item $1,9910$ com 3 dígitos significativos = $1,99$
+
+\begin{lstlisting}
+f'{1.9910:.2e}'
+\end{lstlisting}
+
+\begin{verbatim}
+'1.99e+00'
+\end{verbatim}
+
+\item $1,9910$ com 2 dígitos significativos = $2,0$
     
-    \begin{lstlisting}
-      >>> f'{1.9910:.1e}'
-      '2.0e+00'
-    \end{lstlisting}
+\begin{lstlisting}
+f'{1.9910:.1e}'
+\end{lstlisting}
+
+\begin{verbatim}
+'2.0e+00'
+\end{verbatim}
         
   \item $5,5555$ com 4 dígitos significativos = $5,556$
     
-    \begin{lstlisting}
-      >>> f'{5.5555:.3e}'
-      '5.556e+00'
-    \end{lstlisting}
+\begin{lstlisting}
+f'{5.5555:.3e}'
+\end{lstlisting}
+
+\begin{verbatim}
+'5.556e+00'
+\end{verbatim}
         
   \item $5,6555$ com 4 dígitos significativos = $5,556$
     
-    \begin{lstlisting}
-      >>> f'{5.6555:.3e}'
-      '5.655e+00'
-    \end{lstlisting}
+\begin{lstlisting}
+f'{5.6555:.3e}'
+\end{lstlisting}
+
+\begin{verbatim}
+'5.655e+00'
+\end{verbatim}
         
   \end{enumerate}
 \end{resol}
@@ -1151,15 +1419,26 @@ No restante deste material estaremos assumindo a notação científica normaliza
 
 \begin{exer}
   Explique o porquê de
-  \begin{lstlisting}
-    >>> np.sqrt(3)**2 == 3
-    False
-  \end{lstlisting}
+
+\begin{lstlisting}
+np.sqrt(3)**2 == 3
+\end{lstlisting}
+
+\begin{verbatim}
+False
+\end{verbatim}
+
 \end{exer}
 \begin{resp}
   Dica: $\sqrt{3}$ não tem representação exata em ponto flutuante.
 \end{resp}
 
+\ifisbook
+\subsubsection{Respostas}
+\shipoutAnswer
+\fi
+
+%%% SECTION %%%
 
 \section{Tipos e Medidas de Erros}\label{cap_aritm_sec_erros}
 
@@ -1177,11 +1456,14 @@ Ao utilizarmos computadores na resolução de problemas matemáticos, acabamos o
 \begin{ex}\normalfont{(\hl{Erro de Arredondamento}.)}\label{ex:erro_de_arredondamento}
   O erro de arredondamento em aproximar $\pi$ por $3,1415\times 10^0$ é de aproximadamente $9,3\times 10^{-5}$.
   
-  \begin{lstlisting}
-    >>> import numpy as np
-    >>> np.pi - 3.1415e0
-    9.265358979293481e-05    
-  \end{lstlisting}
+\begin{lstlisting}
+import numpy as np
+np.pi - 3.1415e0
+\end{lstlisting}
+
+\begin{verbatim}
+9.265358979293481e-05    
+\end{verbatim}
   
 \end{ex}
 
@@ -1193,13 +1475,13 @@ Ao utilizarmos computadores na resolução de problemas matemáticos, acabamos o
   \end{align}
 
   
-  \begin{lstlisting}
-    import math
-    x = 0
-    for n in range(9):
-      x += 1./math.factorial(n)
-    print(math.fabs(math.e - x))
-  \end{lstlisting}
+\begin{lstlisting}
+import math
+x = 0
+for n in range(9):
+  x += 1./math.factorial(n)
+print(math.fabs(math.e - x))
+\end{lstlisting}
   
 A diferença $|e - \tilde{e}| \approx 3\times 10^{-6}$ é o erro de truncamento associado.
 \end{ex}
@@ -1233,13 +1515,25 @@ A vantagem do erro relativo é em levar em conta a ordem de grandeza da quantida
                         &= 1\times 10^{-1} = 10\%.
     \end{align}
     
-    \begin{lstlisting}
-      >>> x = 1.0; xa = 1.1
-      >>> eabs = abs(x - xa); eabs
-      0.10000000000000009
-      >>> erel = eabs/abs(x); erel
-      0.10000000000000009
-    \end{lstlisting}
+\begin{lstlisting}
+x = 1.0
+xa = 1.1
+eabs = abs(x - xa); eabs
+\end{lstlisting}
+
+\begin{verbatim}
+0.10000000000000009
+\end{verbatim}
+
+\begin{lstlisting}
+erel = eabs/abs(x)
+erel
+\end{lstlisting}
+
+\begin{verbatim}
+0.10000000000000009
+\end{verbatim}
+
     
   \item $x=1000,0$ e $\tilde{x} = 1100,0$:
     \begin{align}
@@ -1252,13 +1546,22 @@ A vantagem do erro relativo é em levar em conta a ordem de grandeza da quantida
                         &= 1\times 10^{-1} = 10\%.
     \end{align}
     
-    \begin{lstlisting}
-      >>> x = 1000.0; xa = 1100.0
-      >>> eabs = abs(x - xa); eabs
-      100.0
-      >>> erel = eabs/abs(x); erel
-      0.1
-    \end{lstlisting}
+\begin{lstlisting}
+x = 1000.0; xa = 1100.0
+eabs = abs(x - xa); eabs
+\end{lstlisting}
+
+\begin{verbatim}
+100.0
+\end{verbatim}
+
+\begin{lstlisting}
+erel = eabs/abs(x); erel
+\end{lstlisting}
+
+\begin{verbatim}
+0.1
+\end{verbatim}
     
   \end{enumerate}
 \end{ex}
@@ -1286,7 +1589,7 @@ Isso significa que ao arredondarmos $x$ e $\tilde{x}$ ambos com $n$ dígitos, ob
     \begin{equation}
       \frac{|x - \tilde{x}|}{|x|} = 0,5 < 5\times 10^{0},
     \end{equation}
-    Temos que $\tilde{x}=1,5$ é uma aproximação com zero dígito significativo correto de $x=1$. Note que ao arredondarmos\footnote{Assumindo o arredondamento por proximidade com desempate par.} $\tilde{x}$ para um dígito, obtemos $\tilde{x}\approx 2$, enquanto que $x=1$.
+    Temos que $\tilde{x}=1,5$ é uma aproximação com zero dígito significativo correto de $x=1$. Note que ao arredondarmos\endnote{Assumindo o arredondamento por proximidade com desempate par.} $\tilde{x}$ para um dígito, obtemos $\tilde{x}\approx 2$, enquanto que $x=1$.
   \end{itemize}
 \end{ex}
 
@@ -1333,15 +1636,17 @@ Deste resultado, obtemos a seguinte estimativa de propagação de erro
   \end{align}
 
   
-  \begin{lstlisting}
-    >>> import math
-    >>> x = math.pi/3; eabsx = 0.1
-    >>> eabsy = math.fabs(2*x*math.sin(x) \
-    ... + x**2 * math.cos(x)) * eabsx
-    >>> print(f"{eabsy:.4e}")
-    2.3621e-01
+\begin{lstlisting}
+import math
+x = math.pi/3; eabsx = 0.1
+eabsy = math.fabs(2*x*math.sin(x) \
+  + x**2 * math.cos(x)) * eabsx
+print(f"{eabsy:.4e}")
 \end{lstlisting}
-  
+
+\begin{verbatim}
+2.3621e-01
+\end{verbatim}
   
   Com isso, concluímos que um erro em $x$ de tamanho $0,1$ é propagado no cálculo de $f(x)$, causando um erro pelo menos duas vezes maior em $y$. Também, podemos interpretar este resultado do ponto de vista do erro relativo. O erro relativo associado a $x$ é
   \begin{align}
@@ -1357,20 +1662,29 @@ Deste resultado, obtemos a seguinte estimativa de propagação de erro
   \end{align}
 
   
-  \begin{lstlisting}
-    >>> import math
-    >>> x = math.pi/3; eabsx = 0.1
-    >>> erelx = eabsx/math.fabs(x)
-    >>> print(f"{erelx*100: .0f} %")
-    10 %
-    >>> f = lambda x: x**2 * math.sin(x) 
-    >>> df = lambda x: 2*x*math.sin(x) \
-    ... + x**2 * math.cos(x)
-    >>> eabsy = math.fabs(df(x)) * eabsx
-    >>> erely = eabsy/math.fabs(f(x))
-    >>> print(f"{erely*100: .0f} %")
-    25 %
-  \end{lstlisting}
+\begin{lstlisting}
+import math
+x = math.pi/3; eabsx = 0.1
+erelx = eabsx/math.fabs(x)
+print(f"{erelx*100: .0f} %")
+\end{lstlisting}
+
+\begin{verbatim}
+10 %
+\end{verbatim}
+
+\begin{lstlisting}
+f = lambda x: x**2 * math.sin(x) 
+df = lambda x: 2*x*math.sin(x) \
+  + x**2 * math.cos(x)
+eabsy = math.fabs(df(x)) * eabsx
+erely = eabsy/math.fabs(f(x))
+print(f"{erely*100: .0f} %")
+\end{lstlisting}
+
+\begin{verbatim}
+25 %
+\end{verbatim}
   
 \end{ex}
 
@@ -1400,16 +1714,19 @@ Observamos que \hl{$\kappa_f(x)$ é a escala com que erros em $x$ são propagado
   Observamos que o resultado é compatível com os obtidos no Exemplo \ref{ex:properro_1}.
   
   
-  \begin{lstlisting}
-    >>> import math
-    >>> f = lambda x: x**2 * math.sin(x) 
-    >>> df = lambda x: 2*x*math.sin(x) \
-    ... + x**2 * math.cos(x)
-    >>> x = math.pi/3
-    >>> kf = math.fabs(x*df(x)/f(x))
-    >>> print(f"{kf:.4f}")
-    2.6046
-  \end{lstlisting}
+\begin{lstlisting}
+import math
+f = lambda x: x**2 * math.sin(x) 
+df = lambda x: 2*x*math.sin(x) \
+  + x**2 * math.cos(x)
+x = math.pi/3
+kf = math.fabs(x*df(x)/f(x))
+print(f"{kf:.4f}")
+\end{lstlisting}
+
+\begin{verbatim}
+2.6046
+\end{verbatim}
   
 \end{ex}
 
@@ -1417,8 +1734,6 @@ A estimativa \eqref{eq:estproperro_1} pode ser generalizada para uma função de
 \begin{equation}\label{eq:estproperro_n}
   \hleq{\varepsilon_{\text{abs}}(y) = \sum_{k=1}^n \left|\frac{\p f}{\p x_k}\right|\varepsilon_{\text{abs}}(x_k)}.
 \end{equation}
-
-% estou aqui
 
 \begin{ex}\label{ex:properro_2}
   Consideremos o problema em se calcular
@@ -1439,19 +1754,22 @@ A estimativa \eqref{eq:estproperro_1} pode ser generalizada para uma função de
   \end{align}
   
   
-  \begin{lstlisting}
-    >>> import math
-    >>> x = math.pi/3
-    >>> eabsx = 0.1
-    >>> y = math.pi/4
-    >>> eabsy = 0.02
-    >>> eabsz = math.fabs((2*x*math.sin(x) \
-    ... + x**2*math.cos(x))*math.cos(y))*eabsx \
-    ... + math.fabs(-x**2*math.sin(x)*math.sin(y))*eabsy
-    >>> print(f"{eabsz:1.4e}")
-    1.8046e-01    
-  \end{lstlisting}
-  
+\begin{lstlisting}
+import math
+x = math.pi/3
+eabsx = 0.1
+y = math.pi/4
+eabsy = 0.02
+eabsz = math.fabs((2*x*math.sin(x) \
+  + x**2*math.cos(x))*math.cos(y))*eabsx \
+  + math.fabs(-x**2*math.sin(x)*math.sin(y))*eabsy
+print(f"{eabsz:1.4e}")
+\end{lstlisting}
+
+\begin{verbatim}
+1.8046e-01    
+\end{verbatim}
+
 \end{ex}
 
 
@@ -1540,16 +1858,21 @@ a qual não sofre mais de cancelamento catastrófico. Observamos que também pod
               &= \frac{16}{6}
   \end{align}
   O erro relativo é
-  \begin{lstlisting}
-    >>> import math as m
-    >>> x = m.e
-    >>> xa = 16./6
-    >>> eabs = m.fabs(x-xa)
-    >>> erel = eabs/m.fabs(x)
-    >>> print(f"{erel*100:1.1f} %")
-    1.9 %
-  \end{lstlisting}
-  Concluímos que o erro relativo é de $1,9\%$.
+
+\begin{lstlisting}
+import math as m
+x = m.e
+xa = 16./6
+eabs = m.fabs(x-xa)
+erel = eabs/m.fabs(x)
+print(f"{erel*100:1.1f} %")
+\end{lstlisting}
+
+\begin{verbatim}
+1.9 %
+\end{verbatim}
+
+Concluímos que o erro relativo é de $1,9\%$.
 \end{resol}
 
 \begin{exeresol}
@@ -1585,25 +1908,28 @@ a qual não sofre mais de cancelamento catastrófico. Observamos que também pod
 
   
   Com o código
-  \begin{lstlisting}
-    import math as m
 
-    a = 1e-6
-    b = 1e2
-    c = 3e-3
+\begin{lstlisting}
+import math as m
 
-    delta = b**2 - 4*a*c
+a = 1e-6
+b = 1e2
+c = 3e-3
 
-    x1 = -2*c/(b + m.sqrt(delta))
-    x2 = (-b - m.sqrt(delta))/(2*a)
+delta = b**2 - 4*a*c
 
-    print(f"{x1:1.9e}, {x2:1.9e}")
-  \end{lstlisting}
-  obtemos as saídas
-  \begin{lstlisting}
-    x_1 = -3.000000000e-05
-    x_2 = -1.000000000e+08
-  \end{lstlisting}
+x1 = -2*c/(b + m.sqrt(delta))
+x2 = (-b - m.sqrt(delta))/(2*a)
+
+print(f"{x1:1.9e}, {x2:1.9e}")
+\end{lstlisting}
+
+obtemos as saídas
+
+\begin{verbatim}
+  x_1 = -3.000000000e-05
+  x_2 = -1.000000000e+08
+\end{verbatim}
   
 \end{resol}
 
@@ -1676,3 +2002,10 @@ para $h=10^{-9}$. Compute o valor de $y$ reescrevendo esta expressão de forma a
 \begin{resp}
   $5,0\times 10^{-10}$
 \end{resp}
+
+\ifisbook
+\subsubsection{Respostas}
+\shipoutAnswer
+\fi
+
+%%% SECTION %%%

@@ -1,7 +1,6 @@
 %Este trabalho está licenciado sob a Licença Atribuição-CompartilhaIgual 4.0 Internacional Creative Commons. Para visualizar uma cópia desta licença, visite http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR ou mande uma carta para Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
 
 \chapter{Interpolação}\label{cap_interp}
-\thispagestyle{fancy}
 
 Neste capítulo, estudamos a \hl{resolução de problemas de interpolação} da forma: dados uma família de $n$ funções reais
 \begin{equation}\hleq
@@ -18,7 +17,7 @@ tal que
 
 \section{Interpolação Polinomial}\label{cap_interp_sec_interpoli}
 
-\hl{Dado um conjunto de $n$ pontos $\{(x_i, y_i)\}_{i=1}^n$, o problema de interpolação consiste em encontrar o polinômio\footnote{Chamado de \emph{polinômio interpolador}.} de grau $n-1$}
+\hl{Dado um conjunto de $n$ pontos $\{(x_i, y_i)\}_{i=1}^n$, o problema de interpolação consiste em encontrar o polinômio}\endnote{Chamado de \emph{polinômio interpolador}.} \hl{de grau $n-1$}
 \begin{equation}\label{cap_interp_sec_interpoli:eq:interpoli_poli}\hleq
   p(x) = p_1x^{n-1} + p_2x^{n-2} + \cdots + p_{n-1}x + p_n
 \end{equation}
@@ -85,15 +84,15 @@ import numpy as np
 import numpy.linalg as npla
 
 def poliInterp(x, y):
-    # num. pts
-    n = x.size
-    # Vandermonde
-    A = np.empty((n,n))
-    for j in range(n):
-        A[:,j] = x**(n-1-j)
-    # coefs
-    p = npla.solve(A, y)
-    return p
+  # num. pts
+  n = x.size
+  # Vandermonde
+  A = np.empty((n,n))
+  for j in range(n):
+    A[:,j] = x**(n-1-j)
+  # coefs
+  p = npla.solve(A, y)
+  return p
 
 # exemplo
 x = np.array([-1., 0, 1])
@@ -105,6 +104,7 @@ p = poliInterp(x, y)
 # verificação
 print(np.polyval(p, x))
 \end{lstlisting}
+
 \end{ex}
 
 \subsection{Exercícios}
@@ -148,6 +148,13 @@ print(np.polyval(p, x))
 \begin{resp}
   Dica: use os pontos $x_i = (i-1)\frac{\pi}{4}$, $i=1,2,3,4$.
 \end{resp}
+
+\ifisbook
+\subsubsection{Respostas}
+\shipoutAnswer
+\fi
+
+%%% SECTION %%%
 
 \section{Interpolação de Lagrange}\label{cap_interp_sec_lagrange}
 
@@ -210,16 +217,16 @@ import numpy as np
 from itertools import chain
 
 def poliLagrange(x, xpts, ypts):
-    # num. pts
-    n = xpts.size
-    # Lagrange poli
-    L = np.ones((n,x.size))
-    y = 0
-    for i in range(n):
-        for j in chain(range(i),range(i+1,n)):
-            L[i] *= (x-xpts[j])/(xpts[i]-xpts[j])
-        y += ypts[i] * L[i]
-    return y
+  # num. pts
+  n = xpts.size
+  # Lagrange poli
+  L = np.ones((n,x.size))
+  y = 0
+  for i in range(n):
+    for j in chain(range(i),range(i+1,n)):
+      L[i] *= (x-xpts[j])/(xpts[i]-xpts[j])
+    y += ypts[i] * L[i]
+  return y
 
 # exemplo
 xpts = np.array([-1., 0, 1])
@@ -229,6 +236,7 @@ ypts = np.array([-1., 1, 1/2])
 x = xpts.copy()
 print(poliLagrange(x, xpts, ypts))
 \end{lstlisting}
+
 \end{ex}
 
 \subsection{Aproximação de Funções}
@@ -241,11 +249,6 @@ Polinômio interpoladores podem ser usados para a aproximação de funções. \h
     f(x) = p(x) + \frac{f^{(n+1)}(\xi)}{(n+1)!}\prod_{i=1}^n(x-x_i).
   \end{equation}
 \end{teo}
-\begin{dem}
-
-  [[tag:construcao]]
-
-\end{dem}
 
 \begin{ex}\label{cap_interp_sec_lagrange:ex:interpoli_aprox}
   Consideramos o problema de aproximar $f(x) = \sen(x)$ pelo polinômio interpolador do conjunto de pontos $x_1=0$, $x_2=\pi/2$ e $x_3=\pi$. I.e., queremos determinar o polinômio $p(x)$ de grau $2$ que interpola os pontos $\{(0, 0),~(\pi/2, 1),~(\pi, 0)\}$. Usando a técnica de Lagrange, obtemos
@@ -266,9 +269,10 @@ x = np.array([0, np.pi/2, np.pi])
 f = lambda x: np.sin(x)
 poli = lagrange(x, f(x))
 \end{lstlisting}
+
 \end{ex}
 
-\subsection*{Exercícios}
+\subsection{Exercícios}
 
 \begin{exer}
   Use a técnica de Lagrange para obter o polinômio interpolador do conjunto de pontos $\{(-1, -1), (-0.5, 1), (1, 2)\}$.
@@ -304,6 +308,13 @@ $0,54x^3 - 0,15x^2 + 1,3x + 1$.
 \begin{resp}
   Dica: use os pontos $x_i = (i-1)\frac{\pi}{4}$, $i=1,2,3,4$.
 \end{resp}
+
+\ifisbook
+\subsubsection{Respostas}
+\shipoutAnswer
+\fi
+
+%%% SECTION %%%
 
 \section{Diferenças Divididas de Newton}\label{cap_interp_sec_difdiv}
 
@@ -349,7 +360,7 @@ De fato, \eqref{cap_interp_sec_difdiv:eq:interp_parc1} é trivial. Agora, denota
     &r(x_k) = \frac{(x_k-x_j)y_k}{x_k-x_j}=y_k.
   \end{align}
 \end{subequations}
-Logo, pela unicidade do polinômio interpolador\footnote{Consulte o Exercício \ref{cap_interp_sec_difdiv:exer:pinterp_unico}}, temos demonstrado \eqref{cap_interp_sec_difdiv:eq:interp_parc2}.
+Logo, pela unicidade do polinômio interpolador\endnote{Consulte o Exercício \ref{cap_interp_sec_difdiv:exer:pinterp_unico}}, temos demonstrado \eqref{cap_interp_sec_difdiv:eq:interp_parc2}.
 
 Observando que o polinômio interpolador $p(x)$ é igual a $p[x_1,\dotsc,x_n](x)$, temos que \eqref{cap_interp_sec_difdiv:eq:interp_parc1}-\eqref{cap_interp_sec_difdiv:eq:interp_parc2} nos fornece uma forma de computar $p(x)$ de forma recursiva. Além disso, observemos que $p[x_j, \dotsc, x_{k-1}](x)$ e $p[x_j, \dotsc, x_k]$ diferem por um polinômio de grau $k-j$ com zeros $x_j$, $x_{j+1}$, ..., $x_{k-1}$. Logo, temos
 \begin{equation}
@@ -435,29 +446,30 @@ onde \hl{os elementos da diagonal correspondem aos coeficientes do polinômio in
 import numpy as np
 
 def interpDDF(x, y):
-    n = x.size
-    M = np.empty((n,n))
-    M[:,0] = y
-    for j in range(1,n):
-        for i in range(j,n):
-            M[i,j] = (M[i,j-1] - M[i-1,j-1]) \
-                / (x[i]-x[i-j])
-    return np.diag(M)
+  n = x.size
+  M = np.empty((n,n))
+  M[:,0] = y
+  for j in range(1,n):
+    for i in range(j,n):
+      M[i,j] = (M[i,j-1] - M[i-1,j-1]) \
+          / (x[i]-x[i-j])
+  return np.diag(M)
 
 def poliDDF(x, p, xpts):
-    n = p.size
-    pval = p[0]
-    aux = 1.
-    for i in range(1,n):
-        aux *= (x-xpts[i-1])
-        pval += p[i]*aux
-    return pval
+  n = p.size
+  pval = p[0]
+  aux = 1.
+  for i in range(1,n):
+    aux *= (x-xpts[i-1])
+    pval += p[i]*aux
+  return pval
 
 xpts = np.array([-1., 0, 1])
 ypts = np.array([-1., 1, 1/2])
 p = interpDDF(xpts, ypts)
 print(poliDDF(xpts, p, xpts))
 \end{lstlisting}
+
 \end{ex}
 
 \subsection{Exercícios}
@@ -496,6 +508,12 @@ $p(x) = 0,54x^3 - 0,15x^2 + 1,3x + 1$.
   Dado um conjunto de pontos distintos $\{(x_i, y_i)\}_{i=1}^n$, mostre que é único o polinômio interpolador do conjunto.
 \end{exer}
 
+\ifisbook
+\subsubsection{Respostas}
+\shipoutAnswer
+\fi
+
+%%% SECTION %%%
 
 \section{Spline Cúbico}\label{cap_interp_sec_splines}
 
@@ -568,6 +586,7 @@ cs = CubicSpline(xx, yy)
 # coefs
 print(cs.c)
 \end{lstlisting}
+
 \end{ex}
 
 \subsection{Spline Fixado}
@@ -620,6 +639,7 @@ cs = CubicSpline(xx, yy,
 # coefs
 print(cs.c)
 \end{lstlisting}
+
 \end{ex}
 
 \subsection{Exercícios}
@@ -661,3 +681,10 @@ print(cs.c)
 \begin{resp}
   Dica: use um spline fixado.
 \end{resp}
+
+\ifisbook
+\subsubsection{Respostas}
+\shipoutAnswer
+\fi
+
+%%% SECTION %%%
