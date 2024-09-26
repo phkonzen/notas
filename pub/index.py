@@ -184,26 +184,19 @@ class Index:
 
         # anúncio
         body += '<div class="carousel-item active">'
-        body += self.add_anuncio(text = 'Concurso IME/UFRGS: Inscrições 21/Ago - 04/Set',
-                                 link = 'https://www.ufrgs.br/progesp/?page_id=43903',
+        body += self.add_anuncio(text = '10º MCsul/X SEMENGO: Submissões até 04/Out',
+                                 link = 'https://mcsulsemengo.furg.br/',
                                  status = 'danger')
         body += '</div>'
 
 
         # anúncio
         body += '<div class="carousel-item">'
-        body += self.add_anuncio(text = 'PPG Matemática Aplicada: Edital Doutorado 2024',
-                                 link = 'https://www.ufrgs.br/ppgmap/?page_id=63',
-                                 status = 'warning')
-        body += '</div>'
-
-
-        # anúncio
-        body += '<div class="carousel-item">'
-        body += self.add_anuncio(text = 'XLIII CNMAC 2024: 16-20/Set',
-                                 link = 'http://www.cnmac.org.br/novo/index.php/CNMAC',
+        body += self.add_anuncio(text = 'PPG Matemática Aplicada',
+                                 link = 'https://www.ufrgs.br/ppgmap',
                                  status = 'primary')
         body += '</div>'
+
 
         # anúncio
         body += '<div class="carousel-item">'
