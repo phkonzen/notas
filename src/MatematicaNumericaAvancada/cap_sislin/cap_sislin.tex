@@ -1,21 +1,12 @@
 %Este trabalho está licenciado sob a Licença Atribuição-CompartilhaIgual 4.0 Internacional Creative Commons. Para visualizar uma cópia desta licença, visite http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR ou mande uma carta para Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
 
 \chapter{Sistemas Lineares}\label{cap_sislin}
-\thispagestyle{fancy}
 
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
-
-Neste capítulo, apresentam-se métodos numéricos para a resolução de sistemas lineares de grande porte. Salvo explicitado ao contrário, assume-se que os sistemas são quadrados e têm solução única.
+Neste capítulo, estudamos métodos numéricos para a resolução de sistemas lineares de médio e grande porte. Salvo explicitado ao contrário, assume-se que os sistemas são quadrados e têm solução única.
 
 \section{Matrizes Esparsas}\label{cap_sislin_sec_matesparsa}
 
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
-
-Uma matriz é dita ser \emph{esparsa} quando ela tem apenas poucos elementos não nulos. A ideia é que os elementos não nulos não precisam ser guardados na memória do computador, gerando um grande benefício na redução da demanda de armazenamento de dados. O desafio está no desenvolvimento de estruturas de dados para a alocação eficiente de tais matrizes, i.e. que sejam suficientemente adequadas para os métodos numéricos conhecidos.
+\hl{Uma matriz é dita ser \emph{esparsa} quando ela tem apenas poucos elementos não nulos}. A ideia é que os elementos não nulos não precisam ser guardados na memória do computador, gerando um grande benefício na redução da demanda de armazenamento de dados. O desafio está no desenvolvimento de estruturas de dados para a alocação eficiente de tais matrizes, i.e. que sejam suficientemente adequadas para os métodos numéricos conhecidos.
 
 \begin{figure}[H]
   \centering
@@ -25,28 +16,28 @@ Uma matriz é dita ser \emph{esparsa} quando ela tem apenas poucos elementos nã
   \label{fig:ex_matriz_esparsa_estrutura}
 \end{figure}
 
-Matrizes esparsas podem ser classificadas como \emph{estruturadas} ou \emph{não-estruturadas}. Uma matriz estruturada é aquela em que as entradas não-nulas formam um padrão regular. Por exemplo, estão dispostas em poucas diagonais ou formam blocos (submatrizes densas) ao longo de sua diagonal principal. No caso de não haver um padrão regular das entradas não-nulas, a matriz esparsa é dita ser não-estruturada. Consulte a Figura \ref{fig:ex_matriz_esparsa_estrutura} para exemplos.
+\hl{Matrizes esparsas podem ser classificadas como \textbf{estruturadas} ou \textbf{não-estruturadas}}. Uma matriz estruturada é aquela em que as entradas não-nulas formam um padrão regular. Por exemplo, estão dispostas em poucas diagonais ou formam blocos (submatrizes densas) ao longo de sua diagonal principal. No caso de não haver um padrão regular das entradas não-nulas, a matriz esparsa é dita ser não-estruturada. Consulte a Figura \ref{fig:ex_matriz_esparsa_estrutura} para exemplos.
 
-A \emph{esparsidade} de uma matriz é a porcentagem de elementos nulos que ela tem, i.e. para uma matriz quadrada $n\times n$ tem-se que a esparsidade é
-\begin{equation}
-  \frac{n_{\text{nulos}}}{n^2}\times 100\%
+\hl{A \textbf{esparsidade} de uma matriz é a porcentagem de elementos nulos que ela tem}, i.e. para uma matriz quadrada $n\times n$ tem-se que a esparsidade é
+\begin{equation}\hleq
+  e := \frac{n_{\text{nulos}}}{n^2}\times 100\%.
 \end{equation}
 Por exemplo, a matriz identidade de tamanho $n=100$ tem esparsidade
 \begin{equation}
-  \frac{100^2 - 100}{100^2}\times 100\% = 99\% 
+  e = \frac{100^2 - 100}{100^2}\times 100\% = 99\% .
 \end{equation}
 
 \subsection{Sistemas Tridiagonais}
 
-Um sistema tridiagonal tem a seguinte forma matricial
+Um \hlemph{sistema tridiagonal} tem a seguinte forma matricial
 \begin{equation}\label{eq:sistridiag}
   \begin{bmatrix}
-    a_{1,1} & a_{1,2} & & & & 0\\
-    a_{2,1} & a_{2,2} & a_{2,3} & & &\\
-    & a_{3,2} & a_{3,3} & a_{3,4} & &\\
+    a_{1,1} & {\color{violet}a_{1,2}} & & & & 0\\
+    {\color{teal}a_{2,1}} & a_{2,2} & {\color{violet}a_{2,3}} & & &\\
+    & {\color{teal}a_{3,2}} & a_{3,3} & {\color{violet}a_{3,4}} & &\\
     & & \ddots & \ddots & \ddots &\\
-    & & & \ddots & \ddots & a_{n-1,n}\\
-    0 & & & & a_{n,n-1} & a_{n,n}
+    & & & \ddots & \ddots & {\color{violet}a_{n-1,n}}\\
+    0 & & & & {\color{teal}a_{n,n-1}} & a_{n,n}
   \end{bmatrix}
   \begin{bmatrix}
     x_1\\
@@ -63,28 +54,28 @@ Um sistema tridiagonal tem a seguinte forma matricial
     \vdots\\
     b_{n-1}\\
     b_n
-  \end{bmatrix}
+  \end{bmatrix}.
 \end{equation}
-Ou seja, é um sistema cuja a matriz dos coeficientes é tridiagonal.
+Ou seja, \hl{é um sistema cuja a matriz dos coeficientes é tridiagonal}.
 
-Uma \emph{matriz tridiagonal} é uma matriz esparsa estruturada. Mais especificamente, é um caso particular de uma \href{https://pt.wikipedia.org/wiki/Matriz_banda}{matriz banda}, em que os elementos não nulos estão apenas em algumas de suas diagonais. Para armazenarmos tal matriz precisamos alocar apenas os seguintes três vetores
-\begin{gather}
-  d_{1} = \left(0,a_{2,1},\dotsc,a_{n-1,n}\right)\\
-  d_{0} = \left(a_{1,1},a_{2,2},\dotsc,a_{n,n}\right)\\
-  d_{-1} = \left(a_{2,1},\dotsc,a_{n,n-1},0\right)
-\end{gather}
+\hl{Uma \emph{matriz tridiagonal} é uma matriz esparsa estruturada}. Mais especificamente, é um caso particular de uma \hlemph{matriz banda}, em que os elementos não nulos estão dispostos apenas em algumas de suas diagonais. Para armazenarmos tal matriz precisamos alocar apenas os seguintes três vetores
+\begin{align}
+  & {\color{violet}d_{1} = \left(0,a_{1,2},\dotsc,a_{n-1,n}\right)},\\
+  & d_{0} = \left(a_{1,1},a_{2,2},\dotsc,a_{n,n}\right),\\
+  & {\color{teal}d_{-1} = \left(a_{2,1},\dotsc,a_{n,n-1},0\right)}.
+\end{align}
 Ou seja, precisamos armazenar $3n$ pontos flutuantes em vez de $n^2$, como seria o caso se a matriz dos coeficientes fosse densa. Com isso, podemos alocar a matriz do sistema da seguinte forma
 \begin{equation}
   \tilde{A} =
   \begin{bmatrix}
-    * & a_{2,1} & \cdots & a_{n-1,n}\\
+    {\color{violet}*} & {\color{violet}a_{1,2}} & {\color{violet}\cdots} & {\color{violet}a_{n-1,n}}\\
     a_{1,1} & a_{2,2} & \cdots & a_{n,n}\\
-    a_{2,1} & \dotsc & a_{n,n-1} & *
-  \end{bmatrix}
+    {\color{teal}a_{2,1}} & {\color{teal}\dotsc} & {\color{teal}a_{n,n-1}} & {\color{teal}*}
+  \end{bmatrix}.
 \end{equation}
 Ou seja, $\tilde{A} = [\tilde{a}_{i,j}]_{i,j=1}^{3,n}$, sendo
 \begin{equation}
-  \tilde{a}_{1+i-j,j} = a_{i,j}
+  \tilde{a}_{1+i-j,j} = a_{i,j}.
 \end{equation}
 
 \begin{ex}
@@ -94,69 +85,56 @@ Ou seja, $\tilde{A} = [\tilde{a}_{i,j}]_{i,j=1}^{3,n}$, sendo
     x_{i-1} - 6x_i + 4x_{i+1} = \sen\left(i\frac{\pi}{2(n-1)}\right)\\
     x_{n-1} + x_n = 1
   \end{gather}
+  
   O seguinte código {\python} faz a alocação de seu vetor dos termos constantes $b$ e de sua matriz de coeficientes no formato compacto de $\tilde{A}$.
-  \begin{lstlisting}
-    import numpy as np
-    n = 100000
-    
-    # alocação
-    # vetor dos termos constantes
-    b = np.empty(n)
-    b[0] = 0.
-    for i in range(1,n-1):
-      b[i] = np.sin(i*np.pi/(2*(n-1)))
-    b[n-1] = 1.
-    print(b)
-    print(f"b size: {b.size*b.itemsize/1024} Kbytes")
 
-    # matriz compacta
-    tA = np.zeros((3,n))
+\begin{lstlisting}[caption=diagSis.py, label={py:diagSis}]
+import numpy as np
+n = 100000
 
-    # indexação
-    def ind(i,j):
-    return 1+i-j,j
+# alocação
+# vetor dos termos constantes
+b = np.empty(n)
+b[0] = 0.
+for i in range(1,n-1):
+  b[i] = np.sin(i*np.pi/(2*(n-1)))
+b[n-1] = 1.
+print(b)
+print(f"b size: {b.size*b.itemsize/1024} Kbytes")
 
-    tA[ind(0,0)] = 2.
-    tA[ind(0,1)] = -1.
-    for i in range(1,n-1):
-      tA[ind(i,i-1)] = 1.
-      tA[ind(i,i)] = -3.
-      tA[ind(i,i+1)] = 4.
-    tA[ind(n-1,n-2)] = 1.
-    tA[ind(n-1,n-1)] = 1.
-    print(tA)
-    print(f"tA size: {tA.size*tA.itemsize/1024**2:1.1f} Mbytes")
-  \end{lstlisting}
+# matriz compacta
+tA = np.zeros((3,n))
+
+# indexação
+def ind(i,j):
+return 1+i-j,j
+
+tA[ind(0,0)] = 2.
+tA[ind(0,1)] = -1.
+for i in range(1,n-1):
+  tA[ind(i,i-1)] = 1.
+  tA[ind(i,i)] = -3.
+  tA[ind(i,i+1)] = 4.
+tA[ind(n-1,n-2)] = 1.
+tA[ind(n-1,n-1)] = 1.
+print(tA)
+print(f"tA size: {tA.size*tA.itemsize/1024**2:1.1f} Mbytes")
+\end{lstlisting}
+
 \end{ex}
 
 \subsubsection{Algoritmo de Thomas (TDMA)}
 
-O Algoritmo de Thomas\footnote{Llewellyn Hilleth Thomas, 1903 - 1992, físico e matemático aplicado britânico. Fonte: \href{https://en.wikipedia.org/wiki/Llewellyn_Thomas}{Wikipedia}.} (ou, TDMA, {\it Tridiagonal Matrix Algorithm}) é uma forma otimizada do Método de Eliminação Gaussiana\footnote{Carl Friedrich Gauss, 1777-1855, matemático alemão. Fonte: \href{https://en.wikipedia.org/wiki/Carl_Friedrich_Gauss}{Wikipédia}.} aplicada à sistemas tridiagonais. Enquanto este requer $O(n^3)$ operações, esse demanda apenas $O(n)$.
+\hl{O \emph{algoritmo de Thomas}{\thomas} ou \emph{TDMA} (do inglês, \textit{Tridiagonal Matrix Algorithm}) é uma forma otimizada do método de eliminação gaussiana{\gauss} aplicada à sistemas tridiagonais}. Enquanto este requer $O(n^3)$ operações, esse demanda apenas $O(n)$.
 
 Eliminando os termos abaixo da diagonal em \eqref{eq:sistridiag}, obtemos o sistema equivalente
 \begin{equation}
   \begin{bmatrix}
-    a_{1,1} & a_{1,2} & & & 0\\
-      & \tilde{a}_{2,2} & a_{2,3} & & \\
-    &  & \tilde{a}_{3,3} & \ddots & \\
-    & & \ddots & \ddots & a_{n-1,n}\\
-    0 & & &  a_{n,n-1} & \tilde{a}_{n,n}
-  \end{bmatrix}
-  \begin{bmatrix}
-    x_1\\
-    x_2\\
-    x_3\\
-    \vdots\\
-    x_{n-1}\\
-    x_n
-  \end{bmatrix} =
-    \begin{bmatrix}
-    b_1\\
-    \tilde{b}_2\\
-    \tilde{b}_3\\
-    \vdots\\
-    \tilde{b}_{n-1}\\
-    \tilde{b}_n
+    a_{1,1} & a_{1,2} & & & 0 & | & b_1\\
+      & \tilde{a}_{2,2} & a_{2,3} & & & | & \tilde{b}_2\\
+    &  & \tilde{a}_{3,3} & \ddots & & | & \vdots \\
+    & & & \ddots & a_{n-1,n} & | & \tilde{b}_{n-1}\\
+    0 & & & & \tilde{a}_{n,n} & | & \tilde{b}_n
   \end{bmatrix}
 \end{equation}
 Este é obtido pela seguinte iteração
@@ -172,9 +150,7 @@ onde, o $~\tilde{}~$ foi esquecido de propósito, indicando a reutilização da 
 \end{gather}
 com $i=n-1,n-2,\dotsc,1$.
 
-% \lstinputlisting[caption=Algoritmo de Thomas, label={lst:algThomas}]{./cap_sislin/dados/pyTDMA/main.py}
-
-\begin{lstlisting}[caption=TDMA, label={py:tdma}]
+\begin{lstlisting}[caption=tdma.py, label={py:tdma}]
 def tdma(ta, b):
   a = ta.copy()
   x = b.copy()
@@ -189,6 +165,8 @@ def tdma(ta, b):
     x[i] = (x[i] - a[0,i+1]*x[i+1])/a[1,i]
   return x
 \end{lstlisting}
+
+\subsection{Exercícios}
 
 \begin{exer}\label{exer:sislin_tridiag}
   Considere o seguinte sistema linear
