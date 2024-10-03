@@ -125,7 +125,7 @@ print(f"tA size: {tA.size*tA.itemsize/1024**2:1.1f} Mbytes")
 
 \subsubsection{Algoritmo de Thomas (TDMA)}
 
-\hl{O \emph{algoritmo de Thomas}{\thomas} ou \emph{TDMA} (do inglês, \textit{Tridiagonal Matrix Algorithm}) é uma forma otimizada do método de eliminação gaussiana{\gauss} aplicada à sistemas tridiagonais}. Enquanto este requer $O(n^3)$ operações, esse demanda apenas $O(n)$.
+\hl{O \emph{algoritmo de Thomas}{\thomas} ou \emph{TDMA} (do inglês, \textit{Tridiagonal Matrix Algorithm}) é uma forma otimizada do método de eliminação gaussiana}{\gauss}\hl{ aplicada a sistemas tridiagonais}. Enquanto este requer $O(n^3)$ operações, esse demanda apenas $O(n)$.
 
 Eliminando os termos abaixo da diagonal em \eqref{eq:sistridiag}, obtemos o sistema equivalente
 \begin{equation}
@@ -138,15 +138,15 @@ Eliminando os termos abaixo da diagonal em \eqref{eq:sistridiag}, obtemos o sist
   \end{bmatrix}
 \end{equation}
 Este é obtido pela seguinte iteração
+\begin{align}
+  & w \leftarrow \frac{a_{i+1,i}}{a_{i,i}}\\
+  & a_{i,i} \leftarrow a_{i,i} - w\cdot a_{i-1,i}\\
+  & b_i \leftarrow b_i - w\cdot b_{i-1}
+\end{align}
+onde, o {\textasciitilde} foi esquecido de propósito, indicando a reutilização da matriz $\tilde{A}$ e do vetor $b$. A solução do sistema é, então, obtida de baixo para cima, i.e.
 \begin{gather}
-  w := \frac{a_{i+1,i}}{a_{i,i}}\\
-  a_{i,i} := a_{i,i} - w a_{i-1,i}\\
-  b_i := b_i - w b_{i-1}
-\end{gather}
-onde, o $~\tilde{}~$ foi esquecido de propósito, indicando a reutilização da matriz $\tilde{A}$ e do vetor $b$. A solução do sistema é, então, obtida de baixo para cima, i.e.
-\begin{gather}
-  x_n = \frac{b_n}{a_{n,n}}\\
-  x_i = \frac{b_i - a_{i,i+1}x_{i+1}}{a_{i,i}},
+  x_n \leftarrow \frac{b_n}{a_{n,n}}\\
+  x_i \leftarrow \frac{b_i - a_{i,i+1}x_{i+1}}{a_{i,i}},
 \end{gather}
 com $i=n-1,n-2,\dotsc,1$.
 
@@ -166,59 +166,10 @@ def tdma(ta, b):
   return x
 \end{lstlisting}
 
-\subsection{Exercícios}
-\badgeRevisar
-
-\begin{exer}\label{exer:sislin_tridiag}
-  Considere o seguinte sistema linear
-  \begin{gather}
-    2x_1 - x_2 = 0\\
-    x_{i-1} - 6x_i + 4x_{i+1} = \sen\left(i\frac{\pi}{2(n-1)}\right)\\
-    x_{n-1} + x_n = 1
-  \end{gather}
-  \begin{enumerate}[a)]
-  \item Compute sua solução usando o Algoritmo de Thomas para $n=3$.
-  \item Compare a solução obtida no item anterior com a gerada pela função \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.solve.html}{\lstinline+scipy.linalg.solve+}.
-  \item Compare a solução com a obtida no item anterior com a gerada pela função \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.solve_banded.html}{\lstinline+scipy.linalg.solve_banded+}.
-  \item Use o módulo {\python} \href{https://docs.python.org/3/library/datetime.html?highlight=datetime#module-datetime}{datetime} para comprar a demanda de tempo computacional de cada um dos métodos acima. Compute para $n=10,100,1000,10000$.
-  \end{enumerate}
-\end{exer}
-
-\begin{exer}\label{exer:pvc1d}
-  Considere que o problema de valor de contorno (PVC)
-  \begin{gather}
-    -u'' = \sen \pi x,\quad 0 < x < 1,\\
-    u(0) = 0,\\
-    u(1) = 0
-  \end{gather}
-  seja simulado com o Método das Diferenças Finitas\footnote{Consulte mais em \href{https://phkonzen.github.io/notas/MatematicaNumerica/cap_pvc_sec_mdf.html}{Notas de Aula: Matemática Numérica}.}. Vamos assumir uma discretização espacial uniforme com $n$ nodos e tamanho de malha
-  \begin{equation}
-    h = \frac{1}{n-1}.
-  \end{equation}
-  Com isso, temos os nodos $x_i = (i-1)h$, $i=1,2,\dotsc,n$. Nos nodos internos, aplicamos a fórmula de diferenças central
-  \begin{equation}
-    u''(x_i) \approx \frac{u_{i-1} - 2u_i + u_{i+1}}{h^2},
-  \end{equation}
-  onde, $u_i \approx u(x_i)$. Com isso, a discretização da EDO fornece
-  \begin{equation}
-    -\frac{1}{h^2}u_{i-1} + \frac{2}{h^2}u_i - \frac{1}{h^2}u_{i+1} = \sen \pi x_i
-  \end{equation}
-  para $i=2,3,\dotsc,n-1$. Das condições de contorno temos $u_1 = u_n = 0$. Logo, o problema discreto lê-se: encontrar $u = (u_1,u_2,\dotsc,u_n)\in \mathbb{R}^n$ tal que
-  \begin{gather}
-    u_1 = 0\\
-    -\frac{1}{h^2}u_{i-1} + \frac{2}{h^2}u_i - \frac{1}{h^2}u_{i+1} = \sen \pi x_i\\
-    u_n = 0
-  \end{gather}
-  \begin{enumerate}[a)]
-  \item Calcule a solução analítica do PVC.
-  \item Use a função \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.solve_banded.html}{\lstinline+scipy.linalg.solve_banded+} para computar a solução do problema discreto associado para diferentes tamanhos de malha $h = 10^{-1}, 10^{-2}, 10^{-3}, 10^{-4}$. Compute o erro da solução discreta em relação à solução analítica.
-  \item Compare a demanda de tempo computacional se a função \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.solve.html}{\lstinline+scipy.linalg.solve+} for empregada na computação da solução discreta.
-  \end{enumerate}
-\end{exer}
 
 \subsection{Matrizes Banda}
 
-Uma matriz banda é aquela em que os elementos não nulos estão dispostos em apenas algumas de suas diagonais. Consulte a Figura \ref{fig:MatrizBanda}.
+\hl{Uma \emph{matriz banda} é aquela em que os elementos não nulos estão dispostos em apenas algumas de suas diagonais}. Consulte a Figura \ref{fig:MatrizBanda}.
 
 \begin{figure}[H]
   \centering
@@ -228,55 +179,59 @@ Uma matriz banda é aquela em que os elementos não nulos estão dispostos em ap
 \end{figure}
 
 \begin{ex}\label{ex:poisson}
-  Consideremos o seguinte problema de Poisson\footnote{Baron Siméon Denis Poisson, 1781 - 1840, matemático, engenheiro e físico francês. Fonte: \href{https://en.wikipedia.org/wiki/Sim\%C3\%A9on_Denis_Poisson}{Wikipedia}.}
-  \begin{gather}
-    - \Delta u = f(x,y),~(x, y)\in (0, \pi)\times (0, \pi),\\
-    u(0, y) = 0,~y\in [0, \pi],\\
-    u(\pi, y) = 0,~y\in [0, \pi],\\
-    u(x, 0) = 0,~x\in [0, \pi],\\
-    u(x, \pi) = 0,~x\in [0, \pi].
-  \end{gather}
-  Para fixarmos as ideias, vamos assumir
+  Consideramos o seguinte problema de Poisson{\poisson}
+  \begin{align}
+    &- \Delta u = f(x,y),~(x, y)\in (0, \pi)\times (0, \pi),\\
+    &u(0, y) = 0,~y\in [0, \pi],\\
+    &u(\pi, y) = 0,~y\in [0, \pi],\\
+    &u(x, 0) = 0,~x\in [0, \pi],\\
+    &u(x, \pi) = 0,~x\in [0, \pi],
+  \end{align}
+  onde, $\Delta := \left(\frac{\p^2}{\p x^2}, \frac{\p^2}{\p y^2}\right)$ é o operador laplaciano{\laplace}. Para fixarmos as ideias, vamos assumir
   \begin{equation}
     f(x,y) = \sen(x)\sen(y)
   \end{equation}
   
-  Vamos empregar o Método de Diferenças Finitas\footnote{Observamos que $\Delta u = u_{xx} + u_{yy}$.} para computar uma aproximação para a sua solução. Começamos assumindo uma malha uniforme de $n^2$ nodos
-  \begin{gather}
-    x_i = (i-1)h\\
-    y_j = (j-1)h
-  \end{gather}
-  com tamanho de malha $h = \pi/(n-1)$, $i=1,2,\dotsc,n$ e $j=1,2,\dotsc,n$. Empregando a Fórmula de Diferenças Central\footnote{Consulte mais em \href{https://phkonzen.github.io/notas/MatematicaNumerica/cap_edp_sec_Poisson.html}{Notas de Aula: Matemática Numérica}.} encontramos o seguinte problema discreto associado
-  \begin{gather}
-    u_{i, 1} = u_{1, j} = 0\\
-    ~\nonumber\\
-    - \frac{1}{h^2}u_{i-1,j} - \frac{1}{h^2}u_{i,j-1} + \frac{4}{h^2}u_{i,j} \nonumber\\
-    - \frac{1}{h^2}u_{i+1,j} - \frac{1}{h^2}u_{i,j+1} = f(x_i, y_j)\\
-    ~\nonumber\\
-    u_{i,n} = u_{n,j} = 0
-  \end{gather}
+  Vamos empregar o \textbf{método de diferenças finitas} para computar uma aproximação para a sua solução. Começamos assumindo uma malha uniforme de $n^2$ nodos
+  \begin{align}
+    & x_i = (i-1)h\\
+    & y_j = (j-1)h
+  \end{align}
+  com tamanho de malha $h = \pi/(n-1)$, $i=1,2,\dotsc,n$ e $j=1,2,\dotsc,n$. Empregando a fórmula de diferenças central, encontramos o seguinte problema discreto associado
+  \begin{align}
+    &u_{i, 1} = u_{1, j} = 0\\
+    &~\nonumber\\
+    &- \frac{1}{h^2}u_{i-1,j} - \frac{1}{h^2}u_{i,j-1} + \frac{4}{h^2}u_{i,j} \nonumber\\
+    &\qquad- \frac{1}{h^2}u_{i+1,j} - \frac{1}{h^2}u_{i,j+1} = f(x_i, y_j)\\
+    &~\nonumber\\
+    &u_{i,n} = u_{n,j} = 0
+  \end{align}
 
   Este é um sistema linear $n^2 \times n^2$. Tomando em conta as condições de contorno, ele pode ser reduzido a um sistema $(n-2)^2\times (n-2)^2$
   \begin{equation}
     Aw = b
   \end{equation}
-  usando a enumeração das incógnitas $(i,j) \rightarrow k=i-1 + (j-2)(n-2)$, i.e.
+  usando a enumeração das incógnitas 
   \begin{equation}
-    u_{i,j} = w_{k=i-1 + (j-2)(n-2)},\quad i,j=2,\dotsc,n-2
+    (i,j) \rightarrow k=i-1 + (j-2)(n-2), 
   \end{equation}
-  Consulte a Figura \ref{fig:malha2d} para uma representação da enumeração em relação a malha.
+  i.e.
+  \begin{equation}
+    u_{i,j} = w_{k=i-1 + (j-2)(n-2)}
+  \end{equation}
+para $i,j=2,\dotsc,n-2$. Consulte a Figura \ref{fig:malha2d} para uma representação da enumeração em relação a malha.
 
   \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{./cap_sislin/dados/figMalha2D/fig}
-    \caption{Representação da enumeração das incógnitas referente ao problema discutido no Exercício \ref{ex:poisson}.}
+    \includegraphics[width=5in]{./cap_sislin/dados/figMalha2D/fig}
+    \caption{Representação da enumeração das incógnitas referente ao problema discutido no Exemplo \ref{ex:poisson}.}
     \label{fig:malha2d}
   \end{figure}
 
   Afim de obtermos uma matriz diagonal dominante, vamos ordenar as equações do sistema discreto como segue
   \begin{itemize}
   \item $j=2$, $i=2$:
-    \begin{equation}
+    \begin{equation}\label{cap_sislin_sec_matesparsa:eq:ex_poisson_deq0}
       4w_k - w_{k+1} - w_{k+n-2} = h^2f_{i,j}
     \end{equation}
   \item $j=2$, $i=3,\dotsc,n-2$:
@@ -309,10 +264,10 @@ Uma matriz banda é aquela em que os elementos não nulos estão dispostos em ap
     \end{equation}
   \item $j=n-1$, $i=n-1$:
     \begin{equation}
-      -w_{k-1} - w_{k-(n-2)} + 4w_k = h^2f_{i,j}
+      -w_{k-1} - w_{k-(n-2)} + 4w_k = h^2f_{i,j}\label{cap_sislin_sec_matesparsa:eq:ex_poisson_deq1}
     \end{equation}
   \end{itemize}
-  Com isso, obtemos uma matriz com 5 bandas, consulte a Figura \ref{fig:exPoissonMatriz}.
+  Com isso, temos um sistema com matriz com 5 bandas, consulte a Figura \ref{fig:exPoissonMatriz}.
 
   \begin{figure}[H]
     \centering
@@ -322,17 +277,6 @@ Uma matriz banda é aquela em que os elementos não nulos estão dispostos em ap
   \end{figure}
 \end{ex}
 
-\begin{exer}
-    Consideremos o problema trabalho no Exemplo \ref{ex:poisson}.
-    \begin{enumerate}[a)]
-    \item Use a função \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.solve.html}{\lstinline+scipy.linalg.solve+} para computar a solução do problema discreto associado para diferentes tamanhos de malha $h = 10^{-1}, 10^{-2}, 10^{-3}, 10^{-4}$. Compute o erro da solução discreta em relação à solução analítica. Compare as aproximações com a solução analítica
-      \begin{equation}
-        u(x,y) = \frac{1}{2}\sen(x)\sen(y).
-      \end{equation}
-    \item Compare a demanda de tempo e memória computacional se a função \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.solve_banded.html}{\lstinline+scipy.linalg.solve_banded+} for empregada na computação da solução discreta.
-    \item Baseado no Algoritmo de Thomas, implemente o Método de Eliminação Gaussiana otimizado para a matriz banda deste problema. Compare com as abordagens dos itens a) e b).
-    \end{enumerate}
-\end{exer}
 
 \subsection{Esquemas de Armazenamento}
 
@@ -340,10 +284,16 @@ A ideia é armazenar apenas os elementos não-nulos de uma matriz esparsa, de fo
 
 \subsubsection{Formato COO}
 
-O formato COO ({\it COOrdinate format}) é o esquema de armazenamento mais simples. As estrutura de dados consiste em três arranjos: (1) um arranjo contendo as entradas não-nulas da matriz; (2) um arranjo contendo seus índices de linha; (3) um arranjo contendo seus índices de coluna.
+O \hlemph{formato COO} (do inglês, \textit{COOrdinate format}) é o esquema de armazenamento simples de matrizes esparsas. As estrutura de dados consiste em três arranjos:
+\begin{enumerate}[1.]
+  \item um arranjo contendo as entradas não-nulas da matriz; 
+  \item um arranjo contendo seus índices de linha; 
+  \item um arranjo contendo seus índices de coluna.
+\end{enumerate}
+O método {\PYTHONscipyDOTsparseDOTcooArray} permite a alocação de matrizes no formato COO. 
 
 \begin{ex}\label{ex:coo}
-  Consideremos a seguinte matriz
+  O seguinte código armazena a matriz
   \begin{equation}
     A =
     \begin{bmatrix}
@@ -353,40 +303,42 @@ O formato COO ({\it COOrdinate format}) é o esquema de armazenamento mais simpl
       0  & 0  & 0   & 1.
     \end{bmatrix}
   \end{equation}
-  O formato COO está disponível na biblioteca SciPy com o método \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.coo_matrix.html}{scipy.sparse.coo\_matrix}\footnote{Versões recentes do SciPy estão migrando para a nomenclatura do NumPy. Consulte mais em \href{https://docs.scipy.org/doc/scipy/reference/sparse.html}{SciPy Sparse}.}. Neste caso, temos
-  \begin{lstlisting}
-    import numpy as np
-    import scipy as sp
-    from scipy.sparse import coo_matrix
+  no formato COO.
 
-    data = np.array([2.,1.,3.,2.,-1.,-1.,-2.,1.])
-    row = np.array([0,0,1,1,1,2,2,3])
-    col = np.array([0,2,1,2,3,1,2,3])
-    coo = coo_matrix((data, (row, col)), shape=(4,4))
-    print("coo = \n", coo)
-    print("A = \n", coo.toarray())
-  \end{lstlisting}
+\begin{lstlisting}
+import numpy as np
+from scipy.sparse import coo_array
+
+data = np.array([2.,1.,3.,2.,-1.,-1.,-2.,1.])
+row = np.array([0,0,1,1,1,2,2,3])
+col = np.array([0,2,1,2,3,1,2,3])
+A = coo_array((data, (row, col)), shape=(4,4))
+print("A = \n", A)
+print("A = \n", A.toarray())
+\end{lstlisting}
+
 \end{ex}
 
 \begin{itemize}
-\item Vantagens do formato COO são:
+\item \hl{Vantagens do formato COO} são:
   \begin{itemize}
   \item permite a entrada de dados duplicados (simplicidade);
-  \item possível conversão rápida entre os formatos CSR e CSC\footnote{Estes formatos são mais eficientes para a computação matricial e são apresentados na sequência.}.
+  \item conversão rápida para os formatos CSR e CSC\endnote{CSR e CSC são formatos de matrizes esparsas mais eficientes para a computação matricial.}.
   \end{itemize}
   
-\item Desavantagens do formato COO são:
+\item \hl{Desavantagens do formato COO} são:
   \begin{itemize}
   \item complexidade em operações aritméticas;
   \item complexidade na extração de submatrizes.
   \end{itemize}
 \end{itemize}
 
-\begin{obs}
-  O SciPy conta com vários métodos para o tratamento e operação com matrizes esparsas armazenadas no formato COO. Consulte mais em \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.coo_matrix.html}{scipy.sparse.coo\_matrix}.
+\begin{obs}\normalfont{(\hl{Entradas Duplicadas}.)}
+  O formato COO permite a entrada duplicada de elementos da matriz. Na conversão para outros formatos (por exemplo, CSR ou CSC), as entradas duplicadas são somadas.
 \end{obs}
 
 \subsubsection{Formato CSR}
+\badgeRevisar
 
 O formato {\it Compressed Sparse Row} (CSR) é uma variação do COO que busca diminuir a alocação de dados repetidos. Assim como o COO, o formato conta com três arranjos $d$, $c$, $p$:
 \begin{itemize}
@@ -607,6 +559,68 @@ O formato {\it Compressed Sparse Column} (CSC) é uma variação análoga do CSR
 %   As enumerações F1 e F2 consideradas no Exemplo \ref{ex:reordenamento} correspondem a permutações na coluna da matriz (e no vetor solução) do sistema linear. Já, no item c) do Exercício \ref{exer:reordenamento}, fizemos o reordenamento das linhas da matriz (e do vetor dos termos constantes) do sistema, em conformidade com a enumeração das incógnitas. Normalmente, esta segunda abordagem leva a uma estrutura computacionalmente mais eficiente.  
 % \end{obs}
 
+\subsection{Exercícios}
+
+\begin{exer}\label{exer:sislin_tridiag}
+  Considere o seguinte sistema linear
+  \begin{gather}
+    2x_1 - x_2 = 0\\
+    x_{i-1} - 6x_i + 4x_{i+1} = \sen\left(i\frac{\pi}{2(n-1)}\right)\\
+    x_{n-1} + x_n = 1
+  \end{gather}
+  \begin{enumerate}[a)]
+  \item Compute sua solução usando o Algoritmo de Thomas para $n=3$.
+  \item Compare a solução obtida no item anterior com a gerada pela função \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.solve.html}{\lstinline+scipy.linalg.solve+}.
+  \item Compare a solução com a obtida no item anterior com a gerada pela função \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.solve_banded.html}{\lstinline+scipy.linalg.solve_banded+}.
+  \item Use o módulo {\python} \href{https://docs.python.org/3/library/datetime.html?highlight=datetime#module-datetime}{datetime} para comprar a demanda de tempo computacional de cada um dos métodos acima. Compute para $n=10,100,1000,10000$.
+  \end{enumerate}
+\end{exer}
+
+\begin{exer}\label{exer:pvc1d}
+  Considere que o problema de valor de contorno (PVC)
+  \begin{gather}
+    -u'' = \sen \pi x,\quad 0 < x < 1,\\
+    u(0) = 0,\\
+    u(1) = 0
+  \end{gather}
+  seja simulado com o Método das Diferenças Finitas\footnote{Consulte mais em \href{https://phkonzen.github.io/notas/MatematicaNumerica/cap_pvc_sec_mdf.html}{Notas de Aula: Matemática Numérica}.}. Vamos assumir uma discretização espacial uniforme com $n$ nodos e tamanho de malha
+  \begin{equation}
+    h = \frac{1}{n-1}.
+  \end{equation}
+  Com isso, temos os nodos $x_i = (i-1)h$, $i=1,2,\dotsc,n$. Nos nodos internos, aplicamos a fórmula de diferenças central
+  \begin{equation}
+    u''(x_i) \approx \frac{u_{i-1} - 2u_i + u_{i+1}}{h^2},
+  \end{equation}
+  onde, $u_i \approx u(x_i)$. Com isso, a discretização da EDO fornece
+  \begin{equation}
+    -\frac{1}{h^2}u_{i-1} + \frac{2}{h^2}u_i - \frac{1}{h^2}u_{i+1} = \sen \pi x_i
+  \end{equation}
+  para $i=2,3,\dotsc,n-1$. Das condições de contorno temos $u_1 = u_n = 0$. Logo, o problema discreto lê-se: encontrar $u = (u_1,u_2,\dotsc,u_n)\in \mathbb{R}^n$ tal que
+  \begin{gather}
+    u_1 = 0\\
+    -\frac{1}{h^2}u_{i-1} + \frac{2}{h^2}u_i - \frac{1}{h^2}u_{i+1} = \sen \pi x_i\\
+    u_n = 0
+  \end{gather}
+  \begin{enumerate}[a)]
+  \item Calcule a solução analítica do PVC.
+  \item Use a função \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.solve_banded.html}{\lstinline+scipy.linalg.solve_banded+} para computar a solução do problema discreto associado para diferentes tamanhos de malha $h = 10^{-1}, 10^{-2}, 10^{-3}, 10^{-4}$. Compute o erro da solução discreta em relação à solução analítica.
+  \item Compare a demanda de tempo computacional se a função \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.solve.html}{\lstinline+scipy.linalg.solve+} for empregada na computação da solução discreta.
+  \end{enumerate}
+\end{exer}
+
+\begin{exer}
+    Consideremos o problema trabalho no Exemplo \ref{ex:poisson}.
+    \begin{enumerate}[a)]
+    \item Use a função \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.solve.html}{\lstinline+scipy.linalg.solve+} para computar a solução do problema discreto associado para diferentes tamanhos de malha $h = 10^{-1}, 10^{-2}, 10^{-3}, 10^{-4}$. Compute o erro da solução discreta em relação à solução analítica. Compare as aproximações com a solução analítica
+      \begin{equation}
+        u(x,y) = \frac{1}{2}\sen(x)\sen(y).
+      \end{equation}
+    \item Compare a demanda de tempo e memória computacional se a função \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.solve_banded.html}{\lstinline+scipy.linalg.solve_banded+} for empregada na computação da solução discreta.
+    \item Baseado no Algoritmo de Thomas, implemente o Método de Eliminação Gaussiana otimizado para a matriz banda deste problema. Compare com as abordagens dos itens a) e b).
+    \end{enumerate}
+\end{exer}
+
+%%% Section %%%
 
 \section{Métodos Iterativos}\label{cap_sislin_sec_metiter}
 
