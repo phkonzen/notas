@@ -184,9 +184,17 @@ class Index:
 
         # anúncio
         body += '<div class="carousel-item active">'
-        body += self.add_anuncio(text = '10º MCsul/X SEMENGO: Submissões até 04/Out',
+        body += self.add_anuncio(text = 'XXVI Escola de Verão PPGMPA/UFSC: Inscrições Abertas',
+                                 link = 'https://sites.google.com/view/escoladevero/',
+                                 status = 'warning')
+        body += '</div>'
+
+
+        # anúncio
+        body += '<div class="carousel-item">'
+        body += self.add_anuncio(text = '10º MCsul/X SEMENGO: 4-6/Dez/24',
                                  link = 'https://mcsulsemengo.furg.br/',
-                                 status = 'danger')
+                                 status = 'primary')
         body += '</div>'
 
 
@@ -200,7 +208,7 @@ class Index:
 
         # anúncio
         body += '<div class="carousel-item">'
-        body += self.add_anuncio(text = 'IME/UFRGS: Instituto de Matemática e Estatística',
+        body += self.add_anuncio(text = 'Instituto de Matemática e Estatística - UFRGS',
                                  link = 'http://www.ufrgs.br/ime',
                                  status = 'primary')
         body += '</div>'
