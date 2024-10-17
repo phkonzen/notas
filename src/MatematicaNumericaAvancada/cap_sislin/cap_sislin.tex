@@ -312,9 +312,9 @@ from scipy.sparse import coo_array
 data = np.array([2.,1.,3.,2.,-1.,-1.,-2.,1.])
 row = np.array([0,0,1,1,1,2,2,3])
 col = np.array([0,2,1,2,3,1,2,3])
-A = coo_array((data, (row, col)), shape=(4,4))
-print("A = \n", A)
-print("A = \n", A.toarray())
+Acoo = coo_array((data, (row, col)), shape=(4,4))
+print("Acoo = \n", Acoo)
+print("A = \n", Acoo.toarray())
 \end{lstlisting}
 
 \end{ex}
@@ -340,14 +340,14 @@ print("A = \n", A.toarray())
 \end{obs}
 
 \subsubsection{Formato CSR}
-\badgeRevisar
 
-O formato {\it Compressed Sparse Row} (CSR) é uma variação do COO que busca diminuir a alocação de dados repetidos. Assim como o COO, o formato conta com três arranjos $d$, $c$, $p$:
+O \hlemph{formato CSR} (do inglês, \textit{Compressed Sparse Row}) é uma variação do COO que busca diminuir a alocação de dados repetidos. Assim como o COO, o formato conta com três arranjos $d$, $c$, $p$:
 \begin{itemize}
 \item $d$ é o arranjo contendo os elementos não-nulos da matriz, ordenados por linhas (i.e., da esquerda para direita, de cima para baixo);
 \item $c$ é o arranjo contendo o índice das colunas das entradas não-nulas da matriz (como no formato COO);
 \item $p$ é um arranjo cujos elementos são a posição no arranjo $c$ em que cada linha da matriz começa a ser representada. O número de elementos de $i$-ésima linha da matriz dado por $p_{j+1}-p_j$.
 \end{itemize}
+O método {\PYTHONscipyDOTsparseDOTcsrArray} permite a alocação de matrizes no formato CSR. 
 
 \begin{ex}
   No Exemplo \ref{ex:coo}, alocamos a matriz
@@ -361,44 +361,45 @@ O formato {\it Compressed Sparse Row} (CSR) é uma variação do COO que busca d
     \end{bmatrix}
   \end{equation}
   no formato COO. Aqui, vamos converter a alocação para o formato CSR e, então, verificar seus atributos.
-  \begin{lstlisting}
-    from scipy.sparse import csr_matrix
-    csr = coo.tocsr()
-    d = csr.data
-    c = csr.indices
-    p = csr.indptr
-    print(d)
-    print(c)
-    print(p)
-  \end{lstlisting}
-  Para fixarmos as ideias, temos
-  \begin{gather}
-    d = (2., 1., 3., 2., -1., -1., -2., 1.)\\
-    c = (0, 2, 1, 2, 3, 1, 2, 3)\\
-    p = (0, 2, 5, 7, 8)
-  \end{gather}
-  Assim sendo, o elemento \lstinline+p[i=2] = 5+ aponta para o \lstinline+c[k=5] = 1+, o que fornece que \lstinline+A[i=2,j=1]=d_{k}=-1.+. Verifique!
+
+\begin{lstlisting}
+from scipy.sparse import csr_array
+Acsr = Acoo.tocsr()
+print(f'd = {Acsr.data}')
+print(f'c = {Acsr.indices}')
+print(f'p = {Acsr.indptr}')
+\end{lstlisting}
+
+\begin{verbatim}
+d = [ 2.  1.  3.  2. -1. -1. -2.  1.]
+c = [0 2 1 2 3 1 2 3]
+p = [0 2 5 7 8]  
+\end{verbatim}
+  
+
+  Por exemplo, o elemento \texttt{p[i=2] = 5} aponta para o \texttt{c[k=5] = 1}, o que fornece \texttt{A[i=2,j=1] = d[k] = -1.}. Verifique!
 \end{ex}
 
+\begin{flushleft}
+  \hl{Vantagens do formato CSR}
+\end{flushleft}
 \begin{itemize}
-\item 
-  \begin{itemize}
   \item operações aritméticas eficientes;
   \item fatiamento por linhas eficiente;
   \item multiplicação matriz vetor eficiente.
-  \end{itemize}
-\item Desvantagens do formato CSR:
-  \begin{itemize}
-  \item fatiamento por colunas não eficiente;
-  \item custo elevado de realocamento com alteração da esparsidade da matriz.
-  \end{itemize}
 \end{itemize}
 
-\begin{obs}
-  O SciPy conta com vários métodos para o tratamento e operação com matrizes esparsas armazenadas no formato CSR. Consulte mais em \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html}{scipy.sparse.csr\_matrix}.
-\end{obs}
+\begin{flushleft}
+  \hl{Desvantagens do formato CSR}
+\end{flushleft}
+\begin{itemize}
+  \item fatiamento por colunas não eficiente;
+  \item custo elevado de realocamento com alteração da esparsidade da matriz.
+\end{itemize}
+
 
 \subsubsection{Formato CSC}
+\badgeRevisar
 
 O formato {\it Compressed Sparse Column} (CSC) é uma variação análoga do CSR, mas para armazenamento por colunas. O formato conta com três arranjos $d$, $l$, $p$:
 \begin{itemize}
