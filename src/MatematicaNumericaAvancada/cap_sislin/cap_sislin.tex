@@ -399,14 +399,15 @@ p = [0 2 5 7 8]
 
 
 \subsubsection{Formato CSC}
-\badgeRevisar
 
-O formato {\it Compressed Sparse Column} (CSC) é uma variação análoga do CSR, mas para armazenamento por colunas. O formato conta com três arranjos $d$, $l$, $p$:
+O formato CSC (do inglês, \textit{Compressed Sparse Column}) é uma variação análoga do CSR, mas para armazenamento por colunas. O formato conta com três arranjos $d$, $l$, $p$:
 \begin{itemize}
 \item $d$ é o arranjo contendo os elementos não-nulos da matriz, ordenados por colunas (i.e., de cima para baixo, da esquerda para direita);
 \item $l$ é o arranjo contendo o índice das linhas das entradas não-nulas da matriz;
 \item $p$ é um arranjo cujos elementos são a posição no arranjo $l$ em que cada coluna da matriz começa a ser representada. O número de elementos de $j$-ésima coluna da matriz dado por $p_{j+1}-p_j$.
 \end{itemize}
+O método {\PYTHONscipyDOTsparseDOTcscArray} permite a alocação de matrizes no formato CSC. 
+
 
 \begin{ex}
   No Exemplo \ref{ex:coo}, alocamos a matriz
@@ -420,42 +421,42 @@ O formato {\it Compressed Sparse Column} (CSC) é uma variação análoga do CSR
     \end{bmatrix}
   \end{equation}
   no formato COO. Aqui, vamos converter a alocação para o formato CSC e, então, verificar seus atributos.
-  \begin{lstlisting}
-    from scipy.sparse import csc_matrix
-    csc = coo.tocsc()
-    d = csc.data
-    l = csc.indices
-    p = csc.indptr
-    print(d)
-    print(l)
-    print(p)
-  \end{lstlisting}
-  Para fixarmos as ideias, temos
-  \begin{gather}
-    d = (2.,  3., -1.,  1.,  2., -2., -1.,  1.)\\
-    l = (0, 1, 2, 0, 1, 2, 1, 3)\\
-    p = (0 1 3 6 8)
-  \end{gather}
-  Assim sendo, o elemento \lstinline+p[j=2] = 3+ aponta para o \lstinline+l[k=3] = 0+, o que informa que \lstinline+A[i=0,j=2]=d_{k}=1.+. Verifique!
+
+\begin{lstlisting}
+  from scipy.sparse import csc_array
+  Acsc = Acoo.tocsc()
+  l = Acsc.indices
+  p = Acsc.indptr
+  print(f'd = {Acsc.date}')
+  print(f'l = {Acsc.indices}')
+  print(f'p = {Acsc.indptr}')
+\end{lstlisting}
+
+\begin{verbatim}
+  d = [2.  3. -1.  1.  2. -2. -1.  1.]
+  l = [0 1 2 0 1 2 1 3]
+  p = [0 1 3 6 8]
+\end{verbatim}
+
+Assim sendo, o elemento \texttt{p[j=2] = 3} aponta para o \texttt{l[k=3] = 0}, o que informa que \texttt{A[i=0,j=2]=d[k]=1.}. Verifique!
 \end{ex}
 
+\begin{flushleft}
+  Vantagens do formato CSC
+\end{flushleft}
 \begin{itemize}
-\item Vantagens do formato CSC:
-  \begin{itemize}
-  \item fatiamento por colunas eficiente;
-  \item operações aritméticas eficientes;
-  \item multiplicação matriz vetor eficiente\footnote{CSR é mais eficiente em muitos casos.}.
-  \end{itemize}
-\item Desvantagens do formato CSC:
-  \begin{itemize}
-  \item fatiamento por linhas não eficiente;
-  \item custo elevado de realocamento com alteração da esparsidade da matriz.
-  \end{itemize}
+\item fatiamento por colunas eficiente;
+\item operações aritméticas eficientes;
+\item multiplicação matriz vetor eficiente\footnote{CSR é mais eficiente em muitos casos.}.
 \end{itemize}
 
-\begin{obs}
-  O SciPy conta com vários métodos para o tratamento e operação com matrizes esparsas armazenadas no formato CSC. Consulte mais em \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csc_matrix.html}{scipy.sparse.csc\_matrix}.
-\end{obs}
+\begin{flushleft}
+  Desvantagens do formato CSC
+\end{flushleft}
+\begin{itemize}
+\item fatiamento por linhas não eficiente;
+\item custo elevado de realocamento com alteração da esparsidade da matriz.
+\end{itemize}
 
 \begin{obs}
   Além dos formatos COO, CSR e CSC, exitem ainda vários outros que podem empregados e que são mais eficientes em determinadas aplicações. Recomendamos a leitura de \cite[Seção 3.4]{Saad2003} e da documentação do \href{https://docs.scipy.org/doc/scipy/reference/sparse.html}{scipy.sparse}.
@@ -629,7 +630,7 @@ O formato {\it Compressed Sparse Column} (CSC) é uma variação análoga do CSR
 
 \subsection{GMRES}
 
-O GMRES (do inglês, {\it Generalized Minimal Residual Method}\footnote{Desenvolvido por Yousef Saad e H. Schultz, 1986. Fonte: \href{https://en.wikipedia.org/wiki/Generalized_minimal_residual_method}{Wikipedia}.}) é um Método de Subespaço de Krylov e é considerado uma das mais eficientes técnicas para a resolução de sistemas lineares gerais e de grande porte (esparsos).
+O \hlemph{GMRES} (do inglês, \textit{Generalized Minimal Residual Method}\endnote{Desenvolvido por Yousef Saad e H. Schultz, 1986. Fonte: \href{https://en.wikipedia.org/wiki/Generalized_minimal_residual_method}{Wikipedia}.}) é um \hlemph{método de subespaço de Krylov}{\krylov} e é considerado uma das mais eficientes técnicas para a resolução de sistemas lineares gerais e de grande porte (esparsos).
 
 \subsubsection{Método de Subespaço de Krylov}
 
@@ -637,32 +638,32 @@ A ideia básica é resolver o sistema linear
 \begin{equation}
   Ax = b
 \end{equation}
-por um \emph{método de projeção}. Mais especificamente, busca-se uma solução aproximada $x_m\in\mathbb{R^n}$ no subespaço afim $x_0 + \mathcal{K}_m$ de dimensão $m$, impondo-se a \emph{condição de Petrov}\footnote{Georgi Iwanowitsch Petrov, 1912 - 1987, engenheiro soviético. Fonte: \href{https://de.wikipedia.org/wiki/Georgi_Iwanowitsch_Petrow}{Wikipedia}.}\emph{-Galerkin}\footnote{Boris Galerkin, 1871 - 1945, engenheiro e matemático soviético. Fonte: \href{https://pt.wikipedia.org/wiki/Boris_Galerkin}{Wikipédia}.}
+por um \hlemph{método de projeção}. Mais especificamente, busca-se uma solução aproximada $x_m\in\mathbb{R}^n$ no subespaço afim $x_0 + \mathcal{K}_m$ de dimensão $m$, impondo-se a \hlemph{condição de Petrov}{\petrov}\hlemph{-Galerkin}{\galerkin}
 \begin{equation}
   b - Ax_m \perp \mathcal{L}_m,
 \end{equation}
-onde $\mathcal{L}_m$ também é um subespaço de dimensão $m$. Quando $\mathcal{K}_m$ é um \emph{subespaço de Krylov}\footnote{Alexei Nikolajewitsch Krylov, 1863 - 1945, engenheiro e matemático russo. Fonte: \href{https://pt.wikipedia.org/wiki/Alexei_Krylov}{Wikipédia}.}, i.e.
+onde $\mathcal{L}_m$ também é um subespaço de dimensão $m$. Quando $\mathcal{K}_m$ é um \hlemph{subespaço de Krylov}, i.e.
 \begin{equation}
   \mathcal{K}_m(A,r_0) = \spn\{r_0, Ar_0, A^2r_0,\dotsc,A^{m-1}r_0\},
 \end{equation}
-temos o Método de Subespaço de Krylov. Aqui, temos o \emph{resíduo}
+temos o \hlemph{método de subespaço de Krylov}. Aqui, temos o \emph{resíduo}
 \begin{equation}
   r_0 = b - Ax_0,
 \end{equation}
-sendo $x_0$ uma aproximação inicial para a solução do sistema. Notemos que com isso, temos que a aproximação calculada é tal que
+sendo $x_0$ uma aproximação inicial para a solução do sistema. Notamos que com isso, temos que a aproximação calculada é tal que
 \begin{equation}
   A^{-1}b \approx x_m = x_0 + q_{m-1}(A)r_0,
 \end{equation}
 onde $q_{m-1}$ é um dado polinômio de grau $m-1$. No caso particular de $x_0 = 0$, temos
 \begin{equation}
-  A^{-1}b \approx q_{m-1}(A)x_0.
+  A^{-1}b \approx q_{m-1}(A)b.
 \end{equation}
 
 Diferentes versões deste método são obtidas pelas escolhas do subespaço $\mathcal{L}_m$ e formas de precondicionamento do sistema.
 
 \subsubsection{GMRES}
 
-O GMRES é um Método de Subespaço de Krylov assumindo $\mathcal{L}_m = A\mathcal{K}_m$, com
+O \hlemph{GMRES} é um \emph{método de subespaço de Krylov} assumindo $\mathcal{L}_m = A\mathcal{K}_m$, com
 \begin{equation}
   \mathcal{K}_m = \mathcal{K}_m(A,v_1) = \spn\{v_1, Av_1, \dotsc, A^{m-1}v_1\},
 \end{equation}
@@ -672,24 +673,24 @@ Vamos derivar o método observando que qualquer vetor $x$ em $x_0 + \mathcal{K}_
 \begin{equation}
   x = x_0 + V_my
 \end{equation}
-onde, $V_m = [v_1,\dotsc,v_m]$ é a matriz $n\times m$ cujas colunas formam uma base ortogonal $\{v_1, \dotsc, v_m\}$ de $\mathcal{K}_m$ e $y\in R^m$. Aqui, $V_m$ é computada usando-se o seguinte \emph{Método de Arnoldi}\footnote{Walter Edwin Arnoldi, 1917 - 1995, engenheiro americano estadunidense. Fonte: \href{https://pt.wikipedia.org/wiki/Walter_Edwin_Arnoldi}{Wikipédia}.}\emph{- Gram}\footnote{Jørgen Pedersen Gram, 1850 - 1916, matemático dinamarquês. Fonte: \href{https://pt.wikipedia.org/wiki/J\%C3\%B8rgen_Pedersen_Gram}{Wikipédia}.}\emph{-Schmidt}\footnote{Erhard Schmidt, 1876 - 1959, matemático alemão. Fonte: \href{https://pt.wikipedia.org/wiki/Erhard_Schmidt}{Wikipédia}.} \emph{Modificado} \cite[Subseção 6.3]{Saad2003}:
+onde, $V_m = [v_1,\dotsc,v_m]$ é a matriz $n\times m$ cujas colunas formam uma base ortogonal $\{v_1, \dotsc, v_m\}$ de $\mathcal{K}_m$ e $y\in R^m$. Aqui, $V_m$ é computada usando-se o seguinte \hlemph{método de Arnoldi}{\arnoldi}\hlemph{- Gram}{\gram}\hlemph{-Schmidt}{\schmidt} \emph{modificado} \cite[Subseção 6.3]{Saad2003}:
 \begin{enumerate}[1.]
 \item Dado $v_1$ de norma 1
 \item Para $j=1,\dotsc,m$:
   \begin{enumerate}
-  \item $w_j := Av_j$
+  \item $w_j \leftarrow Av_j$
   \item Para $i=1,\dotsc,j$:
     \begin{enumerate}
-    \item $h_{i,j} := (w_j,v_i)$
-    \item $w_j := w_j - h_{i,j}v_i$
+    \item $h_{i,j} \leftarrow (w_j,v_i)$
+    \item $w_j \leftarrow w_j - h_{i,j}v_i$
     \end{enumerate}
-  \item $h_{j+1,j} := \|w_j\|$
-  \item Se $h_{j+1,j}=0$, então pare.
-  \item $v_{j+1} = w_j/h_{j+1,j}$
+  \item $h_{j+1,j} \leftarrow \|w_j\|$
+  \item Se $h_{j+1,j} \leftarrow 0$, então pare.
+  \item $v_{j+1} \leftarrow w_j/h_{j+1,j}$
 \end{enumerate}
 \end{enumerate}
 
-Seja, então, $\bar{H}_m = [h_{i,j}]_{i,j=1}^{m+1,m}$ a matriz de Hessenberg\footnote{Karl Adolf Hessenberg, 1904 - 1959, engenheiro e matemático alemão. Fonte: \href{https://pt.wikipedia.org/wiki/Karl_Hessenberg}{Wikipédia}.} cujas entradas não nulas são computadas pelo algoritmo acima (Passos 2(a)i-ii). Pode-se mostrar\footnote{Consulte \cite[Proposição 6.5]{Saad2003}.} que
+Seja, então, $\bar{H}_m = [h_{i,j}]_{i,j=1}^{m+1,m}$ a \emph{matriz de Hessenberg}{\hessenberg} cujas entradas não nulas são computadas pelo algoritmo acima (Passos 2(a)i-ii). Pode-se mostrar que \cite[Proposição 6.5]{Saad2003}
 \begin{align}
   J(y) &= \|b-Ax\|\\
        &= \|b - A(x_0 + V_my)\|\\
@@ -708,23 +709,23 @@ Observamos que este último é um pequeno problema de minimização, sendo que r
 Em resumo, a solução GMRES $x_m$ é computada seguindo os seguintes passos:
 \begin{enumerate}[1.]
 \item Escolhemos uma aproximação inicial $x_0$ para a solução de $Ax = b$.
-\item Calculamos o resíduo $r_0 = b - Ax_0$.
-\item Calculamos o vetor unitário $v_1 = r_0/\|r_0\|$.
-\item Usamos o Método de Arnoldi-Gram-Schmidt Modificado para calculamos uma base ortogonal $V_m$ de $\mathcal{K}_m$ e a matriz de Hessenberg $\bar{H}_m$ associada.
-\item Calculamos $y_m = \min_{y} \|\beta e_1 - \hat{H}_my\|$.
-\item Calculamos $x_m = x_0 + V_my$.
+\item Computamos o resíduo $r_0 = b - Ax_0$.
+\item Computamos o vetor unitário $v_1 = r_0/\|r_0\|$.
+\item Usamos o método de Arnoldi-Gram-Schmidt modificado para calculamos uma base ortogonal $V_m$ de $\mathcal{K}_m$ e a matriz de Hessenberg $\bar{H}_m$ associada.
+\item Computamos $y_m = \min_{y} \|\beta e_1 - \hat{H}_my\|$.
+\item Computamos $x_m = x_0 + V_my$.
 \end{enumerate}
 
-\begin{obs}[Convergência]
+\begin{obs}[\hlemph{Convergência}]
   Pode-se mostrar que o GMRES converge em ao menos $n$ passos.
 \end{obs}
 
-\begin{obs}[GMRES com a ortogonalização de Householder]
-  No algoritmo acima, o Método Modificado de Gram-Schmidt é utilizado no processo de Arnoldi. Uma versão numericamente mais eficiente é obtida quando a \emph{Transformação de Householder}\footnote{Alston Scott Householder, 1904 - 1993, matemático americano estadunidense. Fonte: \href{https://pt.wikipedia.org/wiki/Alston_Scott_Householder}{Wikipédia}.} é utilizada. Consulte mais em \cite[Subsetion 6.5.2]{Saad2003}.
+\begin{obs}[\hlemph{GMRES com a ortogonalização de Householder}]
+  No algoritmo acima, o método modificado de Gram-Schmidt é utilizado no processo de Arnoldi. Uma versão numericamente mais eficiente é obtida quando a \hlemph{transformação de Householder}{\householder} é utilizada. Consulte mais em \cite[Subsetion 6.5.2]{Saad2003}.
 \end{obs}
 
-\begin{obs}[GMRES com Reinicialização]
-  O {\it Restarted GMRES} é uma variação do método para sistemas que requerem uma aproximação GMRES $x_m$ com $m$ grande. Nestes casos, o método original pode demandar um custo muito alto de memória computacional. A ideia consiste em assumir $m$ pequeno e, caso não suficiente, recalcular a aproximação GMRES com $x_0 = x_m$. Este algoritmo pode ser descrito como segue.
+\begin{obs}[\hlemph{GMRES com Reinicialização}]
+  O \hlemph{restarted GMRES} é uma variação do método para sistemas que requerem uma aproximação GMRES $x_m$ com $m$ grande. Nestes casos, o método original pode demandar um custo muito alto de memória computacional. A ideia consiste em assumir $m$ pequeno e, caso não suficiente, recalcular a aproximação GMRES com $x_0 = x_m$. Este algoritmo pode ser descrito como segue.
   \begin{enumerate}[1.]
   \item Computamos $r_0 = b - Ax_0$, $\beta = \|r_0\|$ e $v_1 = r_0/\beta$
   \item Computamos $V_m$ e $\hat{H}_m$ pelo método de Arnoldi
@@ -736,18 +737,18 @@ Em resumo, a solução GMRES $x_m$ é computada seguindo os seguintes passos:
   \item Se $\|b-Ax_m\|$ é satisfatória, paramos. Caso contrário, setamos $x_0 := x_m$ e voltamos ao passo 1.
   \end{enumerate}
 
-  A convergência do {\it Restarted GMRES} não é garantida para matrizes que não sejam positiva-definidas.
+  \hl{A convergência do restarted GMRES não é garantida para matrizes que não sejam positiva-definidas}.
 \end{obs}
 
 \begin{exer}\label{exer:pvc1d_gmres}
   Considere o problema discreto do Exercício \ref{exer:pvc1d}.
   \begin{enumerate}[a)]
-  \item Compute a solução com a implementação {\it Restarted GMRES}
+  \item Compute a solução com a implementação restarted GMRES
     \begin{center}
     \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.gmres.html}{scipy.sparse.linalg.gmres}.
   \end{center}
   \item Por padrão, o intervalo de iterações entre as inicializações é \lstinline+restart=20+. Compare o desempenho para diferentes intervalos de reinicialização.
-  \item Compare o desempenho entre as abordagens dos ítens a) e b) frente a implementação do Método de Eliminação Gaussiana disponível em
+  \item Compare o desempenho entre as abordagens dos ítens a) e b) frente a implementação do método de eliminação gaussiana disponível em
     \begin{center}
     \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.spsolve.html#scipy.sparse.linalg.spsolve}{scypi.sparse.linalg.spsolve}.
   \end{center}
@@ -758,12 +759,12 @@ Em resumo, a solução GMRES $x_m$ é computada seguindo os seguintes passos:
 \begin{exer}\label{exer:poisson_gmres}
   Considere o problema discreto trabalhado no Exemplo \ref{ex:poisson}.
   \begin{enumerate}[a)]
-  \item Compute a solução com a implementação {\it Restarted GMRES}
+  \item Compute a solução com a implementação restarted GMRES
     \begin{center}
 \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.gmres.html}{scipy.sparse.linalg.gmres}.
 \end{center}
   \item Por padrão, o intervalo de iterações entre as inicializações é \lstinline+restart=20+. Compare o desempenho para diferentes intervalos de reinicialização.
-  \item Compare o desempenho entre as abordagens dos ítens a) e b) frente a implementação do Método de Eliminação Gaussiana disponível em
+  \item Compare o desempenho entre as abordagens dos ítens a) e b) frente a implementação do método de eliminação gaussiana disponível em
     \begin{center}
 \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.spsolve.html#scipy.sparse.linalg.spsolve}{scypi.sparse.linalg.spsolve}.
 \end{center}
@@ -771,7 +772,7 @@ Em resumo, a solução GMRES $x_m$ é computada seguindo os seguintes passos:
 \end{exer}
 
 \begin{exer}\label{exer:poissonDNH}
-    Consideremos o seguinte problema de Poisson\footnote{Baron Siméon Denis Poisson, 1781 - 1840, matemático, engenheiro e físico francês. Fonte: \href{https://en.wikipedia.org/wiki/Sim\%C3\%A9on_Denis_Poisson}{Wikipedia}.} com condições de contorno não homogêneas.
+    Considere o seguinte problema de Poisson{\poisson} com condições de contorno não homogêneas.
   \begin{gather}
     - \Delta u = f(x,y),~(x, y)\in D,\\
     u = g, \quad\text{em }\p D
@@ -789,12 +790,12 @@ Em resumo, a solução GMRES $x_m$ é computada seguindo os seguintes passos:
     u(x,y) = \sen \pi(x+y).
   \end{equation}
   
-  Vamos empregar o Método de Diferenças Finitas\footnote{Observamos que $\Delta u = u_{xx} + u_{yy}$.} para computar uma aproximação para a solução. Assumimos uma malha uniforme de $n^2$ nodos
+  Empregue o método de diferenças finitas para computar uma aproximação para a solução. Assumimos uma malha uniforme de $n^2$ nodos
   \begin{gather}
     x_i = (i-1)h\\
     y_j = (j-1)h
   \end{gather}
-  com tamanho de malha $h = 1/(n-1)$, $i=1,2,\dotsc,n$ e $j=1,2,\dotsc,n$. Empregando a Fórmula de Diferenças Central\footnote{Consulte mais em \href{https://phkonzen.github.io/notas/MatematicaNumerica/cap_edp_sec_Poisson.html}{Notas de Aula: Matemática Numérica}.} encontramos o seguinte problema discreto associado
+  com tamanho de malha $h = 1/(n-1)$, $i=1,2,\dotsc,n$ e $j=1,2,\dotsc,n$. Empregando a fórmula de diferenças central encontramos o seguinte problema discreto associado
   \begin{gather}
     u_{i, 1} = g(x_i, 0)\\
     u_{1, j} = g(0, y_j)\\
@@ -809,7 +810,7 @@ Em resumo, a solução GMRES $x_m$ é computada seguindo os seguintes passos:
   \begin{equation}
     Aw = b
   \end{equation}
-  onde, $A$ é $(n-2)**2\times (n-2)**2$ e assumindo a enumeração
+  onde, $A$ é $(n-2)^2\times (n-2)^2$ e assumindo a enumeração
   \begin{equation}
     u_{i,j} = w_{k=i-1 + (j-2)(n-2)},\quad i,j=2,\dotsc,n-2.
   \end{equation}
@@ -820,7 +821,7 @@ Em resumo, a solução GMRES $x_m$ é computada seguindo os seguintes passos:
     \begin{center}
       \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.gmres.html}{scipy.sparse.linalg.gmres}
     \end{center}
-  \item Compare o desempenho com a aplicação do Método LU implemento em
+  \item Compare o desempenho com a aplicação do método LU implemento em
     \begin{center}
       \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.spsolve.html}{scipy.sparse.linalg.spsolve}
     \end{center}
@@ -833,13 +834,13 @@ Em resumo, a solução GMRES $x_m$ é computada seguindo os seguintes passos:
 
 \subsection{Método do Gradiente Conjugado}
 
-O Método do Gradiente Conjugado é uma das mais eficientes técnicas iterativas para a resolução de sistema linear com matriz esparsa, simétrica e definida positiva. Portanto, vamos assumir que o sistema
+O \hlemph{método do gradiente conjugado} é uma das mais eficientes técnicas iterativas para a resolução de sistema linear com matriz esparsa, simétrica e definida positiva. Vamos assumir que o sistema
 \begin{equation}
   Ax = b
 \end{equation}
 onde, a $A$ é \emph{simétrica} e \emph{definida positiva}.
 
-O método pode ser derivado a partir do Método de Arnoldi\footnote{Walter Edwin Arnoldi, 1917 - 1995, engenheiro americano estadunidense. Fonte: \href{https://pt.wikipedia.org/wiki/Walter_Edwin_Arnoldi}{Wikipédia}.} \cite[Seção 6.7]{Saad2003} ou como uma variação do Método do Gradiente. Este é caminho que será adotado aqui.
+O método pode ser derivado a partir do método de Arnoldi{\arnoldi} \cite[Seção 6.7]{Saad2003} ou como uma variação do método do gradiente. Este é caminho que será adotado aqui.
 
 \subsubsection{Método do Gradiente}
 
@@ -852,17 +853,17 @@ O vetor $y$ que minimiza $J$ é a solução de $Ax = b$. De fato, denotando $x$ 
   J(y) &= \frac{1}{2}y^TAy - y^Tb + \frac{1}{2}x^TAx - \frac{1}{2}x^TAx\\
        &= \frac{1}{2}(y-x)^TA(y-x) - \frac{1}{2}x^TAx
 \end{align}
-O termo é independente de $y$ e, portanto, $J$ é mínimo quando
+O último termo é independente de $y$ e, portanto, $J$ é mínimo quando
 \begin{equation}
   \frac{1}{2}(y-x)^TA(y-x)
 \end{equation}
-é minimizado. Agora, como $A$ é definida positiva\footnote{$x^TAx > 0$ para todo $x\neq 0$.}, o menor valor deste termo ocorre quando $y-x = 0$, i.e. $y=x$.
+é minimizado. Agora, como $A$ é definida positiva\endnote{$x^TAx > 0$ para todo $x\neq 0$.}, o menor valor deste termo ocorre quando $y-x = 0$, i.e. $y=x$.
 
 Observamos, também, que o gradiente de $J$ é
 \begin{equation}
   \nabla J = Ay - b
 \end{equation}
-i.e., é o oposto do resíduo $r = b - Ay$. Com isso, temos que $y = x$ é a única escolha tal que $\nabla J = 0$. Ainda, temos que $\nabla J$ é o vetor que aponta na direção e sentido de maior crescimento de $J$. Isso nos motiva a aplicarmos a seguinte iteração\footnote{Iteração do Método do Máximo Declive.}
+i.e., é o oposto do resíduo $r = b - Ay$. Com isso, temos que $y = x$ é a única escolha tal que $\nabla J = 0$. Ainda, temos que $\nabla J$ é o vetor que aponta na direção e sentido de maior crescimento de $J$. Isso nos motiva a aplicarmos a seguinte iteração\endnote{Iteração do método do máximo declive.}
 \begin{gather}
   x^{(0)} = \text{aprox. inicial}\\
   x^{(k+1)} = x^{(k)} - \alpha_k\nabla J\left(x^{(k)}\right)
@@ -871,7 +872,7 @@ onde, $\alpha_k>0$ é um escalar que regula o tamanho do passo a cada iteração
 \begin{equation}
   x^{(k+1)} = x^{(k)} + \alpha_kr^{(k)}.
 \end{equation}
-Notamos que $x^{(k+1)}$ é um ponto na reta $\left\{x^{(k)} + \alpha r^{(k)}:~\alpha\in\mathbb{R}\right\}$ que tem a mesma direção de $\nabla J\left(x^{(k)}\right)$ e passa pelo ponto $x^{(k)}$. O procedimento de escolher um $\alpha^{(k)}$ entre todos os possíveis, é conhecido como pesquisa linear (em inglês, {\it line search}).
+Notamos que $x^{(k+1)}$ é um ponto na reta $\left\{x^{(k)} + \alpha r^{(k)}:~\alpha\in\mathbb{R}\right\}$ que tem a mesma direção de $\nabla J\left(x^{(k)}\right)$ e passa pelo ponto $x^{(k)}$. O procedimento de escolher um $\alpha^{(k)}$ entre todos os possíveis, é conhecido como pesquisa linear (em inglês, \textit{line search}).
 
 A cada iteração, queremos escolher $\alpha_k$ de forma que $J\left(x^{(k+1)}\right) \leq J\left(x^{(k)}\right)$. Isso pode ser garantido fazendo a seguinte escolha\footnote{Chamada de pesquisa linear exata. Qualquer outra escolha para $\alpha$ é conhecida como pesquisa linear não exata.}
 \begin{equation}
