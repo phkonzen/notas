@@ -911,7 +911,7 @@ Com isso, temos a iteração do Método do Gradiente
   \alpha_k = \frac{{r^{(k)}}^Tr^{(k)}}{{r^{(k)}}^TAr^{(k)}}
 \end{gather}
 
-\begin{obs}
+\begin{obs}[\hlemph{Detalhe de Implementação}]
   Observamos que, a cada iteração, precisamos computar $Ar^{(k)}$ (no cálculo de $\alpha_k$) e $Ax^{(k)}$ (no cálculo do resíduo). Essas multiplicações matriz-vetor são os passos computacionais mais custosos do método. Podemos otimizar isso usando o fato de que
   \begin{equation}
     r^{(k+1)} = r^{(k)} - \alpha_k Ar^{(k)}.
@@ -921,7 +921,7 @@ Com isso, temos a iteração do Método do Gradiente
 % \lstinputlisting[caption=Algoritmo do Gradiente, label={lst:algG}]{./cap_sislin/dados/pyMG/main.py}
 
 \begin{exer}\label{exer:mg}
-  Faça sua implementação do Método do Gradiente.
+  Faça sua implementação do método do gradiente.
 \end{exer}
 
 \begin{exer}\label{exer:mg}
@@ -929,14 +929,14 @@ Com isso, temos a iteração do Método do Gradiente
   \begin{enumerate}[a)]
   \item Compute a solução do problema discreto do Exemplo \ref{ex:poisson} pelo Método do Gradiente. Quantas iterações são necessárias para obter um resíduo com norma $\leq 10^{-14}$?
   \item Compute a solução do problema discreto do Exercício \ref{exer:poissonDNH} pelo Método do Gradiente. Quantas iterações são necessárias para obter um resíduo com norma $\leq 10^{-14}$?
-  \item Compare a aplicação do Método GMRES\footnote{\href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.gmres.html}{scipy.sparse.linalg.gmres}} e do Método LU\footnote{\href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.spsolve.html}{scipy.sparse.linalg.spsolve}} nos itens anteriores.
+  \item Compare a aplicação do método GMRES\endnote{\href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.gmres.html}{scipy.sparse.linalg.gmres}} e do método LU\endnote{\href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.spsolve.html}{scipy.sparse.linalg.spsolve}} nos itens anteriores.
   \end{enumerate}
 \end{exer}
 
 \begin{exer}
-  Considere o Exercício \ref{exer:poissonDNH}.
+  Considere o Exercício~\ref{exer:poissonDNH}.
   \begin{enumerate}[a)]
-  \item Use sua implementação do Método do Gradiente para computar uma solução aproximada, cuja norma do resíduo $\leq 10^{-14}$.
+  \item Use sua implementação do método do gradiente para computar uma solução aproximada, cuja norma do resíduo $\leq 10^{-14}$.
   \item Compare o desempenho com a aplicação da implementação GMRES
     \begin{center}
       \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.gmres.html}{scipy.sparse.linalg.gmres}
@@ -946,15 +946,15 @@ Com isso, temos a iteração do Método do Gradiente
 
 \subsubsection{Método do Gradiente Conjugado}
 
-O Método do Gradiente consiste em uma iteração da forma
-\begin{gather}
-  x_0 = \text{aprox. inicial},
-  x^{(k+1)} = x^{(k)} + \alpha_kp^{(k)},
-\end{gather}
+O método do gradiente consiste em uma iteração da forma
+\begin{align}
+  & x_0 = \text{aprox. inicial},\\
+  & x^{(k+1)} = x^{(k)} + \alpha_kp^{(k)},
+\end{align}
 com $p^{(k)} = r^{(k)}$. Ou seja, a nova aproximação $x^{(k+1)}$ é buscada na direção de $p^{(k)}$. Aqui, a ideia é usar uma melhor direção para buscar a solução.
 
 
-O Método do Gradiente Conjugado é um Método de Gradiente que busca encontrar a solução de $Ax = b$ pela computação do mínimo do seguinte funcional\footnote{Compare com o funcional $J$ dado em \eqref{eq:funcional_mg}.}
+O \hlemph{método do gradiente conjugado} é um método de gradiente que busca encontrar a solução de $Ax = b$ pela computação do mínimo do seguinte funcional\endnote{Compare com o funcional $J$ dado em \eqref{eq:funcional_mg}.}
 \begin{equation}
   J(y) = \frac{1}{2}\left<y,y\right>_A - \left<b,y\right>, 
 \end{equation}
@@ -962,7 +962,7 @@ onde, $\left<\cdot,\cdot\right>$ denota o produto interno padrão e
 \begin{equation}
   \left<x,y\right>_A := x^TAy
 \end{equation}
-é o \emph{produto interno induzido por $A$}, lembrando que $A$ é positiva definida\footnote{Mostre que $\left<\cdot,\cdot\right>_A$ é de fato um produto interno.}. Associada a este produto interno, temos a norma
+é o \emph{produto interno induzido por $A$}, lembrando que $A$ é positiva definida\endnote{Mostre que $\left<\cdot,\cdot\right>_A$ é de fato um produto interno.}. Associada a este produto interno, temos a norma
 \begin{equation}
   \|x\|_A := \sqrt{\left<x,x\right>_A},
 \end{equation}
@@ -973,22 +973,46 @@ chamada de \emph{norma da energia}. O produto interno associado é também conhe
 
 Aqui, a ideia é desenvolver um método iterativo em que o erro a cada passo seja conjugado a todas as direções de busca anteriores. Consulte o desenvolvimento detalhado do método em \cite[Seção 7.7]{Watkins2002}.
 
-\lstinputlisting[caption=Algoritmo do Gradiente Conjugado, label={lst:algGC}]{./cap_sislin/dados/pyMGC/main.py}
+\begin{lstlisting}[caption=Algoritmo do gradiente conjugado, label={code:algGC}]
+import numpy as np
+import scipy as sp
+from scipy.linalg import norm
+
+def mgc(A, b, x, tol=1e-14):
+  n, = b.shape
+  r = b - A*x
+  p = r
+  nu = np.dot(r,r)
+  for it in np.arange(n):
+    q = A*p
+    mu = np.dot(p,q)
+    alpha = nu/mu
+    x = x + alpha*p
+    r = r - alpha*q
+    nu0 = np.dot(r,r)
+    beta = nu0/nu
+    p = r + beta*p
+    nu = nu0
+    if (norm(r) < tol):
+      print(it)
+      return x
+  raise ValueError("Falha de convergencia.")
+\end{lstlisting}
 
 \begin{exer}\label{exer:mgc}
-  Use a implementação acima (Listing \ref{lst:algGC}) na resolução dos seguintes itens.
+  Use o Código~\ref{code:algGC} na resolução dos seguintes itens.
   \begin{enumerate}
-  \item Compute a solução do problema discreto do Exemplo \ref{ex:poisson} pelo Método do Gradiente Conjugado. Quantas iterações são necessárias para obter um resíduo com norma $\leq 10^{-14}$?
-  \item Compute a solução do problema discreto do Exercício \ref{exer:poissonDNH} pelo Método do Gradiente Conjugado. Quantas iterações são necessárias para obter um resíduo com norma $\leq 10^{-14}$?
-  \item Compare a aplicação do Método GMRES\footnote{\href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.gmres.html}{scipy.sparse.linalg.gmres}} e da implementação {\scipy} do Método do Gradiente Conjugado\footnote{\href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.cg.html}{scipy.sparse.linalg.cg}}
+  \item Compute a solução do problema discreto do Exemplo~\ref{ex:poisson} pelo método do gradiente conjugado. Quantas iterações são necessárias para obter um resíduo com norma $\leq 10^{-14}$?
+  \item Compute a solução do problema discreto do Exercício~\ref{exer:poissonDNH} pelo método do gradiente conjugado. Quantas iterações são necessárias para obter um resíduo com norma $\leq 10^{-14}$?
+  \item Compare a aplicação do método GMRES\endnote{\href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.gmres.html}{scipy.sparse.linalg.gmres}} e da implementação {\scipy} do método do gradiente conjugado\endnote{\href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.cg.html}{scipy.sparse.linalg.cg}}
   \end{enumerate}
 \end{exer}
 
 \begin{exer}
-  Considere o Exercício \ref{exer:poissonDNH}.
+  Considere o Exercício~\ref{exer:poissonDNH}.
   \begin{enumerate}[a)]
-  \item Use sua implementação do Método do Gradiente Conjugado acima (Listing \ref{lst:algGC}) para computar uma solução aproximada, cuja norma do resíduo $\leq 10^{-14}$.
-  \item Compare o desempenho com a aplicação de sua implementação do Método do Gradiente (Exercício \ref{exer:mg}).
+  \item Use sua implementação do método do gradiente conjugado Código~\ref{lst:algGC} para computar uma solução aproximada, cuja norma do resíduo $\leq 10^{-14}$.
+  \item Compare o desempenho com a aplicação de sua implementação do método do gradiente (Exercício~\ref{exer:mg}).
   \item Compare o desempenho com a aplicação da implementação GMRES
     \begin{center}
       \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.gmres.html}{scipy.sparse.linalg.gmres}
@@ -997,6 +1021,7 @@ Aqui, a ideia é desenvolver um método iterativo em que o erro a cada passo sej
 \end{exer}
 
 \subsection{Precondicionamento}
+\badgeRevisar
 
 Precondicionamento refere-se a modificar o sistema linear original de forma que a computação de sua solução possa ser feita de forma mais eficiente. No lugar do sistema original
 \begin{equation}
