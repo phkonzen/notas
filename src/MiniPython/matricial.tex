@@ -1,0 +1,734 @@
+%Este trabalho está licenciado sob a Licença Atribuição-CompartilhaIgual 4.0 Internacional Creative Commons. Para visualizar uma cópia desta licença, visite http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR ou mande uma carta para Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+
+\section{Elementos da Computação Matricial}\label{sec_mat}
+
+Nesta seção, vamos explorar a {\numpy} (Numerical Python), biblioteca para tratamento numérico de dados. Ela é extensivamente utilizada nos mais diversos campos da ciência e da engenharia. Aqui, vamos nos restringir a introduzir algumas de suas ferramentas para a computação matricial.
+
+Usualmente, a biblioteca é importada como segue
+
+\begin{lstlisting}
+import numpy as np
+\end{lstlisting}
+
+\subsection{NumPy \texttt{array}}
+
+Um {\PYTHONnumpyDOTarray} é uma tabela de valores (vetor, matriz ou multidimensional) e contém informação sobre os dados brutos, indexação e como interpretá-los. {\bf Os elementos são todos do mesmo tipo} (diferente de uma lista Python), referenciados pela propriedade \texttt{dtype}. A indexação dos elementos pode ser feita por um \texttt{tuple} de inteiros não negativos, por booleanos, por outro {\PYTHONnumpyDOTarray} ou por números inteiros. O \texttt{ndim} de um {\PYTHONnumpyDOTarray} é seu número de dimensões (chamadas de \texttt{axes}\footnote{Do inglês, plural de {\it axis}, eixo.}). O {\PYTHONnumpyDOTndarrayDOTshape} é um \texttt{tuple} de inteiros que fornece seu tamanho (número de elementos) em cada dimensão. Sua inicialização pode ser feita usando-se listas simples ou encadeadas. Por exemplo,
+
+\begin{lstlisting}
+a = np.array([1,3,-1,2])
+print(a)
+\end{lstlisting}
+
+\begin{verbatim}
+[ 1  3 -1  2]
+\end{verbatim}
+
+\begin{lstlisting}
+a.dtype
+\end{lstlisting}
+
+\begin{verbatim}
+dtype('int64')
+\end{verbatim}
+
+\begin{lstlisting}
+a.shape
+\end{lstlisting}
+
+\begin{verbatim}
+(4,)
+\end{verbatim}
+
+\begin{lstlisting}
+a[2]
+\end{lstlisting}
+
+\begin{verbatim}
+-1
+\end{verbatim}
+
+\begin{lstlisting}
+a[1:3]
+\end{lstlisting}
+
+\begin{verbatim}
+array([ 3, -1])
+\end{verbatim}
+
+temos um {\PYTHONnumpyDOTarray} de números inteiros com quatro elementos dispostos em um único \texttt{axis} (eixo). Podemos interpretá-lo como uma representação de um vetor linha ou coluna, i.e.
+\begin{equation}
+  a = (1, 3, -1, 2)
+\end{equation}
+vetor coluna ou $a^T$ vetor linha.
+
+Outro exemplo,
+
+\begin{lstlisting}
+a = np.array([[1.0,2,3],[-3,-2,-1]])
+a.dtype
+\end{lstlisting}
+
+\begin{verbatim}
+dtype('float64')
+\end{verbatim}
+
+\begin{lstlisting}
+a.shape
+\end{lstlisting}
+
+\begin{verbatim}
+(2, 3)
+\end{verbatim}
+
+\begin{lstlisting}
+a[1,1]
+\end{lstlisting}
+
+\begin{verbatim}
+-2.0
+\end{verbatim}
+
+temos um {\PYTHONnumpyDOTarray} de números decimais (\texttt{loat}) dispostos em um arranjo com dois \texttt{axes} (eixos). O primeiro \texttt{axis} tem tamanho $2$ e o segundo tem tamanho $3$. Ou seja, podemos interpretá-lo como uma matriz de duas linhas e três colunas. Podemos fazer sua representação algébrica como
+\begin{equation}
+  a =
+  \begin{bmatrix}
+    1 & 2 & 3\\
+    -3 & -2 & -1 
+  \end{bmatrix}
+\end{equation}
+
+\subsubsection{Inicialização de um array}\label{subsubsection:iniarray}
+
+O {\numpy} conta com úteis funções de inicialização de {\PYTHONnumpyDOTarray}. Vejam algumas das mais frequentes:
+\begin{itemize}
+\item \texttt{np.zeros()}: inicializa um {\PYTHONnumpyDOTarray} com todos seus elementos iguais a zero.
+  
+\begin{lstlisting}
+np.zeros(2)
+\end{lstlisting}
+
+\begin{verbatim}
+array([0., 0.])
+\end{verbatim}
+
+  \item \texttt{np.ones()}: inicializa um {\PYTHONnumpyDOTarray} com todos seus elementos iguais a $1$.
+
+\begin{lstlisting}
+np.ones((3,2), dtype='int')
+\end{lstlisting}
+
+\begin{verbatim}
+array([[1, 1],
+      [1, 1],
+      [1, 1]])
+\end{verbatim}
+
+  \item \texttt{np.empty()}: inicializa um {\PYTHONnumpyDOTarray} sem alocar valores para seus elementos\footnote{Atenção! Os valores dos elementos serão dinâmicos conforme ``lixo'' da memória.}.
+  
+\begin{lstlisting}
+np.empty(3)
+\end{lstlisting}
+
+\begin{verbatim}
+array([4.9e-324, 1.5e-323, 2.5e-323])
+\end{verbatim}
+
+  \item \texttt{np.arange()}: inicializa um {\PYTHONnumpyDOTarray} com uma sequência de elementos\endnote{Similar à função Python \texttt{range}.}.
+
+\begin{lstlisting}
+np.arange(1,6,2)
+\end{lstlisting}
+
+\begin{verbatim}
+array([1, 3, 5])
+\end{verbatim}
+
+  \item \texttt{np.linspace(a, b[, num=n])}: inicializa um {\PYTHONnumpyDOTarray} como uma sequência de elementos que começa em \texttt{a}, termina em \texttt{b} (incluídos) e contém \texttt{n} elementos igualmente espaçados.
+
+\begin{lstlisting}
+np.linspace(0, 1, num=5)
+\end{lstlisting}
+
+\begin{verbatim}
+array([0.  , 0.25, 0.5 , 0.75, 1.  ])
+\end{verbatim}
+
+\end{itemize}
+
+\subsubsection{Manipulação de \texttt{arrays}}
+
+Outras duas funções importantes no tratamento de \texttt{arrays} são:
+\begin{itemize}
+\item \texttt{arr.reshape()}: permite a alteração da forma de um {\PYTHONnumpyDOTarray}.
+  
+\begin{lstlisting}
+a = np.array([-2,-1])
+a
+\end{lstlisting}
+
+\begin{verbatim}
+array([-2, -1])
+\end{verbatim}
+
+\begin{lstlisting}
+a.reshape(2,1)
+\end{lstlisting}
+
+\begin{verbatim}
+array([[-2],
+        [-1]])
+\end{verbatim}
+
+O \texttt{arr.reshape()} também permite a utilização de um coringa \texttt{-1} que será dinamicamente determinado de forma obter-se uma estrutura adequada. Por exemplo,
+
+\begin{lstlisting}
+a = np.array([[1,2],[3,4]])
+a
+\end{lstlisting}
+
+\begin{verbatim}
+array([[1, 2],
+        [3, 4]])
+\end{verbatim}
+
+\begin{lstlisting}
+a.reshape((-1,1))
+\end{lstlisting}
+
+\begin{verbatim}
+array([[1],
+        [2],
+        [3],
+        [4]])
+\end{verbatim}
+
+\item \texttt{arr.transpose()}: computa a transposta de uma matriz.
+
+\begin{lstlisting}
+a = np.array([[1,2],[3,4]])
+a
+\end{lstlisting}
+
+\begin{verbatim}
+array([[1, 2],
+        [3, 4]])
+\end{verbatim}
+
+\begin{lstlisting}
+a.transpose()
+\end{lstlisting}
+
+\begin{verbatim}
+array([[1, 3],
+        [2, 4]])
+\end{verbatim}
+
+\item \texttt{np.concatenate()}: concatena \texttt{arrays}.
+
+\begin{lstlisting}
+a = np.array([1,2])
+b = np.array([2,3])
+c = np.concatenate((a,b))
+c
+\end{lstlisting}
+
+\begin{verbatim}
+array([1, 2, 2, 3])
+\end{verbatim}
+
+\begin{lstlisting}
+a = a.reshape((1,-1))
+a.ndim  
+\end{lstlisting}
+
+\begin{verbatim}
+2
+\end{verbatim}
+
+\begin{lstlisting}
+b = b.reshape((1,-1))
+b
+\end{lstlisting}
+
+\begin{verbatim}
+array([[2, 3]])
+\end{verbatim}
+
+\begin{lstlisting}
+d = np.concatenate((a,b), axis=0)
+d
+\end{lstlisting}
+
+\begin{verbatim}
+array([[1, 2],
+      [2, 3]])
+\end{verbatim}
+
+  \end{itemize}
+
+\subsubsection{Operadores Elemento-a-Elemento}\label{subsubsection:ope-a-e}
+
+Os operadores aritméticos disponível no Python atuam elemento-a-elemento nos \texttt{arrays}. Por exemplo,
+
+\begin{lstlisting}
+a = np.array([1,2])
+b = np.array([2,3])
+a+b
+\end{lstlisting}
+
+\begin{verbatim}
+array([3, 5])
+\end{verbatim}
+
+\begin{lstlisting}
+a-b
+\end{lstlisting}
+
+\begin{verbatim}
+array([-1, -1])
+\end{verbatim}
+
+\begin{lstlisting}
+b*a
+\end{lstlisting}
+
+\begin{verbatim}
+array([2, 6])
+\end{verbatim}
+
+\begin{lstlisting}
+a**b
+\end{lstlisting}
+
+\begin{verbatim}
+array([1, 8])
+\end{verbatim}
+
+\begin{lstlisting}
+2*b
+\end{lstlisting}
+
+\begin{verbatim}
+array([4, 6])
+\end{verbatim}
+
+
+O {\numpy} também conta com várias funções matemáticas elementares que operam elemento-a-elemento em \texttt{arrays}. Por exemplo,
+
+\begin{lstlisting}
+a = np.array([np.pi, np.sqrt(2)])
+a
+\end{lstlisting}
+
+\begin{verbatim}
+array([3.14159265, 1.41421356])
+\end{verbatim}
+
+\begin{lstlisting}
+np.sin(a)
+\end{lstlisting}
+
+\begin{verbatim}
+array([1.22464680e-16, 9.87765946e-01])
+\end{verbatim}
+
+\begin{lstlisting}
+np.exp(a)
+\end{lstlisting}
+
+\begin{verbatim}
+array([23.14069263,  4.11325038])
+\end{verbatim}
+
+ 
+\begin{obs}
+O {\numpy} contém um série de outras funções práticas para a manipulação de \texttt{arrays}. Consulte \href{https://numpy.org/doc/stable/user/absolute_beginners.html\#numpy-the-absolute-basics-for-beginners}{NumPy: the absolute basics for beginners}.  
+\end{obs}
+
+\subsection{Elementos da Álgebra Linear}
+
+O {\PYTHONnumpy} conta com um módulo de álgebra linear
+
+\begin{lstlisting}
+import numpy.linalg as npla
+\end{lstlisting}
+
+\subsubsection{Vetores}
+
+Um vetor podem ser representado usando um {\PYTHONnumpyDOTarray} de um eixo (dimensão) ou um com dois eixos, caso se queira diferenciá-lo entre um vetor linha ou coluna. Por exemplo, os vetores
+\begin{gather}
+  a = (2, -1, 7),\\
+  b = (3, 1, 0)^T
+\end{gather}
+podem ser alocados com
+
+\begin{lstlisting}
+x = np.array([2,-1,7])
+y = np.array([3,1,0])
+\end{lstlisting}
+
+Caso queira-se que $x$ siga um arranjo em coluna, pode-se modificado como segue
+
+\begin{lstlisting}
+a = a.reshape((-1,1))
+a
+\end{lstlisting}
+
+\begin{verbatim}
+array([[ 2],
+      [-1],
+      [ 7]])
+\end{verbatim}
+
+Como já vimos, o {\numpy} conta com operadores elemento-a-elemento que podem ser utilizados na álgebra envolvendo \texttt{arrays}, logo também aplicáveis a vetores (consulte a Subseção \ref{subsubsection:ope-a-e}). Vamos, aqui, introduzir outras operações próprias deste tipo de objeto.
+
+\begin{exr}
+  Aloque cada um dos seguintes vetores como um {\PYTHONnumpyDOTarray}:
+  \begin{enumerate}
+  \item[a)] $x = (1.2, -3.1, 4)$
+  \item[b)] $y = x^T$
+  \item[c)] $z = (\pi, \sqrt{2}, e^{-2})^T$
+  \end{enumerate}
+\end{exr}
+
+\subsubsection{Produto Escalar e Norma}
+
+Dados dois vetores,
+\begin{gather}
+  x = (x_0, x_1, \dotsc, x_{n-1}),\\
+  y = (y_0, y_1, \dotsc, y_{n-1})
+\end{gather}
+define-se o \emph{produto escalar} por
+\begin{equation}
+  x\cdot y = x_0y_0 + x_1y_1 + \cdots + x_{n-1}y_{n-1}
+\end{equation}
+Com o {\numpy}, podemos computá-lo com a função \texttt{np.dot()}. Por exemplo,
+
+\begin{lstlisting}
+x = np.array([-1, 0, 2, 4])
+y = np.array([0, 1, 1, -1])
+np.dot(x,y)
+\end{lstlisting}
+
+\begin{verbatim}
+-2
+\end{verbatim}
+
+A norma (euclidiana) de um vetor é definida por
+\begin{equation}
+  \|x\| = \sqrt{\sum_{i=0}^{n-1} x_i^2}.
+\end{equation}
+O {\numpy} conta com a função \texttt{np.linalg.norm()} para computá-la. Por exemplo,
+
+\begin{lstlisting}
+npla.norm(y)
+\end{lstlisting}
+
+\begin{verbatim}
+1.7320508075688772
+\end{verbatim}
+
+\begin{exr}
+  Faça um código para computar o produto escalar $x\cdot y$ sendo
+  \begin{gather}
+    x = (1.2, \ln(2), 4),\\
+    y = (\pi^2, \sqrt{3}, e)
+  \end{gather}
+\end{exr}
+
+
+\subsubsection{Matrizes}\label{sec_alglin}
+
+Uma matriz pode ser alocada como um {\PYTHONnumpyDOTarray} de dois eixos (dimensões). Por exemplo, as matrizes
+\begin{align}
+  &A =
+  \begin{bmatrix}
+    2 & -1 & 7\\
+    3 & 1 & 0
+  \end{bmatrix},\label{sec_alglin:eq:A}\\
+  &B =
+  \begin{bmatrix}
+    4 & 0\\
+    2 & 1\\
+   -8 & 6
+  \end{bmatrix}\label{sec_alglin:eq:B}
+\end{align}
+podem ser alocadas como segue
+
+\begin{lstlisting}
+A = np.array([[2,-1,7],[3,1,0]])
+A
+\end{lstlisting}
+
+\begin{verbatim}
+array([[ 2, -1,  7],
+        [ 3,  1,  0]])
+\end{verbatim}
+
+\begin{lstlisting}
+B = np.array([[4,0],[2,1],[-8,6]])
+B
+\end{lstlisting}
+
+\begin{verbatim}
+array([[ 4,  0],
+        [ 2,  1],
+        [-8,  6]])
+\end{verbatim}
+
+Como já vimos, o {\numpy} conta com operadores elemento-a-elemento que podem ser utilizados na álgebra envolvendo \texttt{arrays}, logo também aplicáveis a matrizes (consulte a Subseção \ref{subsubsection:ope-a-e}). Vamos, aqui, introduzir outras operações próprias deste tipo de objeto.
+
+\begin{exr}
+  Aloque cada uma das seguintes matrizes como um {\PYTHONnumpyDOTarray}:
+  \begin{enumerate}[a)]
+  \item
+    \begin{equation}
+      A =
+      \begin{bmatrix}
+        -1 & 2\\
+        2 & -4\\
+        6 & 0
+      \end{bmatrix}
+    \end{equation}
+  \item $B = A^T$ 
+  \end{enumerate}
+\end{exr}
+
+\begin{exr}
+  Seja
+
+\begin{lstlisting}
+A = np.array([[2,1],[1,1],[-3,-2]])
+\end{lstlisting}
+
+  Determine o formato (\texttt{shape}) dos seguintes \texttt{arrays}:
+  \begin{enumerate}[a)]
+  \item \texttt{A[:,0]}
+  \item \texttt{A[:,0:1]}
+  \item \texttt{A[1:3,0]}
+  \item \texttt{A[1:3,0:1]}
+  \item \texttt{A[1:3,0:2]}
+  \end{enumerate}
+\end{exr}
+
+\subsubsection{Inicialização de Matrizes}
+
+Além das inicializações de \texttt{arrays} já estudadas na Subseção \ref{subsubsection:iniarray}, temos mais algumas que são particularmente úteis no caso de matrizes.
+\begin{itemize}
+\item \texttt{np.eye(n)}: \hl{retorna a matriz identidade $n\times n$}
+
+\begin{lstlisting}
+np.eye(3)
+\end{lstlisting}
+
+\begin{verbatim}
+array([[1., 0., 0.],
+    [0., 1., 0.],
+    [0., 0., 1.]])
+\end{verbatim}
+
+   \item \texttt{np.diag(v)}: \hl{retorna uma matriz diagonal formada pela \texttt{list v}}
+
+\begin{lstlisting}
+np.diag([1,2,3])
+\end{lstlisting}
+
+\begin{verbatim}
+array([[1, 0, 0],
+    [0, 2, 0],
+    [0, 0, 3]])
+\end{verbatim}
+
+  \end{itemize}
+
+ \begin{exr}
+   Aloque a matriz escalar $C = [c_{ij}]_{i,j=0}^{99}$, sendo $c_{ii}=\pi$ e $c_{ij}=0$ para $i\neq j$.
+ \end{exr}
+
+\subsubsection{Multiplicação de Matrizes}
+
+A multiplicação da matriz $A = [a_{ij}]_{i,j=0}^{n-1,l-1}$ pela matriz $B = [b_{ij}]_{i,j=0}^{l-1,m-1}$ é a matriz $C = AB = [c_{ij}]_{i,j=0}^{n-1,m-1}$ tal que
+\begin{equation}
+  c_{ij} = \sum_{k=0}^{l-1} a_{ik}b_{k,j}
+\end{equation}
+O {\PYTHONnumpy} tem a função {\PYTHONnumpyDOTmatmul} para computar a multiplicação de matrizes. Por exemplo, a multiplicação das matrizes dadas em \eqref{sec_alglin:eq:A} e \eqref{sec_alglin:eq:B}, computamos
+
+\begin{lstlisting}
+C = np.matmul(A,B)
+C
+\end{lstlisting}
+
+\begin{verbatim}
+array([[-50,  41],
+[ 14,   1]])
+\end{verbatim}
+
+\begin{obs}\normalfont{(\hl{\texttt{matmul}, \texttt{*}, \texttt{@}})}
+  É importante notar que {\PYTHONnumpyDOTmatmul}\texttt{(A,B)} é a multiplicação de matrizes, enquanto que \texttt{*} consiste na multiplicação elemento a elemento. Alternativamente a {\PYTHONnumpyDOTmatmul}\texttt{(A,B)} pode-se usar \texttt{A @ B}.
+\end{obs}
+
+\begin{exr}
+  Aloque as matrizes
+  \begin{gather}
+    C =
+    \begin{bmatrix}
+      1 & 2 & -1 \\
+      3 & 2 & 1 \\
+      0 & -2 & -3
+    \end{bmatrix}\\
+    D =
+    \begin{bmatrix}
+      2 & 3 \\
+      1 & -1 \\
+      6 & 4
+    \end{bmatrix}\\
+    E =
+    \begin{bmatrix}
+      1 & 2 & 1 \\
+      0 & -1 & 3
+    \end{bmatrix}
+  \end{gather}
+  Então, se existirem, compute e forneça as dimensões das seguintes matrizes
+  \begin{enumerate}[a)]
+  \item $CD$
+  \item $D^TE$
+  \item $D^TC$
+  \item $DE$
+  \end{enumerate}
+\end{exr}
+
+\subsubsection{Traço e Determinante de uma Matriz}
+
+O {\PYTHONnumpy} tem a função {\PYTHONnumpyDOTndarrayDOTtrace} para computar o \emph{traço} de uma matriz (soma dos elementos de sua diagonal). Por exemplo,
+
+\begin{lstlisting}
+A = np.array([[-1,2,0],[2,3,1],[1,2,-3]])
+A.trace()
+\end{lstlisting}
+
+\begin{verbatim}
+-1
+\end{verbatim}
+
+Já, o \emph{determinante} é fornecido no módulo {\PYTHONnumpyDOTlinalg}. Por exemplo,
+
+\begin{lstlisting}
+A = np.array([[-1,2,0],[2,3,1],[1,2,-3]])
+npla.det(A)
+\end{lstlisting}
+
+\begin{verbatim}
+25.000000000000007
+\end{verbatim}
+
+\begin{exr}
+  Compute e verifique os traços e os determinantes das seguintes matrizes
+  \begin{gather}
+    C =
+    \begin{bmatrix}
+      -2 & 3 \\
+      1 & 4
+    \end{bmatrix}\\
+    D =
+    \begin{bmatrix}
+      3 & 1 & -1 \\
+      1 & 0 & 2 \\
+      4 & 2 & -1
+    \end{bmatrix}
+  \end{gather}
+\end{exr}
+
+\subsubsection{Rank e Inversa de uma Matriz}
+
+O \emph{rank} de uma matriz é o número de linhas ou colunas linearmente independentes. O {\PYTHONnumpy} conta com a função {\PYTHONnumpyDOTlinalgDOTmatrixrank} para computá-lo. Por exemplo,
+
+\begin{lstlisting}
+npla.matrix_rank(np.eye(3))
+\end{lstlisting}
+
+\begin{verbatim}
+3
+\end{verbatim}
+
+\begin{lstlisting}
+A = np.array([[1,2,3],[-1,1,-1],[0,3,2]])
+npla.matrix_rank(A)
+\end{lstlisting}
+
+\begin{verbatim}
+2
+\end{verbatim}
+
+
+A inversa de uma matriz \emph{full rank} pode ser computada com a função {\PYTHONnumpyDOTlinalgDOTinv}. Por exemplo,
+
+\begin{lstlisting}
+A = np.array([[1,2,3],[-1,1,-1],[1,3,2]])
+npla.matrix_rank(A)
+\end{lstlisting}
+
+\begin{verbatim}
+3
+\end{verbatim}
+
+\begin{lstlisting}
+Ainv = np.linalg.inv(A)
+np.matmul(A,Ainv)
+\end{lstlisting}
+
+\begin{verbatim}
+array([[ 1.00000000e+00,  0.00000000e+00,  0.00000000e+00],
+        [ 1.11022302e-16,  1.00000000e+00,  2.22044605e-16],
+        [-2.22044605e-16,  0.00000000e+00,  1.00000000e+00]])
+\end{verbatim}
+
+\begin{exr}
+  Compute, se possível, a matriz inversa de cada uma das seguintes matrizes
+  \begin{gather}
+    B =
+    \begin{bmatrix}
+      2 & -1\\
+      -2 & 1
+    \end{bmatrix}\\
+    C =
+    \begin{bmatrix}
+      -2 & 0 & 1\\
+      3 & 1 & -1\\
+      2 & 1 & 0
+    \end{bmatrix}
+  \end{gather}
+  Verifique suas respostas.
+\end{exr}
+
+\subsubsection{Autovalores e Autovetores de uma Matriz}
+
+Um auto-par $(\lambda, v)$, $\lambda$ um escalar chamado de autovalor e $v\neq 0$ é um vetor chamado de autovetor, é tal que
+\begin{equation}
+  A\lambda = \lambda v.
+\end{equation}
+O {\PYTHONnumpy} tem a função {\PYTHONnumpyDOTlinalgDOTeig} para computar os auto-pares de uma matriz. Por exemplo,
+
+\begin{lstlisting}
+npla.eig(np.eye(3))
+\end{lstlisting}
+
+\begin{verbatim}
+(array([1., 1., 1.]), array([[1., 0., 0.],
+[0., 1., 0.],
+[0., 0., 1.]]))
+\end{verbatim}
+
+Observamos que a função uma dupla, sendo o primeiro item um {\PYTHONnumpyDOTarray} contendo os autovalores (repetidos conforme suas multiplicidades) e o segundo item é a matriz dos autovetores, onde estes são suas colunas.
+
+\begin{exr}
+  Compute os auto-pares da matriz
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      1 & 3 & 2\\
+      3 & 2 & -1\\
+      2 & -1 & 1
+    \end{bmatrix}.
+  \end{equation}
+  Então, verifique se, de fato, $Av = \lambda v$ para cada auto-par $(\lambda, v)$ computado.
+\end{exr}

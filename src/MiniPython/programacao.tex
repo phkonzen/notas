@@ -1,0 +1,284 @@
+%Este trabalho está licenciado sob a Licença Atribuição-CompartilhaIgual 4.0 Internacional Creative Commons. Para visualizar uma cópia desta licença, visite http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR ou mande uma carta para Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+
+\section{Elementos da Programação Estruturada}\label{sec_progest}
+
+\hl{Na programação estruturada, os comandos de programação são executados em sequência, um novo comando só iniciado após o término do processamento do comando anterior}. Em {\python}, cada linha consiste em um comando, o programa tem início na primeira linha e término na última linha do código. \hl{Instruções de \emph{ramificação} permitem a seleção \textit{on-the-fly} de blocos de comandos, enquanto que instruções de \emph{repetição} permitem a execução repetida de um bloco. A definição de \emph{função} permite a criação de um sub-código (sub-programa) do código}.
+
+\subsection{Ramificação}
+
+\hl{Uma \emph{estrutura de ramificação} é uma instrução para a tomada de decisões durante a execução de um programa}. No {\python}, temos disponível a instrução \texttt{if-[elif-...-elif-else]}.
+
+\subsubsection{\texttt{if}}
+
+Por exemplo, o código abaixo computa as raízes reais do polinômio
+\begin{equation}
+  p(x) = ax^2 + bx + c,
+\end{equation}  
+com $a$, $b$ e $c$ alocados no início do código.
+
+\begin{lstlisting}
+import math as m
+a = 1.
+b = -1.
+c = -2.
+dlta = b**2 - 4.*a*c
+if (dlta >= 0.):
+  x1 = (-b - m.sqrt(dlta))/(2.*a)
+  x2 = (-b + m.sqrt(dlta))/(2.*a)
+  print('x1 =', x1)
+  print('x2 =', x2)
+\end{lstlisting}
+
+\begin{verbatim}
+x1 = -1.0
+x2 = 2.0
+\end{verbatim}
+
+Neste código, o bloco de comandos (linhas 7-10) só é executado, se o discrimante do polinômio seja não-negativo. Verifique! Troque os valores de $a$, $b$ e $c$ de forma que $p$ tenha raízes complexas.
+
+\begin{obs}\normalfont{(\hl{Indentação}.)}
+  Nas linhas 7-10 do código anterior, a indentação dos comandos é obrigatória. O bloco de comandos indentados indicam o escopo da instrução \texttt{if}.
+\end{obs}
+
+\subsubsection{\texttt{if-else}}
+
+Vamos modificar o código anterior, de forma que as raízes complexas sejam computadas e impressas, quando for o caso.
+
+\begin{lstlisting}
+import math as m
+a = 1.
+b = -4.
+c = 8.
+dlta = b**2 - 4.*a*c
+if (dlta >= 0.):
+  # raízes reais
+  x1 = (-b - m.sqrt(dlta))/(2.*a)
+  x2 = (-b + m.sqrt(dlta))/(2.*a)
+else:
+  # raízes complexas
+  rea = -b/(2.*a)
+  img = m.sqrt(-dlta)/(2.*a)
+  x1 = rea - img*1j
+  x2 = rea + img*1j
+print('x1 =', x1)
+print('x2 =', x2)
+\end{lstlisting}
+
+\begin{verbatim}
+x1 = (2-2j)
+x2 = (2+2j)
+\end{verbatim}
+
+\begin{obs}\normalfont{(\hl{Número Complexo}.)}
+  Em {\python}, números complexos podem ser alocados como objetos da classe \texttt{complex}. O número imaginário $i = \sqrt{-1}$ é denotado por \texttt{1j} e um número completo $a + bi$ por \texttt{a + b*1j}.
+\end{obs}
+
+\subsubsection{\texttt{if-elif-else}}
+
+A instrução \texttt{elif} é uma conjunção de uma sequência de instruções texttt{else-if}. Vamos modificar o código anterior, de forma a computar o caso de raízes reais duplas de forma própria.
+
+\begin{lstlisting}
+import math as m
+a = 1.
+b = 2.
+c = 1.
+dlta = b**2 - 4.*a*c
+if (dlta > 0.):
+  # raízes reais
+  x1 = (-b - m.sqrt(dlta))/(2.*a)
+  x2 = (-b + m.sqrt(dlta))/(2.*a)
+elif (dlta == 0.):
+  x1 = x2 = -b/(2.*a)
+else:
+  # raízes complexas
+  rea = -b/(2.*a)
+  img = m.sqrt(-dlta)/(2.*a)
+  x1 = rea - img*1j
+  x2 = rea + img*1j
+print('x1 =', x1)
+print('x2 =', x2)
+\end{lstlisting}
+
+\begin{verbatim}
+x1 = -1.0
+x2 = -1.0
+\end{verbatim}
+
+\begin{exr}
+  Desenvolva um código para computar a raiz do polinômio
+  \begin{equation}
+    f(x) = ax + b
+  \end{equation}
+  com dados $a$ e $b$. O código deve lidar com todos os casos possíveis, a saber:
+  \begin{enumerate}[a)]
+    \item única raiz ($a\neq 0$).
+    \item infinitas raízes ($a=b=0$).
+    \item não existe raíz ($a = 0$ e $b \neq 0$).
+  \end{enumerate}
+\end{exr}
+
+\begin{exr}
+  Desenvolva um código em que dados três pontos $A$, $B$ e $C$ no plano, verifique se $ABC$ determia um triângulo. Caso afirmativo, classifique-o como um triângulo equilátero, isósceles ou escaleno.
+\end{exr}
+
+\subsection{Repetição}
+
+\hl{Estruturas de repetição são instruções que permitem que a execução repetida de um bloco de comandos}. São duas instruções disponíveis {\PYTHONwhile} e {\PYTHONfor}.
+
+\subsubsection{\texttt{while}}
+
+\hl{A instrução {\PYTHONwhile} permite a repetição de um bloco de comandos, equanto uma dada condição for verdadeira}. 
+
+Por exemplo, o seguinte código computa e imprimi os elementos da sequência de Fibonacci{\fibonacci}, enquanto forem menores que $10$.
+
+\begin{lstlisting}
+n = 1
+print(n)
+m = 1
+print(m)
+while (n+m < 10):
+  s = m
+  m += n
+  n = s
+  print(m)
+\end{lstlisting}
+
+Verifique!
+
+\begin{obs}\normalfont{(\hl{Instruções de Controle}.)}
+  As instruções de controle {\PYTHONbreak}, {\PYTHONcontinue} são bastante úteis em várias situações. A primeira, encerra as repetições e, a segunda, pula para uma nova repetição.
+\end{obs}
+
+\begin{exr}
+  Use {\PYTHONwhile} para imprimir os dez primeiros números ímpares.
+\end{exr}
+
+\begin{exr}
+  Uma aplicação do Método Babilônico\footnote{Matemática Babilônica, matemática desenvolvida na Mesopotâmia, desde os Sumérios até a queda da Babilônia em 539 a.C.. Fonte: \href{https://pt.wikipedia.org/wiki/Matem\%C3\%A1tica\_babil\%C3\%B4nica}{Wikipédia}.} para a aproximação da solução da equação $x^2-2 = 0$, consiste na iteração
+  \begin{gather}
+    x_0 = 1,\\
+    x_{i+1} = \frac{x_i}{2} + \frac{1}{x_i},\quad i=0,1,2,\ldots
+  \end{gather}
+  Faça um código com {\PYTHONwhile} para computar aproximação $x_{i}$, tal que $|x_{i}-x_{i-1}|<10^{-7}$.
+\end{exr}
+
+\subsubsection{\texttt{for}}
+
+\hl{A instrução {\PYTHONfor} permite a execução iterada de um bloco de comandos}. Dado um objeto iterável, a cada laço um novo item do objeto é tomado. Por exemplo, o seguinte código computa e imprime os primeiros $6$ elementos da sequência de Fibonacci.
+
+\begin{lstlisting}
+n = 1
+print(f'1: {n}')
+m = 1
+print(f'2: {m}')
+for i in [3,4,5,6]:
+  s = m
+  m += n
+  n = s
+  print(f'{i}: {m}')
+\end{lstlisting}
+
+Verifique!
+
+\subsubsection{\texttt{range}}
+
+A função {\PYTHONrange}\texttt{([start,]stop[,sep])} é particularmente útil na construção de instruções \texttt{for}. Ela cria um objeto de classe iterável de \texttt{start} (incluído) a \texttt{stop} (excluído), de elementos igualmente separados por \texttt{sep}. Por padrão, \texttt{start=0}, \texttt{sep=1} caso omitidos. Por exemplo, o código anterior por ser reescrito como segue.
+
+\begin{lstlisting}
+n = 1
+print(f'1: {n}')
+m = 1
+print(f'2: {m}')
+for i in range(3,7):
+  s = m
+  m += n
+  n = s
+  print(f'{i}: {m}')
+\end{lstlisting}
+
+Verifique!
+
+\begin{exr}
+  Com $n$ dado, desenvolva um código para computar o valor da soma harmônica
+  \begin{equation}
+    \sum_{k=1}^n \frac{1}{k} = \frac{1}{1} + \frac{1}{2} + \cdots + \frac{1}{n}.
+  \end{equation}
+\end{exr}
+
+\begin{exr}
+  Desenvolva um código para computar o fatorial de um dado número natural $n$. Dica: use {\PYTHONmathDOTfactorial} para verificar seu código.
+\end{exr}
+
+\subsection{Funções}
+
+\hl{Em {\python}, uma função é definida pela instrução \texttt{def}}. Por exemplo, o seguinte código impleta a função
+\begin{equation}
+  f(x) = 2x - 3
+\end{equation}
+e imprime o valor de $f(2)$.
+
+\begin{lstlisting}
+  def f(x):
+  y = 2*x - 3
+  return x
+
+z = f(2)
+print(f'f(2) = {z}')
+\end{lstlisting}
+
+\begin{verbatim}
+f(2) = 2
+\end{verbatim}
+
+\begin{obs}
+  Para funções pequenas, pode-se utilizar a instrução \texttt{lambda} de funções anônimas. Por exemplo,
+
+\begin{lstlisting}
+f = lambda x: 2*x - 3
+print(f'f(3) = {f(3)}')
+\end{lstlisting}
+
+\begin{verbatim}
+f(3) = 3
+\end{verbatim}
+
+\end{obs}
+
+\begin{ex}\normalfont{(\hl{Função com Parâmetros}.)}
+  O seguinte código, implementa o polinômio de primeiro grau
+  \begin{equation}
+    p(x) = ax + b,
+  \end{equation}
+  com parâmteros predeterminados $a=1$ e $b=0$ (função identidade).
+
+\begin{lstlisting}
+def p(x, a=1., b=0.):
+  y = a*x + b
+  return y
+
+print('p(2) =', p(2.))
+print('p(2, 3, -5) =', p(2., 3., -5.))
+\end{lstlisting}
+
+\end{ex}
+
+\begin{exr}
+  Implemente uma função para computar as raízes de um polinômio de grau 2 $p(x) = ax^2 + bx + c$.
+\end{exr}
+
+\begin{exr}
+  Implemente uma função que computa o produto escalar de dois vetores
+  \begin{align}
+    &x = (x_0, x_1, \ldots, x_{n-1}),\\
+    &y = (y_0, y_1, \ldots, y_{n-1}).
+  \end{align}
+  Dica: considere que os vetores são alocados com \texttt{lists}.
+\end{exr}
+
+\begin{exr}
+  Implemente uma função que computa o determinante de matrizes $2\times 2$. Dica: considere que a matriz está alocada com um {\PYTHONlist} encadeado.
+\end{exr}
+
+\begin{exr}
+  Implemente uma função que computa a multiplicação matriz - vetor $Ax$, com $A$ matriz $2\times 2$ e $x$ um vetor de dois elementos.
+\end{exr}
