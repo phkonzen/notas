@@ -197,7 +197,7 @@ class Notas:
         body += '<div class="collapse navbar-collapse" id="navbarNav">'
         body += '<ul class="navbar-nav">'
         body += '<li class="nav-item"><a class="nav-link" href="../index.html"><i class="fas fa-home"></i> Início</a></li>'
-        body += '<li class="nav-item"><a class="nav-link active" href="main.html">Sumário</a></li>'
+        body += '<li class="nav-item"><a class="nav-link active" href="main.html">Conteúdo</a></li>'
         body += '<li class="nav-item"><a class="nav-link" href="main.pdf"><i class="fas fa-download" aria-hidden="true"></i> PDF</a></li>'
         # body += '<li class="nav=item"><a class="nav-link" href="https://colab.research.google.com/github/phkonzen/notas/blob/master/notas.ipynb">Google Colab</a></li>'
         body += '<li class="nav-item dropdown">'
@@ -509,7 +509,7 @@ class Notas:
                                         respid + '">Resposta</button></div>' + \
                                         '<div class="collapse" id="'+respid+'">')
                     paux = page.find('ltx_theorem_resp')
-                    
+
                 #modifica o __footer__
                 page = page.replace('<footer class="ltx_page_footer">',
                                     footer_top + '<footer class="ltx_page_footer">')
