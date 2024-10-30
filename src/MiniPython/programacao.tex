@@ -104,7 +104,7 @@ x1 = -1.0
 x2 = -1.0
 \end{verbatim}
 
-\begin{exr}
+\begin{exer}
   Desenvolva um código para computar a raiz do polinômio
   \begin{equation}
     f(x) = ax + b
@@ -115,12 +115,64 @@ x2 = -1.0
     \item infinitas raízes ($a=b=0$).
     \item não existe raíz ($a = 0$ e $b \neq 0$).
   \end{enumerate}
-\end{exr}
+\end{exer}
+\begin{resp}
 
-\begin{exr}
-  Desenvolva um código em que dados três pontos $A$, $B$ e $C$ no plano, verifique se $ABC$ determia um triângulo. Caso afirmativo, classifique-o como um triângulo equilátero, isósceles ou escaleno.
-\end{exr}
+\begin{lstlisting}
+# params
+a = 2.
+b = 1.
+# raiz
+if (a != 0.):
+  x = -b/a
+  print('raiz única x = ', x)
+elif (b == 0.):
+  print('infinitas raízes x')
+else:
+  print('não existe raíz')
+\end{lstlisting}
 
+\end{resp}
+
+\begin{exer}
+  Desenvolva um código em que dados três pontos $A$, $B$ e $C$ no plano, verifique se $ABC$ determina um triângulo. Caso afirmativo, classifique-o como um triângulo equilátero, isósceles ou escaleno.
+\end{exer}
+\begin{resp}
+
+\begin{lstlisting}
+import math
+# pts
+A = (0., 0.)
+B = (3., 0.)
+C = (3., 4.)
+# compr. lados
+lado_1 = math.sqrt((B[0]-A[0])**2 + (B[1]-A[1])**2)
+lado_2 = math.sqrt((C[0]-B[0])**2 + (C[1]-B[1])**2)
+lado_3 = math.sqrt((C[0]-A[0])**2 + (C[1]-A[1])**2)
+# triangulo?
+if (lado_1 + lado_2 > lado_3) and \
+    (lado_1 + lado_3 > lado_2) and \
+    (lado_2 + lado_3 > lado_1):
+  print('ABC é triângulo:')
+  # equilátero?
+  if lado_1 == lado_2 == lado_3:
+    print('\tequilátero')
+  elif (lado_1 != lado_2 != lado_3):
+    print('\tescaleno')
+  else:
+    print('\tisósceles')
+else:
+  print('ABC não é triângulo')
+\end{lstlisting}
+
+\end{resp}
+
+\ifisbook 
+\subsubsection*{Respostas dos Exercícios}
+\shipoutAnswer
+\fi
+
+%%% subsection
 \subsection{Repetição}
 
 \hl{Estruturas de repetição são instruções que permitem que a execução repetida de um bloco de comandos}. São duas instruções disponíveis {\PYTHONwhile} e {\PYTHONfor}.
@@ -149,18 +201,43 @@ Verifique!
   As instruções de controle {\PYTHONbreak}, {\PYTHONcontinue} são bastante úteis em várias situações. A primeira, encerra as repetições e, a segunda, pula para uma nova repetição.
 \end{obs}
 
-\begin{exr}
+\begin{exer}
   Use {\PYTHONwhile} para imprimir os dez primeiros números ímpares.
-\end{exr}
+\end{exer}
+\begin{resp}
+  
+\begin{lstlisting}
+i = 1
+c = 0
+while (c < 10):
+  print(i)
+  i += 2
+  c += 1
+\end{lstlisting}
 
-\begin{exr}
-  Uma aplicação do Método Babilônico\footnote{Matemática Babilônica, matemática desenvolvida na Mesopotâmia, desde os Sumérios até a queda da Babilônia em 539 a.C.. Fonte: \href{https://pt.wikipedia.org/wiki/Matem\%C3\%A1tica\_babil\%C3\%B4nica}{Wikipédia}.} para a aproximação da solução da equação $x^2-2 = 0$, consiste na iteração
+\end{resp}
+
+\begin{exer}
+  Uma aplicação do Método Babilônico\endnote{Matemática Babilônica, matemática desenvolvida na Mesopotâmia, desde os Sumérios até a queda da Babilônia em 539 a.C.. Fonte: \href{https://pt.wikipedia.org/wiki/Matem\%C3\%A1tica\_babil\%C3\%B4nica}{Wikipédia}.} para a aproximação da solução da equação $x^2-2 = 0$, consiste na iteração
   \begin{gather}
     x_0 = 1,\\
     x_{i+1} = \frac{x_i}{2} + \frac{1}{x_i},\quad i=0,1,2,\ldots
   \end{gather}
-  Faça um código com {\PYTHONwhile} para computar aproximação $x_{i}$, tal que $|x_{i}-x_{i-1}|<10^{-7}$.
-\end{exr}
+  Faça um código com {\PYTHONwhile} para computar aproximação $x_{i}$, tal que $|x_{i+1}-x_{i}|<10^{-7}$.
+\end{exer}
+\begin{resp}
+  
+\begin{lstlisting}
+import math
+x0 = 1.
+x = x0/2 + 1/x0
+while (math.fabs(x - x0) >= 1e-7):
+  x0 = x
+  x = x0/2 + 1/x0
+print(x)
+\end{lstlisting}
+
+\end{resp}
 
 \subsubsection{\texttt{for}}
 
@@ -198,17 +275,46 @@ for i in range(3,7):
 
 Verifique!
 
-\begin{exr}
+\begin{exer}
   Com $n$ dado, desenvolva um código para computar o valor da soma harmônica
   \begin{equation}
     \sum_{k=1}^n \frac{1}{k} = \frac{1}{1} + \frac{1}{2} + \cdots + \frac{1}{n}.
   \end{equation}
-\end{exr}
+\end{exer}
+\begin{resp}
+  
+\begin{lstlisting}
+n = 10
+s = 0.
+for i in range(1,n+1):
+  s += 1./i
+print(s)
+\end{lstlisting}
 
-\begin{exr}
+\end{resp}
+
+\begin{exer}
   Desenvolva um código para computar o fatorial de um dado número natural $n$. Dica: use {\PYTHONmathDOTfactorial} para verificar seu código.
-\end{exr}
+\end{exer}
+\begin{resp}
+  
+\begin{lstlisting}
+n = 5
+fact = 1
+for i in range(1, n+1):
+  fact *= i
+print(fact)
+\end{lstlisting}
 
+\end{resp}
+
+\ifisbook 
+\subsubsection*{Respostas dos Exercícios}
+\shipoutAnswer
+\fi
+
+
+%%% subsection
 \subsection{Funções}
 
 \hl{Em {\python}, uma função é definida pela instrução \texttt{def}}. Por exemplo, o seguinte código impleta a função
@@ -262,23 +368,83 @@ print('p(2, 3, -5) =', p(2., 3., -5.))
 
 \end{ex}
 
-\begin{exr}
+\begin{exer}
   Implemente uma função para computar as raízes de um polinômio de grau 2 $p(x) = ax^2 + bx + c$.
-\end{exr}
+\end{exer}
+\begin{resp}
 
-\begin{exr}
+\begin{lstlisting}
+import math
+def raizes_poli2(a, b, c):
+  dlta = b**2 - 4.*a*c
+  if (dlta > 0.):
+    x1 = (-b + math.sqrt(dlta))/(2.*a)
+    x2 = (-b - math.sqrt(dlta))/(2.*a)
+  elif (dlta == 0.):
+    x1 = -b/(2.*a)
+    x2 = x1
+  else:
+    x1 = None
+    x2 = None
+  return x1, x2  
+\end{lstlisting}
+
+\end{resp}
+
+\begin{exer}
   Implemente uma função que computa o produto escalar de dois vetores
   \begin{align}
     &x = (x_0, x_1, \ldots, x_{n-1}),\\
     &y = (y_0, y_1, \ldots, y_{n-1}).
   \end{align}
   Dica: considere que os vetores são alocados com \texttt{lists}.
-\end{exr}
+\end{exer}
+\begin{resp}
+  
+\begin{lstlisting}
+def dot(x, y):
+  s = 0.
+  for xi, yi in zip(x,y):
+    s += xi*yi
+  return s
+\end{lstlisting}
 
-\begin{exr}
+\end{resp}
+
+\begin{exer}
   Implemente uma função que computa o determinante de matrizes $2\times 2$. Dica: considere que a matriz está alocada com um {\PYTHONlist} encadeado.
-\end{exr}
+\end{exer}
+\begin{resp}
+  
+\begin{lstlisting}
+def det(A):
+  d = A[0][0]*A[1][1] \
+    - A[0][1]*A[1][0]
+  return d
+\end{lstlisting}
 
-\begin{exr}
-  Implemente uma função que computa a multiplicação matriz - vetor $Ax$, com $A$ matriz $2\times 2$ e $x$ um vetor de dois elementos.
-\end{exr}
+\end{resp}
+
+\begin{exer}
+  Implemente uma função que computa a multiplicação matriz - vetor $Ax$, com $A$ matriz $2\times 2$ e $x$ um vetor de dois elementos. Assuma que a matriz e o vetor estão alocados usando {\PYTHONlist}.
+\end{exer}
+\begin{resp}
+  
+\begin{lstlisting}
+def matVet(A, x):
+  n = len(A)
+  y = [0.]*n
+  for i in range(n):
+    for j in range(n):
+      y[i] += A[i][j]*x[j]
+  return y
+\end{lstlisting}
+
+\end{resp}
+
+\ifisbook 
+\subsubsection*{Respostas dos Exercícios}
+\shipoutAnswer
+\fi
+
+
