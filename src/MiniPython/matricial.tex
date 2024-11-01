@@ -2,9 +2,9 @@
 
 \section{Elementos da Computação Matricial}\label{sec_mat}
 
-Nesta seção, vamos explorar a {\numpy} (Numerical Python), biblioteca para tratamento numérico de dados. Ela é extensivamente utilizada nos mais diversos campos da ciência e da engenharia. Aqui, vamos nos restringir a introduzir algumas de suas ferramentas para a computação matricial.
+Nesta seção, vamos explorar a \hl{{\numpy} (Numerical Python), biblioteca para tratamento numérico de dados}. Ela é extensivamente utilizada nos mais diversos campos da ciência e da engenharia. Aqui, vamos nos restringir a introduzir algumas de suas ferramentas para a computação matricial.
 
-Usualmente, a biblioteca é importada como segue
+Usualmente, \hl{a biblioteca é importada como segue}
 
 \begin{lstlisting}
 import numpy as np
@@ -12,10 +12,10 @@ import numpy as np
 
 \subsection{NumPy \texttt{array}}
 
-Um {\PYTHONnumpyDOTarray} é uma tabela de valores (vetor, matriz ou multidimensional) e contém informação sobre os dados brutos, indexação e como interpretá-los. {\bf Os elementos são todos do mesmo tipo} (diferente de uma lista Python), referenciados pela propriedade \texttt{dtype}. A indexação dos elementos pode ser feita por um \texttt{tuple} de inteiros não negativos, por booleanos, por outro {\PYTHONnumpyDOTarray} ou por números inteiros. O \texttt{ndim} de um {\PYTHONnumpyDOTarray} é seu número de dimensões (chamadas de \texttt{axes}\footnote{Do inglês, plural de {\it axis}, eixo.}). O {\PYTHONnumpyDOTndarrayDOTshape} é um \texttt{tuple} de inteiros que fornece seu tamanho (número de elementos) em cada dimensão. Sua inicialização pode ser feita usando-se listas simples ou encadeadas. Por exemplo,
+\hl{Um {\PYTHONnumpyDOTarray} é uma tabela de valores} (vetor, matriz ou multidimensional) e contém informação sobre os dados brutos, indexação e como interpretá-los. \hl{Os elementos são todos do mesmo tipo} (diferente de uma lista {\python}), referenciados pela propriedade \texttt{dtype}. A \emph{indexação} dos elementos pode ser feita por um \texttt{tuple} de inteiros não negativos, por booleanos, por outro {\PYTHONnumpyDOTarray} ou por números inteiros. O \texttt{ndim} de um {\PYTHONnumpyDOTarray} é seu \emph{número de dimensões} (chamadas de \texttt{axes}\endnote{\texttt{axes}, do inglês, plural de \textit{axis}, eixo.}). O {\PYTHONnumpyDOTndarrayDOTshape} é um \texttt{tuple} de inteiros que fornece seu \emph{tamanho (número de elementos) em cada dimensão}. Sua inicialização pode ser feita usando-se listas simples ou encadeadas. Por exemplo,
 
 \begin{lstlisting}
-a = np.array([1,3,-1,2])
+a = np.array([1, 3, -1, 2])
 print(a)
 \end{lstlisting}
 
@@ -64,7 +64,8 @@ vetor coluna ou $a^T$ vetor linha.
 Outro exemplo,
 
 \begin{lstlisting}
-a = np.array([[1.0,2,3],[-3,-2,-1]])
+a = np.array([[1.0,2,3],
+              [-3,-2,-1]])
 a.dtype
 \end{lstlisting}
 
@@ -96,6 +97,39 @@ temos um {\PYTHONnumpyDOTarray} de números decimais (\texttt{loat}) dispostos e
     -3 & -2 & -1 
   \end{bmatrix}
 \end{equation}
+
+\begin{exer}
+Use {\PYTHONnumpyDOTarray} para alocar:
+\begin{enumerate}[a)]
+  \item o vetor
+  \begin{equation}
+    v = \left(-5, \pi, \sen(\pi/3)\right)
+  \end{equation}
+  \item a matriz
+  \begin{equation}
+    A = \begin{bmatrix}
+    -1 & \displaystyle\frac{1}{3}\\[1em]
+    2 & \displaystyle\sqrt{2}\\[1em]
+    \displaystyle e^{-1} & -3\\
+    \end{bmatrix}
+  \end{equation}
+\end{enumerate}
+\end{exer}
+\begin{resp}
+  
+\begin{lstlisting}
+import numpy as np
+# a)
+v = np.array([-5., np.pi, np.sin(np.pi/3)])
+print('v = ', v)
+# b)
+A = np.array([[-1., 1./3],
+              [2., np.sqrt(2)],
+              [np.exp(-1.), -3.]])
+print('A = \n', A)  
+\end{lstlisting}
+
+\end{resp}
 
 \subsubsection{Inicialização de um array}\label{subsubsection:iniarray}
 
@@ -154,6 +188,36 @@ array([0.  , 0.25, 0.5 , 0.75, 1.  ])
 \end{verbatim}
 
 \end{itemize}
+
+\begin{exer}
+  Aloque a matriz escalar
+\begin{equation}
+    A = \begin{bmatrix}
+      -2 & 0 & 0\\
+      0 & -2 & 0\\
+      0 & 0 & -2
+    \end{bmatrix}
+\end{equation}  como um {\PYTHONnumpyDOTarray}.
+\end{exer}
+\begin{resp}
+  
+\begin{lstlisting}
+A = -2*np.ones((3,3))
+print('A = \n', A)
+\end{lstlisting}
+\end{resp}
+
+\begin{exer}
+  Construa um {\PYTHONnumpyDOTarray} para alocar uma partição uniforme com $11$ pontos do intervalo $[0, 1]$. Ou seja, um arranjo $\pmb{x} = (x_1, x_2, \dotsc, x_n)$, de elementos $x_i = (i-1)h$, com passo $h = 1/(n-1)$. 
+\end{exer}
+\begin{resp}
+  
+\begin{lstlisting}
+x = np.linspace(0., 1., 11)
+print('x = ', x)
+\end{lstlisting}
+
+\end{resp}
 
 \subsubsection{Manipulação de \texttt{arrays}}
 
@@ -345,6 +409,13 @@ array([23.14069263,  4.11325038])
 O {\numpy} contém um série de outras funções práticas para a manipulação de \texttt{arrays}. Consulte \href{https://numpy.org/doc/stable/user/absolute_beginners.html\#numpy-the-absolute-basics-for-beginners}{NumPy: the absolute basics for beginners}.  
 \end{obs}
 
+\ifisbook 
+\subsubsection*{Respostas dos Exercícios}
+\shipoutAnswer
+\fi
+
+
+%%% subsection
 \subsection{Elementos da Álgebra Linear}
 
 O {\PYTHONnumpy} conta com um módulo de álgebra linear
@@ -357,21 +428,21 @@ import numpy.linalg as npla
 
 Um vetor podem ser representado usando um {\PYTHONnumpyDOTarray} de um eixo (dimensão) ou um com dois eixos, caso se queira diferenciá-lo entre um vetor linha ou coluna. Por exemplo, os vetores
 \begin{gather}
-  a = (2, -1, 7),\\
-  b = (3, 1, 0)^T
+  x = (2, -1, 7),\\
+  y = (3, 1, 0)^T
 \end{gather}
 podem ser alocados com
 
 \begin{lstlisting}
 x = np.array([2,-1,7])
-y = np.array([3,1,0])
+y = np.array([[3,1,0]])
 \end{lstlisting}
 
 Caso queira-se que $x$ siga um arranjo em coluna, pode-se modificado como segue
 
 \begin{lstlisting}
-a = a.reshape((-1,1))
-a
+x = a.reshape((-1,1))
+x
 \end{lstlisting}
 
 \begin{verbatim}
@@ -382,14 +453,29 @@ array([[ 2],
 
 Como já vimos, o {\numpy} conta com operadores elemento-a-elemento que podem ser utilizados na álgebra envolvendo \texttt{arrays}, logo também aplicáveis a vetores (consulte a Subseção \ref{subsubsection:ope-a-e}). Vamos, aqui, introduzir outras operações próprias deste tipo de objeto.
 
-\begin{exr}
+\begin{exer}
   Aloque cada um dos seguintes vetores como um {\PYTHONnumpyDOTarray}:
   \begin{enumerate}
   \item[a)] $x = (1.2, -3.1, 4)$
-  \item[b)] $y = x^T$
+  \item[b)] $y = x^T$ (vetor linha)
   \item[c)] $z = (\pi, \sqrt{2}, e^{-2})^T$
   \end{enumerate}
-\end{exr}
+\end{exer}
+\begin{resp}
+  
+\begin{lstlisting}
+import numpy as np
+# a)
+x = np.array([1.2, -3.1, 4])
+print('x = ', x)
+# b)
+y = x.reshape(1,-1)
+print('y = ', y)
+# c)
+z = np.array([[np.pi, np.sqrt(2.), np.exp(-2)]])
+print('z = ', z)
+\end{lstlisting}
+\end{resp}
 
 \subsubsection{Produto Escalar e Norma}
 
@@ -732,3 +818,8 @@ Observamos que a função uma dupla, sendo o primeiro item um {\PYTHONnumpyDOTar
   \end{equation}
   Então, verifique se, de fato, $Av = \lambda v$ para cada auto-par $(\lambda, v)$ computado.
 \end{exr}
+
+\ifisbook 
+\subsubsection*{Respostas dos Exercícios}
+\shipoutAnswer
+\fi
