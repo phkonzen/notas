@@ -1,39 +1,38 @@
 %Este trabalho está licenciado sob a Licença Atribuição-CompartilhaIgual 4.0 Internacional Creative Commons. Para visualizar uma cópia desta licença, visite http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR ou mande uma carta para Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
 
 \chapter{Sistemas Não Lineares e Otimização}\label{cap_otimizacao}
-\thispagestyle{fancy}
 
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
+Neste capítulo, apresentam-se métodos numéricos para a resolução de sistemas não lineares e de problemas de otimização. Salvo explicitado ao contrário, assume-se que os problemas são bem definidos.
 
-Neste capítulo, apresentam-se métodos numéricos para a resolução de problemas de otimização. Salvo explicitado ao contrário, assume-se que os problemas são bem definidos.
+\section{Sistemas Não-Lineares}\label{cap_otimizacao_sec_sisnlin}
 
-\section{Método de Newton}\label{cap_otimizacao_sec_newton}
-
-Consideremos o seguinte problema: $F:D\subset \mathbb{R}^n\to\mathbb{R}^n$ encontrar $x^*\in\mathbb{R}^n$ tal que
-\begin{equation}
-  F(x^*) = 0.
+Consideramos o seguinte problema: \hl{dada a função $F:D\subset \mathbb{R}^n\to\mathbb{R}^n$ encontrar $\pmb{x}^*\in\mathbb{R}^n$ tal que}
+\begin{equation}\hleq
+  F(\pmb{x}^*) = 0.
 \end{equation}
-Salvo explicitado ao contrário, assumiremos que $F\in C^1(D)$, i.e. $F$ é uma função continuamente diferenciável. Vamos, também, denotar por $J_F(x) = [\jmath_{i,j}(x)]_{i,j=1}^{n,n}$ a \emph{matriz jacobiana}\footnote{Carl Gustav Jakob Jacobi, 1804 - 1851, matemático alemão. Fonte: \href{https://pt.wikipedia.org/wiki/Carl_Gustav_Jakob_Jacobi}{Wikipédia}.} com
-\begin{equation}
-  \jmath_{i,j}(x) = \frac{\p f_i(x)}{\p x_j},
-\end{equation}
-onde $F(x) = (f_1(x), f_2(x), \dotsc, f_n(x))$ e $x = (x_1, x_2,\dotsc, x_n)$.
+Salvo explicitado ao contrário, assumiremos que $F\in C^1(D)$, i.e. $F$ é uma função continuamente diferenciável no domínio computacional $D\subset\mathbb{R}^n$. 
 
-A iteração básica do \emph{Método de Newton}\footnote{{\newton}} consiste em: dada uma aproximação inicial $x^{(0)}\in\mathbb{R}^n$,
+Vamos, denotar por $J_F(\pmb{x}) = [\jmath_{i,j}(\pmb{x})]_{i,j=1}^{n,n}$ a \hlemph{matriz jacobiana}{\jacobi} da F com
+\begin{equation}\hleq
+  \jmath_{i,j}(\pmb{x}) = \frac{\p f_i(\pmb{x})}{\p x_j},
+\end{equation}
+onde $F(\pmb{x}) = (f_1(\pmb{x}), f_2(\pmb{x}), \dotsc, f_n(\pmb{x}))$ e $\pmb{x} = (x_1, x_2,\dotsc, x_n)$.
+
+\subsection{Método de Newton}\label{cap_otimizacao_sec_sisnlin_ssec_newton}
+
+A iteração básica do \hlemph{método de Newton}{\newton} para sistemas de equações consiste em: dada uma aproximação inicial $\pmb{x}^{(0)}\in\mathbb{R}^n$,
 \begin{align}
-  &\text{resolver}\quad J_F\left(x^{(k)}\right)\delta^{(k)} = -F\left(x^{(k)}\right)\\
-  &\text{calcular}\quad x^{(k+1)} = x^{(k)} + \delta^{(k)}
+  &\text{resolver}\quad \hleq J_F\left(\pmb{x}^{(k)}\right)\pmb{\delta}^{(k)} = -F\left(\pmb{x}^{(k)}\right)\\
+  &\text{computar}\quad \hleq \pmb{x}^{(k+1)} = \pmb{x}^{(k)} + \pmb{\delta}^{(k)}
 \end{align}
-para $k=0,1,2,\ldots$ até convergência $x^{(k)}\to x^*$.
+para $k = 0, 1, 2, \ldots$ até que um critério de parada seja satisfeito.
 
-\begin{obs}\label{obs:convNewton}
-  Para $x^{(0)}$ suficientemente próximo da solução $x^*$, o Método de Newton é quadraticamente convergente. Mais precisamente, este resultado de convergência local requer que $J_F^{-1}(x^*)$ seja não singular e que $J_F:\mathbb{R}^n\to\mathbb{R}^{n\times n}$ seja Lipschitz\footnote{Rudolf Otto Sigismund Lipschitz, 1832 - 1903, matemático alemão. Fonte: \href{https://en.wikipedia.org/wiki/Rudolf_Lipschitz}{Wikipédia}.} contínua. Consulte \cite[Seção 7.1]{Quarteroni2007a} para mais detalhes.
+\begin{obs}[\hl{Convergência}]\label{cap_otimizacao_sec_newton:obs:convNewton}
+  Para $\pmb{x}^{(0)}$ suficientemente próximo da solução $\pmb{x}^*$, \hl{o método de Newton é quadraticamente convergente}. Mais precisamente, este resultado de convergência local requer que $J_F^{-1}(\pmb{x}^*)$ seja não singular e que $J_F$ seja Lipschitz{\lipschitz} contínua. Consulte \cite[Seção 7.1]{Quarteroni2007a} para mais detalhes.
 \end{obs}
 
 \begin{ex}\label{ex:burgers}
-  Consideremos a \emph{Equação de Burgers}\footnote{Johannes Martinus Burgers, 1895 - 1981, físico holandês. Fonte: \href{https://en.wikipedia.org/wiki/Jan_Burgers}{Wikipedia}.}
+  Consideramos a \emph{equação de Burgers}{\burgers}
   \begin{equation}
     \frac{\p u}{\p t} + u\frac{\p u}{\p x} = \nu\frac{\p^2 u}{\p x^2}
   \end{equation}
@@ -41,55 +40,62 @@ para $k=0,1,2,\ldots$ até convergência $x^{(k)}\to x^*$.
   \begin{equation}
     u(0,x) = \sin(\pi x)
   \end{equation}
-  e condições de contorno de Dirichlet\footnote{Johann Peter Gustav Lejeune Dirichlet, 1805 - 1859, matemático alemão. Fonte: \href{https://pt.wikipedia.org/wiki/Johann_Peter_Gustav_Lejeune_Dirichlet}{Wikipédia}.} homogêneas
+  e condições de contorno de Dirichlet{\dirichlet} homogêneas
   \begin{equation}
     u(t,0) = u(t,1) = 0.
   \end{equation}
 
-  Aplicando o \emph{Método de Rothe}\footnote{Erich Hans Rothe, 1895 - 1988, matemático alemão. Fonte: \href{https://pt.wikipedia.org/wiki/Erich_Rothe}{Wikipédia}.} com aproximação de Euler\footnote{Leonhard Paul Euler, 1707 - 1783, matemático e físico suíço. Fonte: \href{https://pt.wikipedia.org/wiki/Leonhard_Euler}{Wikipédia}.} implícita, obtemos
+  Aplicando o \emph{método de Rothe}{\rothe} com aproximação de Euler{\euler} implícita, obtemos
   \begin{equation}
-    \frac{u(t+h_t,x) - u(t,x)}{h_t} + u(t+h_t,x)u_x(t+h_t,x) \approx \nu u_{xx}(t+h_t,x),
+    \begin{aligned}
+      & \frac{u(t+h_t,x) - u(t,x)}{h_t} +\\
+      &\quad u(t+h_t,x)u_x(t+h_t,x) \approx \nu u_{xx}(t+h_t,x),
+    \end{aligned}
   \end{equation}
   onde $h_t>0$ é o passo no tempo. Agora, aplicamos diferenças finitas para obter
-  \begin{gather}
-    \frac{u(t+h_t,x_i) - u(t,x_i)}{h_t} + u(t+h_t, x_i)\frac{u(t+h_t,x_{i+1})-u(t+h_t,x_i)}{h_x} \\
-    \approx \nu\frac{u(t+h_t,x_{i-1}) - 2u(t+h_t,x_i) + u(t+h_t,x_{i+1})}{h_x^2},
-  \end{gather}
+  \begin{equation}
+    \begin{aligned}
+      &\frac{u(t+h_t,x_i) - u(t,x_i)}{h_t} \\
+      &\quad + u(t+h_t, x_i)\frac{u(t+h_t,x_{i+1})-u(t+h_t,x_i)}{h_x} \\
+      &\quad \approx \nu\frac{u(t+h_t,x_{i-1}) - 2u(t+h_t,x_i) + u(t+h_t,x_{i+1})}{h_x^2},
+    \end{aligned} 
+ \end{equation}
   onde, $x_i=(i-1)h_x$, $i=1,\dotsc,n_x$ e $h_x=1/(n_x-1)$ é o tamanho da malha.
 
   Rearranjando os termos e denotando $w^{(k)}_i\approx u(t_k, x_i)$, $t_k = (k-1)h$, obtemos o seguinte \emph{problema discreto}
-  \begin{gather}
-    w^{(k+1)}_1 = 0\\
-    ~\nonumber\\
-    \frac{1}{h_t}w^{(k+1)}_i - \frac{1}{h_t}w^{(k)}_i + \frac{1}{h_x}w^{(k+1)}_iw^{(k+1)}_{i+1} - \frac{1}{h_x}w^{(k+1)}_iw^{(k+1)}_i \\
-    - \frac{\nu}{h_x^2}w^{(k+1)}_{i-1} + 2\frac{\nu}{h_x^2}w^{(k+1)}_i - \frac{\nu}{h_x}w^{(k+1)}_{i+1} = 0,\\
-    ~\nonumber\\
-    w^{(k+1)}_{n_x} = 0,
-  \end{gather}
-  sendo $w^{(0)}_i = \sen(\pi x_i)$, $i=1,\dotsc,n_x$ e $k=1,2,\ldots$.
+  \begin{align}
+    & w^{(k+1)}_1 = 0\\
+    & \frac{1}{h_t}w^{(k+1)}_i - \frac{1}{h_t}w^{(k)}_i + \frac{1}{h_x}w^{(k+1)}_iw^{(k+1)}_{i+1} \nonumber\\
+    &\quad - \frac{1}{h_x}w^{(k+1)}_iw^{(k+1)}_i - \frac{\nu}{h_x^2}w^{(k+1)}_{i-1} \nonumber\\ 
+    &\quad + 2\frac{\nu}{h_x^2}w^{(k+1)}_i - \frac{\nu}{h_x^2}w^{(k+1)}_{i+1} = 0,\\
+    & w^{(k+1)}_{n_x} = 0,
+  \end{align}
+  sendo $w^{(0)}_i = \sen(\pi x_i)$, $i = 1, \dotsc, n_x$ e $k = 1, 2, \ldots$.
 
-  Este problema pode ser reescrito como segue: para cada $k=1,2,\ldots$, encontrar $v\in\mathbb{R}^{n_x}$, tal que
+  Este problema pode ser reescrito como segue: para cada $k = 1, 2, \ldots$, encontrar $\pmb{v}\in\mathbb{R}^{n_x}$, tal que
   \begin{equation}
-    F(v; v^{(0)}) = 0, 
+    F\left(\pmb{v}; \pmb{v}^{(0)}\right) = 0, 
   \end{equation}
-  onde $v_{i} \approx w^{(k+1)}_i$, $v_{i}^{(0)} \approx w^{(k)}_{i}$ e
-  \begin{gather}
-    f_1(v,v^{(0)}) = v_1,\\
-    f_{i}(v;v^{(0)}) = \frac{1}{h_t}v_i - \frac{1}{h_t}v^{(0)}_i + \frac{1}{h_x}v_iv_{i+1} - \frac{1}{h_x}v_iv_i \\
-    - \frac{\nu}{h_x^2}v_{i-1} + 2\frac{\nu}{h_x^2}v_i - \frac{\nu}{h_x}v_{i+1},\\
-    f_{n_x}(v;v^{(0)}) = v_{n_x}.
-  \end{gather}
+  onde $v_{i} \approx v^{(k+1)}_i$, $v_{i}^{(0)} \approx v^{(k)}_{i}$ e
+  \begin{align}
+    & f_1\left(\pmb{v}; \pmb{v}^{(0)}\right) = v_1,\\
+    & f_{i}\left(\pmb{v}; \pmb{v}^{(0)}\right) = \frac{1}{h_t}v_i - \frac{1}{h_t}v^{(0)}_i + \frac{1}{h_x}v_iv_{i+1} \nonumber\\
+    &\quad - \frac{1}{h_x}v_iv_i - \frac{\nu}{h_x^2}v_{i-1} + 2\frac{\nu}{h_x^2}v_i - \frac{\nu}{h_x^2}v_{i+1},\\
+    &f_{n_x}\left(\pmb{v}; \pmb{v}^{(0)}\right) = v_{n_x}.
+  \end{align}
   A matriz jacobiana associada $J=[\jmath_{i,j}]_{i,j}^{n_x,n_x}$ contém
-  \begin{gather}
-    \jmath_{i,j} = 0,\quad j\neq i-1,i,i+1,\\
-    \jmath_{1,1} = 1,\\
-    \jmath_{1,2} = 0,\\
-    \jmath_{i,i-1} = -\frac{\nu}{h_x^2},\\
-    \jmath_{i,i} = \frac{1}{h_t} + \frac{1}{h_x}v_{i+1} - \frac{2}{h_x}v_i + \frac{2\nu}{h_x^2},\\
-    \jmath_{i,i+1} = \frac{1}{h_x}v_{i} - \frac{\nu}{h_x^2},\\
-    \jmath_{n_x,n_x-1} = 0\\
-    \jmath_{n_x,n_x} = 1.
-  \end{gather}
+  \begin{align}
+    & \jmath_{i,j} = 0,\quad j\neq i-1,i,i+1,\\
+    & \jmath_{1,1} = 1,\\
+    & \jmath_{1,2} = 0,\\
+    & \jmath_{i,i-1} = -\frac{\nu}{h_x^2},\\
+    & \jmath_{i,i} = \frac{1}{h_t} + \frac{1}{h_x}v_{i+1} - \frac{2}{h_x}v_i + \frac{2\nu}{h_x^2},\\
+    & \jmath_{i,i+1} = \frac{1}{h_x}v_{i} - \frac{\nu}{h_x^2},\\
+    & \jmath_{n_x,n_x-1} = 0\\
+    & \jmath_{n_x,n_x} = 1.
+  \end{align}
+
+  Implemente este esquema numérico!
 \end{ex}
 
 \begin{exer}\label{exer:burgers}
@@ -172,7 +178,7 @@ No que segue e salvo dito explicitamente ao contrário, vamos assumir que o prob
   Se $\nabla f(x^*) = 0$ e $H(x^*)$ é positiva definida, então $x^*$ é um mínimo local de $f$ em uma vizinhança não vazia de $x^*$. Consulte mais em \cite[Seção 7.2]{Quarteroni2007a}. Um ponto $x^*$ tal que $\nabla f(x^*) = 0$ é chamado de \emph{ponto crítico}.
 \end{obs}
 
-\subsection{Métodos de declive}
+\subsection{Métodos de Declive}
 
 Um método de declive consiste em uma iteração tal que: dada uma aproximação inicial $x^{(0)}\in\mathbb{R}^n$, computa-se
 \begin{equation}
