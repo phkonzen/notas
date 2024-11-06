@@ -31,18 +31,18 @@ para $k = 0, 1, 2, \ldots$ até que um critério de parada seja satisfeito.
   Para $\pmb{x}^{(0)}$ suficientemente próximo da solução $\pmb{x}^*$, \hl{o método de Newton é quadraticamente convergente}. Mais precisamente, este resultado de convergência local requer que $J_F^{-1}(\pmb{x}^*)$ seja não singular e que $J_F$ seja Lipschitz{\lipschitz} contínua. Consulte \cite[Seção 7.1]{Quarteroni2007a} para mais detalhes.
 \end{obs}
 
-\begin{ex}\label{ex:burgers}
+\begin{ex}\label{cap_otimizacao_sec_sisnlin:ex:burgers}
   Consideramos a \emph{equação de Burgers}{\burgers}
   \begin{equation}
     \frac{\p u}{\p t} + u\frac{\p u}{\p x} = \nu\frac{\p^2 u}{\p x^2}
   \end{equation}
   com $\nu>0$, condição inicial
   \begin{equation}
-    u(0,x) = \sin(\pi x)
+    u(0,x) = -\sen(\pi x)
   \end{equation}
   e condições de contorno de Dirichlet{\dirichlet} homogêneas
   \begin{equation}
-    u(t,0) = u(t,1) = 0.
+    u(t,-1) = u(t,1) = 0.
   \end{equation}
 
   Aplicando o \emph{método de Rothe}{\rothe} com aproximação de Euler{\euler} implícita, obtemos
@@ -56,41 +56,41 @@ para $k = 0, 1, 2, \ldots$ até que um critério de parada seja satisfeito.
   \begin{equation}
     \begin{aligned}
       &\frac{u(t+h_t,x_i) - u(t,x_i)}{h_t} \\
-      &\quad + u(t+h_t, x_i)\frac{u(t+h_t,x_{i+1})-u(t+h_t,x_i)}{h_x} \\
+      &\quad + u(t+h_t, x_i)\frac{u(t+h_t,x_{i+1})-u(t+h_t,x_{i-1})}{2h_x} \\
       &\quad \approx \nu\frac{u(t+h_t,x_{i-1}) - 2u(t+h_t,x_i) + u(t+h_t,x_{i+1})}{h_x^2},
     \end{aligned} 
  \end{equation}
   onde, $x_i=(i-1)h_x$, $i=1,\dotsc,n_x$ e $h_x=1/(n_x-1)$ é o tamanho da malha.
 
-  Rearranjando os termos e denotando $w^{(k)}_i\approx u(t_k, x_i)$, $t_k = (k-1)h$, obtemos o seguinte \emph{problema discreto}
+  Rearranjando os termos e denotando $u^{(k)}_i\approx u(t_k, x_i)$, $t_k = (k-1)h$, obtemos o seguinte \emph{problema discreto}
   \begin{align}
-    & w^{(k+1)}_1 = 0\\
-    & \frac{1}{h_t}w^{(k+1)}_i - \frac{1}{h_t}w^{(k)}_i + \frac{1}{h_x}w^{(k+1)}_iw^{(k+1)}_{i+1} \nonumber\\
-    &\quad - \frac{1}{h_x}w^{(k+1)}_iw^{(k+1)}_i - \frac{\nu}{h_x^2}w^{(k+1)}_{i-1} \nonumber\\ 
-    &\quad + 2\frac{\nu}{h_x^2}w^{(k+1)}_i - \frac{\nu}{h_x^2}w^{(k+1)}_{i+1} = 0,\\
-    & w^{(k+1)}_{n_x} = 0,
+    & u^{(k+1)}_1 = 0\\
+    & \frac{1}{h_t}u^{(k+1)}_i - \frac{1}{h_t}u^{(k)}_i + \frac{1}{2h_x}u^{(k+1)}_iu^{(k+1)}_{i+1} \nonumber\\
+    &\quad - \frac{1}{2h_x}u^{(k+1)}_{i}u^{(k+1)}_{i-1} - \frac{\nu}{h_x^2}u^{(k+1)}_{i-1} \nonumber\\ 
+    &\quad + 2\frac{\nu}{h_x^2}u^{(k+1)}_i - \frac{\nu}{h_x^2}u^{(k+1)}_{i+1} = 0,\\
+    & u^{(k+1)}_{n_x} = 0,
   \end{align}
-  sendo $w^{(0)}_i = \sen(\pi x_i)$, $i = 1, \dotsc, n_x$ e $k = 1, 2, \ldots$.
+  sendo $u^{(0)}_i = -\sen(\pi x_i)$, $i = 1, \dotsc, n_x$ e $k = 1, 2, \ldots$.
 
-  Este problema pode ser reescrito como segue: para cada $k = 1, 2, \ldots$, encontrar $\pmb{v}\in\mathbb{R}^{n_x}$, tal que
+  Este problema pode ser reescrito como segue: para cada $k = 0, 1, \ldots$, encontrar $\pmb{w}\in\mathbb{R}^{n_x}$, tal que
   \begin{equation}
-    F\left(\pmb{v}; \pmb{v}^{(0)}\right) = 0, 
+    F\left(\pmb{w}; \pmb{w}^{(0)}\right) = 0, 
   \end{equation}
-  onde $v_{i} \approx v^{(k+1)}_i$, $v_{i}^{(0)} \approx v^{(k)}_{i}$ e
+  onde $w_{i} = u^{(k+1)}_i$, $w_{i}^{(0)} = u^{(k)}_{i}$ e
   \begin{align}
-    & f_1\left(\pmb{v}; \pmb{v}^{(0)}\right) = v_1,\\
-    & f_{i}\left(\pmb{v}; \pmb{v}^{(0)}\right) = \frac{1}{h_t}v_i - \frac{1}{h_t}v^{(0)}_i + \frac{1}{h_x}v_iv_{i+1} \nonumber\\
-    &\quad - \frac{1}{h_x}v_iv_i - \frac{\nu}{h_x^2}v_{i-1} + 2\frac{\nu}{h_x^2}v_i - \frac{\nu}{h_x^2}v_{i+1},\\
-    &f_{n_x}\left(\pmb{v}; \pmb{v}^{(0)}\right) = v_{n_x}.
+    & f_1\left(\pmb{w}; \pmb{w}^{(0)}\right) = w_1,\\
+    & f_{i}\left(\pmb{w}; \pmb{w}^{(0)}\right) = \frac{1}{h_t}w_i - \frac{1}{h_t}w^{(0)}_i + \frac{1}{2h_x}w_iw_{i+1} \nonumber\\
+    &\quad - \frac{1}{2h_x}w_iw_{i-1} - \frac{\nu}{h_x^2}w_{i-1} + 2\frac{\nu}{h_x^2}w_i - \frac{\nu}{h_x^2}w_{i+1},\\
+    &f_{n_x}\left(\pmb{w}; \pmb{w}^{(0)}\right) = w_{n_x}.
   \end{align}
   A matriz jacobiana associada $J=[\jmath_{i,j}]_{i,j}^{n_x,n_x}$ contém
   \begin{align}
     & \jmath_{i,j} = 0,\quad j\neq i-1,i,i+1,\\
     & \jmath_{1,1} = 1,\\
     & \jmath_{1,2} = 0,\\
-    & \jmath_{i,i-1} = -\frac{\nu}{h_x^2},\\
-    & \jmath_{i,i} = \frac{1}{h_t} + \frac{1}{h_x}v_{i+1} - \frac{2}{h_x}v_i + \frac{2\nu}{h_x^2},\\
-    & \jmath_{i,i+1} = \frac{1}{h_x}v_{i} - \frac{\nu}{h_x^2},\\
+    & \jmath_{i,i-1} = \frac{1}{2h_x}w_i - \frac{\nu}{h_x^2},\\
+    & \jmath_{i,i} = \frac{1}{h_t} + \frac{1}{2h_x}w_{i+1} - \frac{2}{h_x}w_{i-1} + \frac{2\nu}{h_x^2},\\
+    & \jmath_{i,i+1} = \frac{1}{2h_x}w_{i} - \frac{\nu}{h_x^2},\\
     & \jmath_{n_x,n_x-1} = 0\\
     & \jmath_{n_x,n_x} = 1.
   \end{align}
@@ -98,8 +98,8 @@ para $k = 0, 1, 2, \ldots$ até que um critério de parada seja satisfeito.
   Implemente este esquema numérico!
 \end{ex}
 
-\begin{exer}\label{exer:burgers}
-  Considere o problema discreto apresentado no Exemplo \ref{ex:burgers} para diferentes valores do coeficiente de difusão $\nu=1., 0.5, 0.1, 0.01, 0.001$. Simule o problema com cada uma das seguintes estratégias e as compare quanto ao desempenho computacional.
+\begin{exer}\label{cap_otimizacao_sec_sisnlin:exer:burgers}
+  Considere o problema discreto apresentado no Exemplo~\ref{cap_otimizacao_sec_sisnlin:ex:burgers} para diferentes valores do coeficiente de difusão $\nu = \nu_0/\pi$, $\nu_0 = 1., 0.1, 0.01, 0.001$. Simule o problema com cada uma das seguintes estratégias e as compare quanto ao desempenho computacional.
   \begin{enumerate}[a)]
   \item Simule-o aplicando o Método de Newton com o {\it solver} linear \lstinline+npla.solve+.
   \item Observe que a jacobiana é uma matriz tridiagonal. Simule o problema aplicando o Método de Newton com o {\it solver} linear \lstinline+npla.solve_banded+.
@@ -107,11 +107,16 @@ para $k = 0, 1, 2, \ldots$ até que um critério de parada seja satisfeito.
   \end{enumerate}
 \end{exer}
 
-\section{Método Tipo Newton}\label{cap_otimizacao_sec_tipoNewton}
+\begin{exer}
+  Desenvolva um esquema \textit{upwind} para simular a equação de Burgers do Exemplo~\ref{cap_otimizacao_sec_sisnlin:ex:burgers}.
+\end{exer}
 
-Existem várias modificações do Método de Newton\footnote{Isaac Newton, 1642 - 1727, matemático, físico, astrônomo, teólogo e autor inglês. Fonte: \href{https://pt.wikipedia.org/wiki/Isaac_Newton}{Wikipédia}.} que buscam reduzir o custo computacional. Há estratégias para simplificar as computações da matriz jacobiana\footnote{Carl Gustav Jakob Jacobi, 1804 - 1851, matemático alemão. Fonte: \href{https://pt.wikipedia.org/wiki/Carl_Gustav_Jakob_Jacobi}{Wikipédia}.} e para reduzir o custo nas computações das atualizações de Newton.
+\subsection{Método Tipo Newton}\label{cap_otimizacao_sec_sisnlin_ssec_tipoNewton}
+\badgeRevisar
 
-\subsection{Atualização Cíclica da Matriz Jacobiana}
+Existem várias modificações do Método de Newton{\newton} que buscam reduzir o custo computacional. Há estratégias para simplificar as computações da matriz jacobiana{\jacobi} e para reduzir o custo nas computações das atualizações de Newton.
+
+\subsubsection{Atualização Cíclica da Matriz Jacobiana}
 
 Geralmente, ao simplificarmos a matriz jacobina $J_F$ ou aproximarmos a atualização de Newton $\delta^{(k)}$, perdemos a convergência quadrática do método (consulte a Observação \ref{obs:convNewton}). A ideia é, então, buscar uma convergência pelo menos super-linear, i.e.
 \begin{equation}
