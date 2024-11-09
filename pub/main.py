@@ -54,11 +54,11 @@ os.system('cp -rvf pics ' + odir + '/')
 index = Index(odir)
 index.build()
 
-#politica.html
+# infos.html
 infos = Infos(odir)
 infos.build()
 
-#contato.html
+# contato.html
 os.system('cp contato.html '+odir+'/')
 
 #copia src para pasta temporária
@@ -114,6 +114,9 @@ if __name__ == '__main__':
 
 #cria o README.md do ../docs
 os.system('cp docs_readme.md '+odir+'/README.md')
+
+# images
+os.system('cp -rvf pics '+odir+'/')
 
 #fonts
 os.system('cp -rvf fonts '+odir+'/')
