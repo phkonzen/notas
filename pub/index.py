@@ -56,7 +56,7 @@ class Index:
 
     def new_card(self, header, title, 
                  text, badges, link, color, 
-                 status="", ebook=""):
+                 status="", ebook="", livro=""):
         card = ""
         card += f'<div class="card border-{color} mb-3" style="width: 21rem;">'
         card += f'<div class="card-header text-bg-{color} d-flex justify-content-between">{header} '
@@ -76,17 +76,22 @@ class Index:
         card += '</p>'
         # buttons
 
-        if (ebook != ""):
+        if (ebook != "") or (livro != ""):
             card += '<div class="d-flex justify-content-between">'
-            card += f'<a href="{ebook}" class="btn btn-warning d-flex justify-content-between align-items-center">'
-            card += '<i class="fa-solid fa-heart" style="color: red;"></i>'
-            card += '<span class="m-1"><p class="mb-0" style="font-size: 75%;">Comprar</p><p class="mt-0 mb-0">Livro</p></span>'
+
+            if (ebook != ""):
+                card += f'<a href="{ebook}" class="btn btn-outline-primary d-flex justify-content-between align-items-center">'
+                card += '<span class="m-1"><p class="mb-0" style="font-size: 75%;"><i class="fa-solid fa-heart" style="color: red;"></i> Comprar</p><p class="mt-0 mb-0"><i class="fa-solid fa-tablet-screen-button"></i> E-book</p></span>'
+            
+            if (livro != ""):
+                card += f'<a href="{livro}" class="btn btn-outline-primary d-flex justify-content-between align-items-center">'
+                card += '<span class="m-1"><p class="mb-0" style="font-size: 75%;"><i class="fa-solid fa-heart" style="color: red;"></i> Comprar</p><p class="mt-0 mb-0"><i class="fa-solid fa-book-open"></i> Livro</p></span>'
         else:
             card += '<div class="d-flex justify-content-end">'
 
-        card += f'<a href="{link}" class="btn btn-warning d-flex align-self-end justify-content-between align-items-center">'
+        card += f'<a href="{link}" class="btn btn-outline-success  d-flex align-self-end justify-content-between align-items-center">'
         card += '<i class="fa-solid fa-book-open-reader" style="color: green;"></i>'
-        card += '<span class="m-1"><p class="mb-0" style="font-size: 75%;">Acesso</p><p class="mt-0 mb-0">Livre</p></span>'
+        card += '<span class="m-1"><p class="mb-0" style="font-size: 75%;">Acessar</p><p class="mt-0 mb-0">Livre</p></span>'
         card += '</a>'
         card += '</div>'
         card += '</div>'
@@ -456,8 +461,8 @@ class Index:
         body += 'os códigos-fonte podem ser obtidos no '
         body += 'repositório GitHub '
         body += '<a href="https://github.com/phkonzen/notas">https://github.com/phkonzen/notas</a>.</p>'
-        body += '<p>Aproveito para agradecer a todos e todas que de forma assídua ou esporádica '
-        body += 'contribuem com correções, sugestões e críticas! '
+        body += '<p>Aproveito para agradecer a todas/os que de forma assídua ou esporádica '
+        body += 'contribuem com o material do <i>site</i>. Consulte as <a href="infos.html">formas de colaboração</a> e me ajude a manter o site livre, gratuito e sem propagandas! '
         body += '<i class="far fa-smile"></i>'
         body += '</p>'
 
@@ -472,12 +477,12 @@ class Index:
         body += '<li><a href="http://professor.ufrgs.br/pedro/">Página de professor na UFRGS</a></li>'
         body += '</ul>'
 
-        body += '<h3>Ligações Recomendadas</h3>'
-        body += '<ul>'
-        body += '<li><a href="https://archive.org/">Internet Archive</a>: biblioteca de milhões de livros, filmes, <i>softwares</i>, música, <i>websites</i> e mais</li>'
-        body += '<li><a href="https://www.geogebra.org/">Geogebra</a>: aplicativos abertos de matemática</li>'
-        body += '<li><a href="https://www.ufrgs.br/reamat">REAMAT</a>: projeto de recursos educacionais abertos de matemática</li>'
-        body += '</ul>'
+        # body += '<h3>Ligações Recomendadas</h3>'
+        # body += '<ul>'
+        # body += '<li><a href="https://archive.org/">Internet Archive</a>: biblioteca de milhões de livros, filmes, <i>softwares</i>, música, <i>websites</i> e mais</li>'
+        # body += '<li><a href="https://www.geogebra.org/">Geogebra</a>: aplicativos abertos de matemática</li>'
+        # body += '<li><a href="https://www.ufrgs.br/reamat">REAMAT</a>: projeto de recursos educacionais abertos de matemática</li>'
+        # body += '</ul>'
 
         body += '</div><!-- div class="col-md-6" -->'
 
