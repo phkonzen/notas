@@ -18,6 +18,7 @@ class MiniPython(Notas):
         super().__init__()
         self.srcdir = srcdir
         self.odir = odir
+        self.ebook = 'https://www.amazon.com.br/dp/B0DMPQ24VY'
         
     def make_pdf(self):
         os.chdir(self.srcdir+'/MiniPython')

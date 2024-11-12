@@ -32,7 +32,7 @@ html: main.tex
 	cp -rvf ../fonts html/
 	cp ../notas.css ./html/
 	latexmlc main.tex \
-        --splitat=section -splitnaming=label \
+    --splitat=section -splitnaming=label \
 		--includestyles \
 		--css="./fonts/cmun-serif.css" \
 		--css="./notas.css" \

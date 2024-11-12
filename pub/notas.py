@@ -15,6 +15,7 @@ class Notas:
         self.srcdir = ''
         self.odir = ''
         self.ebook = ''
+        self.livro = ''
 
 
     def goodies(self,htmldir,titulo_notas,srcref):
@@ -276,10 +277,15 @@ class Notas:
 
                 merchant = '<p class="m-1" style="text-align: center">'
                 merchant += '<i class="fa-solid fa-heart" style="color: red;"></i> '
-                merchant += '<a href="'+self.ebook+'">Compre o livro deste material aqui!</a>'
+                if (self.ebook != '') and (self.livro != ''):
+                    merchant += 'Compre o <a href="'+self.livro+'">livro</a> ou o <a href="'+self.ebook+'">e-book</a> deste material aqui!'
+                elif (self.ebook != ''):
+                    merchant += 'Compre o <a href="'+self.ebook+'">e-book</a> deste material aqui!'
+                elif (self.livro != ''):
+                    merchant += 'Compre o <a href="'+self.livro+'">livro</a> deste material aqui!'
                 merchant += '</p>'
 
-                if ((fn == 'main') and (self.ebook != '')):
+                if ((fn == 'main') and ((self.ebook != '') or (self.livro != ''))):
                     page = page.replace('<div class="ltx_page_main">', f'{merchant}<div class="ltx_page_main">')
 
                 if (fn != 'main'):
@@ -289,9 +295,9 @@ class Notas:
                         if (pos != -1):
                             src_fname = fn[0:pos]
 
-                        # book merchant
-                        if (self.ebook != ''):
-                            page = page.replace('</h1>',f'</h1>{merchant}')
+                    # book merchant
+                    if (self.ebook != '') or (self.livro != ''):
+                        page = page.replace('</h1>',f'</h1>{merchant}')
     
                 #     page = page.replace('</h1>',link_to_src+'</h1>')
                 #     page = page.replace('</h2>',link_to_src+'</h2>')
