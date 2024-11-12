@@ -1,0 +1,1144 @@
+%Este trabalho está licenciado sob a Licença Atribuição-CompartilhaIgual 4.0 Internacional Creative Commons. Para visualizar uma cópia desta licença, visite http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR ou mande uma carta para Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+
+\section{Elementos da Linguagem}\label{sec_elem}
+
+\subsection{Classes de Objetos Básicos}
+
+\hl{{\python} é uma \emph{linguagem} de programação \emph{dinâmica} em que as variáveis/objetos são declaradas/os automaticamente ao receberem um valor/dado}. Por exemplo, consideramos as seguintes instruções
+
+\begin{lstlisting}
+x = 2
+y = x * 3.0
+\end{lstlisting}
+
+Na primeira instrução, a variável \texttt{x} recebe o valor inteiro \texttt{2} e, então, é armazenado na memória do computador como um objeto da \hl{classe {\PYTHONint}} (número inteiro). Na segunda instrução, \texttt{y} recebe o valor decimal $6.0$ (resultado de $2\times 3.0$) e é armazenado como um objeto da \hl{classe {\PYTHONfloat}} (ponto flutuante de 64-{\it bits}). Podemos verificar isso, com as seguintes instruções
+
+\begin{lstlisting}
+print(x)
+\end{lstlisting}
+
+\begin{verbatim}
+  2
+\end{verbatim}
+
+\begin{lstlisting}
+print(y)
+\end{lstlisting}
+
+\begin{verbatim}
+  6.0
+\end{verbatim}
+
+\begin{lstlisting}
+print(type(x), type(y))
+\end{lstlisting}
+
+\begin{verbatim}
+  <class 'int'> <class 'float'>
+\end{verbatim}
+
+\begin{obs}\normalfont{(\hl{Comentários e Continuação de Linha}.)}
+  Códigos {\python} admitem \emph{comentários} e \emph{continuação de linha} como no seguinte exemplo
+
+\begin{lstlisting}
+# isto é um comentário
+s = "isto é uma \
+string"
+print(s)
+\end{lstlisting}
+
+\begin{verbatim}
+  isto é uma string
+\end{verbatim}
+
+\begin{lstlisting}
+  type(s)
+\end{lstlisting}
+
+\begin{verbatim}
+  <class 'str'>
+\end{verbatim}
+
+\end{obs}
+
+\begin{obs}\normalfont{(\hl{Notação científica}.)}
+  O {\python} aceita \emph{notação científica}. Por exemplo $5.2\times 10^{-2}$ é digitado da seguinte forma
+
+\begin{lstlisting}
+5.2e-2
+\end{lstlisting}
+
+\begin{verbatim}
+0.052
+\end{verbatim}
+
+\end{obs}
+
+\begin{obs}\normalfont{(\hl{\textit{Casting}}.)}
+  Quando não há ambiguidade, pode-se fazer a conversão entre objetos de classes diferentes (\textit{casting}). Por exemplo,
+
+\begin{lstlisting}
+x = 1
+print(x, type(x))
+\end{lstlisting}
+
+\begin{verbatim}
+  1 <class 'int'>
+\end{verbatim}
+
+\begin{lstlisting}
+y = float(x)
+print(y, type(y))
+\end{lstlisting}
+
+\begin{verbatim}
+1.0 <class 'float'>  
+\end{verbatim}
+
+\end{obs}
+
+Além de objetos numéricos e \textit{string}, {\python} também conta com objetos {\PYTHONlist} (lista), {\PYTHONtuple} ($n$-upla) e {\PYTHONdict} (dicionário). Estudaremos essas classes de objetos mais adiante no minicurso.
+
+\begin{exer}
+  Antes de implementar, diga qual o valor de \texttt{x} após as seguintes instruções.
+
+\begin{lstlisting}
+x = 1
+y = x
+y = 0
+\end{lstlisting}
+
+Justifique sua resposta e verifique-a.
+\end{exer}
+\begin{resp}
+\texttt{1}
+\end{resp}
+
+\begin{exer}
+  Implemente um código em que a(o) usuária(o) entra com valores para as variáveis \texttt{x} e \texttt{y}. Então, os valores das variáveis são permutados entre si. Dica: use {\PYTHONinput} para a entrada de dados.
+\end{exer}
+\begin{resp}
+
+\begin{lstlisting}
+x = float(input('x = '))
+y = float(input('y = '))
+z = x
+x = y
+y = z
+print('x = ', x)
+print('y = ', y)
+\end{lstlisting}
+
+\end{resp}
+
+\ifisbook 
+\subsubsection*{Respostas dos Exercícios}
+\shipoutAnswer
+\fi
+
+%%% subsection
+\subsection{Operações Aritméticas Elementares}
+
+Os operadores aritméticos elementares são:
+\begin{itemize}
+\item[] \texttt{+} \hlemph{adição}
+\item[] \texttt{-} \hlemph{subtração}
+\item[] \texttt{*} \hlemph{multiplicação}
+\item[] \texttt{/} \hlemph{divisão}
+\item[] \texttt{**} \hlemph{potenciação}
+\item[] \texttt{\%} \hlemph{módulo}
+\item[] \texttt{//} \hlemph{divisão inteira}
+\end{itemize}
+
+\begin{ex}
+  Estudamos a seguinte computação
+
+\begin{lstlisting}
+2+8*3/2**2-1
+\end{lstlisting}
+
+\begin{verbatim}
+7.0
+\end{verbatim}
+
+Observamos que as operações \texttt{**} tem precedência sobre as operações \texttt{*}, \texttt{/}, \texttt{\%}, \texttt{//}, as quais têm precedência sobre as operações \texttt{+, -}. Operações de mesma precedência seguem a ordem da esquerda para direita, conforme escritas na linha de comando. Usa-se parênteses para alterar a precedência entre as operações, por exemplo
+
+\begin{lstlisting}
+(2+8*3)/2**2-1
+\end{lstlisting}
+
+\begin{verbatim}
+5.5
+\end{verbatim}
+
+\end{ex}
+
+\begin{obs}\normalfont{(\hl{Precedência das Operações}.)}
+Consulte mais informações sobre a precedência de operadores em \href{https://docs.python.org/3/reference/expressions.html#operator-precedence}{Python Docs: Operator Precedence}.
+\end{obs}
+
+\begin{exer}\label{exr:bhaskara}
+  Compute as raízes do seguinte polinômio quadrático
+  \begin{equation}
+    p(x) = 2x^2 - 2x - 4
+  \end{equation}
+  usando a fórmula de Bhaskara{\bhaskara}.
+\end{exer}
+\begin{resp}
+
+\begin{lstlisting}
+a = 2.
+b = -2.
+c = -4.
+dlta = b**2 - 4*a*c
+x1 = (-b - dlta**(1./2))/(2*a)
+x2 = (-b + dlta**(1./2))/(2*a)
+print('x1 = ', x1)
+print('x2 = ', x2)
+\end{lstlisting}
+
+\end{resp}
+
+O operador \texttt{\%} módulo computa o \emph{resto da divisão} e o operador \texttt{//} a \emph{divisão inteira}, por exemplo
+
+\begin{lstlisting}
+5 % 2
+\end{lstlisting}
+
+\begin{verbatim}
+1
+\end{verbatim}
+
+\begin{lstlisting}
+5 // 2
+\end{lstlisting}
+
+\begin{verbatim}
+2
+\end{verbatim}
+
+\begin{exer}
+  Use o {\python} para computar os inteiros não negativos $q$ e $r$ tais que
+  \begin{equation}
+    25 = q\cdot 3 + r,
+  \end{equation}
+  sendo $r$ o menor possível.
+\end{exer}
+\begin{resp}
+
+\begin{lstlisting}
+q = 25//3
+print('q = ', q)
+r = 25%3
+print('r = ', r)
+\end{lstlisting}
+
+\end{resp}
+
+\ifisbook 
+\subsubsection*{Respostas dos Exercícios}
+\shipoutAnswer
+\fi
+
+
+\subsection{Funções e Constantes Elementares}
+
+\hl{O \emph{módulo} Python {\PYTHONmath} disponibiliza várias funções e constantes elementares}. Para usá-las, precisamos importar o módulo em nosso código
+
+\begin{lstlisting}
+import math
+\end{lstlisting}
+
+Com isso, temos acesso a todas as definições e declarações contidas neste módulo. Por exemplo
+
+\begin{lstlisting}
+math.pi
+\end{lstlisting}
+
+\begin{verbatim}
+3.141592653589793
+\end{verbatim}
+
+\begin{lstlisting}
+math.cos(math.pi)
+\end{lstlisting}
+
+\begin{verbatim}
+-1.0
+\end{verbatim}
+
+\begin{lstlisting}
+math.sqrt(2)
+\end{lstlisting}
+
+\begin{verbatim}
+1.4142135623730951
+\end{verbatim}
+
+\begin{lstlisting}
+math.log(math.e)
+\end{lstlisting}
+
+\begin{verbatim}
+1.0
+\end{verbatim}
+
+
+\begin{obs}\normalfont{(\hl{Função Logaritmo}.)}
+  Notamos que {\PYTHONmathDOTlog} é a função logaritmo natural, i.e. $\ln(x) = \log_e(x)$. A implementação {\python} para o logaritmo de base 10 é {\PYTHONmathDOTlog}\texttt{(x, 10)} ou, mais acurado, {\PYTHONmathDOTlogTen}.
+\end{obs}
+
+\begin{exer}
+  Compute
+  \begin{enumerate}[a)]
+  \item $\displaystyle \sen\left(\frac{\pi}{4}\right)$
+  \item $\displaystyle e^{\log_3(\pi)}$
+  \item $\displaystyle \sqrt[3]{-27}$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+
+\begin{lstlisting}
+import math
+# a)
+a = math.sin(math.pi/4)
+print('a) ', a)
+# b)
+b = 3*math.pi
+print('b) ', b)
+# c)
+c = -(27)**(1/3)
+print('c) ', c)
+\end{lstlisting}
+
+\end{resp}
+
+\begin{exer}
+  Refaça o Exercício~\ref{exr:bhaskara} usando a função {\PYTHONmathDOTsqrt} para computar a raiz quadrada do discriminante.
+\end{exer}
+\begin{resp}
+  
+\begin{lstlisting}
+import math
+a = 2.
+b = -2.
+c = -4.
+dlta = b**2 - 4*a*c
+x1 = (-b - math.sqrt(dlta))/(2*a)
+x2 = (-b + math.sqrt(dlta))/(2*a)
+print('x1 = ', x1)
+print('x2 = ', x2)  
+\end{lstlisting}
+
+\end{resp}
+
+\ifisbook 
+\subsubsection*{Respostas dos Exercícios}
+\shipoutAnswer
+\fi
+
+%%% subsection
+\subsection{Operadores de Comparação Elementares}
+
+Os \hlemph{operadores de comparação} elementares são
+\begin{itemize}
+\item[]\texttt{==} \hlemph{igual a}
+\item[]\texttt{!=} \hlemph{diferente de}
+\item[]\texttt{>} \hlemph{maior que}
+\item[]\texttt{<} \hlemph{menor que}
+\item[]\texttt{>=} \hlemph{maior ou igual que}
+\item[]\texttt{<=} \hlemph{menor ou igual que}
+\end{itemize}
+Estes operadores \hl{retornam os \emph{valores lógicos} {\PYTHONTrue} (verdadeiro) ou {\PYTHONFalse} (falso)}.
+
+Por exemplo, temos
+
+\begin{lstlisting}
+x = 2
+x + x == 4
+\end{lstlisting}
+
+\begin{verbatim}
+True
+\end{verbatim}
+
+\begin{exer}
+  Considere a circunferência de equação
+  \begin{equation}
+    c: ~(x - 1)^2 + (y + 1)^2 = 1.
+  \end{equation}
+  Escreva um código em que a(o) usuária(o) entra com as coordenadas de um ponto $P = (x, y)$ e o código verifica se $P$ pertence ao disco determinado por $c$.
+\end{exer}
+\begin{resp}
+  
+\begin{lstlisting}
+x = float(input('x = '))
+y = float(input('y = '))
+resp = (x-1.)**2 + (y+1.)**2 <= 1.
+print('P em c?', resp)
+\end{lstlisting}
+
+\end{resp}
+
+\begin{exer}
+  Antes de implementar, diga qual é o valor lógico da instrução
+
+\begin{lstlisting}
+math.sqrt(3)**2 == 3
+\end{lstlisting}
+
+Justifique sua resposta e verifique!
+\end{exer}
+\begin{resp}
+\texttt{False}
+\end{resp}
+
+\ifisbook 
+\subsubsection*{Respostas dos Exercícios}
+\shipoutAnswer
+\fi
+
+%%% subsection
+\subsection{Operadores Lógicos Elementares}
+
+Os \hlemph{operadores lógicos} elementares são:
+\begin{itemize}
+\item[]\texttt{and} \hlemph{\texttt{e} lógico}
+\item[]\texttt{or} \hlemph{\texttt{ou} lógico}
+\item[]\texttt{not} \hlemph{\texttt{não} lógico}
+\end{itemize}
+
+\begin{ex}\normalfont{(\hl{Tabela Booleana do \texttt{and}}.)}
+  A tabela booleana{\boole} do \texttt{and} é
+  \begin{center}
+    \begin{tabular}[H]{ll|l}
+      \texttt{A} & \texttt{B} & \texttt{A and B}\\\hline
+      \texttt{True} & \texttt{True} & \texttt{True} \\
+      \texttt{True} & \texttt{False} & \texttt{False} \\
+      \texttt{False} & \texttt{True} & \texttt{False} \\
+      \texttt{False} & \texttt{False} & \texttt{False} \\\hline
+    \end{tabular}
+  \end{center}
+
+  Por exemplo, temos
+
+\begin{lstlisting}
+x = 2
+(x > 1) and (x < 2)
+\end{lstlisting}
+
+\begin{verbatim}
+False
+\end{verbatim}
+
+\end{ex}
+
+\begin{exer}
+  Construa as tabelas booleanas do operador \texttt{or} e do \texttt{not}.
+\end{exer}
+\begin{resp}
+
+\begin{lstlisting}
+print('A B | A or B')
+print(True, True, '|', True or True)
+print(True, False, '|', True or False)
+print(False, True, '|', False or True)
+print(False, False, '|', False or False)
+
+print('A | not(A)')
+print(True, '|', not(True))
+print(False, '|', not(False))
+\end{lstlisting}
+
+\end{resp}
+
+\begin{exer}
+  Use {\python} para verificar se $1.4 <= \sqrt{2} < 1.5$.
+\end{exer}
+\begin{resp}
+
+\begin{lstlisting}
+import math
+resp = 1.4 <= math.sqrt(2) < 1.5
+print('1.4 <= math.sqrt(2) < 1.5 ?', resp)
+\end{lstlisting}
+
+\end{resp}
+
+\begin{exer}
+  Considere um retângulo $r: ~ABDC$ de vértices $A = (1, 1)$ e $D = (2, 3)$. Crie um código em que a(o) usuária(o) informa as coordenadas de um ponto $P = (x, y)$ e o código imprime {\PYTHONTrue} ou {\PYTHONFalse} para cada um dos seguintes itens:
+  \begin{enumerate}[a)]
+  \item $P\in r$.
+  \item $P\in \p r$.
+  \item $P\not\in \overline{r}$.
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  
+\begin{lstlisting}
+x = float(input('x = '))
+y = float(input('y = '))
+print('P em r', \
+      (1 < x < 2) and (1 < y < 3))
+print('P na fronteira', \
+      ((x == 1 or x == 2) and (1 <= y <= 3)) or \
+      (( 1 <= x <= 2) and (y == 1 or y == 3)))
+print('P fora do fecho', \
+      (x < 1 or x > 2) or (y < 1 or y > 3))
+\end{lstlisting}
+
+\end{resp}
+
+\begin{exer}
+  Implemente uma instrução para computar o operador \texttt{xor} (ou exclusivo). Dadas duas afirmações \texttt{A} e \texttt{B}, \texttt{A xor B} é {\PYTHONTrue} no caso de uma, e somente uma, das afirmações ser {\PYTHONFalse}, caso contrário é {\PYTHONFalse}.
+\end{exer}
+\begin{resp}
+\texttt{(A or B) and not(A and B)}
+\end{resp}
+
+\ifisbook 
+\subsubsection*{Respostas dos Exercícios}
+\shipoutAnswer
+\fi
+
+
+%%% subsection
+\subsection{\texttt{set}}
+
+\hl{Um {\PYTHONset} em {\python} é uma \emph{coleção de objetos} \emph{não ordenada}, \emph{imutável} e \emph{não admite itens duplicados}}. Por exemplo,
+
+\begin{lstlisting}
+a = {1, 2, 3}
+type(a)  
+\end{lstlisting}
+
+\begin{verbatim}
+  <class 'set'>
+\end{verbatim}
+
+\begin{lstlisting}
+b = set((2, 1, 3, 3))
+print(b)
+\end{lstlisting}
+
+\begin{verbatim}
+  {1, 2, 3}
+\end{verbatim}
+
+\begin{lstlisting}
+a == b
+\end{lstlisting}
+
+\begin{verbatim}
+True
+\end{verbatim}
+
+\begin{lstlisting}
+# conjunto vazio
+e = set()  
+\end{lstlisting}
+
+Acima, alocamos o conjunto $a = \{1,2, 3\}$. Note que o conjunto $b$ é igual a $a$. Observamos que o conjunto vazio deve ser construído com a instrução \texttt{set()} e não com \texttt{\{\}}\endnote{Isso constrói um dicionário vazio, como estudaremos logo mais.}.
+
+\begin{obs}\normalfont{(\hl{Tamanho de uma Coleção de Objetos}.)}
+  A função {\PYTHONlen} retorna o número de elementos de uma coleção de objetos. Por exemplo,
+  
+\begin{lstlisting}
+len(a)
+\end{lstlisting}
+
+\begin{verbatim}
+3
+\end{verbatim}
+
+\end{obs}
+
+\emph{Operadores envolvendo conjuntos}:
+\begin{itemize}
+\item[] \texttt{-} \hl{diferença entre conjuntos}
+\item[] \texttt{|} \hl{união de conjuntos}
+\item[] \texttt{\&} \hl{interseção de conjuntos}
+\item[] \texttt{\^{}} \hl{diferença simétrica}
+\end{itemize}
+
+\begin{ex}
+  Os conjuntos
+  \begin{gather}
+    A = \{2, \pi, -0.25, 3, \text{'banana'}\},\\
+    B = \{\text{'laranja'}, 3, \operatorname{arc cos}(-1), -1\}
+  \end{gather}
+  podem ser alocados como \texttt{sets}
+
+\begin{lstlisting}
+import math
+A = {2, math.pi, -0.25, 3, 'banana'}
+B = {'laranja', 3, math.acos(-1), -1}
+\end{lstlisting}
+    
+e, então, podemos computar:
+
+  \begin{enumerate}[a)]
+  \item $A\setminus B$
+
+\begin{lstlisting}[framexrightmargin=-1.4em]
+a = A - B
+print(a)
+\end{lstlisting}
+
+\begin{verbatim}
+{-0.25, 2, 'banana'}
+\end{verbatim}
+
+  \item $A\cup B$
+
+\begin{lstlisting}[framexrightmargin=-1.4em]
+b =  A | B
+print(b)
+\end{lstlisting}
+
+\begin{verbatim}
+{-0.25, 2, 3, 3.141592653589793, 'laranja', 'banana', -1}
+\end{verbatim}
+    
+  \item $A\cap B$
+  
+\begin{lstlisting}[framexrightmargin=-1.4em]
+c = A & B
+print(c)
+\end{lstlisting}
+
+\begin{verbatim}
+{3, 3.141592653589793}
+\end{verbatim}
+    
+
+  \item $A\Delta B = (A\setminus B) \cup (B\setminus A)$
+  
+\begin{lstlisting}[framexrightmargin=-1.4em]
+d = A ^ B
+print(d)
+\end{lstlisting}
+
+
+\begin{verbatim}
+{-0.25, 2, 'laranja', 'banana', -1}
+\end{verbatim}
+
+\end{enumerate}
+
+\end{ex}
+
+\begin{exer}
+  Aloque como {\PYTHONset} cada um dos seguintes conjuntos:
+  \begin{enumerate}[a)]
+    \item O conjunto $A$ dos números $-12 \leq n \leq 6$ e que são divisíveis por 2.
+    \item O conjunto $B$ dos números $-12 < n \leq 6$ e que são divisíveis por 3.
+  \end{enumerate}
+  Então, compute o subconjunto de $A$ e $B$ que contém apenas os números divisíveis por $2$ e $3$.
+\end{exer}
+\begin{resp}
+  
+\begin{lstlisting}
+A = {-12, -10, -8, -6, \
+    -4, -2, 0, 2, 4, 6}
+B = {-12, -9, -6, -3, \
+    0, 3, 6}
+C = A & B
+print('C = ', C)
+\end{lstlisting}
+
+\end{resp}
+
+\begin{obs}\normalfont{(\hl{Compreensão de \texttt{sets}}.)}\label{obs:compreensão_de_conjuntos}
+  {\python} disponibiliza a sintaxe de compreensão de \texttt{sets}. Por exemplo,
+
+\begin{lstlisting}
+C = {x for x in A if type(x) == str}
+print(C)
+\end{lstlisting}
+
+\begin{verbatim}
+{'banana'}
+\end{verbatim}
+
+\end{obs}
+
+\begin{exer}
+  Considere o conjunto
+  \begin{equation}
+    Z = \{-4, -3, -2, -1, 0, 1, 2, 3, 4\}.
+  \end{equation}
+  Faça um código {\python} para extrair o subconjunto $\mathcal{P}$ dos números pares do conjunto $Z$. Depois, modifique-o para extrair o subconjunto $\mathcal{I}$ dos números ímpares. Dica: use de compreensão de \texttt{sets}.
+\end{exer}
+\begin{resp}
+
+\begin{lstlisting}
+Z = {-4, -3, -2, -1, \
+    0, 1, 2, 3, 4}
+P = {p for p in Z if p % 2 == 0}
+print('P = ', P)
+\end{lstlisting}
+
+\end{resp}
+
+\ifisbook 
+\subsubsection*{Respostas dos Exercícios}
+\shipoutAnswer
+\fi
+
+
+%%% subsection
+\subsection{\texttt{tuple}}
+
+Em {\python}, \hl{{\PYTHONtuple} é uma coleção ordenada e imutável de objetos}. Por exemplo, na sequência alocamos um par, uma tripla e uma quadrupla ordenada usando \texttt{tuples}.
+
+\begin{lstlisting}
+a = (1, 2)
+print(a, type(a))
+\end{lstlisting}
+
+\begin{verbatim}
+(1, 2) <class 'tuple'>
+\end{verbatim}
+
+\begin{lstlisting}
+b = -1, 1, 0
+print(b, len(b))
+\end{lstlisting}
+
+\begin{verbatim}
+(-1, 1, 0) 3
+\end{verbatim}
+
+\begin{lstlisting}
+c = (0.5, 'laranja', {2, -1}, 2)
+print(c)
+\end{lstlisting}
+
+\begin{verbatim}
+(0.5, 'laranja', {2, -1}, 2)
+\end{verbatim}
+
+Os elementos de um {\PYTHONtuple} são indexados, o índice $0$ corresponde ao primeiro elemento, o índice $1$ ao segundo elemento e assim por diante. Desta forma é possível o acesso direto a um elemento de um {\PYTHONtuple} usando-se sua posição. Por exemplo,
+
+\begin{lstlisting}
+print(c[2])
+\end{lstlisting}
+
+\begin{verbatim}
+{2, -1}
+\end{verbatim}
+
+Pode-se também extrair uma fatia (um subconjunto) usando-se a notação
+\texttt{:}. Por exemplo,
+
+\begin{lstlisting}
+d = c[1:3]
+print(d)
+\end{lstlisting}
+
+\begin{verbatim}
+('laranja', {2, -1})
+\end{verbatim}
+
+\emph{Operadores básicos}:
+
+\begin{itemize}
+\item[] \texttt{+} \hl{concatenação}
+
+\begin{lstlisting}[framexrightmargin=-2.4em]
+a = (1, 2) + (3, 4, 5)
+print(a)
+\end{lstlisting}
+
+\begin{verbatim}
+(1, 2, 3, 4, 5)
+\end{verbatim}
+
+\item[] \texttt{*} \hl{repetição}
+
+\begin{lstlisting}[framexrightmargin=-2.4em]
+b = (1, 2) * 2
+\end{lstlisting}
+
+\begin{verbatim}
+(1, 2, 1, 2)
+\end{verbatim}
+
+\item[] \texttt{in} \hl{pertencimento}
+
+\begin{lstlisting}[framexrightmargin=-2.4em]
+c =  1 in (-1, 0, 1, 2)
+\end{lstlisting}
+
+\begin{verbatim}
+True
+\end{verbatim}
+
+\end{itemize}
+
+\begin{exer}
+  Use \texttt{sets} para alocar os conjuntos
+  \begin{align}
+    &A = \{-1, 0, 2\},\\
+    &B = \{2, 3, 5\}.
+  \end{align}
+  Então, compute o produto cartesiano $A\times B=\{(a,b):~a\in A, b\in B\}$. Qual o número de elementos da $A\times B$? Dica: use a sintaxe de compreensão de \texttt{sets} (consulte a Observação \ref{obs:compreensão_de_conjuntos}).
+\end{exer}
+\begin{resp}
+
+\begin{lstlisting}
+A = {-1, 0, 2}
+B = {2, 3, 5}
+P = {(a,b) for a in A for b in B}
+print('P = ', P)
+\end{lstlisting}
+
+\end{resp}
+
+\begin{exer}
+  Aloque o gráfico discreto da função\endnote{O gráfico de uma função restrita a um conjunto $A$ é o conjunto $\operatorname{G}(f)|_{A} = \{(x,y):~x\in A, y=f(x)\}$.} $f(x) = x^2$ para $x=0, \frac{1}{2}, 1, 2$. Dica: use a sintaxe de compreensão de conjuntos (consulte a Observação \ref{obs:compreensão_de_conjuntos}).
+\end{exer}
+
+\begin{resp}
+
+\begin{lstlisting}
+X = {0., 0.5, 1., 2.}
+G = {(x, x**2) for x in X}
+print('G = ', G)
+\end{lstlisting}
+
+\end{resp}
+
+\ifisbook 
+\subsubsection*{Respostas dos Exercícios}
+\shipoutAnswer
+\fi
+
+
+%%% subsection
+\subsection{\texttt{list}}
+
+\hl{Um {\PYTHONlist} é uma uma coleção de objetos \emph{indexada} e \emph{mutável}}. Por exemplo,
+
+\begin{lstlisting}
+x = [-1, 2, -3, -5]
+print(x, type(x))
+\end{lstlisting}
+
+\begin{verbatim}
+  [-1, 2, -3, -5] <class 'list'>
+\end{verbatim}
+
+\begin{lstlisting}
+y = [1, 1, 'oi', 2.5]
+print(y)
+\end{lstlisting}
+
+\begin{verbatim}
+[1, 1, 'oi', 2.5]
+\end{verbatim}
+
+\begin{lstlisting}
+vazia = []
+print(len(vazia))
+print(len(y))
+\end{lstlisting}
+
+\begin{verbatim}
+0
+4
+\end{verbatim}
+
+Os elementos de um {\PYTHONlist} são indexados de forma análoga a um {\PYTHONtuple}, o índice $0$ corresponde ao primeiro elemento, o índice $1$ ao segundo elemento e assim por diante. Bem como, o índice $-1$ corresponde ao último elemento, o $-2$ ao penúltimo e segue. Por exemplo,
+
+\begin{lstlisting}
+x[-1] = 3.14
+print('x[0] = ', x[0])
+print(x = ', x)
+\end{lstlisting}
+
+\begin{verbatim}
+x[0] = 1
+x = [-1, 2, -3, 3.14]
+\end{verbatim}
+
+\begin{lstlisting}
+x[:3] = [10, -20]
+print(x)
+\end{lstlisting}
+
+\begin{verbatim}
+[10, -20, -3, 3.14]
+\end{verbatim}
+
+\hl{Os operadores básicos de concatenação e de repetição também estão disponíveis para um {\PYTHONlist}}. Por exemplo,
+
+\begin{lstlisting}
+x = [1,2] + [3, 4, 5]
+print(x)
+y = [1,2]*2
+print(y)
+\end{lstlisting}
+
+\begin{verbatim}
+[1, 2, 3, 4, 5]
+[1, 2, 1, 2]
+\end{verbatim}
+
+\begin{obs}
+  {\PYTHONlist} conta com várias funções prontas para a execução de diversas tarefas práticas como, por exemplo, inserir/deletar itens, contar ocorrências, ordenar itens, etc. Consulte na web \href{https://docs.python.org/3/tutorial/datastructures.html#more-on-lists}{Python Docs: More on Lists}.
+\end{obs}
+
+\begin{obs}\normalfont{(\hl{Alocação \textit{versus} Cópia}.)}
+  Estudamos o seguinte exemplo
+
+\begin{lstlisting}
+x = [2, 3, 1]
+y = x
+y[1] = 0
+print('x =', x)
+\end{lstlisting}
+
+\begin{verbatim}
+x = [2, 0, 1]
+\end{verbatim}
+
+\hl{Em {\python}, dados têm identificação única}. Logo, neste exemplo, $x$ e $y$ apontam para o mesmo endereço de memória. Modificar $y$ é também modificar $x$ e vice-e-versa. Para desassociar $y$ de $x$, $y$ precisa receber uma cópia de $x$, como segue
+
+\begin{lstlisting}
+x = [2, 3, 1]
+print('id(x) =', id(x))
+y = x.copy()
+print('id(y) =', id(y))
+y[1] = 0
+print('x =', x)
+print('y =', y)
+\end{lstlisting}
+
+\begin{verbatim}
+id(x) = 140476759980864
+id(y) = 140476760231360
+x = [2, 3, 1]
+y = [2, 0, 1]
+\end{verbatim}
+
+\end{obs}
+
+\begin{obs}\normalfont{(\hl{Anexar ou Estender}.)}
+  Um {\PYTHONlist} tem tamanho dinâmico, permitindo a anexação de um novo item ou sua extensão. A anexação de um item pode ser feita com o método {\PYTHONlistDOTappend}, enquanto que a extensão é feita com {\PYTHONlistDOTextend}. Por exemplo, com o {\PYTHONlistDOTappend} temos
+
+\begin{lstlisting}
+l = [1, 2]
+l.append((3,4)))
+print(l)
+\end{lstlisting}
+
+\begin{verbatim}
+[1, 2, (3, 4)]
+\end{verbatim}
+
+Enquanto, que com o {\PYTHONlistDOTextend} obtemos
+
+\begin{lstlisting}
+l = [1, 2]
+l.extend((3,4)))
+print(l)
+\end{lstlisting}
+  
+\begin{verbatim}
+[1, 2, 3, 4]
+\end{verbatim}
+  
+\end{obs}
+
+\begin{exer}
+  A solução de
+  \begin{equation}
+    x^2 - 2 = 0
+  \end{equation}
+  pode ser aproximada pela iteração do método babilônico
+  \begin{align}
+    &x_0 = 1,\\
+    &x_{i+1} = \frac{1}{2}\left(x_{i} + \frac{2}{x_i}\right)
+  \end{align}
+  para $i = 0, 1, 2, \ldots$. Aloque uma lista com as quatro primeiras iteradas, i.e. $[x_0, x_1, x_2,\allowbreak x_3, x_4]$. Dica: use {\PYTHONlistDOTappend}.
+\end{exer}
+\begin{resp}
+  
+\begin{lstlisting}
+x = [1] # x0
+x.append(0.5*(x[-1] + 2./x[-1])) # x1
+x.append(0.5*(x[-1] + 2./x[-1])) # x2
+x.append(0.5*(x[-1] + 2./x[-1])) # x3
+x.append(0.5*(x[-1] + 2./x[-1])) # x4
+print('x = ', x)
+\end{lstlisting}
+
+\end{resp}
+
+\begin{exer}
+  Aloque cada um dos seguintes vetores como um {\PYTHONlist}:
+  \begin{align}
+    x = (-1, 3, -2),\\
+    y = (4, -2, 0).
+  \end{align}
+  Então, compute
+  \begin{enumerate}[a)]
+  \item $x+y$
+  \item $x\cdot y$
+  \end{enumerate}
+  Dica: use uma compreensão de lista e os métodos {\PYTHONzip} e {\PYTHONsum}.
+\end{exer}
+\begin{resp}
+
+\begin{lstlisting}
+# a)
+x = [-1, 3, -2]
+y = [4, -2, 0]
+xpy = [xy[0]+xy[1] for xy in zip(x,y)]
+print('x + y = ', xpy)
+
+# b)
+dxy = sum([xy[0]*xy[1] for xy in zip(x,y)])
+print('x . y = ', dxy)
+\end{lstlisting}
+
+\end{resp}
+
+\begin{exer}
+  Uma matriz pode ser alocada como um encadeamento de \texttt{lists}. Por exemplo, a matriz
+  \begin{equation}
+    M =
+    \begin{bmatrix}
+      1 & -2 \\
+      2 & 3
+    \end{bmatrix}
+  \end{equation}
+  pode ser alocada como a seguinte {\PYTHONlist}
+
+\begin{lstlisting}
+M = [[1,-2],[2,3]]
+M
+\end{lstlisting}
+
+\begin{verbatim}
+[[1, -2], [2, 3]]
+\end{verbatim}
+
+  Use {\PYTHONlist} para alocar a matriz
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      1 & -2 & 1\\
+      8 & 0 & -7\\
+      3 & -1 & -2
+    \end{bmatrix}
+  \end{equation}
+  e o vetor
+  \begin{equation}
+    x = (2, -3, 1),
+  \end{equation}
+  então compute $Ax$.
+\end{exer}
+\begin{resp}
+
+\begin{lstlisting}
+A = [[1,-2,1],
+    [8,0,-7],
+    [3,-1,-2]]
+x = [2,-3,1]
+Ax = [sum([aix[0]*aix[1] for aix in zip(ai, x)]) for ai in A]
+print('Ax = ', Ax)
+\end{lstlisting}
+
+\end{resp}
+
+\ifisbook 
+\subsubsection*{Respostas dos Exercícios}
+\shipoutAnswer
+\fi
+
+
+%%% subsection
+\subsection{\texttt{dict}}
+
+Um {\PYTHONdict} é um mapeamento de objetos (um dicionário), em que cada item é um par \texttt{chave:valor}. Por exemplo,
+
+\begin{lstlisting}
+a = {'nome': 'triangulo', 'perímetro': 3.2}
+print(a, type(a))
+\end{lstlisting}
+
+\begin{verbatim}
+{'nome': 'triangulo', 'perímetro': 3.2} <class 'dict'>
+\end{verbatim}
+
+
+O acesso a um item do dicionário pode ser feito por sua chave, por exemplo,
+
+\begin{lstlisting}
+a['nome'] = 'triângulo'
+print(a['nome'])
+\end{lstlisting}
+
+\begin{verbatim}
+'triângulo'
+\end{verbatim}
+
+Pode-se adicionar um novo par, simplesmente, atribuindo valor a uma nova chave. Por exemplo,
+
+\begin{lstlisting}
+a['vértices'] = {'A': (0,0), 'B': (3,0), 'C': (0,4)}
+print('vértice B =', a['vértices']['B'])
+\end{lstlisting}
+
+\begin{verbatim}
+vértice B = (3,0)
+\end{verbatim}
+
+
+\begin{exer}
+  Considere a função afim
+  \begin{equation}
+    f(x) = 3 - x.
+  \end{equation}
+  Implemente um dicionário para alocar a raiz da função, a interseção com o eixo $y$ e seu coeficiente angular.
+\end{exer}
+\begin{resp}
+
+\begin{lstlisting}
+f_dict = {'raiz': 3.,
+          'y_intercep': 3.,
+          'coef_angular': -1.}
+print('raiz = ', f_dict['raiz'])
+print('y_intercep = ', f_dict['y_intercep'])
+print('coef_angular = ', f_dict['coef_angular'])
+\end{lstlisting}
+
+\end{resp}
+
+\begin{exer}
+  Considere a função quadrática
+  \begin{equation}
+    g(x) = x^2 - x - 2
+  \end{equation}
+  Implemente um dicionário para alocar suas raízes, vértice e interseção com o eixo $y$.
+\end{exer}
+\begin{resp}
+
+\begin{lstlisting}
+g_dict = {'raízes': (-1., 2.),
+          'vértice': 0.5,
+          'y_intercep': 2.}
+print('raiz = ', g_dict['raízes'])
+print('y_intercep = ', g_dict['y_intercep'])
+print('vértice = ', g_dict['vértice'])
+\end{lstlisting}
+
+\end{resp}
+
+\ifisbook 
+\subsubsection*{Respostas dos Exercícios}
+\shipoutAnswer
+\fi
