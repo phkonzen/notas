@@ -13,7 +13,7 @@ Por uma educação livre, o material do site está disponível sob licença [CC-
 
 * Nos siga, compartilhe e nos contate em nossas redes sociais:
 
-    * Instagra: [@notas.pedrok](https://www.instagram.com/notas.pedrok/)
+    * Instagram: [@notas.pedrok](https://www.instagram.com/notas.pedrok/)
     * YouTube: [notas.pedrok](https://www.youtube.com/channel/UCwutHKlKLgVj6IkFSUFBqoA)
     * GitHub: [phkonzen/notas](https://github.com/phkonzen/notas)
 
