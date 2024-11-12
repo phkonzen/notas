@@ -378,7 +378,8 @@ class Index:
                               text = "Introdução à Python para matemática",
                               badges = ["Python", "NumPy", "Matplotlib"],
                               link = "MiniPython/main.html",
-                              color = "warning", status = "Atualizando")
+                              color = "warning", status = "Atualizando",
+                              ebook="https://www.amazon.com.br/dp/B0DMPQ24VY")
         body += '</div>'
 
         # card: notas do Minicurso de C/C++ para Matemática
