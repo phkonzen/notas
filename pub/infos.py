@@ -103,16 +103,16 @@ class Infos:
         body += 'O site foi criado para o compartilhamento de minhas notas de aula com acesso livre e gratuito. Consulte as formas de colaboração e me ajude a manter o site livre, gratuito e sem propagandas.'
         body += '</p>'
         body += '<ul>'
-        body += '<li>Compre um dos livros das notas de aula!'
+        body += '<li><strong>Compre</strong> um dos livros das notas de aula!'
         body += '<ul>'
-        body += '<li>Série de <strong>e-books</strong> das notas de aula na <a href="https://www.amazon.com.br/dp/B0CW18N6T5">Amazon.com.br</a>.</li>'
+        body += '<li>Série de <a href="https://www.amazon.com.br/dp/B0CW18N6T5">e-books</a> das notas de aula na <a href="https://www.amazon.com.br/dp/B0CW18N6T5">Amazon.com.br</a>.</li>'
         body += '</ul>'
-        body += '<li>Envie um comentário avisando de erros, sugestões, críticas ...'
+        body += '<li><strong>Envie um comentário</strong> avisando de erros, sugestões, críticas ...'
         body += '<ul>'
         body += '<li><a href="./contato.html"><i class="fas fa-envelope"></i> Formulário de Contato</a></li>'
         body += '<li><a href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i> GitHub Repo</a></li>'
         body += '</ul>'
-        body += '<li><strong>Siga</strong> NotasPedroK nas redes sociais <strong>e compartilhe</strong>!  <i class="far fa-smile-wink"></i>'
+        body += '<li><strong>Siga & compartilhe</strong> NotasPedroK nas redes sociais!</li>'
         body += '<ul>'
         body += '<li>Instagram: <a href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i> notas.pedrok</a></li>'
         body += '<li>YouTube: <a href="https://www.youtube.com/channel/UCwutHKlKLgVj6IkFSUFBqoA"><i class="fab fa-youtube"></i> notas.pedrok</a></li>'
@@ -121,9 +121,20 @@ class Infos:
         body += '</li>'
         body += '</ul>'
 
+        ## Pq comprar?
+        body += '<h3 id="colabore" class="mt-3"><i class="fa-regular fa-face-smile-wink"></i> Por que comprar um e-book das notas de aula?</h3>'
+        body += '<ul>'
+        body += '<li><strong>Seu e-book, sua escolha!</strong></li>'
+        body += '<p>A qualquer momento, as notas de aula podem sofrer alterações de conteúdo (modificações, remoções, adições, correções, etc.). Mas, não se preocupe, seu e-book só é atualizado se e quado você quiser.</p>'
+        body += '<li><strong>Conte com toda as vantagens de um e-book Kindle.</strong></li>'
+        body += '<p>Os e-books das notas de aula estão disponíveis para o app Kindle, compatível com celulares e tablets (Android, IOS, entre outros), bem como disponível em computadores (Linux, Windows, entre outros). Assim você terá todos as vantagens de portabilidade, acessibilidade, sustentabilidade, economia e disponibilidade dos e-books Kindle.</p>'
+        body += '<li><strong>Ajude a manter o site com acesso livre e sem propagandas.</strong></li>'
+        body += '<p>Ao comprar um e-book das notas de aula, você ajuda a manter o site das notas de aula com acesso livre e sem propagandas.</p>'
+        body += '</ul>'
+
         ## Política de uso de dados
         body += '<hr>'
-        body += '<h3 id="politica" class="mt-3">Política de Uso de Dados</h3>'
+        body += '<h3 id="politica" class="mt-3"><i class="fa-regular fa-file-lines"></i> Política de Uso de Dados</h3>'
 
         body += '<p>Ao nagevar por este site, você concorda estar ciente da coleta de dados pela utilização de <i>cookies</i> e tecnologias semelhantes. O administrador deste <i>site</i> tem acesso apenas a dados anonimizados e agrupados, sendo estes utilizados para fins de melhorar a experiência de navegação dos usuários do <i>site</i>. Eventualmente, estes dados poderão ser utilizados na publicidade do <i>site</i>.</p>'
 
