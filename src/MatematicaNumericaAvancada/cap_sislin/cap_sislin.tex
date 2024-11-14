@@ -1,10 +1,10 @@
-
-
 \chapter{Sistemas Lineares}\label{cap_sislin}
+\badgeRevisar
 
 Neste capítulo, estudamos métodos numéricos para a resolução de sistemas lineares de médio e grande porte. Salvo explicitado ao contrário, assume-se que os sistemas são quadrados e têm solução única.
 
 \section{Matrizes Esparsas}\label{cap_sislin_sec_matesparsa}
+\badgeRevisar
 
 \hl{Uma matriz é dita ser \emph{esparsa} quando ela tem apenas poucos elementos não nulos}. A ideia é que os elementos não nulos não precisam ser guardados na memória do computador, gerando um grande benefício na redução da demanda de armazenamento de dados. O desafio está no desenvolvimento de estruturas de dados para a alocação eficiente de tais matrizes, i.e. que sejam suficientemente adequadas para os métodos numéricos conhecidos.
 
@@ -28,6 +28,7 @@ Por exemplo, a matriz identidade de tamanho $n=100$ tem esparsidade
 \end{equation}
 
 \subsection{Sistemas Tridiagonais}
+\badgeRevisar
 
 Um \hlemph{sistema tridiagonal} tem a seguinte forma matricial
 \begin{equation}\label{eq:sistridiag}
@@ -124,6 +125,7 @@ print(f"tA size: {tA.size*tA.itemsize/1024**2:1.1f} Mbytes")
 \end{ex}
 
 \subsubsection{Algoritmo de Thomas (TDMA)}
+\badgeRevisar
 
 \hl{O \emph{algoritmo de Thomas}{\thomas} ou \emph{TDMA} (do inglês, \textit{Tridiagonal Matrix Algorithm}) é uma forma otimizada do método de eliminação gaussiana}{\gauss}\hl{ aplicada a sistemas tridiagonais}. Enquanto este requer $O(n^3)$ operações, esse demanda apenas $O(n)$.
 
@@ -168,6 +170,7 @@ def tdma(ta, b):
 
 
 \subsection{Matrizes Banda}
+\badgeRevisar
 
 \hl{Uma \emph{matriz banda} é aquela em que os elementos não nulos estão dispostos em apenas algumas de suas diagonais}. Consulte a Figura \ref{fig:MatrizBanda}.
 
@@ -279,10 +282,12 @@ para $i,j=2,\dotsc,n-2$. Consulte a Figura \ref{fig:malha2d} para uma representa
 
 
 \subsection{Esquemas de Armazenamento}
+\badgeRevisar
 
 A ideia é armazenar apenas os elementos não-nulos de uma matriz esparsa, de forma a economizar a demanda de armazenamento computacional. Cuidados devem ser tomados para que a estrutura de armazenamento utilizada seja adequada para a computação das operações matriciais mais comuns.
 
 \subsubsection{Formato COO}
+\badgeRevisar
 
 O \hlemph{formato COO} (do inglês, \textit{COOrdinate format}) é o esquema de armazenamento simples de matrizes esparsas. As estrutura de dados consiste em três arranjos:
 \begin{enumerate}[1.]
@@ -340,6 +345,7 @@ print("A = \n", Acoo.toarray())
 \end{obs}
 
 \subsubsection{Formato CSR}
+\badgeRevisar
 
 O \hlemph{formato CSR} (do inglês, \textit{Compressed Sparse Row}) é uma variação do COO que busca diminuir a alocação de dados repetidos. Assim como o COO, o formato conta com três arranjos $d$, $c$, $p$:
 \begin{itemize}
@@ -399,6 +405,7 @@ p = [0 2 5 7 8]
 
 
 \subsubsection{Formato CSC}
+\badgeRevisar
 
 O formato CSC (do inglês, \textit{Compressed Sparse Column}) é uma variação análoga do CSR, mas para armazenamento por colunas. O formato conta com três arranjos $d$, $l$, $p$:
 \begin{itemize}
@@ -462,6 +469,9 @@ Assim sendo, o elemento \texttt{p[j=2] = 3} aponta para o \texttt{l[k=3] = 0}, o
   Além dos formatos COO, CSR e CSC, exitem ainda vários outros que podem empregados e que são mais eficientes em determinadas aplicações. Recomendamos a leitura de \cite[Seção 3.4]{Saad2003} e da documentação do \href{https://docs.scipy.org/doc/scipy/reference/sparse.html}{scipy.sparse}.
 \end{obs}
 
+\subsubsection{Exercícios}
+\badgeRevisar
+
 \begin{exer}
   Considere o problema de Poisson dado no Exemplo \ref{ex:poisson}.
   \begin{enumerate}[a)]
@@ -471,99 +481,6 @@ Assim sendo, o elemento \texttt{p[j=2] = 3} aponta para o \texttt{l[k=3] = 0}, o
   \item Compare a eficiência da computação entre os itens b) e c) para tamanhos de malha $h = 10^{-1}, 10^{-2}, 10^{-3}, 10^{-4}$.
   \end{enumerate}
 \end{exer}
-
-% \subsection{Reordenamento}
-
-% O reordenamento de linhas e colunas é uma técnica bastante utilizada para melhorar a estrutura de matrizes esparsas e, com isso, otimizar a aplicação de métodos de solução.
-
-% \begin{ex}\label{ex:reordenamento}
-%   Seja o seguinte PVC
-%   \begin{gather}
-%     -u'' + v(x) = f(x),\quad 0<x<1\\
-%     -v'' - u(x) = g(x),\quad 0<x<1\\
-%     ~\nonumber\\
-%     u(0)=u(1)=0\\
-%     v(0)=v(1)=0
-%   \end{gather}
-%   Vamos considerar sua formulação discreta pelo Método de Diferenças Finitas em uma malha uniforme
-%   \begin{equation}
-%     x_i = (i-1)h,
-%   \end{equation}
-%   com $i=1,2,\dotsc,n$, com tamanho de malha $h = 1/(n-1)$. Usando a fórmula de diferenças central de ordem 2 nas EDOs, obtemos
-%   \begin{gather}
-%     -\left(\frac{u_{i-1}-2u_i+u_{i+1}}{h^2}\right) + v_i = f_i\\
-%     -\left(\frac{v_{i-1}-2v_i+v_{i+1}}{h^2}\right) - u_i = g_i,
-%   \end{gather}
-%   sendo, $u_i \approx u(x_i)$, $v_i\approx v(x_i)$, $f_i=f(x_i)$, $g_i = g(x_i)$ com $i=2,\dotsc,n-1$. Considerando as condições iniciais, tomamos $u_1=u_n=v_1=v_n=0$ e multiplicando por $h^2$, temos
-%   \begin{gather}
-%     2u_2 - u_3 + h^2v_2 = h^2f_2\\
-%     -u_{i-1} + 2u_i -u_{i+1} + h^2v_i = h^2f_i\\
-%     -u_{n-2} + 2u_{n-1} + h^2v_{n-1} = h^2f_{n-1}\\
-%     ~\nonumber\\
-%     2v_2 - v_3 - u_2 = h^2g_2\\
-%     - v_{i-1} + 2v_i -v_{i-1} - h^2u_i = h^2g_i\\
-%     - v_{n-2} + 2v_{n-1}  - h^2u_{n-1} = h^2g_{n-1}\\    
-%   \end{gather}
-%   onde, $i=3,\dotsc,n-2$.
-
-%   As equações acima formam um sistema linear $2(n-2)\times 2(n-2)$. Podemos escrever sua forma matricial
-%   \begin{equation}
-%     Aw = h
-%   \end{equation}
-%   de várias formas a depender da escolha do vetor $w$ em função de $u$ e $v$. Vamos aqui considerar duas delas:
-%   \begin{itemize}
-%   \item[F1.] $w = (u_2,v_2,\dotsc,u_{n-1},v_{n-1})$
-%     \begin{gather}
-%       u_i = w_{2(i-1)-1}\\
-%       f_i = h_{2(i-1)-1}\\
-%       ~\nonumber\\
-%       v_i = w_{2(i-1)}\\
-%       g_i = h_{2(i-1)}
-%     \end{gather}
-%   \item[F2.] $w = (u_2,\dotsc,u_{n-1},v_2,\dotsc,v_{n-1})$
-%     \begin{gather}
-%       u_i = w_{i-1}\\
-%       f_i = h_{i-1}\\
-%       ~\nonumber\\
-%       v_i = w_{i+n-3}\\
-%       g_i = h_{i+n-3}
-%     \end{gather}    
-%   \end{itemize}
-
-  
-% \begin{figure}[H]
-%   \centering
-%   \includegraphics[width=0.45\textwidth]{./cap_sislin/dados/figExReordenamento/f1}
-%   \includegraphics[width=0.45\textwidth]{./cap_sislin/dados/figExReordenamento/f2}
-%   \caption{Esquerda: F1. Direita: F2. Consulte o Exemplo \ref{ex:reordenamento}.}
-%   \label{fig:exReordenamento}
-% \end{figure}
-
-% As escolhas F1. e F2. são duas \emph{enumerações} distintas das incógnitas. A Figure \ref{fig:exReordenamento} mostra a estrutura das matrizes geradas em cada caso. Observamos que a enumeração F1 a matriz gerada tem blocos bem estruturados. Já, a enumeração F2, nos fornece uma matriz banda, o que é uma estrutura mais eficiente.
-% \end{ex}
-
-% \begin{exer}\label{exer:reordenamento}
-%   Consideremos o Exemplo \ref{ex:reordenamento} e assumimos
-%   \begin{gather}
-%     f(x) = \pi^2\sen(\pi x) + x(x-1)\\
-%     g(x) = -2 - \sen(\pi x)
-%   \end{gather}
-%   Neste caso, a solução analítica do sistema de EDOs associado é
-%   \begin{gather}
-%     u(x) = \sen(\pi x)\\
-%     v(x) = x(x-1)
-%   \end{gather}
-%   \begin{enumerate}[a)]
-%   \item Compute a solução numérica com o Método da Eliminação Gaussiana\footnote{Use o método SciPy \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.solve.html}{scipy.linalg.solve}} usando as enumerações F1 e F2. Compare a soluções numéricas com a analítica. Verifique o tempo e a demanda de memória computacionais para $n=10, 10^2, 10^3, 10^4$.
-%   \item Considerando a enumeração F2. Implemente o Método de Eliminação Gaussiana otimizado para matriz banda gerada\footnote{Baseie-se no Algoritmo de Thomas, Código\ref{lst:algThomas}}. Verifique o tempo e a demanda de memória computacionais para $n=10, 10^2, 10^3, 10^4$ e compare com os resultados obtidos no item a).
-%   \item Considerando a enumeração F1. Reordene as equações do sistema discreto de forma a obter uma matriz pentadiagonal. Então, compare seu uso computacional em relação as abordagens dos itens anteriores\footnote{Neste caso, pode-se utilizar o método SciPy \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.solve_banded.html}{scipy.linalg.solve\_banded}}. Por fim, qual é a melhor abordagem?
-%   \end{enumerate}
-% \end{exer}
-% \begin{obs}
-%   As enumerações F1 e F2 consideradas no Exemplo \ref{ex:reordenamento} correspondem a permutações na coluna da matriz (e no vetor solução) do sistema linear. Já, no item c) do Exercício \ref{exer:reordenamento}, fizemos o reordenamento das linhas da matriz (e do vetor dos termos constantes) do sistema, em conformidade com a enumeração das incógnitas. Normalmente, esta segunda abordagem leva a uma estrutura computacionalmente mais eficiente.  
-% \end{obs}
-
-\subsection{Exercícios}
 
 \begin{exer}\label{exer:sislin_tridiag}
   Considere o seguinte sistema linear
@@ -625,14 +542,16 @@ Assim sendo, o elemento \texttt{p[j=2] = 3} aponta para o \texttt{l[k=3] = 0}, o
 \end{exer}
 
 %%% Section %%%
-
 \section{Métodos Iterativos}\label{cap_sislin_sec_metiter}
+\badgeRevisar
 
 \subsection{GMRES}
+\badgeRevisar
 
 O \hlemph{GMRES} (do inglês, \textit{Generalized Minimal Residual Method}\endnote{Desenvolvido por Yousef Saad e H. Schultz, 1986. Fonte: \href{https://en.wikipedia.org/wiki/Generalized_minimal_residual_method}{Wikipedia}.}) é um \hlemph{método de subespaço de Krylov}{\krylov} e é considerado uma das mais eficientes técnicas para a resolução de sistemas lineares gerais e de grande porte (esparsos).
 
 \subsubsection{Método de Subespaço de Krylov}
+\badgeRevisar
 
 A ideia básica é resolver o sistema linear
 \begin{equation}
@@ -662,6 +581,7 @@ onde $q_{m-1}$ é um dado polinômio de grau $m-1$. No caso particular de $x_0 =
 Diferentes versões deste método são obtidas pelas escolhas do subespaço $\mathcal{L}_m$ e formas de precondicionamento do sistema.
 
 \subsubsection{GMRES}
+\badgeRevisar
 
 O \hlemph{GMRES} é um \emph{método de subespaço de Krylov} assumindo $\mathcal{L}_m = A\mathcal{K}_m$, com
 \begin{equation}
@@ -740,6 +660,9 @@ Em resumo, a solução GMRES $x_m$ é computada seguindo os seguintes passos:
   \hl{A convergência do restarted GMRES não é garantida para matrizes que não sejam positiva-definidas}.
 \end{obs}
 
+\subsubsection{Exercícios}
+\badgeRevisar
+
 \begin{exer}\label{exer:pvc1d_gmres}
   Considere o problema discreto do Exercício \ref{exer:pvc1d}.
   \begin{enumerate}[a)]
@@ -752,7 +675,6 @@ Em resumo, a solução GMRES $x_m$ é computada seguindo os seguintes passos:
     \begin{center}
     \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.spsolve.html#scipy.sparse.linalg.spsolve}{scypi.sparse.linalg.spsolve}.
   \end{center}
-
   \end{enumerate}
 \end{exer}
 
@@ -832,7 +754,9 @@ Em resumo, a solução GMRES $x_m$ é computada seguindo os seguintes passos:
   Faça sua própria implementação do método GMRES. Valide-a e compare-a com a resolução do exercício anterior (Exercício \ref{exer:poissonDNH}).
 \end{exer}
 
+
 \subsection{Método do Gradiente Conjugado}
+\badgeRevisar
 
 O \hlemph{método do gradiente conjugado} é uma das mais eficientes técnicas iterativas para a resolução de sistema linear com matriz esparsa, simétrica e definida positiva. Vamos assumir que o sistema
 \begin{equation}
@@ -843,6 +767,7 @@ onde, a $A$ é \emph{simétrica} e \emph{definida positiva}.
 O método pode ser derivado a partir do método de Arnoldi{\arnoldi} \cite[Seção 6.7]{Saad2003} ou como uma variação do método do gradiente. Este é caminho que será adotado aqui.
 
 \subsubsection{Método do Gradiente}
+\badgeRevisar
 
 A ideia é reformular o sistema $Ax = b$ como um problema de minimização. Vamos começar definindo o funcional
 \begin{equation}\label{eq:funcional_mg}
@@ -918,7 +843,9 @@ Com isso, temos a iteração do Método do Gradiente
   \end{equation}
 \end{obs}
 
-% \lstinputlisting[caption=Algoritmo do Gradiente, label={lst:algG}]{./cap_sislin/dados/pyMG/main.py}
+
+\subsubsection{Exercícios}
+\badgeRevisar
 
 \begin{exer}\label{exer:mg}
   Faça sua implementação do método do gradiente.
@@ -945,6 +872,7 @@ Com isso, temos a iteração do Método do Gradiente
 \end{exer}
 
 \subsubsection{Método do Gradiente Conjugado}
+\badgeRevisar
 
 O método do gradiente consiste em uma iteração da forma
 \begin{align}
@@ -999,6 +927,9 @@ def mgc(A, b, x, tol=1e-14):
   raise ValueError("Falha de convergencia.")
 \end{lstlisting}
 
+\subsubsection{Exercícios}
+\badgeRevisar
+
 \begin{exer}\label{exer:mgc}
   Use o Código~\ref{code:algGC} na resolução dos seguintes itens.
   \begin{enumerate}
@@ -1020,6 +951,7 @@ def mgc(A, b, x, tol=1e-14):
   \end{enumerate}
 \end{exer}
 
+
 \subsection{Precondicionamento}
 \badgeRevisar
 
@@ -1034,10 +966,12 @@ resolvemos o sistema equivalente
 onde $M = P^{-1}$ e a matriz $P$ é chamada de \emph{precondicionador} do sistema. De forma geral, a escolha do precondicionador é tal que $P \approx A$, mas com inversa fácil de ser computada. Além disso, uma característica esperada é que $MA$ tenha esparsidade parecida com $A$.
 
 \subsubsection{Precondicionamento ILU}
+\badgeRevisar
 
 A ideia é tomar $P$ igual a uma fatoração LU incompleta (ILU, do inglês, {\it Incomplete LU}). Incompleta no sentido que entradas de $L$ e de $U$ sejam adequadamente removidas, buscando-se uma boa esparsidade e ao mesmo tempo uma boa aproximação $LU$ para $A$.
 
 \subsubsection{ILU(0)}
+\badgeRevisar
 
 O precondicionamento ILU(0) impõe que as matrizes $L$ e $U$ tenham o mesmo padrão de esparsidade da matriz $A$.
 
@@ -1059,6 +993,9 @@ O precondicionamento ILU(0) impõe que as matrizes $L$ e $U$ tenham o mesmo padr
 
 
 \lstinputlisting[caption=Algoritmo ILU(0), label={lst:algIlu0}]{./cap_sislin/dados/pyIlu0/main.py}
+
+\subsubsection{Exercícios}
+\badgeRevisar
 
 \begin{exer}
   Considere o problema discreto do Exercício \ref{exer:poissonDNH}.
