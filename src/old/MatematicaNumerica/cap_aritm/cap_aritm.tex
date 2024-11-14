@@ -1,0 +1,848 @@
+
+
+\chapter{Aritmética de Máquina}\label{cap_aritm}
+\thispagestyle{fancy}
+
+\ifisoctave
+No \verb+GNU Octave+, temos
+\begin{verbatim}
+>> 0.1+0.2==0.3
+ans = 0
+\end{verbatim}
+\fi
+
+\section{Sistema de numeração posicional}\label{cap_aritm_sec_sisnumpos}
+
+Cotidianamente, usamos o sistema de numeração posicional na base decimal. Por exemplo, temos
+\begin{equation}
+  123,5 = 1\times 10^2 + 2\times 10^1 + 3\times 10^0 + 5\times 10^{-1},
+\end{equation}
+onde o algarismo/dígito 1 está na posição 2 (posição das centenas), o dígito 2 está na posição 1 (posição das dezenas) e o dígito 3 está na posição 0 (posição das unidades). Mais geralmente, temos a representação decimal
+\begin{align}
+  \pm &d_n\ldots d_2d_1d_0,d_{-1}d_{-2}d_{-3}\ldots := \\
+  \pm &\left(d_n\times 10^n + \cdots + d_2\times 10^2 + d_1\times 10^1 + d_0\times 10^0\right. \\
+      &\left. + d_{-1}\times 10^{-1} + d_{-2}\times 10^{-2} + d_{-3}\times 10^{-3} + \cdots\right),
+\end{align}
+cujos os dígitos $d_i \in \{0, 1, 2, 3, 4, 5, 6, 7, 8, 9\}$, $i=n, \dotsc, 2, 1, 0, -1, -2, -3, \ldots$. Observamos que esta representação posicional pode ser imediatamente generalizada para outras bases numéricas.
+
+\begin{defn}\normalfont{(Representação posicional)}\label{defn:representacao_posicional}
+  Dada uma base $b\in\mathbb{N}\setminus \{0\}$, definimos a representação
+  \begin{align}
+    \pm &(d_n\ldots d_2d_1d_0,d_{-1}d_{-2}d_{-3}\ldots)_{b} := \\
+    \pm &\left(d_n\times b^n + \cdots + d_2\times b^2 + d_1\times b^1 + d_0\times b^0\right. \\
+      &\left. + d_{-1}\times b^{-1} + d_{-2}\times b^{-2} + d_{-3}\times b^{-3} + \cdots\right),
+  \end{align}
+onde os dígitos $d_i\in\{0, 1, \dotsc, b-1\}$\footnote{Para bases $b\geq 11$, usamos a representação dos dígitos maiores ou iguais a 10 por letras maiúsculas do alfabeto latino, i.e. $A=10$, $B=11$, $C=12$ e assim por diante.}, $i=n, \dotsc, 2, 1, 0, -1, -2, -3, \ldots$.
+\end{defn}
+
+\begin{ex}\normalfont{(Representação binária)}\label{ex:base_binaria}
+  O número $(11010,101)_2$ está escrito na representação binária (base $b=2$). Da Definição~\ref{defn:representacao_posicional}, temos
+  \begin{align}
+    (\stackrel{4}{1}~\stackrel{3}{1}~\stackrel{2}{0}~\stackrel{1}{1}~\stackrel{0}{0},\stackrel{-1}{~\,1}~\stackrel{-2}{~\,0}~\stackrel{-3}{~\,1})_2 &= 1\times 2^4 + 1\times 2^3 + 0\times 2^2 + 1\times 2^1 + 0\times 2^0\\
+    &+ 1\times 2^{-1} + 0\times 2^{-2} + 1\times 2^{-3}\\
+    &= 26,625.
+  \end{align}
+\ifisoctave
+Podemos fazer estas contas no \verb+GNU Octave+ da seguinte forma
+\begin{verbatim}
+>> 1*2^4+1*2^3+0*2^2+1*2^1+0*2^0+1*2^-1+0*2^-2+1*2^-3
+ans =  26.625
+\end{verbatim}
+\fi
+\end{ex}
+
+\subsection{Mudança de base}
+
+Um mesmo número pode ser representado em diferentes bases e, aqui, estudaremos como obter a representação de uma número em diferentes bases. A mudança de base de representação de um dado número pode ser feita de várias formas. De forma geral, se temos um número $x$ representado na base $b_1$ e queremos obter sua representação na base $b_2$, fazemos
+\begin{enumerate}
+\item Calculamos a representação do número $x$ na base decimal.
+\item Da calculada representação decimal, calculamos a representação de $x$ na base $b_2$.
+\end{enumerate}
+Observamos que o passo 1. ($b \to 10$) segue imediatamente da Definição \ref{defn:representacao_posicional}. Agora, o passo 2. ($10\to b$), podemos usar o seguinte procedimento. Suponhamos que $x$ tenha a seguinte representação decimal
+\begin{equation}
+  d_nd_{n-1}d_{n-2}\ldots d_0,d_{-1}d_{-2}d_{-3}\ldots
+\end{equation}
+Então, separamos sua parte inteira $I = d_nd_{n-1}d_{n-2}\ldots d_0$ e sua parte fracionária $F = 0,d_{-1}d_{-2}d_{-3}\ldots$ ($x = I + F$). Então, usando de sucessivas divisões de $I$ pela base $b$ desejada, obtemos sua representação nesta mesma base. Analogamente, usando de sucessivas multiplicações de $F$ pela base $b$, obtemos sua representação nesta base. Por fim, basta somar as representações calculadas.
+
+\begin{ex}
+  Obtenha a representação em base quartenária ($b=4$) do número $(11010,101)_2$.
+  \begin{itemize}
+  \item[1.] $b=2 \to b=10$. 
+A representação de $(11010,101)_2$ segue direto da Definição \ref{defn:representacao_posicional} (veja, o Exemplo~\ref{ex:base_binaria}). Ou seja, temos
+\begin{align}
+    (\stackrel{4}{1}~\stackrel{3}{1}~\stackrel{2}{0}~\stackrel{1}{1}~\stackrel{0}{0},\stackrel{-1}{~\,1}~\stackrel{-2}{~\,0}~\stackrel{-3}{~\,1})_2 &= 2^4 + 2^3 + 2^1 + 2^{-1} + 2^{-3} \\
+  &= 26,625.
+\end{align}
+  \end{itemize}
+\ifisoctave
+No \verb+GNU Octave+ podemos fazer a mudança para a base decimal com a função \verb+base2dec+:
+\begin{verbatim}
+>> I = base2dec("11010",2)
+I =  26
+>> F = base2dec("101",2)*2^-3
+F =  0.62500
+>> I+F
+ans =  26.625
+\end{verbatim}
+\fi
+
+\begin{itemize}
+\item[2.] $b=10 \to b=4$.
+\end{itemize}
+Primeiramente, decompomos $26,625$ em sua parte inteira $I = 26$ e em sua parte fracionária $0,625$. Então, ao fazermos sucessivas divisões de $I$ por $b=4$, obtemos:
+\begin{align}
+  I &= 26\\
+  &= 6\times 4 + 2\times 4^0\\
+  &= (1\times 4 + 2)\times 4 + 2\times 4^0\\
+  &= 1\times 4^2 + 2\times 4 + 2\times 4^0\\
+  &= (122)_4.
+\end{align}
+Agora, para a parte fracionária, usamos sucessivas multiplicações de $F$ por $b=4$, obtendo:
+\begin{align}
+  F &= 0,625\\
+  &= 2,5\times 4^{-1} = 2\times 4^{-1} + 0,5\times 4^{-1}\\
+  &= 2\times 4^{-1} + 2\times 4^{-1}\times 4^{-1}\\
+  &= 2\times 4^{-1} + 2\times 4^{-2}\\
+  &= (0,22)_{4}.
+\end{align}
+No \verb+GNU Octave+, podemos computar a representação de $F$ na base $b=4$ da seguinte forma:
+\begin{verbatim}
+>> F=0.625
+F =  0.62500
+>> d=fix(F*4),F=F*4-d
+d =  2
+F =  0.50000
+>> d=fix(F*4),F=F*4-d
+d =  2
+F = 0
+\end{verbatim}
+
+Por fim, dos passos 1. e 2., temos $(11010,101)_2 = (122,22)_4$.
+\end{ex}
+
+\subsection*{Exercícios}
+
+\begin{exer}\label{exer:base2dec}
+  Obtenha a representação decimal dos seguinte números:
+  \begin{enumerate}[a)]
+  \item $(101101,00101)_2$
+  \item $(23,1)_4$
+  \item $(DAAD)_{16}$
+  \item $(0,1)_3$
+  \item $(0,\overline{1})_4$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+    \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/exer_base2dec/exer_base2dec.m}{Código.} 
+  \fi
+  a)~$45,15625$; b)~$11,25$; c)~$55981$; d)~$0,\overline{3}$; e)~$0,\overline{3}$
+\end{resp}
+
+\begin{exer}\label{exer_dec2base}
+  Obtenha a representação dos seguintes números na base indicada:
+  \begin{enumerate}[a)]
+  \item $45,5$ na base $b=2$.
+  \item $0,3$ na base $b=4$.
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/exer_dec2base/exer_dec2base.m}{Código.} 
+  \fi
+  a)~$(101101,1)_2$; b)~$(0,1\overline{03})_4$
+\end{resp}
+
+\begin{exer}\label{exer_base2base}
+  Obtenha a representação dos seguintes números na base indicada:
+  \begin{enumerate}[a)]
+  \item $(101101,00101)_2$ na base $b=4$.
+  \item $(23,1)_4$ na base $b=2$.
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/exer_base2base/exer_base2base.m}{Código.} 
+  \fi
+  a)~$(231,022)_4$; b)~$(1011,01)_2$  
+\end{resp}
+
+\section{Representação de números em máquina}\label{cap_artm_sec_repummaq}
+
+Usualmente, números são manipulados em máquina através de suas representações em registros com $n$-{\it bits}. Ao longo desta seção, vamos representar um tal registro por
+\begin{equation}
+  [b_0 ~ b_1 ~ b_2 ~ \cdots ~ b_{n-1}],
+\end{equation}
+onde cada {\it bit} é $b_i=0, 1$, $i=0, 1, 2, \dotsc, n-1$.
+
+Na sequência, fazemos uma breve discussão sobre as formas comumente usadas para a manipulação de números em computadores.
+
+\subsection{Números inteiros}
+
+A representação de complemento de 2 é usualmente utilizada em computadores para a manipulação de números inteiros. Nesta representação, um registro de $n$-{\it bits}
+\begin{equation}
+  [b_0 ~ b_1 ~ b_2 ~ \cdots ~ b_{n-1}],
+\end{equation}
+representa o número inteiro
+\begin{equation}
+  x = -d_{n-1}2^{n-1} + (d_{n-2}\ldots d_2d_1d_0)_2.
+\end{equation}
+
+\begin{ex}
+  O registro de 8 {\it bits}
+  \begin{equation}
+    [1 ~ 1 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0]
+  \end{equation}
+representa o número
+\begin{align}
+  x &= -0\cdots 2^{7} + (0000011)_2\\
+  &= 2^1 + 2^0 = 3.
+\end{align}
+
+\ifisoctave
+No \verb+GNU Octave+, podemos usar:
+\begin{verbatim}
+>> bitunpack(int8(3))
+ans =
+
+   1   1   0   0   0   0   0   0
+
+>> bitpack(logical([1 1 0 0 0 0 0 0]),'int8')
+ans = 3
+\end{verbatim}
+\fi
+\end{ex}
+
+Nesta representação de complemento de 2, o maior e o menor números inteiros que podem ser representados em um registro com $n$-{\it bits} são
+\begin{equation}
+  [1 ~ 1 ~ 1 ~ \cdots ~ 1 ~ 0] ~ \text{e} ~ [1 ~ 0 ~ 0 ~ 0 ~ \cdots ~ 0],
+\end{equation}
+respectivamente. Já o zero é obtido com o registro
+\begin{equation}
+  [0 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0].
+\end{equation}
+
+\begin{ex}
+  Com um registro de $8$-{\it bits}, temos que o maior e o menor números inteiros representados em complemento de 2 são
+  \begin{align}
+    [1 ~ 1 ~ 1 ~ 1 ~ 1 ~ 1 ~ 1 ~ 0] \sim x &= -0\cdot 2^7 + (1111111)_2 = 127,\\
+    [0 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0 ~ 1] \sim x &= -1\cdot 2^7 + (1111111)_2 = -128,\\
+  \end{align}
+  respectivamente.  
+\ifisoctave Confirmamos isso no \verb+GNU Octave+ com
+\begin{verbatim}
+>> intmax('int8')
+ans = 127
+>> intmin('int8')
+ans = -128
+\end{verbatim}
+  \fi
+\end{ex}
+
+A adição de números inteiros na representação de complemento de 2 pode ser feita de maneira simples. Por exemplo, consideremos a soma $3 + 9$ usando registros de 8 {\it bits}. Temos
+\begin{align}
+  3 &\sim [1 ~ 1 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0]\\
+  9 &\sim [1 ~ 0 ~ 0 ~ 1 ~ 0 ~ 0 ~ 0 ~ 0] ~ + \\
+  - & -------- \\
+ 12 &\sim [0 ~ 0 ~ 1 ~ 1 ~ 0 ~ 0 ~ 0 ~ 0]
+\end{align}
+
+Em representação de complemento de 2, a representação de um número negativo $-x$ pode ser obtida da representação de $x$, invertendo seus {\it bits} e somando 1. Por exemplo, a representação de $-3$ pode ser obtida da representação de $3$, como segue
+\begin{equation}
+  3 \sim [1 ~ 1 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0].
+\end{equation}
+Invertendo seus {\it bits} e somando 1, obtemos
+\begin{equation}
+  -3 \sim [1 ~ 0 ~ 1 ~ 1 ~ 1 ~ 1 ~ 1 ~ 1].
+\end{equation}
+
+A subtração de números inteiros usando a representação de complemento de 2 fica, então, tanto simples quanto a adição. Por exemplo:
+\begin{align}
+  3 &\sim [1 ~ 1 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0 ~ 0]\\
+ -9 &\sim [1 ~ 1 ~ 1 ~ 0 ~ 1 ~ 1 ~ 1 ~ 1] ~ + \\
+  - & -------- \\
+ -6 &\sim [0 ~ 1 ~ 0 ~ 1 ~ 1 ~ 1 ~ 1 ~ 1]
+\end{align}
+
+\ifisoctave
+\begin{obs}
+  Por padrão, o \verb+GNU Octave+ usa a representação de complemento de 2 com 32 {\it bits} para números inteiros. Com isso, temos
+\begin{verbatim}
+>> intmin()
+ans = -2147483648
+>> intmax()
+ans = 2147483647
+\end{verbatim}
+\end{obs}
+\fi
+
+\subsection{Ponto flutuante}
+
+A manipulação de números decimais em computadores é comumente realizada usando a representação de ponto flutuante de 64-{\it bits}. Nesta, um dado registro de 64-{\it bits}
+\begin{equation}
+  [m_{52} ~ m_{51} ~ m_{50} ~ \cdots ~ m_{1} ~ | ~ c_0 ~ c_1 ~ c_2 ~ \cdots ~ c_{10} ~ | ~ s]
+\end{equation}
+representa o número
+\begin{equation}
+  x = (-1)^s M\cdot 2^{c - 1023},
+\end{equation}
+onde $M$ é chamada de mantissa e $c$ da característica, as quais são definidas por
+\begin{align}
+  M &:= (1,m_1m_2m_3\ldots m_{52})_2,\\
+  c &:= (c_{10}\ldots c_2c_1c_0)_2.
+\end{align}
+
+\begin{ex}
+  Por exemplo, na representação em ponto flutuante de 64-{\it bits}, temos que o registro
+  \begin{equation}
+    [0 ~ 0 ~ 0 ~ \cdots ~ 0 ~ 1 ~ 0 ~ 1 ~ | ~ 0 ~ 0 ~ 0 ~ \cdots ~ 0 ~ 1 ~ | ~ 1]
+  \end{equation}
+representa o número $-3,25$.
+\end{ex}
+
+\subsection{Erro de arredondamento}
+
+Dado um número real $x$, sua representação $fl(x)$ em ponto flutuante é dada pelo registro que representa o número mais próximo de $x$. Este procedimento é chamado de arredondamento por proximidade. Por exemplo, $x = 1,1$ é representado pelo registro
+\begin{small}
+  \begin{center}
+    [0101100110011001100110011001100110011001100110011000111111111100]
+  \end{center}
+\end{small}
+o qual é o número 
+\begin{small}
+  \begin{center}
+    $fl(x) = 1,100000000000000088817841970012523233890533447265625,$
+  \end{center}
+\end{small}
+sendo o erro de arredondamento $|x - fl(x)| \approx 8,9\times 10^{-17}$.
+
+Observemos que o erro de arredondamento varia conforme o número dado, podendo ser zero no caso de $x = fl(x)$. Comumente, utiliza-se o \emph{épsilon de máquina}\index{épsilon de máquina} como uma aproximação deste erro. O épsilon de máquina é definido como a distância entre o número 1 e seu primeiro sucessor em ponto flutuante. Notemos que
+\begin{equation}
+  1 = fl(1) \sim [0 ~ 0 ~ 0 ~ \cdots ~ 0 ~ | ~ 1 ~ 1 ~ 1 ~ \cdots ~ 1 ~ 0 ~ | ~ 0].
+\end{equation}
+Assim sendo, o primeiro sucessor de $fl(1)$ é
+\begin{equation}
+  fl(1)+\mathrm{eps} \sim [1 ~ 0 ~ 0 ~ \cdots ~ 0 ~ | ~ 1 ~ 1 ~ 1 ~ \cdots ~ 1 ~ 0 ~ | ~ 0]
+\end{equation}
+onde $\mathrm{eps}$ é o épsilon de máquina e
+\begin{equation}
+  \mathrm{eps} = 2^{-52} \approx 2,22\times 10^{-16}.
+\end{equation}
+\ifisoctave
+No \verb+GNU Octave+, o $\mathrm{eps}$ está definido como constante:
+\begin{verbatim}
+>> eps
+ans =    2.2204e-16
+\end{verbatim}
+\fi
+
+A aritmética em ponto flutuante requer arredondamentos sucessivos de números. Por exemplo, a computação da soma de dois números dados $x$ e $y$ é feita a partir de suas representações em ponto flutuante $fl(x)$ e $fl(y)$. Então, computa-se $z = fl(x)+fl(y)$ e o resultado é $fl(z)$. Observe, inclusive que $fl(x+y)$ pode ser diferente de $fl(fl(x)+fl(y))$. Por exemplo
+\ifisoctave
+\begin{verbatim}
+>> 0.1+0.2 == 0.3
+ans = 0
+\end{verbatim}
+\fi
+
+\subsection*{Exercício}
+
+\begin{exer}
+  Considerando a representação de complemento de 2 de números inteiros, obtenha os registros de $8$-{\it bits} dos seguintes números:
+  \begin{enumerate}[a)]
+  \item $15$
+  \item $-15$
+  \item $32$
+  \item $-32$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+     \ifisoctave 
+    \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/exer_int8/exer_int8.m}{Código.} 
+    \fi
+    a)~[11110000]; b)~[10001111]\\
+    c)~[00000100]; d)~[00000111]
+\end{resp}
+
+\begin{exer}
+  Considerando a representação de complemento de 2 de números inteiros, obtenha os registros de $16$-{\it bits} dos seguintes números:
+  \begin{enumerate}[a)]
+  \item $1024$
+  \item $-1024$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+     \ifisoctave 
+    \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/exer_int16/exer_int16.m}{Código.} 
+    \fi
+    a)~[0000000000100000]; \\
+    b)~[0000000000111111];
+\end{resp}
+
+\begin{exer}
+  Considerando a representação de complemento de 2 de números inteiros, qual é o maior número que pode ser representado por um registro de $32$-{\it bits} da forma
+  \begin{equation}
+    [1 ~ 0 ~ b_2 ~ b_3 ~ b_4 ~ \cdots ~ b_{30} ~ 1],
+  \end{equation}
+onde $b_i \in \{0, 1\}$, $i=2, 3, 4, \cdots, 15$.
+\end{exer}
+\begin{resp}
+  $[10111~\ldots~11] \sim -3$
+\end{resp}
+
+\begin{exer}
+  Obtenha os registros em ponto flutuante de $64$-{\it bits} dos seguintes números:
+  \begin{enumerate}[a)]
+  \item $-1,25$
+  \item $3$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+     \ifisoctave 
+    \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/exer_float64/exer_float64.m}{Código.} 
+    \fi
+    a)~$[000\ldots 0 10|111\ldots 10|1]$;\\
+    b)~$[000\ldots 01|000\ldots 01|0]$
+\end{resp}
+
+\begin{exer}
+  Considerando a representação em ponto flutuante de 64-{\it bits}, encontre o número que é representado pelos seguintes registros:
+  \begin{enumerate}[a)]
+  \item $[000\ldots 011|1000\ldots 01|0]$
+  \item $[111\ldots 1|111\ldots 1|1]$
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+     \ifisoctave 
+    \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/exer_float2dec/exer_float2dec.m}{Código.} 
+    \fi  
+    a)~7; b)~\verb+NaN+
+\end{resp}
+
+\section{Notação científica}\label{cap_aritm_sec_notcient}
+
+Enquanto que a manipulação de números decimais é comumente feita usando-se da aritmética em ponto flutuante, a interpretação dos parâmetros dos problemas de interesse e seus resultados é normalmente feita com poucos dígitos. Nesta seção, introduziremos algumas notações que serão utilizadas ao longo deste material.
+
+A \emph{notação científica}\index{notação científica} é a representação de um dado número na forma
+\begin{equation}
+  d_{n}\ldots d_2d_1d_0,d_{-1}d_{-2}d_{-3}\ldots \times 10^{E},
+\end{equation}
+onde $d_i$, $i=n, \ldots, 1, 0, -1, \ldots$, são algarismos da base 10. A parte à esquerda do sinal $\times$ é chamada de mantissa do número e $E$ é chamado de expoente (ou ordem de grandeza).
+
+\begin{ex}\label{ex:notacao_cientifica}
+  O número $31,515$ pode ser representado em notação científica das seguintes formas
+  \begin{align}
+    31,515\times 10^0 &= 3,1515\times 10^{1} \\
+                      &= 315,15\times 10^{-2} \\
+                      &= 0,031515\times 10^{3},
+  \end{align}
+entre outras tantas possibilidades.
+\end{ex}
+
+No exemplo anterior (Exemplo~\ref{ex:notacao_cientifica}), podemos observar que a representação em notação científica de um dado número não é única. Para contornar isto, introduzimos a \emph{notação científica normalizada}\index{notação científica!normalizada}, a qual tem a forma
+\begin{equation}
+  d_0,d_{-1}d_{-2}d_{-3}\ldots\times 10^{E},
+\end{equation}
+com $d_0 \neq 0$\footnote{No caso do número zero, temos $d_0=0$.}.
+
+\begin{ex}
+  O número $31,515$ representado em notação científica normalizada é $3,1515\times 10^{1}$.
+\end{ex}
+
+Como vimos na seção anterior, costumeiramente usamos da aritmética de ponto flutuante nas computações, com a qual os números são representados com muito mais dígitos dos quais estamos interessados na interpretação dos resultados. Isto nos leva de volta a questão do arredondamento.
+
+Dizemos que um número está representado com $n$ \emph{dígitos significativo}\index{dígitos significativo} (na notação científica normalizada) quando está escrito na forma
+\begin{equation}
+  d_0,d_{1}d_{2}\ldots d_{n-1}\times 10^{E},
+\end{equation}
+com $d_0\neq 0$. 
+
+\subsection{Arredondamento}
+
+Observamos que pode ocorrer a necessidade de se arredondar um número para obter sua representação com um número finito de dígitos significativos. Por exemplo, para representarmos o número $x=3,1415\times 10^1$ com 3 dígitos significativos, precisamos determinar de que forma vamos considerar a contribuição de seus demais dígitos a direita. Isto, por sua vez, é determinado pelo tipo de arredondamento que iremos utilizar.
+
+O tipo de arredondamento mais comumente utilizado é o chamado \emph{arredondamento por proximidade com desempate par}\index{arredondamento}. Neste, a representação escolhida é aquela mais próxima do número dado. Por exemplo, a representação de 
+\begin{equation}
+  x=3,1515\times 10^1
+\end{equation}
+ com três dígitos significativos é 
+ \begin{equation}
+   x=3,15\times 10^{1}. 
+\end{equation}
+Agora, sua representação com apenas dois dígitos significativos é
+\begin{equation}
+  x=3,2\times 10^{1}.
+\end{equation}
+No caso de empate, usa-se a seguinte regra: 1) no caso de o último dígito significativo ser par, este é mantido; 2) no caso de o último dígito significativo ser ímpar, este é acrescido de uma unidade. Por exemplo, no caso do número $x=3,1515\times 10^1$, sua representação com 4 dígitos significativos é
+\begin{equation}
+  x = 3,152\times 10^1.
+\end{equation}
+
+\ifisoctave
+No \verb+GNU Octave+, o arredondamento por proximidade com desempate par é o padrão para números em ponto flutuante. Vejamos os seguintes casos:
+\begin{verbatim}
+>> printf("%1.1\E\n",0.625)
+6.2E-01
+>> printf("%1.1\E\n",0.635)
+6.4E-01
+\end{verbatim}
+\fi
+
+No restante deste material estaremos assumindo a notação científica normalizada com arredondamento por proximidade.
+
+\subsection*{Exercícios}
+
+\begin{exer}
+  Obtenha a representação de $2718,2818$ em notação científica normalizada com:
+  \begin{enumerate}[a)]
+  \item 3 dígitos significativos.
+  \item 4 dígitos significativos.
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+    \ifisoctave 
+    \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/exer_notcient/exer_notcient.m}{Código.} 
+  \fi
+  a)~$2,72\times 10^3$; b)~$2,718\times 10^3$
+\end{resp}
+
+\ifisoctave
+Por padrão no \verb+GNU Octave+, números em ponto flutuante são arredondados por proximidade com desempate par. Então, explique o que está ocorrendo nos seguintes casos:
+\begin{verbatim}
+>> printf("%1.3\E\n",3.1515)
+3.151E+00
+>> printf("%1.3\E\n",3.1525)
+3.152E+00
+\end{verbatim}
+\fi
+
+\section{Tipos e medidas de erros}\label{cap_aritm_sec_erros}
+
+Ao utilizarmos computadores na resolução de problemas matemáticos, acabamos obtendo soluções aproximadas aproximadas. A diferença entre a solução exata e a computada solução aproximada é chamada de erro. O erro é comumente classificado nas seguintes duas categorias:
+\begin{itemize}
+\item \emph{Erro de arredondamento}\index{erro de!arredondamento}. Este é o erro que ocorre na representação aproximada de números na máquina.
+\item \emph{Erro de truncamento}\index{erro de!truncamento}. Este é o erro que ocorre na interrupção (truncamento) de um procedimento com infinitos passos.
+\end{itemize}
+
+\begin{ex}\label{ex:erro_de_arredondamento}
+  O erro de arredondamento em aproximar $\pi$ por $3,1415\times 10^0$ é de aproximadamente $9,3\times 10^{-5}$.
+\end{ex}
+
+\begin{ex}\label{ex:erro_de_truncamento}
+  Consideremos a seguinte série numérica $\sum_{k=0}^\infty 1/k! = e \approx 2,7183\times 10^0$. Ao computarmos esta série no computador, precisamos truncá-la em algum $k$ suficientemente grande. Por exemplo, trunca a série em seu décimo termo, temos
+  \begin{align}
+    \sum_{k=1}^\infty \frac{1}{k!} &\approx 1 + 1 + \frac{1}{2} + \frac{1}{3} + \cdots + \frac{1}{9} \\
+    &\approx 2,7182815\times 10^0 =: \tilde{e}.
+  \end{align}
+A diferença $e - \tilde{e} \approx 3\times 10^{-7}$ é o erro de truncamento associado.
+\end{ex}
+
+Suponhamos, agora, que $x$ seja o valor exato de uma quantidade de interesse e $\tilde{x}$ a quantidade computada (i.e., uma aproximação de $x$). Em matemática numérica, utilizamos frequentemente as seguintes medidas de erro:
+\begin{itemize}
+  \item Erro absoluto:
+    \begin{equation}
+      e_{abs} := |x - \tilde{x}|.
+    \end{equation}
+  \item Erro relativo:
+    \begin{equation}
+      e_{rel} := \frac{|x - \tilde{x}|}{|x|}\left(\times 100\%\right).
+    \end{equation}
+\end{itemize}
+
+A vantagem do erro relativo é em levar em conta a ordem de grandeza das quantidades $x$ e $\tilde{x}$. Vejamos o seguinte exemplo (Exemplo~\ref{ex:medidas_de_erros}).
+
+\begin{ex}\label{ex:medidas_de_erros}
+  Observemos os seguintes casos:
+  \begin{enumerate}[a)]
+  \item $x=1,0$ e $\tilde{x} = 1,1$:
+    \begin{align}
+      e_{abs} &= |x - \tilde{x}| = 1\times 10^{-1}.\\
+      e_{rel} &= \frac{|x - \tilde{x}|}{|x|} = 1\times 10^{-1} = 10\%.
+    \end{align}
+  \item $x=10000,0$ e $\tilde{x} = 11000,0$:
+    \begin{align}
+      e_{abs} &= |x - \tilde{x}| = 1\times 10^3.\\
+      e_{rel} &= \frac{|x - \tilde{x}|}{|x|} = 1\times 10^{-1} = 10\%.
+    \end{align}
+  \end{enumerate}
+\end{ex}
+
+Outra medida de erro comumente empregada é o \emph{número de dígitos significativos corretos}. Dizemos que $\tilde{x}$ aproxima $x$ com $n$ dígitos significativos corretos, quando
+\begin{equation}
+  \frac{|x - \tilde{x}|}{|x|} < 5\times 10^{-n}.
+\end{equation}
+
+\begin{ex}\label{ex:numdigsigcorr}
+  Vejamos o seguintes casos:
+  \begin{itemize}
+  \item $x=2$ e $\tilde{x} = 2,5$:
+    \begin{equation}
+      \frac{|x - \tilde{x}|}{|x|} = 0,25 < 5\times 10^{-1},
+    \end{equation}
+donde concluímos que $\tilde{x}=2,5$ é uma aproximação com $1$ dígito significativo correto de $x=2$.
+  \item $x=1$ e $\tilde{x} = 1,5$:
+    \begin{equation}
+      \frac{|x - \tilde{x}|}{|x|} = 0,5 < 5\times 10^{-0},
+    \end{equation}
+donde concluímos que $\tilde{x}=1,5$ é uma aproximação com zero dígito significativo correto de $x=1$.
+  \end{itemize}
+\end{ex}
+
+\subsection*{Exercícios}
+
+\begin{exer}\label{exer:erro_abs}
+  Calcule o erro absoluto na aproximação de
+  \begin{enumerate}[a)]
+  \item $\pi$ por $3,14$.
+  \item $10e$ por $27,18$.
+  \end{enumerate}
+  Forneça as respostas com $4$ dígitos significativos.
+\end{exer}
+\begin{resp}
+  \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/exer_erro_abs/exer_erro_abs.m}{Código.} 
+  \fi
+  a)~$1,593\times 10^{-3}$; b)~$2,818\times 10^{-1}$;
+\end{resp}
+
+\begin{exer}\label{exer:erro_rel}
+  Calcule o erro relativo na aproximação de
+  \begin{enumerate}[a)]
+  \item $\pi$ por $3,14$.
+  \item $10e$ por $27,18$.
+  \end{enumerate}
+  Forneça as respostas em porcentagem.
+\end{exer}
+\begin{resp}
+  \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/exer_erro_rel/exer_erro_rel.m}{Código.} 
+  \fi
+  a)~$0,051\%$; b)~$0,01\%$;
+\end{resp}
+
+\begin{exer}\label{exer:dig_corr}
+  Com quantos dígitos significativos corretos
+  \begin{enumerate}[a)]
+  \item $3,13$ aproxima $\pi$?
+  \item $27,21$ aproxima $10e$?
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+  \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/exer_dig_corr/exer_dig_corr.m}{Código.} 
+  \fi
+  a)~$3$; b)~$3$
+\end{resp}
+
+
+\begin{exer}
+  Obtenha uma estimativa do erro de truncamento em se aproximar o valor de $\sen(1)$ usando-se $p_5(1)$, onde $p_5(x)$ é o polinômio de Taylor de grau 5 da função $\sen(x)$ em torno de $x=0$.
+\end{exer}
+\begin{resp}
+  $1/6! \approx 1,4\times 10^{-3}$.
+\end{resp}
+
+\section{Propagação de erros}\label{cap_aritm_sec_properros}
+
+Nesta seção, vamos introduzir uma estimativa para a propagação de erros (de arredondamento) na computação de um problema. Para tando, vamos considerar o caso de se calcular o valor de uma dada função $f$ em um dado ponto $x$, i.e. queremos calcular $y$ com
+\begin{equation}\label{eq:properros_aux1}
+  y = f(x).
+\end{equation}
+Agora, assumindo que $x$ seja conhecido com um erro $e(x)$, este se propaga no cálculo da $f$, levando a um erro $e(y)$ no valor calculado de $y$. Ou seja, temos
+\begin{equation}\label{eq:properros_aux2}
+  y + e(y) = f(x+e(x)).
+\end{equation}
+Notemos que $e_{abs}(x) = |e(x)|$ é o erro absoluto associado a $x$ e $e_{abs}(y) = |e(y)|$ é o erro absoluto associado a $y$.
+
+Nosso objetivo é de estimar $e_{abs}(y)$ com base em $e_{abs}(x)$. Para tanto, podemos tomar a aproximação de $f(x+e(x))$ dada pelo polinômio de Taylor de grau $1$ de $f$ em torno de $x$, i.e.
+\begin{equation}
+  f(x+e(x)) = f(x) + f'(x)e(x) + O\left(e^2(x)\right).
+\end{equation}
+Então, de \eqref{eq:properros_aux1} e \eqref{eq:properros_aux2}, temos
+\begin{equation}
+  e(y) = f'(x)e(x) + O(e^2(x)).
+\end{equation}
+Daí, passando ao valor absoluto e usando a desigualdade triangular, obtemos
+\begin{equation}
+  e_{abs}(y) \leq |f'(x)|e_{abs}(x) + O\left(e_{abs}^2(x)\right).
+\end{equation}
+Deste resultado, consideraremos a seguinte estimativa de propagação de erro
+\begin{equation}\label{eq:estproperro_1}
+  e_{abs}(y) \approx |f'(x)|e_{abs}(x).
+\end{equation}
+
+\begin{ex}\label{ex:properro_1}
+  Consideremos o problema em se calcular $y = f(x) = x^2\sen(x)$ com $x=\pi/3 \pm 0,1$. Usando \eqref{eq:estproperro_1} para estimarmos o erro absoluto $e_{abs}(y)$ no cálculo de $y$ com base no erro absoluto $e_{abs}(x)=0,1$, calculamos
+  \begin{align}
+    e_{abs}(y) &= |f'(x)|e_{abs}(x)\\
+             &= |2x\sen(x) + x^2\cos(x)|e_{abs}(x)\\
+             &= 2,3621\times 10^{-1}.
+  \end{align}
+Com isso, podemos concluir que um erro em $x$ de tamanho $0,1$ é propagado no cálculo de $f(x)$, causando um erro pelo menos duas vezes maior em $y$. Também, podemos interpretar este resultado do ponto de vista do erro relativo. O erro relativo associado a $x$ é
+\begin{equation}
+  e_{rel}(x) = \frac{e_{abs}(x)}{|x|} = \frac{0,1}{\pi/3} = 9,5493\times 10^{-2} \approx 1\%,
+\end{equation}
+acarretando um erro relativo em $y$ de
+\begin{equation}
+  e_{rel}(y) = \frac{e_{abs}(y)}{|y|} = \frac{e_{abs}(y)}{|f(x)|} = 2,4872\times 10^{-1} \approx 2\%.
+\end{equation}
+\ifisoctave
+Podemos fazer estas contas com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/ex_properro_1/ex_properro_1.m}{código} \verb+GNU Octave+:
+\verbatiminput{./cap_aritm/dados/ex_properro_1/ex_properro_1.m}
+\fi
+\end{ex}
+
+Associada à estimativa \eqref{ex:properro_1}, temos
+\begin{align*}
+  e_{rel}(y) = \frac{e_{abs}(y)}{|y|} &= \frac{|f'(x)|}{|y|}e_{abs}(x)\\
+  &= \frac{|x|\cdot |f'(x)|}{|f(x)|}\frac{e_{abs}(x)}{|x|}\\
+  &= \left|\frac{xf'(x)}{f(x)}\right|e_{rel}(x).
+\end{align*}
+Desta última equação, definimos o \emph{número de condicionamento} de $f$, denotado por
+\begin{equation}
+  \kappa_f(x) := \left|\frac{xf'(x)}{f(x)}\right|.
+\end{equation}
+Observamos que $\kappa_f(x)$ é a escala com que erros em $x$ são propagados no cálculo de $y = f(x)$.
+
+\begin{ex}\label{ex:numcond_1}
+  O número de condicionamento da função $f(x) = x^2\sen(x)$ no ponto $x=\pi/3$ pode ser calculado de
+  \begin{align}
+    \kappa_f(x) &= \left|\frac{xf'(x)}{f(x)}\right|\\
+                &= \left|\frac{x(2x\sen(x)+x^2\cos(x))}{x^2\sen(x)}\right|. 
+  \end{align}
+  Substituindo $x$ por $\pi/3$ temos
+  \begin{equation}
+    \kappa_f(\pi/3) = 2,6046.
+  \end{equation}
+  Notamos que este resultado é compatível com as observações feitas no Exemplo \ref{ex:properro_1}.
+  
+  \ifisoctave
+  Podemos computar $\kappa_f(x)$ com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/ex_numcond_1/ex_numcond_1.m}{código} \verb+GNU Octave+:
+  \verbatiminput{./cap_aritm/dados/ex_numcond_1/ex_numcond_1.m}
+  \fi
+\end{ex}
+
+A estimativa \eqref{eq:estproperro_1} pode ser generalizada para uma função de várias variáveis. No caso de uma função $y = f(x_1,x_2,\dotsc,x_n)$, temos
+\begin{equation}\label{eq:estproperro_n}
+  e_{abs}(y) = \sum_{k=1}^n \left|\frac{\p f}{\p x_k}\right|e_{abs}(x_k).
+\end{equation}
+
+\begin{ex}\label{ex:properro_2}
+  Consideremos o problema em se calcular $z = f(x,y) = x^2\sen(x)\cos(y)$ com $x=\pi/3 \pm 0,1$ e $y=\pi/4 \pm 0,02$. Usando \eqref{eq:estproperro_n} para estimarmos o erro absoluto $e_{abs}(z)$ no cálculo de $z$ com base nos erros absolutos $e_{abs}(x)=0,1$ e $e_{abs}(y)=0,02$, calculamos
+  \begin{align}
+    e_{abs}(z) &= \left|\frac{\p f}{\p x}\right|e_{abs}(x) + \left|\frac{\p f}{\p y}\right|e_{abs}(y)\\
+             &= |(2x\sen(x) + x^2\cos(x))\cos(y)|e_{abs}(x) \nonumber\\
+               &+ \left|-x^2\sen(x)\sen(y)\right|e_{abs}(y)\\
+             &= 1,8046\times 10^{-1}.
+  \end{align}
+\ifisoctave
+Podemos fazer estas contas com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/ex_properro_2/ex_properro_2.m}{código} \verb+GNU Octave+:
+\verbatiminput{./cap_aritm/dados/ex_properro_2/ex_properro_2.m}
+\fi
+\end{ex}
+
+
+\subsection{Cancelamento catastrófico}
+
+No computador (com aritmética de ponto flutuante de 64-{\it bits}), as operações e funções elementares são computadas, usualmente, com um erro próximo do épsilon de máquina\index{épsilon de máquina} ($\mathrm{eps} \approx 10^{-16}$). Entretanto, em algumas situações estas operações fundamentais acarretam erros maiores, causando uma perda de precisão.
+
+O chamado cancelamento catastrófico ocorre quando ao computarmos a diferença entre dois números próximos. Para ilustrá-lo, consideremos os seguintes números
+\begin{align}
+  x &= 314150000001549,\\
+  y &= 314150000002356.
+\end{align}
+Suponhamos, ainda, os arredondamentos de $x$ e $y$ com $12$ dígitos significativos
+\begin{align}
+  \tilde{x} &= 314150000002000,\\
+  \tilde{y} &= 314150000002000.
+\end{align}
+Notemos que os erros relativos associados às aproximações de $x$ e $y$ por $\tilde{x}$ e $\tilde{y}$ são
+\begin{align}
+  e_{rel}(x) &= \frac{|x-\tilde{x}|}{|x|} \approx 10^{-10}\%,\\
+  e_{rel}(y) &= \frac{|y-\tilde{y}|}{|y|} \approx 10^{-10}\%,
+\end{align}
+respectivamente. Agora, temos
+\begin{align}
+  y-x = 807\quad\text{e}\quad\tilde{y}-\tilde{x}=0.
+\end{align}
+Ou seja, o erro relativa na aproximação de $y-x$ por $\tilde{y}-\tilde{x}$ é
+\begin{equation}
+  e_{rel}(y-x) = \frac{|(y-x)-(\tilde{y}-\tilde{x})|}{(y-x)} = \frac{807}{807} = 100\%!
+\end{equation}
+Vejamos outros exemplos.
+
+\begin{ex}\label{ex:cancela_1}
+  Na Tabela~\ref{tab:cancela_1} temos os erros em se computar
+  \begin{equation}
+    \frac{(1+x^4)-1}{x^4}
+  \end{equation}
+para diferentes valores de $x$. Observamos que, para o valor de $x=0,001$ o erro na computação já é da ordem de $10^{-5}$ e para valores de $x$ menores ou iguais a $0,0001$ o erro é catastrófico. Isto ocorre, pois se $x\leq 10^{-4}$, então $x^4 \leq 10^{-16} < \mathrm{eps}$ e, portanto, $(1+x^4)-1=0$.
+  \begin{table}[h!]
+    \centering
+    \begin{tabular}{l|r}
+      $x$     & erro \\\hline
+      $1$      & $0$ \\
+      $10^{-1}$ & $1,1\times 10^{-13}$\\
+      $10^{-2}$ & $6,1\times 10^{-9}$\\
+      $10^{-3}$ & $8,9\times 10^{-5}$\\
+      $10^{-4}$ & $1,0\times 10^{0}$\\
+      $10^{-5}$ & $1,0\times 10^{0}$\\\hline
+    \end{tabular}
+    \caption{Resultados referentes ao Exemplo~\ref{ex:cancela_1}.}
+    \label{tab:cancela_1}
+  \end{table}
+\end{ex}
+
+\begin{ex}\label{ex:solpq}
+  Uma equação de segundo grau $ax^2 + bx + c = 0$ tem raízes
+  \begin{align}
+    x_1 &= \frac{-b + \sqrt{b^2 - 4ac}}{2a},\label{eq:cancela_b}\\
+    x_2 &= \frac{-b - \sqrt{b^2 - 4ac}}{2a}.\label{eq:cancela_bx2}
+  \end{align}
+Entretanto, no caso de $b$ e $\sqrt{b^2 - 4ac}$ serem ambos positivos, a fórmula \eqref{eq:cancela_b} não é adequada para a computação da raiz $x_1$, pois pode ocorrer cancelamento catastrófico. Podemos contornar este problema reescrevendo $\eqref{eq:cancela_b}$ da seguinte forma
+\begin{align}
+  x_1 &= \frac{-b + \sqrt{b^2 - 4ac}}{2a}\frac{-b - \sqrt{b^2 - 4ac}}{-b - \sqrt{b^2 - 4ac}}\\
+  &= \frac{-b^2 + b^2 - 4ac}{2a(-b-\sqrt{b^2-4ac})}\\
+  &= \frac{2c}{b+\sqrt{b^2-4ac}},
+\end{align}
+a qual não sofre mais de cancelamento catastrófico. Observemos que também pode ocorrer cancelamento catastrófico no cálculo de $x_2$ pela fórmula \eqref{eq:cancela_bx2}, no caso de $b$ e $\sqrt{b^2 - 4ac}$ serem ambos negativos.
+\ifisoctave
+No \verb+GNU Octave+, podemos escrever a seguinte função para computar as raízes de um polinômio quadrático $ax^2 + bx + c$ (\href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/ex_solpq/ex_solpq.m}{código}):
+\verbatiminput{./cap_aritm/dados/ex_solpq/ex_solpq.m}
+\fi
+\end{ex}
+
+\subsection*{Exercícios}
+
+\begin{exer}\label{exer:properro_abs1}
+  Considerando que $x=2\pm 0,1$, estime o erro absoluto em se calcular $y = e^{-x^2}\cos(\pi x/3)$. Forneça a estimativa com $7$ dígitos significativos por arredondamento.
+\end{exer}
+\begin{resp}
+  \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/exer_properro_abs1/exer_properro_abs1.m}{Código.} 
+  \fi
+  $2,002083\times 10^{-3}$
+\end{resp}
+
+\begin{exer}\label{exer:properro_abs2}
+  Considerando que $x=2\pm 2\%$ e $y=1,5\pm 0,3$, estime o erro absoluto em se calcular $y = e^{-x^2}\cos(\pi y/3)$. Forneça a estimativa com $6$ dígitos significativos por arredondamento.
+\end{exer}
+\begin{resp}
+  \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/exer_properro_abs2/exer_properro_abs2.m}{Código.} 
+  \fi
+  $5,75403\times 10^{-3}$
+\end{resp}
+
+\begin{exer}\label{exer:cancela_1}
+  Considere a computação de
+  \begin{equation}
+    y = \frac{1 - \cos(h)}{h}
+  \end{equation}
+para $h=10^{-9}$. Compute o valor de $y$ reescrevendo esta expressão de forma a mitigar o cancelamento catastrófico. Forneça o valor computado de $y$ com $2$ dígitos significativos por arredondamento.
+\end{exer}
+\begin{resp}
+  \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_aritm/dados/exer_cancela_1/exer_cancela_1.m}{Código.} 
+  \fi
+  $5,0\times 10^{-10}$
+\end{resp}

@@ -1,0 +1,289 @@
+
+
+\chapter{Técnicas de extrapolação}\label{cap_extrapl}
+\thispagestyle{fancy}
+
+Neste capítulo, estudamos algumas técnicas de extrapolação, as quais serão usadas nos próximos capítulos.
+
+\section{Extrapolação de Richardson}\label{cap_extrapl_sec_Richardson}
+
+Seja $F_1(h)$ uma aproximação de $I$ tal que
+\begin{equation}\label{eq:extrapl_aux1}
+  I = F_1(h) + \underbrace{k_1h + k_2h^2 + k_3h^3 + O(h^4)}_{\text{erro de truncamento}}.
+\end{equation}
+Então, dividindo $h$ por $2$, obtemos
+\begin{equation}\label{eq:extrapl_aux2}
+  I = F_1\left(\frac{h}{2}\right) + k_1\frac{h}{2} + k_2\frac{h^2}{4} + k_3\frac{h^3}{8} + O(h^4).
+\end{equation}
+Agora, de forma a eliminarmos o termo de ordem $h$ das expressões acima, subtraímos \eqref{eq:extrapl_aux1} de $2$ vezes~\eqref{eq:extrapl_aux2}, o que nos leva a
+\begin{equation}\label{eq:extrapl_aux3}
+  I = \underbrace{\left[F_1\left(\frac{h}{2}\right) + \left(F_1\left(\frac{h}{2}\right) - F_1(h)\right)\right]}_{F_2(h)} - k_2\frac{h^2}{2} - k_3\frac{3h^3}{4} + O(h^4).
+\end{equation}
+Ou seja, denotando
+\begin{equation}
+  F_2(h) := F_1\left(\frac{h}{2}\right) + \left(F_1\left(\frac{h}{2}\right) - F_1(h)\right)
+\end{equation}
+temos que $N_2(h)$ é uma aproximação de $I$ com erro de truncamento da ordem de $h^2$, uma ordem a mais de $N_1(h)$. Ou seja, esta combinação de aproximações de ordem de truncamento $h$ nos fornece uma aproximação de ordem de truncamento $h^2$.
+
+Analogamente, consideremos a aproximação de $I$ por $N_2(h/2), i.e.$
+\begin{equation}\label{eq:extrapl_aux4}
+  I = F_2\left(\frac{h}{2}\right) - k_2\frac{h^2}{8} - k_2\frac{3h^3}{32} + O(h^4)
+\end{equation}
+Então, subtraindo~\eqref{eq:extrapl_aux3} de $4$ vezes~\eqref{eq:extrapl_aux4} de, obtemos
+\begin{equation}\label{eq:extrapl_aux5}
+  I = \underbrace{\left[3F_2\left(\frac{h}{2}\right) + \left(F_2\left(\frac{h}{2}\right) - F_2(h)\right)\right]}_{F_3(h)} + k_3\frac{3h^3}{8} + O(h^4).
+\end{equation}
+Observemos, ainda, que $N_3(h)$ pode ser reescrita na forma
+\begin{equation}
+  F_3(h) = F_2\left(\frac{h}{2}\right) + \frac{F_2\left(\frac{h}{2}\right) - F_2(h)}{3},
+\end{equation}
+a qual é uma aproximação de ordem $h^3$ para $I$.
+
+Para fazermos mais um passo, consideramos a aproximação de $I$ por $F_3(h/2)$, i.e.
+\begin{equation}\label{eq:extrapl_aux6}
+  I = F_3\left(\frac{h}{2}\right) + k_3\frac{3h^3}{64} + O(h^4).
+\end{equation}
+E, então, subtraindo~\eqref{eq:extrapl_aux5} de $8$ vezes~\eqref{eq:extrapl_aux6}, temos
+\begin{equation}
+  I = \underbrace{\left[F_3\left(\frac{h}{2} \right)+ \left(\frac{F_3\left(\frac{h}{2}\right)-F_3(h)}{7}\right)\right]}_{F_4(h)} + O(h^4).
+\end{equation}
+Ou seja,
+\begin{equation}
+  F_4(h) = \left[F_3\left(\frac{h}{2}\right) + \frac{F_3\left(\frac{h}{2}\right)-F_3(h)}{7}\right]
+\end{equation}
+é uma aproximação de $I$ com erro de truncamento da ordem $h^4$. Estes cálculos nos motivam o seguinte teorema.
+
+\begin{teo}\label{teo:Richardson}
+  Seja $F_1(h)$ uma aproximação de $I$ com erro de truncamento da forma
+  \begin{equation}
+    I-F_1(h) = \sum_{i=1}^n k_1h^i + O(h^{n+1}).
+  \end{equation}
+Então, para $j\geq 2$,
+\begin{equation}
+  F_j(h) := F_{j-1}\left(\frac{h}{2}\right) + \frac{F_{j-1}\left(\frac{h}{2}\right) - F_{j-1}(h)}{2^{j-1}-1}
+\end{equation}
+é uma aproximação de $I$ com erro de truncamento da forma
+\begin{align}
+  I-F_{j}(h) &= \sum_{i=j}^n (-1)^{j-1}\frac{\left(2^{i-1}-1\right)\prod_{l=1}^{j-2}\left(2^{i-l-1}-1\right)}{2^{(j-1)(i-j+1)}d_j}k_ih^i \nonumber \\
+           & + O(h^{n+1}),
+\end{align}
+onde $d_{j}$ é dado recursivamente por $d_{j+1}=2^{j-1}d_j$, com $d_2=1$.
+\end{teo}
+\begin{dem}
+  Fazemos a demonstração por indução. O resultado para $j=2$ segue de~\eqref{eq:extrapl_aux3}. Assumimos, agora, que vale
+  \begin{align}
+    I-F_{j}(h) &= (-1)^{j-1}\frac{\left(2^{j-1}-1\right)\prod_{l=1}^{j-2}\left(2^{j-l-1}-1\right)}{2^{(j-1)}d_j}k_jh^j \nonumber \\
+              &+ \sum_{i=j+1}^n (-1)^{j-1}\frac{\left(2^{i-1}-1\right)\prod_{l=1}^{j-2}\left(2^{i-l-1}-1\right)}{2^{(j-1)(i-j+1)}d_j}k_ih^i \nonumber \\
+              & + O(h^{n+1}).\label{eq:extrapl_aux7}
+  \end{align}
+para $j\geq 2$. Então, tomamos
+\begin{align}
+  I-F_{j}\left(\frac{h}{2}\right) &= (-1)^{j-1}\frac{\left(2^{j-1}-1\right)\prod_{l=1}^{j-2}\left(2^{j-l-1}-1\right)}{2^{(j-1)}d_j}k_j\frac{h^j}{2^j} \nonumber \\
+              &+ \sum_{i=j+1}^n (-1)^{j-1}\frac{\left(2^{i-1}-1\right)\prod_{l=1}^{j-2}\left(2^{i-l-1}-1\right)}{2^{(j-1)(i-j+1)}d_j}k_i\frac{h^i}{2^i} \nonumber \\
+              & + O(h^{n+1}). \label{eq:extrapl_aux8}
+\end{align}
+Agora, subtraímos~\eqref{eq:extrapl_aux7} de $2^{j}$ vezes~\eqref{eq:extrapl_aux8}, o que nos fornece
+\begin{align}
+  I &= \left[F_{j}\left(\frac{h}{2}\right) + \frac{F_{j}\left(\frac{h}{2}\right) - F_{j}(h)}{2^{j}-1}\right] \nonumber\\
+    &+ \sum_{i=j+1}^n (-1)^{(j+1)-1}\frac{\left(2^{i-1}-1\right)\prod_{l=1}^{(j+1)-2}\left(2^{i-l-1}-1\right)}{2^{((j+1)-1)(i-(j+1)+1)}2^{j-1}d_j}k_ih^i\nonumber \\
+              & + O(h^{n+1}).
+\end{align}
+\end{dem}
+
+\begin{corol}
+  Seja $F_1(h)$ uma aproximação de $I$ com erro de truncamento da forma
+  \begin{equation}
+    I-F_1(h) = \sum_{i=1}^n k_1h^{2i} + O(h^{2n+2}).
+  \end{equation}
+Então, para $j\geq 2$,
+\begin{equation}
+  F_j(h) := F_{j-1}\left(\frac{h}{2}\right) + \frac{F_{j-1}\left(\frac{h}{2}\right) - F_{j-1}(h)}{4^{j-1}-1}
+\end{equation}
+é uma aproximação de $I$ com erro de truncamento da forma
+\begin{align}
+  I-F_{j}(h) &= \sum_{i=j}^n (-1)^{j-1}\frac{\left(4^{i-1}-1\right)\prod_{l=1}^{j-2}\left(4^{i-l-1}-1\right)}{4^{(j-1)(i-j+1)}d_j}k_ih^{2i} \nonumber \\
+           & + O(h^{n+1}),
+\end{align}
+onde $d_{j}$ é dado recursivamente por $d_{j+1}=4^{j-1}d_j$, com $d_2=1$.
+\end{corol}
+\begin{dem}
+  A demonstração é análoga ao do Teorema~\ref{teo:Richardson}.
+\end{dem}
+
+\begin{ex}
+  Dada uma função $f(x)$, consideremos sua aproximação por diferenças finitas progressiva de ordem $h$, i.e.
+  \begin{align}
+    \underbrace{f'(x)}{I} &= \underbrace{\frac{f(x+h)-f(x)}{h}}_{F_1(h)}\nonumber\\
+    &+ \frac{f''(x)}{2}h + \frac{f'''(x)}{6}h^2 + O(h^3).
+  \end{align}
+Estão, considerando a primeira extrapolação de Richardson, temos
+\begin{align}
+  F_2(h) &= F_1\left(\frac{h}{2}\right) + \left(F_1\left(\frac{h}{2}\right) - F_1(h)\right)\\
+  &= 4\frac{f(x+h/2)-f(x)}{h} - \frac{f(x+h)-f(x)}{h}\\
+  &= \frac{-f(x+h)+4f(x+h/2)-3f(x)}{h},
+\end{align}
+a qual é a fórmula de diferenças finitas progressiva de três pontos com passo $h/2$, i.e. $D_{+,(h/2)^2}f(x)$ (veja, Fórmula~\eqref{eq:dfp_3pts}).
+\end{ex}
+
+\begin{ex}
+  Dada uma função $f(x)$, consideremos sua aproximação por diferenças finitas central de ordem $h^2$, i.e.
+  \begin{align}
+    \underbrace{f'(x)}{I} &= \underbrace{\frac{f(x+h)-f(x-h)}{2h}}_{F_1(h)} \nonumber \\
+                          &- \frac{f'''}{6}h^2 - \frac{f^{(5)}(x)}{120}h^4 + O(h^6).
+  \end{align}
+Estão, considerando a primeira extrapolação de Richardson, temos
+\begin{align}
+  F_2(h) &= F_1\left(\frac{h}{2}\right) + \frac{\left(F_1\left(\frac{h}{2}\right) - F_1(h)\right)}{3}\\
+  &= \frac{1}{6h}\left[f(x-h)-8f(x-h/2)+8f(x+h/2)-f(x+h)\right]
+\end{align}
+a qual é a fórmula de diferenças finitas central de cinco pontos com passo $h/2$, i.e. $D_{+,(h/2)^4}f(x)$ (veja, Fórmula~\eqref{eq:dfc_5pts}).
+\end{ex}
+
+\subsection{Sucessivas extrapolações}
+
+Sucessivas extrapolações de Richardson podem ser computadas de forma robusta com o auxílio de uma tabela. Seja $F_1(h)$ uma dada aproximação de uma quantidade de interesse $I$ com erro de truncamento da forma
+\begin{equation}
+  I-F_1(h) = k_1h + k_2h^2 + k_3h^3 + \cdots + k_nh^n + O(h^{n+1}).
+\end{equation}
+Então, as sucessivas extrapolações $F_2(h)$, $F_3(h)$, $\dotsc$, $F_n(h)$ podem ser organizadas na seguinte forma tabular
+\begin{equation}
+  T = \left[\begin{array}{lllll}
+    F_1(h)\\
+    F_1(h/2) & F_2(h) \\
+    F_1(h/2^2) & F_2(h/2) & F_3(h) \\
+    \vdots & \vdots & \vdots \\
+    F_1(h/2^n) & F_2(h/2^{n-1}) & F_3(h/2^{n-2}) & \cdots & F_n(h)
+  \end{array}\right]
+\end{equation}
+Desta forma, temos que
+\begin{equation}
+  F_j\left(\frac{h}{2^{i-1}}\right) = t_{i,j-1} + \frac{t_{i,j-1}-t_{i-1,j-1}}{2^{j-1}-1}
+\end{equation}
+com $j=2, 3, \dotsc, n$ e $j\geq i$, onde $t_{i,j}$ é o elemento da $i$-ésima linha e $j$-ésima coluna da matriz $T$.
+
+\begin{ex}\label{ex:Richardson_suc_h}
+  Consideremos o problema de aproximar a derivada da função $f(x) = \sen(x)$ no ponto $\pi/3$. Usando a fórmula de diferenças finitas progressiva de ordem $h$ obtemos
+  \begin{align}
+    f'\left(\frac{\pi}{3}\right) &= \underbrace{\frac{f\left(\frac{\pi}{3}+h\right)-f\left(\frac{\pi}{3}\right)}{h}}_{F_1(h) := D_{+,h}f(\pi/3)} \nonumber\\
+          &+ \frac{f''(x)}{2}h + \frac{f'''(x)}{6}h^2 + \cdots \label{eq:ex_Richardson_suc_h}
+  \end{align}
+Na Tabela~\ref{tab:ex_Richardson_suc_h} temos os valores das aproximações de $f'(\pi/3)$ computadas via sucessivas extrapolações de Richardson a partir de \eqref{eq:ex_Richardson_suc_h} com $h=0.1$.
+
+\begin{table}[h!]
+  \centering
+  \caption{Resultados referente ao Exemplo~\ref{ex:Richardson_suc_h}.}
+  \begin{tabular}{cccc}\hline
+    $O(h)$ & $O(h^2)$ & $O(h^3)$ & $O(h^4)$\\ \hline
+    $4,55902\E-1$ \\
+    $4,78146\E-1$ & $5,00389\E-1$ \\
+    $4,89123\E-1$ & $5,00101\E-1$ & $5,00005\E-1$ \\
+    $4,94574\E-1$ & $5,00026\E-1$ & $5,00001\E-1$ & $5,00000\E-1$ \\\hline
+  \end{tabular}
+  \label{tab:ex_Richardson_suc_h}
+\end{table}
+
+\ifisoctave
+No \verb+GNU Octave+, podemos fazer estes cálculos com o seguinte código:
+\begin{verbatim}
+#funcao
+f = @(x) sin(x);
+x=pi/3;
+
+#aproximacao de ordem 1
+dfp = @(x,h) (f(x+h)-f(x))/h;
+h=0.1;
+
+#tabela c/ sucessivas extrapolacoes
+T=zeros(4,4);
+for i=1:4
+  T(i,1) = dfp(x,h/2^(i-1));
+endfor
+for j=2:4
+  for i=j:4
+    T(i,j) = T(i,j-1) ... 
+           + (T(i,j-1)-T(i-1,j-1))/(2^(j-1)-1);
+  endfor
+endfor
+\end{verbatim}
+\fi
+\end{ex}
+
+\begin{ex}\label{ex:Richardson_suc_h2}
+  Novamente, consideremos o problema de aproximar a derivada da função $f(x) = \sen(x)$ no ponto $\pi/3$. A fórmula de diferenças finitas central de ordem $h^2$ tem a forma
+  \begin{align}
+    f'\left(\frac{\pi}{3}\right) &= \underbrace{\frac{f\left(\frac{\pi}{3}+h\right)-f\left(\frac{\pi}{3}-h\right)}{2h}}_{F_1(h) := D_{0,h^2}f(\pi/3)} \nonumber\\
+          &- \frac{f'''(x)}{6}h^2 + \frac{f^{(5)}(x)}{120}h^4 - \cdots \label{eq:ex_Richardson_suc_h2}
+  \end{align}
+Na Tabela~\ref{tab:ex_Richardson_suc_h2} temos os valores das aproximações de $f'(\pi/3)$ computadas via sucessivas extrapolações de Richardson a partir de \eqref{eq:ex_Richardson_suc_h2} com $h=1$.
+
+\begin{table}[h!]
+  \centering
+  \caption{Resultados referente ao Exemplo~\ref{ex:Richardson_suc_h2}.}
+  \begin{tabular}{cccc}\hline
+    $O(h^2)$ & $O(h^4)$ & $O(h^6)$ & $O(h^8)$\\ \hline
+    $4,20735\E-1$ \\
+    $4,79426\E-1$ & $4,98989\E-1$ \\
+    $4,94808\E-1$ & $4,99935\E-1$ & $4,99998\E-1$ \\
+    $4,98699\E-1$ & $4,99996\E-1$ & $5,00000\E-1$ & $5,00000\E-1$ \\\hline
+  \end{tabular}
+  \label{tab:ex_Richardson_suc_h2}
+\end{table}
+
+\ifisoctave
+No \verb+GNU Octave+, podemos fazer estes cálculos com o seguinte código:
+\begin{verbatim}
+#funcao obj.
+f = @(x) sin(x);
+x=pi/3;
+
+#aprox. O(h^2)
+h=1;
+dfp = @(x,h) (f(x+h)-f(x-h))/(2*h);
+
+#tabela c/ sucessivas extrapolacoes
+T=zeros(4,4);
+for i=1:4
+  T(i,1) = dfp(x,h/2^(i-1));
+endfor
+for j=2:4
+  for i=j:4
+    T(i,j) = T(i,j-1) ... 
+           + (T(i,j-1)-T(i-1,j-1))/(4^(j-1)-1);
+  endfor
+endfor
+\end{verbatim}
+\fi
+\end{ex}
+
+\subsection{Exercícios}
+
+\begin{exer}
+  Mostre que a primeira extrapolação de Richardson de
+  \begin{equation}
+    D_{-,h}f(x) = \frac{f(x)-f(x-h)}{h}
+  \end{equation}
+é igual a
+\begin{equation}
+  D_{-,(h/2)^2}f(x) = \frac{3f(x)-4f(x-h)+f(x-2h)}{h}.
+\end{equation}
+\end{exer}
+
+\begin{exer}\label{exer:df_fun}
+  Considere o problema de aproximar a derivada de 
+  \begin{equation}
+    f(x) = \frac{\sen(x+2) - e^{-x^2}}{x^2 + \ln(x+2)}+x
+  \end{equation}
+no ponto $x=2,5$. Para tanto, use de sucessivas extrapolações de Richardson a partir da aproximação por diferenças finitas:
+\begin{enumerate}[a)]
+\item progressiva de ordem $h$, com $h=0,5$.
+\item regressiva de ordem $h$, com $h=0,5$.
+\item central de ordem $h^2$, com $h=0,5$.
+\end{enumerate}
+Nas letras a) e b), obtenha as aproximações de ordem $h^3$ e, na letra $c)$ obtenha a aproximação de ordem $h^6$.
+\end{exer}
+\begin{resp}
+  \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_deriv/dados/exer_Richardson_fun/exer_Richardson_fun.m}{Código.} 
+  \fi
+  a)~$1,05919$; b)~$1,05916$; c)~$1,05913$
+\end{resp}

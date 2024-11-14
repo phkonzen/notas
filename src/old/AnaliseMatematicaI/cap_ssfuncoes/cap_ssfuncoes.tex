@@ -1,0 +1,653 @@
+
+
+\chapter{Sequências e séries de funções}\label{cap_ssfuncoes}\index{sequência de funções}\index{séries de funções}
+\thispagestyle{fancy}
+
+\section{Sequência de funções}\label{cap_ssfuncoes_sec_sf}\index{sequência de funções}
+
+\begin{defn}
+  Uma sequência de funções $(f_n)_{n\in\mathbb{N}}$ é um conjunto de funções $f_n:D\to\mathbb{R}$, $y=f_n(x)$, indexadas por $n\in\mathbb{R}$. Comumente, utiliza-se a notação $(f_n(x))_{n\in\mathbb{N}}$ (ou, simplesmente, $f_n(x)$) para explicitar que trata-se de uma sequência de funções.
+\end{defn}
+
+\begin{obs}
+  Salvo explicitado ao contrário, ao longo deste capítulo assumiremos que as funções que compõe uma dada sequência têm todas o mesmo domínio.
+\end{obs}
+
+\begin{ex}
+  Vejamos os seguintes exemplos:
+  \begin{enumerate}[a)]
+  \item $f_n(x) = x+1/n$, $n\in\mathbb{N}$, é uma sequência de funções afins.
+  \item $g_n(x) = x^n$ é uma sequência de polinômios.
+  \item $h_n(x) = 1 + x + x^2 + \cdots + x^n$ é, também, uma sequência\footnote{Um sequência deste tipo também é chamada de série de funções, como definiremos logo adiante no texto.} de polinômios.
+  \end{enumerate}
+\end{ex}
+
+\subsection{Convergência pontual}\index{limite!pontual}
+
+\begin{defn}\normalfont{Limite pontual}
+  Diz-se que uma sequência de funções $(f_n(x))_{n\in\mathbb{R}}$, $f_n:D\to\mathbb{R}$, \emph{converge pontualmente}\index{convergência!pontual} (ou simplesmente\index{convergência!simples}) para uma função $f(x)$, $f:D\to\mathbb{R}$, se, dado qualquer $\varepsilon>0$, para cada $x\in D$, existe $N$ tal que
+  \begin{equation}
+    n>N \Rightarrow |f_n(x)-f(x)|<\varepsilon.
+  \end{equation}
+\end{defn}
+
+\begin{ex}\label{ex:convergencia_pontual}
+  Vejamos os seguintes casos.
+  \begin{enumerate}[a)]
+  \item A sequência de funções $f_n(x) = x + 1/n$ converge pontualmente para a função identidade $f(x)=x$. De fato, sejam $\varepsilon>0$ e $x$ no domínio da $f$. Escolhendo $N > 1/\varepsilon$, temos
+    \begin{equation}
+      n>N \Rightarrow |f_n(x) - f(x)| = \left|x+\frac{1}{n} - x\right| = \left|\frac{1}{n}\right| < \frac{1}{N} < \varepsilon.
+    \end{equation}
+  \item A sequência de funções $g_n(x) = x/n$ converge pontualmente para a função nula $f(x) \equiv 0$. De fato, sejam $\varepsilon>0$ e $x$ no domínio da $f$. Escolhendo $N > |x|/\varepsilon$, temos
+    \begin{equation}
+      n>N \Rightarrow \left|\frac{x}{n} - 0\right| < \frac{|x|}{n} < \frac{|x|}{N} < \varepsilon.
+    \end{equation}
+  \end{enumerate}
+\end{ex}
+
+\subsection{Convergência uniforme}
+
+\begin{defn}\normalfont{Convergência uniforme}
+  Diz-se que uma sequência de funções $(f_n(x))_{n\in\mathbb{R}}$, $f_n:D\to\mathbb{R}$, \emph{converge uniformemente}\index{convergência!uniforme} para uma função $f(x)$, $f:D\to\mathbb{R}$, se, dado qualquer $\varepsilon>0$, existe $N$ tal que
+  \begin{equation}
+    x\in D, n>N \Rightarrow |f_n(x)-f(x)|<\varepsilon.
+  \end{equation}
+\end{defn}
+
+\begin{ex}\label{ex:convergencia_uniforme}
+  Vejamos os seguintes casos:
+  \begin{enumerate}[a)] 
+  \item No Exemplo~\ref{ex:convergencia_pontual}~a), vimos que a
+    sequência de funções $f_n(x) = x + 1/n$ é pontualmente convergente
+    para a função $f(x)$. Agora, observando a demonstração vemos que a
+    convergência é também uniforme. Verifique!
+  \item A sequência de funções $f_n(x) = x/n$ é pontualmente
+    convergente para $f(x)\equiv 0$, mas não é uniformemente
+    convergente. De fato, dado $\varepsilon>0$ e $x$ no domínio,
+    escolhemos $N>|x|/\varepsilon$ e, então, temos
+    \begin{equation}
+      n>N \Rightarrow |f_n(x) - f(x)| = \left|\frac{x}{n}-0\right|\leq \frac{|x|}{N} < \varepsilon.
+    \end{equation}
+    Isto mostra a convergência pontual. Entretanto, por exemplo,
+    tomemos $\varepsilon=1$. Então, dado qualquer $n\in \mathbb{N}$
+    escolhemos $x=2/n$. Logo, temos
+    \begin{equation}
+      |f_n(x) - f(x)| = \left|\frac{x}{n}\right| = \frac{x}{n} = 2 > \varepsilon.
+    \end{equation}
+    Isto mostra que a convergência de $f_n\to 0$ não é uniforme.
+  \end{enumerate}
+\end{ex}
+
+\begin{teo}\normalfont{(Critério de convergência de Cauchy)}\index{teorema de!Cauchy}\index{critério de!Cauchy}\label{teo:sf_criterio_de_Cauchy}
+  Uma sequência de funções $f_n:D\to\mathbb{R}$ é uniformemente convergente para uma função $f:D\to\mathbb{R}$ se, e somente se, dado qualquer $\varepsilon>0$, exista $N\in\mathbb{N}$ tal que
+  \begin{equation}
+    x\in D, ~n,m>N \Rightarrow |f_n(x) - f_m(x)| < \varepsilon.
+  \end{equation}
+\end{teo}
+\begin{dem}
+  Mostraremos, separadamente, que a condição é necessária e suficiente.
+  \begin{enumerate}[a)]
+  \item Necessidade. Seja $\varepsilon>0$. Por hipótese, $f_n(x) \to f(x)$ uniformemente, ou seja, existe $N$ tal que
+    \begin{equation}
+      x\in D, n>N \Rightarrow |f_n(x) - f(x)| < \frac{\varepsilon}{2}.
+    \end{equation}
+Logo, para este mesmo $N$, temos
+\begin{equation}
+  x\in D, n,m > N \Rightarrow |f_n(x)-f_m(x)| \leq |f_n(x)-f(x)|+|f_m(x)-f(x)| < \varepsilon.
+\end{equation}
+Isto mostra que $(f_n)$ satisfaz o critério de Cauchy.
+  \item Suficiência. Comecemos construindo nosso candidato a limite. Para cada $x\in D$, $(f_n(x))$ é uma sequência de números reais que, pela hipótese, satisfaz o critério de Cauchy e, portanto, $f_n(x)$ converge quando $n\to \infty$. Seja, então, $f:D\to \mathbb{R}$ a função tal que $f(x)$ é o limite de $f_n(x)$ para cada $x\in D$.
+    Mostraremos, agora, que $f_n$ converge uniformemente para $f$. Seja dado $\varepsilon>0$. Por hipótese, existe $N$ tal que
+    \begin{equation}\label{eq:afirmacao_Cauchy}
+      x\in D, ~n,m>N \Rightarrow |f_n(x) - f_m(x)| < \frac{\varepsilon}{2}.
+    \end{equation}
+Agora, observemos que $f_n(x) - f_m(x) \to f_n(x) - f(x)$ pontualmente quando $m\to \infty$. Logo, passando ao limite na afirmação~\eqref{eq:afirmacao_Cauchy}, temos
+\begin{equation}
+  x\in D, n>N \Rightarrow |f_n(x) - f(x)| \leq \frac{\varepsilon}{2} < \varepsilon,
+\end{equation}
+o que mostra a convergência uniforme.
+  \end{enumerate}
+\end{dem}
+
+\begin{ex}
+  No exemplo anterior (Exemplo~\ref{ex:convergencia_uniforme}~a)) vimos que $f_n(x) = x + 1/n$ converge uniformemente para $f(x) = x$. Aqui, mostraremos que $f_n$ satisfaz o critério de Cauchy para sequência de funções.
+  Seja $\varepsilon>0$. Observemos que $1/n\to 0$ quando $n\to \infty$ e, portanto, satisfaz o critério de Cauchy para sequências de números. A saber, existe $N$ tal que
+  \begin{equation}
+    n,m > N \Rightarrow \left|\frac{1}{n} - \frac{1}{m}\right| < \varepsilon.
+  \end{equation}
+  Daí, temos também que
+  \begin{equation}
+    x\in\mathbb{R}, ~n,m>n \Rightarrow |f_n(x) - f_m(x)| = \left|x+\frac{1}{n} - x - \frac{1}{m}\right| = \left|\frac{1}{n} - \frac{1}{m}\right| < \varepsilon.
+  \end{equation}
+O que concluí que $f_n$ satisfaz o critério de Cauchy.
+\end{ex}
+
+\subsection*{Exercícios}
+
+\begin{exer}
+  Mostre que a sequência de funções $f_n:\mathbb{R}\setminus \{0\}$, $f_n(x) = 1/(nx)$, converge pontualmente para a função nula $f(x) \equiv 0$.
+\end{exer}
+
+\begin{exer}
+  Mostre que a sequência de funções $f_n(x) = \cos(x/n)$ converge pontualmente para função constante $f(x)\equiv 1$.
+\end{exer}
+
+\begin{exer}
+  Mostre que a sequência de funções $f_n(x) = e^{-(x-n)^2}$ é pontualmente convergente para $f(x)\equiv 0$.
+\end{exer}
+
+\begin{exer}
+  Mostre que a sequência de funções $f_n(x) = e^{-(x-n)^2}$ não é uniformemente convergente para $f(x)\equiv 0$.
+\end{exer}
+
+\begin{exer}
+  Mostre que a sequência de funções $f_n:[-1, 1]\to\mathbb{R}$, $f_n(x) = e^{x/n}$, é uniformemente convergente para a função $f(x)\equiv 1$.
+\end{exer}
+
+\begin{exer}
+  Mostre que a sequência de funções $f_n(x) = x^2/(1 + nx^2)$ satisfaz o critério de convergência de Cauchy para sequências de funções. Dica: observe que $0\leq f_n(x) < 1/n$.
+\end{exer}
+
+\section{Algumas consequências da convergência uniforme}\label{cap_ssfunces_sec_conseq_convu}
+
+\begin{teo}\label{teo:sf_continuas}
+  Seja $f_n:D\to\mathbb{R}$ uma sequência de funções contínuas. Se $f_n$ converge uniformemente para uma função $f:D\to\mathbb{R}$, então $f$ é contínua.
+\end{teo}
+\begin{dem}
+  Primeiramente, observemos que para quaisquer $x,a\in D$ e $n\in \mathbb{N}$, temos
+  \begin{align}\label{eq:sf_desigualdade_triangular}
+    |f(x)-f(a)| &= |f(x)-f_n(x)+f_n(x)-f_n(a)+f_n(a)-f(a)|\\
+                &\leq |f(x)-f_n(x)| + |f_n(x)-f_n(a)| + |f_n(a)-f(a)|.
+  \end{align}
+Seja, então, $\varepsilon>0$. Como $f_n$ converge uniformemente para $f$, existe $N\in\mathbb{N}$ tal que, para todo $n>N$ temos
+\begin{equation}
+  |f(x)-f_n(x)| < \frac{\varepsilon}{3} \qquad\text{e}\qquad |f_n(a)-f(a)| < \frac{\varepsilon}{3}.
+\end{equation}
+Fixemos um $n>N$. Como $f_n$ é contínua, para cada $a\in D$, existe $\delta>0$ tal que
+\begin{equation}
+  x\in D, |x-a|<\delta \Rightarrow |f_n(x) - f_n(a)| < \frac{\varepsilon}{3}.
+\end{equation}
+Portanto, usando a desigualdade em~\eqref{eq:sf_desigualdade_triangular}, vemos que para cada $a\in D$, existe $\delta>0$ tal que
+\begin{equation}
+  x\in D, |x-a|<\varepsilon \Rightarrow |f(x) - f(a)| < \varepsilon.
+\end{equation}
+Isto mostra a continuidade de $f$.
+\end{dem}
+
+\begin{teo}\label{teo:sf_integravel}
+  Seja $f_n:[a, b]\to\mathbb{R}$ uma sequência de funções contínuas. Se $f_n$ converge uniformemente para uma função $f:[a, b]\to\mathbb{R}$, então
+  \begin{equation}
+    \lim \int_a^b f_n(x)\,dx = \int_a^b [\lim f_n(x)]\,dx = \int_a^b f(x)\,dx.
+  \end{equation}
+\end{teo}
+\begin{dem}
+  Seja $\varepsilon>0$. Como $f_n$ converge uniformemente para $f$, temos que existe $N\in\mathbb{N}$ tal que
+  \begin{equation}
+    x\in [a, b], n>N \Rightarrow |f_n(x) - f(x)| < \frac{\varepsilon}{(b-a)}.
+  \end{equation}
+Além disso, do teorema anterior (Teorema~\ref{teo:sf_continuas}), temos que $f$ é contínua em $[a, b]$ e, portanto, assim como $f_n$, é integrável neste intervalo (veja Teorema~\ref{teo:integrabilidade_de_f_continua}). Por tudo isso, temos
+\begin{align}
+  n>N \Rightarrow \left|\int_a^b f_n(x)\,dx - \int_a^b f(x)\,dx\right| &= \left|\int_a^b |f_n(x) - f(x)|\,dx\right|\\
+                                                                       &\leq \frac{\varepsilon}{(b-a)}(b-a) = \varepsilon.
+\end{align}
+O que concluí a demonstração.
+\end{dem}
+
+\begin{teo}\label{teo:sf_derivaveis}
+  Seja $f_n:[a, b]\to\mathbb{R}$ uma sequência de funções com derivadas contínuas em $[a, b]$, tal que $f_n'$ converge uniformemente para uma função $g:[a, b]\to\mathbb{R}$. Suponhamos, ainda, para algum ponto $c\in [a, b]$, $f_n(c)$ é uma sequência convergente. Então, $f_n$ converge uniformemente para uma função $f$ para a qual $f' = g$, i.e.
+  \begin{equation}
+    \frac{d}{dx}\lim f_n(x) = \lim \frac{d}{dx}f_n(x).
+  \end{equation}
+\end{teo}
+\begin{dem}
+  Do teorema fundamental do cálculo (Teorema~\ref{teo:teo_fundamental_do_calculo}), para todo $x\in [a, b]$ temos
+  \begin{equation}\label{eq:sf_tfc1}
+    f_n(x) = f_n(c) + \int_c^x f'_n(t)\,dt.
+  \end{equation}
+Como, por hipótese, $f_n(c)$ é convergente e $f_n'$ é uniformemente convergente para a função $g$, temos, do teorema anterior (Teorema~\ref{teo:sf_integravel}), que tomando o limite de $n\to \infty$ nesta última equação, obtemos
+  \begin{equation}\label{eq:sf_tfc2}
+    f(x) = f(c) + \int_c^x g(t)\,dt.
+  \end{equation}
+Observemos que $f' = g$. Fica de exercício, mostrar que $f_n$ converge uniformemente para $f$, o que completa a demonstração.
+\end{dem}
+
+\subsection*{Exercícios}
+
+\begin{exer}
+  Complete a demonstração do Teorema~\ref{teo:sf_derivaveis}.
+\end{exer}
+
+\section{Séries de funções}\label{cap_ssfuncoes_sec_serf}\index{séries de!funções}
+
+\begin{defn}\normalfont{(Séries de funções)}
+  Sejam dadas funções $f_i:D\to\mathbb{R}$, $i=1, 2, 3, \ldots$. A \emph{série das funções} $f_i$ é a sequência das \emph{somas parciais}
+  \begin{equation}
+    \sum_{i=1}^n f_i(x) := f_1(x) + f_2(x) + f_3(x) + \cdots + f_n(x).
+  \end{equation}
+Comumente, denotamos uma tal série por
+\begin{equation}
+  \sum_{i=1}^\infty f_i(x).
+\end{equation}
+\end{defn}
+
+Tendo em vista de uma série de funções $\sum_i f_i(x)$ é uma sequência de funções, os conceitos de convergência de séries são aplicações diretas das definições de convergência de sequências de funções. Ou seja, dizemos que uma série de funções é \emph{pontualmente convergente} para a função $f:D\to\mathbb{R}$ quando, para cada $\varepsilon>0$ e para cada $x\in D$, existe $N$ tal que
+\begin{equation}
+  n>N \Rightarrow \left|\sum_{i=1}^n f_i(x) - f(x)\right| = \left|\sum_{i=n+1}^\infty f_i(x)\right| < \varepsilon.
+\end{equation}
+Ainda, dizemos uma série de funções é \emph{uniformemente convergente} quando, para cada $\varepsilon>0$, existe $N$ tal que
+\begin{equation}
+  x\in D, n>N \Rightarrow \left|\sum_{i=n+1}^\infty f_i(x)\right| <  \varepsilon.
+\end{equation}
+
+Assim como as definições de séries de funções, os seguintes teoremas são consequências diretas dos relacionados a sequências de funções.
+
+\begin{teo}\normalfont{(Critério de Cauchy)}\index{critério de!Cauchy}\label{teo_criterio_de_Cauchy_serf}
+  Uma série de funções $\sum f_i(x)$, $f_i:D\to\mathbb{R}$, é uniformemente convergente se, e somente se, para qualquer $\varepsilon>0$, existe $N$ tal que
+  \begin{equation}
+    x\in D, p\in\mathbb{N}, n>N \Rightarrow \left|\sum_{i=n+1}^{n+p} f_{n+i}(x)\right| < \varepsilon.
+  \end{equation}
+\end{teo}
+\begin{dem}
+  Do critério de convergência de Cauchy para sequências de funções, temos que $\sum f_i(x)$ é uniformemente convergente se, e somente se, para qualquer $\varepsilon>0$, existe $N$ tal que
+  \begin{equation}
+    x\in D, n,m>N \Rightarrow \left|\sum_{i=1}^n f_i(x) - \sum_{i=1}^m f_i(x)\right| < \varepsilon.
+  \end{equation}
+Agora, assumindo $m>n$ s.p.g. e denotando $p=m-n$ temos
+\begin{align}
+  \left|\sum_{i=1}^n f_i(x) - \sum_{i=1}^m f_i(x)\right| &= \left|\sum_{i=1}^m f_i(x) - \sum_{i=1}^n f_i(x)\right|\\
+                                                         &= \left|\sum_{i=m+1}^n f_i(x)\right| \\
+                                                         &= \left|\sum_{i=n+1}^m f_i(x)\right|\\
+                                                         &= \left|\sum_{i=n+1}^{n+p} f_i(x)\right|.
+    \end{align}
+\end{dem}
+
+\begin{teo}
+  Seja $\sum f_i(x)$ uma série de funções $f_i:D\to\mathbb{R}$ contínua em $D$. Se $\sum f_i(x)$ converge uniformemente para $f:D\to\mathbb{R}$, então $f$ é contínua em $D$.
+\end{teo}
+\begin{dem}
+  Sejam
+  \begin{equation}
+    S_n(x) = \sum_{i=1}^n f_i(x)
+  \end{equation}
+as somas parciais da série $\sum f_i(x)$. Como a soma finita de funções contínuas em um conjunto $D$ é uma função contínua no mesmo, temos que $S_n$ é uma função contínua. Logo, como $S_n\to f$ uniformemente, temos do Teorema~\ref{teo:sf_continuas} que $f$ é contínua em D.
+\end{dem}
+
+\begin{teo}\label{teo:serie_f_integravel}
+  Seja $\sum f_i(x)$ uma série de funções $f_i:[a, b]\to\mathbb{R}$ contínua em $[a, b]$. Se $\sum f_i(x)$ converge uniformemente para $f:D\to\mathbb{R}$, então
+  \begin{equation}
+    \sum_{i=1}^\infty \int_a^b f_i(x)\,dx = \int_a^b \sum_{i=1}^\infty f_i(x)\,dx.
+  \end{equation}
+\end{teo}
+\begin{dem}
+  Exercício~\ref{exer:serie_f_integravel}.
+\end{dem}
+
+\begin{teo}\normalfont{(Teste de Weierstrass)}\label{teo:teste_de_Weierstrass}
+  Seja $f_n:D\to\mathbb{R}$ uma sequência de funções. Se $|f_n(x)|\leq M_n$, $\forall x\in D$, com $\sum M_n$ convergente, então $\sum f_n(x)$ converge absoluta e uniformemente.
+\end{teo}
+\begin{dem}
+  Seja $\varepsilon>0$. Como $\sum M_n$ é convergente, existe $N$ tal que
+  \begin{equation}
+    n\geq N \Rightarrow \left|\sum_{i=n}^\infty M_i\right|\leq \varepsilon.
+  \end{equation}
+Mas, então, temos
+\begin{align}
+  x\in D, n\geq N \Rightarrow \left|\sum_{i=n}^\infty f_n(x)\right| &\leq \sum_{i=n}^\infty |f_n(x)|\\
+  &\leq \sum_{i=n}^\infty M_i < \varepsilon.
+\end{align}
+Isto mostra que $\sum f_n(x)$ é absoluta e uniformemente convergente.
+\end{dem}
+
+\begin{ex}
+  A série $\sum \sen(nx)/n!$ é absoluta e uniformemente convergente. De fato, como $|\sen(nx)|\leq 1$ para todo $x\in \mathbb{R}$, temos que $|\sen(nx)/n!|\leq 1/n!$. Ainda, como $\sum 1/n!$ é convergente, segue do Teste de Weierstrass~\ref{teo:teste_de_Weierstrass}, que $\sum \sen(nx)/n!$ é absoluta e uniformemente convergente.
+\end{ex}
+
+\subsection*{Exercício}
+
+\begin{exer}\label{exer:serie_f_integravel}
+  Mostre o Teorema~\ref{teo:serie_f_integravel}.
+\end{exer}
+
+\begin{exer}
+  Use o teste de Weierstrass para mostrar que
+  \begin{equation}
+    \sum \frac{\cos nx}{n!}
+  \end{equation}
+é absoluta e uniformemente convergente.
+\end{exer}
+
+\begin{exer}
+  Seja $f_n:D\to\mathbb{R}$ uma sequência de funções. Use o critério de Cauchy de séries de funções (Teorema~\ref{teo_criterio_de_Cauchy_serf}) para mostrar que se $|f_n(x)|\leq M_n$, $\forall x\in D$, com $\sum M_n$ convergente, então $\sum f_n(x)$ é uniformemente convergente.
+\end{exer}
+
+\section{Séries de potências}\label{cap_ssfuncoes_sec_ser_pot}
+
+Séries de potências são séries da forma
+\begin{equation}
+  \sum a_nx^n.
+\end{equation}
+
+\begin{ex}
+  A expansão em série de Taylor da função $f(x)=e^x$ em torno do ponto $x=0$ é
+  \begin{align}
+    f(x) &= \frac{f(0)}{0!} + \frac{f'(0)}{1!}x + \frac{f''(0)}{2!}x^2 + \frac{f'''(0)}{3!}x^3 + \cdots\\
+    &= 1 + \frac{1}{1!}x + \frac{1}{2!}x^2 + \frac{1}{3!}x^3 + \cdots\\
+    e^{x} &= \sum_{n=0}^\infty \frac{1}{n!}x^n.
+  \end{align}
+Mostraremos esta afirmação no decorrer desta seção.
+\end{ex}
+
+\begin{lem}\label{lem:ser_pot}
+  Se a série de potências $\sum a_nx^n$ converge absolutamente para um dado $x=x_0\neq 0$, então ela é absolutamente convergente para todo $|x|<|x_0|$. Agora, se ela diverge para um dado $x=x_0\neq 0$, então ela diverge para todo $|x|>|x_0|$.
+\end{lem}
+\begin{dem}
+  Analisemos, primeiro, o caso em que $\sum a_nx^n$ converge absolutamente para um dado $x=x_0\neq$. Então, $|a_nx_0^n|\to 0$ quando $n\to \infty$. Seja, então, $M>0$ tal que $|a_nx_0^n| < M$. Com isso, temos
+  \begin{equation}
+    |a_nx^n| = |a_nx_0^n|\left|\frac{x}{x_0}\right|^n < M\left|\frac{x}{x_0}\right|^n.
+  \end{equation}
+Logo
+\begin{equation}
+  \sum |a_nx^n| \leq M\sum \left|\frac{x}{x_0}\right|^n.
+\end{equation}
+Esta última, é uma série geométrica e, portanto, converge sempre que $|x|<|x_0|$. Isto mostra que $\sum a_nx^n$ é absolutamente convergente sempre que $|x|<|x_0|$.
+
+Analisemos, agora, o caso em que $\sum a_nx^n$ é divergente para um dado $x=x_0\neq 0$. Neste caso, pelo que acabamos de mostrar, a série não pode convergir para nenhum $x$ tal que $|x|>|x_0|$ pois, caso contrário, ela teria de ser convergente para $x=x_0$.
+\end{dem}
+
+\begin{teo}\label{teo:raio_de_convergencia}
+  Para cada série de potência $\sum a_nx^n$ que seja convergente em um ponto $x'\neq 0$ e diverge em um ponto $x''$, existe $r>0$ tal que a série é absolutamente convergente se $|x|<r$ e diverge se $|x|>r$.
+\end{teo}
+\begin{dem}
+  Seja $r$ o supremo dos números $|x|$ tal que a série de potências é convergente. Do lema anterior (Lema~\ref{lem:ser_pot}), temos $|x'|\leq r \leq |x''|$. Então, para cada $x$ tal que $|x|<r$, existe $x_0$ tal que $|x|<|x_0|<r$ e no qual a série $\sum a_nx^n$ é convergente. Logo, pelo lema anterior, esta série é absolutamente convergente em $x$. Isto mostra que a série de potências é absolutamente convergente para todo $x$ tal que $|x|<r$. Por outro lado, se $x$ é ta que $|x|>r$, então, também pelo lema anterior, $\sum a_nx^n$ é divergente.
+\end{dem}
+
+\begin{defn}\normalfont{(Raio de convergência)}\index{raio de convergência}
+  Dizemos que $r\leq 0$ é o raio de convergência de uma dada série de potências $\sum a_nx^n$ quando, esta é convergente para todo $|x|<r$.
+\end{defn}
+
+\begin{obs}
+  O Teorema~\ref{teo:raio_de_convergencia} nos garante a existência do raio de convergência, levando em conta de que quando a série é convergente para todo $x\in\mathbb{R}$, dizemos que seu raio de convergência é infinito.
+\end{obs}
+
+\begin{teo}
+  Se $r>0$ é o raio de convergência da série de potências $\sum a_nx^n$, então esta converge uniformemente em todo intervalo $[-c, c]$, onde $0<c<r$.
+\end{teo}
+\begin{dem}
+  Sejam $c<r$ e $x_0$ tal que $c<x_0<r$. Então, $\sum |a_nx_0^n|$ é convergente e, logo, existe $M$ tal que $|a_nx_0^n|<M$ para todo $n$. Assim sendo, para todo $|x| < c$ temos
+  \begin{equation}
+    |a_nx^n| = |a_nx^n|\left|\frac{x}{x_0}\right|^n \leq M\left|\frac{c}{x_0}\right|^n.
+  \end{equation}
+Agora, como $\sum M|c/x_0|^n$ é convergente, temos do teste de Weierstrass (Teorema~\ref{teo:teste_de_Weierstrass}), que $\sum a_nx^n$ é uniformemente convergente em $|x|< c$.
+\end{dem}
+
+\begin{obs}\label{obs:teste_da_raiz}
+  Do teste da raiz para séries de números, temos que para cada $x$ tal que $\lim\sup \sqrt[n]{|a_nx^n|} = \lim\sup |x|\sqrt[n]{|a_n|}<1$ a série $\sum a_nx^n$ é convergente. Também, para cada $x$ tal que $\lim\sup |x|\sqrt[n]{|a_n|}>1$ a série é divergente. Daí, temos que o raio de convergência de uma dada série $\sum a_nx^n$ é
+  \begin{equation}
+    r = \frac{1}{\lim\sup \sqrt[n]{|a_n|}}.
+  \end{equation}
+\end{obs}
+
+\begin{teo}\label{teo:ser_pot_deriv}
+  Se a série $\sum_{n=0}^\infty a_nx^n$ tem raio de convergência $r>0$, então 
+  \begin{equation}
+    \sum_{n=1}^\infty na_nx^{n-1},
+  \end{equation}
+obtida da derivação termo a termo, também tem raio de convergência $r$.
+\end{teo}
+\begin{dem}
+  Seja $r$ o raio de convergência da série $\sum_{n=0}^\infty a_nx^n$. Primeiramente, observamos que
+  \begin{equation}
+    \sum_{n=1}^\infty na_nx^{n-1} = \sum_{n=0}^\infty (n+1)a_{n+1}x^n.
+  \end{equation}
+Então, da Observação~\ref{obs:teste_da_raiz} temos que o raio de convergência desta série é
+\begin{align}
+  \frac{1}{\lim\sup \sqrt[n+1]{|(n+1)a_{n+1}|}} &= \frac{1}{\lim\sup \sqrt[n]{|na_{n}|}} \\
+  &= \frac{1}{\lim\sup \sqrt[n]{n} \lim\sup \sqrt[n]{|a_{n}|}}\\
+  &= \frac{1}{1 \cdot \lim\sup \sqrt[n]{|a_{n}|}} = r.
+\end{align}
+\end{dem}
+
+\begin{teo}\label{teo:ser_pot_integr}
+  Se a série $\sum_{n=0}^\infty a_nx^n$ tem raio de convergência $r>0$, então 
+  \begin{equation}
+    \sum_{n=0}^\infty \frac{a_n}{n+1}x^{n+1},
+  \end{equation}
+obtida da integração termo a termo, também tem raio de convergência $r$.  
+\end{teo}
+\begin{dem}
+  A demonstração é análoga a do teorema anterior (Teorema \ref{teo:ser_pot_deriv}). Veja o Exercício~\ref{exer:teo_ser_pot_integr}.
+\end{dem}
+
+\begin{teo}\normalfont{(Unicidade de séries de potências)}\label{teo:ser_pot_unicidade}
+  Sejam $\sum a_nx^n$ e $\sum b_nx^n$ duas séries de potências com raio de convergência $r$. Se $\sum a_nx^n = \sum b_nx^n$ para todo $x$ tal que $|x|<r$, então $a_n=b_n$ para todo $n$.
+\end{teo}
+\begin{dem}
+  Suponhamos que $f$ tenha as seguintes duas representações em séries de potências
+  \begin{equation}
+    f(x) = \sum a_nx^n = \sum b_nx^n
+  \end{equation}
+para todo $x$ tal que $|x|<r$. Então, pelo Teorema~\ref{teo:ser_pot_deriv}, podemos derivar termo a termo estas representações para cada $x$ tal que $|x|<r$, em particular em $x=0$. Daí, segue o resultado desejado, veja Exercício~\ref{exer:teo_ser_pot_unicidade}.
+\end{dem}
+
+\subsection*{Exercícios}
+
+\begin{exer}
+  Mostre que a série geométrica $\sum_{n=1}^\infty x^n$ não é uniformemente convergente no intervalo $|x|<1$.
+\end{exer}
+
+\begin{exer}
+  Seja dada a série de potência $\sum a_nx^n$. Mostre que se existe $N$ tal que
+  \begin{equation}
+    \sum_{n=N+1}^\infty |a_nx_0^n| < \infty,
+  \end{equation}
+para algum $x_0\neq 0$, então $\sum a_nx^n$ é absolutamente convergente para todo $|x|<|x_0|$.
+\end{exer}
+
+\begin{exer}
+  Mostre o teste da razão. Isto é, se
+  \begin{equation}
+    \lim_{n\to\infty} \left|\frac{a_{n+1}}{a_n}x_0\right| < 1,
+  \end{equation}
+então $\sum a_nx$ é absolutamente convergente para todo $|x|<|x_0|$.
+\end{exer}
+
+\begin{exer}
+  Mostre que se $\sum a_nx^n$ satisfaz o teste da razão para algum $x_0\in\mathbb{R}$, então existe $c\in\mathbb{R}$ tal que $\sum a_nx^n$ é uniformemente convergente em $[-c, c]$.
+\end{exer}
+
+\begin{exer}\label{exer:teo_ser_pot_integr}
+  Demonstre o Teorema~\ref{teo:ser_pot_integr}.
+\end{exer}
+
+\begin{exer}\label{exer:teo_ser_pot_unicidade}
+  Complete a demonstração do Teorema~\ref{teo:ser_pot_unicidade}.
+\end{exer}
+
+\section{Funções analíticas}\label{cap_ssfuncoes_sec_fun_analit}
+
+Dizemos que uma função $f:D\to\mathbb{R}$ admite representação em série de potências num ponto $x_0\in D$, quando existe uma série $\sum a_n(x-x_0)^n$ com raio de convergência $r$ positivo (ou infinito) tal que
+\begin{equation}
+  f(x) = \sum a_n(x-x_0)^n,
+\end{equation}
+para todo $x$ tal que $|x-x_0|<r$.
+
+\begin{defn}\normalfont{(Funções analíticas)}
+  Dizemos que uma função $f:D\to\mathbb{R}$ é analítica num ponto $x_0\in D$, quando ela admite uma representação em série de potências neste ponto.
+\end{defn}
+
+\begin{obs}
+  Do Teorema~\ref{teo:ser_pot_deriv}, concluímos que toda função analítica em um dado ponto $x_0$ de seu domínio é de classe $C^\infty$ (infinitamente continuamente diferenciável) num intervalo $|x-x_0|<r$.
+\end{obs}
+
+As representações de várias funções em séries de potências são muitas vezes obtidas de seus desenvolvimentos em série de Taylor, i.e.
+\begin{align}
+  f(x) &= f(x_0) + f'(x_0)(x-x_0) + \frac{f''(x_0)}{2!}(x-x_0)^2 \nonumber \\
+  &+ \cdots + \frac{f^{(n)}(x_0)}{n!}(x-x_0)^n + \cdots \\
+  &= \sum_{n=0}^\infty \frac{f^{(n)}(x_0)}{n!}(x-x_0)^n.
+\end{align}
+Mais precisamente, temos o seguinte resultado.
+
+\begin{teo}\normalfont{(Desenvolvimento em série de Taylor)}\label{teo:resto_de_Lagrange_para_Taylor}
+  Se $f:D\to\mathbb{R}$ é uma função derivável até a ordem $n+1$ numa vizinhança $|x-x_0|<r$, $x_o\in D$ e $r>0$, então
+  \begin{align}
+    f(x) &= f(x_0) + f'(x_0)(x-x_0) + \frac{f''(x_0)}{2!}(x-x_0)^2 \\
+    &+ \cdots + \frac{f^{(n)}(x_0)}{n!}(x-x_0)^n + R_n(x)  \end{align} 
+onde $R_n(x)$ é o chamado \emph{resto de Lagrange}
+\begin{equation}
+  R_n(x) := \frac{f^{(n+1)}(c)}{(n+1)!}(x-x_0)^{n+1},
+\end{equation}
+onde $c$ é um número entre $x_0$ e $x$.
+\end{teo}
+\begin{dem}
+  Primeiramente, denotando $G(x) = (x-x_0)^{n+1}$ observamos que
+  \begin{equation}
+    \frac{R_n(x)}{(x-x_0)^{n+1}} = \frac{R_n(x)-R_n(x_0)}{G(x) - G(x_0)}.
+  \end{equation}
+Então, do teorema do valor médio generalizado, existe $x'$ entre $x$ e $x_0$ tal que
+\begin{equation}
+  \frac{R_n(x)}{(x-x_0)^{n+1}} = \frac{R_n'(x')}{G'(x')} = \frac{f'(x') - p_n'(x')}{(n+1)(x'-x0)^n},
+\end{equation}
+onde denotamos $p_n(x) := f(x) - R_n(x)$. Novamente, aplicando o teorema do valor médio generalizado para a razão do lado direito da equação acima, temos que existe $x''$ entre $x'$ e $x_0$ e, portanto, entre $x$ e $x_0$ tal que
+\begin{equation}
+  \frac{R_n(x)}{(x-x_0)^{n+1}} = \frac{R_n''(x'')}{G''(x'')} = \frac{f''(x'') - p_n''(x'')}{(n+1)n(x'-x0)^{n-1}}.
+\end{equation}
+Ou seja, da repetição deste procedimento $n+1$ vezes, temos garantida a existência de $c$ entre $x$ e $x_0$ tal que
+\begin{equation}
+  \frac{R_n(x)}{(x-x_0)^{n+1}} = \frac{f^{(n+1)}(c) - p_n^{(n+1)}(c)}{(n+1)!},
+\end{equation}
+o que mostra o resultado desejado, pois $p_n^{(n+1)}(x)\equiv 0$.
+\end{dem}
+
+\begin{ex}
+  A função $f(x) = e^x$ tem a seguinte representação em série de potências
+  \begin{equation}
+    e^x = \sum_{n=0}^\infty \frac{x^n}{n!},
+  \end{equation}
+com raio de convergência infinito, ou seja, $e^x$ é uma função analítica. De fato, sua representação em série de potências pode ser obtida de seu desenvolvimento por série de Taylor em torno de $x_0 = 0$. Daí, do teorema anterior (Teorema~\ref{teo:resto_de_Lagrange_para_Taylor}) segue que para cada $x$, existe $c$ entre $x$ e $0$ tal que
+\begin{equation}
+  |e^x - \sum_{n=0}^m \frac{x^n}{n!}| = e^c\frac{x^{m+1}}{(m+1)!}\to 0
+\end{equation}
+quando $m\to \infty$.
+\end{ex}
+
+\begin{obs}
+  Toda função analítica é $C^\infty$, mas a recíproca não é verdadeira.
+\end{obs}
+
+\begin{ex}
+  A função
+  \begin{equation}
+    f(x) = \left\{
+      \begin{array}{ll}
+        0 &, x\leq 0\\
+        e^{-1/x} &, x>0
+      \end{array}
+\right.,
+  \end{equation}
+é de classe $C^\infty$. Entretanto, ela não é analítica em $x=0$, pois $f^{(n)}(0)=0$ para todo o $n$ e, então, pelo Teorema~\ref{teo:ser_pot_unicidade}, teríamos que $f(x)= 0$ em uma vizinhança de $0$.
+\end{ex}
+
+\subsection*{Exercícios}
+
+\begin{exer}
+  Mostre que $f(x)=\sen(x)$ é analítica em $x=0$.
+\end{exer}
+
+\begin{exer}
+  Mostre que a seguinte função de classe $C^\infty$
+  \begin{equation}
+    f(x) = \left\{
+      \begin{array}{ll}
+        0 &,x\leq 0,\\
+        e^{-1/x^2} &,x> 0
+      \end{array}
+\right.
+  \end{equation}
+não é analítica em $x=0$.
+\end{exer}
+
+\section{Funções trigonométricas}\label{cap_ssfuncoes_sec_fun_trigo}
+
+Todas as funções trigonométricas podem ser definidas a partir das funções $\sen(x)$ e $\cos(x)$. Estas, por sua vez, podem ser definidas como as funções de classe $C^1$ tais que
+\begin{align}
+  s'(x) &= c(x),\label{eq:s_deriv}\\
+  c'(x) &= -s(x),\label{eq:c_deriv}\\
+  s(0) &= 0,\label{eq:s_0}\\
+  c(0) &= 1.\label{eq:c_1}
+\end{align}
+De fato, nesta seção mostraremos que estas condições definem as funções $\sen$ e $\cos$ de forma única.
+
+\begin{flushleft}
+  {\bf Existência.}
+\end{flushleft}
+
+Em primeiro lugar, observamos que \eqref{eq:s_deriv}-\eqref{eq:c_deriv} implicam que $s(x)$ e $c(x)$ são funções de classe $C^\infty$. Também, definindo $f(x)=s^2(x) + c^2(x)$, temos $f'(x)\equiv 0$ e, portanto, $f(x)$ é uma função contante. Como, $f(0)=1$, seque que
+\begin{equation}
+  s^2(x) + c^2(x) = 1.
+\end{equation}
+Daí, temos que $|s(x)|\leq 1$ e $|c(x)|\leq 1$.
+
+Do que acabamos de observar, temos que $s(x)$ e $c(x)$ admitem desenvolvimentos por séries de Taylor em torno de $x=0$, as quais são
+\begin{equation}\label{eq:ser_pot_seno}
+  s(x) = \sum_{n=0}^\infty \frac{(-1)^nx^{2n+1}}{(2n+1)!}
+\end{equation}
+e
+\begin{equation}\label{eq:ser_pot_cos}
+  c(x) = \sum_{n=0}^\infty \frac{(-1)^nx^{2n}}{(2n)!}.
+\end{equation}
+Do teste da razão, temos que estas séries são convergentes para todo $x\in\mathbb{R}$. Logo, elas podem ser derivadas termo a termo, donde verifica-se que elas satisfazem \eqref{eq:s_deriv} e \eqref{eq:c_deriv}. Além disso, podemos verificar imediatamente que elas também satisfazem \eqref{eq:s_0} e \eqref{eq:c_1}.
+
+\begin{flushleft}
+  {\bf Unicidade.}
+\end{flushleft}
+
+Suponhamos que existam outras funções $S(x)$ e $C(x)$ satisfazendo as condições \eqref{eq:s_deriv}-\eqref{eq:c_1}. Então, definindo $f(x) = s(x)C(x)-S(x)c(x)$, temos
+\begin{align}
+  f'(x) &= s'(x)C(x)+s(x)C'(x)-S'(x)c(x)-S(x)c'(x)\\
+  &= c(x)C(x)-s(x)S(x)-C(x)c(x)+S(x)s(x) \equiv 0.
+\end{align}
+Além disso, como $f(0)=0$, temos que
+\begin{equation}\label{eq:sC-Sc}
+  s(x)C(x)-S(x)c(x)\equiv 0.
+\end{equation}
+De forma análoga, mostra-se que
+\begin{equation}\label{eq:sS+cC}
+  s(x)S(x)+c(x)C(x)\equiv 1.
+\end{equation}
+Agora, de \eqref{eq:sC-Sc} e \eqref{eq:sS+cC}, temos
+\begin{align}
+  c(x) &= (s(x)C(x)-S(x)c(x))s(x)+(s(x)S(x)+c(x)C(x))c(x)\\
+  &= s^2(x)C(x)-S(x)c(x)s(x)+s(x)S(x)c(x)+c^2(x)C(x)\\
+  &= (s^2(x)+c^2(x))C(x)\\
+  &= C(x).
+\end{align}
+De forma análoga, mostra-se que $s(x) = S(x)$.
+
+Da existência e unicidade demonstradas, definimos $\sen(x) := s(x)$ e $\cos(x) := c(x)$. Temos, do demostrado, que $\sen$ e $\cos$ são funções analíticas em $x=0$ cujas séries de potências são,  respectivamente, \eqref{eq:ser_pot_seno} e \eqref{eq:ser_pot_cos} com raio de convergência infinito. 
+
+\subsection*{Exercícios}
+
+\begin{exer}
+  Mostre que se $s(x)$ e $c(x)$ são funções que satisfazem \eqref{eq:s_deriv}-\eqref{eq:c_1} e $S(x)$ e $C(x)$ também satisfazem as mesmas condições, i.e.
+\begin{align}
+  S'(x) &= C(x),\label{eq:s_deriv}\\
+  C'(x) &= -S(x),\label{eq:c_deriv}\\
+  S(0) &= 0,\label{eq:s_0}\\
+  C(0) &= 1,\label{eq:c_1}
+\end{align}
+então $g(x) = s(x)S(x)+c(x)C(x) \equiv 1$. Por fim, com o auxílio de \eqref{eq:sC-Sc}, mostre que $s(x) = S(x)$.
+\end{exer}
+
+\begin{exer}
+  Use a série de potência de $\sen(x)$ em torno de $x=0$ para mostrar que $\sen(x)$ é uma função ímpar. Analogamente, use a série de potência de $\cos(x)$ em torno de $x=0$ para mostrar que $\cos(x)$ é uma função par.
+\end{exer}
+
+\begin{exer}
+  Prove que
+  \begin{align}
+    \sen(a+b)&=\sen(a)\cos(b)+\cos(a)\sen(b),\\
+    \cos(a+b)&=\cos(a)\cos(b)-\sen(a)\sen(b).
+  \end{align}
+\end{exer}
+
+

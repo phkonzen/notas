@@ -1,0 +1,1179 @@
+
+
+\chapter{Equação com uma incógnita}\label{cap_eq1d}\index{zeros de!funções}
+\thispagestyle{fancy}
+
+Neste capítulo, discutiremos sobre métodos numéricos para resolver equações com uma incógnita real. Para tanto, notemos que toda equação pode ser reescrita na seguinte forma equivalente
+\begin{equation}\label{eq:zero_fun}
+  f(x) = 0,
+\end{equation}
+onde $f$ é uma função adequada. Isto é, o problema de se encontrar a incógnita de uma dada equação pode ser reescrito como um problema de encontrar os zeros (ou raízes) de uma função de uma variável real.
+
+Os métodos numéricos que abordaremos ao longo deste capítulo são descritos para problemas da forma \eqref{eq:zero_fun}.
+
+\section{Método da bisseção}\label{cap_eq1d_sec_bissec}\label{método da!bisseção}
+
+O método da bisseção explora o fato de que toda função contínua $f$ com $f(a)\cdot f(b) < 0$ (i.e., $f(a)$ e $f(b)$ tem sinais diferentes) tem pelo menos um zero no intervalo $(a, b)$\footnote{Esta é uma consequência imediata do \href{https://phkonzen.github.io/notas/AnaliseMatematicaI/cap_continuidade_sec_prop_f_cont.html}{teorema do valor intermediário}.}.
+
+\begin{ex}\label{ex:bis_intro}
+  Consideremos o problema de resolver
+  \begin{equation}
+    \sen^2\left(x+\frac{\pi}{4}\right) = x^3 - \frac{\pi}{4}x^2 - \frac{5\pi^2}{16}x - \frac{3\pi^3}{64}.
+  \end{equation}
+Este problema é equivalente a encontrar os zeros da seguinte função
+\begin{equation}
+  f(x) = \sen^2\left(x+\frac{\pi}{4}\right) - x^3 + \frac{\pi}{4}x^2 + \frac{5\pi^2}{16}x + \frac{3\pi^3}{64}.
+\end{equation}
+Os zeros exatos\footnote{O problema foi construído para que tivesse estas soluções.} desta função são $x_1=3\pi/4\approx 2,3562$ e $x_2=x_3=-\pi/4\approx -0,78540$ (veja a Figura \ref{fig:bis_intro}).
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./cap_eq1d/dados/ex_bis_intro/fig_bis_intro}
+  \caption{Esboço da função $f$ do Exemplo~\ref{ex:bis_intro}.}
+  \label{fig:bis_intro}
+\end{figure}
+
+Observamos que esta função é contínua e que, por exemplo, $f(-2)>0$ e $f(3)<0$, logo $f(-2)\cdot f(3) < 0$ e, de fato, $f$ tem pelo menos um zero\footnote{De fato, $f$ tem três zeros no intervalo $(-2, 3)$.} no intervalo $(-2, 3)$.
+
+\ifisoctave
+O esboço do gráfico da função $f$ pode ser feito no \verb+GNU Octave+ com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/ex_bis_intro/ex_bis_intro.m}{código}:
+\verbatiminput{./cap_eq1d/dados/ex_bis_intro/ex_bis_intro.m}
+\fi
+\end{ex}
+
+Consideremos, então, uma função $f$ contínua tal que $f(a)\cdot f(b) < 0$. O método da bisseção é iterativo, sendo que a primeira aproximação para uma solução de $f(x)=0$ tomada como o ponto médio do intervalo $(a, b)$, i.e.
+\begin{equation}
+  x^{(1)} = \frac{a^{(1)}+b^{(1)}}{2},
+\end{equation}
+onde $a^{(1)} = a$ e $b^{(1)} = b$. Daí, se ocorrer $f(x^{(1)})=0$ o problema está resolvido. Caso contrário, $f$ tem pelo menos um zero num dos subintervalos $(a^{(1)}, x^{(1)})$ ou $(x^{(1)}, b^{(1)})$, pois $f(a^{(1)})\cdot f(x^{(1)}) < 0$ ou  $f(x^{(1)})\cdot f(b^{(1)}) < 0$, respectivamente e exclusivamente. No primeiro caso, escolhemos $(a^{(2)}, b^{(2)}) = (a^{(1)}, x^{(1)})$ ou, no segundo caso, tomamos $(a^{(2)}, b^{(2)}) = (x^{(1)}, b^{(1)})$. Então, a segunda aproximação para uma solução é computada como
+\begin{equation}
+  x^{(2)} = \frac{a^{(2)} + b^{(2)}}{2}.
+\end{equation}
+Daí, o procedimento se repete até obtermos uma aproximação com a precisão desejada.
+
+\begin{ex}\label{ex:bis_exec}
+  Consideremos o problema de encontrar um zero da função
+\begin{equation}
+  f(x) = \sen^2\left(x+\frac{\pi}{4}\right) - x^3 + \frac{\pi}{4}x^2 + \frac{5\pi^2}{16}x + \frac{3\pi^3}{64}.
+\end{equation}
+Do esboço de seu gráfico (Figura \ref{fig:bis_intro}) vemos que $f(2)\cdot f(3) \neq 0$ sendo que o zero $x=3\pi/4\approx 2,3562$ de $f$ está no intervalo $(2, 3)$. Então, aplicando o método da bisseção com intervalo inicial $(a^{(1)}, b^{(1)}) = (2, 3)$ e aproximação inicial $x^{(1}) = (a^{(1)}+b^{(1)})/2$, obtemos as aproximações apresentadas na Tabela \ref{tab:bis_exec}.
+
+\begin{table}[h!]
+  \centering
+  \caption{Resultados referentes ao Exemplo~\ref{ex:bis_exec}.}
+  \begin{tabular}{r|rr|r|c}
+    k & $a^{(k)}$ & $b^{(k)}$ & $x^{(k)}$ & $f(a^{(k)})\cdot f(x^{(k)})$\\\hline
+    1 & $2,0000$ & $3,0000$ & $2,5000$ & -1 \\
+    2 & $2,0000$ & $2,5000$ & $2,2500$ &  1 \\
+    3 & $2,2500$ & $2,5000$ & $2,3750$ & -1 \\
+    4 & $2,2500$ & $2,3750$ & $2,3125$ & 1 \\
+    5 & $2,3125$ & $2,3750$ & $2,3438$ & 1 \\
+    6 & $2,3438$ & $2,3750$ & $2,3594$ &  -1 \\
+    7 & $2,3438$ & $2,3594$ & $2,3516$ & 1 \\
+    8 & $2,3516$ & $2,3594$ & $2,3555$ &  1 \\
+    9 & $2,3555$ & $2,3594$ & $2,3574$ &  -1 \\
+    10 & $2,3555$ & $2,3574$ & $2,3564$ & -1 \\\hline
+  \end{tabular}
+  \label{tab:bis_exec}
+\end{table}
+
+\ifisoctave
+A tabela \ref{tab:bis_exec} pode ser obtida no \verb+GNU Octave+ com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/ex_bis_exec/ex_bis_exec.m}{código}:
+\verbatiminput{./cap_eq1d/dados/ex_bis_exec/ex_bis_exec.m}
+\fi
+\end{ex}
+
+\subsection{Análise de convergência}
+
+Dada uma função estritamente monótona\footnote{Estritamente crescente ou estritamente decrescente.} e contínua $f:[a, b]\to\mathbb{R}$ com $f(a)\cdot f(b) < 0$, temos que o método da bisseção converge para o zero de $f$ no intervalo $(a, b)$. 
+
+De fato, como consequência imediata do \href{https://phkonzen.github.io/notas/AnaliseMatematicaI/cap_continuidade_sec_prop_f_cont.html}{teorema do valor intermediário}, temos que $f$ tem pelo menos um zero no intervalo $(a, b)$. Agora, da hipótese de monotonicidade estrita, temos que $f$ tem um único zero neste intervalo, o qual denotaremos por $x^{*}$.
+
+Da construção das iteradas do método, temos
+\begin{align}
+  |x^{(k)} - x^{*}| &\leq \frac{b^{(k)}-a^{(k)}}{2}\\
+  &\leq \frac{b^{(k-1)}-a^{(k-1)}}{2^2}\\
+  &\vdots \\
+  &\leq \frac{b^{(1)}-a^{(1)}}{2^k},
+\end{align}
+donde, temos a seguinte estimativa do erro de truncamento
+\begin{equation}\label{eq:bis_est_trunc}
+  |x^{(k)} - x^{*}| \leq \frac{b^{(1)}-a^{(1)}}{2^k}.
+\end{equation}
+E, daí também, segue a convergência do método da bisseção, pois
+\begin{equation}
+  \lim_{k\to\infty} |x^{(k)}-x^{*}| = \lim_{k\to\infty} \frac{b^{(1)}-a^{(1)}}{2^k} = 0.
+\end{equation}
+
+\begin{obs}
+  No caso de $f$ não ser estritamente monótona no intervalo $(a, b)$, ainda podemos garantir a convergência do método da bisseção. Isto segue do fato de que após algumas iteradas, digamos $k$ iteradas, a função $f$ terá apenas um zero no intervalo $(a^{(k)}, b^{(k)})$. A partir daí, as estimativas acima podem ser aplicadas.
+\end{obs}
+
+\begin{ex}\label{ex:bis_conv}
+  No Exemplo \ref{ex:bis_exec} aplicamos o método da bisseção para a função
+\begin{equation}
+  f(x) = \sen^2\left(x+\frac{\pi}{4}\right) - x^3 + \frac{\pi}{4}x^2 + \frac{5\pi^2}{16}x + \frac{3\pi^3}{64}.
+\end{equation}
+no intervalo $(2, 3)$. Observando os resultados mostrados na Tabela \ref{tab:bis_exec}, vemos que
+\begin{equation}
+  |x^{(10)}-x^*| = 2,5\E-4,
+\end{equation}
+com $x^* = x_1 = 3\pi/4$. Observamos que este resultado é consistente com a estimativa do erro de truncamento \eqref{eq:bis_est_trunc}, da qual temos
+\begin{align}
+  |x^{(10)} - x^*| &\leq \frac{b^{(1)}-a^{(1)}}{2^{10}}\\
+  &= \frac{1}{2^{10}} = 9,8\E-4.
+\end{align}
+\end{ex}
+
+\begin{obs}(\normalfont{Taxa de convergência.})
+  A estimativa de convergência \eqref{eq:bis_est_trunc} também pode ser usada para mostrarmos que, assintoticamente, o método da bisseção tem a seguinte taxa de convergência linear
+  \begin{equation}
+    \left|x^{(k+1)} - x^{(k)}\right| \lesssim \frac{1}{2}\left|x^{(k)} - x^{(k-1)}\right|^{\pmb{1}}.
+  \end{equation}
+\end{obs}
+
+\subsection{Zeros de multiplicidade par}\index{zeros de!multiplicidade par}
+
+Sejam $f$ uma função suave e $x^*$ um zero de multiplicidade par de $f$. Observamos que o método da bisseção não é diretamente aplicável para aproximar $x^*$. Isto ocorre, pois, neste caso, $x^*$ será um ponto de mínimo ou de máximo local de $f$, não havendo pontos $a$ e $b$ próximos de $x^*$ tal que $f(a)\cdot f(b) < 0$.
+
+Agora, sendo $x^*$ é um zero de multiplicidade $2m$ de $f$, temos que ela admite a seguinte decomposição
+\begin{equation}
+  f(x) = (x-x^*)^{2m}g(x),
+\end{equation}
+onde $g$ é uma função suave e $g(x^*)\neq 0$. Daí, a derivada de $f$
+\begin{equation}
+  f'(x) = 2m(x-x^*)^{2m-1}g(x) + (x-x^*)^{2m}g'(x),
+\end{equation}
+tem $x^*$ como um zero de multiplicidade $2m-1$ (ímpar) e, desta forma, podemos aplicar o método da bisseção em $f'$ para aproximar $x^*$.
+
+\begin{ex}\label{ex:bis_multpar}
+  A função
+\begin{equation}
+  f(x) = \sen^2\left(x+\frac{\pi}{4}\right) - x^3 + \frac{\pi}{4}x^2 + \frac{5\pi^2}{16}x + \frac{3\pi^3}{64}.
+\end{equation}
+tem $x=-\pi/4\approx -0,7854$ como um zero de multiplicidade par (veja Figura \ref{fig:bis_intro}). Para aplicarmos o método da bisseção para aproximarmos este zero, primeiramente, derivamos $f$
+\begin{equation}
+  f'(x) = 2\sin(x+\pi/4)\cos(x+\pi/4) - 3x^2 + \frac{\pi}{2}x + \frac{5\pi^2}{16}.
+\end{equation}
+O esboço do gráfico de $f'$ (Figura \ref{fig:bis_multpar}) mostra que $f'(-1)\cdot f'(0) < 0$ sendo que no intervalo $(-1, 0)$ $f'$ tem um zero de multiplicidade ímpar. Então, aplicando o método da bisseção a $f'$ no intervalo inicial $(a^{(1)}, b^{(1)}) = (-1, ~0)$, obtemos os resultados apresentados na Tabela~\ref{tab:bis_multpar}. Nesta tabela são apresentados as iteradas até a convergência da solução com precisão de $10^{-3}$.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./cap_eq1d/dados/ex_bis_multpar/fig_bis_multpar}
+  \caption{Esboço do gráfico da $f$ e de sua derivada $f'$ dada no Exemplo \ref{ex:bis_multpar}.}
+  \label{fig:bis_multpar}
+\end{figure}
+
+\begin{table}[h!]
+  \centering
+  \caption{Resultados referentes ao Exemplo~\ref{ex:bis_exec}.}
+  \begin{tabular}{r|rr|r|c}
+    k & $a^{(k)}$ & $b^{(k)}$ & $x^{(k)}$ & $f'(a^{(k)})\cdot f'(x^{(k)})$\\\hline
+    1 & $-1,0000\E+0$ & $0,0000\E+0$ & $-5,0000\E-1$ & -1 \\
+    2 & $-1,0000\E+0$ & $-5,0000\E-1$ & $-7,5000\E-1$ & -1 \\
+    3 & $-1,0000\E+0$ & $-7,5000\E-1$ & $-8,7500\E-1$ & 1 \\
+    4 & $-8,7500\E-1$ & $-7,5000\E-1$ & $-8,1250\E-1$ &  1 \\
+    5 & $-8,1250\E-1$ & $-7,5000\E-1$ & $-7,8125\E-1$ & -1 \\
+    6 & $-8,1250\E-1$ & $-7,8125\E-1$ & $-7,9688\E-1$ & 1 \\
+    7 & $-7,9688\E-1$ & $-7,8125\E-1$ & $-7,8906\E-1$ & 1 \\
+    8 & $-7,8906\E-1$ & $-7,8125\E-1$ & $-7,8516\E-1$ & -1 \\
+    9 & $-7,8906\E-1$ & $-7,8516\E-1$ & $-7,8711\E-1$ & 1 \\
+    10 & $-7,8711\E-1$ & $-7,8516\E-1$ & $-7,8613\E-1$ & 1 \\\hline
+  \end{tabular}
+  \label{tab:bis_multpar}
+\end{table}
+
+\ifisoctave
+A tabela \ref{tab:bis_multpar} pode ser obtida no \verb+GNU Octave+ com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/ex_bis_multpar/ex_bis_multpar.m}{código}:
+\verbatiminput{./cap_eq1d/dados/ex_bis_multpar/ex_bis_multpar.m}
+\fi
+\end{ex}
+
+\subsection*{Exercícios}
+
+\begin{exer}\label{exer:bis_1}
+  Use o método da bisseção para aproximar um zero de $f(x)=x^3\sen(x)-\cos(x)$, aplicando como intervalo inicial $(a^{(1)}, b^{(1)}) = (0,5, ~1)$ e aproximação inicial $x^{(1)}=(a^{(1)}+b^{(1)})/2$. Faça, então, $6$ iterações de forma a obter a aproximação $x^{(7)}$ e forneça-a com $7$ dígitos significativos por arredondamento.
+\end{exer}
+\begin{resp}
+    \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/exer_bis_1/exer_bis_1.m}{Código.} 
+  \fi
+  $9,179688\times 10^{-1}$
+\end{resp}
+
+\begin{exer}\label{exer:bis_est_trunc}
+  Considere que o método da bisseção para aproximar um zero de $f(x)=x^3\sen(x)-\cos(x)$, aplicando como intervalo inicial $(a^{(1)}, b^{(1)}) = (0,5, ~1)$ e aproximação inicial $x^{(1)}=(a^{(1)}+b^{(1)})/2$. Use a estimativa de convergência \eqref{eq:bis_est_trunc}
+  \begin{equation}
+    \left|x^{(k)} - x^{*}\right| \leq \frac{b^{(1)}-a^{(1)}}{2^k},
+  \end{equation}
+para estimar o número mínimo de iterações $k_{conv}$ necessárias para se obter a solução com exatidão de $10^{-4}$. Então, compute $x^{(k_{conv})}$ e forneça-o com $6$ dígitos significativos por arredondamento.
+\end{exer}
+\begin{resp}
+    \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/exer_bis_este_trunc/exer_bis_est_trunc.m}{Código.} 
+  \fi
+  $9,15833\E-1$
+\end{resp}
+
+\begin{exer}\label{exer:bis_multpar}
+  Use o método da bisseção para encontrar uma aproximação com precisão de $10^{-4}$ do zero de
+  \begin{equation}
+    f(x) = (-x^2+1,154x-0,332929)\cos(x) + x^2 - 1,154x + 0,332929
+  \end{equation}
+no intervalo $(0,55, ~0,65)$. Forneça a aproximação computada com $7$ dígitos significativos por arredondamento.
+\end{exer}
+\begin{resp}
+    \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/exer_bis_multpar/exer_bis_multpar.m}{Código.} 
+  \fi
+  $5,770508\times 10^{-1}$
+\end{resp}
+
+\section{Método da falsa posição}\label{cap_eq1d_sec_falsapos}\index{método da!falsa posição}
+
+O método da falsa posição é uma variação do método da bisseção. Dada uma função $f$ contínua, escolhemos um intervalo inicial $(a, b)$ tal que $f(a)\cdot f(b) < 0$ (i.e. $f$ tem sinais trocados nos pontos $a$ e $b$). Então, uma aproximação para o zero de $f$ neste intervalo é computada como o ponto de interseção da reta secante a $f$ pelos pontos $(a, f(a))$ e $(b, f(b))$, i.e.
+\begin{equation}
+  x = a - \frac{b-a}{f(b)-f(a)}f(a).
+\end{equation}
+Veja a Figura \ref{fig:falsapos}.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.7\textwidth]{./cap_eq1d/dados/fig_falsapos/fig_falsapos}
+  \caption{Ilustração do método da falsa posição (veja no \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/fig_falsapos/fig_falsapos.ggb}{Geogebra}).}
+  \label{fig:falsapos}
+\end{figure}
+
+Mais explicitamente, o método da falsa posição consiste no seguinte procedimento iterativo:
+\begin{enumerate}
+\item Determinar um intervalo $(a^{(1)}, b^{(1)})$ tal que $f(a^{(1)})\cdot f(b^{(1)}) < 0$.
+\item Para $k = 1, 2, 3, \cdots, N$:
+  \begin{enumerate}[2.1]
+  \item $\displaystyle x^{(k)} = a^{(k)} - \frac{b^{(k)}-a^{(k)}}{f(b^{(k)})-f(a^{(k)})}f(a^{(k)})$
+  \item Verificar critério de parada.
+  \item Se $f(a^{(k)})\cdot f(x^{(k)}) < 0$, então $a^{(k+1)}=a^{(k)}$ e $b^{(k+1)}=x^{(k)}$.
+  \item Se $f(x^{(k)})\cdot f(b^{(k)}) > 0$, então $a^{(k+1)}=x^{(k)}$ e $b^{(k+1)}=b^{(k)}$.
+  \end{enumerate}
+\end{enumerate}
+
+\begin{ex}\label{ex:falsapos_exec}
+  Consideremos o problema de aproximar o zero de
+\begin{equation}
+  f(x) = \sen^2\left(x+\frac{\pi}{4}\right) - x^3 + \frac{\pi}{4}x^2 + \frac{5\pi^2}{16}x + \frac{3\pi^3}{64}.
+\end{equation}
+no intervalo $(0, 3)$. A Tabela \ref{tab:falsapos_exec} mostra os resultados obtidos da aplicação do método da falsa posição com intervalo inicial $(a^{(1)}, b^{(1)}) = (2, 3)$. Aqui, o método foi iterado até a convergência com cinco dígitos significativos.
+
+\begin{table}[h!]
+  \centering
+  \caption{Resultados referentes ao Exemplo~\ref{ex:falsapos_exec}.}
+  \begin{tabular}{r|rr|r|c}
+    k & $a^{(k)}$ & $b^{(k)}$ & $x^{(k)}$ & $f'(a^{(k)})\cdot f'(x^{(k)})$\\\hline
+    1 & $2,0000$ & $3,0000$ & $2,2455$ & 1 \\
+    2 & $2,2455$ & $3,0000$ & $2,3240$ &  1 \\
+    3 & $2,3240$ & $3,0000$ & $2,3470$ & 1 \\
+    4 & $2,3470$ & $3,0000$ & $2,3536$ & 1 \\
+    5 & $2,3536$ & $3,0000$ & $2,3555$ & 1 \\
+    6 & $2,3555$ & $3,0000$ & $2,3560$ & 1 \\
+    7 & $2,3560$ & $3,0000$ & $2,3561$ &  1 \\
+    8 & $2,3561$ & $3,0000$ & $2,3562$ & 1 \\
+    9 & $2,3562$ & $3,0000$ & $2,3562$ & 1 \\
+    10 & $2,3562$ & $3,0000$ & $2,3562$ & 1 \\\hline
+  \end{tabular}
+  \label{tab:falsapos_exec}
+\end{table}
+
+\ifisoctave
+A tabela \ref{tab:falsapos_exec} pode ser obtida no \verb+GNU Octave+ com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/ex_falsapos_exec/ex_falsapos_exec.m}{código}:
+\verbatiminput{./cap_eq1d/dados/ex_falsapos_exec/ex_falsapos_exec.m}
+\fi
+\end{ex}
+
+\subsection*{Exercícios}
+
+\begin{exer}\label{exer:falsapos_1}
+  Use o método da falsa posição para aproximar um zero de $f(x)=x^3\sen(x)-\cos(x)$, aplicando como intervalo inicial $(a^{(1)}, b^{(1)}) = (0,5, ~1)$ e aproximação inicial
+  \begin{equation}
+    x^{(1)} = a^{(1)} - \frac{b^{(1)}-a^{(1)}}{f(b^{(1)})-f(a^{(1)})}f(a^{(1)}).
+  \end{equation}
+Faça, então, $4$ iterações deste método de forma a obter a aproximação $x^{(5)}$ e forneça-a com $7$ dígitos significativos por arredondamento.
+\end{exer}
+\begin{resp}
+    \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/exer_falsapos_1/exer_falsapos_1.m}{Código.} 
+  \fi
+  $9,158079\times 10^{-1}$
+\end{resp}
+
+\begin{exer}\label{exer:falsapos_multpar}
+  Use o método da bisseção para encontrar uma aproximação com precisão de $10^{-4}$ do zero de
+  \begin{equation}
+    f(x) = (-x^2+1,154x-0,332929)\cos(x) + x^2 - 1,154x + 0,332929
+  \end{equation}
+no intervalo $(0,55, ~0,65)$. Forneça a aproximação computada com $7$ dígitos significativos por arredondamento.
+\end{exer}
+\begin{resp}
+    \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/exer_falsapos_multpar/exer_falsapos_multpar.m}{Código.} 
+  \fi
+  $5,76984\times 10^{-1}$
+\end{resp}
+
+\section{Iteração de ponto fixo}\label{cap_eq1d_pfixo}\index{iteração de!ponto fixo}
+
+O ponto fixo de uma função dada $g$ é o ponto $x$ tal que
+\begin{equation}
+  g(x) = x.
+\end{equation}
+Geometricamente, pontos fixos são interseções do gráfico da $g$ com a reta $y=x$, veja a Figura \ref{fig:pfixo}.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./cap_eq1d/dados/fig_pfixo/fig_pfixo}
+  \caption{Exemplos de pontos fixos (veja no \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/fig_pfixo/fig_pfixo.ggb}{Geogebra}).}
+  \label{fig:pfixo}
+\end{figure}
+
+Observamos que toda equação de uma incógnita pode ser reescrita de forma equivalente como um problema de ponto fixo.
+
+\begin{ex}\label{ex:pfixo_intro}
+  Consideremos o problema de resolver
+  \begin{equation}
+    \sen^2\left(x+\frac{\pi}{4}\right) = x^3 - \frac{\pi}{4}x^2 - \frac{5\pi^2}{16}x - \frac{3\pi^3}{64}.
+  \end{equation}
+Podemos reescrevê-la como o problema de se obter os zeros da seguinte função
+\begin{equation}
+  f(x) = \sen^2\left(x+\frac{\pi}{4}\right) - x^3 + \frac{\pi}{4}x^2 + \frac{5\pi^2}{16}x + \frac{3\pi^3}{64}.
+\end{equation}
+Por sua vez, este problema é equivalente aos seguintes problemas de ponto fixo (entre outros):
+\begin{align}
+  &a)~g_1(x) = \frac{16}{5\pi^2}\left[-\sen^2\left(x+\frac{\pi}{4}\right) + x^3 - \frac{\pi}{4}x^2 - \frac{3\pi^3}{64}\right] = x.\\
+  &b)~g_2(x) = \sqrt[3]{\sen^2\left(x+\frac{\pi}{4}\right) + \frac{\pi}{4}x^2 + \frac{5\pi^2}{16}x + \frac{3\pi^3}{64}}
+\end{align}
+Na Figura \ref{fig:pfixo_intro} podemos observar que os zeros da $f$ (a saber, $x_1=3\pi/4\approx 2,3562$ e $x_2=x_3=-\pi/4\approx -0,78540$) coincidem com os pontos fixos das funções $g_1$ e $g_2$.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./cap_eq1d/dados/ex_pfixo_intro/fig_pfixo_intro}
+  \caption{Esboço da função $f$ do Exemplo~\ref{ex:pfixo_intro}.}
+  \label{fig:pfixo_intro}
+\end{figure}
+\end{ex}
+
+Em muitos casos, é possível obter aproximações de um ponto fixo de uma dada função $g$ pela chamada \emph{iteração de ponto fixo}:
+\begin{align}
+  x^{(1)} &= \text{aprox. inicial}\\
+  x^{(k+1)} &= g(x^{(k)}),\quad k=1, 2, 3, \ldots
+\end{align}
+
+\begin{ex}\label{ex:pfixo_testes}
+  Observemos que para a função $g_1$ dada no Exemplo \ref{ex:pfixo_intro}, temos as seguintes iterações:
+  \begin{align}
+    x^{(1)} &= -0,70000,\\
+    x^{(2)} &= -0,70959,\\
+    x^{(3)} &= -0,71716,\\
+    &\vdots \\
+    x^{(100)} &= -0,77862,\\
+    &\vdots \\
+    x^{(1000)} &= -0,78466,\\    
+    &\vdots \\
+    x^{(20000)} &= -0,78536.
+  \end{align}
+Ou seja, neste caso as iterações de ponto fixo convergem (lentamente) para o ponto fixo $x=-\pi/4\approx -0,78540$.
+\ifisoctave
+Veja o \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/ex_pfixo_testes/ex_g1_t1.m}{código} no \verb+GNU Octave+.
+\fi
+
+Agora, se usarmos a iteração de ponto fixo com esta mesma função para aproximar o ponto fixo $x=3\pi/4\approx 2,3562$, obtemos
+  \begin{align}
+    x^{(1)} &= 2,50000,\\
+    x^{(2)} &= 2,9966,\\
+    x^{(3)} &= 5,8509,\\
+    &\vdots \\
+    x^{(8)} &= 4,8921e\times 10^{121}.
+  \end{align}
+Donde observamos que as iterações divergem rapidamente.
+
+Entretanto, se usarmos a iteração de ponto fixo com a função $f_2$ dada no Exemplo \ref{ex:pfixo_intro}, obtemos
+  \begin{align}
+    x^{(1)} &= 2,50000,\\
+    x^{(2)} &= 2,4155,\\
+    x^{(3)} &= 2,3805,\\
+    &\vdots \\
+    x^{(10)} &= 2,3562.
+  \end{align}
+A qual, portanto, converge para o ponto fixo esperado.
+\end{ex}
+
+Este último exemplo (Exemplo \ref{ex:pfixo_testes}) mostra que a iteração do ponto fixo nem sempre é convergente. Antes de vermos condições suficientes para a convergência, vejamos sua interpretação geométrica.
+
+\subsection{Interpretação geométrica}
+
+A Figura \ref{fig:pfixo_interp} apresenta o caso de uma iteração de ponto fixo convergente. As iterações iniciam-se no ponto $x^{(1)}$ e seguem para $x^{(2)} = g(x^{(1)})$ e $x^{(3)} = g(x^{(2)})$.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./cap_eq1d/dados/fig_pfixo_interp/fig_pfixo_interp}
+  \caption{Interpretação geométrica da iteração de ponto fixo.}
+  \label{fig:pfixo_interp}
+\end{figure}
+
+\subsection{Análise de convergência}
+
+O seguinte teorema nos fornece condições suficientes para a convergência das iterações de ponto fixo.
+
+\begin{teo}(\normalfont{Teorema do ponto fixo})\label{teo:pfixo}
+  Seja uma dada função $g$ continuamente diferenciável satisfazendo
+  \begin{enumerate}[a)]
+  \item $g([a, b]) \subset [a, b]$,
+  \item $|g'(x)|<K<1$ para todo $x\in [a, b]$.
+  \end{enumerate}
+Então, $g$ tem um único ponto fixo $x^*\in [a, b]$ e as iterações $x^{(k+1)}=x^{(k)}$, $k=1, 2, 3, \ldots$, convergem para $x^*$, para qualquer escolha de $x^{(1)}\in [a, b]$.
+\end{teo}
+\begin{dem}
+  Da hipótese b), temos que $g$ é uma contração com
+  \begin{equation}
+    |g(x) - g(y)| < K\cdot |x - y|,~\forall x,y\in [a, b].
+  \end{equation}
+Com isso, da hipótese a) e tomando $x^{(1)}\in [a, b]$, temos
+\begin{align}
+  |x^{(k+1)} - x^{(k)}| &= |g(x^{(k)}) - g(x^{(k-1)})|\\
+  &\leq K |x^{(k)} - x^{(k-1)}|\\
+  &\vdots \\
+  &\leq K^{k-1}|x^{(2)}-x^{(1)}|,
+\end{align}
+para todo $k=2, 3, \ldots$. Como $K<1$, temos $|x^{(k+1)}-x^{(k)}|\to 0$ quando $k\to\infty$ e, portanto, $x^{(k)}$ converge para algum $x^*\in [a, b]$.
+
+De fato, $x^*$ é ponto fixo de $g$, pois da continuidade da $g$, temos
+\begin{equation}
+  x^* = \lim_{k\to\infty} x^{(k+1)} = \lim_{k\to\infty} g(x^{(k)}) = g(x^*).
+\end{equation}
+
+Por fim, $x^*$ é único, pois assumindo a existência de outro ponto fixo $x^{**}\neq x^*$ teríamos
+\begin{equation}
+  |x^* - x^{**}| = |g(x^*) - g(x^{**})| < K|x^* - x^{**}|.
+\end{equation}
+\end{dem}
+
+Agora, dado um problema de encontrar um zero de uma dada função $f$, i.e. $f(x)=0$, podemos construir uma função $g$ para a iteração de ponto fixo associada da seguinte forma:
+\begin{align}
+  f(x) = 0 &\Leftrightarrow \underbrace{x - \alpha f(x)}_{g(x)} = x,
+\end{align}
+com $\alpha\in\mathbb{R}$ escolhido de forma a satisfazer as hipóteses do teorema do ponto fixo (Teorema \ref{teo:pfixo}).
+
+\begin{ex}\label{ex:pfixo_exec}
+  Retornamos ao problema de encontrar o zero da função
+  \begin{equation}
+    f(x) = \sen^2\left(x+\frac{\pi}{4}\right) - x^3 + \frac{\pi}{4}x^2 + \frac{5\pi^2}{16}x + \frac{3\pi^3}{64}.
+  \end{equation}
+  no intervalo $[2,3]$. Para construir uma função $g$ para a iteração de ponto fixo neste intervalo, podemos tomar
+  \begin{equation}
+    g(x) = x - \alpha f(x),
+  \end{equation}
+com $\alpha = -0,1$. A Figura \ref{fig:ex_pfixo_exec} mostra esboços dos gráficos de $g$ e $|g'|$ no intervalos $[2, 3]$ e podemos observar que esta escolha de $\alpha$ faz com que a $g$ satisfaça o teorema do ponto fixo.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./cap_eq1d/dados/ex_pfixo_exec/fig_ex_pfixo_exec}
+  \caption{Esboço dos gráficos de $g$ e $|g'|$ discutidas no Exemplo \ref{ex:pfixo_exec}.}
+  \label{fig:ex_pfixo_exec}
+\end{figure}
+
+Então, fazendo as iterações de ponto fixo com aproximação inicial $x^{(1)}=2,6$, obtemos os resultados apresentados na Tabela \ref{tab:ex_pfixo_exec}.
+
+\begin{table}[h!]
+  \centering
+  \caption{Resultados referentes ao Exemplo \ref{ex:pfixo_exec}.}
+  \label{tab:ex_pfixo_exec}
+  \begin{tabular}{r|cc}
+    $k$ & $x^{(k)}$ & $|x^{(k)}-x^{(k-1)}|$ \\\hline
+    1 & $2,6000$ & -x-\\
+    2 & $2,3264$ & $2,7\E-1$ \\
+    3 & $2,3553$ & $2,9\E-2$ \\
+    4 & $2,3562$ & $8,4\E-4$ \\
+    5 & $2,3562$ & $1,1\E-5$ \\\hline
+  \end{tabular}
+\end{table}
+
+\ifisoctave
+Os resultados apresentados na Tabela \ref{tab:ex_pfixo_exec} podem ser computados no \verb+GNU Octave+ com o seguinte código:
+\verbatiminput{./cap_eq1d/dados/ex_pfixo_exec/ex_pfixo_exec.m}
+\fi
+\end{ex}
+
+\begin{obs}(\normalfont{Taxa de convergência})
+  A iteração de ponto fixo tem taxa de convergência linear
+  \begin{equation}
+    |x^{(k+1)} - x^{(k)}| < K|x^{(k)} - x^{(k-1)}|^{\pmb{1}},
+  \end{equation}
+onde $K > 0$ é a constante dada na hipótese $b)$ do teorema do ponto fixo (Teorema \ref{teo:pfixo}). Além disso, isso mostra que quanto menor o valor da constante $K$, mais rápida será a convergência das iterações de ponto fixo.
+\end{obs}
+
+\subsection*{Exercícios}
+
+\begin{exer}\label{exer:pfixo_1}
+  Considere o problema de computar uma aproximação do zero de $f(x)=x-\cos(x)$. Resolva-o aplicando a iteração de ponto fixo para a função auxiliar
+  \begin{equation}
+    g(x) = x - \alpha f(x),
+  \end{equation}
+restrita ao intervalo $[a, b] = [0.5, 1]$ com aproximação inicial $x^{(1)}=(a+b)/2$. Escolha o melhor valor de $\alpha$ entre os seguintes:
+\begin{enumerate}
+\item $\alpha = 1$
+\item $\alpha = 0,5$
+\item $\alpha = -0,5$
+\item $\alpha = 0,6$
+\end{enumerate}
+Então, compute uma aproximação do zero de $f$ com $5$ dígitos significativos de precisão.
+\end{exer}
+\begin{resp}
+  \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/exer_pfixo_1/exer_pfixo_1.m}{Código.} 
+  \fi
+  $\alpha=0,6$; $7,3909\times 10^{-1}$
+\end{resp}
+
+\section{Método de Steffensen}\label{cap_eq1d_sec_Steffensen}\index{método de!Steffensen}
+
+O método de Steffensen\footnote{Johan Frederik Steffensen, matemático e estatístico dinamarquês, 1873 - 1961. Fonte: \href{https://en.wikipedia.org/wiki/Johan_Frederik_Steffensen}{Wikipedia}.} é uma aplicação do método de aceleração de convergência $\Delta^2$ de Aitken\footnote{Alexander Aitken, matemático neozelandês, 1895 - 1967. Fonte: \href{https://en.wikipedia.org/wiki/Alexander_Aitken}{Wikipedia}.} à iteração de ponto fixo.
+
+\subsection{Acelerador $\Delta^2$ de Aitken}
+
+Seja dada uma sequência $(x^{(k)})_{k=1}^\infty$ monotonicamente convergente para $x^*$. Assumamos que $k$ seja suficientemente grande tal que
+\begin{equation}
+  \frac{x^{(k+1)}-x^*}{x^{(k)}-x^*} \approx \frac{x^{(k+2)}-x^*}{x^{(k+1)}-x^*}.
+\end{equation}
+Então, isolando $x^*$ obtemos
+\begin{equation}
+  x^* \approx \frac{x^{(k)}x^{(k+2)}-(x^{(k+1)})^2}{x^{(k)}-2x^{(k+1)}+x^{(k+2)}}.
+\end{equation}
+Ainda, somando e subtraindo $(x^{(k)})^2$ e $2x^{(k)}x^{(k+1)}$ no numerador acima e rearranjando os termos, obtemos
+\begin{equation}
+  x^* \approx x^{(k)} - \frac{(x^{(k+1)}-x^{(k)})^2}{x^{(k+2)}-2x^{(k+1)}+x^{(k)}}.
+\end{equation}
+
+O observado acima, nos motiva a introduzir o acelerador $\Delta^2$ de Aitken
+\begin{equation}
+  \Delta^2\{x^{(k)},x^{(k+1)},x^{(k+2)}\} := x^{(k)} - \frac{(x^{(k+1)}-x^{(k)})^2}{x^{(k+2)}-2x^{(k+1)}+x^{(k)}}.
+\end{equation}
+
+
+\begin{ex}\label{ex:Aitken}
+  Consideremos o problema de encontrar o zero da função
+  \begin{equation}
+    f(x) = \sen^2\left(x+\frac{\pi}{4}\right) - x^3 + \frac{\pi}{4}x^2 + \frac{5\pi^2}{16}x + \frac{3\pi^3}{64}.
+  \end{equation}
+  no intervalo $[2,3]$. Para tanto, podemos aplicar a iteração de ponto fixo dada por
+  \begin{equation}
+    x^{(k+1)} = g(x^{(k)}) := x^{(k)} - \alpha f(x^{(k)}),\quad k=1,2,\ldots,
+  \end{equation}
+com $\alpha=-0,05$ e $x^{(1)}=2,6$. Na Tabela \ref{tab:ex_Aitken} temos os valores das iteradas $x^{(k)}$ e das correções $\Delta^2 = \Delta^2\{x^{(k)},x^{(k+1)},x^{(k+2)}\}$ de Aitken. Neste caso, a aceleração de convergência é notável.
+
+\begin{table}[h!]
+  \centering
+  \caption{Resultados referentes ao Exemplo \ref{ex:Aitken}.}
+  \label{tab:ex_Aitken}
+  \begin{tabular}{r|cc}
+    $k$ & $x^{(k)}$ & $\Delta^2$ \\\hline
+    1 & $2,6000$ & -x- \\
+    2 & $2,4632$ & -x- \\
+    3 & $2,4073$ & $2,3687$ \\
+    4 & $2,3814$ & $2,3590$ \\
+    5 & $2,3688$ & $2,3569$ \\
+    6 & $2,3625$ & $2,3564$ \\
+    7 & $2,3594$ & $2,3562$ \\
+    8 & $2,3578$ & $2,3562$ \\\hline
+  \end{tabular}
+\end{table}
+
+\ifisoctave
+Os resultados apresentados na Tabela \ref{tab:ex_Aitken} podem ser computados no \verb+GNU Octave+ com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/ex_Aitken/ex_Aitken.m}{código}:
+\verbatiminput{./cap_eq1d/dados/ex_Aitken/ex_Aitken.m}
+\fi
+\end{ex}
+
+\subsection{Algoritmo de Steffensen}
+
+O método de Steffensen consiste em aplicar o acelerador $\Delta^2$ de Aitken à iteração de ponto fixo. Mais especificamente, sejam uma aproximação inicial $x^{(1)}$ e uma iteração de ponto fixo
+\begin{equation}
+  x^{(k+1)} = g(x^{(k)}),\quad k=1,2,\ldots.
+\end{equation}
+O algoritmo de Steffensen pode ser descrito como segue:
+\begin{enumerate}
+\item Fazemos $x = x^{(1)}$.
+\item Para $k=1,2,3,\dotsc, N-1$:
+  \begin{enumerate}
+  \item Computamos $x_1 = g(x^{(k)})$.
+  \item Computamos $x_2 = g(x_1)$.
+  \item Computamos $x^{(k+1)} = \Delta^2\{x^{(k)},x_1,x_2\}$
+  \item Verificamos o critério de parada.
+  \end{enumerate}
+\end{enumerate}
+
+
+\begin{ex}\label{ex:Steffensen_exec}
+  Retornemos ao exemplo anterior (Exemplo \ref{ex:Aitken}. Na Tabela \ref{tab:ex_Steffensen_exec} temos os valores das iteradas de Steffensen $x^{(k)}$ e do indicador de convergência $|x^{(k)}-x^{(k-1)}|$. Observe que os resultados são compatíveis com aqueles obtidos no último exemplo.
+
+\begin{table}[h!]
+  \centering
+  \caption{Resultados referentes ao Exemplo \ref{ex:Steffensen_exec}.}
+  \label{tab:ex_Steffensen_exec}
+  \begin{tabular}{r|cc}
+    $k$ & $x^{(k)}$ & $|x^{(k)}-x^{(k-1)}|$ \\\hline
+    1 & $2,6000$ & -x- \\
+    2 & $2,3687$ & $2,3\E-1$ \\
+    3 & $2.3562$ & $1,2\E-2$ \\
+    4 & $2,3562$ & $4,2\E-5$ \\\hline
+  \end{tabular}
+\end{table}
+
+\ifisoctave
+Os resultados apresentados na Tabela \ref{tab:ex_Steffensen_exec} podem ser computados no \verb+GNU Octave+ com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/ex_Steffensen_exec/ex_Steffensen_exec.m}{código}:
+\verbatiminput{./cap_eq1d/dados/ex_Steffensen_exec/ex_Steffensen_exec.m}
+\fi
+\end{ex}
+
+\subsection*{Exercícios}
+
+\begin{exer}\label{exer:Steffensen_1}
+  Use o método de Steffensen para obter uma aproximação do zero de $f(x)=x^3\sen(x)-\cos(x)$ no intervalo $[0,5, 1]$ com precisão de $10^{-6}$.
+\end{exer}
+\begin{resp}
+    \ifisoctave 
+    \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/exer_Steffensen_1/exer_Steffensen_1.m}{Código.} 
+    \fi
+    $9,15811\times 10^{-1}$
+\end{resp}
+
+\section{Método de Newton}\label{cap_mef1d_sec_newton}\index{método de!Newton}
+
+Seja $x^*$ um zero de uma dada função $f$, i.e. $f(x^*)=0$. Usando de expansão em polinômio de Taylor da $f$ em um dado ponto $\tilde{x}$, temos
+\begin{equation}
+  f(x^*) = f(\tilde{x}) + f'(\tilde{x})(x^*-\tilde{x}) + O((x^*-\tilde{x})^2).
+\end{equation}
+Como $f(x^*)=0$, temos
+\begin{equation}
+  x^* + O((x^*-\tilde{x})^2) = \tilde{x} - \frac{f(\tilde{x})}{f'(\tilde{x})}.
+\end{equation}
+Esta última expressão nos indica que dada uma aproximação $\tilde{x}$ do zero de $f$ a expressão
+\begin{equation}
+  \tilde{x} - \frac{f(\tilde{x})}{f'(\tilde{x})},
+\end{equation}
+aproxima $x^*$ com um erro da ordem de $(x^*-\tilde{x})^2$.
+
+Estes observações nos levam a \emph{iteração de Newton}\footnote{Sir Isaac Newton, matemático e físico inglês, 1642 - 1726/27. Fonte: \href{https://en.wikipedia.org/wiki/Isaac_Newton}{Wikipedia}.}\index{iteração de!Newton}
+\begin{align}
+  x^{(1)} &= \text{aprox. inicial},\\
+  x^{(k+1)} &= x^{(k)} - \frac{f(x^{(k)})}{f'(x^{(k)})},\label{eq:Newton_iteracao}
+\end{align}
+com $k=1, 2, \ldots$.
+
+\begin{ex}\label{ex:Newton_exec}
+  Retornamos ao problema de encontrar o zero da função
+  \begin{equation}
+    f(x) = \sen^2\left(x+\frac{\pi}{4}\right) - x^3 + \frac{\pi}{4}x^2 + \frac{5\pi^2}{16}x + \frac{3\pi^3}{64}.
+  \end{equation}
+  no intervalo $[2,3]$. Então, fazendo as iterações de Newton com aproximação inicial $x^{(1)}=2,6$, obtemos os resultados apresentados na Tabela \ref{tab:ex_Newton_exec}.
+
+\begin{table}[h!]
+  \centering
+  \caption{Resultados referentes ao Exemplo \ref{ex:Newton_exec}.}
+  \label{tab:ex_Newton_exec}
+  \begin{tabular}{r|cc}
+    $k$ & $x^{(k)}$ & $|x^{(k)}-x^{(k-1)}|$ \\\hline
+    1 & $2,6000$ & -x-\\
+    2 & $2,3836$ & $2,2\E-1$ \\
+    3 & $2,3566$ & $2,7\E-2$ \\
+    4 & $2,3562$ & $3,9\E-4$ \\
+    5 & $2,3562$ & $8,3\E-8$ \\\hline
+  \end{tabular}
+\end{table}
+
+\ifisoctave
+Os resultados apresentados na Tabela \ref{tab:ex_Newton_exec} podem ser computados no \verb+GNU Octave+ com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/ex_Newton_exec/ex_Newton_exec.m}{código}:
+\verbatiminput{./cap_eq1d/dados/ex_Newton_exec/ex_Newton_exec.m}
+\fi
+\end{ex}
+
+\begin{obs}
+  O método de Newton é uma iteração de ponto fixo ótima. Do Teorema do ponto fixo (Teorema \ref{teo:pfixo}), uma iteração de ponto fixo
+  \begin{equation}\label{eq:Newton_pfixo}
+    x^{k+1} = g(x^{(k)}) := x^{(k)} -\alpha f(x)
+  \end{equation}
+tem taxa de convergência\footnote{Supondo as demais hipóteses do Teorema \ref{teo:pfixo}.}
+\begin{equation}
+  |x^{(k+1)}-x^{(k)}| \leq K |x^{(k)}-x^{(k-1)}|,
+\end{equation}
+com $K$ tal que $|g'(x)|=|1 - \alpha f'(x)|<K<1$. Isto nos indica que a melhor escolha para $\alpha$ é
+\begin{equation}
+  \alpha = \frac{1}{f'(x)},
+\end{equation}
+de forma que \eqref{eq:Newton_pfixo} coincide com a iteração de \eqref{eq:Newton_iteracao}.
+\end{obs}
+
+
+\subsection{Interpretação geométrica}
+
+Dada uma aproximação $x^{(k)}$ de um zero de uma dada função $f$, a iteração de Newton fornece uma nova aproximação $x^{(k+1)}$ com
+\begin{equation}
+  x^{(k+1)} = x^{(k)} - \frac{f(x^{(k)})}{f'(x^{(k)})}.
+\end{equation}
+Subtraindo $x^{(k+1)}$ e multiplicando por $-f'(x^{(k)})$, obtemos
+\begin{equation}\label{eq:Newton_geointerp}
+  0 = f'(x^{(k)})(x^{(k+1)}-x^{(k)}) + f(x^{(k)}),
+\end{equation}
+Observemos que o lado direito desta última equação corresponde a expressão da reta tangente ao gráfico de $f$ pelo ponto $(x^{(k)}, f(x^{(k)}))$, avaliada em $x^{(k+1)}$. Mais precisamente, a equação desta reta tangente é
+\begin{equation}
+  y = f'(x^{(k)})(x-x^{(k)}) + f(x^{(k)})
+\end{equation}
+e a equação \eqref{eq:Newton_geointerp} nos informa que em $x=x^{(k+1)}$ a reta tangente cruza o eixo $x$.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./cap_eq1d/dados/fig_Newton_geointerp/fig_Newton_geointerp}
+  \caption{Interpretação geométrica das iterações de Newton. Veja no \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/fig_Newton_geointerp/fig_Newton_geointerp.ggb}{Geogebra}.}
+  \label{fig:Newton_geointerp}
+\end{figure}
+
+
+Destas observações, concluímos que a iterada $x^{(k+1)}$ do método de Newton corresponde ao ponto de interseção da reta tangente ao gráfico da $f$ pelo ponto $(x^{k}, f(x^{k}))$. Veja a Figura \ref{fig:Newton_geointerp}.
+
+\begin{ex}\label{ex:Newton_init}
+  Consideremos que o método de Newton seja usado para aproximarmos o zero de
+  \begin{equation}
+    f(x) = (x-1)e^{-x^2}.
+  \end{equation}
+Observemos que esta função tem $x=1$ como seu único zero. Agora, se escolhermos $x^{(1)} = 0,5$ as iterações de Newton convergem para este zero, mas, se escolhermos $x^{(1)}=1,5$ não (veja a Tabela \ref{tab:ex_Newton_init}).
+
+\begin{table}[h!]
+  \centering
+  \caption{Resultados referentes ao Exemplo \ref{ex:Newton_init}}
+  \label{tab:ex_Newton_init}
+  \begin{tabular}{r|cc}
+    $k$ & $x^{(k)}$ & $x^{(k+1)}$ \\\hline
+    1 & $5,0000\E-1$ & $1,5000\E+0$ \\
+    2 & $8,3333\E-1$ & $2,5000\E+0$ \\
+    3 & $9,6377\E-1$ & $2,7308\E+0$ \\
+    4 & $9,9763\E-1$ & $2,9355\E+0$ \\
+    5 & $9,9999\E-1$ & $3,1223\E+0$ \\
+    6 & $1,0000\E+0$ & $3,2955\E+0$ \\
+    7 & $1,0000\E+0$ & $3,4580\E+0$ \\\hline    
+  \end{tabular}
+\end{table}
+
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./cap_eq1d/dados/ex_Newton_init/fig_ex_Newton_init}
+    \caption{Escolha da aproximação inicial para o método de Newton.}
+    \label{fig:ex_Newton_init}
+  \end{figure}
+
+Embora ambas aproximações iniciais estão a mesma distância da solução $x=1$, quando tomamos $x^{(1)}=1,5$ as iterações irão divergir, como podemos observar da interpretação geométrica dada na Figura \ref{fig:ex_Newton_init}.
+\end{ex}
+
+\subsection{Análise de convergência}
+
+Seja $x^*$ o zero de uma dada função $f$ duas vezes continuamente diferenciável com $f'(x)\neq 0$ para todo $x\in [x^*-\varepsilon_0, x^*+\varepsilon_0]$ para algum $\varepsilon_0>0$. Seja, também, $(x^{(k)})_{k=1}^\infty$ a sequência das iteradas de Newton
+\begin{equation}\label{eq:newton_iter1}
+  x^{(k+1)} = x^{(k)} - \frac{f(x^{(k)})}{f'(x^{(k)})},\quad k=1, 2, \ldots,
+\end{equation}
+com aproximação inicial $x^{(1)}\in (x^*-\varepsilon_0, x^*+\varepsilon_0)$. Então, do polinômio de Taylor de grau 1 de $f$ em torno de $x^{(1)}$, temos
+\begin{equation}
+  f(x^*) = f(x^{(1)}) + f'(x^{(1)})(x^* - x^{(1)}) + \frac{f''(\xi^{(1)})}{2!}(x^*-x^{(1)})^2,
+\end{equation}
+onde $\xi^{(1)}$ está entre $x^{(1)}$ e $\xi$. Daí, rearranjamos os termos e notamos que $f(x^*)=0$ para obtermos
+\begin{equation}
+  x^* - \left[x^{(1)} - \frac{f(x^{(1)})}{f'(x^{(1)})}\right] = \frac{f''(\xi^{(1)})}{2f'(x^{(1)})}(x^*-x^{(1)})^2.
+\end{equation}
+Então, da iteração de Newton \eqref{eq:newton_iter1}, temos
+\begin{equation}
+  x^* - x^{(2)} = \frac{f''(\xi^{(1)})}{2f'(x^{(1)})}(x^* - x^{(1)})^2
+\end{equation}
+Logo,
+\begin{equation}\label{eq:newton_taxa_1}
+  |x^* - x^{(2)}| \leq C |x^* - x^{(1)}|^2,
+\end{equation}
+com
+\begin{equation}
+  C = \sup_{x,y\in [x^*-\varepsilon, x^*+\varepsilon]} \left|\frac{f''(x)}{2f'(y)}\right|.
+\end{equation}
+Segue, então, que se $x^{(1)}\in (x^*-\varepsilon, x^* + \varepsilon)$ para algum $\varepsilon>0$ tal que
+\begin{equation}
+  C |x^* - x|^2 < 1,\quad\forall x\in (x^*-\varepsilon, x^* + \varepsilon),
+\end{equation}
+então $x^{(2)}\in (x^*-\varepsilon, x^*+\varepsilon)$.
+
+Logo, por indução matemática\footnote{Veja o exercício \ref{ex:Newton_analise_conv}.}, temos que o método de Newton tem taxa de convergência quadrática
+\begin{equation}\label{eq:Newton_taxa_quadratica}
+  |x^{(k+1)}-x^*| \leq C|x^{(k)}-x^{*}|^{\pmb{2}},
+\end{equation}
+para qualquer escolha de $x^{(1)}$ suficientemente próximo de $x^*$, i.e. $x^{(1)}\in (x^*-\varepsilon, x^*+\varepsilon)$.
+
+\begin{obs}
+  O intervalo $(x^*-\varepsilon, x^*+\varepsilon)$ é chamado de \emph{bacia de atração}\index{bacia de atração} do método de Newton.
+\end{obs}
+
+\begin{ex}\label{ex:Newton_taxa}
+  Retornamos ao problema de encontrar o zero da função
+  \begin{equation}
+    f(x) = \sen^2\left(x+\frac{\pi}{4}\right) - x^3 + \frac{\pi}{4}x^2 + \frac{5\pi^2}{16}x + \frac{3\pi^3}{64}.
+  \end{equation}
+  no intervalo $[2,3]$. Este problema foi construído de forma que $x^* = 3\pi/4$ é um zero de $f$. Então, fazendo as iterações de Newton com aproximação inicial $x^{(1)}=2,6$, obtemos os resultados apresentados na Tabela \ref{tab:ex_Newton_taxa}, os quais evidenciam a convergência quadrática das iterações computadas.
+
+\begin{table}[h!]
+  \centering
+  \caption{Resultados referentes ao Exemplo \ref{ex:Newton_taxa}.}
+  \label{tab:ex_Newton_taxa}
+  \begin{tabular}{r|cc}
+    $k$ & $x^{(k)}$ & $|x^{(k)}-x^*|$ \\\hline
+    1 & $2,6000$ & $2,4\E-01$ \\
+    2 & $2,3836$ & $2,7\E-02$ \\
+    3 & $2,3566$ & $3,9\E-04$ \\
+    4 & $2,3562$ & $8,3\E-08$ \\
+    5 & $2,3562$ & $3,6\E-15$ \\\hline
+  \end{tabular}
+\end{table}
+
+\ifisoctave
+Os resultados apresentados na Tabela \ref{tab:ex_Newton_taxa} podem ser computados no \verb+GNU Octave+ com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/ex_Newton_taxa/ex_Newton_taxa.m}{código}:
+\verbatiminput{./cap_eq1d/dados/ex_Newton_taxa/ex_Newton_taxa.m}
+\fi
+\end{ex}
+
+\subsection{Zeros múltiplos}\index{zeros múltiplos}
+
+Na análise de convergência acima foi necessário assumir que $f'(x) \neq 0$ para todo $x$ em uma vizinha do zero $x^*$ da função $f$. Isto não é possível no caso de $x^*$ ser um zero duplo pois, então, $f'(x^*) = 0$. Neste caso, podemos aplicar o método de Newton a $f'(x)$, a qual tem $x^*$ como um zero simples.
+
+\begin{ex}\label{ex:Newton_multpar}
+  Consideremos o problema de aproximar o zero da função
+  \begin{equation}
+    f(x) = \sen^2\left(x+\frac{\pi}{4}\right) - x^3 + \frac{\pi}{4}x^2 + \frac{5\pi^2}{16}x + \frac{3\pi^3}{64}.
+  \end{equation}
+  no intervalo $[-1,0]$. Este problema foi construído de forma que $x^* = -\pi/4$ é um zero duplo de $f$. Então, aplicamos o método de Newton a
+  \begin{equation}
+    f'(x) = 2\sen\left(x+\frac{\pi}{4}\right)\cos\left(x+\frac{\pi}{4}\right) -3x² +\frac{\pi}{2}x+\frac{5\pi^2}{16}.
+  \end{equation}
+Ou seja, as iterações de Newton são
+\begin{equation}
+  x^{(k+1)} = x^{(k)} - \frac{f'(x^{(k)})}{f''(x^{(k)})},\quad k=1,2,\ldots,
+\end{equation}
+sendo $x^{(1)}$ uma aproximação inicial. Na Tabela~\ref{tab:ex_Newton_multpar}, temos os resultados obtidos da computação destas iterações com $x^{(1)}=-0,5$.
+
+\begin{table}[h!]
+  \centering
+  \caption{Resultados referentes ao Exemplo \ref{ex:Newton_multpar}.}
+  \label{tab:ex_Newton_multpar}
+  \begin{tabular}{r|cc}
+    $k$ & $x^{(k)}$ & $|x^{(k)}-x^*|$ \\\hline
+    1 & $-5,0000\E-1$ & $2,9\E-01$ \\
+    2 & $-8,3407\E-1$ & $4,9\E-02$ \\
+    3 & $-7,8619\E-1$ & $7,9\E-04$ \\
+    4 & $-7,8540\E-1$ & $2,3\E-07$ \\
+    5 & $-7,8540\E-1$ & $1,9\E-14$ \\\hline
+  \end{tabular}
+\end{table}
+
+\ifisoctave
+Os resultados apresentados na Tabela \ref{tab:ex_Newton_multpar} podem ser computados no \verb+GNU Octave+ com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/ex_Newton_multpar/ex_Newton_multpar.m}{código}:
+\verbatiminput{./cap_eq1d/dados/ex_Newton_multpar/ex_Newton_multpar.m}
+\fi
+\end{ex}
+
+\begin{obs}
+  No caso de zeros de multiplicidade $n$ de uma dada função $f$, podemos aplicar o método de Newton a derivada $n-1$ de $f$.
+\end{obs}
+
+\subsection*{Exercícios}
+
+\begin{exer}\label{exer:Newton_1}
+  Use o método de Newton para obter uma aproximação do zero de $f(x)=x^3\sen(x)-\cos(x)$ no intervalo $[0,5, 1]$ com precisão de $10^{-6}$.
+\end{exer}
+\begin{resp}
+    \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/exer_Newton_1/exer_Newton_1.m}{Código.} 
+  \fi
+  $9,15811\times 10^{-1}$
+\end{resp}
+
+\begin{exer}\label{exer:Newton_multpar}
+  Use o método de Newton para obter uma aproximação do zero de
+  \begin{equation}
+    f(x) = (-x^2+1,154x-0,332929)\cos(x) + x^2 - 1,154x + 0,332929
+  \end{equation}
+no intervalo $(0,55, ~0,65)$ com precisão de $10^-5$.
+\end{exer}
+\begin{resp}
+    \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/exer_Newton_multpar/exer_Newton_multpar.m}{Código.} 
+  \fi
+  $5,7700\times 10^{-1}$
+\end{resp}
+
+\begin{exer}\label{ex:Newton_analise_conv}
+  Complete a demonstração por indução matemática de que o método de Newton tem taxa de convergência quadrática.
+\end{exer}
+
+\section{Método da secante}\label{cap_eq1d_sec_secante}
+
+O método da secante é uma variação do método de Newton. Observemos que para duas aproximações $x^{(k)}$ e $x^{(k-1)}$ suficientemente próximas, temos\footnote{Razão fundamental do Cálculo.}
+\begin{equation}
+  f'(x^{(k)}) \approx \frac{f(x^{(k)})-f(x^{(k-1)})}{x^{(k)}-x^{(k-1)}}.
+\end{equation}
+Assim sendo, substituindo esta aproximação em \eqref{eq:Newton_iteracao}, obtemos as iterações do método da secante:
+\begin{align}
+  x^{(1)}&, x^{(2)} = \text{aprox. iniciais},\\
+  x^{(k+1)} &= x^{(k)} - f(x^{(k)})\frac{x^{(k)}-x^{(k-1)}}{f(x^{(k)})-f(x^{(k-1)})},
+\end{align}
+para $k=2,3,\ldots$.
+
+\begin{ex}\label{ex:secante_exec}
+  Consideremos o problema de encontrar o zero da função
+  \begin{equation}
+    f(x) = \sen^2\left(x+\frac{\pi}{4}\right) - x^3 + \frac{\pi}{4}x^2 + \frac{5\pi^2}{16}x + \frac{3\pi^3}{64}.
+  \end{equation}
+  no intervalo $[2,3]$. Então, fazendo as iterações do método da secante com aproximações iniciais $x^{(1)}=2,6$ e $x^{(2)}-2,5$, obtemos os resultados apresentados na Tabela \ref{tab:ex_secante_exec}.
+
+\begin{table}[h!]
+  \centering
+  \caption{Resultados referentes ao Exemplo \ref{ex:secante_exec}.}
+  \label{tab:ex_secante_exec}
+  \begin{tabular}{r|ccc}
+    $k$ & $x^{(k-1)}$ & $x^{(k)}$ & $|x^{(k)}-x^{(k-1)}|$ \\\hline
+    2 & $2,6000$ & $2,5000$ & -x-\\
+    3 & $2,5000$ & $2.3728$ & $1,3\E-1$ \\
+    4 & $2,3728$ & $2,3574$ & $1,5\E-2$ \\
+    5 & $2,3574$ & $2,3562$ & $1,2\E-3$ \\
+    6 & $2,3562$ & $2,3562$ & $1,1\E-5$ \\
+    7 & $2,3562$ & $2,3562$ & $7,0\E-9$ \\\hline
+  \end{tabular}
+\end{table}
+
+\ifisoctave
+Os resultados apresentados na Tabela \ref{tab:ex_secante_exec} podem ser computados no \verb+GNU Octave+ com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/ex_secante_exec/ex_secante_exec.m}{código}:
+\verbatiminput{./cap_eq1d/dados/ex_secante_exec/ex_secante_exec.m}
+\fi
+\end{ex}
+
+\subsection{Interpretação geométrica}
+
+A iteração do método da secante é
+\begin{equation}
+  x^{(k+1)} = x^{(k)} - f(x^{(k)})\frac{x^{(k)}-x^{(k-1)}}{f(x^{(k)})-f(x^{(k-1)})},
+\end{equation}
+donde segue que
+\begin{equation}
+  0 = x^{(k+1)}-x^{(k)} + f(x^{(k)})\frac{x^{(k)}-x^{(k-1)}}{f(x^{(k)})-f(x^{(k-1)})},
+\end{equation}
+bem como que
+\begin{equation}\label{eq:secante_geointerp}
+  0 = \frac{f(x^{(k)})-f(x^{(k-1)})}{x^{(k)}-x^{(k-1)}}(x^{(k+1)}-x^{(k)}) + f(x^{(k)}).
+\end{equation}
+Agora, observemos que
+\begin{equation}
+  y = \frac{f(x^{(k)})-f(x^{(k-1)})}{x-x^{(k-1)}}(x^{(k+1)}-x^{(k)}) + f(x^{(k)}).
+\end{equation}
+é a equação da reta secante ao gráfico de $f$ pelos pontos $(x^{(k)}, f(x^{(k)}))$ e $(x^{(k-1)}, f(x^{(k-1)}))$. 
+
+Do observado acima, temos que \eqref{eq:secante_geointerp} nos mostra que a iterada $x^{(k+1)}$ é a a interseção do eixo $x$ com a reta secante ao gráfico de $f$ pelos pontos $(x^{(k)}, f(x^{(k)}))$ e $(x^{(k-1)}, f(x^{(k-1)}))$. Veja a Figura \ref{fig:secante_geointerp}.
+
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./cap_eq1d/dados/fig_secante_geointerp/fig_secante_geointerp}
+  \caption{Interpretação geométrica das iterações do método da secante. Veja no \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/fig_secante_geointerp/fig_secante_geointerp.ggb}{Geogebra}.}
+  \label{fig:secante_geointerp}
+\end{figure}
+
+
+\begin{obs}
+  A interpretação geométrica do método da secante pode nos ajudar a escolher as aproximações iniciais $x^{(1)}$ e $x^{(2)}$. Como uma boa prática, escolhemo-las próximas do zero (por inspeção gráfica), tomando $x^{(2)}$ como uma aproximação melhor que $x^{(1)}$. 
+\end{obs}
+
+\subsection{Análise de convergência}
+
+Pode-se mostrar\footnote{Veja, por exemplo, \href{https://www.ufrgs.br/reamat/CalculoNumerico/livro-oct/sdeduv-metodo_das_secantes.html}{Seção 3.5.2 do livro ``Cálculo Numérico''} do projeto \href{https://www.ufrgs.br/reamat}{REAMAT}.} que a taxa de convergência do método da secante é super-linear com
+\begin{equation}
+  |x^{(k+1)}-x^*| \leq C|x^{(k)}-x^*|^{\pmb{\varphi}},
+\end{equation}
+onde $\varphi = (1+\sqrt{5})/2\approx 1,618$ (razão áurea) e $x^*$ é o zero de $f$.
+
+
+\begin{ex}\label{ex:secante_taxa}
+  Consideremos o problema de encontrar o zero da função
+  \begin{equation}
+    f(x) = \sen^2\left(x+\frac{\pi}{4}\right) - x^3 + \frac{\pi}{4}x^2 + \frac{5\pi^2}{16}x + \frac{3\pi^3}{64}.
+  \end{equation}
+  no intervalo $[2,3]$. Este problema foi construído de forma que $x^* = 3\pi/4$ é um zero de $f$. Agora, fazendo as iterações do método da secante com aproximações iniciais $x^{(1)}=2,6$ e $x^{(2)}=2,5$, obtemos os resultados apresentados na Tabela \ref{tab:ex_secante_taxa}.
+
+\begin{table}[h!]
+  \centering
+  \caption{Resultados referentes ao Exemplo \ref{ex:secante_taxa}.}
+  \label{tab:ex_secante_taxa}
+  \begin{tabular}{r|cc}
+    $k$ & $x^{(k)}$ & $|x^{(k)}-x^*|$ \\\hline
+    3 & $2,3728$ & $1,7\E-02$ \\
+    4 & $2,3574$ & $1,2\E-03$ \\
+    5 & $2,3562$ & $1,1\E-05$ \\
+    6 & $2,3562$ & $7,0\E-09$ \\\hline
+  \end{tabular}
+\end{table}
+
+\ifisoctave
+Os resultados apresentados na Tabela \ref{tab:ex_secante_taxa} podem ser computados no \verb+GNU Octave+ com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/ex_secante_taxa/ex_secante_taxa.m}{código}:
+\verbatiminput{./cap_eq1d/dados/ex_secante_taxa/ex_secante_taxa.m}
+\fi
+\end{ex}
+
+
+\begin{obs}(\normalfont{Zeros de multiplicidade par.})
+  A taxa de convergência super-linear do método da secante não se mantém para o caso de $x^*$ ser um zero múltiplo. Para contornar este problema, pode-se aplicar o método à derivada $n-1$ de $f$, a fim de se aproximar um zero de multiplicidade $n$.
+\end{obs}
+
+\begin{obs}(\normalfont{Cancelamento catastrófico.})
+  Conforme convergem as iterações do método da secante, o denominador $f(x^{(k)})-f(x^{(k-1)})$ pode convergir rapidamente para zero, ocasionando uma divisão por zero.
+\end{obs}
+
+
+\subsection*{Exercícios}
+
+\begin{exer}\label{exer:secante_1}
+  Use o método da secante para obter uma aproximação do zero de $f(x)=x^3\sen(x)-\cos(x)$ no intervalo $[0,5, 1]$ com precisão de $10^{-5}$.
+\end{exer}
+\begin{resp}
+    \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/exer_secante_1/exer_secante_1.m}{Código.} 
+  \fi
+  $9,1581\times 10^{-1}$
+\end{resp}
+
+\begin{exer}\label{exer:secante_multpar}
+  Use o método da secante para obter uma aproximação do zero de
+  \begin{equation}
+    f(x) = (-x^2+1,154x-0,332929)\cos(x) + x^2 - 1,154x + 0,332929
+  \end{equation}
+no intervalo $(0,55, ~0,65)$ com precisão de $10^-5$.
+\end{exer}
+\begin{resp}
+    \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/exer_secante_multpar/exer_secante_multpar.m}{Código.} 
+  \fi
+  $5,7700\times 10^{-1}$
+\end{resp}
+
+\section{Raízes de polinômios}\label{cap_eq1d_sec_raizes}\index{raízes de!polinômios}
+
+Nesta seção, veremos como o método de Newton pode ser aplicado de forma robusta a polinômios com o auxílio do método de Horner\footnote{William George Horner, matemático britânico, 1786 - 1837. Fonte: \href{https://en.wikipedia.org/wiki/William_George_Horner}{Wikipedia}}. A questão central é que dado um polinômio de grau $n$ escrito na forma
+\begin{equation}
+  p(x) = a_{1}x^n + a_{2}x^{n-1} + \cdots + a_nx + a_{n+1},
+\end{equation}
+o procedimento de avaliá-lo em um ponto requer $n!n$ multiplicações e $n$ adições. Desta forma, a aplicação do método de Newton para obter as raízes de $p$ torna-se computacionalmente custosa, por requer a avaliação de $p$ e de sua derivada a cada iteração. Agora, o método de Horner nos permite avaliar $p$ em um ponto qualquer usando apenas $n$ multiplicações e $n$ adições, reduzindo enormemente o custo computacional.
+
+\subsection{Método de Horner}\index{método de!Horner}
+
+Sejam dados um número $x_0$ e um polinômio de grau $n$
+\begin{equation}\label{eq:Horner_poli}
+  p(x) = p_1x^n + p_2x^{n-1} + \cdots + p_{n}x + p_{n+1}s.
+\end{equation}
+O método de Horner consiste em computar $p(x_0)$ pela iteração
+\begin{align}
+  q_1 &= p_1,\label{eq:Horner_b1}\\
+  q_{k} &= p_k + q_{k-1}x_0,\quad k=2,3,\dotsc,n+1,\label{eq:Horner_b2}
+\end{align}
+sendo que, então, $p(x_0) = q_{n+1}$ e, além disso,
+\begin{equation}\label{eq:Horner_decomp}
+  p(x) = (x-x_0)q(x) + q_{n+1},
+\end{equation}
+com
+\begin{equation}
+  q(x) = q_1x^{n-1} + q_2x^{n-2} + \cdots + q_{n-1}x + q_{n}.
+\end{equation}
+
+De fato, a verificação de \eqref{eq:Horner_decomp} é direta, uma vez que
+\begin{align}
+  (x-x_0)q(x)+q_{n+1} &= (x-x_0)(q_1x^{n-1} + q_2x^{n-2} + \cdots + q_{n-1}x + q_{n})\nonumber\\ 
+                      &+ q_{n+1}\\
+                      &= q_1x^n + (q_2-q_1x_0)^{n-1} + \cdots + (q_{n+1}-q_{n}x_0).
+\end{align}
+E, então, igualando a $p(x)$ na forma \eqref{eq:Horner_poli}, temos as equações \eqref{eq:Horner_b1}-\eqref{eq:Horner_b2}.
+
+\begin{ex}\label{ex:Horner_exec}
+  Consideremos o polinômio
+  \begin{equation}
+    p(x) = x^3 - 3x^2 + 4.
+  \end{equation}
+  Para computarmos $p(1)$ pelo método de Horner, tomamos $x_0=1$, $q_1=p_1=1$ e
+  \begin{align}
+    q_2 &= p_2 + q_1x_0 = -3 + 1\cdot 1 = -2\\
+    q_3 &= p_3 + q_2x_0 = 0 + (-2)\cdot 1 = -2\\
+    q_4 &= p_4 + q_3x_0 = 4 + (-2)\cdot 1 = 2.
+  \end{align}
+Com isso, temos $p(3) = q_4 = 4$ (verifique!).
+
+\ifisoctave
+Para este caso, podemos implementar o método de Horner no \verb+GNU Octave+ com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/ex_Horner_exec/ex_Horner_exec.m}{código}:
+\verbatiminput{./cap_eq1d/dados/ex_Horner_exec/ex_Horner_exec.m}
+\fi
+\end{ex}
+
+\begin{obs}\label{obs:Horner_polider}
+  Ao computarmos $p(x_0)$ pelo método de Horner, obtemos a decomposição
+  \begin{equation}
+    p(x) = (x-x_0)q(x) + b_{n+1}.
+  \end{equation}
+Desta forma, temos
+\begin{equation}
+  p'(x) = q(x) + (x-x_0)q'(x),
+\end{equation}
+donde temos que $p'(x_0) = q(x_0)$. Com isso, para computarmos $p'(x_0)$ podemos aplicar o método de Horner a $q(x)$.
+
+\ifisoctave
+A implementação do método de Horner no \verb+GNU Octave+ para computar $p(x_0)$ e $p'(x_0)$ pode ser feita com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/obs_Horner_fun/Horner.m}{código}:
+\verbatiminput{./cap_eq1d/dados/obs_Horner_fun/Horner.m}
+\fi
+\end{obs}
+
+\subsection{Método de Newton-Horner}
+
+A implementação do método de Newton a polinômios pode ser feita de forma robusta com o auxílio do método de Horner. Dado um polinômio $p$ e uma aproximação inicial $x^{(1)}$ para uma de suas raízes reais, a iteração de Newton consiste em
+\begin{equation}
+  x^{(k+1)} = x^{(k)} - \frac{p(x^{(k)})}{p'(x^{(k)})},
+\end{equation}
+na qual podemos utilizar o método de Horner para computar $p(x^{(k)})$ e $p'(x^{(k)})$.
+
+\begin{ex}\label{ex:poli_Newton}
+  Consideremos o caso de aplicar o método de Newton para obter uma aproximação da raiz $x=-1$ de
+  \begin{equation}
+    p(x) = x^3 - 3x^2 + 4,
+  \end{equation}
+  com aproximação inicial $x^{(1)} = -2$. Na Tabela \ref{tab:ex_poli_Newton} temos os resultados obtidos.
+
+\begin{table}[h!]
+  \centering
+  \caption{Resultados referentes ao Exemplo \ref{ex:poli_Newton}.}
+  \label{tab:ex_poli_Newton}
+  \begin{tabular}{r|cc}
+    $k$ & $x^{(k)}$ & $|x^{(k)}-x^{(k-1)}|$ \\\hline
+    1 & $-2,0000$ & -x- \\
+    2 & $-1,3333$ & $6,7\E-1$ \\
+    3 & $-1,0556$ & $2,8\E-1$ \\
+    4 & $-1,0019$ & $5,4\E-2$ \\
+    5 & $-1,0000$ & $1,9\E-3$ \\\hline
+  \end{tabular}
+\end{table}
+
+
+\ifisoctave
+No \verb+GNU Octave+, a implementação do método de Newton para polinômios (com a aplicação do método de Horner, veja Observação \ref{obs:Horner_polider}) pode ser feita com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/ex_poli_Newton/ex_poli_Newton.m}{código}:
+\verbatiminput{./cap_eq1d/dados/ex_poli_Newton/ex_poli_Newton.m}
+\fi
+\end{ex}
+
+\subsection*{Exercícios}
+
+\begin{exer}
+  Use o método de Newton-Horner para computar a aproximação da raiz de $p(x) = x^3 - 3x^2 + 4$ no intervalo $[1,3]$. Observe que $p$ tem um zero duplo deste intervalo.
+\end{exer}
+\begin{resp}
+  \ifisoctave 
+  \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_eq1d/dados/exer_NewtonHorner_multpar/exer_NewtonHorner_multpar.m}{Código.} 
+  \fi
+  $2$
+\end{resp}

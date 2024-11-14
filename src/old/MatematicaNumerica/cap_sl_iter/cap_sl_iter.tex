@@ -1,0 +1,541 @@
+
+
+\chapter{Métodos iterativos para sistemas lineares}\label{cap_sl_iter}
+\thispagestyle{fancy}
+
+\section{Métodos de Jacobi e de Gauss-Seidel}\label{cap_sl_iter_sec_jgs}
+
+Nesta seção, discutiremos os métodos de Jacobi\footnote{Carl Gustav Jacob Jacobi, 1804 - 1851, matemático alemão. Fonte: \href{https://en.wikipedia.org/wiki/Carl_Gustav_Jacob_Jacobi}{Wikipedia}.} e de Gauss-Seidel\footnote{Johann Carl Friedrich Gauss, 1777 - 1855, matemático alemão. Philipp Ludwig von Seidel, 1821 - 1896, matemático alemão. Fonte: \href{https://en.wikipedia.org/wiki/Philipp_Ludwig_von_Seidel}{Wikipedia}.} para a aproximação da solução de sistemas lineares.
+
+\subsection{Método de Jacobi}
+
+Dado um sistema $A\pmb{x} = \pmb{b}$ com $n$ equações e $n$ incógnitas, consideramos a seguinte decomposição da matriz $A = L + D + U$:
+\begin{align}
+  A &=
+  \begin{bmatrix}
+    a_{11} & a_{12} & a_{13} & \ldots & a_{1n}\\
+    a_{21} & a_{22} & a_{23} & \ldots & a_{2n}\\
+    a_{31} & a_{32} & a_{33} & \ldots & a_{3n}\\
+    \vdots & \vdots & \vdots & \ldots & \vdots\\
+    a_{n1} & a_{n2} & a_{n3} & \ldots & a_{nn}\\
+  \end{bmatrix}\\
+    &= \underbrace{\begin{bmatrix}
+    0 & 0 & 0 & \ldots & 0\\
+    a_{21} & 0 & 0 & \ldots & 0\\
+    a_{31} & a_{32} & 0 & \ldots & 0\\
+    \vdots & \vdots & \vdots & \ldots & \vdots\\
+    a_{n1} & a_{n2} & a_{n3} & \ldots & 0\\
+  \end{bmatrix}}_{L}\\
+    &+ \underbrace{\begin{bmatrix}
+    a_{11} & 0 & 0 & \ldots & 0\\
+    0 & a_{22} & 0 & \ldots & 0\\
+    0 & 0 & a_{33} & \ldots & 0\\
+    \vdots & \vdots & \vdots & \ldots & \vdots\\
+    0 & 0 & 0 & \ldots & a_{nn}\\
+  \end{bmatrix}}_{D}\\
+  &+ \underbrace{\begin{bmatrix}
+    0 & a_{12} & a_{13} & \ldots & a_{1n}\\
+    0 & 0 & a_{23} & \ldots & a_{2n}\\
+    0 & 0 & a_{33} & \ldots & a_{3n}\\
+    \vdots & \vdots & \vdots & \ldots & \vdots\\
+    0 & 0 & 0 & \ldots & a_{nn}\\
+  \end{bmatrix}}_{U}.
+\end{align}
+Isto é, a matriz $A$ decomposta como a soma de sua parte triangular inferior $L$, de sua diagonal $D$ e de sua parte triangular superior $U$.
+
+Desta forma, podemos reescrever o sistema $A\pmb{x}=b$ da seguinte forma:
+\begin{align}
+  A\pmb{x} = \pmb{b} &\Leftrightarrow (L + D + U)\pmb{x} = \pmb{b}\\
+         &\Leftrightarrow D\pmb{x} = -(L+U)\pmb{x} + \pmb{b}\\
+         &\Leftrightarrow \pmb{x} = -D^{-1}(L+U)\pmb{x} + D^{-1}\pmb{b}.
+\end{align}
+Ou seja, resolver o sistema $A\pmb{x} = \pmb{b}$ é equivalente a resolver o problema de ponto fixo
+\begin{equation}
+  \pmb{x} = T_J\pmb{x} + \pmb{c}_J,
+\end{equation}
+onde $T_J = -D^{-1}(L+U)$ é chamada de \emph{matriz de Jacobi}\index{matriz de!Jacobi} e $\pmb{c}_J = D^{-1}\pmb{b}$ é chamado de \emph{vetor de Jacobi}\index{vetor de!Jacobi}.
+
+\begin{ex}\label{ex:jacobi_intro}
+  Consideremos o sistema linear $A\pmb{x} = \pmb{b}$ com
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      -4 & 2 & -1 \\
+      -2 & 5 & 2 \\
+       1 & -1 & -3
+    \end{bmatrix},\quad
+    \pmb{b} =
+    \begin{bmatrix}
+      -11\\ -7\\ 0
+    \end{bmatrix}.
+  \end{equation}
+  Este sistema tem solução $\pmb{x} = (2, -1, 1)$. Neste caso, temos a decomposição $A = L + D + U$ com
+  \begin{equation}
+    L = \begin{bmatrix} 
+      0 & 0 & 0 \\
+      -2 & 0 & 0 \\
+       1 & -1 & 0
+     \end{bmatrix},\quad
+    D = \begin{bmatrix}
+      -4 & 0 & 0 \\
+      0 & 5 & 0 \\
+       0 & 0 & -3                  
+     \end{bmatrix}
+  \end{equation}
+  e
+  \begin{equation}
+    U = \begin{bmatrix}
+      0 & 2 & -1 \\
+      0 & 0 & 2 \\
+       0 & 0 & 0
+    \end{bmatrix}.
+  \end{equation}
+  Ainda, observamos que
+  \begin{align}
+    T_J\pmb{x} + \pmb{c}_J &= -D^{-1}(L+U)\pmb{x} + D^{-1}\pmb{b}\\
+    &= \underbrace{\begin{bmatrix}
+        0 & 1/2 & 1/4 \\
+        2/5 & 0 & -2/5 \\
+        1/3 & -1/3 & 0
+      \end{bmatrix}}_{T_J}
+      \underbrace{\begin{bmatrix}
+        2 \\
+        -1 \\
+        1             
+      \end{bmatrix}}_{\pmb{x}} +
+      \underbrace{\begin{bmatrix}
+       11/4 \\
+       -7/5 \\
+       0
+      \end{bmatrix}}_{\pmb{c}_J}\\
+  &= \underbrace{\begin{bmatrix}
+        2 \\
+        -1 \\
+        1             
+      \end{bmatrix}}_{\pmb{x}}.
+  \end{align}
+\ifisoctave
+No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_iter/dados/ex_jacobi_intro/ex_jacobi_intro.m}{código}:
+\verbatiminput{./cap_sl_iter/dados/ex_jacobi_intro/ex_jacobi_intro.m}
+\fi
+\end{ex}
+
+Com o exposto acima, o \emph{método de Jacobi} consiste na seguinte iteração de ponto fixo
+\begin{align}
+  \pmb{x}^{(1)} &= \text{aprox. inicial},\\
+  \pmb{x}^{(k+1)} &= T_J\pmb{x}^{(k)} + \pmb{c}_J,\label{eq:iter_jacobi_mat}
+\end{align}
+onde $\pmb{x}^{(k)} = (x_1^{(k)}, x_2^{(k)}, \dotsc, x_n^{(k)})$ é a $k$-ésima aproximação (ou iterada) de Jacobi.
+
+A iteração \eqref{eq:iter_jacobi_mat} pode ser equivalentemente escrita na seguinte forma algébrica
+\begin{equation}
+  x_i^{(k+1)} = \frac{{\displaystyle b_i - \sum_{\overset{j=1}{j\neq i}}^n a_{ij}x^{(k)}}}{a_{ii}},~i=1, 2, \dotsc, n,
+\end{equation}
+a qual não requer a computação da matriz $T_J$ e $\pmb{c}_J$.
+
+\begin{ex}\label{ex:jacobi_exec}
+  Consideremos o sistema $A\pmb{x} = \pmb{b}$ com
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      -4 & 2 & -1 \\
+      -2 & 5 & 2 \\
+       1 & -1 & -3
+    \end{bmatrix},\quad
+    \pmb{b} =
+    \begin{bmatrix}
+      -11\\ -7\\ 0
+    \end{bmatrix}.
+  \end{equation}
+  Aplicando o método de Jacobi com aproximação inicial $\pmb{x}^{(1)} = (0, 0, 0)$ obtemos os resultados da Tabela \ref{tab:ex_jacobi_exec}.
+
+  \begin{table}[h!]
+    \centering
+    \begin{tabular}{l|cc}
+      k & $\pmb{x}^{(k)}$ & $\|A\pmb{x}^{(k)}-\pmb{b}\|$\\\hline
+      1 & $(0,0,~0,0,~0,0)$ & $1,3\E+1$\\
+      2 & $(2,8,~-1,4,~0,0)$ & $7,4\E+0$ \\
+      3 & $(2,0,~-0,3,~1,4)$ & $4,6\E+0$ \\
+      4 & $(2,3,~-1,1,~0,8)$ & $2,2\E+0$ \\
+      5 & $(2,0,~-0,8,~1,1)$ & $1,4\E+0$ \\
+      6 & $(2,1,~-1,1,~0,9)$ & $6,9\E-1$ \\
+      7 & $(2,0,~-0,9,~1,0)$ & $4,2\E-1$ \\
+      8 & $(2,0,~-1,0,~1,0)$ & $2,2\E-1$ \\
+      9 & $(2,0,~-1,0,~1,0)$ & $1,3\E-1$ \\
+      10 & $(2,0,~-1,0,~1,0)$ & $6,9\E-2$ \\\hline
+    \end{tabular}
+    \caption{Resultados referentes ao Exemplo \ref{ex:jacobi_exec}.}
+    \label{tab:ex_jacobi_exec}
+  \end{table}
+
+\ifisoctave
+No \verb+GNU Octave+, podemos obter os resultados reportados na Tabela \ref{tab:ex_jacobi_exec} com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_iter/dados/ex_jacobi_exec/ex_jacobi_exec.m}{código}:
+\verbatiminput{./cap_sl_iter/dados/ex_jacobi_exec/ex_jacobi_exec.m}
+\fi
+\end{ex}
+
+\subsection{Método de Gauss-Seidel}
+
+Como acima, começamos considerando um sistema linear $A\pmb{x} = \pmb{b}$ e a decomposição $A = L + D + U$, onde $L$ é a parte triangular inferior de $A$, $D$ é sua parte diagonal e $U$ sua parte triangular superior. Então, observamos que
+\begin{align}
+  A\pmb{x} = \pmb{b} &\Leftrightarrow (L + D + U)\pmb{x} = \pmb{b}\\
+  &\Leftrightarrow (L+D)\pmb{x} = -U\pmb{x} + \pmb{b}\\
+  &\Leftrightarrow \pmb{x} = -(L+D)^{-1}U\pmb{x} + (L+D)^{-1}\pmb{b}.
+\end{align}
+Isto nos leva a iteração de Gauss-Seidel
+\begin{align}
+  \pmb{x}^{(1)} = \text{aprox. inicial},\\
+  \pmb{x}^{(k+1)} = T_G\pmb{x}^{(k)} + \pmb{c}_G,\label{eq:iter_gs_mat}
+\end{align}
+onde $T_G = -(L+D)^{-1}U$ é a chamada \emph{matriz de Gauss-Seidel}\index{matriz de!Gauss-Seidel} e $\pmb{c}_G = (L+D)^{-1}\pmb{b}$ é o chamado \emph{vetor de Gauss-Seidel}\index{vetor de!Gauss-Seidel}.
+
+Observamos, também, que a iteração \eqref{eq:iter_gs_mat} pode ser reescrita na seguinte forma algébrica
+\begin{equation}
+  x_i^{(k+1)} = \frac{{\displaystyle b_i - \sum_{j=1}^{i-1} a_{ij}x^{(k+1)} - \sum_{j=i+1}^{n} a_{ij}x^{(k)}}}{a_{ii}},~i=1, 2, \dotsc, n.
+\end{equation}
+
+\begin{ex}\label{ex:gs_exec}
+  Consideremos o sistema $A\pmb{x} = \pmb{b}$ com
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      -4 & 2 & -1 \\
+      -2 & 5 & 2 \\
+       1 & -1 & -3
+    \end{bmatrix},\quad
+    \pmb{b} =
+    \begin{bmatrix}
+      -11\\ -7\\ 0
+    \end{bmatrix}.
+  \end{equation}
+  Aplicando o método de Gauss-Seidel com aproximação inicial $\pmb{x}^{(1)} = (0, 0, 0)$ obtemos os resultados da Tabela \ref{tab:ex_gs_exec}.
+
+  \begin{table}[h!]
+    \centering
+    \begin{tabular}{l|cc}
+      k & $\pmb{x}^{(k)}$ & $\|A\pmb{x}^{(k)}-\pmb{b}\|$\\\hline
+      1 & $(0,0,~0,0,~0,0)$ & $1,3\E+1$ \\
+      2 & $(2,8,~-0,3,~1,0)$ & $2,6\E+0$ \\
+      3 & $(2,3,~-0,9,~1,1)$ & $1,2\E+0$ \\
+      4 & $(2,0,~-1,0,~1,0)$ & $2,5\E-1$ \\
+      5 & $(2,0,~-1,0,~1,0)$ & $4,0\E-2$ \\\hline
+    \end{tabular}
+    \caption{Resultados referentes ao Exemplo \ref{ex:gs_exec}.}
+    \label{tab:ex_gs_exec}
+  \end{table}
+
+\ifisoctave
+No \verb+GNU Octave+, podemos obter os resultados reportados na Tabela \ref{tab:ex_gs_exec} com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_iter/dados/ex_gs_exec/ex_gs_exec.m}{código}:
+\verbatiminput{./cap_sl_iter/dados/ex_gs_exec/ex_gs_exec.m}
+\fi
+\end{ex}
+
+\subsection{Análise de convergência}
+
+Observamos que ambos os métodos de Jacobi e de Gauss-Seidel consistem de iterações da forma
+\begin{equation}
+  \pmb{x}^{(k+1)} = T\pmb{x}^{(k)} + \pmb{c},~k=1, 2, \ldots,\label{eq:jgs_iter}
+\end{equation}
+com $x^{(1)}$ uma aproximação inicial dada, $T$ e $c$ a matriz e o vetor de iteração, respectivamente. O seguinte teorema nos fornece uma condição suficiente e necessária para a convergência de tais métodos.
+
+\begin{teo}
+  Para qualquer $\pmb{x}^{(1)}\in\mathbb{R}^n$, temos que a sequência $\{\pmb{x}^{(k+1)}\}_{k=1}^{\infty}$ dada por
+  \begin{equation}
+    \pmb{x}^{(k+1)} = T\pmb{x}^{(k)} + \pmb{c},
+  \end{equation}
+  converge para a solução única de $\pmb{x} = T\pmb{x} + \pmb{c}$ se, e somente se, $\rho(T) < 1$\footnote{$\rho(T)$ é o raio espectral da matriz $T$, i.e. o máximo dos módulos dos autovalores de $T$.}.
+\end{teo}
+\begin{dem}
+  Veja \cite[Cap. 7, Sec. 7.3]{Burden2015a}.
+\end{dem}
+
+\begin{obs}(\normalfont{Taxa de convergência})
+  Para uma iteração da forma \eqref{eq:jgs_iter}, vale
+  \begin{equation}
+    \|\pmb{x}^{(k)}-\pmb{x}\| \approx \rho(T)^{k-1}\|\pmb{x}^{(1)}-\pmb{x}\|,
+  \end{equation}
+onde $\pmb{x}$ é a solução de $\pmb{x} = T\pmb{x} + \pmb{c}$.
+\end{obs}
+
+\begin{ex}\label{ex:jacobi_exec}
+  Consideremos o sistema $A\pmb{x} = \pmb{b}$ com
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      -4 & 2 & -1 \\
+      -2 & 5 & 2 \\
+       1 & -1 & -3
+    \end{bmatrix},\quad
+    \pmb{b} =
+    \begin{bmatrix}
+      -11\\ -7\\ 0
+    \end{bmatrix}.
+  \end{equation}
+  Nos Exemplos \ref{ex:jacobi_exec} e \ref{ex:gs_exec} vimos que ambos os métodos de Jacobi e de Gauss-Seidel eram convergentes, sendo que este convergiu aproximadamente duas vezes mais rápido que esse. Isto é confirmado pelos raios espectrais das respectivas matrizes de iteração
+  \begin{equation}
+    \rho(T_J) \approx 0,56,\quad\rho(T_G) \approx 0,26.
+  \end{equation}
+
+\ifisoctave
+No \verb+GNU Octave+, podemos obter os raios espectrais das matrizes de iteração de Jacobi e Gauss-Seidel com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_iter/dados/ex_jgs_conv/ex_jgs_conv.m}{código}:
+\verbatiminput{./cap_sl_iter/dados/ex_jgs_conv/ex_jgs_conv.m}
+\fi
+\end{ex}
+
+\begin{obs}{\normalfont{Matriz estritamente diagonal dominante}}
+  Pode-se mostrar que se $A$ é uma matriz estritamente diagonal dominante, i.e. se
+  \begin{equation}
+    |a_{ii}| > \sum_{\overset{j=1}{j\neq i}}^n |a_{ij}|,~\forall i=1, 2, \ldots, n,
+  \end{equation}
+então ambos os métodos de Jacobi e de Gauss-Seidel são convergentes.
+\end{obs}
+
+\subsection*{Exercícios}
+
+\begin{exer}\label{exer:jacobi_exec}
+  Considere o seguinte sistema linear
+  \begin{align}
+    -4x_1 + x_2 + x_3 - x_4 &= -1\\
+    5x_2 -x_3 + 2x_4 &= 3\\
+    -x_1 + 4x_3 - 2x_4 &= -2\\
+    x_1 -x_2 -5x_4 &= 1
+  \end{align}
+  Compute a quinta iterada $x^{(5)}$ do método de Jacobi aplicado a este sistema com aproximação inicial $x^{(1)} = (1, 1, -1, -1)$. Também, compute $\|Ax^{(5)} - b\|$.
+\end{exer}
+\begin{resp}
+    \ifisoctave 
+    \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_iter/dados/exer_jacobi_exec/exer_jacobi_exec.m}{Código.} 
+  \fi
+  $x^{(5)} = (-1,00256,~2,95365,~-1,95347,~0,97913)$; $\|Ax^{(5)}-b\| = 0,42244$
+\end{resp}
+
+\begin{exer}\label{exer:gs_exec}
+  Considere o seguinte sistema linear
+  \begin{align}
+    -4x_1 + x_2 + x_3 - x_4 &= -1\\
+    5x_2 -x_3 + 2x_4 &= 3\\
+    -x_1 + 4x_3 - 2x_4 &= -2\\
+    x_1 -x_2 -5x_4 &= 1
+  \end{align}
+  Compute a quinta iterada $x^{(5)}$ do método de Gauss-Seidel aplicado a este sistema com aproximação inicial $x^{(1)} = (1, 1, -1, -1)$. Também, compute $\|Ax^{(5)} - b\|$.
+\end{exer}
+\begin{resp}
+    \ifisoctave 
+    \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_iter/dados/exer_gs_exec/exer_gs_exec.m}{Código.} 
+  \fi
+  $x^{(5)} = (-1,00423,~3,00316,~-2,00401,~0,99852)$; $\|Ax^{(5)}-b\| = 0,025883$
+\end{resp}
+
+\section{Método do gradiente}\label{cap_sl_iter_sec_metg}
+
+Começamos observando que se $A$ é uma matriz $n\times n$ positiva definida\footnote{$A$ é simétrica e $x^TAx > 0$ para todo $x\neq 0$.}, temos que $\pmb{x}\in\mathbb{R}^n$ é solução de
+\begin{equation}\label{eq:metg_sislin}
+  A\pmb{x} = \pmb{b}
+\end{equation}
+se, e somente se, $\pmb{x}$ é solução do seguinte problema de minimização
+\begin{equation}\label{eq:metg_minprob}
+  \min_{\pmb{x}\in\mathbb{R}^n}f(\pmb{x}) := \frac{1}{2}\pmb{x}^TA\pmb{x}-\pmb{x}^T\pmb{b}.
+\end{equation}
+
+O método do gradiente é um algoritmo da forma: dada uma aproximação inicial $\pmb{x}^{(1)}$ da solução de \eqref{eq:metg_minprob} (ou, equivalentemente, de \eqref{eq:metg_sislin}), computamos novas aproximações da forma iterativa
+\begin{equation}
+  \pmb{x}^{(k+1)} = \pmb{x}^{(k)} + \alpha^{(k)}\pmb{d}^{(k)},\quad k=1, 2, \ldots,
+\end{equation}
+onde $\alpha^{(k)}$ é o tamanho do passo (um escalar) e $\pmb{d}^{(k)}\in\mathbb{R}^n$ é a direção de busca.
+
+Para escolhermos a direção $\pmb{d}^{(k)}$, tomamos a fórmula de Taylor de $f$ em torno da aproximação $\pmb{x}^{(k)}$
+\begin{equation}\label{eq:metg_taylor}
+  f(\pmb{x}^{(k+1)}) = f(\pmb{x}^{(k)}) + \alpha^{(k)}\nabla f(\pmb{x}^{(k)})\cdot \pmb{d}^{(k)} + O\left((\alpha^{(k)})^2\right),
+\end{equation}
+com $\alpha^{(k)}\to 0$, onde $\nabla f$ denota o gradiente de $f$, i.e.
+\begin{align}
+  \nabla f(\pmb{x}^{(k)}) &= \left(\frac{\p f}{\p x_1}(\pmb{x}^{(k)}), \frac{\p f}{\p x_2}(\pmb{x}^{(k)}), \dotsc, \frac{\p f}{\p x_n}(\pmb{x}^{(k)})\right)\\
+  &= A\pmb{x}^{(k)}-\pmb{b}.
+\end{align}
+
+
+De \eqref{eq:metg_taylor}, segue que se
+\begin{equation}
+  \nabla f(\pmb{x}^{(k)})\cdot \pmb{d}^{(k)} < 0,
+\end{equation}
+então $f(\pmb{x}^{(k+1)}) < f(\pmb{x}^{(k)})$ se $\alpha^{(k)}$ é suficientemente pequeno. Em particular, podemos escolher
+\begin{equation}
+  \pmb{d}^{(k)} = -\nabla f(\pmb{x}^{(k)}),
+\end{equation}
+se $\nabla f(\pmb{x}^{(k)})\neq 0$.
+
+Do exposto acima, temos a \pmb{iteração do método do gradiente}
+\begin{align}
+  \pmb{x}^{(1)} &= \text{aprox. inicial}\\
+  \pmb{x}^{(k+1)} &= \pmb{x}^{(k)} - \alpha^{(k)}\pmb{r}^{(k)},~k=1, 2, \ldots,
+\end{align}
+onde $\pmb{r}^{(k)}$ é o resíduo da iterada $k$ dado por
+\begin{equation}
+  \pmb{r}^{(k)} = A\pmb{x^{(k)}}-\pmb{b}.
+\end{equation}
+
+\begin{ex}\label{ex:metg_pc}
+  Consideremos o sistema $Ax = b$ com
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      2 & -1 & 0 & 0\\
+      -1 & 2 & -1 & 0\\
+      0 & -1 & 2 & -1 \\
+      0 & 0 & -1 & 2
+    \end{bmatrix},\quad
+    b =
+    \begin{bmatrix}
+      -3\\
+      2\\
+      2\\
+      -3
+    \end{bmatrix}.
+  \end{equation}
+  Na Tabela \ref{tab:metg_pc} temos os resultados do emprego do método do gradiente com $\pmb{x}^{(1)} = (0, 0, 0, 0)$ e com passo constante $\alpha^{(k)}\equiv 0,5$.
+
+  \begin{table}[h!]
+    \centering
+    \caption{Resultados referentes ao Exemplo \ref{ex:metg_pc}.}
+    \label{tab:metg_pc}
+    \begin{tabular}{l|c|c}
+      k & $\pmb{x}^{(k)}$ & $\|A\pmb{x}^{(k)}-\pmb{b}\|$\\\hline
+      1 & $(0,0,~0,0,~0,0,~0,0)$ & $5,1\E+0$\\
+      2 & $(-1,5,~1,0,~1,0,~-1,5)$ & $1,6\E+0$\\
+      3 & $(-1,0,~0,8,~0,8,~-1,0)$ & $5,0\E-1$\\
+      4 & $(-1,1,~0,9,~0,9,~-1,1)$ & $1,8\E-1$\\
+      5 & $(-1,1,~0,9,~0,9,~-1,1)$ & $8,8\E-2$\\
+      6 & $(-1,1,~0,9,~0,9,~-1,1)$ & $6,2\E-2$\\
+      7 & $(-1,0,~0,9,~0,9,~-1,0)$ & $4,9\E-2$\\
+      8 & $(-1,0,~0,9,~0,9,~-1,0)$ & $4,0\E-2$\\
+      9 & $(-1,0,~0,9,~0,9,~-1,0)$ & $3,2\E-2$\\
+      10 & $(-1,0,~1,0,~1,0,~-1,0)$ & $2,6\E-2$\\
+      11 & $(-1,0,~1,0,~1,0,~-1,0)$ & $2,1\E-2$\\\hline
+    \end{tabular}
+  \end{table}
+
+\ifisoctave
+No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_iter/dados/ex_metg_pc/ex_metg_pc.m}{código}:
+\verbatiminput{./cap_sl_iter/dados/ex_metg_pc/ex_metg_pc.m}
+\fi
+\end{ex}
+
+\subsection{Escolha do passo}
+
+Da iteração do método do gradiente, temos que a melhor escolha do passo $\alpha^{(k)}$ é tal que
+\begin{equation}
+  f(\pmb{x}^{(k)}+\alpha^{(k)}\pmb{r}^{(k)}) = \min_{\alpha > 0} f(\pmb{x}^{(k)}+\alpha\pmb{r}^{(k)}).
+\end{equation}
+Desta forma,
+\begin{align}
+  \frac{\dd}{\dd \alpha}f(\pmb{x}^{(k)}+\alpha \pmb{r}^{(k)}) = 0 &\Rightarrow \nabla f(\pmb{x}^{(k+1)})\cdot \pmb{r}^{(k)} = 0,\\
+  &\Rightarrow \left(A(\pmb{x}^{(k)}+\alpha^{(k)}\pmb{r}^{(k)})-b\right)\cdot\pmb{r}^{(k)} = 0,\\
+  &\Rightarrow (A\pmb{x}^{(k)}-\pmb{b})\cdot\pmb{r}^{(k)}+\alpha^{(k)}\pmb{r}^{(k)}\cdot A\pmb{r}^{(k)} = 0,
+\end{align}
+donde
+\begin{equation}
+  \alpha^{(k)} = - \frac{\pmb{r}^{(k)}\cdot\pmb{r}^{(k)}}{\pmb{r}^{(k)}\cdot A\pmb{r}^{(k)}}.
+\end{equation}
+
+\begin{ex}\label{ex:metg_alpha}
+  Consideremos o sistema $Ax = b$ com
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      2 & -1 & 0 & 0\\
+      -1 & 2 & -1 & 0\\
+      0 & -1 & 2 & -1 \\
+      0 & 0 & -1 & 2
+    \end{bmatrix},\quad
+    b =
+    \begin{bmatrix}
+      -3\\
+      2\\
+      2\\
+      -3
+    \end{bmatrix}.
+  \end{equation}
+  Na Tabela \ref{tab:metg_alpha} temos os resultados do emprego do método do gradiente com $\pmb{x}^{(1)} = (0, 0, 0, 0)$ e com passo
+  \begin{equation}
+    \alpha^{(k)} = - \frac{\pmb{r}^{(k)}\cdot\pmb{r}^{(k)}}{\pmb{r}^{(k)}\cdot A\pmb{r}^{(k)}}.
+\end{equation}
+
+  \begin{table}[h!]
+    \centering
+    \caption{Resultados referentes ao Exemplo \ref{ex:metg_alpha}.}
+    \label{tab:metg_alpha}
+    \begin{tabular}{l|c|c}
+      k & $\pmb{x}^{(k)}$ & $\|A\pmb{x}^{(k)}-\pmb{b}\|$\\\hline
+      1 & $(0,0,~0,0,~0,0,~0,0)$ & $5,1\E+0$\\
+      2 & $(-1,1,~0,8,~0,8,~-1,1)$ & $1,5\E-1$\\
+      3 & $(-1,0,~1,0,~1,0,~-1,0)$ & $3,0\E-2$\\
+      4 & $(-1,0,~1,0,~1,0,~-1,0)$ & $8,8\E-4$\\
+      5 & $(-1,0,~1,0,~1,0,~-1,0)$ & $1,8\E-4$\\\hline
+    \end{tabular}
+  \end{table}
+
+\ifisoctave
+No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_iter/dados/ex_metg_alpha/ex_metg_alpha.m}{código}:
+\verbatiminput{./cap_sl_iter/dados/ex_metg_alpha/ex_metg_alpha.m}
+\fi
+\end{ex}
+
+\subsection*{Exercícios}
+
+\emconstrucao
+
+\section{Método do gradiente conjugado}\label{cap_sl_iter_sec_metgc}
+
+O método do gradiente conjugado é uma variação do método do gradiente (veja Seção \ref{cap_sl_iter_sec_metg}). Aqui, a solução de um dado sistema $A\pmb{x}=\pmb{b}$, com $A$ uma matriz positiva definida, é computada de forma iterativa por
+\begin{align}
+  \pmb{x}^{(1)} &= \text{aprox. inicial},\\
+  \pmb{d}^{(1)} &= \pmb{r}^{(1)},\\
+  &\\
+  \pmb{x}^{(k+1)} &= \pmb{x}^{(k)} + \alpha_k\pmb{d}^{(k)},\\
+  \alpha^{(k)} &= -\frac{\pmb{r}^{(k)}\cdot \pmb{d}^{(k)}}{\pmb{d}^{(k)}\cdot A\pmb{d}^{(k)}},\\
+  \pmb{d}^{(k+1)} &= -\pmb{r}^{(k+1)}+\beta_k\pmb{d}^{(k)},\\
+  \beta^{(k)} &= \frac{\pmb{r}^{(k+1)}\cdot A\pmb{d}^{(k)}}{\pmb{d}^{(k)}\cdot A\pmb{d}^{(k)}},
+\end{align}
+para $k = 1, 2, \ldots$, e $\pmb{r}^{(k)} = A\pmb{x}^{(k)}-\pmb{b}$.
+
+\begin{ex}\label{ex:metgc_exec}
+  Consideremos o sistema $Ax = b$ com
+  \begin{equation}
+    A =
+    \begin{bmatrix}
+      2 & -1 & 0 & 0\\
+      -1 & 2 & -1 & 0\\
+      0 & -1 & 2 & -1 \\
+      0 & 0 & -1 & 2
+    \end{bmatrix},\quad
+    b =
+    \begin{bmatrix}
+      -3\\
+      2\\
+      2\\
+      -3
+    \end{bmatrix}.
+  \end{equation}
+  Na Tabela \ref{tab:metgc_exec} temos os resultados do emprego do método do gradiente conjugado com $\pmb{x}^{(1)} = (0, 0, 0, 0)$.
+
+  \begin{table}[h!]
+    \centering
+    \caption{Resultados referentes ao Exemplo \ref{ex:metgc_exec}.}
+    \label{tab:metgc_exec}
+    \begin{tabular}{l|c|c}
+      k & $\pmb{x}^{(k)}$ & $\|A\pmb{x}^{(k)}-\pmb{b}\|$\\\hline
+      1 & $(0,~0,~0,~0)$ & $5.1\E+0$\\
+      2 & $(-1,1,~0,8,~0,8,~-1,1)$ & $1,5\E-1$\\
+      3 & $(-1,0,~1,0,~1,0,~-1,0)$ & $0,0\E+0$\\\hline
+    \end{tabular}
+  \end{table}
+
+\ifisoctave
+No \verb+GNU Octave+, podemos fazer as computações acima com o seguinte \href{https://github.com/phkonzen/notas/blob/master/src/MatematicaNumerica/cap_sl_iter/dados/ex_metgc_exec/ex_metgc_exec.m}{código}:
+\verbatiminput{./cap_sl_iter/dados/ex_metgc_exec/ex_metgc_exec.m}
+\fi
+\end{ex}
+
+\subsection*{Exercícios}
+
+\emconstrucao
