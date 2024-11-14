@@ -1,3 +1,3 @@
 # ../cap_ag
 
-Capítulo.
+Capítulo

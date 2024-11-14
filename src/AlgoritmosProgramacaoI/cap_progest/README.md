@@ -1,3 +1,3 @@
 # ../cap_progest
 
-Capítulo.
+Capítulo

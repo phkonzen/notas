@@ -1,3 +1,3 @@
 # ../cap_apderiv
 
-Capítulo.
+Capítulo

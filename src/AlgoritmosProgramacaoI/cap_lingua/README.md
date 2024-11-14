@@ -1,3 +1,3 @@
 # ../cap_lingua
 
-Capítulo.
+Capítulo

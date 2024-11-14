@@ -1,3 +1,3 @@
 # ../cap_fun
 
-Capítulo.
+Capítulo

@@ -1,3 +1,3 @@
 # ../cap_apint
 
-Capítulo.
+Capítulo

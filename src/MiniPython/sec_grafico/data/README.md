@@ -1,3 +1,3 @@
-# data
+# ../data
 
 Pasta de dados.

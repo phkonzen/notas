@@ -1,3 +1,3 @@
 # ../cap_intro
 
-Capítulo.
+Capítulo

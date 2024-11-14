@@ -1,3 +1,3 @@
 # ../cap_lim
 
-Capítulo.
+Capítulo

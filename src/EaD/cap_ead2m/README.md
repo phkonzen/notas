@@ -1,3 +1,3 @@
 # ../cap_ead2m
 
-Capítulo.
+Capítulo

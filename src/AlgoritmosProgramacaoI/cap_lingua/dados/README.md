@@ -1,3 +1,3 @@
 # ../dados
 
-Dados.
+Dados
