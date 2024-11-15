@@ -1,22 +1,29 @@
 import numpy as np
-from itertools import chain
 
-def poliLagrange(x, xpts, ypts):
-    # num. pts
-    n = xpts.size
+def poliLagrange(xpts, ypts):
+  # num. pts
+  n = xpts.size
+  # interp poli
+  p = np.poly1d(0)
+  for i in range(n):
     # Lagrange poli
-    L = np.ones((n,x.size))
-    y = 0
-    for i in range(n):
-        for j in chain(range(i),range(i+1,n)):
-            L[i] *= (x-xpts[j])/(xpts[i]-xpts[j])
-        y += ypts[i] * L[i]
-    return y
+    L = np.poly1d(1)
+    for j in range(n):
+      if (i != j):
+        L *= np.poly1d([1, -xpts[j]])/(xpts[i]-xpts[j])
+    p += ypts[i] * L
+  return p
+
+
 
 # exemplo
 xpts = np.array([-1., 0, 1])
 ypts = np.array([-1., 1, 1/2])
 
+
+# interp poli
+p = poliLagrange(xpts, ypts)
+print(p)
+
 # verificação
-x = xpts.copy()
-print(poliLagrange(x, xpts, ypts))
+print(p(x))

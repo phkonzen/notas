@@ -1,5 +1,3 @@
-
-
 \chapter{Interpolação}\label{cap_interp}
 
 Neste capítulo, estudamos a \hl{resolução de problemas de interpolação} da forma: dados uma família de $n$ funções reais
@@ -110,21 +108,22 @@ print(np.polyval(p, x))
 \subsection{Exercícios}
 
 \begin{exer}
-  Obtenha o polinômio interpolador do conjunto de pontos $\{(-1, -1), (-0.5, 1), (1, 2)\}$.
+  Obtenha o polinômio interpolador do conjunto de pontos 
+  $\{(-1, -1)$, $(-0.5, 1)$, $(1, 2)\}$.
 \end{exer}
 \begin{resp}
   $-1,\bar{6}x^2 + 1.5x + 2.1\bar{6}$
 \end{resp}
 
 \begin{exer}
-  Obtenha o polinômio interpolador do conjunto de pontos $\{(-1, -1), (0, 1), (1, 1/2), (2, 1)\}$.
+  Obtenha o polinômio interpolador do conjunto de pontos $\{(-1, -1)$, $(0, 1)$, $(1, 1/2)$, $(2, 1)\}$.
 \end{exer}
 \begin{resp}
   $0.58\bar{3}x^3 - 1.25x^2 + 0.1\bar{6}x + 1$. 
 \end{resp}
 
 \begin{exer}
-  Obtenha o polinômio interpolador do conjunto de pontos $\{(-1,~-1), (0, 1), (1, 1/2), (2, 1), (2.5, 1)\}$.
+  Obtenha o polinômio interpolador do conjunto de pontos $\{(-1,~-1)$, $(0, 1)$, $(1, 1/2)$, $(2, 1)$, $(2.5, 1)\}$.
 \end{exer}
 \begin{resp}
   $-0.26190476x^4  1.10714286x^3 -0.98809524x^2 -0.35714286x  1$.  
@@ -143,7 +142,7 @@ print(np.polyval(p, x))
 \end{resp}
 
 \begin{exer}
-  Aproxime a função $f(x) = \cos(x)$ por um polinômio interpolador $p$ no intervalo $[0, \pi]$. Escolhas pontos nesse intervalo de forma a obter $p$ que aproxime $f$ com boa precisão gráfica.
+  Aproxime a função $f(x) = \cos(x)$ por um polinômio interpolador $p$ no intervalo $[0, \pi]$. Escolhas pontos nesse intervalo de forma a obter $p$ que aproxime $f$ com boa precisão.
 \end{exer}
 \begin{resp}
   Dica: use os pontos $x_i = (i-1)\frac{\pi}{4}$, $i = 1, 2, 3, 4$.
@@ -178,7 +177,8 @@ Mais especificamente, temos que \hl{$L_i(x)$ tem raízes $\{x_1, \ldots, x_{i-1}
 \begin{subequations}
   \begin{align}
     L_i(x) &= c_i\prod_{\overset{j=1}{j\neq i}}^n (x-x_j)\\
-           &= c_i(x-x_1)\cdots(x-x_{i-1})(x-x_i)\cdots(x-x_n).
+           &= c_i(x-x_1)\cdots(x-x_{i-1}) \nonumber\\
+           &\quad \times (x-x_i)\cdots(x-x_n).
   \end{align}
 \end{subequations}
 Além disso, como $L_i(x_i) = 1$, temos
@@ -188,8 +188,9 @@ Além disso, como $L_i(x_i) = 1$, temos
 Assim sendo, podemos concluir que
 \begin{subequations}\hleq
   \begin{align}
-    L_i(x) &= \prod_{\overset{j=1}{j\neq i}}^n \frac{x-x_j}{x_i-x_j}\\
-           &= \frac{(x-x_1)\cdots(x-x_{i-1})(x-x_{i+1})\cdots(x-x_n)}{(x_i-x_1)\cdots(x_i-x_{i-1})(x_i-x_{i+1})\cdots(x_i-x_n)}.
+    L_i(x) &= \prod_{\overset{j=1}{j\neq i}}^n \frac{x-x_j}{x_i-x_j} \\
+           &= \frac{(x-x_1)\cdots(x-x_{i-1})}{(x_i-x_1)\cdots(x_i-x_{i-1})} \nonumber \\
+           &\quad \times \frac{(x-x_{i+1})\cdots(x-x_n)}{(x_i-x_{i+1})\cdots(x_i-x_n)}.
   \end{align}
 \end{subequations}
 
@@ -214,27 +215,34 @@ Assim sendo, podemos concluir que
 
 \begin{lstlisting}[caption=poliLagrange.py]
 import numpy as np
-from itertools import chain
 
-def poliLagrange(x, xpts, ypts):
+def poliLagrange(xpts, ypts):
   # num. pts
   n = xpts.size
-  # Lagrange poli
-  L = np.ones((n,x.size))
-  y = 0
+  # interp poli
+  p = np.poly1d(0)
   for i in range(n):
-    for j in chain(range(i),range(i+1,n)):
-      L[i] *= (x-xpts[j])/(xpts[i]-xpts[j])
-    y += ypts[i] * L[i]
-  return y
+    # Lagrange poli
+    L = np.poly1d(1)
+    for j in range(n):
+      if (i != j):
+        L *= np.poly1d([1, -xpts[j]])/(xpts[i]-xpts[j])
+    p += ypts[i] * L
+  return p
+
+
 
 # exemplo
 xpts = np.array([-1., 0, 1])
 ypts = np.array([-1., 1, 1/2])
 
+
+# interp poli
+p = poliLagrange(xpts, ypts)
+print(p)
+
 # verificação
-x = xpts.copy()
-print(poliLagrange(x, xpts, ypts))
+print(p(x))
 \end{lstlisting}
 
 \end{ex}
@@ -243,7 +251,7 @@ print(poliLagrange(x, xpts, ypts))
 
 Polinômio interpoladores podem ser usados para a aproximação de funções. \hl{Podemos aproximar uma dada função $f$ pelo polinômio interpolador de um conjunto de pontos selecionados $\{(x_i, y_i=f(x_i))\}_{i=1}^n$}. De fato, o seguinte teorema nos fornece uma estimativa para o erro de uma tal interpolação.
 
-\begin{teo}\normalfont{(\hl{Teorema de Lagrange}.)}\label{cap_interp_sec_lagrange:teo:lagrange}
+\begin{teo}[\hl{Teorema de Lagrange}]\label{cap_interp_sec_lagrange:teo:lagrange}
   Sejam dados uma função $f\in C^{n+1}([a, b])$ e $n$ pontos $\{x_i\}_{i=1}^n\subset [a, b]$. Então, o polinômio interpolador do conjunto de pontos $\{x_i, y_i=f(x_i)\}_{i=1}^n$ satisfaz
   \begin{equation}\hleq
     f(x) = p(x) + \frac{f^{(n+1)}(\xi)}{(n+1)!}\prod_{i=1}^n(x-x_i).
@@ -255,7 +263,7 @@ Polinômio interpoladores podem ser usados para a aproximação de funções. \h
   \begin{equation}
     p(x) = -0.41x^2 + 1.3x,
   \end{equation}
-com seus coeficientes arredondados para dois dígitos significativos. A Figura \ref{fig:interpoli_aprox} mostra os esboços da função $f(x)=\sen(x)$, dos pontos dados e do polinômio interpolador $p(x)$.
+com seus coeficientes arredondados para dois dígitos significativos. A Figura \ref{cap_interp_sec_lagrange:fig:interpoli_aprox} mostra os esboços da função $f(x)=\sen(x)$, dos pontos dados e do polinômio interpolador $p(x)$.
 
 \begin{figure}[H]
   \centering
@@ -267,7 +275,7 @@ com seus coeficientes arredondados para dois dígitos significativos. A Figura \
 \begin{lstlisting}
 x = np.array([0, np.pi/2, np.pi])
 f = lambda x: np.sin(x)
-poli = lagrange(x, f(x))
+poli = poliLagrange(x, f(x))
 \end{lstlisting}
 
 \end{ex}
@@ -275,21 +283,21 @@ poli = lagrange(x, f(x))
 \subsection{Exercícios}
 
 \begin{exer}
-  Use a técnica de Lagrange para obter o polinômio interpolador do conjunto de pontos $\{(-1, -1), (-0.5, 1), (1, 2)\}$.
+  Use a técnica de Lagrange para obter o polinômio interpolador do conjunto de pontos $\{(-1, -1)$, $(-0.5, 1)$, $(1, 2)\}$.
 \end{exer}
 \begin{resp}
   $-1,\bar{6}x^2 + 1.5x + 2.1\bar{6}$
 \end{resp}
 
 \begin{exer}
-  Use a técnica de Lagrange para obter o polinômio interpolador do conjunto de pontos $\{(-1, -1), (0, 1), (1, 1/2), (2, 1)\}$.
+  Use a técnica de Lagrange para obter o polinômio interpolador do conjunto de pontos $\{(-1, -1)$, $(0, 1)$, $(1, 1/2)$, $(2, 1)\}$.
 \end{exer}
 \begin{resp}
   $0.58\bar{3}x^3 - 1.25x^2 + 0.1\bar{6}x + 1$. 
 \end{resp}
 
 \begin{exer}
-  Use a técnica de Lagrange para obter o polinômio interpolador do conjunto de pontos $\{(-1,~-1), (0, 1), (1, 1/2), (2, 1), (2.5, 1)\}$.
+  Use a técnica de Lagrange para obter o polinômio interpolador do conjunto de pontos $\{(-1, -1)$, $(0, 1)$, $(1, 1/2)$, $(2, 1)$, $(2.5, 1)\}$.
 \end{exer}
 \begin{resp}
   $-0.26190476x^4  1.10714286x^3 -0.98809524x^2 -0.35714286x  1$.  
@@ -303,7 +311,7 @@ $0.54x^3 - 0.15x^2 + 1.3x + 1$.
 \end{resp}
 
 \begin{exer}
-  Use a técnica de Lagrange para aproximar a função $f(x) = \cos(x)$ por um polinômio interpolador $p$ no intervalo $[0, \pi]$. Escolha pontos de forma a obter $p$ que aproxime $f$ com boa precisão gráfica.
+  Use a técnica de Lagrange para aproximar a função $f(x) = \cos(x)$ por um polinômio interpolador $p$ no intervalo $[0, \pi]$. Escolha pontos de forma a obter $p$ que aproxime $f$ com boa precisão.
 \end{exer}
 \begin{resp}
   Dica: use os pontos $x_i = (i-1)\frac{\pi}{4}$, $i = 1, 2, 3, 4$.
@@ -315,7 +323,6 @@ $0.54x^3 - 0.15x^2 + 1.3x + 1$.
 \fi
 
 %%% SECTION %%%
-
 \section{Diferenças Divididas de Newton}\label{cap_interp_sec_difdiv}
 
 Dado um conjunto de pontos $\{(x_i, y_i)\}_{i=1}^n$, o \hl{\emph{Método das Diferenças Divididas de Newton}}{\newton} busca determinar o \hl{polinômio interpolador da forma}
