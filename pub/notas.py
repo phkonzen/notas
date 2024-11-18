@@ -39,40 +39,41 @@ class Notas:
         text += '}'
 
         text += '.ltx_title_theorem {'
-        text += 'border-style: dashed;'
-        text += 'border-width: 0px 0px 2px 0px;'
+        text += 'border-style: none;'
+        text += 'border-width: 0px 0px 1px 0px;'
         text += 'border-color: blueviolet;'
         text += '}'
 
         text += '.ltx_theorem {'
         text += 'border-style: dashed;'
-        text += 'border-width: 0px 0px 2px 0px;'
+        text += 'border-width: 0px 0px 1px 0px;'
         text += 'border-color: blueviolet;'      
         text += '}'
 
-        text += '.ltx_theorem_exeresol {'
-        text += 'border-style: none;'
-        text += 'border-width: 0px 0px 2px 0px;'
-        text += 'border-color: blueviolet;'      
-        text += '}'
+        # text += '.ltx_theorem_exeresol {'
+        # text += 'border-style: none;'
+        # text += 'border-width: 0px 0px 2px 0px;'
+        # text += 'border-color: blueviolet;'      
+        # text += '}'
 
-        text += '.ltx_theorem_resol {'
-        text += 'border-style: dashed;'
-        text += 'border-width: 0px 0px 2px 0px;'
-        text += 'border-color: blueviolet;'      
-        text += '}'
+        # text += '.ltx_theorem_resol {'
+        # text += 'border-style: dashed;'
+        # text += 'border-width: 0px 0px 2px 0px;'
+        # text += 'border-color: blueviolet;'      
+        # text += '}'
 
 
         text += '.ltx_proof {'
         text += 'border-style: dashed;'
-        text += 'border-width: 0px 0px 2px 0px;'
+        text += 'border-width: 0px 0px 1px 0px;'
         text += 'border-color: blueviolet;'      
         text += '}'
 
         text += '.ltx_title_proof {'
-        text += 'border-style: dashed;'
-        text += 'border-width: 0px 0px 2px 0px;'
-        text += 'border-color: blueviolet;'      
+        # text += 'margin-left: 0em;'
+        text += 'border-style: none;'
+        # text += 'border-width: 0px 0px 2px 0px;'
+        # text += 'border-color: blueviolet;'      
         text += '}'
 
         text += '.ltx_verbatim {'
@@ -297,9 +298,12 @@ class Notas:
                     merchant += 'Compre o <a href="'+self.ebook+'">e-book</a> deste material aqui!'
                 elif (self.livro != ''):
                     merchant += 'Compre o <a href="'+self.livro+'">livro</a> deste material aqui!'
+                else:
+                    merchant += 'Ajude a manter o site livre, gratuito e sem propagandas. <a href="../infos.html#colabore">Colabore!</a>'
                 merchant += '</p>'
 
-                if ((fn == 'main') and ((self.ebook != '') or (self.livro != ''))):
+                # merchant
+                if (fn == 'main'):
                     page = page.replace('<div class="ltx_page_main">', f'{merchant}<div class="ltx_page_main">')
 
                 if (fn != 'main'):
@@ -310,8 +314,7 @@ class Notas:
                             src_fname = fn[0:pos]
 
                     # book merchant
-                    if (self.ebook != '') or (self.livro != ''):
-                        page = page.replace('</h1>',f'</h1>{merchant}')
+                    page = page.replace('</h1>',f'</h1>{merchant}')
     
                 #     page = page.replace('</h1>',link_to_src+'</h1>')
                 #     page = page.replace('</h2>',link_to_src+'</h2>')
@@ -528,7 +531,7 @@ class Notas:
                                         '<button class="btn btn-warning" type="button" ' + \
                                         'data-bs-toggle="collapse" data-bs-target="#' + \
                                         respid + '">Resposta</button></div>' + \
-                                        '<div class="collapse" id="'+respid+'">')
+                                        '<div class="collapse" id="'+respid+'" style="margin-bottom: 1em; border-style: dashed; border-width: 0px 0px 1px 0px; border-color: blueviolet;">')
                     paux = page.find('ltx_theorem_resp')
 
                 #modifica o __footer__
