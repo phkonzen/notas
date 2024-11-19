@@ -32,7 +32,7 @@ para $k = 0, 1, 2, \ldots$ até que um critério de parada seja satisfeito.
   Para $\pmb{x}^{(0)}$ suficientemente próximo da solução $\pmb{x}^*$, \hl{o método de Newton é quadraticamente convergente}. Mais precisamente, este resultado de convergência local requer que $J_F^{-1}(\pmb{x}^*)$ seja não singular e que $J_F$ seja Lipschitz{\lipschitz} contínua. Consulte \cite[Seção 7.1]{Quarteroni2007a} para mais detalhes.
 \end{obs}
 
-\begin{ex}\label{cap_otimizacao_sec_sisnlin:ex:burgers}
+\begin{ex}\label{ex:burgers}
   Consideramos a \emph{equação de Burgers}{\burgers}
   \begin{equation}
     \frac{\p u}{\p t} + u\frac{\p u}{\p x} = \nu\frac{\p^2 u}{\p x^2}
@@ -99,8 +99,11 @@ para $k = 0, 1, 2, \ldots$ até que um critério de parada seja satisfeito.
   Implemente este esquema numérico!
 \end{ex}
 
+\subsubsection{Exercícios}
+\badgeRevisar
+
 \begin{exer}\label{cap_otimizacao_sec_sisnlin:exer:burgers}
-  Considere o problema discreto apresentado no Exemplo~\ref{cap_otimizacao_sec_sisnlin:ex:burgers} para diferentes valores do coeficiente de difusão $\nu = \nu_0/\pi$, $\nu_0 = 1., 0.1, 0.01, 0.001$. Simule o problema com cada uma das seguintes estratégias e as compare quanto ao desempenho computacional.
+  Considere o problema discreto apresentado no Exemplo~\ref{ex:burgers} para diferentes valores do coeficiente de difusão $\nu = \nu_0/\pi$, $\nu_0 = 1., 0.1, 0.01, 0.001$. Simule o problema com cada uma das seguintes estratégias e as compare quanto ao desempenho computacional.
   \begin{enumerate}[a)]
   \item Simule-o aplicando o Método de Newton com o {\it solver} linear \lstinline+npla.solve+.
   \item Observe que a jacobiana é uma matriz tridiagonal. Simule o problema aplicando o Método de Newton com o {\it solver} linear \lstinline+npla.solve_banded+.
@@ -109,7 +112,7 @@ para $k = 0, 1, 2, \ldots$ até que um critério de parada seja satisfeito.
 \end{exer}
 
 \begin{exer}
-  Desenvolva um esquema \textit{upwind} para simular a equação de Burgers do Exemplo~\ref{cap_otimizacao_sec_sisnlin:ex:burgers}.
+  Desenvolva um esquema \textit{upwind} para simular a equação de Burgers do Exemplo~\ref{ex:burgers}.
 \end{exer}
 
 \subsection{Método Tipo Newton}\label{cap_otimizacao_sec_sisnlin_ssec_tipoNewton}
@@ -120,7 +123,7 @@ Existem várias modificações do Método de Newton{\newton} que buscam reduzir 
 \subsubsection{Atualização Cíclica da Matriz Jacobiana}
 \badgeRevisar
 
-Geralmente, ao simplificarmos a matriz jacobina $J_F$ ou aproximarmos a atualização de Newton $\delta^{(k)}$, perdemos a convergência quadrática do método (consulte a Observação \ref{obs:convNewton}). A ideia é, então, buscar uma convergência pelo menos super-linear, i.e.
+Geralmente, ao simplificarmos a matriz jacobina $J_F$ ou aproximarmos a atualização de Newton $\delta^{(k)}$, perdemos a convergência quadrática do método (consulte a Observação~\ref{cap_otimizacao_sec_newton:obs:convNewton}). A ideia é, então, buscar uma convergência pelo menos super-linear, i.e.
 \begin{equation}
   \|e^{(k+1)}\|\approx \rho_k\|e^{(k)}\|,
 \end{equation}
@@ -156,7 +159,7 @@ Vamos, então, propor o seguinte  método tipo Newton de atualização cíclica 
 \end{enumerate}
 
 \begin{exer}
-  Implemente uma versão do Método Tipo Newton apresentado acima e aplique-o para simular o problema discutido no Exemplo \ref{ex:burgers} para $\nu = 1., 0.1, 0.01, 0.001, 0.0001$. Faça uma implementação com suporte para matrizes esparsas.
+  Implemente uma versão do método tipo Newton apresentado acima e aplique-o para simular o problema discutido no Exemplo \ref{ex:burgers} para $\nu = 1., 0.1, 0.01, 0.001, 0.0001$. Faça uma implementação com suporte para matrizes esparsas.
 \end{exer}
 
 \section{Problemas de Minimização}\label{cap_otimizacao_sec_minimi}
@@ -327,7 +330,7 @@ for k in range(maxiter):
     f(\pmb{x}) = \sum_{i=1}^n 100\left(x_{i+1}-x_i^2\right)^2 + (1-x_i)^2
   \end{equation}
   com
-  \begin{enumerate}
+  \begin{enumerate}[a)]
     \item $n = 2$.
     \item $n = 3$.
     \item $n = 4$.
@@ -386,7 +389,7 @@ $f(\pmb{1}) = 0$
     f(x) = 10 n + \sum_{i=1}^n \left[x_i^2 - 10\cos(2 \pi x_i)\right],
   \end{equation}
   para $\pmb{x}\in[-5.12, 5.12]^n$, com
-  \begin{enumerate}
+  \begin{enumerate}[a)]
     \item $n = 2$.
     \item $n = 3$.
     \item $n = 4$.
@@ -402,22 +405,35 @@ $f(\pmb{0}) = 0$
 \subsection{Método de Newton}
 \badgeRevisar
 
-O Método de Newton{\newton} para problemas de otimização é um Método de Declive com direções descendentes
-\begin{equation}
-  d^{(k)} = -H^{-1}(x^{(k)})\nabla f(x^{(k)}),
+O método de Newton{\newton} para problemas de otimização é um método de declive com direções descendentes
+\begin{equation}\hleq\label{eq:direcao_newton}
+  \pmb{d}^{(k)} = -H^{-1}\left(\pmb{x}^{(k)}\right)\nabla f\left(\pmb{x}^{(k)}\right),
 \end{equation}
-assumindo que a hessiana $H$ seja definida positiva dentro de uma vizinhança suficientemente grande do ponto de mínimo $x^*$.
+assumindo que a hessiana $H$ seja definida positiva dentro de uma vizinhança suficientemente grande do ponto de mínimo $\pmb{x}^*$. Esta escolha é baseada no polinômio de Taylor da função objetivo $f$
+\begin{equation}
+  f\left(\pmb{x}^{(k+1)}\right) \approx f\left(\pmb{x}^{(k)}\right) + \nabla f\left(\pmb{x}^{(k)}\right)\cdot \pmb{d}^{(k)} + \frac{1}{2}\pmb{d}^{(k)}\cdot H\left(\pmb{x}^{(k)}\right)\pmb{d}^{(k)}.
+\end{equation}
+Com isso, escolhemos $\pmb{x}^{(k+1)}$ de forma a minimizar o lado direito desta aproximação, i.e.
+\begin{equation}
+  \frac{\p}{\p d_i^{(k)}}\left(f\left(\pmb{x}^{(k)}\right) + \nabla f\left(\pmb{x}^{(k)}\right)\cdot \pmb{d}^{(k)} + \frac{1}{2}\pmb{d}^{(k)}\cdot H\left(\pmb{x}^{(k)}\right)\pmb{d}^{(k)}\right) = 0
+\end{equation}
+para $i = 1, 2, \dotsc, n$. Ou seja, temos
+\begin{equation}
+  \nabla f\left(\pmb{x}^{(k)}\right)\cdot \pmb{d}^{(k)} + H\left(\pmb{x}^{(k)}\right)\pmb{d}^{(k)} = \pmb{0}
+\end{equation}
+o que leva a \eqref{eq:direcao_newton}.
 
-\begin{obs}
-  A cada iteração de Newton é necessário computar a inversa da matriz hessiana. Este é um passo crítico para o desempenho computacional. Desta forma, a escolha do método para o cálculo da inversa é normalmente explicitado, este é chamado de {\it solver} linear. Por exemplo, \emph{Newton-Krylov} é o nome dado ao Método de Newton que utiliza um Método de Subespaço de Krylov como {\it solver} linear. Mais especificamente, \emph{Newton-GMRES} quando a inversa é computada com o GMRES. Uma escolha natural é \emph{Newton-GC}, tendo em vista que o Método de Gradiente Conjugado é ideal para matriz simétrica e definida positiva.
-\end{obs}
-
-\begin{obs}
-  Na implementação computacional não é necessário computar a inversa da hessiana, mais apenas computar $d^{(k)}$ resolvendo o seguinte sistema linear
-  \begin{equation}
+\begin{obs}[\hl{Computação da Direção}]
+  Na implementação computacional, não é necessário computar a inversa da hessiana, \hl{a direção $d^{(k)}$ pode ser mais eficientemente computada resolvendo-se}
+  \begin{equation}\hleq\label{eq:computa_direcao_newton}
     H(x^{(k)})d^{(k)} = -\nabla f(x^{(k)}).
   \end{equation}
 \end{obs}
+
+\begin{obs}[\hl{\textit{Solver} linear}]
+  O método usado para computar a solução de \eqref{eq:computa_direcao_newton} é chamado de {\it solver} linear. Por exemplo, \emph{Newton-Krylov}{\krylov} é o nome dado ao método de Newton que utiliza um método de subespaço de Krylov como {\it solver} linear. Mais especificamente, \emph{Newton-GMRES} quando o GMRES é escolhido como \textit{solver} linear. \hl{Uma escolha natural é \emph{Newton-GC}, tendo em vista que o método de gradiente conjugado é ideal para matriz simétrica e definida positiva}.
+\end{obs}
+
 
 \begin{ex}\label{ex:optNewtonGC}
   Seguindo o Exemplo \ref{ex:Rosenbrock}, temos que a hessiana associada é a matriz simétrica $H = [h_{i,j}]_{i,j=1}^{n,n}$ com
@@ -433,44 +449,324 @@ assumindo que a hessiana $H$ seja definida positiva dentro de uma vizinhança su
   \end{align}
   Notemos que a hessiana é uma matriz tridiagonal.
 
-  \lstinputlisting[caption=Algoritmo de Newton, label={lst:algOtimNewton}]{./cap_otimizacao/dados/pyNewton/main.py}  
+  % \lstinputlisting[caption=Algoritmo de Newton, label={lst:algOtimNewton}]{./cap_otimizacao/dados/pyNewton/main.py}  
+\begin{lstlisting}
+import numpy as np
+import numpy.linalg as npla
+import scipy.optimize as spopt
+
+# fun obj
+def fun(x):
+  '''
+  Funcao de Rosenbrock
+  '''
+  return sum(100.*(x[1:]-x[:-1]**2.)**2. + (1.-x[:-1])**2.)
+
+# gradiente da fun
+def grad(x):
+  xm = x[1:-1]
+  xm_m1 = x[:-2]
+  xm_p1 = x[2:]
+  der = np.zeros_like(x)
+  der[1:-1] = 200*(xm-xm_m1**2) - 400*(xm_p1 - xm**2)*xm - 2*(1-xm)
+  der[0] = -400*x[0]*(x[1]-x[0]**2) - 2*(1-x[0])
+  der[-1] = 200*(x[-1]-x[-2]**2)
+  
+  return der
+
+def hess(x):
+  x = np.asarray(x)
+  H = np.diag(-400*x[:-1],1) - np.diag(400*x[:-1],-1)
+  diagonal = np.zeros_like(x)
+  diagonal[0] = 1200*x[0]**2-400*x[1]+2
+  diagonal[-1] = 200
+  diagonal[1:-1] = 202 + 1200*x[1:-1]**2 - 400*x[2:]
+  H = H + np.diag(diagonal)
+
+  return H
+
+# dimensao
+n = 2
+
+# num max iters
+maxiter = 100000
+# tolerancia
+tol = 1e-10
+
+# aprox. inicial
+x = np.zeros(n)
+
+for k in range(maxiter):
+
+  # direcao descendente
+  d = npla.solve (hess(x),-grad(x))
+
+  # pesquisa linear
+  alpha = spopt.line_search(fun, grad, x, d)[0]
+
+  # atualizacao
+  x = x + alpha * d
+
+  nad = npla.norm(alpha * d)
+  nfun = npla.norm(fun(x))
+
+  print(f"{k+1}: {alpha:1.2e} {nad:1.2e} {nfun:1.2e}")
+
+  if ((nfun < tol) or np.isnan(nfun)):
+    break  
+\end{lstlisting}
+
 \end{ex}
 
-\begin{obs}{Métodos Tipo Newton}
-  Métodos Tipo Newton são aqueles que utilizam uma aproximação para a inversa da matriz hessiana. Uma estratégia comumente aplicada, é a de atualizar a hessiana apenas em algumas iterações, baseando-se em uma estimativa da taxa de convergência. Na Seção \ref{cap_otimizacao_sec_tipoNewton}, exploramos esta técnica no contexto de resolução de sistemas não lineares.
+\begin{obs}[\hl{Métodos Tipo Newton}]
+  Métodos tipo Newton são aqueles que utilizam uma aproximação para a inversa da matriz hessiana. Uma estratégia comumente aplicada, é a de atualizar a hessiana apenas em algumas iterações, baseando-se em uma estimativa da taxa de convergência. Na Subseção~\ref{cap_otimizacao_sec_sisnlin_ssec_tipoNewton}, exploramos esta técnica no contexto de resolução de sistemas não lineares.
 \end{obs}
 
-\begin{exer}
-  Aplique o Método de Newton para minimizar a função de Rosenbrock no caso de várias dimensões. Para tanto, utilize uma implementação eficiente com suporte para matrizes esparsas. Compare o desempenho entre os métodos Newton-GMRES e Newton-GC. 
-\end{exer}
+\subsubsection{Exercícios}
+\badgeRevisar
 
 \begin{exer}
-  Aplique o Método de Newton para minimizar as funções dadas no Exercício \ref{exer:optFuns}.
+  Aplique o método de Newton para computar o ponto mínimo da função de Rosenbrock{\rosenbrock}
+  \begin{equation}
+    f(\pmb{x}) = \sum_{i=1}^n 100\left(x_{i+1}-x_i^2\right)^2 + (1-x_i)^2
+  \end{equation}
+  com
+  \begin{enumerate}[a)]
+    \item $n = 2$.
+    \item $n = 3$.
+    \item $n = 4$.
+    \item $n = 5$.
+    \item $n = 10$.
+  \end{enumerate}
 \end{exer}
+\begin{resp}
+$f(\pmb{1}) = 0$
+\end{resp}
 
+\begin{exer}
+  Aplique o método de Newton para computar o ponto mínimo da função de Beale \cite{Beale1955a}
+  \begin{equation}
+    \begin{aligned}
+      & f(x,y) = (1.5-x+xy)^2 \\
+      &\qquad + (2.25-x+xy^2)^2 \\
+      &\qquad + (2.625-x+xy^3)^2.
+    \end{aligned}
+  \end{equation}
+  para $\pmb{x}\in [-4.5, 4.5]^2$.
+\end{exer}
+\begin{resp}
+  $f(3, 0.5) = 0$
+\end{resp}
+
+\begin{exer}
+  Aplique o método de Newton para computar o ponto mínimo da função de Goldstein-Price \cite{Goldstein1971a}
+  \begin{equation}
+    \begin{aligned}
+      & f(x,y) = \left[1+\left(x+y+1\right)^{2}\left(19-14x \right.\right.\\
+      &\qquad \left.\left.+ 3x^{2}-14y+6xy+3y^{2}\right)\right] \\
+      &\qquad \times \left[30+\left(2x-3y\right)^{2}\left(18-32x\right.\right.\\
+      &\qquad \left.\left.+12x^{2}+48y-36xy+27y^{2}\right)\right]
+    \end{aligned}  
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $f(0,-1) = 3$
+\end{resp}
+
+\begin{exer}
+  Aplique o método de Newton para computar o ponto mínimo da função de Booth
+  \begin{equation}
+    f(x,y) = \left( x + 2y -7\right)^{2} + \left(2x +y - 5\right)^{2}
+  \end{equation}
+  para $\pmb{x}\in [-10, 10]^2$.
+\end{exer}
+\begin{resp}
+  $f(1,3)=0$
+\end{resp}
+
+\begin{exer}
+  Aplique o método de Newton para computar o ponto mínimo da função de Rastrigin
+  \begin{equation}
+    f(x) = 10 n + \sum_{i=1}^n \left[x_i^2 - 10\cos(2 \pi x_i)\right],
+  \end{equation}
+  para $\pmb{x}\in[-5.12, 5.12]^n$, com
+  \begin{enumerate}[a)]
+    \item $n = 2$.
+    \item $n = 3$.
+    \item $n = 4$.
+    \item $n = 5$.
+    \item $n = 10$.
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+$f(\pmb{0}) = 0$
+\end{resp}
+
+%%% subsection
 \subsection{Método do Gradiente Conjugado}
 \badgeRevisar
 
-Métodos do Gradiente Conjugado são obtidos escolhendo-se as direções descendentes
+Métodos do gradiente conjugado são obtidos escolhendo-se as direções descendentes
 \begin{equation}
   d^{(k)} = -\nabla f(x^{(k)}) + \beta_k d^{(k-1)},
 \end{equation}
-onde $\beta_k$ é um escalar escolhido de forma que as direções $\{d^{(k)}\}$ sejam mutuamente ortogonais com respeito a uma dada norma. Por exemplo, o \emph{Método de Fletcher}-\emph{Reeves} consiste em escolher
+onde $\beta_k$ é um escalar escolhido de forma que as direções $\{d^{(k)}\}$ sejam mutuamente ortogonais com respeito a uma dada norma. Por exemplo, o \emph{método de Fletcher}-\emph{Reeves} consiste em escolher
 \begin{equation}
   \beta_k = \frac{\nabla f(x^{(k)})\cdot\nabla f(x^{(k)})}{\nabla f(x^{(k-1)})\cdot\nabla f(x^{(k-1)})},
 \end{equation}
 o que garante que as direções sejam mutuamente ortogonais com respeito ao produto interno euclidiano.
 
-\begin{obs}
+\begin{obs}[\hl{Variantes}]
   Outras variações comumente empregadas são o Método de Polak-Ribière e suas variantes. Consulte mais em \cite[Seção 5.2]{Nocedal2006}.
 \end{obs}
 
 \begin{ex}
   Implementação do Método de Fletcher-Reeves para a minimização da função de Rosenbrock dada no Exemplo \ref{ex:Rosenbrock}.
   
-  \lstinputlisting[caption=Algoritmo de Fletcher-Reeves, label={lst:algOtimGC}]{./cap_otimizacao/dados/pyMGC/main.py}    
+  % \lstinputlisting[caption=Algoritmo de Fletcher-Reeves, label={lst:algOtimGC}]{./cap_otimizacao/dados/pyMGC/main.py}
+
+\begin{lstlisting}
+import numpy as np
+import numpy.linalg as npla
+import scipy.optimize as spopt
+
+# fun obj
+def fun(x):
+  '''
+  Funcao de Rosenbrock
+  '''
+  return sum(100.*(x[1:]-x[:-1]**2.)**2. + (1.-x[:-1])**2.)
+
+# gradiente da fun
+def grad(x):
+  xm = x[1:-1]
+  xm_m1 = x[:-2]
+  xm_p1 = x[2:]
+  der = np.zeros_like(x)
+  der[1:-1] = 200*(xm-xm_m1**2) - 400*(xm_p1 - xm**2)*xm - 2*(1-xm)
+  der[0] = -400*x[0]*(x[1]-x[0]**2) - 2*(1-x[0])
+  der[-1] = 200*(x[-1]-x[-2]**2)
+  
+  return der
+
+# dimensao do prob
+n = 2
+
+# num max iters
+maxiter = 100000
+# tolerancia
+tol = 1e-10
+
+# aprox. inicial
+x = np.zeros(n)
+
+# iteracoes CG
+gf = grad(x)
+d = -gf
+
+for k in range(maxiter):
+
+  # pesquisa linear
+  alpha = spopt.line_search(fun, grad, x, d)[0]
+
+  # atualizacao
+  x = x + alpha * d
+
+  nad = npla.norm(alpha * d)
+  nfun = npla.norm(fun(x))
+
+  print(f"{k+1}: {alpha:1.2e} {nad:1.2e} {nfun:1.2e}")
+
+  if ((nfun < tol) or np.isnan(nfun)):
+    break
+
+  # prepara nova iter
+  ngf = grad(x)
+  
+  beta = np.dot(ngf,ngf)/np.dot(gf,gf)
+  d = -ngf + beta * d
+
+  gf = ngf  
+\end{lstlisting}
+
 \end{ex}
 
+\subsubsection{Exercícios}
+\badgeRevisar
+
 \begin{exer}
-  Teste o Método de Fletcher-Reeves para a minimização das funções dadas no Exercício \ref{exer:optFuns}.
+  Aplique o método um gradiente conjugado para computar o ponto mínimo da função de Rosenbrock{\rosenbrock}
+  \begin{equation}
+    f(\pmb{x}) = \sum_{i=1}^n 100\left(x_{i+1}-x_i^2\right)^2 + (1-x_i)^2
+  \end{equation}
+  com
+  \begin{enumerate}[a)]
+    \item $n = 2$.
+    \item $n = 3$.
+    \item $n = 4$.
+    \item $n = 5$.
+    \item $n = 10$.
+  \end{enumerate}
 \end{exer}
+\begin{resp}
+$f(\pmb{1}) = 0$
+\end{resp}
+
+\begin{exer}
+  Aplique o método um gradiente conjugado para computar o ponto mínimo da função de Beale \cite{Beale1955a}
+  \begin{equation}
+    \begin{aligned}
+      & f(x,y) = (1.5-x+xy)^2 \\
+      &\qquad + (2.25-x+xy^2)^2 \\
+      &\qquad + (2.625-x+xy^3)^2.
+    \end{aligned}
+  \end{equation}
+  para $\pmb{x}\in [-4.5, 4.5]^2$.
+\end{exer}
+\begin{resp}
+  $f(3, 0.5) = 0$
+\end{resp}
+
+\begin{exer}
+  Aplique o método um gradiente conjugado para computar o ponto mínimo da função de Goldstein-Price \cite{Goldstein1971a}
+  \begin{equation}
+    \begin{aligned}
+      & f(x,y) = \left[1+\left(x+y+1\right)^{2}\left(19-14x \right.\right.\\
+      &\qquad \left.\left.+ 3x^{2}-14y+6xy+3y^{2}\right)\right] \\
+      &\qquad \times \left[30+\left(2x-3y\right)^{2}\left(18-32x\right.\right.\\
+      &\qquad \left.\left.+12x^{2}+48y-36xy+27y^{2}\right)\right]
+    \end{aligned}  
+  \end{equation}
+\end{exer}
+\begin{resp}
+  $f(0,-1) = 3$
+\end{resp}
+
+\begin{exer}
+  Aplique o método um gradiente conjugado para computar o ponto mínimo da função de Booth
+  \begin{equation}
+    f(x,y) = \left( x + 2y -7\right)^{2} + \left(2x +y - 5\right)^{2}
+  \end{equation}
+  para $\pmb{x}\in [-10, 10]^2$.
+\end{exer}
+\begin{resp}
+  $f(1,3)=0$
+\end{resp}
+
+\begin{exer}
+  Aplique um método do gradiente conjugado para computar o ponto mínimo da função de Rastrigin
+  \begin{equation}
+    f(x) = 10 n + \sum_{i=1}^n \left[x_i^2 - 10\cos(2 \pi x_i)\right],
+  \end{equation}
+  para $\pmb{x}\in[-5.12, 5.12]^n$, com
+  \begin{enumerate}[a)]
+    \item $n = 2$.
+    \item $n = 3$.
+    \item $n = 4$.
+    \item $n = 5$.
+    \item $n = 10$.
+  \end{enumerate}
+\end{exer}
+\begin{resp}
+$f(\pmb{0}) = 0$
+\end{resp}
