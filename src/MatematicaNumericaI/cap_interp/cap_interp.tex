@@ -6,7 +6,9 @@ Neste capítulo, estudamos a \hl{resolução de problemas de interpolação} da 
 \end{equation}
 e um conjunto de $n$ pontos $\{(x_i, y_i)\}_{i=1}^n$, com $x_i\neq x_j$ se $i\neq j$, encontrar a \emph{função interpoladora}
 \begin{equation}\hleq
-  f(x) = c_1f_1(x) + c_2f_2(x) + \cdots + c_nf_n(x),
+  \begin{aligned}
+    f(x) = c_1f_1(x) + c_2f_2(x) + \cdots + c_nf_n(x),
+  \end{aligned}
 \end{equation}
 tal que
 \begin{equation}\hleq
@@ -17,7 +19,10 @@ tal que
 
 \hl{Dado um conjunto de $n$ pontos $\{(x_i, y_i)\}_{i=1}^n$, o problema de interpolação consiste em encontrar o polinômio}\endnote{Chamado de \emph{polinômio interpolador}.} \hl{de grau $n-1$}
 \begin{equation}\label{cap_interp_sec_interpoli:eq:interpoli_poli}\hleq
-  p(x) = p_1x^{n-1} + p_2x^{n-2} + \cdots + p_{n-1}x + p_n
+  \begin{aligned}
+    p(x) &= p_1x^{n-1} + p_2x^{n-2} \\
+         &+ \cdots + p_{n-1}x + p_n
+  \end{aligned}
 \end{equation}
 tal que
 \begin{equation}\label{cap_interp_sec_interpoli:eq:interpoli_conds}\hleq
@@ -26,12 +31,12 @@ tal que
 para todo $i=1, 2, \dotsc, n$.
 
 Das condições \eqref{cap_interp_sec_interpoli:eq:interpoli_poli}, temos
-\begin{equation}
-  \begin{aligned}\label{cap_interp_sec_interpoli:eq:interpoli_sis}
-    p_1x_1^{n-1} + p_2x_1^{n-2} + \cdots + p_{n-1}x_1 + p_n &= y_1 \\
-    p_1x_2^{n-1} + p_2x_2^{n-2} + \cdots + p_{n-1}x_2 + p_n &= y_2 \\
+\begin{equation}\label{cap_interp_sec_interpoli:eq:interpoli_sis}
+  \begin{aligned}
+    p_1x_1^{n-1} + p_2x_1^{n-2} + \cdots + p_n &= y_1 \\
+    p_1x_2^{n-1} + p_2x_2^{n-2} + \cdots + p_n &= y_2 \\
     &\vdots \\
-    p_1x_n^{n-1} + p_2x_n^{n-2} + \cdots + p_{n-1}x_n + p_n &= y_n.
+    p_1x_n^{n-1} + p_2x_n^{n-2} + \cdots + p_n &= y_n.
   \end{aligned}
 \end{equation}
 Isto é, \hl{os coeficientes do \emph{polinômio interpolador} {\eqref{cap_interp_sec_interpoli:eq:interpoli_poli}} satisfazem o sistema linear}
@@ -72,7 +77,7 @@ A Figura \ref{cap_interp_sec_interpoli:fig:interpoli_intro} mostra os esboços d
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.7\textwidth]{./cap_interp/dados/fig_poliInterp/fig}
+  \includegraphics[width=3in]{./cap_interp/dados/fig_poliInterp/fig}
   \caption{Esboço do polinômio interpolador referente ao Exemplo \ref{cap_interp_sec_interpoli:ex:interpoli_intro}.}
   \label{cap_interp_sec_interpoli:fig:interpoli_intro}
 \end{figure}
@@ -112,33 +117,35 @@ print(np.polyval(p, x))
   $\{(-1, -1)$, $(-0.5, 1)$, $(1, 2)\}$.
 \end{exer}
 \begin{resp}
-  $-1,\bar{6}x^2 + 1.5x + 2.1\bar{6}$
+  $$-1,\bar{6}x^2 + 1.5x + 2.1\bar{6}$$
 \end{resp}
 
 \begin{exer}
   Obtenha o polinômio interpolador do conjunto de pontos $\{(-1, -1)$, $(0, 1)$, $(1, 1/2)$, $(2, 1)\}$.
 \end{exer}
 \begin{resp}
-  $0.58\bar{3}x^3 - 1.25x^2 + 0.1\bar{6}x + 1$. 
+  $$0.58\bar{3}x^3 - 1.25x^2 + 0.1\bar{6}x + 1$$. 
 \end{resp}
 
 \begin{exer}
   Obtenha o polinômio interpolador do conjunto de pontos $\{(-1,~-1)$, $(0, 1)$, $(1, 1/2)$, $(2, 1)$, $(2.5, 1)\}$.
 \end{exer}
 \begin{resp}
-  $-0.26190476x^4  1.10714286x^3 -0.98809524x^2 -0.35714286x  1$.  
+  $$-0.26190476x^4 + 1.10714286x^3 - 0.98809524x^2 - 0.35714286x  + 1$$.  
 \end{resp}
 
 \begin{exer}
   Considere a matriz de Vandermonde $V = [\pmb{x}^{n-j}]_{j=1}^{n}$, com $\pmb{x} = (x_1, x_2, \dotsc, x_n)$, sendo $x_i = (i-1)h$, $h=0.1$ e $i = 1, 2, \dotsc, n$. Compute o número de condicionamento de $V$ para $n=5, 10, 100$. De que forma os resultados obtidos impactam no problema de interpolação polinomial?
 \end{exer}
 \begin{resp}
-  \begin{tabular}{ll}
-    $n$ & $\kappa(V)$\\\hline
+
+  \begin{tabular}{rr}
+    $n$ & $\kappa(V)$\\\midrule
     $5$ & $1.03\E+4$\\
     $10$ & $2.57\E+7$\\
-    $100$ & $9.11\E+109$\\\hline
+    $100$ & $9.11\E+109$\\\bottomrule
   \end{tabular}
+
 \end{resp}
 
 \begin{exer}

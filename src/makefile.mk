@@ -25,6 +25,23 @@ pdf-draft: main.tex
 # FORMATO HTML
 ########################################
 
+# html: main.tex
+# 	cp ../config-html.knd config.knd
+# 	rm -rvf ./html
+# 	mkdir -p ./html
+# 	cp -rvf ../fonts html/
+# 	cp ../notas.css ./html/
+# 	latexmlc main.tex \
+#     --splitat=section -splitnaming=label \
+# 		--includestyles \
+# 		--css="./fonts/cmun-serif.css" \
+# 		--css="./notas.css" \
+# 		--format=html \
+# 		--javascript='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=MML_SVG' \
+# 		--linelength=20 \
+# 		--dest=html/main.html -
+# 	cp ../config-book.knd config.knd
+
 html: main.tex
 	cp ../config-html.knd config.knd
 	rm -rvf ./html
@@ -32,14 +49,19 @@ html: main.tex
 	cp -rvf ../fonts html/
 	cp ../notas.css ./html/
 	latexmlc main.tex \
-    --splitat=section -splitnaming=label \
+    --splitat=section --splitnaming=label \
 		--includestyles \
 		--css="./fonts/cmun-serif.css" \
 		--css="./notas.css" \
-		--format=html \
-		--javascript='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=MML_SVG' \
+		--format=html5 \
+		--pmml \
+		--javascript=LaTeXML-maybeMathJax.js \
+		--linelength=25 \
 		--dest=html/main.html -
 	cp ../config-book.knd config.knd
+
+# --javascript='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=MML_SVG' \
+# --linelength=20 \
 
 
 
