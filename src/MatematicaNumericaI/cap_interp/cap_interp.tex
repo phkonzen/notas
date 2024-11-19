@@ -33,10 +33,10 @@ para todo $i=1, 2, \dotsc, n$.
 Das condições \eqref{cap_interp_sec_interpoli:eq:interpoli_poli}, temos
 \begin{equation}\label{cap_interp_sec_interpoli:eq:interpoli_sis}
   \begin{aligned}
-    p_1x_1^{n-1} + p_2x_1^{n-2} + \cdots + p_n &= y_1 \\
-    p_1x_2^{n-1} + p_2x_2^{n-2} + \cdots + p_n &= y_2 \\
-    &\vdots \\
-    p_1x_n^{n-1} + p_2x_n^{n-2} + \cdots + p_n &= y_n.
+    &p_1x_1^{n-1} + p_2x_1^{n-2} + \cdots + p_n = y_1 \\
+    &p_1x_2^{n-1} + p_2x_2^{n-2} + \cdots + p_n = y_2 \\
+    &\text{}\qquad\qquad\qquad\qquad\vdots \\
+    &p_1x_n^{n-1} + p_2x_n^{n-2} + \cdots + p_n = y_n.
   \end{aligned}
 \end{equation}
 Isto é, \hl{os coeficientes do \emph{polinômio interpolador} {\eqref{cap_interp_sec_interpoli:eq:interpoli_poli}} satisfazem o sistema linear}
@@ -341,15 +341,15 @@ Dado um conjunto de pontos $\{(x_i, y_i)\}_{i=1}^n$, o \hl{\emph{Método das Dif
   \end{aligned}
 \end{equation}
 Por uma abordagem direta, temos que $p(x_i)=y_i$, $i=1, 2, \dotsc, n$, o que nos leva ao seguinte sistema triangular inferior
-\begin{subequations}
-  \begin{align}
-    a_1 &= y_1, \\
-    a_1 + a_2(x_2-x_1) &= y_2, \\
-    a_1 + a_2(x_3-x_1) + a_3(x_3-x_1)(x_3-x_2) &= y_3, \\
-        &\vdots\\
-    a_1 + a_2(x_n-x_1) + \cdots + a_{n}(x_n-x_1)\cdot\cdots\cdot(x_n-x_{n-1}) &= y_n.
-  \end{align}
-\end{subequations}
+\begin{equation}
+  \begin{aligned}
+    & a_1 = y_1, \\
+    & a_1 + a_2(x_2-x_1) = y_2, \\
+    & a_1 + a_2(x_3-x_1) + a_3(x_3-x_1)(x_3-x_2) = y_3, \\
+    &\text{}\qquad\qquad\qquad\vdots \\
+    & a_1 + a_2(x_n-x_1) + \cdots + a_{n}(x_n-x_1) \cdots (x_n-x_{n-1}) = y_n.
+  \end{aligned}
+\end{equation}
 Entretanto, existe uma forma mais eficiente de se determinar os coeficientes $a_i$, $i=1, 2, \dotsc, n$.
 
 Denotemos por $p[x_j, x_{j+1}, \dotsc, x_{k}](x)$ o polinômio interpolador do conjunto de pontos $\{(x_i, y_i)\}_{i=j}^k$. Então, temos a seguinte recursão
@@ -409,11 +409,11 @@ para todo $n\geq k > j \geq 1$. E, temos \hl{o polinômio interpolador} do conju
   A recursão \eqref{cap_interp_sec_difdiv:eq:interp_difdiv} pode ser adequadamente organizada em uma matriz da forma
   \begin{equation}
     \begin{bmatrix}
-      \pmb{f[x_1]} & 0 & 0 & \ldots & 0 \\
-      f[x_2] & \pmb{f[x_1,x_2]} & 0 & \ldots & 0 \\
-      f[x_3] & f[x_2,x_3] & \pmb{f[x_1,x_2,x_3]} & \ldots & 0\\
-      \vdots & \vdots & \vdots & \ldots & \vdots \\
-      f[x_n] & f[x_{n-1},x_{n}] & f[x_{n-2},x_{n-1},x_n] & \ldots & \pmb{f[x_1,x_2,\dotsc,x_n]}
+      \pmb{f[x_1]} & 0 & \ldots & 0 \\
+      f[x_2] & \pmb{f[x_1,x_2]} & \ldots & 0 \\
+      f[x_3] & f[x_2,x_3] & \ldots & 0\\
+      \vdots & \vdots & \ldots & \vdots \\
+      f[x_n] & f[x_{n-1},x_{n}] & \ldots & \pmb{f[x_1,\dotsc,x_n]}
     \end{bmatrix}
   \end{equation}
 onde \hl{os elementos da diagonal correspondem aos coeficientes do polinômio interpolador na forma {\eqref{cap_interp_sec_difdiv:eq:interpoli_Newton}}}.
@@ -533,26 +533,38 @@ $p(x) = 0.54x^3 - 0.15x^2 + 1.3x + 1$.
 
 \hl{Dado um conjunto de pontos $\{(x_i,y_i)\}_{i=1}^n$, um \emph{spline cúbico} é uma função duas vezes continuamente diferenciável da forma}
 \begin{equation}\hleq
-  \begin{small}
-    s(x)\!=\!\left\{
-      \begin{array}{ll}
-        \!s_{11}(x-x_1)^3 + s_{12}(x-x_1)^2 + s_{13}(x-x_1) + s_{14} &,x_1\!\leq\!x\!<\!x_2,\\
-        \!s_{21}(x-x_2)^3 + s_{22}(x-x_2)^2 + s_{23}(x-x_2) + s_{24} &,x_2\!\leq\!x\!<\!x_3,\\
-                                                                   &, \vdots \\
-        \!s_{n-1,1}(x-x_2)^3\!+\!s_{n-1,2}(x-x_2)^2\!+\!s_{n-1,3}(x-x_2)\!+\!s_{n-1,4}\!&,x_{n-1}\!\leq\!x\!\leq\!x_n.
-      \end{array}
-    \right.
-  \end{small}
+  s(x) = \left\{\begin{array}{ll}
+    s_1(x) &, ~x_1 \leq x < x_2, \\
+    s_2(x) &, ~x_2 \leq x < x_3, \\
+    \text{}~\vdots & \text{}~\vdots \\
+    s_{n-1}(x) &, ~x_{n-1}\leq x < x_n,
+  \end{array}\right.
 \end{equation}
-que satisfaz as seguintes propriedades
-\begin{enumerate}
-\item \hl{$s(x_i) = y_i$} para $i=1, 2, \dotsc, n$,
-\item \hl{$s_j(x_j) = s_{j+1}(x_j)$} para todo $j = 1, 2, \dotsc, n-2$,
-\item \hl{$s_j'(x_j) = s_{j+1}'(x_j)$} para todo $j = 1, 2, \dotsc, n-2$,  
-\item \hl{$s_j''(x_j) = s_{j+1}''(x_j)$} para todo $j= 1, 2, \dotsc, n-2$.
+onde as partes são polinômios cúbicos
+\begin{equation}\hleq
+  s_i(x) = s_{i,1}(x-x_{i})^3 + s_{i,2}(x-x_{i})^2 + s_{i,3}(x-x_{i}) + s_{i,4},
+\end{equation}
+que satisfazem as seguintes propriedades
+\begin{enumerate}[a)]
+\item \hl{Interpolação}
+  \begin{equation}
+    \hleq{s(x_i) = y_i}, ~i=1, 2, \dotsc, n,
+  \end{equation}
+\item \hl{Continuidade}
+  \begin{equation}
+    \hleq{s_i(x_i) = s_{i+1}(x_i)}, ~i = 1, 2, \dotsc, n-2,
+  \end{equation}
+\item \hl{Continuidade da derivada}
+  \begin{equation}
+    \hleq{s_i'(x_i) = s_{i+1}'(x_i)}, ~i = 1, 2, \dotsc, n-2,  
+  \end{equation}
+\item \hl{Continuidade da segunda derivada}
+  \begin{equation}
+    \hleq{s_i''(x_i) = s_{i+1}''(x_i)}, ~i= 1, 2, \dotsc, n-2.
+  \end{equation}
 \end{enumerate}
 
-Observemos que o spline tem $4(n-1)$ coeficientes a determinar, enquanto que as condições acima nos fornecem $4n-6$ equações. Assim sendo, notamos que a determinação de \hl{um spline requer ainda 2 condições de fechamento}. Conforme a escolha destas condições, diferentes splines cúbicos são computados.
+Observamos que o spline tem $4(n-1)$ coeficientes a determinar, enquanto que as condições acima nos fornecem $4n-6$ equações. Assim sendo, a determinação de \hl{um spline requer ainda duas condições de fechamento}. Conforme a escolha destas condições, diferentes splines cúbicos são computados.
 
 \subsection{Spline {\it Not-a-Knot}}
 
