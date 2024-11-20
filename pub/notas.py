@@ -290,16 +290,21 @@ class Notas:
                 #modifica o __body__ (bottom)
                 page = page.replace('</body>',body_end)
 
-                merchant = '<p class="m-1" style="text-align: center">'
-                merchant += '<i class="fa-solid fa-heart" style="color: red;"></i> '
-                if (self.ebook != '') and (self.livro != ''):
-                    merchant += 'Compre o <a href="'+self.livro+'">livro</a> ou o <a href="'+self.ebook+'">e-book</a> deste material aqui!'
-                elif (self.ebook != ''):
-                    merchant += 'Compre o <a href="'+self.ebook+'">e-book</a> deste material aqui!'
-                elif (self.livro != ''):
-                    merchant += 'Compre o <a href="'+self.livro+'">livro</a> deste material aqui!'
-                else:
-                    merchant += 'Ajude a manter o site livre, gratuito e sem propagandas. <a href="../infos.html#colabore">Colabore!</a>'
+                merchant = '<p class="m-1 text-black" style="text-align: center">'
+
+                merchant += '<i class="fa-solid fa-hand-fist""></i> '
+                merchant += ' Dia da Consciência Negra'
+
+                # merchant += '<i class="fa-solid fa-heart" style="color: red;"></i> '
+                # if (self.ebook != '') and (self.livro != ''):
+                #     merchant += 'Compre o <a href="'+self.livro+'">livro</a> ou o <a href="'+self.ebook+'">e-book</a> deste material aqui!'
+                # elif (self.ebook != ''):
+                #     merchant += 'Compre o <a href="'+self.ebook+'">e-book</a> deste material aqui!'
+                # elif (self.livro != ''):
+                #     merchant += 'Compre o <a href="'+self.livro+'">livro</a> deste material aqui!'
+                # else:
+                #     merchant += 'Ajude a manter o site livre, gratuito e sem propagandas. <a href="../infos.html#colabore">Colabore!</a>'
+
                 merchant += '</p>'
 
                 # merchant
