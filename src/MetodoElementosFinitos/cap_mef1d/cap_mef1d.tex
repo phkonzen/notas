@@ -1476,6 +1476,46 @@ for k in range(nt):
 \section{Aplicação: EDP de Advecção-Difusão}\label{cap_mef1d_sec_eqad}
 \badgeConstrucao
 
+Consideramos a equação de advecção-Difusão
+\begin{equation}\label{eq:edp_ad}
+  cu' - \epsilon u'' = f,
+\end{equation}
+no domínio $x\in [0, 1]$, com $c\neq 0$, $\epsilon>0$ e condições de contorno de Dirichlet{\dirichlet} homogêneas.
+
+A formulação padrão de elementos finitos de Galerkin consiste em: encontrar $u_h\in V_h$ tal que
+\begin{equation}
+  a(u_h, v_h) = l(v_h)
+\end{equation}
+para todo $v_h\in V_h$. Aqui, vamos assumir que o espaço de elementos finitos $V_h$ da funções $v_h$ lineares por partes com $v(0)=v(1)=0$. No caso de \eqref{eq:edp_ad}, temos a forma bilinear
+\begin{equation}
+  a(u_h, v_h) := (cu_h', v_h) + (\epsilon u_h', v_h')
+\end{equation}
+e a forma linear
+\begin{equation}
+  l(v_h) := (f, v_h).
+\end{equation}
+
+Para problema dominados pela advecção/convecção ($\epsilon \llless 1$), soluções da formulação padrão de elementos finitos tem grande dificuldade de tratar as camadas (regiões de rápida variação) que tipicamente fazem parte da solução do problema de advecção-difusão. A alternativa é usar os chamados métodos de elementos finitos estabilizados.
+
+O método SUPG (\textit{streamline upwind Petrov-Galerkin}) é uma formulação de estabilização para elementos finitos. A formulação de elementos finitos estabilizada é construída com a função teste $v_h + \tau cv_h'\in V_h$, $\tau > 0$, o que fornece
+\begin{equation}
+  (cu_h', v_h + \tau cv_h') - (\epsilon u_h'', v_h + \tau cv_h') = (f, v_h + \tau cv_h').
+\end{equation}
+Que por intergração por partes e das condições de contorno fornece
+\begin{equation}
+  (cu_h', v_h + \tau cv_h') + (\epsilon u_h', v_h' + \tau cv_h'') = (f, v_h + \tau cv_h').
+\end{equation}
+Observando que para elementos lineares $v_h'' = 0$, temos a formulação de elementos finitos com SUPG: encontrar $u_h\in V_h$ tal que
+\begin{equation}
+  b(u_h, v_h) = l(v_h + \tau cv_h')
+\end{equation}
+para todo $v_h\in V_h$, sendo a forma bilinear
+\begin{equation}
+  b(u_h, v_h) := (cu_h', v_h + \tau cv_h') + (\epsilon u_h', v_h').
+\end{equation}
+Uma escolha rasoável é $\tau = h/2$ de forma que $\tau\to 0$ quando $h\to 0$.
+
+
 \subsection{Exercícios}
 \badgeConstrucao
 
