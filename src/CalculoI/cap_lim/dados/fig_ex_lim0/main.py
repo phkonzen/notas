@@ -6,8 +6,7 @@ plt.rcParams.update({
      "font.family": "serif",
      "font.size": 12,
      "font.sans-serif": "Computer Modern Roman",
-     "text.latex.preamble": r"\usepackage{amsmath}",
-     "text.latex.preamble": r"\usepackage{amssymb}",
+     "text.latex.preamble": r"\usepackage{amsmath} \usepackage{amssymb}",
      "figure.figsize": [4, 4],
      "figure.dpi": 300
      })

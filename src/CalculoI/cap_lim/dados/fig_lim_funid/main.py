@@ -4,7 +4,11 @@ from sympy import *
 plt.rcParams.update({
      "text.usetex": True,
      "font.family": "serif",
-     "font.size": 16
+     "font.size": 12,
+     "font.sans-serif": "Computer Modern Roman",
+     "text.latex.preamble": r"\usepackage{amsmath} \usepackage{amssymb}",
+     "figure.figsize": [4, 4],
+     "figure.dpi": 300
      })
 
 var('x,y', real=True)
@@ -20,7 +24,7 @@ q = plot_implicit(x<y,(x,0,3),(y,(x0-tol),(x0+tol)),
 p.extend(q)
 p.xlabel = '$x$'
 p.ylabel = '$y$'
-p.save('fig_lim_funid.png')
+p.save('fig.png')
 
 fig = p._backend.fig
 ax = fig.axes[0]
@@ -40,4 +44,4 @@ ax.text(-0.2,x0+tol,"$\\downarrow$")
 ax.text(-0.3,x0-0.05,"$x_0$")
 ax.plot([x0],[x0],marker="o",markersize=6,markeredgecolor="red",markerfacecolor="red")
 ax.text(2.5+0.2,2.5,"$y=x$")
-fig.savefig('fig_lim_funid.png', bbox_inches='tight')
+fig.savefig('fig.png', bbox_inches='tight')

@@ -6,9 +6,8 @@ plt.rcParams.update({
      "font.family": "serif",
      "font.size": 12,
      "font.sans-serif": "Computer Modern Roman",
-     "text.latex.preamble": r"\usepackage{amsmath}",
-     "text.latex.preamble": r"\usepackage{amssymb}",
-     "figure.figsize": [4, 4],
+     "text.latex.preamble": r"\usepackage{amsmath} \usepackage{amssymb}",
+     "figure.figsize": (4,4),
      "figure.dpi": 300
      })
 
@@ -27,9 +26,12 @@ q = plot_implicit(x<sqrt(y),(x,0,3),(y,(x0-tol)**2,(x0+tol)**2),
 p.extend(q)
 p.xlabel = ''
 p.ylabel = ''
-p.save('fig_lim.png')
+p.save('fig_lim.svg')
+# p.show()
 
 fig = p._backend.fig
+#fig.set_size_inches(4, 4)
+
 ax = fig.axes[0]
 ax.set_yticks([])
 ax.set_xticks([])
@@ -48,4 +50,5 @@ ax.text(-0.15,(x0-tol)**2,"$\\uparrow$")
 ax.text(-0.15,(x0+tol)**2-0.3,"$\\downarrow$")
 ax.text(-0.175,x0**2-0.1,"$L$",color="red")
 ax.plot([x0],[x0**2],marker="o",markersize=6,markeredgecolor="red",markerfacecolor="0.85")
+
 fig.savefig('fig.png', bbox_inches='tight')
