@@ -6,7 +6,7 @@ Neste capítulo, estudamos métodos numéricos para a computação de autovalore
 \section{Método da Potência}\label{cap_autoval_sec_pot}
 \badgeRevisar
 
-O método da potência é uma técnica iterativa para computar o autovalor dominante de uma matriz e um autovetor associado. Modificações do método, tornam possível sua aplicação para a determinação de outros autovalores próximos a um dado número. Desta forma, pode ser utilizá-lo em conjunto com outra técnica de aproximação de autovalores e autovetores.
+\hl{O \emph{método da potência} é uma técnica iterativa para computar o autovalor dominante de uma matriz e um autovetor associado}. Modificações do método, tornam possível sua aplicação para a determinação de outros autovalores próximos a um número dado. Desta forma, pode ser utilizá-lo em conjunto com outra técnica de aproximação de autovalores e autovetores.
 
 \subsection{Autovalor dominante}
 \badgeRevisar
@@ -15,108 +15,146 @@ Vamos denotar o \emph{espectro} de uma dada matriz $A\in\mathbb{C}^{n\times n}$ 
 \begin{equation}
   \sigma(A) = \{\lambda_1, \lambda_2, \dotsc, \lambda_n\},
 \end{equation}
-sendo $\lambda_i\in \mathbb{C}$ o $i$-ésimo \emph{autovalor} de uma \emph{matriz diagonalizável}\footnote{Existe uma base de $\mathbb{C}^{n\times n}$ formada apenas de autovetores de $A$.} $A=[a_{i,j}]_{i,j=1}^{n,n}$, i.e. existe um vetor $0\neq v^{(i)}\in\mathbb{C}^n$ tal que
-\begin{equation}
-  Av^{(i)} = \lambda_i v^{(i)},
+sendo $\lambda_i\in \mathbb{C}$ o $i$-ésimo \emph{autovalor} de uma \emph{matriz diagonalizável}\endnote{Existe uma base de $\mathbb{C}^{n\times n}$ formada apenas de autovetores de $A$.} $A=[a_{i,j}]_{i,j=1}^{n,n}$, i.e. existe um vetor $\pmb{0}\neq \pmb{v}_i\in\mathbb{C}^n$ tal que
+\begin{equation}\hleq
+  A\pmb{v}_i = \lambda_i \pmb{v}_i,
 \end{equation}
-sendo $v^{(i)}$ chamado de \emph{autovetor} associado a $\lambda_i$. No desenvolvimento do \emph{Método da Potência}, vamos assumir que os autovalores podem ser ordenados da seguinte forma
-\begin{equation}
+sendo $\pmb{v}_i$ chamado de \emph{autovetor} associado a $\lambda_i$. No desenvolvimento do \emph{método da potência}, vamos assumir que os autovalores podem ser ordenados da seguinte forma
+\begin{equation}\hleq
   |\lambda_1| > |\lambda_2| \geq \cdots \geq |\lambda_n|.
 \end{equation}
-Assim sendo, o $\lambda_1$ é chamado de \emph{autovalor dominante}. Na sequência, vamos denotar por $A^H$ a matriz adjunta\footnote{Também, chamada de matriz conjugada transposta de $A$.} de $A$, i.e. $A^H=[\bar{a}_{j,i}]_{i,j=1}^{n,n}$.
+Assim sendo, o \hl{$\lambda_1$ é chamado de \emph{autovalor dominante}}. Na sequência, vamos denotar por $\pmb{A}^H$ a transposta conjugada de $A$, i.e. $A^H=[\bar{a}_{j,i}]_{i,j=1}^{n,n}$.
 
-A \emph{iteração} do Método da Potência consiste em
-\begin{align}
-  z^{(k)} &= Aq^{(k-1)},\\
-  q^{(k)} &= z^{(k)}/\left\|z^{(k)}\right\|,\\
-  \nu_k &= (q^{(k)})^H A q^{(k)},
+\hl{A \emph{iteração} do método da potência consiste em}
+\begin{align}\hleq
+  & \pmb{z}^{(k)} = A\pmb{q}^{(k-1)},\\
+  & \pmb{q}^{(k)} = \pmb{z}^{(k)}/\left\|\pmb{z}^{(k)}\right\|,\\
+  & \nu^{(k)} = (\pmb{q}^{(k)})^H A \pmb{q}^{(k)},
 \end{align}
-com dada aproximação inicial $q^{(0)}$ para o autovetor associado a $\lambda_1$. Quando o método é bem sucedido, tem-se $\nu_k\to \lambda_1$ quando $k\to\infty$.
+com dada aproximação inicial $\pmb{q}^{(0)}$ para um autovetor associado a $\lambda_1$. Quando o método é bem sucedido, tem-se $\nu^{(k)}\to \lambda_1$ quando $k\to\infty$.
 
-Para mostrar a \emph{convergência} do método, basta mostrar que $q^{(k)}$ converge para um autovetor associado a $\lambda_1$. Primeiramente, notemos que\footnote{Segue por indução matemática.}
+\subsubsection{Convergência}
+
+Para mostrar a convergência do método, basta mostrar que $\pmb{q}^{(k)}$ converge para um autovetor associado a $\lambda_1$. Primeiramente, notamos que\endnote{Segue por indução matemática.}
 \begin{equation}
-  q^{(k)} = \frac{A^kq^{(0)}}{\left\|A^kq^{(0)}\right\|},\quad k\geq 1.
+  \pmb{q}^{(k)} = \frac{A^k\pmb{q}^{(0)}}{\left\|A^k\pmb{q}^{(0)}\right\|}, ~k\geq 1.
 \end{equation}
-Como $A$ é diagonalizável, temos que existe uma base $\{v^{(1)}, v^{(2)}, \dotsc, v^{(n)}\}$ de $\mathbb{C}^{n\times n}$ formada apenas de autovetores de $A$. Segue que
-\begin{equation}
-  q^{(0)} = \sum_{i=1}^n \alpha_i v^{(i)},
+Para $A$ diagonalizável, temos que existe uma base $\left\{\pmb{v}_1, \pmb{v}_2, \dotsc, \pmb{v}_n\right\}$ de $\mathbb{C}^{n\times n}$ formada apenas de autovetores de $A$. Segue que
+\begin{equation}\label{eq:q0_comblin}
+  \pmb{q}^{(0)} = \sum_{i=1}^n \alpha_i \pmb{v}_i,
 \end{equation}
-onde $\alpha_i\in\mathbb{C}$. Vamos assumir que $\alpha_1\neq 0$\footnote{Condição necessária para a convergência.}. Ainda, $Av^{(i)} = \lambda_i v^{(i)}$, donde
+onde $\alpha_i\in\mathbb{C}$. Vamos assumir que $\alpha_1\neq 0$\endnote{Condição necessária para a convergência.}. Ainda, $A\pmb{v}_i = \lambda_i \pmb{v}_i$, donde
 \begin{align}
-  A^kq^{(0)} &= \sum_{i=1}^n \alpha_iA^kv^{(i)}\\
-             &= \sum_{i=1}^n \alpha_i\lambda_i^kv^{(i)}\\
-             &= \alpha_1\lambda_1^k\left[v^{(1)} + \sum_{i=2}^n\frac{\alpha_i}{\alpha_1}\left(\frac{\lambda_k}{\lambda_1}\right)^kv^{(i)}\right]
+  A^k\pmb{q}^{(0)} &= \sum_{i=1}^n \alpha_iA^k\pmb{v}_i\\
+             &= \sum_{i=1}^n \alpha_i\lambda_i^k\pmb{v}_i\\
+             &= \alpha_1\lambda_1^k\left[\pmb{v}_1 + \sum_{i=2}^n\frac{\alpha_i}{\alpha_1}\left(\frac{\lambda_k}{\lambda_1}\right)^k\pmb{v}_i\right]
 \end{align}
 Como $|\lambda_i|/|\lambda_1| < 1$, $i=2,\dotsc,n$, temos que
 \begin{equation}
-  y^{(k)} = \sum_{i=2}^n\frac{\alpha_i}{\alpha_1}\left(\frac{\lambda_k}{\lambda_1}\right)^kv^{(i)} \to 0,
+  \pmb{y}^{(k)} = \sum_{i=2}^n\frac{\alpha_i}{\alpha_1}\left(\frac{\lambda_k}{\lambda_1}\right)^k\pmb{v}_i \to 0,
 \end{equation}
 quando $k\to \infty$. Logo, temos que
 \begin{align}
-  q^{(k)} &= \frac{\alpha_1\lambda_1^k\left(v^{(1)}+y^{(k)}\right)}{\left\|\alpha_1\lambda_1\left(v^{(1)}+y^{(k)}\right)\right\|}\\
-          &= \frac{\lambda_1}{|\lambda_1|}\frac{\left(v^{(1)}+y^{(k)}\right)}{\left\|v^{(1)}+y^{(k)}\right\|}.
+  \pmb{q}^{(k)} &= \frac{\alpha_1\lambda_1^k\left(\pmb{v}_1+\pmb{y}^{(k)}\right)}{\left\|\alpha_1\lambda_1\left(\pmb{v}_1+\pmb{y}^{(k)}\right)\right\|}\\
+          &= \frac{\lambda_1}{|\lambda_1|}\frac{\left(\pmb{v}_1+\pmb{y}^{(k)}\right)}{\left\|\pmb{v}_1+\pmb{y}^{(k)}\right\|}.
 \end{align}
-Por fim, observamos que $\lambda_1/|\lambda_1|$ tem o mesmo sinal de $\lambda_1$. Portanto, $q^{(k)}$ tende a um múltiplo não nulo de $v^{(1)}$ quando $k\to\infty$.
+Por fim, observamos que $\lambda_1/|\lambda_1|$ tem o mesmo sinal de $\lambda_1$. Portanto, $\pmb{q}^{(k)}$ tende a um múltiplo não nulo de $\pmb{v}_1$ quando $k\to\infty$.
 
-\begin{obs}[Taxa de convergência.]
-  Pode-se mostrar a seguinte taxa de convergência para o Método da Potência
+\begin{observacao}[\hl{Aproximação Inicial}]
+  A convergência do método da potência está condicionada a escolha de uma aproximação inicial tal que \eqref{eq:q0_comblin} seja tal que $\alpha_1\neq 0$. Não há como saber \textit{a priori} que o $\pmb{q}^{(0)}$ escolhido satisfaz essa condição e, caso não satisfaça as iterações não são convergentes.
+\end{observacao}
+
+\begin{obs}[\hl{Taxa de convergência}]
+  Pode-se mostrar a seguinte taxa de convergência para o método da potência
   \begin{equation}
-    \left\|\tilde{q}^{(k)}-v^{(1)}\right\| \leq C\left|\frac{\lambda_2}{\lambda_1}\right|^k,\quad k\geq 1,
+    \left\|\tilde{\pmb{q}}^{(k)}-\pmb{v}_1\right\| \leq C\left|\frac{\lambda_2}{\lambda_1}\right|^k,\quad k\geq 1,
   \end{equation}
   onde
   \begin{equation}
-    \tilde{q}^{(k)} = v^{(1)} + \sum_{i=2}^n \frac{\alpha_i}{\alpha_1}\left(\frac{\lambda_i}{\lambda_1}\right)^kv^{(i)}.
+    \tilde{\pmb{q}}^{(k)} = \pmb{v}_1 + \sum_{i=2}^n \frac{\alpha_i}{\alpha_1}\left(\frac{\lambda_i}{\lambda_1}\right)^k\pmb{v}_i.
   \end{equation}
   Consulte \cite[Seção 5.3.]{Quarteroni2007a}.
 \end{obs}
 
-\lstinputlisting[caption=Algoritmo do Método da Potência, label={lst:algMetPot}]{./cap_autoval/dados/pyMetPot/main.py}
+% \lstinputlisting[caption=Algoritmo do Método da Potência, label={lst:algMetPot}]{./cap_autoval/dados/pyMetPot/main.py}
+\begin{lstlisting}[caption=Algoritmo do Método da Potência, label={lst:algMetPot}]
+import numpy as np
+import numpy.linalg as npla
+
+def metPot(A, q0, maxiter=1000, tol=1e-14):
+  q = q0/npla.norm(q0)
+  nu0 = np.dot(q, A @ q)
+  print(f"{0}: {nu0}")
+
+  info = -1
+  for k in range(maxiter):
+    z = A @ q
+    q = z/npla.norm(z)
+    nu = np.dot(q, A @ q)
+
+    print(f"{k+1}: {nu}")
+    if (np.fabs(nu-nu0) < tol):
+      info = 0
+      break
+
+    nu0 = nu
+
+  return nu, q, info  
+\end{lstlisting}
+
+\subsubsection{Exercícios}
 
 \begin{exer}
-  Use o Método da Potência para computar o autovalor dominante da matriz de coeficientes do problema discreto associado ao Exercício \ref{exer:pvc1d}. Estude sua convergência para diferentes tamanhos da matriz. 
+  Use o método da potência para computar o autovalor dominante da matriz de coeficientes do problema discreto associado ao Exercício~\ref{exer:pvc1d}. Estude sua convergência para diferentes tamanhos da matriz.
 \end{exer}
 
 \begin{exer}
-  Use o Método da Potência para computar o autovalor dominante da matriz de coeficientes do problema discreto associado ao Exemplo \ref{ex:poisson}. Estude sua convergência para diferentes tamanhos da matriz. 
+  Use o método da potência para computar o autovalor dominante da matriz de coeficientes do problema discreto associado ao Exemplo~\ref{ex:poisson}. Estude sua convergência para diferentes tamanhos da matriz.
 \end{exer}
 
-\subsection{Método da Potência Inverso}
+\subsection{Método da Potência Inversa}
 \badgeRevisar
 
-Esta variação do Método da Potência nos permite computar o autovalor mais próximo de um dado número $\mu\in\mathbb{C}$, $\mu\not\in\sigma(A)$. A ideia é aplicar o método para a matriz
+Esta \hl{variação do método da potência nos permite computar o autovalor mais próximo de um número $\mu\in\mathbb{C}$ dado}, $\mu\not\in\sigma(A)$. A ideia é aplicar o método para a matriz
 \begin{equation}
   M_\mu^{-1} = (A-\mu I)^{-1}.
 \end{equation}
-Neste contexto, $\mu$ é chamado de \emph{deslocamento} (em inglês, {\it shift}).
+Neste contexto, \hl{$\mu$ é chamado de \emph{deslocamento}} (em inglês, {\it shift}).
 
-Notemos que se $(\lambda_i, v_i)$ é um autopar de $A$, então $\xi_i=(\lambda_i-\mu)^{-1}$ é autovalor de $M_\mu^{-1}$ associado ao autovetor $v_i$. De fato,
-\begin{gather}
-  (\lambda_i - \mu) v_i = (A-\mu I)v_i\\
-  M_\mu^{-1}(\lambda_i-\mu)v_i = v_i\\
-  M_\mu^{-1}v_i = (\lambda_i-\mu)^{-1}v_i.
-\end{gather}
+Notamos que se $\left(\lambda_i, \pmb{v}_i\right)$ é um autopar de $A$, então $\xi_i=(\lambda_i-\mu)^{-1}$ é autovalor de $M_\mu^{-1}$ associado ao autovetor $\pmb{v}_i$. De fato,
+\begin{align}
+  & (\lambda_i - \mu) \pmb{v}_i = (A-\mu I)\pmb{v}_i \\
+  & M_\mu^{-1}(\lambda_i-\mu)\pmb{v}_i = \pmb{v}_i \\
+  & M_\mu^{-1}\pmb{v}_i = (\lambda_i-\mu)^{-1} \pmb{v}_i.
+\end{align}
 Isso também mostra que $A$ e $M_\mu^{-1}$ têm os mesmos autovetores.
 
-Agora, se $\mu$ for suficientemente próximo de $\lambda_m$, autovalor simples de $A$, então
+Agora, \hl{se $\mu$ for suficientemente próximo de $\lambda_m$, autovalor simples de $A$, então}
 \begin{equation}
   |\lambda_m-\mu| < |\lambda_i-\mu|,\quad i=1,2,\dotsc,n,~i\neq m.
 \end{equation}
-Com isso, $\xi_i=(\lambda_m-\mu)^{-1}$ é o autovalor dominante de $M_\mu^{-1}$ e, portanto, a iteração do Método da Potência aplicada a $M_\mu^{-1}$ fornece este autovalor. Mais especificamente, como $A$ e $M_\mu^{-1}$ tem os  mesmos autovetores, a \emph{iteração do Método da Potência Inverso} é dada como segue
-\begin{gather}
-  (A-\mu I)z^{(k)} = q^{(k-1)}, \label{eq:slmpi}\\
-  q^{(k)}=z^{(k)}/\|z^{(k)}\|,\\
-  \nu_k = (q^{(k)})^H A q^{(k)}.
-\end{gather}
+Com isso, \hl{$\xi_m=(\lambda_m-\mu)^{-1}$ é o autovalor dominante de $M_\mu^{-1}$} e, portanto, a iteração do método da potência aplicada a $M_\mu^{-1}$ fornece este autovalor. Mais especificamente, como $A$ e $M_\mu^{-1}$ tem os  mesmos autovetores, \hl{a \emph{iteração do método da potência inversa} é dada como segue}
+\begin{align}
+  & (A-\mu I)\pmb{z}^{(k)} = \pmb{q}^{(k-1)}, \label{eq:slmpi} \\
+  & \pmb{q}^{(k)} = \pmb{z}^{(k)}/\|\pmb{z}^{(k)}\|, \\
+  & \nu^{(k)} = (\pmb{q}^{(k)})^H A \pmb{q}^{(k)},
+\end{align}
+onde $\pmb{q}^{(0)}$ é uma aproximação inicial para o autovetor associado ao autovalor $\lambda_m$, $\nu^{(k)}\to \lambda_m$ quando $k\to \infty$.
 
+\subsubsection{Exercícios}
 
 \begin{exer}
-  Use o Método da Potência para computar diferentes autovalores da matriz de coeficientes do problema discreto associado ao Exercício \ref{exer:pvc1d}. Estude sua convergência para diferentes tamanhos da matriz. 
+  Use o método da potência para computar diferentes autovalores da matriz de coeficientes do problema discreto associado ao Exercício~\ref{exer:pvc1d}. Estude sua convergência para diferentes tamanhos da matriz. 
 \end{exer}
 
 \begin{exer}
-  Use o Método da Potência para computar diferentes autovalores da matriz de coeficientes do problema discreto associado ao Exemplo \ref{ex:poisson}. Verifique se há vantagem em aplicar os métodos GMRES e GC na resolução de \eqref{eq:slmpi}.
+  Use o método da potência para computar diferentes autovalores da matriz de coeficientes do problema discreto associado ao Exemplo~\ref{ex:poisson}. Verifique se há vantagem em aplicar os métodos GMRES e GC na resolução de \eqref{eq:slmpi}.
 \end{exer}
 
+\subsection{Métodos de Deflação}
+\badgeConstrucao
+
+%%% section
 \section{Iteração QR}\label{cap_autoval_sec_qr}
 \badgeRevisar
 
