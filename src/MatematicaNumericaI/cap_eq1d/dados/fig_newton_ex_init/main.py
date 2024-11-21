@@ -4,9 +4,10 @@ import matplotlib.pyplot as plt
 plt.rcParams.update({
      "text.usetex": True,
      "font.family": "serif",
-     "font.size": 14
+     "font.size": 12,
+     "font.sans-serif": "Computer Modern Roman",
+     "text.latex.preamble": r"\usepackage{amsmath} \usepackage{amssymb}"
      })
-plt.rc('text.latex', preamble=r'\usepackage{amsmath}')
 
 
 f = lambda x: (x-1.)*np.exp(-x**2)
@@ -14,7 +15,7 @@ fl = lambda x: (2*x - 2*x**2 + 1)*np.exp(-x**2)
 def rt(x,x0):
     return fl(x0)*(x-x0) + f(x0)
 
-fig = plt.figure(dpi=300)
+fig = plt.figure(dpi=300, figsize=(4,4))
 ax = fig.add_subplot()
 ax.grid()
 
@@ -38,7 +39,7 @@ xx = np.linspace(1.1, 2.9)
 ax.plot(xx, rt(xx,x1), lw='0.75', ls='--',
         color='red')
 
+ax.set_xlabel('$x$')
+ax.set_ylabel('$y$')
 
-
-fig.savefig('fig.pdf')
-fig.savefig('fig.png')
+fig.savefig('fig.png', bbox_inches='tight')

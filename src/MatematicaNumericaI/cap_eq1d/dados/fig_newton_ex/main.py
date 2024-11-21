@@ -4,15 +4,18 @@ import matplotlib.pyplot as plt
 plt.rcParams.update({
      "text.usetex": True,
      "font.family": "serif",
-     "font.size": 14
+     "font.size": 12,
+     "font.sans-serif": "Computer Modern Roman",
+     "text.latex.preamble": r"\usepackage{amsmath} \usepackage{amssymb}"
      })
-plt.rc('text.latex', preamble=r'\usepackage{amsmath}')
+
+#plt.rc('text.latex', preamble=r'\usepackage{amsmath}')
 
 
 f = lambda x: np.sin(x+np.pi/4)**2 \
     - x**3 + np.pi/4 * x**2 + 5*np.pi**2/16 * x + 3*np.pi**3/64
 
-fig = plt.figure(dpi=300)
+fig = plt.figure(dpi=300, figsize=[4,4])
 ax = fig.add_subplot()
 ax.grid()
 
@@ -39,6 +42,7 @@ ax.set_xticks([a, x1, 0, x2, x0, b],
               ["$-2$", "$-\\frac{\pi}{4}$",
                "$0$", "$\\overset{\\frac{3\pi}{4}}{}$",
                "$\\underset{x^{(0)}}{}$", "$3$"])
+ax.set_xlabel('$x$')
+ax.set_ylabel('$y$')
 
-fig.savefig('fig.pdf')
 fig.savefig('fig.png')

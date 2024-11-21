@@ -4,12 +4,14 @@ import matplotlib.pyplot as plt
 plt.rcParams.update({
      "text.usetex": True,
      "font.family": "serif",
-     "font.size": 14
+     "font.size": 12,
+     "font.sans-serif": "Computer Modern Roman",
+     "text.latex.preamble": r"\usepackage{amsmath} \usepackage{amssymb}"
      })
 
 f = lambda x: x**2-1
 
-fig = plt.figure(dpi=300)
+fig = plt.figure(dpi=300, figsize=[4,4])
 ax = fig.add_subplot()
 
 xx = np.linspace(-2, 2)
@@ -26,7 +28,9 @@ ax.plot(xf, f(xf), ls='',
         marker='o', color='red', label='pto. fixo')
 
 
-ax.set_aspect('equal')
+# ax.set_aspect('equal')
+ax.set_xlabel('$x$')
+ax.set_ylabel('$y$')
 ax.set_xticks([-2,-1,0,1,2])
 ax.set_yticks([-2,-1,0,1,2])
 ax.grid()
@@ -34,5 +38,4 @@ ax.set_xlim((-2,2))
 ax.set_ylim((-2,2))
 ax.legend()
 
-fig.savefig('fig.pdf')
-fig.savefig('fig.png')
+fig.savefig('fig.png', bbox_inches='tight')

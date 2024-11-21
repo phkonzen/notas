@@ -4,14 +4,16 @@ import matplotlib.pyplot as plt
 plt.rcParams.update({
      "text.usetex": True,
      "font.family": "serif",
-     "font.size": 14
+     "font.size": 12,
+     "font.sans-serif": "Computer Modern Roman",
+     "text.latex.preamble": r"\usepackage{amsmath} \usepackage{amssymb}"
      })
 
 f = lambda x: np.cos(x)
 
-fig = plt.figure(dpi=300)
+fig = plt.figure(figsize=[4,4], dpi=300)
 ax = fig.add_subplot()
-ax.grid()
+
 ax.set_xlim((-np.pi/6, np.pi))
 xx = np.linspace(-np.pi/6, np.pi)
 ax.plot([-np.pi/6, np.pi], [0, 0], color='black')
@@ -41,5 +43,6 @@ ax.set_yticks([f(a), 0, f(b)],
               ['$f(a)$', '$0$', '$f(b)$'])
 
 ax.legend()
-fig.savefig('fig.pdf')
-fig.savefig('fig.png')
+ax.grid()
+
+fig.savefig('fig.png', bbox_inches='tight')

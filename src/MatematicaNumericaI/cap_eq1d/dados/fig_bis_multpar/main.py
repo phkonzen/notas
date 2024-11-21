@@ -4,11 +4,10 @@ import matplotlib.pyplot as plt
 plt.rcParams.update({
      "text.usetex": True,
      "font.family": "serif",
-     "font.size": 14
+     "font.size": 12,
+     "font.sans-serif": "Computer Modern Roman",
+     "text.latex.preamble": r"\usepackage{amsmath} \usepackage{amssymb}"
      })
-plt.rc('text.latex',
-       preamble=r'\usepackage{amsmath}'
-       )
 
 
 f = lambda x: np.sin(x+np.pi/4)**2 \
@@ -16,9 +15,8 @@ f = lambda x: np.sin(x+np.pi/4)**2 \
 fl = lambda x: 2*np.sin(x+np.pi/4)*np.cos(x+np.pi/4) \
     - 3*x**2 + np.pi/2 * x + 5*np.pi**2/16
 
-fig = plt.figure(dpi=300)
+fig = plt.figure(figsize=[4,4], dpi=300)
 ax = fig.add_subplot()
-ax.grid()
 
 xx = np.linspace(-2.5, 3.5)
 ax.plot(xx, f(xx), ls='--', label='$f$')
@@ -34,9 +32,11 @@ x1 = -np.pi/4
 ax.plot(x1, f(x1), marker='o', color='red')
 x2 = 3*np.pi/4
 
-ax.set_xticks([a, x1, b, x2, 3],
-              ["$\\overset{\\overset{-2}{}}{}$", "$\\underset{-\\frac{\pi}{4}}{}$", "$0$", "$\\frac{3\pi}{4}$", "$3$"])
-
+ax.set_xlabel('$x$')
+ax.set_xticks([-2, x1, 0, x2, 3],
+              ["$-2$", "$-\\frac{\pi}{4}$", "$0$", "$\\frac{3\pi}{4}$", "$3$"])
+ax.set_ylabel('$y$')
+ax.grid()
 ax.legend()
-fig.savefig('fig.pdf')
-fig.savefig('fig.png')
+
+plt.savefig('fig.png', bbox_inches='tight')

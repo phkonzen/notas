@@ -4,7 +4,9 @@ import matplotlib.pyplot as plt
 plt.rcParams.update({
      "text.usetex": True,
      "font.family": "serif",
-     "font.size": 12
+     "font.size": 12,
+     "font.sans-serif": "Computer Modern Roman",
+     "text.latex.preamble": r"\usepackage{amsmath} \usepackage{amssymb}"
      })
 
 alpha = -0.1
@@ -15,7 +17,7 @@ g = lambda x: x - alpha*(np.sin(x+np.pi/4)**2 \
 gl = lambda x: 1. - alpha*(2*np.sin(x+np.pi/4)*np.cos(x+np.pi/4) \
     -3*x**2 + np.pi/2*x + 5*np.pi**2/16)
 
-fig = plt.figure(dpi=300)
+fig = plt.figure(dpi=300, figsize=[4,4])
 ax = fig.add_subplot()
 ax.grid()
 
@@ -36,7 +38,9 @@ ax.plot([a, b], [a, b], ls='--', color='red')
 xs = 3*np.pi/4
 ax.plot([xs], [xs], marker='o', color='red')
 
-ax.set_aspect('equal')
+#ax.set_aspect('equal')
 ax.legend()
-fig.savefig('fig.pdf')
-fig.savefig('fig.png')
+ax.set_xlabel('$x$')
+ax.set_ylabel('$y$')
+
+fig.savefig('fig.png', bbox_inches='tight')
