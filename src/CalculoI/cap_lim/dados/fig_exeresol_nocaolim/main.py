@@ -4,7 +4,11 @@ from sympy import *
 plt.rcParams.update({
      "text.usetex": True,
      "font.family": "serif",
-     "font.size": 16
+     "font.size": 12,
+     "font.sans-serif": "Computer Modern Roman",
+     "text.latex.preamble": r"\usepackage{amsmath} \usepackage{amssymb}",
+     "figure.figsize": [4, 4],
+     "figure.dpi": 300
      })
 
 var('x', real=True)
@@ -14,7 +18,7 @@ q = plot(3,(x,-3,3),line_color="none",show=False)
 p.extend(q)
 p.xlabel = '$x$'
 p.ylabel = '$y$'
-p.save('fig_exeresol_nocaolim.png')
+p.save('fig.png')
 
 fig = p._backend.fig
 ax = fig.axes[0]
@@ -31,5 +35,5 @@ ax.plot([1],[2],marker='o', markersize=6,
         markeredgecolor="blue", markerfacecolor="white")
 ax.plot([1],[1],marker='o', markersize=6,
         markeredgecolor="blue", markerfacecolor="blue")
-fig.savefig('fig_exeresol_nocaolim.png',
+fig.savefig('fig.png',
             bbox_inches='tight')

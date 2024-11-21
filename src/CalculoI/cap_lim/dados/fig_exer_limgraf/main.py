@@ -4,7 +4,11 @@ from sympy import *
 plt.rcParams.update({
      "text.usetex": True,
      "font.family": "serif",
-     "font.size": 16
+     "font.size": 12,
+     "font.sans-serif": "Computer Modern Roman",
+     "text.latex.preamble": r"\usepackage{amsmath} \usepackage{amssymb}",
+     "figure.figsize": [4, 4],
+     "figure.dpi": 300
      })
 
 var('x',real=True)
@@ -15,10 +19,12 @@ p = p1
 p.extend(p2)
 p.xlabel = '$x$'
 p.ylabel = '$y$'
-p.save('fig_exer_limgraf.png')
+p.save('fig.png')
 
 fig = p._backend.fig
 ax = fig.axes[0]
+ax.set_xlabel('$x$', loc='right')
+ax.set_ylabel('$y$', loc='top', rotation=0)
 ax.grid('on')
 ax.plot([-2,-1],[-2,-1],color='blue')
 ax.plot([-1,1],[-1,-1],color='blue')
@@ -37,4 +43,4 @@ ax.plot([3],[1],marker='o',
         markeredgecolor='blue',markerfacecolor='blue',markersize=6)
 ax.plot([3],[2],marker='o',
         markeredgecolor='blue',markerfacecolor='white',markersize=6)
-fig.savefig('fig_exer_limgraf.png', bbox_inches='tight')
+fig.savefig('fig.png', bbox_inches='tight')
