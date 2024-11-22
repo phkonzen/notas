@@ -5,9 +5,12 @@ import matplotlib.pyplot as plt
 plt.rcParams.update({
      "text.usetex": True,
      "font.family": "serif",
-     "font.size": 12
+     "font.size": 12,
+     "font.sans-serif": "Computer Modern Roman",
+     "text.latex.preamble": r"\usepackage{amsmath} \usepackage{amssymb}",
+     "figure.figsize": [4, 4],
+     "figure.dpi": 300
      })
-plt.rc('text.latex', preamble=r'\usepackage{amsmath}')
 
 def poliInterp(x, y):
     # num. pts
@@ -27,7 +30,7 @@ y = np.array([-1., 1, 1/2])
 # poli interp
 p = poliInterp(x, y)
 
-fig = plt.figure(dpi=300)
+fig = plt.figure()
 ax = fig.add_subplot()
 ax.grid()
 
@@ -35,6 +38,8 @@ ax.plot(x, y, ls='', marker='o', label='pts')
 xx = np.linspace(-1.25, 1.25)
 ax.plot(xx, np.polyval(p, xx), label='interp')
 
+ax.set_xlabel('$x$')
+ax.set_ylabel('$y$')
 ax.legend()
-fig.savefig('fig.pdf')
-fig.savefig('fig.png')
+
+fig.savefig('fig.png', bbox_inches='tight')
