@@ -733,27 +733,19 @@ Com isso, definimos \hl{a \emph{integral indefinida} de $f$ em relação a $x$} 
 \fi
 
 
-\section{Regras básicas de integração}\label{cap_int_sec_regrasbasic}
+\section{Regras Básicas de Integração}\label{cap_int_sec_regrasbasic}
 
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
-
-Na Seção \ref{cap_int_sec_propint}, definimos a \hl{integral indefinida} por
+A \hl{integral indefinida} de uma função $f$ em relação a $x$ é
 \begin{equation}\hleq
   \int f(x)\,dx = F(x) + C,
 \end{equation}
-onde \hl{$F$ é uma \emph{primitiva} de $f$}, i.e. \hl{$F' = f$, e $C$ é uma \emph{constante indeterminada}}. Na sequência, vamos discutir sobre as regras básicas para o cálculo de integrais.
+onde \hl{$F$ é uma \emph{primitiva} de $f$}, i.e. \hl{$F' = f$, e $C$ é uma \emph{constante indeterminada}}. Na sequência, vamos estudar as regras básicas para o cálculo de integrais.
 
-\subsection{Integral de função potência}
+\subsection{Integral de Função Potência}
 
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
-
-Com base na derivada de \hl{função potência}\footnote{Consulte Subseção \ref{cap_deriv_sec_funcip:ssec:funpot} sobre a derivada de função potência.}, podemos afirmar que
-\begin{equation}\label{eq:int_fpot}
-  {\color{blue}\int x^r\,dx = \frac{x^{r+1}}{r+1} + C,\quad r\neq -1}.
+Com base na derivada de \hl{função potência}, podemos afirmar que
+\begin{equation}\label{eq:int_fpot}\hleq
+  \int x^r\,dx = \frac{x^{r+1}}{r+1} + C, ~r\neq -1.
 \end{equation}
 De fato, para $r\neq -1$, temos
 \begin{align}
@@ -769,15 +761,36 @@ De fato, para $r\neq -1$, temos
     \begin{equation}
       \int x\,dx = \frac{x^2}{2} + C.
     \end{equation}
+
+\begin{lstlisting}
+import sympy as sp
+from sympy.abc import x
+I = sp.integrate(x, x)
+print(I)
+\end{lstlisting}
+
+\begin{verbatim}
+x**2/2
+\end{verbatim}
+
   \item
     \begin{align}
       \int \frac{1}{x^2}\,dx &= \int x^{-2}\,dx \\
                              &= -x^{-1} + C \\
                              &= -\frac{1}{x}+C.
     \end{align}
-    \ifispython
-    Verifique com o {\python}+{\sympy}!
-    \fi
+
+\begin{lstlisting}
+import sympy as sp
+from sympy.abc import x
+I = sp.integrate(1/x**2, x)
+print(I)
+\end{lstlisting}
+
+\begin{verbatim}
+-1/x
+\end{verbatim}
+
   \end{enumerate}
 \end{ex}
 
@@ -786,32 +799,37 @@ De fato, para $r\neq -1$, temos
   \begin{equation}
     \int_{-1}^1 x^2\,dx.
   \end{equation}
-  Da regra da potência, temos
+  Da regra da potência \eqref{eq:int_fpot}, temos
   \begin{equation}
     \int x^2\,dx = \frac{x^3}{3} + C.
   \end{equation}
-  Logo, do Teorema Fundamental do Cálculo, temos
+  Logo, do teorema fundamental do cálculo, temos
   \begin{align}
     \int_{-1}^1 x^2\,dx &= \left.\frac{x^3}{3}\right|_{-1}^1 \\
                         &= \frac{1^3}{3} - \frac{(-1)^3}{3} \\
                         &= \frac{1}{3} + \frac{1}{3} = \frac{2}{3}.
   \end{align}
-    \ifispython
-    Verifique com o {\python}+{\sympy}!
-    \fi
+
+\begin{lstlisting}
+import sympy as sp
+from sympy.abc import x
+I = sp.integrate(x**2, (x, -1, 1))
+print(I)
+\end{lstlisting}
+
+\begin{verbatim}
+2/3
+\end{verbatim}
+
 \end{ex}
 
-\subsection{Regra da multiplicação por constante}
+\subsection{Regra da Multiplicação por Constante}
 
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
-
-Seja $k$ uma constante. Então, temos a seguinte \hl{\emph{regra da multiplicação por constante}}
-\begin{equation}
-  {\color{blue}\int k\cdot f(x)\,dx = k\cdot \int f(x)\,dx}
+Seja $k$ uma constante. Então, temos a seguinte \hlemph{regra da multiplicação por constante}
+\begin{equation}\label{eq:regra_mult_por_const}\hleq
+  \int k\cdot f(x)\,dx = k\cdot \int f(x)\,dx
 \end{equation}
-De fato, se $F$ é uma primitiva de $f$, então pela regra da multiplicação por constante para derivadas\footnote{Consulte a Subseção \ref{cap_deriv_sec_regrasderiv:ssec:deriv_rmcs} sobre a regra da multiplicação por constante para derivadas.}, temos
+De fato, se $F$ é uma primitiva de $f$, então pela regra da multiplicação por constante para derivadas, temos
 \begin{align}
   (k\cdot F)' &= k\cdot F'\\
               &= k\cdot f,
@@ -829,31 +847,64 @@ i.e. $k\cdot F$ é primitiva de $k\cdot f$.
                   &= x^2 + C
     \end{align}
     Aqui, fizemos um abuso de linguagem ao assumir \hl{$2C = C$}. Isso pode ser feito, pois $C$ denota uma constante indeterminada e, multiplicá-la por dois continua sendo indeterminada e constante. Vamos fazer este tipo de \hl{simplificação de notação} várias vezes ao longo do texto.
-  \item
+
+\begin{lstlisting}
+import sympy as sp
+from sympy.abc import x
+I = sp.integrate(2*x, x)
+print(I)
+\end{lstlisting}
+
+\begin{verbatim}
+x**2
+\end{verbatim}
+
+\item
     \begin{align}
       \int \frac{1}{3}\sqrt{x}\,dx &= \frac{1}{3}\int x^{\frac{1}{2}}\,dx\\
                                    &= \frac{1}{3}\frac{x^{\frac{1}{2}+1}}{\frac{1}{2}+1} + C\\
                                    &= \frac{1}{3}\frac{x^{\frac{3}{2}}}{\frac{3}{2}} + C\\
                                    &= \frac{2}{9}\sqrt{x^3} + C
     \end{align}
+
+\begin{lstlisting}
+import sympy as sp
+from sympy.abc import x
+I = sp.integrate(1/3*sp.sqrt(x), x)
+print(I)
+\end{lstlisting}
+
+\begin{verbatim}
+0.222222222222222*x**(3/2)
+\end{verbatim}
+
   \item
     \begin{align}
-      \int_0^{1}-x^2\,dx &= -\int_0^1x^2\,dx\\
-                         &= \int_1^0 x^2\,dx\\
-                         &= \left.\frac{x^3}{3}\right|_1^0\\
-                         &= \frac{0^3}{3} - \frac{1^3}{3}\\
-                         &= \frac{1}{3}
+      \int_0^{1}-x^2\,dx &= -\int_0^1x^2\,dx \\
+                         &= -\left[\frac{x^3}{3}\right]_0^1 \\
+                         &= -\left(\frac{1}{3} - \frac{0}{3}\right) \\
+                         &= -\frac{1}{3}.
     \end{align}
-    \ifispython
-    Verifique com o {\python}+{\sympy}!
-    \fi
+
+\begin{lstlisting}
+import sympy as sp
+from sympy.abc import x
+I = sp.integrate(-x**2, (x, 0, 1))
+print(I)
+\end{lstlisting}
+
+\begin{verbatim}
+-1/3
+\end{verbatim}
+
   \end{enumerate}
+
 \end{ex}
 
 \subsection{Regra da soma ou subtração}
 
 Se $f$ e $g$ são funções integráveis, então vale a seguinte \hl{\emph{regra da soma/subtração}}
-\begin{equation}\hleq
+\begin{equation}\label{cap_int_sec_regrasbasias:eq:regra_soma}\hleq
   \int \left[f(x)\pm g(x)\right]\,dx = \int f(x)\,dx \pm \int g(x)\,dx.
 \end{equation}
 De fato, sejam $F$ uma primitiva de $f$ e $G$ uma primitiva de $g$. Temos
@@ -868,25 +919,62 @@ i.e. $F \pm G$ é primitiva de $f\pm g$.
   \begin{enumerate}[a)]
   \item
     \begin{align}
-      \int x + 1\,dx &= {\color{blue}\int x\,dx} + {\color{red}\int dx}\\
+      \int {\color{blue}x} + {\color{red}1}\,dx &= {\color{blue}\int x\,dx} + {\color{red}\int dx}\\
                      &= {\color{blue}\frac{x^2}{2} + C_1} + {\color{red}x + C_2}\\
                      &= \frac{x^2}{2} + x + C
     \end{align}
     Aqui, $C_1$, $C_2$ e $C = C_1+C_2$ denotam constantes indeterminadas.
+
+\begin{lstlisting}
+import sympy as sp
+from sympy.abc import x
+I = sp.integrate(x+1, x)
+print(I)
+\end{lstlisting}
+
+\begin{verbatim}
+x**2/2 + x
+\end{verbatim}
+
   \item
     \begin{align}
-      \int \sqrt{x} - x\,dx &= {\color{blue}\int x^{\frac{1}{2}}\,dx} - {\color{red}\int x\,dx}\\
-                            &= {\color{blue}\frac{3}{2}x^{\frac{3}{2}}} - {\color{red}\frac{x^2}{2}} + C
+      \int {\color{blue}\sqrt{x}} - {\color{red}x}\,dx &= {\color{blue}\int x^{\frac{1}{2}}\,dx} - {\color{red}\int x\,dx}\\
+                            &= {\color{blue}\frac{2}{3}x^{\frac{3}{2}}} - {\color{red}\frac{x^2}{2}} + C
     \end{align}
+
+\begin{lstlisting}
+import sympy as sp
+from sympy.abc import x
+f = sp.sqrt(x) - x
+I = sp.integrate(f, x)
+print(I)
+\end{lstlisting}
+
+\begin{verbatim}
+2*x**(3/2)/3 - x**2/2
+\end{verbatim}
+
   \item
     \begin{align}
-      {\color{blue}\int (2x^2 + 3x - 1)\,dx} &= \int \left[2x^2 + (3x - 1)\right]\,dx\\
+      \hleq{\int (2x^2 + 3x - 1)\,dx} &= \int \left[2x^2 + (3x - 1)\right]\,dx\\
                                              &= \int 2x^2\,dx + \int 3x - 1 \,dx \\
-                                             &= {\color{blue}\int 2x^2\,dx - \int 3x\,dx - \int \,dx}\\
+                                             &= \hleq{\int 2x^2\,dx - \int 3x\,dx - \int \,dx}\\
                                              &= 2\int x^2\,dx + 3\int x\,dx - \int \,dx\\
                                              &= \frac{2}{3}x^3 + \frac{3}{2}x^2 - x + C
     \end{align}
   \end{enumerate}
+
+\begin{lstlisting}
+import sympy as sp
+from sympy.abc import x
+f = 2*x**2 + 3*x - 1
+I = sp.integrate(f, x)
+print(I)
+\end{lstlisting}
+
+\begin{verbatim}
+2*x**3/3 + 3*x**2/2 - x
+\end{verbatim}
 \end{ex}
 
 \begin{ex}
@@ -899,25 +987,33 @@ i.e. $F \pm G$ é primitiva de $f\pm g$.
     \int x^2 + 1\,dx &= \int x^2\,dx + \int \,dx\\
                      &= \frac{x^3}{3} + x + C.
   \end{align}
-  Agora, do Teorema Fundamental do Cálculo, temos
+  Agora, do teorema fundamental do cálculo, temos
   \begin{align}
     \int_0^1 x^2+1\,dx &= \left. \frac{x^3}{3} + x\right|_0^1 \\
-                       &= \frac{1}{3} + 1 - \left(\frac{0^3}{3} + 0\right) \\
+                       &= \left(\frac{1}{3} + 1 \right)- \left(\frac{0^3}{3} + 0\right) \\
                        &= \frac{4}{3}.
   \end{align}
+
+\begin{lstlisting}
+import sympy as sp
+from sympy.abc import x
+I = sp.integrate(x**2 + 1, (x, 0, 1))
+print(I)
+\end{lstlisting}
+
+\begin{verbatim}
+4/3
+\end{verbatim}
+
 \end{ex}
 
 \subsection{Integral de $x^{-1}$}
 
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
-
-Começamos lembrando que, para $x>0$, temos\footnote{Consulte Subseção \ref{cap_deriv_sec_funexplog:ssec:dlog} sobre a derivada de função logarítmica.}
+Começamos lembrando que
 \begin{equation}
-  \frac{d}{dx}\ln x = \frac{1}{x}
+  \frac{d}{dx}\ln x = \frac{1}{x}, ~x>0.
 \end{equation}
-Agora, pela regra da cadeia\footnote{Consulte Seção \ref{cap_deriv_sec_cadeia} sobre a regra da cadeia.}, para $x<0$, temos
+Para $x < 0$, usamos a regra da cadeia
 \begin{align}
   \frac{d}{dx}\ln(-x) &= \frac{1}{-x}\cdot (-x)'\\
                       &= -\frac{1}{x}\cdot (-1)\\
@@ -925,37 +1021,38 @@ Agora, pela regra da cadeia\footnote{Consulte Seção \ref{cap_deriv_sec_cadeia}
 \end{align}
 Ou seja, temos que 
 \begin{equation}
-  \frac{d}{dx}\ln|x| = \frac{1}{x}
+  \frac{d}{dx}\ln|x| = \frac{1}{x},
 \end{equation}
-donde, concluímos que a \hl{\emph{integral de $x^{-1}$}} é
+donde concluímos que a \hlemph{integral de $x^{-1}$} é
 \begin{equation}\hleq
-  \int\frac{1}{x}\,dx = \ln|x| + C
+  \int\frac{1}{x}\,dx = \ln|x| + C.
 \end{equation}
 
 \begin{ex}
-  Vamos calcular
-  \begin{equation}
-    \int_1^e x^{-1}\,dx.
-  \end{equation}
-  Usando o Teorema Fundamental do Cálculo, temos
+
   \begin{align}
     \int_1^e x^{-1}\,dx &= \int_1^e \frac{1}{x}\,dx\\
-                        &= \left. \ln|x|\right|_1^e \\
+                        &= \left[ \ln|x|\right]_1^e \\
                              &= \ln|e| - \ln|1| \\
                              &= 1 - 0 = 1.
   \end{align}
-  \ifispython
-  Verifique computando com o {\python}+{\sympy}!
-  \fi
+
+\begin{lstlisting}
+import sympy as sp
+from sympy.abc import x
+I = sp.integrate(1/x, (x, 1, sp.E))
+print(I)
+\end{lstlisting}
+
+\begin{verbatim}
+1
+\end{verbatim}
+  
 \end{ex}
 
-\subsection{Integral da função exponencial natural}\label{cap_int_subsec_funexp}
+\subsection{Integral da Função Exponencial Natural}\label{cap_int_subsec_funexp}
 
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
-
-Da derivada da \hl{função exponencial natural}\footnote{Consule Subseção \ref{cap_deriv_sec_funexplog:ssec:dexp} sobre a derivada da função exponencial.}, temos
+Da derivada da \hl{função exponencial natural}, temos
 \begin{equation}\hleq
   \int e^x\,dx = e^x + C.
 \end{equation}
@@ -970,6 +1067,18 @@ Da derivada da \hl{função exponencial natural}\footnote{Consule Subseção \re
                          &= e^2e^x + C \\
                          &= e^{2+x} + C
     \end{align}
+
+\begin{lstlisting}
+import sympy as sp
+from sympy.abc import x
+I = sp.integrate(sp.exp(2+x), x)
+print(I)
+\end{lstlisting}
+
+\begin{verbatim}
+exp(x + 2)  
+\end{verbatim}
+
   \item
     \begin{align}
       \int_{0}^{\ln 2}e^x\,dx &= \left. e^x\right|_0^{\ln 2}\\
@@ -977,22 +1086,30 @@ Da derivada da \hl{função exponencial natural}\footnote{Consule Subseção \re
                               &= 2 - 1\\
                               &= 1
     \end{align}
+
+\begin{lstlisting}
+import sympy as sp
+from sympy.abc import x
+I = sp.integrate(sp.exp(x), (x, 0, sp.log(2)))
+print(I)
+\end{lstlisting}
+
+\begin{verbatim}
+1
+\end{verbatim}
+
 \end{enumerate}
 \end{ex}
 
-\subsection{Integrais de funções trigonométricas}\label{cap_int_sec_regrasbasic_trigo}
+\subsection{Integrais de Funções Trigonométricas}\label{cap_int_sec_regrasbasic_trigo}
 
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
-
-No que lembramos que\footnote{Consulte Seção \ref{cap_deriv_sec_trigo} sobre a derivada de funções trigonométricas.}
+No que lembramos que
 \begin{equation}
   \frac{d}{dx}\cos(x) = -\sen(x)
 \end{equation}
-temos que a \hl{\emph{integral da função seno}} é
+temos que a \hlemph{integral da função seno} é
 \begin{equation}\hleq
-  \int \sen(x)\,dx = -\cos(x) + C
+  \int \sen(x)\,dx = -\cos(x) + C.
 \end{equation}
 
 \begin{ex}
@@ -1003,12 +1120,36 @@ temos que a \hl{\emph{integral da função seno}} é
       \int 2\sen(x)\,dx &= 2\int \sen(x) dx\\
                        &= -2\cos(x) + C
     \end{align}
+
+\begin{lstlisting}
+import sympy as sp
+from sympy.abc import x
+I = sp.integrate(2*sp.sin(x), x)
+print(I)
+\end{lstlisting}
+
+\begin{verbatim}
+-2*cos(x)
+\end{verbatim}
+
   \item
     \begin{align}
       \int_{-\pi}^\pi\sen(x)\,dx &= \left.-\cos(x)\right|_{-\pi}^\pi\\
                                  &= -\cos(\pi) - [-\cos(-\pi)]\\
                                  &= 1 - 1 = 0
     \end{align}
+
+\begin{lstlisting}
+import sympy as sp
+from sympy.abc import x
+I = sp.integrate(sp.sin(x), (x, -sp.pi, sp.pi))
+print(I)
+\end{lstlisting}
+
+\begin{verbatim}
+0
+\end{verbatim}
+
   \end{enumerate}
 \end{ex}
 
@@ -1018,7 +1159,7 @@ Também, lembramos que
 \end{equation}
 donde temos que a \hl{\emph{integral da função cosseno}}
 \begin{equation}\hleq
-  \int \cos(x)\,dx = \sen(x) + C
+  \int \cos(x)\,dx = \sen(x) + C.
 \end{equation}
 
 \begin{ex}
@@ -1029,20 +1170,41 @@ donde temos que a \hl{\emph{integral da função cosseno}}
       \int \frac{1}{2}\cos(x)\,dx &= \frac{1}{2}\int\cos(x)\,dx\\
                                   &= \frac{1}{2}\sen(x) + C\\
     \end{align}
+
+\begin{lstlisting}
+import sympy as sp
+from sympy.abc import x
+I = sp.integrate(1/2*sp.cos(x), x)
+print(I)
+\end{lstlisting}
+
+\begin{verbatim}
+0.5*sin(x)
+\end{verbatim}
+
   \item
     \begin{align}
       \int_{-\pi}^\pi\cos(x)\,dx &= \left.\sen(x)\right|_{-\pi}^\pi\\
                                  &= \sen(\pi) - \sen(-\pi)\\
                                  &= 0
     \end{align}
+
+\begin{lstlisting}
+import sympy as sp
+from sympy.abc import x
+I = sp.integrate(sp.cos(x), (x, -sp.pi, sp.pi))
+print(I)
+\end{lstlisting}
+
+\begin{verbatim}
+0
+\end{verbatim}
+
   \end{enumerate}
+
 \end{ex}
 
-\subsection{Tabela de integrais}
-
-\begin{flushright}
-  [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-\end{flushright}
+\subsection{Tabela de Integrais}
 
 \begin{small}
 \begin{align}
