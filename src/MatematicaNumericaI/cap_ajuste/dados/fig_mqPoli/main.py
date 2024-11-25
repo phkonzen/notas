@@ -5,9 +5,12 @@ import matplotlib.pyplot as plt
 plt.rcParams.update({
      "text.usetex": True,
      "font.family": "serif",
-     "font.size": 14
+     "font.size": 12,
+     "font.sans-serif": "Computer Modern Roman",
+     "text.latex.preamble": r"\usepackage{amsmath} \usepackage{amssymb}",
+     "figure.figsize": [4, 4],
+     "figure.dpi": 300
      })
-plt.rc('text.latex', preamble=r'\usepackage{amsmath}')
 
 # dados
 x = np.array([-1.0,
@@ -30,7 +33,7 @@ A[:,2] = np.ones_like(x)
 # sol de mq
 p = npla.solve(A.T@A, A.T@y)
 
-fig = plt.figure(dpi=300)
+fig = plt.figure()
 ax = fig.add_subplot()
 ax.grid()
 
@@ -39,7 +42,8 @@ xx = np.linspace(-1.25, 1.75)
 ax.plot(xx, np.polyval(p, xx), label='p(x)')
 
 ax.legend()
+ax.set_xticks(x)
 ax.set_xlabel('$x$')
-ax.set_xlabel('$y$')
-fig.savefig('fig.pdf')
-fig.savefig('fig.png')
+ax.set_ylabel('$y$')
+
+fig.savefig('fig.png', bbox_inches='tight')
