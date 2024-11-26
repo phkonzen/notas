@@ -289,7 +289,7 @@ class Index:
                               text = "Tópicos de métodos numéricos avançados",
                               badges = ["Python", "NumPy", "SciPy", "Matplotlib"],
                               link = "MatematicaNumericaAvancada/main.html",
-                              color = "warning", status = "Atualizando")
+                              color = "secondary", status = "Antigo")
         body += '</div>'
 
         # card: notas de aula de Matemática Numérica I
@@ -309,6 +309,16 @@ class Index:
                               text = "Introdução a métodos numéricos para o cálculo de funções e resolução de equações diferenciais",
                               badges = ["Python", "NumPy"],
                               link = "MatematicaNumericaII/main.html",
+                              color = "warning", status = "Atualizando")
+        body += '</div>'
+
+        # card: notas de aula de Matemática Numérica III
+        body += '<div class="col">'
+        body += self.new_card(header = "Notas de Aula",
+                              title = "Matemática Numérica III",
+                              text = "Introdução a métodos numéricos para o cálculo de funções e resolução de equações diferenciais",
+                              badges = ["Python", "NumPy"],
+                              link = "MatematicaNumericaIII/main.html",
                               color = "warning", status = "Atualizando")
         body += '</div>'
 

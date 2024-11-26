@@ -31,6 +31,9 @@ MatematicaNumericaI: mainMatematicaNumericaI.py
 MatematicaNumericaII: mainMatematicaNumericaII.py
 	python3 mainMatematicaNumericaII.py
 
+MatematicaNumericaIII: mainMatematicaNumericaIII.py
+	python3 mainMatematicaNumericaIII.py
+
 MatematicaNumericaAvancada: mainMatematicaNumericaAvancada.py
 	python3 mainMatematicaNumericaAvancada.py
 

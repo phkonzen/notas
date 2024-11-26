@@ -1,0 +1,263 @@
+\chapter{Autovalores e Autovetores}\label{cap_autoval}
+\badgeRevisar
+
+Neste capítulo, estudamos métodos numéricos para a computação de autovalores e autovetores de matrizes.
+
+\section{Método da Potência}\label{cap_autoval_sec_pot}
+\badgeRevisar
+
+\hl{O \emph{método da potência} é uma técnica iterativa para computar o autovalor dominante de uma matriz e um autovetor associado}. Modificações do método, tornam possível sua aplicação para a determinação de outros autovalores próximos a um número dado. Desta forma, pode ser utilizá-lo em conjunto com outra técnica de aproximação de autovalores e autovetores.
+
+\subsection{Autovalor dominante}
+\badgeRevisar
+
+Vamos denotar o \emph{espectro} de uma dada matriz $A\in\mathbb{C}^{n\times n}$ por
+\begin{equation}
+  \sigma(A) = \{\lambda_1, \lambda_2, \dotsc, \lambda_n\},
+\end{equation}
+sendo $\lambda_i\in \mathbb{C}$ o $i$-ésimo \emph{autovalor} de uma \emph{matriz diagonalizável}\endnote{Existe uma base de $\mathbb{C}^{n\times n}$ formada apenas de autovetores de $A$.} $A=[a_{i,j}]_{i,j=1}^{n,n}$, i.e. existe um vetor $\pmb{0}\neq \pmb{v}_i\in\mathbb{C}^n$ tal que
+\begin{equation}\hleq
+  A\pmb{v}_i = \lambda_i \pmb{v}_i,
+\end{equation}
+sendo $\pmb{v}_i$ chamado de \emph{autovetor} associado a $\lambda_i$. No desenvolvimento do \emph{método da potência}, vamos assumir que os autovalores podem ser ordenados da seguinte forma
+\begin{equation}\hleq
+  |\lambda_1| > |\lambda_2| \geq \cdots \geq |\lambda_n|.
+\end{equation}
+Assim sendo, o \hl{$\lambda_1$ é chamado de \emph{autovalor dominante}}. Na sequência, vamos denotar por $\pmb{A}^H$ a transposta conjugada de $A$, i.e. $A^H=[\bar{a}_{j,i}]_{i,j=1}^{n,n}$.
+
+\hl{A \emph{iteração} do método da potência consiste em}
+\begin{align}\hleq
+  & \pmb{z}^{(k)} = A\pmb{q}^{(k-1)},\\
+  & \pmb{q}^{(k)} = \pmb{z}^{(k)}/\left\|\pmb{z}^{(k)}\right\|,\\
+  & \nu^{(k)} = (\pmb{q}^{(k)})^H A \pmb{q}^{(k)},
+\end{align}
+com dada aproximação inicial $\pmb{q}^{(0)}$ para um autovetor associado a $\lambda_1$. Quando o método é bem sucedido, tem-se $\nu^{(k)}\to \lambda_1$ quando $k\to\infty$.
+
+\subsubsection{Convergência}
+
+Para mostrar a convergência do método, basta mostrar que $\pmb{q}^{(k)}$ converge para um autovetor associado a $\lambda_1$. Primeiramente, notamos que\endnote{Segue por indução matemática.}
+\begin{equation}
+  \pmb{q}^{(k)} = \frac{A^k\pmb{q}^{(0)}}{\left\|A^k\pmb{q}^{(0)}\right\|}, ~k\geq 1.
+\end{equation}
+Para $A$ diagonalizável, temos que existe uma base $\left\{\pmb{v}_1, \pmb{v}_2, \dotsc, \pmb{v}_n\right\}$ de $\mathbb{C}^{n\times n}$ formada apenas de autovetores de $A$. Segue que
+\begin{equation}\label{eq:q0_comblin}
+  \pmb{q}^{(0)} = \sum_{i=1}^n \alpha_i \pmb{v}_i,
+\end{equation}
+onde $\alpha_i\in\mathbb{C}$. Vamos assumir que $\alpha_1\neq 0$\endnote{Condição necessária para a convergência.}. Ainda, $A\pmb{v}_i = \lambda_i \pmb{v}_i$, donde
+\begin{align}
+  A^k\pmb{q}^{(0)} &= \sum_{i=1}^n \alpha_iA^k\pmb{v}_i\\
+             &= \sum_{i=1}^n \alpha_i\lambda_i^k\pmb{v}_i\\
+             &= \alpha_1\lambda_1^k\left[\pmb{v}_1 + \sum_{i=2}^n\frac{\alpha_i}{\alpha_1}\left(\frac{\lambda_k}{\lambda_1}\right)^k\pmb{v}_i\right]
+\end{align}
+Como $|\lambda_i|/|\lambda_1| < 1$, $i=2,\dotsc,n$, temos que
+\begin{equation}
+  \pmb{y}^{(k)} = \sum_{i=2}^n\frac{\alpha_i}{\alpha_1}\left(\frac{\lambda_k}{\lambda_1}\right)^k\pmb{v}_i \to 0,
+\end{equation}
+quando $k\to \infty$. Logo, temos que
+\begin{align}
+  \pmb{q}^{(k)} &= \frac{\alpha_1\lambda_1^k\left(\pmb{v}_1+\pmb{y}^{(k)}\right)}{\left\|\alpha_1\lambda_1\left(\pmb{v}_1+\pmb{y}^{(k)}\right)\right\|}\\
+          &= \frac{\lambda_1}{|\lambda_1|}\frac{\left(\pmb{v}_1+\pmb{y}^{(k)}\right)}{\left\|\pmb{v}_1+\pmb{y}^{(k)}\right\|}.
+\end{align}
+Por fim, observamos que $\lambda_1/|\lambda_1|$ tem o mesmo sinal de $\lambda_1$. Portanto, $\pmb{q}^{(k)}$ tende a um múltiplo não nulo de $\pmb{v}_1$ quando $k\to\infty$.
+
+\begin{observacao}[\hl{Aproximação Inicial}]
+  A convergência do método da potência está condicionada a escolha de uma aproximação inicial tal que \eqref{eq:q0_comblin} seja tal que $\alpha_1\neq 0$. Não há como saber \textit{a priori} que o $\pmb{q}^{(0)}$ escolhido satisfaz essa condição e, caso não satisfaça as iterações não são convergentes.
+\end{observacao}
+
+\begin{obs}[\hl{Taxa de convergência}]
+  Pode-se mostrar a seguinte taxa de convergência para o método da potência
+  \begin{equation}
+    \left\|\tilde{\pmb{q}}^{(k)}-\pmb{v}_1\right\| \leq C\left|\frac{\lambda_2}{\lambda_1}\right|^k,\quad k\geq 1,
+  \end{equation}
+  onde
+  \begin{equation}
+    \tilde{\pmb{q}}^{(k)} = \pmb{v}_1 + \sum_{i=2}^n \frac{\alpha_i}{\alpha_1}\left(\frac{\lambda_i}{\lambda_1}\right)^k\pmb{v}_i.
+  \end{equation}
+  Consulte \cite[Seção 5.3.]{Quarteroni2007a}.
+\end{obs}
+
+% \lstinputlisting[caption=Algoritmo do Método da Potência, label={lst:algMetPot}]{./cap_autoval/dados/pyMetPot/main.py}
+\begin{lstlisting}[caption=Algoritmo do Método da Potência, label={lst:algMetPot}]
+import numpy as np
+import numpy.linalg as npla
+
+def metPot(A, q0, maxiter=1000, tol=1e-14):
+  q = q0/npla.norm(q0)
+  nu0 = np.dot(q, A @ q)
+  print(f"{0}: {nu0}")
+
+  info = -1
+  for k in range(maxiter):
+    z = A @ q
+    q = z/npla.norm(z)
+    nu = np.dot(q, A @ q)
+
+    print(f"{k+1}: {nu}")
+    if (np.fabs(nu-nu0) < tol):
+      info = 0
+      break
+
+    nu0 = nu
+
+  return nu, q, info  
+\end{lstlisting}
+
+\subsubsection{Exercícios}
+
+\begin{exer}
+  Use o método da potência para computar o autovalor dominante da matriz de coeficientes do problema discreto associado ao Exercício~\ref{exer:pvc1d}. Estude sua convergência para diferentes tamanhos da matriz.
+\end{exer}
+
+\begin{exer}
+  Use o método da potência para computar o autovalor dominante da matriz de coeficientes do problema discreto associado ao Exemplo~\ref{ex:poisson}. Estude sua convergência para diferentes tamanhos da matriz.
+\end{exer}
+
+\subsection{Método da Potência Inversa}
+\badgeRevisar
+
+Esta \hl{variação do método da potência nos permite computar o autovalor mais próximo de um número $\mu\in\mathbb{C}$ dado}, $\mu\not\in\sigma(A)$. A ideia é aplicar o método para a matriz
+\begin{equation}
+  M_\mu^{-1} = (A-\mu I)^{-1}.
+\end{equation}
+Neste contexto, \hl{$\mu$ é chamado de \emph{deslocamento}} (em inglês, {\it shift}).
+
+Notamos que se $\left(\lambda_i, \pmb{v}_i\right)$ é um autopar de $A$, então $\xi_i=(\lambda_i-\mu)^{-1}$ é autovalor de $M_\mu^{-1}$ associado ao autovetor $\pmb{v}_i$. De fato,
+\begin{align}
+  & (\lambda_i - \mu) \pmb{v}_i = (A-\mu I)\pmb{v}_i \\
+  & M_\mu^{-1}(\lambda_i-\mu)\pmb{v}_i = \pmb{v}_i \\
+  & M_\mu^{-1}\pmb{v}_i = (\lambda_i-\mu)^{-1} \pmb{v}_i.
+\end{align}
+Isso também mostra que $A$ e $M_\mu^{-1}$ têm os mesmos autovetores.
+
+Agora, \hl{se $\mu$ for suficientemente próximo de $\lambda_m$, autovalor simples de $A$, então}
+\begin{equation}
+  |\lambda_m-\mu| < |\lambda_i-\mu|,\quad i=1,2,\dotsc,n,~i\neq m.
+\end{equation}
+Com isso, \hl{$\xi_m=(\lambda_m-\mu)^{-1}$ é o autovalor dominante de $M_\mu^{-1}$} e, portanto, a iteração do método da potência aplicada a $M_\mu^{-1}$ fornece este autovalor. Mais especificamente, como $A$ e $M_\mu^{-1}$ tem os  mesmos autovetores, \hl{a \emph{iteração do método da potência inversa} é dada como segue}
+\begin{align}
+  & (A-\mu I)\pmb{z}^{(k)} = \pmb{q}^{(k-1)}, \label{eq:slmpi} \\
+  & \pmb{q}^{(k)} = \pmb{z}^{(k)}/\|\pmb{z}^{(k)}\|, \\
+  & \nu^{(k)} = (\pmb{q}^{(k)})^H A \pmb{q}^{(k)},
+\end{align}
+onde $\pmb{q}^{(0)}$ é uma aproximação inicial para o autovetor associado ao autovalor $\lambda_m$, $\nu^{(k)}\to \lambda_m$ quando $k\to \infty$.
+
+\subsubsection{Exercícios}
+
+\begin{exer}
+  Use o método da potência para computar diferentes autovalores da matriz de coeficientes do problema discreto associado ao Exercício~\ref{exer:pvc1d}. Estude sua convergência para diferentes tamanhos da matriz. 
+\end{exer}
+
+\begin{exer}
+  Use o método da potência para computar diferentes autovalores da matriz de coeficientes do problema discreto associado ao Exemplo~\ref{ex:poisson}. Verifique se há vantagem em aplicar os métodos GMRES e GC na resolução de \eqref{eq:slmpi}.
+\end{exer}
+
+\subsection{Métodos de Deflação}
+\badgeConstrucao
+
+%%% section
+\section{Iteração QR}\label{cap_autoval_sec_qr}
+\badgeRevisar
+
+\hl{A \emph{iteração QR} é um método para a computação aproximada de todos os autovalores de uma dada matriz $A$}. A ideia é explorar um método iterativo para a computação da \emph{decomposição de Schur}{\schur} de A, i.e. encontrar uma \emph{matriz unitária}\endnote{Uma matriz $U$ é dita unitária quando $U^{-1} = U^H$.} $U$ tal que
+\begin{equation}
+  U^{H}AU =
+  \begin{bmatrix}
+    \lambda_1 & t_{12} & \cdots & t_{1n}\\
+    0 & \lambda_2 & & t_{2n}\\
+    \vdots & & \ddots & \vdots\\
+    0 & \vdots & 0 & \lambda_n
+  \end{bmatrix}
+\end{equation}
+
+Assumindo $A\in\mathbb{R}^{n\times n}$, sejam $Q^{(0)}\in\mathbb{R}^{n\times n}$ uma \emph{matriz ortogonal}\endnote{Uma matriz $Q$ é dita ortogonal quando $Q^TQ = I$.} e $T^{(0)} = (Q^{(0)})^TAQ^{(0)}$. A iteração $QR$ consiste em
+\begin{align}
+  &\text{determinar }Q^{(k)}, R^{(k)}\text{ tal que}\nonumber\\
+  &Q^{(k)}R^{(k)} = T^{(k-1)} ~\text{(fatoração QR)}\\
+  &T^{(k)} = R^{(k)}Q^{(k)},
+\end{align}
+para $k=1,2,\ldots$.
+
+Ou seja, a cada iteração $k$, computa-se a fatoração da matriz $T^{(k-1)}$ como o produto de uma matriz ortogonal $Q^{(k)}$ com uma matriz triangular superior $R^{(k)}$. Então, computa-se uma nova aproximação $T^{(k)}$ pela multiplicação de $R^{(k)}$ por $Q^{(k)}$. Com isso, temos
+\begin{align}
+  & T^{(k)} = R^{(k)}Q^{(k)}\\
+  &\text{}\quad = (Q^{(k)})^T(Q^{(k)}R^{(k)})Q^{(k)}\\
+  &\text{}\quad = (Q^{(k)})^TT^{(k-1)}Q^{(k)}\\
+  &\text{}\quad = (Q^{(k)})^TR^{(k-1)}Q^{(k-1)}Q^{(k)}\\
+  &\text{}\quad = (Q^{(k)})^T(Q^{(k-1)})^TQ^{(k-1)}R^{(k-1)}Q^{(k-1)}Q^{(k)}\\
+  &\text{}\quad = (Q^{(k-1)}Q^{(k)})^TT^{(k-2)}(Q^{(k-1)}Q^{(k)})\\
+  &\text{}\quad =(Q^{(0)}\cdots Q^{(k)})^TA(Q^{(0)}\cdots Q^{(k)}).
+\end{align}
+Ou seja, $T^{(k)}$ é matriz semelhante a $A$ para todo $k$. E, portanto, tem os mesmos autovalres.
+
+\begin{obs}[\hl{Convergência}]
+  Se $A\in\mathbb{R}^{n\times n}$ for uma matriz com autovalores tais que
+  \begin{equation}
+    |\lambda_1| > |\lambda_2| > \cdots > |\lambda_n|,
+  \end{equation}
+  então
+  \begin{equation}
+    \lim_{k\to\infty} T^{(k)} =   \begin{bmatrix}
+    \lambda_1 & t_{12} & \cdots & t_{1n}\\
+    0 & \lambda_2 & & t_{2n}\\
+    \vdots & & \ddots & \vdots\\
+    0 & \vdots & 0 & \lambda_n
+  \end{bmatrix}.
+\end{equation}
+
+  Para a taxa de convergência, temos
+  \begin{equation}
+    |t^{(k)}_{i,i-1}| = \mathcal{O}\left(\left|\frac{\lambda_i}{\lambda_{i-1}}\right|^k\right),\quad i=2,\dotsc,n,
+  \end{equation}
+  quando $k\to\infty$.
+
+  Ainda, se $A$ for uma \emph{matriz simétrica}, então $T^{(k)}$ tende a uma matriz diagonal quando $k\to\infty$.
+\end{obs}
+
+\begin{obs}
+  Variantes do método QR permitem sua aplicação para matrizes mais gerais. Consulte \cite{Golub2013a}.
+\end{obs}
+
+Uma forma eficiente do método QR é chamada de \emph{iteração Hessenberg}{\hessenberg}\emph{-QR}. Consiste em inicializar $T^{(0)}$ como uma \emph{matriz de Hessenberg superior}, i.e. $t^{(0)}_{i,j}=0$ para $i>j+1$. A computação de $T^{(0)}$ é feita com \emph{transformadas de Householder} e a fatoração $QR$ de $T^{(k)}$ utiliza de \emph{matrizes de Givens}{\givens}.
+
+% \lstinputlisting[caption=Algoritmo da Iteração QR, label={lst:pyQRIter}]{./cap_autoval/dados/pyQRIter/main.py}
+\begin{lstlisting}[caption=Algoritmo da Iteração QR, label={lst:pyQRIter}]
+import numpy as np
+import numpy.linalg as npla
+
+def qr_iter(A, Q=None, maxiter=10, tol=1e-5):
+  Q = np.eye(A.shape[0]) if Q==None else Q
+  T0 = Q.T @ A @ Q
+  info = -1
+  for k in range(maxiter):
+    Q, R = npla.qr(T0)
+    T = R @ Q
+    if (npla.norm(T-T0) < tol):
+      info = 0
+      break
+    T0 = T
+  return T, info  
+\end{lstlisting}
+
+\begin{obs}[\hl{Computação dos Autovetores}]
+  Se $\pmb{v}$ é autovetor associado ao autovalor simples $\lambda$ de $A$, então
+  \begin{align}
+    & A\pmb{v} = \lambda \pmb{v}\\
+    & (Q^{(k)})^TAQ^{(k)}(Q^{(k)})^T\pmb{v} \approx \lambda (Q^{(k)})^T\pmb{v}
+  \end{align}
+  Denotando, $y = (Q^{(k)})^T\pmb{v}$, temos
+  \begin{equation}
+    T^{(k)}\pmb{y} = \lambda \pmb{y}.
+  \end{equation}
+
+  Com isso, podemos computar $\pmb{y}$ e, então, temos $\pmb{v}\approx Q^{(k)}\pmb{y}$.
+\end{obs}
+
+\subsubsection{Exercícios}
+
+\begin{exer}
+  Use a iteração QR para computar os autovalores da matriz de coeficientes do problema discreto associado ao Exercício \ref{exer:pvc1d}.
+\end{exer}
+
+\begin{exer}
+  Use a iteração QR para computar os autovalores da matriz de coeficientes do problema discreto associado ao Exemplo \ref{ex:poisson}. Use \lstinline+spla.hessenberg+ para computar $T^{(0)}$.
+\end{exer}

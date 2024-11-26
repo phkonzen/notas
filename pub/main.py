@@ -4,7 +4,7 @@ Constroi/atualiza o __site__
 das notas de aula.
 
 Autor: Pedro H A Konzen - 05/2018
-Modificado: 03/2024
+Modificado: 11/2024
 '''
 
 #pacotes do Python
@@ -24,6 +24,7 @@ from edo import *
 # from matematicanumerica import *
 from matematicanumericai import *
 from matematicanumericaii import *
+from matematicanumericaiii import *
 from matematicanumericaparalela import *
 from matematicanumericaavancada import *
 from metodoelementosfinitos import *
@@ -77,6 +78,7 @@ edo = EDO(srcdir,odir)
 # mn = MatematicaNumerica(srcdir,odir)
 mni = MatematicaNumericaI(srcdir,odir)
 mnii = MatematicaNumericaII(srcdir,odir)
+mniii = MatematicaNumericaIII(srcdir,odir)
 mnp = MatematicaNumericaParalela(srcdir,odir)
 mna = MatematicaNumericaAvancada(srcdir,odir)
 mef = MetodoElementosFinitos(srcdir,odir)
@@ -101,6 +103,7 @@ if __name__ == '__main__':
 #                 mn,
                  mni,
                  mnii,
+                 mniii,                 
                  mnp,
                  mna,
                  mef,
