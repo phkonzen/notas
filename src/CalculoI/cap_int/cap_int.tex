@@ -1,5 +1,3 @@
-
-
 \chapter{Integração}\label{cap_int}
 \thispagestyle{fancy}
 
@@ -73,15 +71,16 @@ Na notação de integral definida acima, chamamos $a$ de \hl{\emph{limite inferi
     \int_0^1 1\,dx = 1\cdot 1 = 1.
   \end{equation}
 
-  \ifispython
-  Com o {\python}+{\sympy}, podemos computar esta integral com os seguintes comandos
-  \begin{lstlisting}
-    >>> from sympy import *
-    >>> x = Symbol('x')
-    >>> integrate(1, (x,0,1))
-     1
-  \end{lstlisting}
-  \fi
+\begin{lstlisting}
+import sympy as sym
+from sympy.abc import x
+sym.integrate(1, (x, 0, 1))
+\end{lstlisting}
+
+\begin{verbatim}
+1
+\end{verbatim}
+
 \end{ex}
 
 \subsection{Exercícios resolvidos}
@@ -103,15 +102,16 @@ Na notação de integral definida acima, chamamos $a$ de \hl{\emph{limite inferi
     \int_{-1}^1 \sqrt{1 - x^2}\,dx = \frac{\pi \cdot 1^2}{2} = \frac{\pi}{2}.
   \end{equation}
 
-  \ifispython
-  Com o {\python}+{\sympy}, podemos computar esta integral com os seguintes comandos
-  \begin{lstlisting}
-    In : from sympy import *
-    >>> x = Symbol('x')
-    >>> integrate(sqrt(1-x**2), (x,-1,1))
-     pi/2
-  \end{lstlisting}
-  \fi
+\begin{lstlisting}
+import sympy as sym
+from sympy.abc import x
+sym.integrate(sym.sqrt(1-x**2), (x, -1, 1))
+\end{lstlisting}
+
+\begin{verbatim}
+pi/2
+\end{verbatim}
+
 \end{resol}
 
 \begin{exeresol}
@@ -135,19 +135,25 @@ Na notação de integral definida acima, chamamos $a$ de \hl{\emph{limite inferi
     F'(x) = \frac{1}{2}\cdot 2x = x.
   \end{equation}
 
-  \ifispython
-  Com o {\python}+{\sympy}, podemos fazer essas computações com os seguintes comandos
-  \begin{lstlisting}
-    In : from sympy import *
-    >>> x, t = symbols('x,t')
-    >>> F = integrate(t, (t,0,x))
-    >>> print("F(x) = ", F)
-    >>> 
-    F(x) =  x**2/2
-    In : diff(F,x)
-     x
-  \end{lstlisting}
-  \fi  
+\begin{lstlisting}
+import sympy as sym
+from sympy.abc import x,t
+F = sym.integrate(t, (t, 0, x))
+print('F(x) =', F)
+\end{lstlisting}
+
+\begin{verbatim}
+F(x) = x**2/2  
+\end{verbatim}
+
+\begin{lstlisting}
+sym.diff(F, x)
+\end{lstlisting}
+
+\begin{verbatim}
+x
+\end{verbatim}
+
 \end{resol}
 
 \subsection{Exercícios}
@@ -396,26 +402,33 @@ para algum número real $a$ dado.
     \begin{equation}
       \frac{d}{dx}\int_1^x t^2\,dt = x^2.
     \end{equation}
+
+\begin{lstlisting}
+import sympy as sym
+from sympy.abc import x,t
+sym.diff(sym.integrate(t**2, (t, 1, x)))
+\end{lstlisting}
+
+\begin{verbatim}
+x**2
+\end{verbatim}
+
   \item
     \begin{equation}
       \frac{d}{dx}\int_0^x \sen(t)\,dt = \sen(x)
     \end{equation}
   \end{enumerate}
 
-  \ifispython
-  Com o {\python}+{\sympy}, podemos computar os resultados acima com os seguintes comandos:
-  \begin{lstlisting}
-    In : from sympy import *
-    >>> x, t = symbols('x,t')
-    >>> # a)
-    >>> diff(integrate(t**2, (t,1,x)))
-    >>> 
-     x**2
-    
-    In : diff(integrate(sin(t), (t,0,x)))
-     sin(x)
-  \end{lstlisting}
-  \fi
+\begin{lstlisting}
+import sympy as sym
+from sympy.abc import x,t  
+sym.diff(sym.integrate(sym.sin(t), (t, 0, x)))
+\end{lstlisting}
+
+\begin{verbatim}
+sin(x)
+\end{verbatim}
+
 \end{ex}
 
 \subsection{Integral indefinida}
@@ -749,9 +762,8 @@ Com base na derivada de \hl{função potência}, podemos afirmar que
 \end{equation}
 De fato, para $r\neq -1$, temos
 \begin{align}
-  F(x) &= \frac{x^{r+1}}{r+1} + C \\
-  F'(x) &= (r+1) \frac{x^r}{r+1} \\
-  &= x^r.
+  & F(x) = \frac{x^{r+1}}{r+1} + C, \\
+  & F'(x) = (r+1) \frac{x^r}{r+1} = x^r.
 \end{align}
 
 \begin{ex}
@@ -763,10 +775,9 @@ De fato, para $r\neq -1$, temos
     \end{equation}
 
 \begin{lstlisting}
-import sympy as sp
+import sympy as sym
 from sympy.abc import x
-I = sp.integrate(x, x)
-print(I)
+sym.integrate(x, x)
 \end{lstlisting}
 
 \begin{verbatim}
@@ -775,16 +786,14 @@ x**2/2
 
   \item
     \begin{align}
-      \int \frac{1}{x^2}\,dx &= \int x^{-2}\,dx \\
-                             &= -x^{-1} + C \\
-                             &= -\frac{1}{x}+C.
+      & \int \frac{1}{x^2}\,dx = \int x^{\color{blue}-2}\,dx \\
+      &\text{}\qquad = \frac{x^{{\color{blue}-2}+1}}{{\color{blue}-2}+1} + C = -\frac{1}{x}+C.
     \end{align}
 
 \begin{lstlisting}
-import sympy as sp
+import sympy as sym
 from sympy.abc import x
-I = sp.integrate(1/x**2, x)
-print(I)
+sym.integrate(1/x**2, x)
 \end{lstlisting}
 
 \begin{verbatim}
@@ -805,16 +814,15 @@ print(I)
   \end{equation}
   Logo, do teorema fundamental do cálculo, temos
   \begin{align}
-    \int_{-1}^1 x^2\,dx &= \left.\frac{x^3}{3}\right|_{-1}^1 \\
-                        &= \frac{1^3}{3} - \frac{(-1)^3}{3} \\
-                        &= \frac{1}{3} + \frac{1}{3} = \frac{2}{3}.
+    & \int_{-1}^1 x^2\,dx = \left.\frac{x^3}{3}\right|_{-1}^1 \\
+    &\text{}\qquad = \frac{1^3}{3} - \frac{(-1)^3}{3} \\
+    &\text{}\qquad = \frac{1}{3} + \frac{1}{3} = \frac{2}{3}.
   \end{align}
 
 \begin{lstlisting}
-import sympy as sp
+import sympy as sym
 from sympy.abc import x
-I = sp.integrate(x**2, (x, -1, 1))
-print(I)
+sym.integrate(x**2, (x, -1, 1))
 \end{lstlisting}
 
 \begin{verbatim}
@@ -831,8 +839,8 @@ Seja $k$ uma constante. Então, temos a seguinte \hlemph{regra da multiplicaçã
 \end{equation}
 De fato, se $F$ é uma primitiva de $f$, então pela regra da multiplicação por constante para derivadas, temos
 \begin{align}
-  (k\cdot F)' &= k\cdot F'\\
-              &= k\cdot f,
+  & (k\cdot F)' = k\cdot F'\\
+  &\text{}\qquad = k\cdot f,
 \end{align}
 i.e. $k\cdot F$ é primitiva de $k\cdot f$.
 
@@ -841,18 +849,17 @@ i.e. $k\cdot F$ é primitiva de $k\cdot f$.
   \begin{enumerate}[a)]
   \item
     \begin{align}
-      \int 2x\,dx &= 2\int x\,dx\\
-                  &= 2\left(\frac{x^2}{2} + C\right)\\
-                  &= x^2 + 2C\\
-                  &= x^2 + C
+      & \int 2x\,dx = 2\int x\,dx\\
+      &\text{}\qquad = 2\left(\frac{x^2}{2} + C\right)\\
+      &\text{}\qquad = x^2 + 2C\\
+      &\text{}\qquad = x^2 + C.
     \end{align}
     Aqui, fizemos um abuso de linguagem ao assumir \hl{$2C = C$}. Isso pode ser feito, pois $C$ denota uma constante indeterminada e, multiplicá-la por dois continua sendo indeterminada e constante. Vamos fazer este tipo de \hl{simplificação de notação} várias vezes ao longo do texto.
 
 \begin{lstlisting}
-import sympy as sp
+import sympy as sym
 from sympy.abc import x
-I = sp.integrate(2*x, x)
-print(I)
+sym.integrate(2*x, x)
 \end{lstlisting}
 
 \begin{verbatim}
@@ -861,17 +868,16 @@ x**2
 
 \item
     \begin{align}
-      \int \frac{1}{3}\sqrt{x}\,dx &= \frac{1}{3}\int x^{\frac{1}{2}}\,dx\\
-                                   &= \frac{1}{3}\frac{x^{\frac{1}{2}+1}}{\frac{1}{2}+1} + C\\
-                                   &= \frac{1}{3}\frac{x^{\frac{3}{2}}}{\frac{3}{2}} + C\\
-                                   &= \frac{2}{9}\sqrt{x^3} + C
+      & \int \frac{1}{3}\sqrt{x}\,dx = \frac{1}{3}\int x^{\frac{1}{2}}\,dx\\
+      &\text{}\qquad = \frac{1}{3}\frac{x^{\frac{1}{2}+1}}{\frac{1}{2}+1} + C\\
+      &\text{}\qquad = \frac{1}{3}\frac{x^{\frac{3}{2}}}{\frac{3}{2}} + C\\
+      &\text{}\qquad = \frac{2}{9}\sqrt{x^3} + C.
     \end{align}
 
 \begin{lstlisting}
-import sympy as sp
+import sympy as sym
 from sympy.abc import x
-I = sp.integrate(1/3*sp.sqrt(x), x)
-print(I)
+sym.integrate(1/3*sym.sqrt(x), x)
 \end{lstlisting}
 
 \begin{verbatim}
@@ -880,17 +886,16 @@ print(I)
 
   \item
     \begin{align}
-      \int_0^{1}-x^2\,dx &= -\int_0^1x^2\,dx \\
-                         &= -\left[\frac{x^3}{3}\right]_0^1 \\
-                         &= -\left(\frac{1}{3} - \frac{0}{3}\right) \\
-                         &= -\frac{1}{3}.
+      & \int_0^{1}-x^2\,dx = -\int_0^1x^2\,dx \\
+      &\text{}\qquad = -\left[\frac{x^3}{3}\right]_0^1 \\
+      &\text{}\qquad = -\left(\frac{1}{3} - \frac{0}{3}\right) \\
+      &\text{}\qquad = -\frac{1}{3}.
     \end{align}
 
 \begin{lstlisting}
-import sympy as sp
+import sympy as sym
 from sympy.abc import x
-I = sp.integrate(-x**2, (x, 0, 1))
-print(I)
+sym.integrate(-x**2, (x, 0, 1))
 \end{lstlisting}
 
 \begin{verbatim}
@@ -909,8 +914,8 @@ Se $f$ e $g$ são funções integráveis, então vale a seguinte \hl{\emph{regra
 \end{equation}
 De fato, sejam $F$ uma primitiva de $f$ e $G$ uma primitiva de $g$. Temos
 \begin{align}
-  (F \pm G)' &= F' \pm G'\\
-             &= f \pm g,
+  & (F \pm G)' = F' \pm G'\\
+  &\text{}\qquad = f \pm g,
 \end{align}
 i.e. $F \pm G$ é primitiva de $f\pm g$.
 
@@ -919,35 +924,33 @@ i.e. $F \pm G$ é primitiva de $f\pm g$.
   \begin{enumerate}[a)]
   \item
     \begin{align}
-      \int {\color{blue}x} + {\color{red}1}\,dx &= {\color{blue}\int x\,dx} + {\color{red}\int dx}\\
-                     &= {\color{blue}\frac{x^2}{2} + C_1} + {\color{red}x + C_2}\\
-                     &= \frac{x^2}{2} + x + C
+      & \int {\color{blue}x} + {\color{red}1}\,dx = {\color{blue}\int x\,dx} + {\color{red}\int dx}\\
+      &\text{}\qquad = {\color{blue}\frac{x^2}{2} + C_1} + {\color{red}x + C_2}\\
+      &\text{}\qquad = \frac{x^2}{2} + x + C.
     \end{align}
     Aqui, $C_1$, $C_2$ e $C = C_1+C_2$ denotam constantes indeterminadas.
 
 \begin{lstlisting}
-import sympy as sp
+import sympy as sym
 from sympy.abc import x
-I = sp.integrate(x+1, x)
-print(I)
+sym.integrate(x+1, x)
 \end{lstlisting}
 
 \begin{verbatim}
 x**2/2 + x
 \end{verbatim}
 
-  \item
+  \item 
     \begin{align}
-      \int {\color{blue}\sqrt{x}} - {\color{red}x}\,dx &= {\color{blue}\int x^{\frac{1}{2}}\,dx} - {\color{red}\int x\,dx}\\
-                            &= {\color{blue}\frac{2}{3}x^{\frac{3}{2}}} - {\color{red}\frac{x^2}{2}} + C
+      & \int {\color{blue}\sqrt{x}} - {\color{red}x}\,dx = {\color{blue}\int x^{\frac{1}{2}}\,dx} - {\color{red}\int x\,dx}\\
+      &\text{}\qquad = {\color{blue}\frac{2}{3}x^{\frac{3}{2}}} - {\color{red}\frac{x^2}{2}} + C.
     \end{align}
 
 \begin{lstlisting}
-import sympy as sp
+import sympy as sym
 from sympy.abc import x
-f = sp.sqrt(x) - x
-I = sp.integrate(f, x)
-print(I)
+f = sym.sqrt(x) - x
+sym.integrate(f, x)
 \end{lstlisting}
 
 \begin{verbatim}
@@ -956,20 +959,19 @@ print(I)
 
   \item
     \begin{align}
-      \hleq{\int (2x^2 + 3x - 1)\,dx} &= \int \left[2x^2 + (3x - 1)\right]\,dx\\
-                                             &= \int 2x^2\,dx + \int 3x - 1 \,dx \\
-                                             &= \hleq{\int 2x^2\,dx - \int 3x\,dx - \int \,dx}\\
-                                             &= 2\int x^2\,dx + 3\int x\,dx - \int \,dx\\
-                                             &= \frac{2}{3}x^3 + \frac{3}{2}x^2 - x + C
+      & \hleq{\int (2x^2 + 3x - 1)\,dx} = \int \left[2x^2 + (3x - 1)\right]\,dx\\
+      &\text{}\qquad = \int 2x^2\,dx + \int 3x - 1 \,dx \\
+      &\text{}\qquad = \hleq{\int 2x^2\,dx - \int 3x\,dx - \int \,dx}\\
+      &\text{}\qquad = 2\int x^2\,dx + 3\int x\,dx - \int \,dx\\
+      &\text{}\qquad = \frac{2}{3}x^3 + \frac{3}{2}x^2 - x + C.
     \end{align}
   \end{enumerate}
 
 \begin{lstlisting}
-import sympy as sp
+import sympy as sym
 from sympy.abc import x
 f = 2*x**2 + 3*x - 1
-I = sp.integrate(f, x)
-print(I)
+sym.integrate(f, x)
 \end{lstlisting}
 
 \begin{verbatim}
@@ -984,21 +986,20 @@ print(I)
   \end{equation}
   Temos
   \begin{align}
-    \int x^2 + 1\,dx &= \int x^2\,dx + \int \,dx\\
-                     &= \frac{x^3}{3} + x + C.
+    & \int x^2 + 1\,dx = \int x^2\,dx + \int \,dx\\
+    &\text{}\qquad = \frac{x^3}{3} + x + C.
   \end{align}
   Agora, do teorema fundamental do cálculo, temos
   \begin{align}
-    \int_0^1 x^2+1\,dx &= \left. \frac{x^3}{3} + x\right|_0^1 \\
-                       &= \left(\frac{1}{3} + 1 \right)- \left(\frac{0^3}{3} + 0\right) \\
-                       &= \frac{4}{3}.
+    & \int_0^1 x^2+1\,dx = \left. \frac{x^3}{3} + x\right|_0^1 \\
+    &\text{}\qquad = \left(\frac{1}{3} + 1 \right)- \left(\frac{0^3}{3} + 0\right) \\
+    &\text{}\qquad = \frac{4}{3}.
   \end{align}
 
 \begin{lstlisting}
-import sympy as sp
+import sympy as sym
 from sympy.abc import x
-I = sp.integrate(x**2 + 1, (x, 0, 1))
-print(I)
+sym.integrate(x**2 + 1, (x, 0, 1))
 \end{lstlisting}
 
 \begin{verbatim}
@@ -1015,9 +1016,9 @@ Começamos lembrando que
 \end{equation}
 Para $x < 0$, usamos a regra da cadeia
 \begin{align}
-  \frac{d}{dx}\ln(-x) &= \frac{1}{-x}\cdot (-x)'\\
-                      &= -\frac{1}{x}\cdot (-1)\\
-                      &= \frac{1}{x}
+  & \frac{d}{dx}\ln(-x) = \frac{1}{-x}\cdot (-x)'\\
+  &\text{}\qquad = -\frac{1}{x}\cdot (-1)\\
+  &\text{}\qquad = \frac{1}{x}.
 \end{align}
 Ou seja, temos que 
 \begin{equation}
@@ -1031,17 +1032,16 @@ donde concluímos que a \hlemph{integral de $x^{-1}$} é
 \begin{ex}
 
   \begin{align}
-    \int_1^e x^{-1}\,dx &= \int_1^e \frac{1}{x}\,dx\\
-                        &= \left[ \ln|x|\right]_1^e \\
-                             &= \ln|e| - \ln|1| \\
-                             &= 1 - 0 = 1.
+    & \int_1^e x^{-1}\,dx = \int_1^e \frac{1}{x}\,dx\\
+    &\text{}\qquad = \left[ \ln|x|\right]_1^e \\
+    &\text{}\qquad = \ln|e| - \ln|1| \\
+    &\text{}\qquad = 1 - 0 = 1.
   \end{align}
 
 \begin{lstlisting}
-import sympy as sp
+import sympy as sym
 from sympy.abc import x
-I = sp.integrate(1/x, (x, 1, sp.E))
-print(I)
+sym.integrate(1/x, (x, 1, sym.E))
 \end{lstlisting}
 
 \begin{verbatim}
@@ -1062,17 +1062,16 @@ Da derivada da \hl{função exponencial natural}, temos
   \begin{enumerate}[a)]
   \item
     \begin{align}
-      \int e^{2 + x}\,dx &= \int e^2e^x\,dx \\
-                         &= e^2\int e^x\,dx \\
-                         &= e^2e^x + C \\
-                         &= e^{2+x} + C
+      & \int e^{2 + x}\,dx = \int e^2e^x\,dx \\
+      &\text{}\qquad = e^2\int e^x\,dx \\
+      &\text{}\qquad = e^2e^x + C \\
+      &\text{}\qquad = e^{2+x} + C.
     \end{align}
 
 \begin{lstlisting}
-import sympy as sp
+import sympy as sym
 from sympy.abc import x
-I = sp.integrate(sp.exp(2+x), x)
-print(I)
+sym.integrate(sym.exp(2+x), x)
 \end{lstlisting}
 
 \begin{verbatim}
@@ -1081,17 +1080,16 @@ exp(x + 2)
 
   \item
     \begin{align}
-      \int_{0}^{\ln 2}e^x\,dx &= \left. e^x\right|_0^{\ln 2}\\
-                              &= e^{\ln 2} - e^0\\
-                              &= 2 - 1\\
-                              &= 1
+      & \int_{0}^{\ln 2}e^x\,dx = \left. e^x\right|_0^{\ln 2}\\
+      &\text{}\qquad = e^{\ln 2} - e^0\\
+      &\text{}\qquad = 2 - 1\\
+      &\text{}\qquad = 1.
     \end{align}
 
 \begin{lstlisting}
-import sympy as sp
+import sympy as sym
 from sympy.abc import x
-I = sp.integrate(sp.exp(x), (x, 0, sp.log(2)))
-print(I)
+sym.integrate(sym.exp(x), (x, 0, sym.log(2)))
 \end{lstlisting}
 
 \begin{verbatim}
@@ -1117,15 +1115,14 @@ temos que a \hlemph{integral da função seno} é
   \begin{enumerate}[a)]
   \item
     \begin{align}
-      \int 2\sen(x)\,dx &= 2\int \sen(x) dx\\
-                       &= -2\cos(x) + C
+      & \int 2\sen(x)\,dx = 2\int \sen(x) dx\\
+      &\text{}\qquad = -2\cos(x) + C
     \end{align}
 
 \begin{lstlisting}
-import sympy as sp
+import sympy as sym
 from sympy.abc import x
-I = sp.integrate(2*sp.sin(x), x)
-print(I)
+sym.integrate(2*sym.sin(x), x)
 \end{lstlisting}
 
 \begin{verbatim}
@@ -1134,16 +1131,15 @@ print(I)
 
   \item
     \begin{align}
-      \int_{-\pi}^\pi\sen(x)\,dx &= \left.-\cos(x)\right|_{-\pi}^\pi\\
-                                 &= -\cos(\pi) - [-\cos(-\pi)]\\
-                                 &= 1 - 1 = 0
+      & \int_{-\pi}^\pi\sen(x)\,dx = \left.-\cos(x)\right|_{-\pi}^\pi\\
+      &\text{}\qquad = -\cos(\pi) - [-\cos(-\pi)]\\
+      &\text{}\qquad = 1 - 1 = 0
     \end{align}
 
 \begin{lstlisting}
-import sympy as sp
+import sympy as sym
 from sympy.abc import x
-I = sp.integrate(sp.sin(x), (x, -sp.pi, sp.pi))
-print(I)
+sym.integrate(sym.sin(x), (x, -sym.pi, sym.pi))
 \end{lstlisting}
 
 \begin{verbatim}
@@ -1167,15 +1163,14 @@ donde temos que a \hl{\emph{integral da função cosseno}}
   \begin{enumerate}[a)]
   \item
     \begin{align}
-      \int \frac{1}{2}\cos(x)\,dx &= \frac{1}{2}\int\cos(x)\,dx\\
-                                  &= \frac{1}{2}\sen(x) + C\\
+      & \int \frac{1}{2}\cos(x)\,dx = \frac{1}{2}\int\cos(x)\,dx \\
+      &\text{}\qquad = \frac{1}{2}\sen(x) + C. \\
     \end{align}
 
 \begin{lstlisting}
-import sympy as sp
+import sympy as sym
 from sympy.abc import x
-I = sp.integrate(1/2*sp.cos(x), x)
-print(I)
+sym.integrate(1/2*sym.cos(x), x)
 \end{lstlisting}
 
 \begin{verbatim}
@@ -1184,16 +1179,15 @@ print(I)
 
   \item
     \begin{align}
-      \int_{-\pi}^\pi\cos(x)\,dx &= \left.\sen(x)\right|_{-\pi}^\pi\\
-                                 &= \sen(\pi) - \sen(-\pi)\\
-                                 &= 0
+      & \int_{-\pi}^\pi\cos(x)\,dx = \left.\sen(x)\right|_{-\pi}^\pi\\
+      &\text{}\qquad = \sen(\pi) - \sen(-\pi)\\
+      &\text{}\qquad = 0.
     \end{align}
 
 \begin{lstlisting}
-import sympy as sp
+import sympy as sym
 from sympy.abc import x
-I = sp.integrate(sp.cos(x), (x, -sp.pi, sp.pi))
-print(I)
+sym.integrate(sym.cos(x), (x, -sym.pi, sym.pi))
 \end{lstlisting}
 
 \begin{verbatim}
@@ -1206,7 +1200,6 @@ print(I)
 
 \subsection{Tabela de Integrais}
 
-\begin{small}
 \begin{align}
   & \int k\cdot f(x)\,dx = k\cdot\int f(x)\,dx\\
   & \int \left[f(x)\pm g(x)\right]\,dx = \int f(x)\,dx \pm \int g(x)\,dx\\
@@ -1216,13 +1209,8 @@ print(I)
   & \int \sen(x)\,dx = -\cos(x) + C \\
   & \int \cos(x)\,dx = \sen(x) + C
 \end{align}
-\end{small}
 
 \subsection{Exercícios resolvidos}
-
-% \begin{flushright}
-%   [Vídeo] | [Áudio] | \href{https://phkonzen.github.io/notas/contato.html}{[Contatar]}
-% \end{flushright}
 
 \begin{exeresol}
   Calcule
@@ -1232,54 +1220,29 @@ print(I)
 \end{exeresol}
 \begin{resol}
   \begin{align}
-    \int \frac{x^2+2x}{\sqrt{x}}\,dx &= \int \frac{x^2}{\sqrt{x}} + 2\frac{x}{\sqrt{x}}\,dx\\
-                                     &= \int \frac{x^2}{x^{\frac{1}{2}}} + 2\frac{x}{x^{\frac{1}{2}}}\,dx\\
-                                     &= \int x^{2-\frac{1}{2}} + 2x^{1-\frac{1}{2}}\,dx\\
-                                     &= \int x^{\frac{3}{2}}\,dx + 2\int x^{\frac{1}{2}}\,dx
+    & \int \frac{x^2+2x}{\sqrt{x}}\,dx = \int \frac{x^2}{\sqrt{x}} + 2\frac{x}{\sqrt{x}}\,dx\\
+    &\text{}\qquad = \int \frac{x^2}{x^{\frac{1}{2}}} + 2\frac{x}{x^{\frac{1}{2}}}\,dx\\
+    &\text{}\qquad = \int x^{2-\frac{1}{2}} + 2x^{1-\frac{1}{2}}\,dx\\
+    &\text{}\qquad = \int x^{\frac{3}{2}}\,dx + 2\int x^{\frac{1}{2}}\,dx.
   \end{align}
   Agora, usando a \emph{regra da função potência} \eqref{eq:int_fpot}, obtemos
   \begin{align}
-    \int \frac{x^2+2x}{\sqrt{x}}\,dx &= \frac{x^{\frac{3}{2}+1}}{\frac{3}{2}+1} + 2\frac{x^{\frac{1}{2}+1}}{\frac{1}{2}+1} + C\\
-                                     &= \frac{2}{5}x^{\frac{5}{2}} + \frac{4}{3}x^{\frac{3}{2}} + C
+    & \int \frac{x^2+2x}{\sqrt{x}}\,dx = \frac{x^{\frac{3}{2}+1}}{\frac{3}{2}+1} + 2\frac{x^{\frac{1}{2}+1}}{\frac{1}{2}+1} + C \\
+    &\text{}\qquad = \frac{2}{5}x^{\frac{5}{2}} + \frac{4}{3}x^{\frac{3}{2}} + C.
   \end{align}
 
-  \ifispython
-  Com o {\python}+{\sympy}, podemos computar a solução deste exercício
-  \begin{lstlisting}
-    >>> from sympy import *
-    >>> x = symbols('x')
-    >>> integrate((x**2+2*x)/(sqrt(x)))
-    2*x**(5/2)/5 + 4*x**(3/2)/3
-  \end{lstlisting}
-  \fi
+\begin{lstlisting}
+import sympy as sym
+from sympy.abc import x
+sym.integrate((x**2+2*x)/(sqrt(x)))
+\end{lstlisting}
+
+\begin{verbatim}
+2*x**(5/2)/5 + 4*x**(3/2)/3
+\end{verbatim}
+
 \end{resol}
 
-% \begin{exeresol}
-%   Calcule a área total entre as curvas $y=x^2-1$, $y=0$, $x=0$ e $x=2$.
-% \end{exeresol}
-% \begin{resol}
-%   Tendo em vista que $x^2-1\leq 0$ para $x\in [0, 1]$ e $x^2-1\geq [0, 1]$, temos que a área $A$ pedida é igual a
-%   \begin{equation}
-%     A = -\int_0^1 x^2 -1\,dx + \int_1^2 x^2-1\,dx.
-%   \end{equation}
-%   Agora, calculamos a seguinte integral indefinida
-%   \begin{align}
-%     \int x^2 - 1\,dx &= \int x^2\,dx - \int\,dx \\
-%                      &= \frac{x^3}{3} - x + C.
-%   \end{align}
-%   Então, usando o Teorema Fundamental do Cálculo, obtemos
-%   \begin{align}
-%     A &= -\left[\frac{x^3}{3}-x\right]_0^1 + \left[\frac{x^3}{3}-x\right]_1^2\\
-%       &= - \left[\frac{1}{3}-1\right] + \left[\frac{8}{3} - 2 - \frac{1}{3} + 1\right] \\
-%       &= \frac{2}{3} \frac{4}{3} = 2.
-%   \end{align}
-% \ifispython
-% Podemos usar o {\python}+{\sympy} para calcular a área como segue
-% \begin{lstlisting}
-  
-% \end{lstlisting}
-% \fi  
-% \end{resol}
 
 \begin{exeresol}
   Calcule
@@ -1290,27 +1253,28 @@ print(I)
 \begin{resol}
   Das regras básicas de integração, temos
   \begin{align}
-    \int \frac{1}{2x}\,dx &= \int \frac{1}{2}\cdot\frac{1}{x}\,dx \\
-                          &= \frac{1}{2}\int\frac{1}{x}\,dx \\
-                          &= \frac{1}{2}\ln(x) + C \\
-                          &= \ln\sqrt{x} + C.
+    & \int \frac{1}{2x}\,dx = \int \frac{1}{2}\cdot\frac{1}{x}\,dx \\
+    &\text{}\qquad = \frac{1}{2}\int\frac{1}{x}\,dx \\
+    &\text{}\qquad = \frac{1}{2}\ln(x) + C \\
+    &\text{}\qquad = \ln\sqrt{x} + C.
   \end{align}
-  Então, do Teorema fundamental do cálculo, temos
+  Então, do teorema fundamental do cálculo, temos
   \begin{align}
-    \int_1^e \frac{1}{2x}\,dx &= \left.\ln\sqrt{x}\right|_1^e\\
-                              &= \ln(\sqrt{e}) - \ln(1)\\
-                              &= \frac{1}{2}
+    & \int_1^e \frac{1}{2x}\,dx = \left.\ln\sqrt{x}\right|_1^e\\
+    &\text{}\qquad = \ln(\sqrt{e}) - \ln(1)\\
+    &\text{}\qquad = \frac{1}{2}.
   \end{align}
 
-  \ifispython
-  Com o {\python}+{\sympy}, computamos a solução como segue
-  \begin{lstlisting}
-    >>> from sympy import *
-    >>> x = symbols('x')
-    >>> integrate(1/(2*x), (x, 1, E))
-    1/2
-  \end{lstlisting}
-  \fi    
+\begin{lstlisting}
+import sympy as sym
+from sympy.abc import x
+sym.integrate(1/(2*x), (x, 1, sym.E))
+\end{lstlisting}
+
+\begin{verbatim}
+1/2
+\end{verbatim}
+
 \end{resol}
 
 
