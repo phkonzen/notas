@@ -14,9 +14,11 @@ Códigos-fonte das notas de aula.
 
 * ./GeometriaAnalitica - notas de aula sobre Geometria Analítica
 
-* ./MatematicaNumerica - notas de aula sobre Matemática Numérica
+* ./MatematicaNumericaI - notas de aula sobre Matemática Numérica I
 
-* ./MatematicaNumericaAvancada - notas de aula sobre Matemática Numérica Avançada
+* ./MatematicaNumericaII- notas de aula sobre Matemática Numérica II
+
+* ./MatematicaNumericaIII - notas de aula sobre Matemática Numérica III
 
 * ./MatematicaNumericaParalela - notas de aula sobre Matemática Numérica Paralela
 
