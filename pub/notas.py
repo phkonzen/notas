@@ -17,11 +17,47 @@ class Notas:
         self.ebook = ''
         self.livro = ''
 
+        self.folder_notas = ''
+        self.titulo_notas = ''
 
-    def goodies(self,htmldir,titulo_notas,srcref):
+    def make_pdf(self):
+        os.chdir(self.srcdir + '/' + self.folder_notas)
+        os.system('make -B pdf')
+        os.chdir('../..')
+
+    def make_html(self):
+        os.chdir(self.srcdir + '/' + self.folder_notas)
+        os.system('rm -r html/*')
+        os.system('make -B html')
+        os.chdir('../..')
+
+    def make_html_mobile(self):
+        os.chdir(self.srcdir + '/' + self.folder_notas)
+        os.system('rm -r html-mobile/*')
+        os.system('make -B html-mobile')
+        os.chdir('../..')
+
+    def build(self):
+        #html
+        self.make_html()
+        self.make_html_mobile()
+        self.goodies(self.srcdir + '/' + self.folder_notas + '/html', \
+                         self.titulo_notas, self.folder_notas)
+        os.system('rm -rvf ' + self.odir + '/' + self.folder_notas)
+        os.system('mv ' + self.srcdir + '/' + self.folder_notas + '/html' \
+                      + ' ' + self.odir + '/' + self.folder_notas)
+
+        #pdf
+        self.make_pdf()
+        os.system('mv ' + self.srcdir + '/' + self.folder_notas + '/main.pdf' \
+                  + ' ' + self.odir + '/' + self.folder_notas + '/')
+
+
+
+    def goodies(self, htmldir, titulo_notas, srcref):
 
         # adiciona goodies.css
-        f = open(htmldir+'/goodies.css','w')        
+        f = open(htmldir+'/goodies.css','w')
         text = 'body {'
         text += 'font-family: "Computer Modern Serif", serif;'
         text += '}'
@@ -125,18 +161,16 @@ class Notas:
         text += '}'
 
         # equations
-        text += '.ltx_eqn_center_padleft {'
-        # text += 'width: 0px;'
-        text += 'min-width: 0px;'
-        text += '}'
-
         # text += '.ltx_eqn_center_padleft {'
-        # text += 'display: inherit;'
+        # text += 'min-width: 0px;'
         # text += '}'
 
-        # text += '.ltx_eqn_center_padright {'
-        # text += 'width: 2em;'
-        # text += '}'
+        # Small devices (landscape phones, less than 768px)
+        text += '@media (max-width: 767.98px) {'
+        text += '.ltx_eqn_center_padleft {'
+        text += 'display: none;'
+        text += '}'
+        text += '}'
 
         text += '.ltx_tabular {'
         text += 'max-width: 100%;'
@@ -238,6 +272,7 @@ class Notas:
         # redes sociais
         body += '<p class="text-left mb-0"><a href="./contato.html"><i class="fas fa-envelope"></i></a> | <a href="https://www.instagram.com/notas.pedrok/"><i class="fab fa-instagram"></i></a> | <a href="https://archive.org/details/notas-de-aula"><i class="fas fa-building-columns"></i></a> | <a href="https://www.youtube.com/channel/UCwutHKlKLgVj6IkFSUFBqoA"><i class="fab fa-youtube"></i></a> | <a href="https://github.com/phkonzen/notas"><i class="fab fa-github" aria-hidden="true"></i></a> | <a href="https://www.amazon.com.br/dp/B0CW18N6T5"><i class="fab fa-amazon"></i></a></p>'
         
+
         #enxerta no __body__ (bottom)
         body_end = ''
 
@@ -256,7 +291,7 @@ class Notas:
         #enxerta no __footer
 
         # formulário de contato
-        footer_top = ''
+        footer_top = '<footer class="ltx_page_footer">'
         footer_top = '<hr/>'
         footer_top += '<h3 class="mt-2"><i class="fa-solid fa-heart" style="color:red;"></i> Envie seu comentário</h3>'
         footer_top += '<p>As informações preenchidas são enviadas por e-mail para o desenvolvedor do site e tratadas de forma privada. Consulte a <a href="../infos.html#politica">Política de Uso de Dados</a> para mais informações. Aproveito para agradecer a todas/os que de forma assídua ou esporádica contribuem enviando correções, sugestões e críticas! <i class="far fa-smile"></i></p>'
@@ -265,7 +300,8 @@ class Notas:
         f.close()
 
         footer_bottom = ''
-        footer_bottom += '<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />Este texto é disponibilizado nos termos da Licença <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR">Creative Commons Atribuição-CompartilhaIgual 4.0 Internacional</a>. Ícones e elementos gráficos podem estar sujeitos a condições adicionais.'
+        footer_bottom += '<p><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />Este texto é disponibilizado nos termos da Licença <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR">Creative Commons Atribuição-CompartilhaIgual 4.0 Internacional</a>. Ícones e elementos gráficos podem estar sujeitos a condições adicionais.</p>'
+        footer_bottom += '</footer>'
 
         pages = []
         for (dirpath, dirnames, filenames) in os.walk(htmldir):
@@ -283,12 +319,29 @@ class Notas:
                 f.close()
 
                 #modifica o __head__
-                page = page.replace('</head>',head)
+                page = page.replace('</head>', head)
 
-                #modifica o __body__ (top)
-                page = page.replace('<body>',body)
+                # add div for desktop
+                page = page.replace('<div class="ltx_page_main">',
+                                    '<div class="ltx_page_main desktop d-none d-md-block">')
+                
+                # add div mobile
+                f = open(htmldir+'-mobile/'+p, 'r')
+                page_mobile = f.read()
+                f.close()
+                page_mobile = page_mobile.replace('<div class="ltx_page_main">',
+                            '<div class="ltx_page_main mobile d-md-none">')
+                start = page_mobile.find('<div class="ltx_page_main mobile d-md-none">')
+                end = page_mobile.rfind('</div>')
+
+                page = page.replace('</body>',
+                                    page_mobile[start:end+len('</div>')] + '</body>')
+
+                # modifica o __body__ (top)
+                page = page.replace('<body>', body)
+
                 #modifica o __body__ (bottom)
-                page = page.replace('</body>',body_end)
+                page = page.replace('</body>', body_end)
 
                 merchant = '<p class="m-1 text-black" style="text-align: center">'
                 merchant += '<i class="fa-solid fa-heart" style="color: red;"></i> '
@@ -305,7 +358,8 @@ class Notas:
 
                 # merchant
                 if (fn == 'main'):
-                    page = page.replace('<div class="ltx_page_main">', f'{merchant}<div class="ltx_page_main">')
+                    page = page.replace('<header class="ltx_page_header">', 
+                                        f'<header class="ltx_page_header">{merchant}')
 
                 if (fn != 'main'):
                     src_fname = fn
@@ -536,10 +590,8 @@ class Notas:
                     paux = page.find('ltx_theorem_resp')
 
                 #modifica o __footer__
-                page = page.replace('<footer class="ltx_page_footer">',
-                                    footer_top + '<footer class="ltx_page_footer">')
-                page = page.replace('<div class="ltx_page_logo">',
-                                    footer_bottom + '<div class="ltx_page_logo">')
+                page = page.replace('<footer class="ltx_page_footer">', footer_top)
+                page = page.replace('</footer>', footer_bottom)
 
                                
                 #sobrescreve a página com as alterações

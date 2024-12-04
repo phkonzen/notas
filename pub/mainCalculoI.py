@@ -28,7 +28,7 @@ os.system('cp -rvf ../src/* '+srcdir+'/')
 os.system('rm -rvf ../docs/CalculoI')
 
 # constroi as notas
-ci = CalculoI(srcdir,odir)
+ci = CalculoI(srcdir, odir)
 ci.build()
 
 # make sitemap.txt

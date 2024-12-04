@@ -20,30 +20,34 @@ class AlgoritmosProgramacaoI(Notas):
         self.srcdir = srcdir
         self.odir = odir
         self.ebook = 'https://a.co/d/eRjID1A'
-        
-    def make_pdf(self):
-        os.chdir(self.srcdir+'/AlgoritmosProgramacaoI')
-        os.system('make clean')
-        os.system('make pdf')
-        os.chdir('../..')
 
-    def make_html(self):
-        os.chdir(self.srcdir+'/AlgoritmosProgramacaoI')
-        os.system('make clean')
-        os.system('make html')
-        os.chdir('../..')
-        
-    def build(self):
-        #html
-        self.make_html()
-        self.goodies(self.srcdir+'/AlgoritmosProgramacaoI/html',\
-                         'Algoritmos e Programação I', 'AlgoritmosProgramacaoI')
-        
-        os.system('rm -rvf '+self.odir+'/AlgoritmosProgramacaoI')
-        os.system('mv '+self.srcdir+'/AlgoritmosProgramacaoI/html'\
-                      +' '+self.odir+'/AlgoritmosProgramacaoI')
+        self.folder_notas = 'AlgoritmosProgramacaoI'
+        self.titulo_notas = 'Algoritmos e Programação I'
 
-        #pdf
-        self.make_pdf()
-        os.system('mv '+self.srcdir+'/AlgoritmosProgramacaoI/main.pdf'\
-                  +' '+self.odir+'/AlgoritmosProgramacaoI/')
+        
+    # def make_pdf(self):
+    #     os.chdir(self.srcdir+'/AlgoritmosProgramacaoI')
+    #     os.system('make clean')
+    #     os.system('make pdf')
+    #     os.chdir('../..')
+
+    # def make_html(self):
+    #     os.chdir(self.srcdir+'/AlgoritmosProgramacaoI')
+    #     os.system('make clean')
+    #     os.system('make html')
+    #     os.chdir('../..')
+        
+    # def build(self):
+    #     #html
+    #     self.make_html()
+    #     self.goodies(self.srcdir+'/AlgoritmosProgramacaoI/html',\
+    #                      'Algoritmos e Programação I', 'AlgoritmosProgramacaoI')
+        
+    #     os.system('rm -rvf '+self.odir+'/AlgoritmosProgramacaoI')
+    #     os.system('mv '+self.srcdir+'/AlgoritmosProgramacaoI/html'\
+    #                   +' '+self.odir+'/AlgoritmosProgramacaoI')
+
+    #     #pdf
+    #     self.make_pdf()
+    #     os.system('mv '+self.srcdir+'/AlgoritmosProgramacaoI/main.pdf'\
+    #               +' '+self.odir+'/AlgoritmosProgramacaoI/')
