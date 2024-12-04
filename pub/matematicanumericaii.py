@@ -17,30 +17,34 @@ class MatematicaNumericaII(Notas):
         super().__init__()
         self.srcdir = srcdir
         self.odir = odir
-        
-    def make_pdf(self):
-        os.chdir(self.srcdir+'/MatematicaNumericaII')
-        os.system('make clean')
-        # self.tags2pdf(self.srcdir+'/MatematicaNumericaI')
-        os.system('make pdf')
-        os.chdir('../..')
 
-    def make_html(self):
-        os.chdir(self.srcdir+'/MatematicaNumericaII')
-        os.system('make clean')
-        os.system('make html')
-        os.chdir('../..')
-        
-    def build(self):
-        #html
-        self.make_html()
-        self.goodies(self.srcdir+'/MatematicaNumericaII/html',\
-                         'Matemática Numérica II', 'MatematicaNumericaII')
-        os.system('rm -rvf '+self.odir+'/MatematicaNumericaII')
-        os.system('mv '+self.srcdir+'/MatematicaNumericaII/html'\
-                      +' '+self.odir+'/MatematicaNumericaII')
+        self.folder_notas = 'MatematicaNumericaII'
+        self.titulo_notas = 'Matemática Numérica II'
 
-        #pdf
-        self.make_pdf()
-        os.system('mv '+self.srcdir+'/MatematicaNumericaII/main.pdf'\
-                  +' '+self.odir+'/MatematicaNumericaII/')
+        
+    # def make_pdf(self):
+    #     os.chdir(self.srcdir+'/MatematicaNumericaII')
+    #     os.system('make clean')
+    #     # self.tags2pdf(self.srcdir+'/MatematicaNumericaI')
+    #     os.system('make pdf')
+    #     os.chdir('../..')
+
+    # def make_html(self):
+    #     os.chdir(self.srcdir+'/MatematicaNumericaII')
+    #     os.system('make clean')
+    #     os.system('make html')
+    #     os.chdir('../..')
+        
+    # def build(self):
+    #     #html
+    #     self.make_html()
+    #     self.goodies(self.srcdir+'/MatematicaNumericaII/html',\
+    #                      'Matemática Numérica II', 'MatematicaNumericaII')
+    #     os.system('rm -rvf '+self.odir+'/MatematicaNumericaII')
+    #     os.system('mv '+self.srcdir+'/MatematicaNumericaII/html'\
+    #                   +' '+self.odir+'/MatematicaNumericaII')
+
+    #     #pdf
+    #     self.make_pdf()
+    #     os.system('mv '+self.srcdir+'/MatematicaNumericaII/main.pdf'\
+    #               +' '+self.odir+'/MatematicaNumericaII/')

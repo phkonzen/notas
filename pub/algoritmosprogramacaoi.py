@@ -6,7 +6,7 @@ Algoritmos e Programação I.
 
 notas/src/AlgoritmosProgramacaoI
 
-Autor: Pedro H A Konzen - 05/2023
+Autor: Pedro H A Konzen
 '''
 
 import os

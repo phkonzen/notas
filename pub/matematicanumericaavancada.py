@@ -17,29 +17,32 @@ class MatematicaNumericaAvancada(Notas):
         super().__init__()
         self.srcdir = srcdir
         self.odir = odir
-        
-    def make_pdf(self):
-        os.chdir(self.srcdir+'/MatematicaNumericaAvancada')
-        os.system('make clean')
-        os.system('make pdf')
-        os.chdir('../..')
 
-    def make_html(self):
-        os.chdir(self.srcdir+'/MatematicaNumericaAvancada')
-        os.system('make clean')
-        os.system('make html')
-        os.chdir('../..')
+        self.folder_notas = 'MatematicaNumericaAvancada'
+        self.titulo_notas = 'Matemática Numérica Avançada'
         
-    def build(self):
-        #html
-        self.make_html()
-        self.goodies(self.srcdir+'/MatematicaNumericaAvancada/html',\
-                         'Matemática Numérica Avançada', 'MatematicaNumericaAvancada')
-        os.system('rm -rvf '+self.odir+'/MatematicaNumericaAvancada')
-        os.system('mv '+self.srcdir+'/MatematicaNumericaAvancada/html'\
-                      +' '+self.odir+'/MatematicaNumericaAvancada')
+    # def make_pdf(self):
+    #     os.chdir(self.srcdir+'/MatematicaNumericaAvancada')
+    #     os.system('make clean')
+    #     os.system('make pdf')
+    #     os.chdir('../..')
 
-        #pdf
-        self.make_pdf()
-        os.system('mv '+self.srcdir+'/MatematicaNumericaAvancada/main.pdf'\
-                  +' '+self.odir+'/MatematicaNumericaAvancada/')
+    # def make_html(self):
+    #     os.chdir(self.srcdir+'/MatematicaNumericaAvancada')
+    #     os.system('make clean')
+    #     os.system('make html')
+    #     os.chdir('../..')
+        
+    # def build(self):
+    #     #html
+    #     self.make_html()
+    #     self.goodies(self.srcdir+'/MatematicaNumericaAvancada/html',\
+    #                      'Matemática Numérica Avançada', 'MatematicaNumericaAvancada')
+    #     os.system('rm -rvf '+self.odir+'/MatematicaNumericaAvancada')
+    #     os.system('mv '+self.srcdir+'/MatematicaNumericaAvancada/html'\
+    #                   +' '+self.odir+'/MatematicaNumericaAvancada')
+
+    #     #pdf
+    #     self.make_pdf()
+    #     os.system('mv '+self.srcdir+'/MatematicaNumericaAvancada/main.pdf'\
+    #               +' '+self.odir+'/MatematicaNumericaAvancada/')

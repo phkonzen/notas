@@ -4,8 +4,7 @@ Publica as notas de Cálculo I.
 
 notas/src/CalculoI
 
-Autor: Pedro H A Konzen - 03/2019
-Modificado: 12/2024
+Autor: Pedro H A Konzen
 '''
 
 import os

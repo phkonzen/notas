@@ -18,28 +18,31 @@ class GeometriaAnalitica(Notas):
         self.srcdir = srcdir
         self.odir = odir
         
-    def make_pdf(self):
-        os.chdir(self.srcdir+'/GeometriaAnalitica')
-        os.system('make clean')
-        os.system('make pdf')
-        os.chdir('../..')
+        self.folder_notas = 'GeometriaAnalitica'
+        self.titulo_notas = 'Geometria Analítica'
 
-    def make_html(self):
-        os.chdir(self.srcdir+'/GeometriaAnalitica')
-        os.system('make clean')
-        os.system('make html')
-        os.chdir('../..')
+    # def make_pdf(self):
+    #     os.chdir(self.srcdir+'/GeometriaAnalitica')
+    #     os.system('make clean')
+    #     os.system('make pdf')
+    #     os.chdir('../..')
+
+    # def make_html(self):
+    #     os.chdir(self.srcdir+'/GeometriaAnalitica')
+    #     os.system('make clean')
+    #     os.system('make html')
+    #     os.chdir('../..')
         
-    def build(self):
-        #html
-        self.make_html()
-        self.goodies(self.srcdir+'/GeometriaAnalitica/html',\
-                         'Geometria Analítica', 'GeometriaAnalitica')
-        os.system('rm -rvf '+self.odir+'/GeometriaAnalitica')
-        os.system('mv '+self.srcdir+'/GeometriaAnalitica/html'\
-                      +' '+self.odir+'/GeometriaAnalitica')
+    # def build(self):
+    #     #html
+    #     self.make_html()
+    #     self.goodies(self.srcdir+'/GeometriaAnalitica/html',\
+    #                      'Geometria Analítica', 'GeometriaAnalitica')
+    #     os.system('rm -rvf '+self.odir+'/GeometriaAnalitica')
+    #     os.system('mv '+self.srcdir+'/GeometriaAnalitica/html'\
+    #                   +' '+self.odir+'/GeometriaAnalitica')
 
-        #pdf
-        self.make_pdf()
-        os.system('mv '+self.srcdir+'/GeometriaAnalitica/main.pdf'\
-                  +' '+self.odir+'/GeometriaAnalitica/')
+    #     #pdf
+    #     self.make_pdf()
+    #     os.system('mv '+self.srcdir+'/GeometriaAnalitica/main.pdf'\
+    #               +' '+self.odir+'/GeometriaAnalitica/')
