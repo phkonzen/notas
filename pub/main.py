@@ -95,7 +95,7 @@ def build(id):
 
 #região paralelizada
 if __name__ == '__main__':
-    p = Pool(processes=4)
+    p = Pool(processes=6)
     p.map(build,[api,
                  ci,
                  ead,

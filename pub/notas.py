@@ -170,7 +170,18 @@ class Notas:
         text += '.ltx_eqn_center_padleft {'
         text += 'display: none;'
         text += '}'
+        text += '#generalAlert {'
+        text += 'max-width: 90vw;'
         text += '}'
+        text += '}'
+
+        # Medium/large devices (landscape phones, larger than 768px)
+        text += '@media (min-width: 768px) {'
+        text += '#generalAlert {'
+        text += 'max-width: 300rem;'
+        text += '}'
+        text += '}'
+
 
         text += '.ltx_tabular {'
         text += 'max-width: 100%;'
