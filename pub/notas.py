@@ -182,6 +182,13 @@ class Notas:
         text += '}'
         text += '}'
 
+        # # just for firefox
+        # text += '@-moz-document url-prefix() {'
+        # text += '.MathJax {'
+        # text += 'font-size: 0.5em;'
+        # text == '}'
+        # text += '}'
+
 
         text += '.ltx_tabular {'
         text += 'max-width: 100%;'
