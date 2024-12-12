@@ -184,31 +184,30 @@ class Index:
 
         # Área de anúncios
         body += '<div id="demo" class="carousel slide mt-2 mb-2" data-bs-ride="carousel" style="height: 4em;">'
-        
+
         body += '<!-- The slideshow -->'
         body += '<div class="carousel-inner">'
 
         # anúncio
-        body += '<div class="carousel-item active">'
-        body += self.add_anuncio(text = 'XXVI Escola de Verão PPGMPA/UFSC: Inscrições Abertas',
+        body += '<div class="carousel-item">'
+        body += self.add_anuncio(text = 'XXVI Escola de Verão PPGMPA/UFSC: Inscrições até 13/Dez',
                                  link = 'https://sites.google.com/view/escoladevero/',
-                                 status = 'warning')
+                                 status = 'danger')
         body += '</div>'
-
 
         # anúncio
         body += '<div class="carousel-item">'
-        body += self.add_anuncio(text = '10º MCsul/X SEMENGO: 4-6/Dez/24',
-                                 link = 'https://mcsulsemengo.furg.br/',
+        body += self.add_anuncio(text = 'XII ERMAC-RS 2025: Submissões até 15/Fev',
+                                 link = 'https://sites.google.com/view/ermacrs',
                                  status = 'primary')
         body += '</div>'
 
 
         # anúncio
-        body += '<div class="carousel-item">'
-        body += self.add_anuncio(text = 'PPG Matemática Aplicada',
+        body += '<div class="carousel-item active">'
+        body += self.add_anuncio(text = 'PPG Matemática Aplicada: Seleção de Mestrado 25/1 até 17/Jan',
                                  link = 'https://www.ufrgs.br/ppgmap',
-                                 status = 'primary')
+                                 status = 'warning')
         body += '</div>'
 
 
