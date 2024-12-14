@@ -185,10 +185,9 @@ class Notas:
         # # just for firefox
         # text += '@-moz-document url-prefix() {'
         # text += '.MathJax {'
-        # text += 'font-size: 0.5em;'
+        # text += 'font-size: 1.0525em !important;'
         # text == '}'
         # text += '}'
-
 
         text += '.ltx_tabular {'
         text += 'max-width: 100%;'
@@ -205,7 +204,7 @@ class Notas:
         head = ''
         
         head += '<meta name="author" content="Pedro H A Konzen"/>'
-        head += '<link rel="icon" type="image/x-icon" href="../pics/favicon.png">'
+        head += '<link rel="icon" type="image/x-icon" href="../pics/favicon.ico">'
 
         # bootstrap 5.3.0
         head += '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">'

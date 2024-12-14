@@ -25,7 +25,7 @@ class Index:
         head += '<meta charset="utf-8">'
         head += '<title>NotasPedroK</title>'
         head += '<meta name="author" content="Pedro H A Konzen">'
-        head += '<link rel="icon" type="image/x-icon" href="./pics/favicon.png">'
+        head += '<link rel="icon" type="image/x-icon" href="./pics/favicon.ico">'
         head += '<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">'
 
         # bootstrap 5.3.0
@@ -387,8 +387,9 @@ class Index:
                               text = "Introdução à Python para matemática",
                               badges = ["Python", "NumPy", "Matplotlib"],
                               link = "MiniPython/main.html",
-                              color = "warning", status = "Atualizando",
-                              ebook="https://www.amazon.com.br/dp/B0DMPQ24VY")
+                              color = "primary", status = "",
+                              ebook="https://www.amazon.com.br/dp/B0DMPQ24VY",
+                              livro="https://clubedeautores.com.br/book/738083--Python_para_matematica")
         body += '</div>'
 
         # card: notas do Minicurso de C/C++ para Matemática

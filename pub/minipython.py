@@ -19,6 +19,7 @@ class MiniPython(Notas):
         self.srcdir = srcdir
         self.odir = odir
         self.ebook = 'https://www.amazon.com.br/dp/B0DMPQ24VY'
+        self.livro = 'https://clubedeautores.com.br/book/738083--Python_para_matematica'
 
         self.folder_notas = 'MiniPython'
         self.titulo_notas = 'Minicurso de Python para Matemática'

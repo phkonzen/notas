@@ -24,7 +24,7 @@ class Infos:
         head += '<meta charset="utf-8">'
         head += '<title>NotasPedroK - Informações</title>'
         head += '<meta name="author" content="Pedro H A Konzen"/>'
-        head += '<link rel="icon" type="image/x-icon" href="./pics/favicon.png">'
+        head += '<link rel="icon" type="image/x-icon" href="./pics/favicon.ico">'
         head += '<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">'
 
         # bootstrap 5.3.0
