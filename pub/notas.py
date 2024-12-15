@@ -240,13 +240,13 @@ class Notas:
         body += '</div>'
         body += '<div class="col-xxl-10">'
 
-        # colab alert
-        f = open('colab_alert.html','r')
-        aux = f.read().replace('./infos.html','../infos.html')
-        aux = aux.replace('<!-- subs:screen_rotation_icon -->',
-                          '<span class="material-symbols-outlined m-0">screen_rotation</span>')
-        body += aux
-        f.close()
+        # # colab alert
+        # f = open('colab_alert.html','r')
+        # aux = f.read().replace('./infos.html','../infos.html')
+        # aux = aux.replace('<!-- subs:screen_rotation_icon -->',
+        #                   '<span class="material-symbols-outlined m-0">screen_rotation</span>')
+        # body += aux
+        # f.close()
 
         # general alert
         f = open('general_alert.html','r')
@@ -363,11 +363,11 @@ class Notas:
                 merchant = '<p class="m-1 text-black" style="text-align: center">'
                 merchant += '<i class="fa-solid fa-heart" style="color: red;"></i> '
                 if (self.ebook != '') and (self.livro != ''):
-                    merchant += 'Compre o <a href="'+self.livro+'">livro</a> ou o <a href="'+self.ebook+'">e-book</a> deste material aqui! Consulte mais formas de <a href="../infos.html#colabore">colaborar</a>.'
+                    merchant += 'Compre o <a href="'+self.livro+'">livro</a> ou o <a href="'+self.ebook+'">e-book</a> deste material aqui! Consulte outras formas de <a href="../infos.html#colabore">colaborar</a>.'
                 elif (self.ebook != ''):
-                    merchant += 'Compre o <a href="'+self.ebook+'">e-book</a> deste material aqui!'
+                    merchant += 'Compre o <a href="'+self.ebook+'">e-book</a> deste material aqui! Consulte outras formas de <a href="../infos.html#colabore">colaborar</a>.'
                 elif (self.livro != ''):
-                    merchant += 'Compre o <a href="'+self.livro+'">livro</a> deste material aqui!'
+                    merchant += 'Compre o <a href="'+self.livro+'">livro</a> deste material aqui! Consulte outras formas de <a href="../infos.html#colabore">colaborar</a>.'
                 else:
                     merchant += 'Ajude a manter o site livre, gratuito e sem propagandas. <a href="../infos.html#colabore">Colabore!</a>'
 
