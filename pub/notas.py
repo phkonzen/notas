@@ -363,7 +363,7 @@ class Notas:
                 merchant = '<p class="m-1 text-black" style="text-align: center">'
                 merchant += '<i class="fa-solid fa-heart" style="color: red;"></i> '
                 if (self.ebook != '') and (self.livro != ''):
-                    merchant += 'Compre o <a href="'+self.livro+'">livro</a> ou o <a href="'+self.ebook+'">e-book</a> deste material aqui!'
+                    merchant += 'Compre o <a href="'+self.livro+'">livro</a> ou o <a href="'+self.ebook+'">e-book</a> deste material aqui! Consulte mais formas de <a href="../infos.html#colabore">colaborar</a>.'
                 elif (self.ebook != ''):
                     merchant += 'Compre o <a href="'+self.ebook+'">e-book</a> deste material aqui!'
                 elif (self.livro != ''):
