@@ -60,12 +60,13 @@ class Notas:
         f = open(htmldir+'/goodies.css','w')
         text = 'body {'
         text += 'font-family: "Computer Modern Serif", serif;'
+        text += 'font-size: 1.1em;'
         text += '}'
-        text += '@media (min-width: 576px) {'
-        text += 'body {'
-        text += 'font-size: larger;'
-        text += '}'
-        text += '}'
+        # text += '@media (min-width: 576px) {'
+        # text += 'body {'
+        # text += 'font-size: larger;'
+        # text += '}'
+        # text += '}'
 
         text += '.ltx_title {'
         text += 'border-style: solid;'
@@ -143,7 +144,8 @@ class Notas:
 
         text += '.ltx_listingline {'
         text += 'white-space: normal;'
-        text += 'word-break: break-all;' 
+        text += 'word-break: break-all;'
+        text += 'font-size: 1em;' 
         text += '}'
   
         text += '.ltx_lst_numbers_left .ltx_listingline .ltx_tag {'
@@ -360,7 +362,7 @@ class Notas:
                 #modifica o __body__ (bottom)
                 page = page.replace('</body>', body_end)
 
-                merchant = '<p class="m-1 text-black" style="text-align: center">'
+                merchant = '<p class="m-1 text-black" style="text-align: center; font-size: 0.9rem;">'
                 merchant += '<i class="fa-solid fa-heart" style="color: red;"></i> '
                 if (self.ebook != '') and (self.livro != ''):
                     merchant += 'Compre o <a href="'+self.livro+'">livro</a> ou o <a href="'+self.ebook+'">e-book</a> deste material aqui! Consulte outras formas de <a href="../infos.html#colabore">colaborar</a>.'
