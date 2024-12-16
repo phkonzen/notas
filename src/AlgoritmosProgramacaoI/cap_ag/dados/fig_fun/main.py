@@ -2,6 +2,11 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 
+plt.rcParams.update({
+     "font.size": 12,
+     "figure.dpi": 300
+     })
+
 # figure
 fig = plt.figure(dpi=300)
 # axis
