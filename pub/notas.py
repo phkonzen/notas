@@ -168,7 +168,7 @@ class Notas:
         # text += '}'
 
         # Small devices (landscape phones, less than 768px)
-        text += '@media (max-width: 767.98px) {'
+        text += '@media (max-width: 575.98px) {'
         text += '.ltx_eqn_center_padleft {'
         text += 'display: none;'
         text += '}'
@@ -178,7 +178,7 @@ class Notas:
         text += '}'
 
         # Medium/large devices (landscape phones, larger than 768px)
-        text += '@media (min-width: 768px) {'
+        text += '@media (min-width: 576px) {'
         text += '#generalAlert {'
         text += 'max-width: 300rem;'
         text += '}'
@@ -340,17 +340,17 @@ class Notas:
                 #modifica o __head__
                 page = page.replace('</head>', head)
 
-                # add div for desktop
+                # add div for desktop (hide only on xs)
                 page = page.replace('<div class="ltx_page_main">',
-                                    '<div class="ltx_page_main desktop d-none d-md-block">')
+                                    '<div class="ltx_page_main desktop d-none d-sm-block">')
                 
                 # add div mobile
                 f = open(htmldir+'-mobile/'+p, 'r')
                 page_mobile = f.read()
                 f.close()
                 page_mobile = page_mobile.replace('<div class="ltx_page_main">',
-                            '<div class="ltx_page_main mobile d-md-none">')
-                start = page_mobile.find('<div class="ltx_page_main mobile d-md-none">')
+                            '<div class="ltx_page_main mobile d-block d-sm-none">')
+                start = page_mobile.find('<div class="ltx_page_main mobile d-block d-sm-none">')
                 end = page_mobile.rfind('</div>')
 
                 page = page.replace('</body>',
