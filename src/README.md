@@ -46,6 +46,22 @@ plt.rcParams.update({
      })
 ```
 
+### Listings
+
+```
+\ifispython
+\begin{lstlisting}[style=input, caption={\python}]
+...
+\end{lstlisting}
+%
+\begin{lstlisting}[style=output]
+...
+\end{lstlisting}  
+\fi
+```
+
+* Obs.: dentro de `itemize/enumerate` use `xrightmargin=0.19in`
+
 ## Licença
 
 O texto do material das notas de aula é disponibilizado nos termos da Licença Atribuição-CompartilhaIgual 4.0 Internacional Creative Commons. Para visualizar uma cópia desta licença, visite https://creativecommons.org/licenses/by-sa/4.0/deed.pt_BR ou mande uma carta para Creative Commons, PO Box 1866, Mountain View, CA 94042, USA. Códigos, ícones e outros elementos gráficos podem estar sujeitos a condições adicionais.
