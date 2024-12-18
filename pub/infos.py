@@ -105,6 +105,7 @@ class Infos:
         body += '<ul>'
         body += '<li><strong>Compre</strong> um dos livros das notas de aula!'
         body += '<ul>'
+        body += '<li>Consulte os <a href="https://clubedeautores.com.br/livros/autores/pedro-henrique-de-almeida-konzen">livros impressos</a> disponíveis no <a href="https://clubedeautores.com.br/livros/autores/pedro-henrique-de-almeida-konzen">Clube de Autores</a></li>'
         body += '<li>Série de <a href="https://www.amazon.com.br/dp/B0CW18N6T5">e-books</a> das notas de aula na <a href="https://www.amazon.com.br/dp/B0CW18N6T5">Amazon.com.br</a>.</li>'
         body += '</ul>'
         body += '<li><strong>Envie um comentário</strong> avisando de erros, sugestões, críticas ...'
@@ -122,7 +123,17 @@ class Infos:
         body += '</ul>'
 
         ## Pq comprar?
-        body += '<h3 id="colabore" class="mt-3"><i class="fa-regular fa-face-smile-wink"></i> Por que comprar um e-book das notas de aula?</h3>'
+        body += '<h3 class="mt-3"><i class="fa-solid fa-book-open"></i> Por que comprar um livro das notas de aula?</h3>'
+        body += '<p> Além de colaborar com o site, os livros impressos oferecem uma experiência de leitura única, estão disponíveis em acabamento brochura com texto em colorido ou em preto e branco.</p>'
+        body += '<h4>Qual título está disponível?</h4>'
+        body += '<ul>'
+        body += '<li><strong>Python para Matemática</strong>'
+        body += '<p>Notas de aula de minicurso sobre a linguagem de programação Python. O livro traz uma introdução sobre os elementos da linguagem, da programação estruturada, da computação matricial e de gráficos. É pensada para estudantes de cursos de matemática e áreas afins.</p>'
+        body += '</li>'
+        body += '</ul>'
+
+
+        body += '<h3 class="mt-3"><i class="fa-solid fa-tablet-screen-button"></i> Por que comprar um e-book das notas de aula?</h3>'
         body += '<ul>'
         body += '<li><strong>Seu e-book, sua escolha!</strong></li>'
         body += '<p>A qualquer momento, as notas de aula podem sofrer alterações de conteúdo (modificações, remoções, adições, correções, etc.). Mas, não se preocupe, seu e-book só é atualizado se e quado você quiser.</p>'
